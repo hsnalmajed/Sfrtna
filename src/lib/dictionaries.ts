@@ -293,11 +293,11 @@ export const dictionaries = {
     hero: {
       badge: "دليلك العربي للسفر · بدون أي رسوم عليك",
       photoCredit: "{place} · تصوير {artist} على Pexels",
-      titleLine1: "من الفكرة إلى الحجز،",
-      titleLine2: "رحلتك كلها في مكان واحد",
-      title: "من الفكرة إلى الحجز، رحلتك كلها في مكان واحد",
+      titleLine1: "من الميزانية إلى الحجز،",
+      titleLine2: "سفرتك كلها في مكان واحد",
+      title: "من الميزانية إلى الحجز، سفرتك كلها في مكان واحد",
       subtitle:
-        "اختر وجهتك أو دعنا نقترحها ضمن ميزانيتك، واعرف أفضل موسم لها وتأشيرتها وعملتها، ثم قارن أسعار الطيران والفنادق من مواقع الحجز الموثوقة — بالعربي، وبدون أي رسوم عليك.",
+        "اختر وجهتك أو دعنا نقترحها ضمن ميزانيتك، واعرف أفضل موسم لها ومعالمها وتأشيرتها وعملتها.",
       trust1: "بدون عمولات حجز خفية",
       trust2: "مقارنة من مصادر موثوقة",
       trust3: "خطة سياحية جاهزة لكل رحلة",
@@ -1259,11 +1259,11 @@ export const dictionaries = {
     hero: {
       badge: "Your travel guide · No fees for you",
       photoCredit: "{place} · photo by {artist} on Pexels",
-      titleLine1: "From idea to booking,",
+      titleLine1: "From budget to booking,",
       titleLine2: "your whole trip in one place",
-      title: "From idea to booking, your whole trip in one place",
+      title: "From budget to booking, your whole trip in one place",
       subtitle:
-        "Pick a destination or let us suggest one within your budget, see its best season, visa and currency, then compare flight and hotel prices from trusted booking sites — at no cost to you.",
+        "Pick a destination or let us suggest one within your budget, and see its best season, sights, visa and currency.",
       trust1: "No hidden booking fees",
       trust2: "Compared across trusted sources",
       trust3: "A ready itinerary for every trip",
