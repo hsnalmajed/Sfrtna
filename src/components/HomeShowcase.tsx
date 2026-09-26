@@ -8,13 +8,6 @@ import { countLabel } from "@/lib/format";
 import Icon, { type IconName } from "@/components/ui/Icon";
 import { openPlanner, type PlanProduct } from "@/lib/planEvents";
 
-export interface ShowcaseDestination {
-  code: string;
-  name: string;
-  photo?: string;
-  cities: number;
-}
-
 /** A city in season this month, with the two numbers that put it there. */
 export interface ShowcaseCity {
   code: string;
@@ -44,7 +37,6 @@ export interface ShowcaseStep {
 }
 
 interface ShowcaseDict {
-  tabFeatured: string;
   tabSeason: string;
   tabTools: string;
   tabHow: string;
@@ -54,8 +46,6 @@ interface ShowcaseDict {
   flightsHint: string;
   hotelsTitle: string;
   hotelsHint: string;
-  featuredSubtitle: string;
-  featuredCta: string;
   seasonTitle: string;
   seasonSubtitle: string;
   seasonCta: string;
@@ -74,13 +64,9 @@ interface ShowcaseDict {
   toolsSubtitle: string;
   toolCta: string;
   stepsTitle: string;
-  cityCountOne: string;
-  cityCountTwo: string;
-  cityCountFew: string;
-  cityCountMany: string;
 }
 
-type TabKey = "featured" | "season" | "tools" | "how" | "plan";
+type TabKey = "season" | "tools" | "how" | "plan";
 
 /**
  * Everything the site is, on one screen.
@@ -108,20 +94,18 @@ type TabKey = "featured" | "season" | "tools" | "how" | "plan";
  */
 export default function HomeShowcase({
   locale,
-  featured,
   seasonCities,
   tools,
   steps,
   dict,
 }: {
   locale: Locale;
-  featured: ShowcaseDestination[];
   seasonCities: ShowcaseCity[];
   tools: ShowcaseTool[];
   steps: ShowcaseStep[];
   dict: ShowcaseDict;
 }) {
-  const [active, setActive] = useState<TabKey>(seasonCities.length > 0 ? "season" : "featured");
+  const [active, setActive] = useState<TabKey>(seasonCities.length > 0 ? "season" : "tools");
   // The season tab runs every city in season past as a moving strip; the
   // button lays them all out as a still grid, in place rather than on
   // another page.
@@ -131,22 +115,16 @@ export default function HomeShowcase({
 
   const tabs: { key: TabKey; label: string; hidden?: boolean }[] = [
     { key: "season", label: dict.tabSeason, hidden: seasonCities.length === 0 },
-    { key: "featured", label: dict.tabFeatured },
     { key: "tools", label: dict.tabTools },
     { key: "how", label: dict.tabHow },
     { key: "plan", label: dict.tabPlan },
   ];
 
   const blurb: Record<TabKey, string> = {
-    featured: dict.featuredSubtitle,
     season: dict.seasonSubtitle,
     tools: dict.toolsSubtitle,
     how: dict.stepsTitle,
     plan: dict.planSubtitle,
-  };
-
-  const link: Partial<Record<TabKey, { href: string; label: string }>> = {
-    featured: { href: `/${locale}/attractions`, label: dict.featuredCta },
   };
 
   const tabClass = (on: boolean) =>
@@ -172,40 +150,6 @@ export default function HomeShowcase({
     { value: "flights", icon: "plane", title: dict.flightsTitle, hint: dict.flightsHint },
     { value: "hotels", icon: "hotel", title: dict.hotelsTitle, hint: dict.hotelsHint },
   ];
-
-  const card = (d: ShowcaseDestination) => (
-    <Link
-      key={d.code}
-      href={`/${locale}/attractions/${d.code}`}
-      className="group relative isolate block aspect-[3/4] overflow-hidden rounded-2xl ring-1 ring-white/10 transition duration-300 hover:-translate-y-1 hover:ring-sun-400/50"
-    >
-      <Photo
-        src={d.photo}
-        className="absolute inset-0 -z-10 h-full w-full object-cover transition duration-500 group-hover:scale-[1.06]"
-        fallback={<div className="absolute inset-0 -z-10 bg-gradient-to-br from-navy-700 to-navy-990" />}
-      />
-      <div className="scrim-soft absolute inset-0 -z-10" />
-      <span
-        className="absolute inset-x-0 bottom-0 h-[3px] origin-left scale-x-0 bg-gradient-to-r from-sun-300 to-sun-600 transition-transform duration-300 group-hover:scale-x-100 rtl:origin-right"
-        aria-hidden="true"
-      />
-      <div className="absolute inset-x-0 bottom-0 p-3">
-        <p className="truncate font-display text-sm font-extrabold text-white drop-shadow-sm sm:text-base">
-          {d.name}
-        </p>
-        {d.cities > 0 && (
-          <p className="mt-0.5 truncate text-2xs font-semibold text-sun-300">
-            {countLabel(d.cities, {
-              one: dict.cityCountOne,
-              two: dict.cityCountTwo,
-              few: dict.cityCountFew,
-              many: dict.cityCountMany,
-            })}
-          </p>
-        )}
-      </div>
-    </Link>
-  );
 
   const cityCard = (c: ShowcaseCity) => (
     <div key={`${c.code}-${c.slug}`} className="group relative isolate aspect-[3/4] overflow-hidden rounded-2xl ring-1 ring-white/10 transition duration-300 hover:-translate-y-1 hover:ring-sun-400/50">
@@ -309,15 +253,6 @@ export default function HomeShowcase({
                 </span>
               </button>
             )}
-            {link[active] && (
-              <Link
-                href={link[active]!.href}
-                className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-white/10 px-4 py-2.5 text-sm font-bold text-white ring-1 ring-white/20 transition hover:bg-white/20"
-              >
-                {link[active]!.label}
-                <span aria-hidden="true">{arrow}</span>
-              </Link>
-            )}
           </div>
 
           {/* Keyed on the tab so the fade replays on every switch. The floor
@@ -325,12 +260,6 @@ export default function HomeShowcase({
               when a shorter panel replaces a taller one — a jump reads as a
               glitch, and is worse than the blank inch it saves. */}
           <div key={active} className="tab-fade min-h-[16rem] sm:min-h-[15rem]">
-            {active === "featured" && (
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-6">
-                {featured.slice(0, 6).map(card)}
-              </div>
-            )}
-
             {active === "season" && (
               <>
                 {allCities || seasonCities.length <= 6 ? (

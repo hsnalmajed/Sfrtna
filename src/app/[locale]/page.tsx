@@ -4,7 +4,7 @@ import type { Locale } from "@/lib/types";
 import { COUNTRY_GUIDES } from "@/lib/countryGuides";
 import { COUNTRY_CITIES } from "@/lib/cities";
 import { findCountry } from "@/lib/countries";
-import { fetchCityPhotos, fetchCountryPhotos } from "@/lib/countryPhotos";
+import { fetchCityPhotos } from "@/lib/countryPhotos";
 import { citiesInSeason, varietyFirst } from "@/lib/citySeasons";
 import { CITY_AIRPORTS } from "@/data/cityAirports";
 import { heroImage as heroImageOf, heroPhotoForToday } from "@/lib/heroPhotos";
@@ -15,21 +15,6 @@ import Photo from "@/components/Photo";
 import { brandJsonLd } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
-
-/**
- * The destinations the homepage leads with.
- *
- * Hand-picked rather than "first nine in the data": the front page has one
- * job, which is to make someone want to go somewhere, and that argument is
- * won by places a Saudi traveller already half-wants — Istanbul, Tbilisi,
- * the Maldives — not by whichever country sorts first alphabetically.
- *
- * Nine, not ten. The first card spans two columns and two rows, so the grid
- * only comes out flush when the remaining eight exactly fill what is left:
- * 2 cols → 4+8 = 12 cells over 6 rows; 3 cols → 12 over 4 rows; 6 cols → 12
- * over 2 rows. Ten destinations left a visible hole at every width.
- */
-const FEATURED = ["TR", "GE", "MV", "MY", "JP", "ES", "AZ", "TH", "IT"];
 
 export default async function HomePage({ params }: PageProps<"/[locale]">) {
   const { locale } = await params;
@@ -51,23 +36,13 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
   // A different corner of the world each day — see heroPhotos.ts for the
   // brief these are chosen against.
   const heroPick = heroPhotoForToday();
-  const [photos, cityPhotos] = await Promise.all([
-    fetchCountryPhotos(FEATURED),
-    fetchCityPhotos(seasonOrder),
-  ]);
+  const cityPhotos = await fetchCityPhotos(seasonOrder);
   const heroImage = heroImageOf(heroPick);
   const heroPhoto = heroImage.url;
   const nameOf = (code: string) => {
     const c = findCountry(code);
     return c ? (isAr ? c.nameAr : c.nameEn) : code;
   };
-
-  const featured = FEATURED.map((code) => ({
-    code,
-    name: nameOf(code),
-    photo: photos.get(code),
-    cities: COUNTRY_CITIES[code]?.length ?? 0,
-  }));
 
   const seasonCities: ShowcaseCity[] = seasonOrder.map((c) => {
     const airport = CITY_AIRPORTS[c.slug];
@@ -208,12 +183,10 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
       <section className="relative z-10 -mt-20 bg-[radial-gradient(60rem_24rem_at_50%_0%,rgb(255_255_255/0.04),transparent)] pb-6 sm:-mt-24 sm:pb-8">
         <HomeShowcase
           locale={loc}
-          featured={featured}
           seasonCities={seasonCities}
           tools={tools}
           steps={steps}
           dict={{
-            tabFeatured: dict.home.tabFeatured,
             tabSeason: dict.home.tabSeason,
             tabTools: dict.home.tabTools,
             tabHow: dict.home.tabHow,
@@ -223,8 +196,6 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
             flightsHint: dict.productSelect.flightsHint,
             hotelsTitle: dict.productSelect.hotelsTitle,
             hotelsHint: dict.productSelect.hotelsHint,
-            featuredSubtitle: dict.home.featuredSubtitle,
-            featuredCta: dict.home.featuredCta,
             seasonTitle: dict.home.seasonTitle.replace("{month}", monthName(month, loc)),
             seasonSubtitle: dict.home.seasonSubtitle,
             seasonCta: dict.home.seasonCta,
@@ -243,10 +214,6 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
             toolsSubtitle: dict.home.toolsSubtitle,
             toolCta: dict.home.toolCta,
             stepsTitle: dict.home.stepsTitle,
-            cityCountOne: dict.home.cityCountOne,
-            cityCountTwo: dict.home.cityCountTwo,
-            cityCountFew: dict.home.cityCountFew,
-            cityCountMany: dict.home.cityCountMany,
           }}
         />
       </section>
