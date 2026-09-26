@@ -557,6 +557,58 @@ html[lang="ar"] .eyebrow {
   }
 }
 
+/* The homepage season strip: this month's cities drifting past on a loop.
+   The track holds the list twice, so sliding it by exactly half its width
+   lands the second copy where the first began and the loop has no seam. It
+   drifts toward the reading direction's end — leftward in English, rightward
+   in Arabic — and stops under a pointer or keyboard focus so a card can be
+   read and clicked. Anyone who asked for less motion gets a plain row they
+   scroll themselves instead. */
+@keyframes marqueeLtr {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes marqueeRtl {
+  to {
+    transform: translateX(50%);
+  }
+}
+
+.marquee {
+  overflow: hidden;
+  mask-image: linear-gradient(to right, transparent, #000 4%, #000 96%, transparent);
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marqueeLtr var(--marquee-duration, 120s) linear infinite;
+}
+
+[dir="rtl"] .marquee-track {
+  animation-name: marqueeRtl;
+}
+
+.marquee:hover .marquee-track,
+.marquee:focus-within .marquee-track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee {
+    overflow-x: auto;
+    mask-image: none;
+  }
+  .marquee-track {
+    animation: none;
+  }
+  .marquee-copy {
+    display: none;
+  }
+}
+
 /* ---------------------------------------------------------------------------
    Arabic does not take letter-spacing.
 

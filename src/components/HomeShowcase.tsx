@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type CSSProperties } from "react";
 import Link from "next/link";
 import type { Locale } from "@/lib/types";
 import Photo from "@/components/Photo";
@@ -122,8 +122,9 @@ export default function HomeShowcase({
   dict: ShowcaseDict;
 }) {
   const [active, setActive] = useState<TabKey>(seasonCities.length > 0 ? "season" : "featured");
-  // The season tab shows six cities, one per country where it can; the rest
-  // of the month's cities open in place rather than on another page.
+  // The season tab runs every city in season past as a moving strip; the
+  // button lays them all out as a still grid, in place rather than on
+  // another page.
   const [allCities, setAllCities] = useState(false);
   const isAr = locale === "ar";
   const arrow = isAr ? "←" : "→";
@@ -332,9 +333,37 @@ export default function HomeShowcase({
 
             {active === "season" && (
               <>
-                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-6">
-                  {(allCities ? seasonCities : seasonCities.slice(0, 6)).map(cityCard)}
-                </div>
+                {allCities || seasonCities.length <= 6 ? (
+                  <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-6">
+                    {seasonCities.map((c) => cityCard(c))}
+                  </div>
+                ) : (
+                  // Every city in season, drifting past (see .marquee in
+                  // globals.css). The second copy is only there to close the
+                  // loop, so it is inert: screen readers and the Tab key meet
+                  // each city once.
+                  <div className="marquee -mx-4 px-4 py-1 sm:-mx-7 sm:px-7">
+                    <div
+                      className="marquee-track"
+                      style={{ "--marquee-duration": `${seasonCities.length * 5}s` } as CSSProperties}
+                    >
+                      {[0, 1].map((copy) => (
+                        <div
+                          key={copy}
+                          className={`flex gap-3 pe-3 sm:gap-4 sm:pe-4 ${copy === 1 ? "marquee-copy" : ""}`}
+                          aria-hidden={copy === 1 || undefined}
+                          inert={copy === 1}
+                        >
+                          {seasonCities.map((c) => (
+                            <div key={`${c.code}-${c.slug}`} className="w-40 shrink-0 sm:w-48">
+                              {cityCard(c)}
+                            </div>
+                          ))}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
                 <p className="mt-4 text-xs text-white/45">
                   {dict.seasonMethod}{" "}
                   <Link href={`/${locale}/seasons`} className="font-bold text-white/70 underline-offset-2 hover:underline">
