@@ -127,6 +127,11 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
             }
           />
           <div className="scrim-soft absolute inset-0" />
+          {/* A dark halo behind the headline. Bright photographs — a pale
+              sky, a white town — left the white and gold words almost
+              invisible; this keeps them readable on any picture of the day
+              without darkening the whole photograph. */}
+          <div className="absolute inset-0 bg-[radial-gradient(75%_48%_at_50%_30%,rgb(4_24_47/0.62),rgb(4_24_47/0.25)_60%,transparent)]" />
           {/* The picture ends; the page keeps going. Without this the slab
               would cut off in a hard line across the middle of the form. */}
           <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-navy-990" />
@@ -150,23 +155,23 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
             A hero whose whole reason for existing is one panel puts that
             panel in the middle of the window. */}
         <div className="mx-auto flex w-full max-w-7xl flex-col items-center px-4 pt-28 text-center sm:px-6">
-          <p className="mb-4 inline-flex items-center gap-2 rounded-full bg-white/10 px-3.5 py-1.5 text-2xs font-bold tracking-wide text-sun-200 ring-1 ring-white/15 backdrop-blur-md">
+          <p className="mb-4 inline-flex items-center gap-2 rounded-full bg-navy-990/60 px-3.5 py-1.5 text-2xs font-bold tracking-wide text-sun-300 ring-1 ring-white/25 backdrop-blur-md">
             ✈️ {dict.hero.badge}
           </p>
 
-          <h1 className="max-w-3xl font-display text-h1 font-black text-white drop-shadow-[0_2px_18px_rgba(4,24,47,0.55)]">
+          <h1 className="max-w-3xl font-display text-h1 font-black text-white drop-shadow-[0_2px_14px_rgba(4,24,47,0.85)]">
             {dict.hero.titleLine1}
             <br />
-            <span className="text-sunlit">{dict.hero.titleLine2}</span>
+            <span className="text-sun-400">{dict.hero.titleLine2}</span>
           </h1>
 
-          <p className="mt-3 max-w-xl text-sm text-white/80 drop-shadow-[0_1px_10px_rgba(4,24,47,0.75)] sm:text-base">
+          <p className="mt-3 max-w-xl text-sm font-medium text-white drop-shadow-[0_1px_8px_rgba(4,24,47,0.95)] sm:text-base">
             {dict.hero.subtitle}
           </p>
 
           <div className="mt-5 flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
             {stats.map((s) => (
-              <p key={s.label} className="text-sm font-semibold text-white/70">
+              <p key={s.label} className="text-sm font-semibold text-white/90 drop-shadow-[0_1px_8px_rgba(4,24,47,0.9)]">
                 <span className="font-display text-xl font-black text-sun-400">{s.value}</span>{" "}
                 {s.label}
               </p>
