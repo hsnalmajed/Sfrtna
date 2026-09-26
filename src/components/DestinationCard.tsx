@@ -104,9 +104,18 @@ export default function DestinationCard({
       <div className="text-sm text-gray-600 space-y-1">
         {suggestion.flight && (
           <>
+            {/* Stops and baggage only when the source said so. The fare
+                feed gives a price and an airline, not the routing: printing
+                "direct" or "no checked bag" for it would be inventing facts
+                a traveller books on. */}
             <p>
-              ✈️ {suggestion.flight.airline} · {suggestion.flight.stops === 0 ? dict.results.stopsNone : `${suggestion.flight.stops} ${dict.results.stops}`}
+              ✈️ {suggestion.flight.airline}
+              {(!suggestion.flight.priceOnly || suggestion.flight.stopsKnown) &&
+                ` · ${suggestion.flight.stops === 0 ? dict.results.stopsNone : `${suggestion.flight.stops} ${dict.results.stops}`}`}
             </p>
+            {suggestion.flight.priceOnly && (
+              <p className="text-xs text-gray-400 ps-5">{dict.results.priceObserved}</p>
+            )}
             {suggestion.flight.stops > 0 && suggestion.flight.layoverCity && (
               <p className="text-xs text-gray-400 ps-5">
                 {dict.results.layoverIn
@@ -150,7 +159,7 @@ export default function DestinationCard({
       </div>
 
       <div className="mt-2 flex flex-wrap gap-1.5">
-        {suggestion.flight && (
+        {suggestion.flight && !suggestion.flight.priceOnly && (
           <span
             className={`text-[11px] font-semibold px-2 py-0.5 rounded-full ${
               suggestion.flight.baggageIncluded ? "bg-accent-50 text-accent-700" : "bg-gray-100 text-gray-500"
