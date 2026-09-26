@@ -17,7 +17,7 @@ export const dictionaries = {
       seasons: "مواسم السفر",
       visa: "متطلبات السفر",
       currency: "تحويل العملة",
-      planCta: "خطّط رحلتك",
+      planCta: "احجز رحلتك",
       menu: "القائمة",
       // Four items instead of seven. "المعالم" and "الخرائط" are two views of
       // the same places, so they share one heading; the two reference tools
@@ -405,8 +405,8 @@ export const dictionaries = {
       tabSeason: "الأنسب هذا الشهر",
       tabTools: "قبل أن تحجز",
       tabHow: "كيف يعمل الموقع",
-      tabPlan: "خطط رحلتك",
-      planSubtitle: "طيران أم فنادق؟ اختر، ونفتح لك نموذج البحث في أعلى الصفحة.",
+      tabPlan: "احجز رحلتك",
+      planSubtitle: "طيران أم فنادق؟ اختر، وابحث من هنا مباشرة.",
 
       featuredEyebrow: "وجهات مختارة",
       featuredTitle: "وجهات يعشقها المسافر السعودي",
@@ -991,7 +991,7 @@ export const dictionaries = {
       seasons: "Travel Seasons",
       visa: "Entry Requirements",
       currency: "Currency",
-      planCta: "Plan your trip",
+      planCta: "Book your trip",
       menu: "Menu",
       destinations: "Destinations",
       whenToTravel: "When to go",
@@ -1371,8 +1371,8 @@ export const dictionaries = {
       tabSeason: "Best this month",
       tabTools: "Before you book",
       tabHow: "How it works",
-      tabPlan: "Plan your trip",
-      planSubtitle: "Flights or hotels? Pick one and we open the search at the top of the page.",
+      tabPlan: "Book your trip",
+      planSubtitle: "Flights or hotels? Pick one and search right here.",
 
       featuredEyebrow: "Featured",
       featuredTitle: "Where Saudi travellers actually go",

@@ -1,12 +1,14 @@
 "use client";
 
-import { useState, type CSSProperties } from "react";
+import { Suspense, useState, type CSSProperties } from "react";
 import Link from "next/link";
 import type { Locale } from "@/lib/types";
 import Photo from "@/components/Photo";
 import { countLabel } from "@/lib/format";
 import Icon, { type IconName } from "@/components/ui/Icon";
-import { openPlanner, type PlanProduct } from "@/lib/planEvents";
+import type { PlanProduct } from "@/lib/planEvents";
+import TripPlanner from "@/components/TripPlanner";
+import HotelPlanner from "@/components/HotelPlanner";
 
 /** A city in season this month, with the two numbers that put it there. */
 export interface ShowcaseCity {
@@ -110,6 +112,8 @@ export default function HomeShowcase({
   // button lays them all out as a still grid, in place rather than on
   // another page.
   const [allCities, setAllCities] = useState(false);
+  // "Book your trip": which search is open inside the tab, if any.
+  const [planProduct, setPlanProduct] = useState<PlanProduct | null>(null);
   const isAr = locale === "ar";
   const arrow = isAr ? "←" : "→";
 
@@ -203,9 +207,9 @@ export default function HomeShowcase({
 
   return (
     <div className="mx-auto max-w-7xl px-3 sm:px-6">
-      <div className="overflow-hidden rounded-[2rem] bg-gradient-to-b from-navy-900 to-navy-990 shadow-[0_30px_80px_-20px_rgba(4,24,47,0.6)] ring-1 ring-white/10">
+      <div className="rounded-[2rem] bg-gradient-to-b from-navy-900 to-navy-990 shadow-[0_30px_80px_-20px_rgba(4,24,47,0.6)] ring-1 ring-white/10">
         {/* ── The strip ─────────────────────────────────────────────── */}
-        <div className="rail rail-fade flex items-center gap-2 overflow-x-auto border-b border-white/10 bg-white/[0.04] px-3 py-3 sm:px-5">
+        <div className="rail rail-fade flex items-center gap-2 overflow-x-auto rounded-t-[2rem] border-b border-white/10 bg-white/[0.04] px-3 py-3 sm:px-5">
           {tabs
             .filter((t) => !t.hidden)
             .map((t) => (
@@ -336,29 +340,66 @@ export default function HomeShowcase({
             )}
 
             {active === "plan" && (
-              <div className="mx-auto grid max-w-3xl grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
-                {planChoices.map((c) => (
-                  <button
-                    key={c.value}
-                    type="button"
-                    onClick={() => openPlanner(c.value)}
-                    className="group flex items-center gap-4 rounded-2xl bg-white/[0.06] p-6 text-start ring-1 ring-white/10 transition duration-300 hover:-translate-y-1 hover:bg-white/[0.12] hover:ring-sun-400/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400 sm:p-8"
-                  >
-                    <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-sun-400 text-navy-950">
-                      <Icon name={c.icon} className="h-7 w-7" />
-                    </span>
-                    <span className="min-w-0">
-                      <span className="block font-display text-h3 font-extrabold text-white">{c.title}</span>
-                      <span className="mt-0.5 block text-sm text-white/60">{c.hint}</span>
-                    </span>
-                    <span
-                      className="ms-auto text-xl text-sun-300 transition-transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1"
-                      aria-hidden="true"
-                    >
-                      {arrow}
-                    </span>
-                  </button>
-                ))}
+              <div>
+                {/* Flights or hotels, then that search opens right here —
+                    the choice shrinks to a switch once a form is showing. */}
+                <div
+                  role="radiogroup"
+                  aria-label={dict.tabPlan}
+                  className="mx-auto grid max-w-3xl grid-cols-2 gap-3 sm:gap-4"
+                >
+                  {planChoices.map((c) => {
+                    const on = planProduct === c.value;
+                    const compact = planProduct !== null;
+                    return (
+                      <button
+                        key={c.value}
+                        type="button"
+                        role="radio"
+                        aria-checked={on}
+                        onClick={() => setPlanProduct(c.value)}
+                        className={`group flex items-center gap-3 rounded-2xl text-start ring-1 transition duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400 sm:gap-4 ${
+                          compact ? "justify-center px-4 py-3" : "p-5 hover:-translate-y-1 sm:p-8"
+                        } ${
+                          on
+                            ? "bg-white text-navy-950 ring-white"
+                            : "bg-white/[0.06] text-white ring-white/10 hover:bg-white/[0.12] hover:ring-sun-400/50"
+                        }`}
+                      >
+                        <span
+                          className={`flex shrink-0 items-center justify-center rounded-full ${
+                            compact ? "h-9 w-9" : "h-12 w-12 sm:h-14 sm:w-14"
+                          } ${on || !compact ? "bg-sun-400 text-navy-950" : "bg-white/10 text-sun-400"}`}
+                        >
+                          <Icon name={c.icon} className={compact ? "h-[1.125rem] w-[1.125rem]" : "h-6 w-6 sm:h-7 sm:w-7"} />
+                        </span>
+                        <span className="min-w-0">
+                          <span className={`block font-display font-extrabold ${compact ? "text-base" : "text-lg sm:text-h3"}`}>
+                            {c.title}
+                          </span>
+                          <span className={`mt-0.5 block text-xs sm:text-sm ${on ? "text-navy-700" : "text-white/60"}`}>
+                            {c.hint}
+                          </span>
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {planProduct !== null && (
+                  // Top margin: each planner's own two tabs sit half outside
+                  // its panel's top edge. No overflow-hidden anywhere above —
+                  // the calendar and travellers counter hang below the panel.
+                  <div className="mt-12 rounded-2xl bg-navy-990/60 px-4 pb-5 ring-1 ring-white/15 sm:px-6 sm:pb-6">
+                    <Suspense fallback={null}>
+                      {planProduct === "flights" ? (
+                        <TripPlanner locale={locale} tone="dark" />
+                      ) : (
+                        <HotelPlanner locale={locale} tone="dark" />
+                      )}
+                    </Suspense>
+                  </div>
+                )}
               </div>
             )}
 
