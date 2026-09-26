@@ -69,9 +69,9 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
   });
 
   const stats = [
+    { value: "6", label: dict.home.statContinents },
     { value: String(guideCodes.length), label: dict.home.statCountries },
     { value: String(cityCount), label: dict.home.statCities },
-    { value: "6", label: dict.home.statContinents },
   ];
 
   const tools = [
