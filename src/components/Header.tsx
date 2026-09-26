@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { getDictionary } from "@/lib/dictionaries";
+import { openPlanner } from "@/lib/planEvents";
 import type { Locale } from "@/lib/types";
 import LanguageSwitcher from "./LanguageSwitcher";
 import Logo from "@/components/ui/Logo";
@@ -27,6 +28,16 @@ export default function Header({ locale }: { locale: Locale }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [toolsOpen, setToolsOpen] = useState(false);
+
+  // "Book your trip" is the homepage's booking tab. Already on the
+  // homepage, a #plan link would only scroll (and not at all if the hash is
+  // already #plan), so it asks the tab to open instead — see planEvents.ts.
+  const onBook = (e: React.MouseEvent) => {
+    if (pathname !== `/${locale}`) return;
+    e.preventDefault();
+    setMenuOpen(false);
+    openPlanner();
+  };
 
   // Subscribe only — no synchronous setState in the effect body. The bar
   // always starts transparent because every page starts at the top of a
@@ -162,6 +173,7 @@ export default function Header({ locale }: { locale: Locale }) {
           <div className="flex shrink-0 items-center gap-2">
             <Link
               href={`/${locale}#plan`}
+              onClick={onBook}
               className="hidden rounded-full bg-sun-400 px-4 py-2 text-sm font-bold text-navy-950 shadow-[var(--shadow-sun)] transition hover:-translate-y-0.5 hover:bg-sun-300 md:inline-flex"
             >
               {dict.nav.planCta}
@@ -219,6 +231,7 @@ export default function Header({ locale }: { locale: Locale }) {
             ))}
             <Link
               href={`/${locale}#plan`}
+              onClick={onBook}
               className="mt-2 block rounded-xl bg-sun-400 px-3 py-3 text-center text-sm font-bold text-navy-950"
             >
               {dict.nav.planCta}

@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import { getDictionary } from "@/lib/dictionaries";
 import type { Locale } from "@/lib/types";
 import { COUNTRY_GUIDES } from "@/lib/countryGuides";
@@ -10,14 +9,21 @@ import { CITY_AIRPORTS } from "@/data/cityAirports";
 import { heroImage as heroImageOf, heroPhotoForToday } from "@/lib/heroPhotos";
 import { monthName } from "@/lib/seasons";
 import HomeShowcase, { type ShowcaseCity } from "@/components/HomeShowcase";
-import HeroPlanner from "@/components/HeroPlanner";
+import { planFromParams } from "@/lib/planEvents";
 import Photo from "@/components/Photo";
 import { brandJsonLd } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 
-export default async function HomePage({ params }: PageProps<"/[locale]">) {
+export default async function HomePage({ params, searchParams }: PageProps<"/[locale]">) {
   const { locale } = await params;
+  // Arriving from "edit search" or a city's flight button opens the booking
+  // tab on the right search — see planFromParams.
+  const query = await searchParams;
+  const initialPlan = planFromParams((k) => {
+    const v = query[k];
+    return Array.isArray(v) ? v[0] : v;
+  });
   const loc = (locale === "en" ? "en" : "ar") as Locale;
   const dict = getDictionary(loc);
   const isAr = loc === "ar";
@@ -108,7 +114,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
           a box whose height is set by that same content means a tall form
           pushes the headline up underneath the fixed header. It starts below
           the header and grows downwards, where there is room. */}
-      <section className="relative isolate overflow-hidden bg-navy-990 pb-12 sm:pb-16">
+      <section className="relative isolate overflow-hidden bg-navy-990 pb-28 sm:pb-32">
         <div className="absolute inset-x-0 top-0 -z-10 h-[46rem] overflow-hidden">
           <Photo
             src={heroPhoto}
@@ -158,13 +164,6 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
             {dict.hero.subtitle}
           </p>
 
-          {/* The whole planner, not a cut-down version of it. Both modes and
-              every option now live here; see HeroPlanner for why the full
-              form moved up and the section at the foot of the page went. */}
-          <Suspense fallback={null}>
-            <HeroPlanner locale={loc} />
-          </Suspense>
-
           <div className="mt-5 flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
             {stats.map((s) => (
               <p key={s.label} className="text-sm font-semibold text-white/70">
@@ -184,6 +183,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
         <HomeShowcase
           locale={loc}
           seasonCities={seasonCities}
+          initialPlan={initialPlan}
           tools={tools}
           steps={steps}
           dict={{

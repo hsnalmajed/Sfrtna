@@ -1,12 +1,12 @@
 "use client";
 
-import { Suspense, useState, type CSSProperties } from "react";
+import { Suspense, useEffect, useState, type CSSProperties } from "react";
 import Link from "next/link";
 import type { Locale } from "@/lib/types";
 import Photo from "@/components/Photo";
 import { countLabel } from "@/lib/format";
 import Icon, { type IconName } from "@/components/ui/Icon";
-import type { PlanProduct } from "@/lib/planEvents";
+import { PLAN_EVENT, type PlanProduct } from "@/lib/planEvents";
 import TripPlanner from "@/components/TripPlanner";
 import HotelPlanner from "@/components/HotelPlanner";
 
@@ -97,31 +97,66 @@ type TabKey = "season" | "tools" | "how" | "plan";
 export default function HomeShowcase({
   locale,
   seasonCities,
+  initialPlan = null,
   tools,
   steps,
   dict,
 }: {
   locale: Locale;
   seasonCities: ShowcaseCity[];
+  /** Open on the booking tab, on this search (from the URL). */
+  initialPlan?: PlanProduct | null;
   tools: ShowcaseTool[];
   steps: ShowcaseStep[];
   dict: ShowcaseDict;
 }) {
-  const [active, setActive] = useState<TabKey>(seasonCities.length > 0 ? "season" : "tools");
+  const [active, setActive] = useState<TabKey>(
+    initialPlan ? "plan" : seasonCities.length > 0 ? "season" : "tools"
+  );
   // The season tab runs every city in season past as a moving strip; the
   // button lays them all out as a still grid, in place rather than on
   // another page.
   const [allCities, setAllCities] = useState(false);
   // "Book your trip": which search is open inside the tab, if any.
-  const [planProduct, setPlanProduct] = useState<PlanProduct | null>(null);
+  const [planProduct, setPlanProduct] = useState<PlanProduct | null>(initialPlan);
+
+  // The header's "book your trip" (see planEvents.ts), and arriving on
+  // /#plan from another page: both mean "show me the search".
+  useEffect(() => {
+    function show(product?: PlanProduct) {
+      setActive("plan");
+      if (product) setPlanProduct(product);
+      requestAnimationFrame(() =>
+        document.getElementById("plan")?.scrollIntoView({ behavior: "smooth", block: "start" })
+      );
+    }
+    function onOpen(e: Event) {
+      const p = (e as CustomEvent<PlanProduct | undefined>).detail;
+      show(p === "flights" || p === "hotels" ? p : undefined);
+    }
+    function onHash() {
+      if (window.location.hash === "#plan") show();
+    }
+    // Deferred, not called here: no synchronous setState in an effect body.
+    const arrived = initialPlan ? undefined : window.setTimeout(onHash, 0);
+    window.addEventListener(PLAN_EVENT, onOpen);
+    window.addEventListener("hashchange", onHash);
+    return () => {
+      window.clearTimeout(arrived);
+      window.removeEventListener(PLAN_EVENT, onOpen);
+      window.removeEventListener("hashchange", onHash);
+    };
+  }, [initialPlan]);
   const isAr = locale === "ar";
   const arrow = isAr ? "←" : "→";
 
+  // "Book your trip" first: it is the site's search now, and on a phone
+  // the strip scrolls, so a tab at the far end is a tab nobody finds.
   const tabs: { key: TabKey; label: string; hidden?: boolean }[] = [
+    { key: "plan", label: dict.tabPlan },
     { key: "season", label: dict.tabSeason, hidden: seasonCities.length === 0 },
     { key: "tools", label: dict.tabTools },
     { key: "how", label: dict.tabHow },
-    { key: "plan", label: dict.tabPlan },
   ];
 
   const blurb: Record<TabKey, string> = {
@@ -206,7 +241,7 @@ export default function HomeShowcase({
   );
 
   return (
-    <div className="mx-auto max-w-7xl px-3 sm:px-6">
+    <div id="plan" className="mx-auto max-w-7xl scroll-mt-24 px-3 sm:px-6">
       <div className="rounded-[2rem] bg-gradient-to-b from-navy-900 to-navy-990 shadow-[0_30px_80px_-20px_rgba(4,24,47,0.6)] ring-1 ring-white/10">
         {/* ── The strip ─────────────────────────────────────────────── */}
         <div className="rail rail-fade flex items-center gap-2 overflow-x-auto rounded-t-[2rem] border-b border-white/10 bg-white/[0.04] px-3 py-3 sm:px-5">
