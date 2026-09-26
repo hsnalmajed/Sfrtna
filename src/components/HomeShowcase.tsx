@@ -166,23 +166,27 @@ export default function HomeShowcase({
     plan: dict.planSubtitle,
   };
 
+  // The tab the visitor is on: a Travel Blue pill, its words in the brand's
+  // gold, with a sky-blue glow. The blue runs Travel Blue to navy rather
+  // than sky blue, because gold on sky blue is barely readable (about 1.6:1)
+  // and gold on this is comfortably so.
+  const selectedClass =
+    "bg-gradient-to-l from-sea-600 to-navy-900 text-sun-400 ring-2 ring-sea-400/70 shadow-[0_0_28px_-4px_var(--sea-400)]";
+
   const tabClass = (on: boolean) =>
     `shrink-0 rounded-full px-4 py-2.5 text-sm font-bold transition duration-200 sm:px-5 sm:text-base ${
-      on
-        ? "bg-sun-400 text-navy-950 shadow-lg shadow-sun-900/25"
-        : "text-white/60 hover:bg-white/10 hover:text-white"
+      on ? selectedClass : "text-white/60 hover:bg-white/10 hover:text-white"
     }`;
 
-  // "Plan your trip" is not another thing to browse — it is the way out of
-  // browsing and into a search. So it looks like it at rest: a blue pill
-  // with a sky-blue glow, its word and plane in the brand's gold. The blue
-  // runs Travel Blue to navy rather than sky blue, because gold on sky blue
-  // is barely readable (about 1.6:1) and gold on this is comfortably so.
+  // "Book your trip" is not another thing to browse — it is the way out of
+  // browsing and into a search — so it is always the orange of the header's
+  // "Book your trip" button, whichever tab is open. Chosen, it keeps the
+  // orange and gains the selected tab's blue ring and glow.
   const planTabClass = (on: boolean) =>
-    `relative inline-flex shrink-0 items-center gap-2 rounded-full px-5 py-2.5 text-sm font-extrabold transition duration-200 sm:px-6 sm:text-base ${
+    `relative inline-flex shrink-0 items-center gap-2 rounded-full bg-sun-400 px-5 py-2.5 text-sm font-extrabold text-navy-950 transition duration-200 hover:bg-sun-300 sm:px-6 sm:text-base ${
       on
-        ? "bg-white text-navy-950 ring-2 ring-sea-400 shadow-[0_0_28px_-6px_var(--sea-400)]"
-        : "bg-gradient-to-l from-sea-600 to-navy-900 text-sun-400 ring-2 ring-sea-400/70 shadow-[0_0_28px_-4px_var(--sea-400)] hover:from-sea-500 hover:to-navy-800 hover:text-sun-300"
+        ? "ring-2 ring-sea-400 shadow-[0_0_28px_-4px_var(--sea-400)]"
+        : "shadow-[var(--shadow-sun)] hover:-translate-y-0.5"
     }`;
 
   const planChoices: { value: PlanProduct; icon: IconName; title: string; hint: string }[] = [
@@ -261,8 +265,8 @@ export default function HomeShowcase({
                         Still when the visitor prefers reduced motion. */}
                     {active !== "plan" && (
                       <span className="absolute -top-0.5 -end-0.5 flex h-3 w-3" aria-hidden="true">
-                        <span className="absolute inline-flex h-full w-full rounded-full bg-sun-400 opacity-75 motion-safe:animate-ping" />
-                        <span className="relative inline-flex h-3 w-3 rounded-full bg-sun-400 ring-2 ring-navy-900" />
+                        <span className="absolute inline-flex h-full w-full rounded-full bg-sea-400 opacity-75 motion-safe:animate-ping" />
+                        <span className="relative inline-flex h-3 w-3 rounded-full bg-sea-400 ring-2 ring-navy-900" />
                       </span>
                     )}
                     <Icon name="plane" className="h-[1.1rem] w-[1.1rem]" />
