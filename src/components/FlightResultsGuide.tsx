@@ -68,6 +68,7 @@ const CSS = `
    screen they are a tall empty column; they come back with the other options. */
 :host([data-sfr-filter]:not([data-show-within]):not([data-show-over])) [class*="FlightFilters-module__filerContainer"],
 :host([data-sfr-filter]:not([data-show-within]):not([data-show-over])) [class*="FlightFiltersMobileMenu-module__root"]{display:none !important}
+:host([data-sfr-filter]:not([data-show-within]):not([data-show-over])) [class*="TicketsWidget-module__wrapper"]{grid-column:1 / -1 !important}
 `;
 
 /** "1,250 SAR" — Western digits, like the rest of the site's prices. */
