@@ -83,8 +83,16 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
         ? {
             code: cur.code,
             name: isAr ? cur.nameAr : cur.nameEn,
-            perSar: perSar
-              ? perSar.toLocaleString("en-US", { maximumFractionDigits: perSar < 1 ? 3 : 2 })
+            // Said the way round a traveller thinks: "1 dollar ≈ 3.75
+            // riyals" for strong currencies, "1 riyal ≈ 8.8 lira" for weak.
+            rateLine: perSar
+              ? perSar < 1
+                ? dict.home.summaryRateInverse
+                    .replace("{rate}", (1 / perSar).toLocaleString("en-US", { maximumFractionDigits: 2 }))
+                    .replace("{code}", cur.code)
+                : dict.home.summaryRate
+                    .replace("{rate}", perSar.toLocaleString("en-US", { maximumFractionDigits: 2 }))
+                    .replace("{code}", cur.code)
               : undefined,
           }
         : undefined,
@@ -268,7 +276,6 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
             summaryVisaUnknown: dict.home.summaryVisaUnknown,
             summaryVisaMore: dict.home.summaryVisaMore,
             summaryCurrency: dict.home.summaryCurrency,
-            summaryRate: dict.home.summaryRate,
             summaryLandmarks: dict.home.summaryLandmarks,
             summaryAllPlaces: dict.home.summaryAllPlaces,
             summaryMap: dict.home.summaryMap,

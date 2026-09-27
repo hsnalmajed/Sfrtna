@@ -32,7 +32,7 @@ export interface ShowcaseCity {
   bestMonths: string;
   /** Confirmed entry status for a Saudi passport; absent when unconfirmed. */
   visa?: { category: VisaCategory; label: string };
-  currency?: { code: string; name: string; perSar?: string };
+  currency?: { code: string; name: string; rateLine?: string };
   /** The country guide's best-known sights. */
   landmarks: string[];
   /** The city's English name, which the hotel partners search by. */
@@ -85,7 +85,6 @@ interface ShowcaseDict {
   summaryVisaUnknown: string;
   summaryVisaMore: string;
   summaryCurrency: string;
-  summaryRate: string;
   summaryLandmarks: string;
   summaryAllPlaces: string;
   summaryMap: string;
@@ -375,12 +374,8 @@ export default function HomeShowcase({
                   <p className="mt-2 text-base font-bold text-white">
                     {openCity.currency.name} <span className="text-white/50">({openCity.currency.code})</span>
                   </p>
-                  {openCity.currency.perSar && (
-                    <p className="mt-1 text-sm text-sun-300" dir={isAr ? "rtl" : "ltr"}>
-                      {dict.summaryRate
-                        .replace("{rate}", openCity.currency.perSar)
-                        .replace("{code}", openCity.currency.code)}
-                    </p>
+                  {openCity.currency.rateLine && (
+                    <p className="mt-1 text-sm text-sun-300">{openCity.currency.rateLine}</p>
                   )}
                 </>
               ) : (
