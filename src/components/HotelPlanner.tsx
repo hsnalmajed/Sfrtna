@@ -39,13 +39,23 @@ type HotelMode = "known" | "discover";
 export default function HotelPlanner({
   locale,
   tone = "light",
+  preset,
 }: {
   locale: Locale;
+  /**
+   * A starting trip handed over by the page (a query string), read instead
+   * of the URL's — the season tab's "book your trip to <city>" uses it to
+   * open the form with that city already filled in.
+   */
+  preset?: string;
   tone?: FormTone;
 }) {
   const dict = getDictionary(locale);
   const router = useRouter();
-  const sp = useSearchParams();
+  const urlParams = useSearchParams();
+  // Only initial values are read from here, so which source wins is fixed
+  // for the life of the form.
+  const sp = preset !== undefined ? new URLSearchParams(preset) : urlParams;
   const dark = tone === "dark";
 
   const [mode, setMode] = useState<HotelMode>(sp.get("hmode") === "discover" ? "discover" : "known");

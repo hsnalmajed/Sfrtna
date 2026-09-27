@@ -62,14 +62,24 @@ const CATEGORY_OPTIONS: DestinationCategory[] = [
 export default function TripPlanner({
   locale,
   tone = "light",
+  preset,
 }: {
   locale: Locale;
+  /**
+   * A starting trip handed over by the page (a query string), read instead
+   * of the URL's — the season tab's "book your trip to <city>" uses it to
+   * open the form with that city already filled in.
+   */
+  preset?: string;
   /** "dark" when the form sits on the hero photograph — see formTone.ts. */
   tone?: FormTone;
 }) {
   const dict = getDictionary(locale);
   const router = useRouter();
-  const sp = useSearchParams();
+  const urlParams = useSearchParams();
+  // Only initial values are read from here, so which source wins is fixed
+  // for the life of the form.
+  const sp = preset !== undefined ? new URLSearchParams(preset) : urlParams;
   const dark = tone === "dark";
 
   // Arriving from a results page's "edit search" carries every answer back,
@@ -302,10 +312,19 @@ export default function TripPlanner({
           </div>
       </div>
 
-      {mode === "discover" && tripRoute === "multicity" && (
-        <p className={`mt-2 ${muted}`}>{dict.discoverForm.multiDestinationHint}</p>
+      {/* What the chosen route means, said once under the switch — centred
+          with it and bright enough to be read, not a faint line off to the
+          side that nobody notices. */}
+      {((mode === "discover" && tripRoute === "multicity") || isOneWay) && (
+        <p
+          className={`mx-auto mt-1 flex w-fit max-w-full items-center gap-2 rounded-full px-3.5 py-1.5 text-center text-xs font-semibold sm:text-sm ${
+            dark ? "bg-sun-400/10 text-sun-200 ring-1 ring-sun-400/30" : "bg-sun-50 text-navy-800 ring-1 ring-sun-200"
+          }`}
+        >
+          <span aria-hidden="true">ℹ️</span>
+          {isOneWay ? dict.discoverForm.oneWayHint : dict.discoverForm.multiDestinationHint}
+        </p>
       )}
-      {isOneWay && <p className={`mt-2 ${muted}`}>{dict.discoverForm.oneWayHint}</p>}
 
       {/* ── 3. The row that is the search ─────────────────────────────
           Auto-fit, so the known tab's five fields and the suggest tab's

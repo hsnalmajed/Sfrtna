@@ -4,7 +4,11 @@ import { COUNTRY_GUIDES } from "@/lib/countryGuides";
 import { COUNTRY_CITIES } from "@/lib/cities";
 import { findCountry } from "@/lib/countries";
 import { fetchCityPhotos } from "@/lib/countryPhotos";
-import { citiesInSeason, varietyFirst } from "@/lib/citySeasons";
+import { citiesInSeason, seasonKindFor, seasonMonthsForCity, varietyFirst } from "@/lib/citySeasons";
+import { visaStatusFor } from "@/data/visaStatus";
+import { currencyForCountry } from "@/lib/currencies";
+import { fetchRates, rateBetween, type Rates } from "@/lib/rates";
+import { cachedJson } from "@/lib/edgeCache";
 import { CITY_AIRPORTS } from "@/data/cityAirports";
 import { heroImage as heroImageOf, heroPhotoForToday } from "@/lib/heroPhotos";
 import { monthName } from "@/lib/seasons";
@@ -42,12 +46,50 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
   // A different corner of the world each day — see heroPhotos.ts for the
   // brief these are chosen against.
   const heroPick = heroPhotoForToday();
-  const cityPhotos = await fetchCityPhotos(seasonOrder);
+  // Rates for the city summaries' "1 riyal ≈ …" line — cached for a few
+  // hours, so the homepage does not spend a subrequest on them every visit.
+  const [cityPhotos, rates] = await Promise.all([
+    fetchCityPhotos(seasonOrder),
+    cachedJson<Rates>("rates-usd", 6 * 3600, fetchRates),
+  ]);
   const heroImage = heroImageOf(heroPick);
   const heroPhoto = heroImage.url;
   const nameOf = (code: string) => {
     const c = findCountry(code);
     return c ? (isAr ? c.nameAr : c.nameEn) : code;
+  };
+
+  // Everything the season tab's city summary says, from data the site
+  // already holds and has checked: the city's own weather record, the
+  // confirmed visa statuses, the currency table and the country guide.
+  // Nothing here is filled in when unknown — a missing field stays missing.
+  const kindNames = dict.citySeasons.kinds as Record<string, string>;
+  const visaNames = {
+    free: dict.visa.statusFree,
+    arrival: dict.visa.statusArrival,
+    eta: dict.visa.statusEta,
+    required: dict.visa.statusRequired,
+  };
+  const citySummary = (code: string, slug: string) => {
+    const kind = seasonKindFor(slug, month);
+    const visa = visaStatusFor(code);
+    const cur = currencyForCountry(code);
+    const perSar = cur && rates && cur.code !== "SAR" ? rateBetween("SAR", cur.code, rates) : null;
+    return {
+      seasonKind: kind ? kindNames[kind] : undefined,
+      bestMonths: seasonMonthsForCity(slug).map((m) => monthName(m, loc)).join("، "),
+      visa: visa ? { category: visa.category, label: visaNames[visa.category] } : undefined,
+      currency: cur
+        ? {
+            code: cur.code,
+            name: isAr ? cur.nameAr : cur.nameEn,
+            perSar: perSar
+              ? perSar.toLocaleString("en-US", { maximumFractionDigits: perSar < 1 ? 3 : 2 })
+              : undefined,
+          }
+        : undefined,
+      landmarks: (COUNTRY_GUIDES[code]?.attractions ?? []).slice(0, 4).map((a) => (isAr ? a.nameAr : a.nameEn)),
+    };
   };
 
   const seasonCities: ShowcaseCity[] = seasonOrder.map((c) => {
@@ -65,6 +107,8 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
         : undefined,
       flightAirport: airport?.iata,
       flightKm: airport?.km ?? undefined,
+      ...citySummary(c.code, c.slug),
+      hotelCity: c.nameEn,
     };
   });
 
@@ -216,6 +260,22 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
             seasonRainFew: dict.home.seasonRainFew,
             seasonRainMany: dict.home.seasonRainMany,
             seasonMethod: dict.home.seasonMethod,
+            seasonTapHint: dict.home.seasonTapHint,
+            monthName: monthName(month, loc),
+            summaryWeather: dict.home.summaryWeather,
+            summaryBestMonths: dict.home.summaryBestMonths,
+            summaryVisa: dict.home.summaryVisa,
+            summaryVisaUnknown: dict.home.summaryVisaUnknown,
+            summaryVisaMore: dict.home.summaryVisaMore,
+            summaryCurrency: dict.home.summaryCurrency,
+            summaryRate: dict.home.summaryRate,
+            summaryLandmarks: dict.home.summaryLandmarks,
+            summaryAllPlaces: dict.home.summaryAllPlaces,
+            summaryMap: dict.home.summaryMap,
+            summaryBook: dict.home.summaryBook,
+            summaryHotels: dict.home.summaryHotels,
+            summaryAirport: dict.home.summaryAirport,
+            summaryClose: dict.home.summaryClose,
             toolsSubtitle: dict.home.toolsSubtitle,
             toolCta: dict.home.toolCta,
             stepsTitle: dict.home.stepsTitle,

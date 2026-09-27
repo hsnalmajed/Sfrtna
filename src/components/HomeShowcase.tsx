@@ -2,6 +2,7 @@
 
 import { Suspense, useEffect, useState, type CSSProperties } from "react";
 import Link from "next/link";
+import { createPortal } from "react-dom";
 import type { Locale } from "@/lib/types";
 import Photo from "@/components/Photo";
 import { countLabel } from "@/lib/format";
@@ -9,6 +10,8 @@ import Icon, { type IconName } from "@/components/ui/Icon";
 import { PLAN_EVENT, type PlanProduct } from "@/lib/planEvents";
 import TripPlanner from "@/components/TripPlanner";
 import HotelPlanner from "@/components/HotelPlanner";
+import VisaBadge from "@/components/VisaBadge";
+import type { VisaCategory } from "@/data/visaStatus";
 
 /** A city in season this month, with the two numbers that put it there. */
 export interface ShowcaseCity {
@@ -23,6 +26,17 @@ export interface ShowcaseCity {
   flightHref?: string;
   flightAirport?: string;
   flightKm?: number;
+  /** This month's season where the city is ("autumn", "dry season"…). */
+  seasonKind?: string;
+  /** The city's in-season months, already named and joined. */
+  bestMonths: string;
+  /** Confirmed entry status for a Saudi passport; absent when unconfirmed. */
+  visa?: { category: VisaCategory; label: string };
+  currency?: { code: string; name: string; perSar?: string };
+  /** The country guide's best-known sights. */
+  landmarks: string[];
+  /** The city's English name, which the hotel partners search by. */
+  hotelCity: string;
 }
 
 export interface ShowcaseTool {
@@ -63,6 +77,22 @@ interface ShowcaseDict {
   seasonRainFew: string;
   seasonRainMany: string;
   seasonMethod: string;
+  seasonTapHint: string;
+  monthName: string;
+  summaryWeather: string;
+  summaryBestMonths: string;
+  summaryVisa: string;
+  summaryVisaUnknown: string;
+  summaryVisaMore: string;
+  summaryCurrency: string;
+  summaryRate: string;
+  summaryLandmarks: string;
+  summaryAllPlaces: string;
+  summaryMap: string;
+  summaryBook: string;
+  summaryHotels: string;
+  summaryAirport: string;
+  summaryClose: string;
   toolsSubtitle: string;
   toolCta: string;
   stepsTitle: string;
@@ -110,15 +140,44 @@ export default function HomeShowcase({
   steps: ShowcaseStep[];
   dict: ShowcaseDict;
 }) {
-  const [active, setActive] = useState<TabKey>(
-    initialPlan ? "plan" : seasonCities.length > 0 ? "season" : "tools"
-  );
+  // The search is what the page promises ("from budget to booking"), so it
+  // is what a visitor sees first; the other tabs are a tap away.
+  const [active, setActive] = useState<TabKey>("plan");
   // The season tab runs every city in season past as a moving strip; the
   // button lays them all out as a still grid, in place rather than on
   // another page.
   const [allCities, setAllCities] = useState(false);
   // "Book your trip": which search is open inside the tab, if any.
   const [planProduct, setPlanProduct] = useState<PlanProduct | null>(initialPlan);
+  // A trip handed to the form by a city summary, and a counter that
+  // remounts the form so it starts from that trip.
+  const [planPreset, setPlanPreset] = useState<string | undefined>(undefined);
+  const [planKey, setPlanKey] = useState(0);
+  // The season city whose summary is open.
+  const [openCity, setOpenCity] = useState<ShowcaseCity | null>(null);
+
+  useEffect(() => {
+    if (!openCity) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpenCity(null);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [openCity]);
+
+  /** From a city summary into the booking tab, with that city filled in. */
+  function bookCity(c: ShowcaseCity, product: PlanProduct) {
+    const preset =
+      product === "flights"
+        ? new URLSearchParams({ mode: "known", destination: c.flightAirport ?? "" })
+        : new URLSearchParams({ hmode: "discover", city: c.hotelCity });
+    setOpenCity(null);
+    setPlanPreset(preset.toString());
+    setPlanKey((k) => k + 1);
+    setPlanProduct(product);
+    setActive("plan");
+    requestAnimationFrame(() =>
+      document.getElementById("plan")?.scrollIntoView({ behavior: "smooth", block: "start" })
+    );
+  }
 
   // The header's "book your trip" (see planEvents.ts), and arriving on
   // /#plan from another page: both mean "show me the search".
@@ -194,51 +253,191 @@ export default function HomeShowcase({
     { value: "hotels", icon: "hotel", title: dict.hotelsTitle, hint: dict.hotelsHint },
   ];
 
+  const rainText = (days: number) => {
+    const n = Math.round(days);
+    return n === 0
+      ? dict.seasonRainNone
+      : countLabel(n, { one: dict.seasonRainOne, two: dict.seasonRainTwo, few: dict.seasonRainFew, many: dict.seasonRainMany });
+  };
+
+  // A season city is a question — "should I go there?" — so tapping it
+  // opens its summary rather than leaving the page: weather, visa, currency,
+  // sights, and the way into booking it.
   const cityCard = (c: ShowcaseCity) => (
-    <div key={`${c.code}-${c.slug}`} className="group relative isolate aspect-[3/4] overflow-hidden rounded-2xl ring-1 ring-white/10 transition duration-300 hover:-translate-y-1 hover:ring-sun-400/50">
-      <Link href={`/${locale}/attractions/${c.code}/${c.slug}`} className="absolute inset-0 block">
-        <Photo
-          src={c.photo}
-          className="absolute inset-0 -z-10 h-full w-full object-cover transition duration-500 group-hover:scale-[1.06]"
-          fallback={<div className="absolute inset-0 -z-10 bg-gradient-to-br from-navy-700 to-navy-990" />}
-        />
-        <div className="scrim-soft absolute inset-0 -z-10" />
-        <span className="sr-only">{c.name}</span>
-      </Link>
-      {c.flightHref && (
-        // A full navigation, not a client one: the planner reads its starting
-        // trip once, when the page loads. The title names the airport, since
-        // for some cities it is a nearby one (Petra flies into Aqaba).
-        <a
-          href={c.flightHref}
-          title={dict.seasonFlightTitle
-            .replace("{airport}", c.flightAirport ?? "")
-            .replace("{km}", String(c.flightKm ?? ""))}
-          className="absolute end-2 top-2 inline-flex items-center gap-1 rounded-full bg-navy-990/75 px-2.5 py-1.5 text-xs font-extrabold text-sun-400 ring-1 ring-sun-400/50 backdrop-blur-md transition hover:bg-navy-990/90"
-        >
-          <Icon name="plane" className="h-3.5 w-3.5" />
-          {dict.seasonFlight}
-        </a>
-      )}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 p-3">
+    <button
+      key={`${c.code}-${c.slug}`}
+      type="button"
+      onClick={() => setOpenCity(c)}
+      aria-haspopup="dialog"
+      className="group relative isolate block aspect-[3/4] w-full overflow-hidden rounded-2xl text-start ring-1 ring-white/10 transition duration-300 hover:-translate-y-1 hover:ring-sun-400/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400"
+    >
+      <Photo
+        src={c.photo}
+        className="absolute inset-0 -z-10 h-full w-full object-cover transition duration-500 group-hover:scale-[1.06]"
+        fallback={<div className="absolute inset-0 -z-10 bg-gradient-to-br from-navy-700 to-navy-990" />}
+      />
+      <div className="scrim-soft absolute inset-0 -z-10" />
+      <div className="absolute inset-x-0 bottom-0 p-3">
         <p className="truncate font-display text-sm font-extrabold text-white drop-shadow-sm sm:text-base">{c.name}</p>
         <p className="truncate text-xs font-semibold text-white/70">{c.countryName}</p>
-        {/* Two numbers, each saying what it is: the typical afternoon
-            temperature, and how many days of the month see rain. */}
         <div className="mt-1.5 flex flex-wrap gap-1">
           <span className="inline-flex rounded-full bg-navy-990/65 px-2 py-0.5 text-xs font-bold text-sun-300 backdrop-blur-sm">
             {dict.seasonHigh.replace("{high}", String(Math.round(c.high)))}
           </span>
           <span className="inline-flex rounded-full bg-navy-990/65 px-2 py-0.5 text-xs font-bold text-sea-200 backdrop-blur-sm">
-            {Math.round(c.rainyDays) === 0
-              ? dict.seasonRainNone
-              : countLabel(Math.round(c.rainyDays), {
-                  one: dict.seasonRainOne,
-                  two: dict.seasonRainTwo,
-                  few: dict.seasonRainFew,
-                  many: dict.seasonRainMany,
-                })}
+            {rainText(c.rainyDays)}
           </span>
+        </div>
+      </div>
+    </button>
+  );
+
+  const fill = (template: string, c: ShowcaseCity) =>
+    template.replace("{city}", c.name).replace("{country}", c.countryName);
+
+  const summary = openCity && (
+    <div
+      className="fixed inset-0 z-[60] flex items-end justify-center bg-navy-990/70 p-0 backdrop-blur-sm sm:items-center sm:p-6"
+      onClick={() => setOpenCity(null)}
+    >
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-label={openCity.name}
+        onClick={(e) => e.stopPropagation()}
+        className="tab-fade max-h-[92vh] w-full max-w-2xl overflow-y-auto rounded-t-3xl bg-navy-950 text-start shadow-2xl ring-1 ring-white/15 sm:rounded-3xl"
+      >
+        {/* The place first: its photograph, its name, its country. */}
+        <div className="relative h-44 sm:h-56">
+          <Photo
+            src={openCity.photo}
+            className="absolute inset-0 h-full w-full object-cover"
+            fallback={<div className="absolute inset-0 bg-gradient-to-br from-navy-700 to-navy-990" />}
+          />
+          <div className="scrim-soft absolute inset-0" />
+          <button
+            type="button"
+            onClick={() => setOpenCity(null)}
+            aria-label={dict.summaryClose}
+            className="absolute end-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-navy-990/70 text-lg text-white ring-1 ring-white/30 transition hover:bg-navy-990"
+          >
+            ✕
+          </button>
+          <div className="absolute inset-x-0 bottom-0 p-5">
+            <p className="font-display text-h2 font-black text-white drop-shadow">{openCity.name}</p>
+            <p className="text-sm font-semibold text-white/80">{openCity.countryName}</p>
+          </div>
+        </div>
+
+        <div className="space-y-4 p-5 sm:p-6">
+          {/* Weather this month, and when else it is good. */}
+          <section className="rounded-2xl bg-white/[0.05] p-4 ring-1 ring-white/10">
+            <h3 className="text-xs font-bold text-white/60">
+              {dict.summaryWeather.replace("{month}", dict.monthName)}
+              {openCity.seasonKind && <span className="text-sun-300"> · {openCity.seasonKind}</span>}
+            </h3>
+            <div className="mt-2 flex flex-wrap gap-2">
+              <span className="rounded-full bg-navy-990/70 px-3 py-1 text-sm font-bold text-sun-300">
+                {dict.seasonHigh.replace("{high}", String(Math.round(openCity.high)))}
+              </span>
+              <span className="rounded-full bg-navy-990/70 px-3 py-1 text-sm font-bold text-sea-200">
+                {rainText(openCity.rainyDays)}
+              </span>
+            </div>
+            {openCity.bestMonths && (
+              <p className="mt-2 text-sm text-white/75">{dict.summaryBestMonths.replace("{months}", openCity.bestMonths)}</p>
+            )}
+          </section>
+
+          <div className="grid gap-4 sm:grid-cols-2">
+            {/* Visa: only a status we confirmed at the source. */}
+            <section className="rounded-2xl bg-white/[0.05] p-4 ring-1 ring-white/10">
+              <h3 className="text-xs font-bold text-white/60">{dict.summaryVisa}</h3>
+              <div className="mt-2">
+                {openCity.visa ? (
+                  <VisaBadge category={openCity.visa.category} label={openCity.visa.label} />
+                ) : (
+                  <p className="text-sm text-white/75">{dict.summaryVisaUnknown}</p>
+                )}
+              </div>
+              <Link
+                href={`/${locale}/visa/${openCity.code}`}
+                className="mt-2 inline-block text-xs font-bold text-sea-300 underline-offset-2 hover:underline"
+              >
+                {arrow} {dict.summaryVisaMore}
+              </Link>
+            </section>
+
+            <section className="rounded-2xl bg-white/[0.05] p-4 ring-1 ring-white/10">
+              <h3 className="text-xs font-bold text-white/60">{dict.summaryCurrency}</h3>
+              {openCity.currency ? (
+                <>
+                  <p className="mt-2 text-base font-bold text-white">
+                    {openCity.currency.name} <span className="text-white/50">({openCity.currency.code})</span>
+                  </p>
+                  {openCity.currency.perSar && (
+                    <p className="mt-1 text-sm text-sun-300" dir={isAr ? "rtl" : "ltr"}>
+                      {dict.summaryRate
+                        .replace("{rate}", openCity.currency.perSar)
+                        .replace("{code}", openCity.currency.code)}
+                    </p>
+                  )}
+                </>
+              ) : (
+                <p className="mt-2 text-sm text-white/60">—</p>
+              )}
+            </section>
+          </div>
+
+          {openCity.landmarks.length > 0 && (
+            <section className="rounded-2xl bg-white/[0.05] p-4 ring-1 ring-white/10">
+              <h3 className="text-xs font-bold text-white/60">{fill(dict.summaryLandmarks, openCity)}</h3>
+              <ul className="mt-2 flex flex-wrap gap-2">
+                {openCity.landmarks.map((l) => (
+                  <li key={l} className="rounded-full bg-navy-990/70 px-3 py-1 text-sm font-semibold text-white">
+                    🏛 {l}
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-xs font-bold">
+                <Link href={`/${locale}/attractions/${openCity.code}/${openCity.slug}`} className="text-sea-300 hover:underline">
+                  {arrow} {fill(dict.summaryAllPlaces, openCity)}
+                </Link>
+                <Link href={`/${locale}/maps/${openCity.code}/${openCity.slug}`} className="text-sea-300 hover:underline">
+                  {arrow} {fill(dict.summaryMap, openCity)}
+                </Link>
+              </div>
+            </section>
+          )}
+
+          {/* The way out of reading and into booking. */}
+          <div className="space-y-2 pt-1">
+            {openCity.flightAirport && (
+              <>
+                <button
+                  type="button"
+                  onClick={() => bookCity(openCity, "flights")}
+                  className="flex w-full items-center justify-center gap-2 rounded-2xl bg-sun-400 px-5 py-4 font-display text-base font-extrabold text-navy-950 shadow-[var(--shadow-sun)] transition hover:bg-sun-300"
+                >
+                  <Icon name="plane" className="h-5 w-5" />
+                  {fill(dict.summaryBook, openCity)}
+                </button>
+                <p className="text-center text-xs text-white/55">
+                  {dict.summaryAirport
+                    .replace("{airport}", openCity.flightAirport)
+                    .replace("{km}", String(openCity.flightKm ?? 0))}
+                </p>
+              </>
+            )}
+            <button
+              type="button"
+              onClick={() => bookCity(openCity, "hotels")}
+              className="flex w-full items-center justify-center gap-2 rounded-2xl bg-white/10 px-5 py-3 text-sm font-bold text-white ring-1 ring-white/20 transition hover:bg-white/20"
+            >
+              <Icon name="hotel" className="h-4 w-4" />
+              {fill(dict.summaryHotels, openCity)}
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -336,7 +535,8 @@ export default function HomeShowcase({
                     </div>
                   </div>
                 )}
-                <p className="mt-4 text-xs text-white/45">
+                <p className="mt-3 text-sm font-semibold text-white/75">👆 {dict.seasonTapHint}</p>
+                <p className="mt-2 text-xs text-white/45">
                   {dict.seasonMethod}{" "}
                   <Link href={`/${locale}/seasons`} className="font-bold text-white/70 underline-offset-2 hover:underline">
                     {dict.seasonCta}
@@ -396,7 +596,10 @@ export default function HomeShowcase({
                         type="button"
                         role="radio"
                         aria-checked={on}
-                        onClick={() => setPlanProduct(c.value)}
+                        onClick={() => {
+                          setPlanPreset(undefined);
+                          setPlanProduct(c.value);
+                        }}
                         className={`group flex items-center gap-3 rounded-2xl text-start ring-1 transition duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400 sm:gap-4 ${
                           compact ? "justify-center px-4 py-3" : "p-5 hover:-translate-y-1 sm:p-8"
                         } ${
@@ -432,9 +635,9 @@ export default function HomeShowcase({
                   <div className="mt-12 rounded-2xl bg-navy-990/60 px-4 pb-5 ring-1 ring-white/15 sm:px-6 sm:pb-6">
                     <Suspense fallback={null}>
                       {planProduct === "flights" ? (
-                        <TripPlanner locale={locale} tone="dark" />
+                        <TripPlanner key={`f${planKey}`} locale={locale} tone="dark" preset={planPreset} />
                       ) : (
-                        <HotelPlanner locale={locale} tone="dark" />
+                        <HotelPlanner key={`h${planKey}`} locale={locale} tone="dark" preset={planPreset} />
                       )}
                     </Suspense>
                   </div>
@@ -463,6 +666,9 @@ export default function HomeShowcase({
           </div>
         </div>
       </div>
+      {/* Portalled to <body>: the showcase sits in a stacking context under
+          the fixed header, and the summary has to cover both. */}
+      {summary && createPortal(summary, document.body)}
     </div>
   );
 }

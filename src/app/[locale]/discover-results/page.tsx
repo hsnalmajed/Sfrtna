@@ -49,6 +49,14 @@ function DiscoverResultsContent() {
   const [pairSuggestions, setPairSuggestions] = useState<DestinationPairSuggestion[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  // City photographs, fetched on their own so the fares never wait for them.
+  const [photos, setPhotos] = useState<Record<string, string>>({});
+  useEffect(() => {
+    fetch("/api/destination-photos")
+      .then((r) => (r.ok ? r.json() : {}))
+      .then((p: Record<string, string>) => setPhotos(p))
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     if (!origin || !departDate) return;
@@ -130,7 +138,21 @@ function DiscoverResultsContent() {
         <div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">{dict.discoverResults.title}</h1>
           <p className="text-gray-500 mt-1.5">
-            {origin} · {departDate} · {budget} {currency} · {dict.discoverResults.subtitle}
+            {dict.discoverResults.searchLine
+              .replace("{origin}", origin)
+              .replace(
+                "{date}",
+                departDate
+                  ? new Date(`${departDate}T00:00:00Z`).toLocaleDateString(locale === "ar" ? "ar-u-ca-gregory-nu-latn" : "en-GB", {
+                      day: "numeric",
+                      month: "long",
+                      timeZone: "UTC",
+                    })
+                  : ""
+              )
+              .replace("{budget}", `${Number(budget).toLocaleString("en-US")} ${currency}`)}
+          </p>
+          <p className="mt-1 text-sm text-gray-500">{dict.discoverResults.subtitle}
           </p>
         </div>
         <Link
@@ -182,23 +204,20 @@ function DiscoverResultsContent() {
       )}
 
       {!loading && !pricesUnavailable && mode === "single" && singleSuggestions.length > 0 && (
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {singleSuggestions.map((s) => (
             <DestinationCard
               key={s.destinationCode}
               suggestion={s}
               locale={locale}
               origin={origin}
-              tripType={tripType}
               departDate={departDate}
               returnDate={returnDate}
               travelers={{ adults: Number(adults), childrenAges, infants: Number(infants) }}
               currency={currency}
               directOnly={directOnly}
-              minStars={Number(minStars)}
-              roomType={roomType}
               baggageIncluded={baggageIncluded}
-              breakfastIncluded={breakfastIncluded}
+              photo={s.place ? photos[`${s.place.countryCode}/${s.place.citySlug}`] : undefined}
             />
           ))}
         </div>

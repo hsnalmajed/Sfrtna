@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { searchFlights, searchHotels } from "@/lib/flights";
 import { DESTINATIONS } from "@/lib/destinations";
+import { placeForDestination } from "@/lib/destinationPlace";
 import type {
   DestinationPairSuggestion,
   DestinationSuggestion,
@@ -58,6 +59,7 @@ async function suggestForDestination(
 
   const totalPrice = (flight?.price ?? 0) + (hotel?.totalPrice ?? 0);
   return {
+    place: placeForDestination(destination.code, destination.nameEn, Number(params.departDate.slice(5, 7))),
     destinationCode: destination.code,
     destinationNameAr: destination.nameAr,
     destinationNameEn: destination.nameEn,
@@ -110,9 +112,16 @@ export async function POST(req: NextRequest) {
       await Promise.all(candidates.map((d) => suggestForDestination(params, d, params.nights)))
     ).filter((r): r is DestinationSuggestion => r !== null);
 
-    const within = results.filter((r) => r.withinBudget).sort((a, b) => a.remainingBudget - b.remainingBudget);
-    const over = results.filter((r) => !r.withinBudget).sort((a, b) => a.totalPrice - b.totalPrice);
-    const suggestions = [...within, ...over].slice(0, 8);
+    // What suits the traveller first: places that fit the budget *and* are
+    // in season in the month they travel, then the rest that fit, cheapest
+    // first; then the ones over budget, by how far over.
+    const byPrice = (a: DestinationSuggestion, b: DestinationSuggestion) => a.totalPrice - b.totalPrice;
+    const within = results.filter((r) => r.withinBudget);
+    const suggestions = [
+      ...within.filter((r) => r.place?.inSeason).sort(byPrice),
+      ...within.filter((r) => !r.place?.inSeason).sort(byPrice),
+      ...results.filter((r) => !r.withinBudget).sort(byPrice),
+    ].slice(0, 12);
 
     return NextResponse.json({ mode: "single", suggestions });
   }

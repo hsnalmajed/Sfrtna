@@ -1,8 +1,12 @@
 import Link from "next/link";
-import type { RoomType, DestinationSuggestion, Locale, TravelerCounts, TripType } from "@/lib/types";
+import type { DestinationSuggestion, Locale, TravelerCounts } from "@/lib/types";
 import { getDictionary } from "@/lib/dictionaries";
-import { formatDuration } from "@/lib/format";
 import { serializeChildrenAges } from "@/lib/searchParamsUtil";
+import { findCountry } from "@/lib/countries";
+import { monthName } from "@/lib/seasons";
+import { countLabel } from "@/lib/format";
+import Photo from "@/components/Photo";
+import VisaBadge from "@/components/VisaBadge";
 
 /** The stay's last night, when discover priced it in nights rather than dates. */
 function addDaysIso(dateStr: string, days: number): string {
@@ -12,191 +16,212 @@ function addDaysIso(dateStr: string, days: number): string {
   return d.toISOString().slice(0, 10);
 }
 
+/**
+ * One answer to "where can my flight budget take me?".
+ *
+ * A fare alone does not decide a trip, so the card carries the three other
+ * things a traveller from the Gulf asks before booking — is it a good time
+ * to go, do I need a visa, what will I see — each from data the site holds
+ * and has checked, and left out when we don't know it. Then the two ways on:
+ * book this flight, or find a hotel in the same city for the same dates.
+ *
+ * Flights and hotels are separate searches now, so the only budget here is
+ * the flight budget; nothing is subtracted for a hotel we have not priced.
+ */
 export default function DestinationCard({
   suggestion,
   locale,
   origin,
-  tripType,
   departDate,
   returnDate,
   travelers,
   currency,
   directOnly,
-  minStars,
-  roomType,
   baggageIncluded = false,
-  breakfastIncluded = false,
+  photo,
 }: {
   suggestion: DestinationSuggestion;
   locale: Locale;
   origin: string;
-  tripType: TripType;
   departDate: string;
   returnDate: string;
   travelers: TravelerCounts;
   currency: string;
   directOnly: boolean;
-  minStars: number;
-  roomType?: RoomType;
   baggageIncluded?: boolean;
-  breakfastIncluded?: boolean;
+  photo?: string;
 }) {
   const dict = getDictionary(locale);
-  const name = locale === "ar" ? suggestion.destinationNameAr : suggestion.destinationNameEn;
+  const d = dict.discoverResults;
+  const isAr = locale === "ar";
+  const name = isAr ? suggestion.destinationNameAr : suggestion.destinationNameEn;
+  const place = suggestion.place;
+  const country = place ? findCountry(place.countryCode) : undefined;
+  const countryName = country ? (isAr ? country.nameAr : country.nameEn) : "";
+  const month = Number(departDate.slice(5, 7));
+  const monthLabel = month >= 1 && month <= 12 ? monthName(month, locale) : "";
+  const fmt = (n: number) => `${Math.abs(n).toLocaleString("en-US")} ${suggestion.currency}`;
+  const paying = Math.max(1, travelers.adults + travelers.childrenAges.length);
+  const flight = suggestion.flight;
 
-  /**
-   * The link has to describe the *same trip* the card just priced.
-   *
-   * It did not, and this is why a card offering Cairo for 4,545 riyals opened
-   * a page offering 3,610 with a different hotel and a different stopover.
-   * Two things were wrong:
-   *
-   *  - It sent `destination: name` — the localised city name, "طوكيو". The
-   *    search that produced this card ran on the IATA code, "TYO". Every
-   *    price on the site is derived from a seed built out of that string, so
-   *    a different string is a different trip: different airline, different
-   *    hotel, different price. Sending the code makes the two agree.
-   *  - It dropped the trip length. Discover works in nights and computes the
-   *    return date itself; the card forwarded an empty `returnDate`, and the
-   *    results page reads a missing return date as a one-night stay. A
-   *    five-night hotel total silently became one night.
-   *
-   * The remaining filters travel too, for the same reason: a filter the
-   * suggestion was priced under but the results page never sees is a filter
-   * that changes the answer.
-   */
+  // The link describes the same trip the card priced: the IATA code the
+  // fare was searched on, and the same dates and filters.
   const stayEnd = returnDate || addDaysIso(departDate, suggestion.nights);
-
-  const resultsParams = new URLSearchParams({
-    tripType,
-    origin,
-    destination: suggestion.destinationCode,
-    departDate,
-    returnDate: stayEnd,
+  const party = {
     adults: String(travelers.adults),
     childrenAges: serializeChildrenAges(travelers.childrenAges),
     infants: String(travelers.infants),
+  };
+  const flightParams = new URLSearchParams({
+    tripType: "flight",
+    origin,
+    destination: suggestion.destinationCode,
+    departDate,
+    returnDate,
+    ...party,
     budget: String(suggestion.totalPrice + suggestion.remainingBudget),
     currency,
     directOnly: String(directOnly),
-    minStars: String(minStars),
-    roomType: roomType || "",
     baggageIncluded: String(baggageIncluded),
-    breakfastIncluded: String(breakfastIncluded),
+  });
+  // The hotel search opens on the homepage with the city and dates filled
+  // in; the traveller adds a hotel budget and extras there.
+  const hotelParams = new URLSearchParams({
+    product: "hotels",
+    hmode: "discover",
+    city: place?.cityNameEn ?? suggestion.destinationNameEn,
+    checkIn: departDate,
+    checkOut: stayEnd,
+    ...party,
   });
 
+  const visaLabels = {
+    free: dict.visa.statusFree,
+    arrival: dict.visa.statusArrival,
+    eta: dict.visa.statusEta,
+    required: dict.visa.statusRequired,
+  };
+
   return (
-    <div
-      className={`rounded-2xl bg-white p-5 shadow-sm ring-1 transition-all duration-200 hover:-translate-y-1 hover:shadow-xl ${
-        suggestion.withinBudget ? "ring-brand-100 hover:ring-brand-300" : "ring-red-100 hover:ring-red-200"
+    <article
+      className={`flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm ring-1 transition duration-200 hover:-translate-y-1 hover:shadow-xl ${
+        suggestion.withinBudget ? "ring-navy-950/10" : "ring-rose-200"
       }`}
     >
-      <div className="flex items-center justify-between mb-3">
-        <div className="flex items-center gap-2">
-          <span className="text-2xl">{suggestion.emoji}</span>
-          <span className="font-bold text-gray-900">{name}</span>
-        </div>
-        <span className="text-lg font-extrabold text-gray-900">
-          {suggestion.totalPrice.toLocaleString()} {suggestion.currency}
-        </span>
-      </div>
-
-      <div className="text-sm text-gray-600 space-y-1">
-        {suggestion.flight && (
-          <>
-            {/* Stops and baggage only when the source said so. The fare
-                feed gives a price and an airline, not the routing: printing
-                "direct" or "no checked bag" for it would be inventing facts
-                a traveller books on. */}
-            <p>
-              ✈️ {suggestion.flight.airline}
-              {(!suggestion.flight.priceOnly || suggestion.flight.stopsKnown) &&
-                ` · ${suggestion.flight.stops === 0 ? dict.results.stopsNone : `${suggestion.flight.stops} ${dict.results.stops}`}`}
-            </p>
-            {suggestion.flight.priceOnly && (
-              <p className="text-xs text-gray-400 ps-5">{dict.results.priceObserved}</p>
-            )}
-            {suggestion.flight.stops > 0 && suggestion.flight.layoverCity && (
-              <p className="text-xs text-gray-400 ps-5">
-                {dict.results.layoverIn
-                  .replace("{city}", suggestion.flight.layoverCity)
-                  .replace(
-                    "{duration}",
-                    suggestion.flight.layoverDurationMinutes
-                      ? formatDuration(suggestion.flight.layoverDurationMinutes, locale)
-                      : ""
-                  )}
-              </p>
-            )}
-          </>
-        )}
-        {!suggestion.hotel && tripType !== "flight" && (
-          // No hotel price, and no pretending there is one. What a budget
-          // traveller actually needs at this moment is the subtraction: the
-          // flight costs this much, so this much is left for the room. The
-          // real room prices are one click away, on the results page.
-          <p>
-            🏨{" "}
-            {suggestion.remainingBudget > 0
-              ? dict.results.hotelBudgetLeft
-                  .replace("{amount}", suggestion.remainingBudget.toLocaleString())
-                  .replace("{currency}", suggestion.currency)
-              : dict.results.hotelBudgetGone}
-          </p>
-        )}
-        {suggestion.hotel && (
-          <>
-            <p>
-              🏨 {suggestion.hotel.name} · {"★".repeat(Math.max(1, suggestion.hotel.stars))} · {suggestion.nights} {dict.results.nights}
-            </p>
-            {!suggestion.hotel.priceOnly && (
-              <p className="text-xs text-gray-400 ps-5">
-                {dict.results.distanceFromCenter.replace("{km}", String(suggestion.hotel.distanceFromCenterKm))}
-              </p>
-            )}
-          </>
-        )}
-      </div>
-
-      <div className="mt-2 flex flex-wrap gap-1.5">
-        {suggestion.flight && !suggestion.flight.priceOnly && (
+      {/* The place: its photograph, its name, and whether it is a good time. */}
+      <div className="relative h-40">
+        <Photo
+          src={photo}
+          className="absolute inset-0 h-full w-full object-cover"
+          fallback={
+            <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-navy-700 to-navy-990 text-5xl">
+              {suggestion.emoji}
+            </div>
+          }
+        />
+        <div className="scrim-soft absolute inset-0" />
+        {place?.inSeason !== undefined && monthLabel && (
           <span
-            className={`text-[11px] font-semibold px-2 py-0.5 rounded-full ${
-              suggestion.flight.baggageIncluded ? "bg-accent-50 text-accent-700" : "bg-gray-100 text-gray-500"
+            className={`absolute start-3 top-3 rounded-full px-2.5 py-1 text-xs font-bold shadow-sm ${
+              place.inSeason ? "bg-emerald-100 text-emerald-900" : "bg-white/90 text-navy-700"
             }`}
           >
-            🧳 {suggestion.flight.baggageIncluded ? dict.results.baggageYes : dict.results.baggageNo}
+            {place.inSeason ? "☀️ " : ""}
+            {(place.inSeason ? d.inSeason : d.notInSeason).replace("{month}", monthLabel)}
           </span>
         )}
-        {suggestion.hotel && !suggestion.hotel.priceOnly && (
-          <>
-            <span
-              className={`text-[11px] font-semibold px-2 py-0.5 rounded-full ${
-                suggestion.hotel.breakfastIncluded ? "bg-accent-50 text-accent-700" : "bg-gray-100 text-gray-500"
-              }`}
-            >
-              🍳 {suggestion.hotel.breakfastIncluded ? dict.results.breakfastYes : dict.results.breakfastNo}
+        <div className="absolute inset-x-0 bottom-0 p-4">
+          <p className="font-display text-xl font-black text-white drop-shadow">{name}</p>
+          {countryName && <p className="text-sm font-semibold text-white/80">{countryName}</p>}
+        </div>
+      </div>
+
+      <div className="flex flex-1 flex-col p-4">
+        {/* The fare: the whole party's total, and what that is per seat. */}
+        <div className="flex items-end justify-between gap-3">
+          <div>
+            <p className="font-display text-2xl font-black text-navy-950">{fmt(suggestion.totalPrice)}</p>
+            <p className="text-xs text-navy-500">
+              {d.totalFor.replace("{count}", String(paying))}
+              {flight?.pricePerPerson && paying > 1 && (
+                <> · {d.perPersonShort.replace("{price}", fmt(flight.pricePerPerson))}</>
+              )}
+            </p>
+          </div>
+          {!suggestion.withinBudget && (
+            <span className="rounded-full bg-rose-50 px-2.5 py-1 text-xs font-bold text-rose-700 ring-1 ring-rose-200">
+              {d.overBudgetBy.replace("{amount}", fmt(suggestion.remainingBudget))}
             </span>
-            <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-gray-100 text-gray-500">
-              🛏️ {dict.roomType[suggestion.hotel.roomType]}
-            </span>
-          </>
+          )}
+        </div>
+
+        {flight && (
+          <div className="mt-2 text-sm text-navy-700">
+            <p>
+              ✈️ {flight.airline}
+              {(!flight.priceOnly || flight.stopsKnown) &&
+                ` · ${flight.stops === 0 ? dict.results.stopsNone : `${flight.stops} ${dict.results.stops}`}`}
+            </p>
+            {flight.priceOnly && (
+              <p className="text-xs text-navy-400">
+                {flight.datesApproximate ? dict.results.approxDatesNote : dict.results.priceObserved}
+              </p>
+            )}
+          </div>
         )}
-      </div>
 
-      <div className="mt-3 pt-3 border-t border-gray-100 flex items-center justify-between text-sm">
-        <span className="text-gray-500">{dict.results.remainingBudget}</span>
-        <span className={suggestion.remainingBudget >= 0 ? "text-brand-900 font-semibold" : "text-red-600 font-semibold"}>
-          {suggestion.remainingBudget.toLocaleString()} {suggestion.currency}
-        </span>
-      </div>
+        {/* Weather that month and the visa, side by side. */}
+        <div className="mt-3 flex flex-wrap items-center gap-1.5">
+          {place?.high !== undefined && (
+            <span className="rounded-full bg-mist-50 px-2.5 py-1 text-xs font-bold text-navy-800 ring-1 ring-mist-200">
+              {dict.home.seasonHigh.replace("{high}", String(Math.round(place.high)))}
+            </span>
+          )}
+          {place?.rainyDays !== undefined && (
+            <span className="rounded-full bg-mist-50 px-2.5 py-1 text-xs font-bold text-navy-800 ring-1 ring-mist-200">
+              {Math.round(place.rainyDays) === 0
+                ? dict.home.seasonRainNone
+                : countLabel(Math.round(place.rainyDays), {
+                    one: dict.home.seasonRainOne,
+                    two: dict.home.seasonRainTwo,
+                    few: dict.home.seasonRainFew,
+                    many: dict.home.seasonRainMany,
+                  })}
+            </span>
+          )}
+          {place?.visa && <VisaBadge category={place.visa} label={visaLabels[place.visa]} className="!px-2.5 !py-1" />}
+        </div>
 
-      <Link
-        href={`/${locale}/results?${resultsParams.toString()}`}
-        className="mt-4 block w-full text-center rounded-xl bg-gradient-to-r from-brand-700 to-brand-900 px-4 py-3 text-sm font-bold text-white shadow-sm transition hover:shadow-md hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2"
-      >
-        {dict.discoverResults.viewDetails}
-      </Link>
-    </div>
+        {suggestion.withinBudget && (
+          <div className="mt-3 flex items-center justify-between border-t border-mist-100 pt-3 text-sm">
+            <span className="text-navy-500">{d.remainingFlight}</span>
+            <span className="font-bold text-emerald-700">{fmt(suggestion.remainingBudget)}</span>
+          </div>
+        )}
+
+        <div className="mt-auto space-y-2 pt-4">
+          <Link
+            href={`/${locale}/results?${flightParams.toString()}`}
+            className="block w-full rounded-xl bg-sun-400 px-4 py-3 text-center text-sm font-extrabold text-navy-950 shadow-[var(--shadow-sun)] transition hover:bg-sun-300"
+          >
+            ✈️ {d.bookFlight}
+          </Link>
+          <a
+            href={`/${locale}?${hotelParams.toString()}#plan`}
+            className="block w-full rounded-xl bg-navy-900 px-4 py-2.5 text-center text-sm font-bold text-white transition hover:bg-navy-800"
+          >
+            🏨 {d.hotelIn.replace("{city}", name)}
+          </a>
+          {place && (
+            <Link
+              href={`/${locale}/attractions/${place.countryCode}/${place.citySlug}`}
+              className="block text-center text-xs font-bold text-sea-700 hover:underline"
+            >
+              {d.aboutCity.replace("{city}", name)}
+            </Link>
+          )}
+        </div>
+      </div>
+    </article>
   );
 }

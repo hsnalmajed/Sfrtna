@@ -182,7 +182,26 @@ export interface DiscoverParams {
   preferenceCategory?: DestinationCategory;
 }
 
+/**
+ * What we know about a suggested destination as a place, beside its fare —
+ * all from data the site holds and has checked, and absent when unknown.
+ */
+export interface DestinationPlace {
+  countryCode: string;
+  citySlug: string;
+  /** The city's English name, which the hotel partners search by. */
+  cityNameEn: string;
+  /** Mean afternoon high and rainy days in the month of travel. */
+  high?: number;
+  rainyDays?: number;
+  /** In season that month by the site's rule; undefined when we can't say. */
+  inSeason?: boolean;
+  /** Confirmed entry status for a Saudi passport. */
+  visa?: "free" | "arrival" | "eta" | "required";
+}
+
 export interface DestinationSuggestion {
+  place?: DestinationPlace;
   destinationCode: string;
   destinationNameAr: string;
   destinationNameEn: string;
