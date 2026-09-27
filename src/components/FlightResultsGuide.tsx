@@ -64,8 +64,10 @@ const CSS = `
 :host([data-sfr-filter]:not([data-show-within])) [data-sfr-state="within"]{display:none !important}
 :host([data-sfr-filter]:not([data-show-over])) [data-sfr-state="over"]{display:none !important}
 :host([data-sfr-filter]:not([data-show-within]):not([data-show-over])) [class*="TicketsWidget-module__moreTickets"]{display:none !important}
-:host([data-sfr-none]:not([data-show-over])) [class*="FlightFilters-module__filerContainer"],
-:host([data-sfr-none]:not([data-show-over])) [class*="FlightFiltersMobileMenu-module__root"]{display:none !important}
+/* Filters are for browsing a list. While only the pick (or nothing) is on
+   screen they are a tall empty column; they come back with the other options. */
+:host([data-sfr-filter]:not([data-show-within]):not([data-show-over])) [class*="FlightFilters-module__filerContainer"],
+:host([data-sfr-filter]:not([data-show-within]):not([data-show-over])) [class*="FlightFiltersMobileMenu-module__root"]{display:none !important}
 `;
 
 /** "1,250 SAR" — Western digits, like the rest of the site's prices. */
