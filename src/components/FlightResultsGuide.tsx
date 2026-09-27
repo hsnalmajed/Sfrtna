@@ -64,6 +64,8 @@ const CSS = `
 :host([data-sfr-filter]:not([data-show-within])) [data-sfr-state="within"]{display:none !important}
 :host([data-sfr-filter]:not([data-show-over])) [data-sfr-state="over"]{display:none !important}
 :host([data-sfr-filter]:not([data-show-within]):not([data-show-over])) [class*="TicketsWidget-module__moreTickets"]{display:none !important}
+:host([data-sfr-none]:not([data-show-over])) [class*="FlightFilters-module__filerContainer"],
+:host([data-sfr-none]:not([data-show-over])) [class*="FlightFiltersMobileMenu-module__root"]{display:none !important}
 `;
 
 /** "1,250 SAR" — Western digits, like the rest of the site's prices. */
@@ -202,6 +204,9 @@ export default function FlightResultsGuide({
 
       if (filtering) host.setAttribute("data-sfr-filter", "");
       else host.removeAttribute("data-sfr-filter");
+      // Nothing fits: no list to filter, so no filter column beside it.
+      if (filtering && !pick) host.setAttribute("data-sfr-none", "");
+      else host.removeAttribute("data-sfr-none");
 
       for (const p of priced) {
         const state = !filtering
