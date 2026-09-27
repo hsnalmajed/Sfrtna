@@ -260,7 +260,7 @@ export default function DateRangeInput({
                 : "text-navy-400"
           }
         >
-          {summary || dict.form.pickDates}
+          {summary || (withReturn ? dict.form.pickDates : dict.form.pickDate)}
         </span>
         <Icon name="calendar" className={`h-4 w-4 ${tone === "dark" ? "text-white/55" : "text-navy-400"}`} />
       </button>

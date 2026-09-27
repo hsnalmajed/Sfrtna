@@ -5,19 +5,6 @@ import { useParams, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { getDictionary } from "@/lib/dictionaries";
 import type { Locale, MultiCityLegInput, MultiCityTripResult } from "@/lib/types";
-import { formatDuration } from "@/lib/format";
-
-function formatTime(iso: string | undefined, locale: Locale) {
-  if (!iso) return "";
-  try {
-    return new Date(iso).toLocaleTimeString(locale === "ar" ? "ar-SA" : "en-US", {
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  } catch {
-    return iso;
-  }
-}
 
 export default function MultiCityResultsPage() {
   return (
@@ -27,324 +14,238 @@ export default function MultiCityResultsPage() {
   );
 }
 
+/** "RUH الرياض — مطار الملك خالد" → "RUH الرياض". The field's label, shortened. */
+function shortPlace(text: string): string {
+  return text.split(" - ")[0].split("—")[0].trim();
+}
+
+/**
+ * A multi-city trip: the flights the traveller listed, one card each.
+ *
+ * Every card ends in its own booking button, which opens our live flight
+ * search for that one-way flight — the same partner search, with the same
+ * commission, as any other trip. The prices on the cards are fares seen
+ * recently for each flight on its own, and the page says so; the live price
+ * is the one on the partner's page.
+ */
 function MultiCityResultsContent() {
   const params = useParams();
   const locale = (params.locale === "en" ? "en" : "ar") as Locale;
   const dict = getDictionary(locale);
+  const m = dict.multicity;
   const sp = useSearchParams();
 
-  const origin = sp.get("origin") || "";
-  const departDate = sp.get("departDate") || "";
   const adults = sp.get("adults") || "1";
+  const childrenAges = sp.get("childrenAges") || "";
+  const infants = sp.get("infants") || "0";
   const budget = sp.get("budget") || "0";
   const currency = sp.get("currency") || "SAR";
   const directOnly = sp.get("directOnly") === "true";
-  const minStars = sp.get("minStars") || "0";
-  const legsRaw = sp.get("legs") || "[]";
   const baggageIncluded = sp.get("baggageIncluded") === "true";
-  const breakfastIncluded = sp.get("breakfastIncluded") === "true";
+  const legsRaw = sp.get("legs") || "[]";
   const editSearchParams = useMemo(() => {
     const p = new URLSearchParams(sp.toString());
     p.set("mode", "known");
     p.set("tripRoute", "multicity");
+    p.set("product", "flights");
     return p.toString();
   }, [sp]);
 
+  const legs = useMemo<MultiCityLegInput[]>(() => {
+    try {
+      const parsed = JSON.parse(legsRaw);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
+  }, [legsRaw]);
+
   const [result, setResult] = useState<MultiCityTripResult | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
-    if (!origin || !departDate) return;
-    let legs: MultiCityLegInput[] = [];
-    try {
-      legs = JSON.parse(legsRaw);
-    } catch {
-      legs = [];
-    }
-    if (!Array.isArray(legs) || legs.length < 2) {
+    if (legs.length < 2) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
-      setError("error");
+      setError(true);
       setLoading(false);
       return;
     }
-
     setLoading(true);
-    setError(null);
-
+    setError(false);
     fetch("/api/multicity", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        origin,
         legs,
-        departDate,
         adults: Number(adults),
+        childrenAges: childrenAges ? childrenAges.split(",").map(Number) : [],
+        infants: Number(infants),
         budgetTotal: Number(budget),
         currency,
         directFlightsOnly: directOnly,
-        minHotelStars: Number(minStars),
         baggageIncluded,
-        breakfastIncluded,
       }),
     })
-      .then((r) => r.json())
-      .then((data) => setResult(data))
-      .catch(() => setError("error"))
+      .then((r) => (r.ok ? r.json() : Promise.reject()))
+      .then((data: MultiCityTripResult) => setResult(data))
+      .catch(() => setError(true))
       .finally(() => setLoading(false));
-  }, [
-    origin,
-    departDate,
-    adults,
-    budget,
-    currency,
-    directOnly,
-    minStars,
-    legsRaw,
-    baggageIncluded,
-    breakfastIncluded,
-  ]);
+  }, [legs, adults, childrenAges, infants, budget, currency, directOnly, baggageIncluded]);
+
+  const money = (n: number) => `${Math.abs(n).toLocaleString("en-US")} ${currency}`;
+  const dateLabel = (iso: string) =>
+    iso
+      ? new Date(`${iso}T00:00:00Z`).toLocaleDateString(locale === "ar" ? "ar-u-ca-gregory-nu-latn" : "en-GB", {
+          weekday: "short",
+          day: "numeric",
+          month: "long",
+          timeZone: "UTC",
+        })
+      : "";
+
+  /** The live search for one flight of the trip, as a one-way search. */
+  const legHref = (leg: MultiCityLegInput) =>
+    `/${locale}/results?${new URLSearchParams({
+      tripType: "flight",
+      tripRoute: "oneway",
+      mode: "known",
+      origin: leg.origin,
+      destination: leg.destination,
+      departDate: leg.date,
+      returnDate: "",
+      adults,
+      childrenAges,
+      infants,
+      currency,
+      directOnly: String(directOnly),
+      baggageIncluded: String(baggageIncluded),
+    })}`;
+
+  const paying = Math.max(1, Number(adults) + (childrenAges ? childrenAges.split(",").length : 0));
+  const pricedCount = result?.legs.filter((l) => l.flight).length ?? 0;
+  const isMock = Boolean(result?.isMock) && process.env.NODE_ENV !== "development";
 
   return (
-    <div className="mx-auto max-w-5xl px-4 pb-10 pt-28 sm:px-6 sm:pt-32">
-      <div className="flex items-center justify-between flex-wrap gap-3 mb-6">
+    <div className="mx-auto max-w-4xl px-4 pb-10 pt-28 sm:px-6 sm:pt-32">
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">{dict.multicity.resultsTitle}</h1>
-          <p className="text-gray-500 mt-1.5">
-            {origin} · {departDate} · {budget} {currency}
-          </p>
+          <h1 className="text-2xl font-extrabold tracking-tight text-navy-950 sm:text-3xl">{m.resultsTitle}</h1>
+          {legs.length >= 2 && (
+            <p className="mt-1.5 text-navy-500">
+              {m.searchSummary
+                .replace("{count}", String(legs.length))
+                .replace("{first}", dateLabel(legs[0].date))
+                .replace("{last}", dateLabel(legs[legs.length - 1].date))
+                .replace("{budget}", money(Number(budget)))}
+            </p>
+          )}
         </div>
         <Link
           href={`/${locale}?${editSearchParams}#plan`}
-          className="inline-flex items-center gap-1.5 rounded-full bg-white px-4 py-2.5 text-sm font-bold text-brand-800 shadow-sm ring-1 ring-brand-100 transition hover:-translate-y-0.5 hover:shadow-md hover:ring-brand-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2"
+          className="inline-flex items-center gap-1.5 rounded-full bg-white px-4 py-2.5 text-sm font-bold text-navy-800 shadow-sm ring-1 ring-mist-200 transition hover:-translate-y-0.5 hover:shadow-md"
         >
           <span aria-hidden="true">{locale === "ar" ? "→" : "←"}</span>
-          {dict.multicity.backToSearch}
+          {m.backToSearch}
         </Link>
       </div>
 
       {loading && (
         <div className="space-y-4">
-          {Array.from({ length: 3 }).map((_, i) => (
-            <div key={i} className="h-32 rounded-2xl bg-white ring-1 ring-black/5 animate-pulse" />
+          {legs.map((_, i) => (
+            <div key={i} className="h-36 animate-pulse rounded-2xl bg-white ring-1 ring-black/5" />
           ))}
         </div>
       )}
 
       {!loading && error && (
-        <p className="text-red-600 py-4 text-center text-sm">
+        <p className="py-4 text-center text-sm text-red-600">
           {locale === "ar" ? "حدث خطأ أثناء البحث، حاول مرة أخرى." : "Something went wrong while searching. Please try again."}
         </p>
       )}
 
       {!loading && !error && result && (
         <>
-          {result.isMock && process.env.NODE_ENV === "development" && (
-            <div className="mb-6 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
-              Generated data (no provider key configured). Hidden in production.
-            </div>
-          )}
+          <p className="mb-5 rounded-xl bg-sea-50 px-4 py-3 text-sm text-navy-800 ring-1 ring-sea-100">
+            ℹ️ {m.separateNotice}
+          </p>
 
-          <div className="space-y-4">
-            {result.legs.map((leg, i) => (
-              <div key={i} className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-brand-100">
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-brand-600 text-xs font-bold text-white">
-                    {i + 1}
-                  </span>
-                  <p className="font-bold text-gray-900">
-                    {dict.multicity.legLabel} {i + 1}: {leg.destination} ({leg.destinationIata})
-                  </p>
-                  <span className="ms-auto text-sm text-gray-500">
-                    {leg.nights} {dict.results.nights}
-                  </span>
-                </div>
-
-                <div className="border-t border-dashed border-gray-200 pt-3">
-                  <p className="text-xs uppercase tracking-wide text-gray-400 mb-1">
-                    {dict.multicity.flightTo} {leg.destination}
-                  </p>
-                  {leg.flight ? (
-                    <div className="flex items-center justify-between text-sm">
-                      <div>
-                        <p className="font-semibold text-gray-800">{leg.flight.airline}</p>
-                        <p className="text-gray-500">
-                          {leg.flight.origin} → {leg.flight.destination} · {leg.departDate}
-                        </p>
-                      </div>
-                      <div className="text-end">
-                        <p className="text-gray-800">
-                          {formatTime(leg.flight.departTime, locale)} - {formatTime(leg.flight.arriveTime, locale)}
-                        </p>
-                        <p className="font-bold text-gray-900">
-                          {leg.flight.price.toLocaleString()} {leg.flight.currency}
-                        </p>
-                      </div>
-                    </div>
-                  ) : (
-                    <p className="text-sm text-red-500">{dict.multicity.noFlightFound}</p>
-                  )}
-                  {leg.flight && leg.flight.stops > 0 && leg.flight.layoverCity && (
-                    <p className="mt-1 text-xs text-gray-400">
-                      {dict.results.layoverIn
-                        .replace("{city}", leg.flight.layoverCity)
-                        .replace(
-                          "{duration}",
-                          leg.flight.layoverDurationMinutes
-                            ? formatDuration(leg.flight.layoverDurationMinutes, locale)
-                            : ""
-                        )}
-                    </p>
-                  )}
-                  {leg.flight && (
-                    <span
-                      className={`mt-2 inline-block text-[11px] font-semibold px-2 py-0.5 rounded-full ${
-                        leg.flight.baggageIncluded ? "bg-accent-50 text-accent-700" : "bg-gray-100 text-gray-500"
-                      }`}
-                    >
-                      🧳 {leg.flight.baggageIncluded ? dict.results.baggageYes : dict.results.baggageNo}
+          <ol className="space-y-4">
+            {result.legs.map((leg, i) => {
+              const f = isMock ? null : leg.flight;
+              return (
+                <li key={i} className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-navy-950/10">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="flex h-7 w-7 items-center justify-center rounded-full bg-sun-400 text-xs font-black text-navy-950">
+                      {i + 1}
                     </span>
-                  )}
-                </div>
+                    <p className="font-bold text-navy-950">{m.legFlight.replace("{n}", String(i + 1))}</p>
+                    <span className="ms-auto text-sm font-semibold text-navy-600">{dateLabel(leg.date)}</span>
+                  </div>
 
-                <div className="border-t border-dashed border-gray-200 pt-3 mt-3">
-                  <p className="text-xs uppercase tracking-wide text-gray-400 mb-1">{dict.multicity.hotelStay}</p>
-                  {leg.hotel ? (
-                    <div className="flex items-center justify-between text-sm">
-                      <div>
-                        <p className="font-semibold text-gray-800">{leg.hotel.name}</p>
-                        <p className="text-amber-500">{"★".repeat(Math.max(1, leg.hotel.stars))}</p>
-                      </div>
-                      <div className="text-end">
-                        <p className="text-gray-800">
-                          {leg.hotel.pricePerNight.toLocaleString()} {leg.hotel.currency} / {dict.results.perNight}
-                        </p>
-                        <p className="font-bold text-gray-900">
-                          {leg.hotel.totalPrice.toLocaleString()} {leg.hotel.currency}
-                        </p>
-                      </div>
+                  <div className="mt-3 flex items-center gap-3 text-navy-950">
+                    <div className="min-w-0 flex-1">
+                      <p className="font-display text-2xl font-black">{leg.originIata}</p>
+                      {shortPlace(leg.origin) !== leg.originIata && (
+                        <p className="truncate text-xs text-navy-500">{shortPlace(leg.origin).replace(leg.originIata, "").trim()}</p>
+                      )}
                     </div>
-                  ) : (
-                    <p className="text-sm text-red-500">{dict.multicity.noHotelFound}</p>
-                  )}
-                  {leg.hotel && (
-                    <>
-                      <p className="mt-1 text-xs text-gray-400">
-                        {dict.results.distanceFromCenter.replace("{km}", String(leg.hotel.distanceFromCenterKm))}
-                      </p>
-                      <span
-                        className={`mt-2 inline-block text-[11px] font-semibold px-2 py-0.5 rounded-full ${
-                          leg.hotel.breakfastIncluded ? "bg-accent-50 text-accent-700" : "bg-gray-100 text-gray-500"
-                        }`}
-                      >
-                        🍳 {leg.hotel.breakfastIncluded ? dict.results.breakfastYes : dict.results.breakfastNo}
-                      </span>
-                    </>
-                  )}
-                </div>
-              </div>
-            ))}
+                    <span className="text-xl text-sun-500" aria-hidden="true">
+                      {locale === "ar" ? "←" : "→"}
+                    </span>
+                    <div className="min-w-0 flex-1 text-end">
+                      <p className="font-display text-2xl font-black">{leg.destinationIata}</p>
+                      {shortPlace(leg.destination) !== leg.destinationIata && (
+                        <p className="truncate text-xs text-navy-500">{shortPlace(leg.destination).replace(leg.destinationIata, "").trim()}</p>
+                      )}
+                    </div>
+                  </div>
 
-            <div className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-brand-100">
-              <p className="text-xs uppercase tracking-wide text-gray-400 mb-1">
-                {dict.multicity.returnFlight} {origin}
-              </p>
-              {result.returnFlight ? (
-                <div className="flex items-center justify-between text-sm">
-                  <div>
-                    <p className="font-semibold text-gray-800">{result.returnFlight.airline}</p>
-                    <p className="text-gray-500">
-                      {result.returnFlight.origin} → {result.returnFlight.destination}
-                    </p>
-                  </div>
-                  <div className="text-end">
-                    <p className="text-gray-800">
-                      {formatTime(result.returnFlight.departTime, locale)} - {formatTime(result.returnFlight.arriveTime, locale)}
-                    </p>
-                    <p className="font-bold text-gray-900">
-                      {result.returnFlight.price.toLocaleString()} {result.returnFlight.currency}
-                    </p>
-                  </div>
-                </div>
-              ) : (
-                <p className="text-sm text-red-500">{dict.multicity.noFlightFound}</p>
-              )}
-              {result.returnFlight && result.returnFlight.stops > 0 && result.returnFlight.layoverCity && (
-                <p className="mt-1 text-xs text-gray-400">
-                  {dict.results.layoverIn
-                    .replace("{city}", result.returnFlight.layoverCity)
-                    .replace(
-                      "{duration}",
-                      result.returnFlight.layoverDurationMinutes
-                        ? formatDuration(result.returnFlight.layoverDurationMinutes, locale)
-                        : ""
+                  <div className="mt-4 flex flex-wrap items-end justify-between gap-3 border-t border-dashed border-mist-200 pt-4">
+                    {f ? (
+                      <div>
+                        <p className="font-display text-xl font-black text-navy-950">{money(f.price)}</p>
+                        <p className="text-xs text-navy-500">
+                          {dict.discoverResults.totalFor.replace("{count}", String(paying))} · ✈️ {f.airline}
+                        </p>
+                        {f.priceOnly && (
+                          <p className="mt-0.5 text-xs text-navy-400">
+                            {f.datesApproximate ? dict.results.approxDatesNote : dict.results.priceObserved}
+                          </p>
+                        )}
+                      </div>
+                    ) : (
+                      <p className="max-w-sm text-sm text-navy-600">{m.legNotPriced}</p>
                     )}
+                    <Link
+                      href={legHref(leg)}
+                      className="rounded-xl bg-sun-400 px-5 py-3 text-sm font-extrabold text-navy-950 shadow-[var(--shadow-sun)] transition hover:bg-sun-300"
+                    >
+                      ✈️ {m.bookLeg}
+                    </Link>
+                  </div>
+                </li>
+              );
+            })}
+          </ol>
+
+          {!isMock && pricedCount > 0 && (
+            <div className="mt-5 rounded-2xl bg-navy-950 p-5 text-white">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <p className="text-sm text-white/70">
+                  {result.allPriced
+                    ? m.totalSeparate
+                    : m.totalPartial.replace("{count}", String(pricedCount)).replace("{all}", String(result.legs.length))}
+                </p>
+                <p className="font-display text-2xl font-black text-sun-400">{money(result.totalPrice)}</p>
+              </div>
+              {result.allPriced && result.budgetTotal > 0 && (
+                <p className={`mt-2 text-sm font-bold ${result.withinBudget ? "text-emerald-300" : "text-rose-300"}`}>
+                  {result.withinBudget
+                    ? `${m.remaining}: ${money(result.remainingBudget)}`
+                    : m.overBudget.replace("{amount}", money(result.remainingBudget))}
                 </p>
               )}
-              {result.returnFlight && (
-                <span
-                  className={`mt-2 inline-block text-[11px] font-semibold px-2 py-0.5 rounded-full ${
-                    result.returnFlight.baggageIncluded ? "bg-accent-50 text-accent-700" : "bg-gray-100 text-gray-500"
-                  }`}
-                >
-                  🧳 {result.returnFlight.baggageIncluded ? dict.results.baggageYes : dict.results.baggageNo}
-                </span>
-              )}
-            </div>
-          </div>
-
-          <div
-            className={`mt-6 rounded-2xl p-5 shadow-sm ring-1 ${
-              result.withinBudget ? "bg-white ring-brand-100" : "bg-white ring-red-100"
-            }`}
-          >
-            <div className="flex items-center justify-between text-sm mb-2">
-              <span className="text-gray-500">{dict.multicity.totalFlights}</span>
-              <span className="font-semibold text-gray-800">
-                {result.totalFlightsPrice.toLocaleString()} {result.currency}
-              </span>
-            </div>
-            <div className="flex items-center justify-between text-sm mb-2">
-              <span className="text-gray-500">{dict.multicity.totalHotels}</span>
-              <span className="font-semibold text-gray-800">
-                {result.totalHotelsPrice.toLocaleString()} {result.currency}
-              </span>
-            </div>
-            <div className="flex items-center justify-between text-base border-t border-gray-100 pt-2 mt-2">
-              <span className="font-bold text-gray-900">{dict.multicity.totalTrip}</span>
-              <span className="font-extrabold text-gray-900">
-                {result.totalPrice.toLocaleString()} {result.currency}
-              </span>
-            </div>
-            <div className="flex items-center justify-between text-sm mt-2">
-              <span className="text-gray-500">{dict.results.remainingBudget}</span>
-              <span className={result.remainingBudget >= 0 ? "text-brand-900 font-semibold" : "text-red-600 font-semibold"}>
-                {result.remainingBudget.toLocaleString()} {result.currency}
-              </span>
-            </div>
-            <span
-              className={`mt-3 inline-block text-xs font-semibold px-2.5 py-1 rounded-full ${
-                result.withinBudget ? "bg-brand-50 text-brand-900" : "bg-red-50 text-red-600"
-              }`}
-            >
-              {result.withinBudget ? dict.results.withinBudget : dict.results.overBudget}
-            </span>
-          </div>
-
-          {!result.withinBudget && result.advice && (
-            <div className="mt-4 rounded-2xl bg-amber-50 border border-amber-200 p-5">
-              <p className="font-bold text-amber-900 mb-2">{dict.multicity.adviceTitle}</p>
-              <ul className="text-sm text-amber-800 space-y-1.5 list-disc ps-5">
-                <li>
-                  {dict.multicity.adviceIncreaseBudget} {result.advice.suggestedBudget.toLocaleString()} {result.currency}
-                </li>
-                {result.advice.suggestedNightsToReduce > 0 && (
-                  <li>
-                    {dict.multicity.adviceReduceNights.replace("{n}", String(result.advice.suggestedNightsToReduce))}
-                  </li>
-                )}
-                {result.advice.canRemoveDestination && <li>{dict.multicity.adviceRemoveDestination}</li>}
-              </ul>
             </div>
           )}
         </>

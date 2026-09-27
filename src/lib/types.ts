@@ -232,56 +232,42 @@ export interface DestinationPairSuggestion {
 
 export type FlightRoute = "roundtrip" | "oneway" | "multicity";
 
+/** One flight of a multi-city trip, as the traveller entered it. */
 export interface MultiCityLegInput {
-  destination: string; // city name or IATA code
-  nights: number;
+  origin: string; // city name or IATA code
+  destination: string;
+  date: string; // YYYY-MM-DD
 }
 
 export interface MultiCitySearchParams {
-  origin: string;
   legs: MultiCityLegInput[];
-  departDate: string; // YYYY-MM-DD, first leg's departure date
   adults: number;
+  childrenAges?: number[];
+  infants?: number;
   budgetTotal: number;
   currency: string;
   directFlightsOnly: boolean;
-  minHotelStars: number;
   baggageIncluded?: boolean;
-  breakfastIncluded?: boolean;
-  childrenAges?: number[];
-  infants?: number;
-  roomType?: RoomType;
 }
 
 export interface MultiCityLegResult {
+  origin: string;
+  originIata: string;
   destination: string;
   destinationIata: string;
-  nights: number;
-  departDate: string; // date of the flight arriving into this leg
+  date: string;
+  /** Cheapest fare seen for this one-way flight; null when none was seen. */
   flight: FlightOffer | null;
-  hotel: HotelOffer | null;
-}
-
-export interface MultiCityAdvice {
-  // Budget that would make this exact itinerary fit, rounded up.
-  suggestedBudget: number;
-  // Roughly how many total nights to cut across the trip to fit the current budget.
-  suggestedNightsToReduce: number;
-  // Whether dropping one destination is a reasonable suggestion (3+ legs only).
-  canRemoveDestination: boolean;
 }
 
 export interface MultiCityTripResult {
-  origin: string;
   legs: MultiCityLegResult[];
-  returnFlight: FlightOffer | null;
-  totalFlightsPrice: number;
-  totalHotelsPrice: number;
+  /** Sum of the fares found. Meaningful only when every flight was priced. */
   totalPrice: number;
+  allPriced: boolean;
   currency: string;
   budgetTotal: number;
   withinBudget: boolean;
   remainingBudget: number;
-  advice: MultiCityAdvice | null;
   isMock: boolean;
 }

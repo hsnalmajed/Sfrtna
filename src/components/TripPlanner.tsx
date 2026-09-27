@@ -45,10 +45,21 @@ import { BudgetInput, EdgeTabs, FieldLabel, Toggle, nightsBetween, toDigits } fr
 
 type Mode = "known" | "discover";
 
+/**
+ * One flight of a multi-city trip, the way every flight search asks for it:
+ * from, to, and the day. `autoOrigin` is true while the "from" is still the
+ * one we filled in from the flight before — typing over it hands it back to
+ * the traveller, and we stop following.
+ */
 interface LegDraft {
+  origin: string;
   destination: string;
-  nights: number;
+  date: string;
+  autoOrigin: boolean;
 }
+
+/** Five flights, like Google Flights: enough for any real trip. */
+const MAX_LEGS = 5;
 
 const CATEGORY_OPTIONS: DestinationCategory[] = [
   "beach",
@@ -105,19 +116,30 @@ export default function TripPlanner({
   const [currency, setCurrency] = useState(sp.get("currency") || "SAR");
   const [directOnly, setDirectOnly] = useState(sp.get("directOnly") === "true");
   const [baggageIncluded, setBaggageIncluded] = useState(sp.get("baggageIncluded") === "true");
+  // Flights after the first. The first flight's "from" and date are the
+  // form's own origin and departure date, so the rest of the planner (the
+  // currency that follows the departure city, the edit-search round trip)
+  // keeps working unchanged.
   const [legs, setLegs] = useState<LegDraft[]>(() => {
     const raw = sp.get("legs");
     if (raw) {
       try {
         const parsed = JSON.parse(raw);
-        if (Array.isArray(parsed) && parsed.length >= 2) return parsed;
+        if (Array.isArray(parsed) && parsed.length >= 2) {
+          return parsed.map((l: Partial<LegDraft>) => ({
+            origin: String(l.origin ?? ""),
+            destination: String(l.destination ?? ""),
+            date: String(l.date ?? ""),
+            autoOrigin: false,
+          }));
+        }
       } catch {
         // fall through to defaults
       }
     }
     return [
-      { destination: "", nights: 3 },
-      { destination: "", nights: 4 },
+      { origin: "", destination: "", date: "", autoOrigin: true },
+      { origin: "", destination: "", date: "", autoOrigin: true },
     ];
   });
   const [errors, setErrors] = useState<FieldErrors>({});
@@ -142,14 +164,40 @@ export default function TripPlanner({
   const showReturnDate = !isOneWay && !listsLegs;
   const showDestination = mode === "known" && !listsLegs;
 
+  /**
+   * Changing where a flight lands also moves where the next one leaves from,
+   * as long as the traveller hasn't typed their own — that is how Google
+   * Flights and the rest behave, and it saves retyping every city twice.
+   */
   function updateLeg(index: number, patch: Partial<LegDraft>) {
-    setLegs((prev) => prev.map((l, i) => (i === index ? { ...l, ...patch } : l)));
+    setLegs((prev) =>
+      prev.map((l, i) => {
+        if (i === index) return { ...l, ...patch };
+        if (i === index + 1 && patch.destination !== undefined && l.autoOrigin) {
+          return { ...l, origin: patch.destination };
+        }
+        return l;
+      })
+    );
+    setErrors((prev) => ({ ...prev, legs: "" }));
   }
   function addLeg() {
-    setLegs((prev) => [...prev, { destination: "", nights: 2 }]);
+    setLegs((prev) =>
+      prev.length >= MAX_LEGS
+        ? prev
+        : [...prev, { origin: prev[prev.length - 1]?.destination ?? "", destination: "", date: "", autoOrigin: true }]
+    );
   }
   function removeLeg(index: number) {
-    setLegs((prev) => (prev.length > 2 ? prev.filter((_, i) => i !== index) : prev));
+    setLegs((prev) => {
+      if (prev.length <= 2) return prev;
+      const next = prev.filter((_, i) => i !== index);
+      // The flight that now follows the gap leaves from where the one before
+      // it landed, unless its "from" was the traveller's own.
+      return next.map((l, i) =>
+        i === index && i > 0 && l.autoOrigin ? { ...l, origin: next[i - 1].destination } : l
+      );
+    });
   }
   function swapPlaces() {
     setOrigin(destination);
@@ -162,8 +210,16 @@ export default function TripPlanner({
     const next: FieldErrors = {};
     if (!origin.trim()) next.origin = dict.form.errorOrigin;
     if (showDestination && !destination.trim()) next.destination = dict.form.errorDestination;
-    if (listsLegs && legs.filter((l) => l.destination.trim()).length < 2) {
-      next.legs = dict.form.errorLegs;
+    if (listsLegs) {
+      // The first flight's from/date are the form's origin and departDate.
+      const flights = legs.map((l, i) =>
+        i === 0 ? { ...l, origin, date: departDate } : l
+      );
+      if (flights.some((l) => !l.origin.trim() || !l.destination.trim() || !l.date)) {
+        next.legs = dict.multicity.errorLegIncomplete;
+      } else if (flights.some((l, i) => i > 0 && l.date < flights[i - 1].date)) {
+        next.legs = dict.multicity.errorLegOrder;
+      }
     }
     if (!departDate) next.departDate = dict.form.errorDepartDate;
     if (showReturnDate && !returnDate) next.returnDate = dict.form.errorReturnDate;
@@ -207,8 +263,12 @@ export default function TripPlanner({
     };
 
     if (listsLegs) {
-      const validLegs = legs.filter((l) => l.destination.trim().length > 0);
-      const params = new URLSearchParams({ ...shared, legs: JSON.stringify(validLegs) });
+      const flights = legs.map((l, i) => ({
+        origin: i === 0 ? origin : l.origin,
+        destination: l.destination,
+        date: i === 0 ? departDate : l.date,
+      }));
+      const params = new URLSearchParams({ ...shared, legs: JSON.stringify(flights) });
       router.push(`/${locale}/multicity-results?${params.toString()}`);
       return;
     }
@@ -312,24 +372,11 @@ export default function TripPlanner({
           </div>
       </div>
 
-      {/* What the chosen route means, said once under the switch — centred
-          with it and bright enough to be read, not a faint line off to the
-          side that nobody notices. */}
-      {((mode === "discover" && tripRoute === "multicity") || isOneWay) && (
-        <p
-          className={`mx-auto mt-1 flex w-fit max-w-full items-center gap-2 rounded-full px-3.5 py-1.5 text-center text-xs font-semibold sm:text-sm ${
-            dark ? "bg-sun-400/10 text-sun-200 ring-1 ring-sun-400/30" : "bg-sun-50 text-navy-800 ring-1 ring-sun-200"
-          }`}
-        >
-          <span aria-hidden="true">ℹ️</span>
-          {isOneWay ? dict.discoverForm.oneWayHint : dict.discoverForm.multiDestinationHint}
-        </p>
-      )}
-
       {/* ── 3. The row that is the search ─────────────────────────────
           Auto-fit, so the known tab's five fields and the suggest tab's
           four both fill the width with no empty column. */}
       <div className="mt-5 grid grid-cols-1 gap-x-3 gap-y-4 sm:grid-cols-2 lg:grid-cols-[repeat(auto-fit,minmax(9.5rem,1fr))]">
+          {!listsLegs && (
           <div data-field="origin" className="relative">
             <FieldLabel dark={dark} icon="pin">{dict.form.origin}</FieldLabel>
             <AirportInput
@@ -368,6 +415,7 @@ export default function TripPlanner({
               </button>
             )}
           </div>
+          )}
 
         {showDestination && (
           <div data-field="destination">
@@ -392,6 +440,7 @@ export default function TripPlanner({
           </div>
         )}
 
+        {!listsLegs && (
         <div data-field="departDate">
           <FieldLabel dark={dark} icon="calendar">
             {showReturnDate ? dict.form.dates : dict.form.departDate}
@@ -411,6 +460,7 @@ export default function TripPlanner({
             }}
           />
         </div>
+        )}
 
         <div>
           <FieldLabel dark={dark} icon="users">{dict.travelers.label}</FieldLabel>
@@ -438,56 +488,103 @@ export default function TripPlanner({
         />
       </div>
 
-      {/* ── The cities, when the traveller is listing them ───────────── */}
+      {/* ── The flights, when the traveller is listing them ───────────
+          The way every multi-city search asks it (Google Flights, Skyscanner,
+          Almosafer): one row per flight — from, to, the day — the next
+          "from" filled in from the last "to", up to five flights. The first
+          row's "from" and date are the form's own. */}
       {listsLegs && (
         <div className={`mt-5 border-t pt-5 ${divider}`} data-field="legs">
-          <div className="mb-3 flex items-center justify-between">
-            <p className={sectionTitle}>{dict.multicity.title}</p>
-            <button type="button" onClick={addLeg} className={st.ghostButton}>
-              + {dict.multicity.addLeg}
-            </button>
-          </div>
+          <p className={`mb-3 ${sectionTitle}`}>{dict.multicity.title}</p>
 
           <div className="space-y-3">
-            {legs.map((leg, i) => (
-              <div key={i} className={`flex items-center gap-2 rounded-xl border p-3 ${divider}`}>
-                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-sun-400 text-xs font-bold text-navy-950">
-                  {i + 1}
-                </span>
-                <div className="flex-1">
-                  <AirportInput
-                    locale={locale}
-                    value={leg.destination}
-                    onChange={(v) => updateLeg(i, { destination: v })}
-                    placeholder={dict.multicity.legDestination}
-                    className={inputClass}
-                    ariaLabel={dict.multicity.legDestination}
-                    required
-                  />
+            {legs.map((leg, i) => {
+              const legOrigin = i === 0 ? origin : leg.origin;
+              const legDate = i === 0 ? departDate : leg.date;
+              return (
+                <div key={i} className={`rounded-xl border p-3 sm:p-4 ${divider}`}>
+                  <div className="mb-2 flex items-center justify-between">
+                    <p className={`flex items-center gap-2 text-sm font-bold ${dark ? "text-white" : "text-navy-900"}`}>
+                      <span className="flex h-6 w-6 items-center justify-center rounded-full bg-sun-400 text-xs font-black text-navy-950">
+                        {i + 1}
+                      </span>
+                      {dict.multicity.legFlight.replace("{n}", String(i + 1))}
+                    </p>
+                    {legs.length > 2 && (
+                      <button
+                        type="button"
+                        onClick={() => removeLeg(i)}
+                        aria-label={`${dict.multicity.removeLeg} ${i + 1}`}
+                        className={`rounded-lg px-2 py-1 text-xs font-bold transition ${
+                          dark ? "text-rose-300 hover:bg-white/10" : "text-red-600 hover:bg-red-50"
+                        }`}
+                      >
+                        ✕ {dict.multicity.removeLeg}
+                      </button>
+                    )}
+                  </div>
+                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+                    <div className="min-w-0">
+                      <FieldLabel dark={dark} icon="pin">{dict.multicity.legFrom}</FieldLabel>
+                      <AirportInput
+                        locale={locale}
+                        value={legOrigin}
+                        onChange={(v) => {
+                          if (i === 0) {
+                            setOrigin(v);
+                            setErrors((prev) => ({ ...prev, origin: "", legs: "" }));
+                          } else {
+                            updateLeg(i, { origin: v, autoOrigin: false });
+                          }
+                        }}
+                        placeholder={dict.form.originPlaceholder}
+                        className={inputClass}
+                        ariaLabel={`${dict.multicity.legFrom} ${i + 1}`}
+                        required
+                      />
+                    </div>
+                    <div className="min-w-0">
+                      <FieldLabel dark={dark} icon="pin">{dict.multicity.legTo}</FieldLabel>
+                      <AirportInput
+                        locale={locale}
+                        value={leg.destination}
+                        onChange={(v) => updateLeg(i, { destination: v })}
+                        placeholder={dict.form.destinationPlaceholder}
+                        className={inputClass}
+                        ariaLabel={`${dict.multicity.legTo} ${i + 1}`}
+                        required
+                      />
+                    </div>
+                    <div className="min-w-0">
+                      <FieldLabel dark={dark} icon="calendar">{dict.multicity.legDate}</FieldLabel>
+                      <DateRangeInput
+                        locale={locale}
+                        departDate={legDate}
+                        returnDate=""
+                        withReturn={false}
+                        required
+                        tone={tone}
+                        onChange={({ departDate: d }) => {
+                          if (i === 0) {
+                            setDepartDate(d);
+                            setErrors((prev) => ({ ...prev, departDate: "", legs: "" }));
+                          } else {
+                            updateLeg(i, { date: d });
+                          }
+                        }}
+                      />
+                    </div>
+                  </div>
                 </div>
-                <input
-                  type="number"
-                  min={1}
-                  max={30}
-                  className={inputClass + " w-24 shrink-0"}
-                  value={leg.nights}
-                  onChange={(e) => updateLeg(i, { nights: Number(e.target.value) })}
-                  title={dict.multicity.legNights}
-                  aria-label={dict.multicity.legNights}
-                />
-                <button
-                  type="button"
-                  onClick={() => removeLeg(i)}
-                  disabled={legs.length <= 2}
-                  className={`shrink-0 rounded-lg px-2 py-2 text-xs font-semibold transition disabled:cursor-not-allowed disabled:opacity-30 ${
-                    dark ? "text-rose-300 hover:bg-white/10" : "text-red-500 hover:bg-red-50"
-                  }`}
-                >
-                  {dict.multicity.removeLeg}
-                </button>
-              </div>
-            ))}
+              );
+            })}
           </div>
+
+          {legs.length < MAX_LEGS && (
+            <button type="button" onClick={addLeg} className={`mt-3 ${st.ghostButton}`}>
+              + {dict.multicity.addFlight}
+            </button>
+          )}
           {errors.legs && (
             <p role="alert" className={errorClass}>
               {errors.legs}
