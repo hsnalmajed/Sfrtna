@@ -301,3 +301,81 @@ export const travelpayouts: PriceProvider = {
     return searchHotellook(params, nights);
   },
 };
+
+/** One cheapest one-way fare seen from a city, per seat. */
+export interface OneWayFare {
+  destination: string;
+  price: number;
+  airline: string;
+  airlineCode: string;
+  departureAt: string;
+  /** Stops, as the source states them. */
+  transfers: number | null;
+}
+
+interface TpV3Row {
+  origin?: string;
+  destination?: string;
+  destination_airport?: string;
+  price?: number;
+  airline?: string;
+  departure_at?: string;
+  transfers?: number;
+}
+
+/**
+ * The cheapest one-way fare seen from `origin` to *every* destination, in
+ * one request — Aviasales' prices_for_dates with only an origin and
+ * `unique=true` answers one row per destination.
+ *
+ * This is what makes "take my budget to two or three countries" affordable
+ * to price: one call per city on the route instead of one per pair of
+ * cities, which on a Cloudflare Worker's 50-subrequest budget is the
+ * difference between possible and not.
+ *
+ * `when` is a day (YYYY-MM-DD) or a month (YYYY-MM). Prices are observed
+ * fares, the same as the rest of this source, and are labelled so.
+ */
+export async function oneWayFaresFrom(origin: string, when: string, currency: string): Promise<Map<string, OneWayFare>> {
+  const out = new Map<string, OneWayFare>();
+  if (!token() || !origin || !when) return out;
+  const url = new URL(`${BASE}/aviasales/v3/prices_for_dates`);
+  url.searchParams.set("origin", origin);
+  url.searchParams.set("departure_at", when);
+  url.searchParams.set("one_way", "true");
+  url.searchParams.set("unique", "true");
+  url.searchParams.set("sorting", "price");
+  url.searchParams.set("limit", "1000");
+  url.searchParams.set("currency", currency.toLowerCase());
+  try {
+    const res = await fetch(url.toString(), {
+      headers: { "X-Access-Token": token(), Accept: "application/json" },
+    });
+    if (!res.ok) return out;
+    const body = (await res.json()) as { success?: boolean; data?: TpV3Row[] };
+    for (const row of body.data ?? []) {
+      const dest = (row.destination || "").toUpperCase();
+      const price = Number(row.price);
+      if (!dest || !Number.isFinite(price) || price <= 0) continue;
+      const code = (row.airline || "").toUpperCase();
+      const fare: OneWayFare = {
+        destination: dest,
+        price: Math.round(price),
+        airline: AIRLINE_NAMES[code] || code || "—",
+        airlineCode: code,
+        departureAt: row.departure_at || "",
+        transfers: typeof row.transfers === "number" ? row.transfers : null,
+      };
+      // Indexed by the city code and the airport code both: our lists use
+      // either (Baku is BAK the city, GYD the airport).
+      for (const key of [dest, (row.destination_airport || "").toUpperCase()]) {
+        if (!key) continue;
+        const prev = out.get(key);
+        if (!prev || price < prev.price) out.set(key, fare);
+      }
+    }
+  } catch {
+    // An empty map: the caller reports "no fare seen", it does not guess.
+  }
+  return out;
+}

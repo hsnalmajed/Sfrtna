@@ -4,10 +4,10 @@ import { Suspense, useEffect, useMemo, useState } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { getDictionary } from "@/lib/dictionaries";
-import type { RoomType, DestinationCategory, DestinationPairSuggestion, DestinationSuggestion, Locale, TripType } from "@/lib/types";
+import type { RoomType, DestinationCategory, DestinationSuggestion, Locale, RouteSuggestion, TripType } from "@/lib/types";
 import DestinationCard from "@/components/DestinationCard";
 import PricesUnavailable from "@/components/PricesUnavailable";
-import DestinationPairCard from "@/components/DestinationPairCard";
+import RouteCard from "@/components/RouteCard";
 import { parseChildrenAges } from "@/lib/searchParamsUtil";
 
 export default function DiscoverResultsPage() {
@@ -44,9 +44,10 @@ function DiscoverResultsContent() {
   const preferenceCategory = (sp.get("preferenceCategory") || undefined) as DestinationCategory | undefined;
   const editSearchParams = sp.toString();
 
-  const [mode, setMode] = useState<"single" | "multi">(multiDestination ? "multi" : "single");
+  const stops = sp.get("stops") === "3" ? 3 : 2;
+  const [mode, setMode] = useState<"single" | "routes">(multiDestination ? "routes" : "single");
   const [singleSuggestions, setSingleSuggestions] = useState<DestinationSuggestion[]>([]);
-  const [pairSuggestions, setPairSuggestions] = useState<DestinationPairSuggestion[]>([]);
+  const [routes, setRoutes] = useState<RouteSuggestion[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   // City photographs, fetched on their own so the fares never wait for them.
@@ -82,6 +83,7 @@ function DiscoverResultsContent() {
         minHotelStars: Number(minStars),
         roomType,
         multiDestination,
+        stops,
         oneWayOnly,
         baggageIncluded,
         breakfastIncluded,
@@ -91,8 +93,8 @@ function DiscoverResultsContent() {
       .then((r) => r.json())
       .then((data) => {
         setMode(data.mode);
-        if (data.mode === "multi") {
-          setPairSuggestions(data.suggestions || []);
+        if (data.mode === "routes") {
+          setRoutes(data.routes || []);
         } else {
           setSingleSuggestions(data.suggestions || []);
         }
@@ -113,6 +115,7 @@ function DiscoverResultsContent() {
     minStars,
     roomType,
     multiDestination,
+    stops,
     oneWayOnly,
     baggageIncluded,
     breakfastIncluded,
@@ -123,14 +126,17 @@ function DiscoverResultsContent() {
   // Suggestions are *made of* prices here, so when they are generated there is
   // nothing honest left to show and the whole list is replaced.
   const isGeneratedData = useMemo(() => {
-    if (mode === "multi")
-      return pairSuggestions.some((p) => p.legs.some((l) => l.flight?.isMock || l.hotel?.isMock));
+    if (mode === "routes") return false;
     return singleSuggestions.some((s) => s.flight?.isMock || s.hotel?.isMock);
-  }, [mode, singleSuggestions, pairSuggestions]);
+  }, [mode, singleSuggestions]);
   const showGenerated = process.env.NODE_ENV === "development";
   const pricesUnavailable = isGeneratedData && !showGenerated;
 
-  const hasResults = mode === "multi" ? pairSuggestions.length > 0 : singleSuggestions.length > 0;
+  const hasResults = mode === "routes" ? routes.length > 0 : singleSuggestions.length > 0;
+  // "RUH مطار الملك خالد الدولي - الرياض" → "الرياض": the city, as the
+  // route line names it.
+  const originLabel = origin.includes(" - ") ? origin.split(" - ").pop()!.trim() : origin.slice(0, 3).toUpperCase();
+  const withinCount = routes.filter((r) => r.withinBudget).length;
 
   return (
     <div className="mx-auto max-w-6xl px-4 pb-10 pt-28 sm:px-6 sm:pt-32">
@@ -139,7 +145,7 @@ function DiscoverResultsContent() {
           <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">{dict.discoverResults.title}</h1>
           <p className="text-gray-500 mt-1.5">
             {dict.discoverResults.searchLine
-              .replace("{origin}", origin)
+              .replace("{origin}", originLabel)
               .replace(
                 "{date}",
                 departDate
@@ -179,9 +185,12 @@ function DiscoverResultsContent() {
         />
       )}
 
-      {mode === "multi" && !loading && !pricesUnavailable && hasResults && (
-        <div className="mb-6 rounded-xl bg-amber-50 border border-amber-200 px-4 py-3 text-sm text-amber-800">
-          {dict.discoverResults.multiNotice}
+      {mode === "routes" && !loading && hasResults && (
+        <div className="mb-6 rounded-xl bg-sea-50 px-4 py-3 text-sm leading-relaxed text-navy-800 ring-1 ring-sea-100">
+          ℹ️{" "}
+          {withinCount > 0
+            ? dict.discoverResults.routesNotice.replace("{budget}", `${Number(budget).toLocaleString("en-US")} ${currency}`)
+            : dict.discoverResults.routesNoneWithin}
         </div>
       )}
 
@@ -223,10 +232,20 @@ function DiscoverResultsContent() {
         </div>
       )}
 
-      {!loading && !pricesUnavailable && mode === "multi" && pairSuggestions.length > 0 && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {pairSuggestions.map((p, i) => (
-            <DestinationPairCard key={i} pair={p} locale={locale} />
+      {!loading && mode === "routes" && routes.length > 0 && (
+        <div className="space-y-5">
+          {routes.map((r) => (
+            <RouteCard
+              key={r.stops.map((x) => x.code).join("-")}
+              route={r}
+              locale={locale}
+              originLabel={originLabel}
+              travelers={{ adults: Number(adults), childrenAges, infants: Number(infants) }}
+              currency={currency}
+              directOnly={directOnly}
+              baggageIncluded={baggageIncluded}
+              photos={photos}
+            />
           ))}
         </div>
       )}

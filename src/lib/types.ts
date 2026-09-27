@@ -271,3 +271,39 @@ export interface MultiCityTripResult {
   remainingBudget: number;
   isMock: boolean;
 }
+
+/** One flight of a suggested multi-country route. */
+export interface RouteLeg {
+  from: string; // IATA
+  to: string; // IATA
+  date: string; // YYYY-MM-DD, the day the traveller flies
+  /** Whole party, in the search currency. */
+  price: number;
+  pricePerSeat: number;
+  airline: string;
+  /** Stops as the source stated them; null when it didn't. */
+  transfers: number | null;
+  /** The fare was seen for another day that month. */
+  approximate: boolean;
+}
+
+/** One country on a suggested route, and how long the traveller stays. */
+export interface RouteStop {
+  code: string; // IATA
+  nameAr: string;
+  nameEn: string;
+  emoji: string;
+  nights: number;
+  arrive: string; // YYYY-MM-DD
+  place?: DestinationPlace;
+}
+
+/** Home → A → B (→ C) → home, every flight priced. */
+export interface RouteSuggestion {
+  stops: RouteStop[];
+  legs: RouteLeg[];
+  totalPrice: number;
+  currency: string;
+  withinBudget: boolean;
+  remainingBudget: number;
+}

@@ -102,6 +102,8 @@ export default function TripPlanner({
   );
   const [origin, setOrigin] = useState(sp.get("origin") || "");
   const [destination, setDestination] = useState(sp.get("destination") || "");
+  // Suggest + several countries: how many countries the route visits.
+  const [stopCount, setStopCount] = useState<2 | 3>(sp.get("stops") === "3" ? 3 : 2);
   const [preferenceCategory, setPreferenceCategory] = useState<DestinationCategory | "">(
     (sp.get("preferenceCategory") as DestinationCategory) || ""
   );
@@ -279,6 +281,7 @@ export default function TripPlanner({
         mode: "discover",
         returnDate: showReturnDate ? returnDate : "",
         multiDestination: String(tripRoute === "multicity"),
+        stops: String(stopCount),
         oneWayOnly: String(isOneWay),
         preferenceCategory,
       });
@@ -487,6 +490,33 @@ export default function TripPlanner({
           error={errors.budget}
         />
       </div>
+
+      {/* ── Suggest + several countries: how many ──────────────────── */}
+      {mode === "discover" && tripRoute === "multicity" && (
+        <div className="mt-4 flex flex-wrap items-center gap-2">
+          <p className={`${labelRow} !mb-0`}>
+            <Icon name="globe" className={labelIcon} />
+            {dict.discoverForm.stopsLabel}
+          </p>
+          {([2, 3] as const).map((n) => (
+            <button
+              key={n}
+              type="button"
+              aria-pressed={stopCount === n}
+              onClick={() => setStopCount(n)}
+              className={`rounded-full px-4 py-1.5 text-sm font-bold ring-1 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400 ${
+                stopCount === n
+                  ? "bg-sun-400 text-navy-950 ring-sun-400"
+                  : dark
+                    ? "bg-white/[0.05] text-white/80 ring-white/15 hover:bg-white/10"
+                    : "bg-white text-navy-700 ring-mist-200 hover:ring-navy-200"
+              }`}
+            >
+              {n === 2 ? dict.discoverForm.stopsTwo : dict.discoverForm.stopsThree}
+            </button>
+          ))}
+        </div>
+      )}
 
       {/* ── The flights, when the traveller is listing them ───────────
           The way every multi-city search asks it (Google Flights, Skyscanner,

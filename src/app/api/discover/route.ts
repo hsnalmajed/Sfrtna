@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { searchFlights, searchHotels } from "@/lib/flights";
+import { resolveIata, searchFlights, searchHotels } from "@/lib/flights";
+import { suggestRoutes } from "@/lib/routeSuggest";
 import { DESTINATIONS } from "@/lib/destinations";
 import { placeForDestination } from "@/lib/destinationPlace";
 import type {
-  DestinationPairSuggestion,
   DestinationSuggestion,
   DiscoverParams,
   SearchParams,
@@ -126,34 +126,22 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ mode: "single", suggestions });
   }
 
-  // Multi-destination: split the trip length across two cities and pair up
-  // candidates whose combined estimated cost fits the budget. This is an
-  // approximation (real multi-city fares differ from two separate round-trip
-  // estimates) — flagged clearly to the user in the UI.
-  const halfNights = Math.max(1, Math.ceil(params.nights / 2));
-  const legResults = (
-    await Promise.all(candidates.map((d) => suggestForDestination(params, d, halfNights)))
-  ).filter((r): r is DestinationSuggestion => r !== null);
-
-  const pairs: DestinationPairSuggestion[] = [];
-  for (let i = 0; i < legResults.length; i++) {
-    for (let j = i + 1; j < legResults.length; j++) {
-      const a = legResults[i];
-      const b = legResults[j];
-      const totalPrice = a.totalPrice + b.totalPrice;
-      pairs.push({
-        legs: [a, b],
-        totalPrice,
-        currency: params.currency,
-        withinBudget: totalPrice <= params.budgetTotal,
-        remainingBudget: params.budgetTotal - totalPrice,
-      });
-    }
-  }
-
-  const within = pairs.filter((p) => p.withinBudget).sort((a, b) => a.remainingBudget - b.remainingBudget);
-  const over = pairs.filter((p) => !p.withinBudget).sort((a, b) => a.totalPrice - b.totalPrice);
-  const suggestions = [...within, ...over].slice(0, 6);
-
-  return NextResponse.json({ mode: "multi", suggestions });
+  // Several countries on one budget: whole routes from home and back, every
+  // flight priced — see routeSuggest.ts.
+  const endDate =
+    typeof body.returnDate === "string" && /^\d{4}-\d{2}-\d{2}$/.test(body.returnDate)
+      ? body.returnDate
+      : addDays(params.departDate, params.nights);
+  const routes = await suggestRoutes({
+    origin: resolveIata(params.origin),
+    startDate: params.departDate,
+    endDate,
+    stops: Number(body.stops) === 3 ? 3 : 2,
+    budgetTotal: params.budgetTotal,
+    currency: params.currency,
+    paying: params.adults + (params.childrenAges?.length ?? 0),
+    directOnly: params.directFlightsOnly,
+    category: params.preferenceCategory,
+  });
+  return NextResponse.json({ mode: "routes", routes });
 }
