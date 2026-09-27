@@ -1,0 +1,389 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import type { Locale } from "@/lib/types";
+import { getDictionary } from "@/lib/dictionaries";
+import { findAirport } from "@/lib/airports";
+import Icon from "@/components/ui/Icon";
+
+/**
+ * The flight results, held to the traveller's budget.
+ *
+ * The widget draws every fare it finds, over budget or not, and leaves the
+ * choosing to the reader. This turns that list into an answer:
+ *
+ *   - one flight, picked for them: the widget's own "best" if it fits the
+ *     budget, otherwise the cheapest that does;
+ *   - the other flights that fit, one tap away, each saying how much more or
+ *     less it costs than the pick;
+ *   - the flights over budget, behind their own button, each saying by how
+ *     much — so the choice to spend more stays theirs, and is never made for
+ *     them by the order of a list;
+ *   - and when nothing fits, a plain sentence: what flights to this place on
+ *     these dates actually start at, and by how much that is over.
+ *
+ * It works on the widget's cards in place (they live in its shadow root), by
+ * marking each card and letting a stylesheet we add there show or hide it —
+ * the widget keeps drawing, sorting and filtering as it likes. Each card also
+ * gets a row that says in words what the widget buries: direct or where it
+ * stops and for how long, baggage in or not, and the fare against the budget.
+ *
+ * Markers read (checked on sfrtna.com, 27 Sep 2026):
+ *
+ *   card          [class*="FlightCard-module__card___"]
+ *   one leg       [class*="Flight-module__cardFlight___"]
+ *   airport code  [class*="airportCode"]
+ *   a stop        [class*="cardFlightTravelLineTransfer"]  → "CAI 15س 15م transfer"
+ *   price         [data-testid^="flight-card-price-"]
+ *   baggage       [class*="cardLeftBaggageLeftPc"]          → "+481" when extra
+ *   tags          [class*="cardBadges"]                     → "الاختيار الأمثل", "الأرخص"
+ *   searching     [class*="SearchProgressbar"]
+ *   direct box    [class*="DirectFlights-module__root"]     → hidden: it repeats the list
+ *   more button   [class*="TicketsWidget-module__moreTickets"]
+ */
+
+const STYLE_ID = "sfr-guide-style";
+const ROW = "sfr-notes";
+
+const CSS = `
+.${ROW}{grid-column:1 / -1;display:flex;flex-wrap:wrap;gap:6px;padding:12px 16px 2px;font-family:inherit}
+.${ROW} span{display:inline-flex;align-items:center;gap:4px;border-radius:999px;padding:4px 10px;font-size:12.5px;font-weight:700;line-height:1.3}
+.${ROW} .pick{background:#ffa630;color:#062653;font-weight:900}
+.${ROW} .direct{background:#e6f6fc;color:#0b2d5b;box-shadow:inset 0 0 0 1px #84d2f3}
+.${ROW} .stop{background:#fff4e5;color:#7a3d00;box-shadow:inset 0 0 0 1px #ffc978}
+.${ROW} .bag-in{background:#e6f6fc;color:#0b2d5b}
+.${ROW} .bag-out{background:#f1f4f8;color:#3b4a60}
+.${ROW} .fits{background:#0b2d5b;color:#fff}
+.${ROW} .diff{background:#f1f4f8;color:#0b2d5b;box-shadow:inset 0 0 0 1px #cfd8e3}
+.${ROW} .over{background:#fff1f2;color:#9f1239;box-shadow:inset 0 0 0 1px #fecdd3}
+[data-sfr-tag]{font-weight:800 !important;font-size:13px !important;padding:3px 12px !important;border-radius:999px !important}
+[data-sfr-tag="best"]{background:#ffa630 !important;color:#062653 !important}
+[data-sfr-tag="cheapest"]{background:#3bb6e4 !important;color:#062653 !important}
+[data-sfr-state="featured"]{box-shadow:0 0 0 2px #ffa630,0 12px 30px -12px rgba(6,38,83,.35) !important}
+[class*="DirectFlights-module__root"]{display:none !important}
+:host([data-sfr-filter]:not([data-show-within])) [data-sfr-state="within"]{display:none !important}
+:host([data-sfr-filter]:not([data-show-over])) [data-sfr-state="over"]{display:none !important}
+:host([data-sfr-filter]:not([data-show-within]):not([data-show-over])) [class*="TicketsWidget-module__moreTickets"]{display:none !important}
+`;
+
+/** "1,250 SAR" — Western digits, like the rest of the site's prices. */
+function moneyIn(currency: string, n: number): string {
+  return `${Math.round(Math.abs(n)).toLocaleString("en-US")} ${currency}`;
+}
+
+const TAG_BEST = /الأمثل|best/i;
+const TAG_CHEAPEST = /الأرخص|cheapest/i;
+
+const CURRENCY_MARKS: [RegExp, string][] = [
+  [/ر\.س|SAR/, "SAR"],
+  [/د\.إ|AED/, "AED"],
+  [/د\.ك|KWD/, "KWD"],
+  [/ر\.ق|QAR/, "QAR"],
+  [/د\.ب|BHD/, "BHD"],
+  [/ر\.ع|OMR/, "OMR"],
+  [/US\$|\$|USD/, "USD"],
+  [/€|EUR/, "EUR"],
+  [/£|GBP/, "GBP"],
+];
+function currencyOf(text: string): string | null {
+  for (const [re, code] of CURRENCY_MARKS) if (re.test(text)) return code;
+  return null;
+}
+function amountOf(text: string): number | null {
+  const digits = text
+    .replace(/[٠-٩]/g, (d) => String(d.charCodeAt(0) - 0x0660))
+    .replace(/[^\d.,]/g, "")
+    .replace(/,/g, "");
+  const n = Number(digits);
+  return Number.isFinite(n) && n > 0 ? n : null;
+}
+
+interface Stats {
+  searching: boolean;
+  settled: boolean;
+  total: number;
+  within: number;
+  over: number;
+  pickPrice: number | null;
+  cheapest: number | null;
+  /** The widget's prices are in the budget's currency. */
+  comparable: boolean;
+}
+
+const EMPTY: Stats = {
+  searching: true,
+  settled: false,
+  total: 0,
+  within: 0,
+  over: 0,
+  pickPrice: null,
+  cheapest: null,
+  comparable: true,
+};
+
+export default function FlightResultsGuide({
+  locale,
+  budget,
+  currency,
+  travelers,
+  cityName,
+}: {
+  locale: Locale;
+  /** The flight budget for the whole party; 0 when none was given. */
+  budget: number;
+  currency: string;
+  travelers: number;
+  cityName: string;
+}) {
+  const t = getDictionary(locale).results;
+  const [stats, setStats] = useState<Stats>(EMPTY);
+  const [showWithin, setShowWithin] = useState(false);
+  const [showOver, setShowOver] = useState(false);
+  const money = (n: number) => moneyIn(currency, n);
+
+
+  // Read the cards, mark them, write their notes — every second, since the
+  // widget re-draws them whenever it sorts, filters or loads more.
+  useEffect(() => {
+    const city = (code: string) => {
+      const a = findAirport(code);
+      return a ? (locale === "ar" ? a.cityAr : a.cityEn) : code;
+    };
+    const money = (n: number) => moneyIn(currency, n);
+    const chip = (cls: string, text: string) => {
+      const s = document.createElement("span");
+      s.className = cls;
+      s.textContent = text;
+      return s;
+    };
+
+    let lastKey = "";
+    let lastChange = Date.now();
+    let sawProgress = false;
+
+    function pass() {
+      const host = document.getElementById("tpwl-tickets");
+      const root = host?.shadowRoot;
+      if (!host || !root) return;
+      if (!root.getElementById(STYLE_ID)) {
+        const style = document.createElement("style");
+        style.id = STYLE_ID;
+        style.textContent = CSS;
+        root.appendChild(style);
+      }
+
+      const cards = [...root.querySelectorAll('[class*="FlightCard-module__card___"]')];
+      const priced = cards.map((card) => {
+        const text = card.querySelector('[data-testid^="flight-card-price-"]')?.textContent || "";
+        const tags = [...card.querySelectorAll('[class*="cardBadges"]')];
+        let best = false;
+        let cheapest = false;
+        for (const tag of tags) {
+          const tx = tag.textContent || "";
+          if (TAG_BEST.test(tx)) {
+            best = true;
+            tag.setAttribute("data-sfr-tag", "best");
+          } else if (TAG_CHEAPEST.test(tx)) {
+            cheapest = true;
+            tag.setAttribute("data-sfr-tag", "cheapest");
+          }
+        }
+        return { card, price: amountOf(text), cur: currencyOf(text), best, cheapest };
+      });
+
+      const widgetCurrency = priced.find((p) => p.cur)?.cur ?? null;
+      const comparable = budget > 0 && (widgetCurrency === null || widgetCurrency === currency);
+      const filtering = comparable && priced.length > 0;
+
+      const within = filtering ? priced.filter((p) => p.price !== null && p.price <= budget) : [];
+      const pick =
+        within.find((p) => p.best) ??
+        (within.length ? within.reduce((a, b) => ((a.price ?? 0) <= (b.price ?? 0) ? a : b)) : null);
+
+      if (filtering) host.setAttribute("data-sfr-filter", "");
+      else host.removeAttribute("data-sfr-filter");
+
+      for (const p of priced) {
+        const state = !filtering
+          ? null
+          : p === pick
+            ? "featured"
+            : p.price !== null && p.price <= budget
+              ? "within"
+              : "over";
+        if (state) p.card.setAttribute("data-sfr-state", state);
+        else p.card.removeAttribute("data-sfr-state");
+
+        // The notes row.
+        const notes: HTMLElement[] = [];
+        if (state === "featured") notes.push(chip("pick", t.cardPicked));
+        const legs = [...p.card.querySelectorAll('[class*="Flight-module__cardFlight___"]')];
+        legs.forEach((leg, i) => {
+          const label = legs.length === 2 ? (i === 0 ? t.cardOutbound : t.cardReturn) : t.cardLeg;
+          const stops = [...leg.querySelectorAll('[class*="cardFlightTravelLineTransfer"]')];
+          if (stops.length === 0) {
+            notes.push(chip("direct", `✈ ${label}: ${t.cardDirect}`));
+            return;
+          }
+          const where = stops
+            .map((s) => {
+              const code = s.querySelector('[class*="airportCode"]')?.textContent?.trim() || "";
+              const wait = (s.textContent || "").replace(code, "").replace(/transfer/i, "").replace(/\s+/g, " ").trim();
+              return wait ? `${city(code)} (${wait})` : city(code);
+            })
+            .join("، ");
+          const count = stops.length === 1 ? t.cardOneStop : t.cardStops.replace("{count}", String(stops.length));
+          notes.push(chip("stop", `↺ ${label}: ${count} — ${where}`));
+        });
+        const bag = p.card.querySelector('[class*="cardLeftBaggageLeftPc"]')?.textContent || "";
+        if (bag.includes("+")) notes.push(chip("bag-out", `🧳 ${t.cardBagExtra}`));
+        else if (/تشمل الأمتعة|baggage included/i.test(p.card.textContent || "")) notes.push(chip("bag-in", `🧳 ${t.cardBagIn}`));
+
+        if (filtering && p.price !== null) {
+          if (state === "over") notes.push(chip("over", t.cardOver.replace("{amount}", money(p.price - budget))));
+          else notes.push(chip("fits", t.cardFits.replace("{amount}", money(budget - p.price))));
+          if (state === "within" && pick?.price != null) {
+            const d = p.price - pick.price;
+            notes.push(
+              chip(
+                "diff",
+                d > 0
+                  ? t.cardMore.replace("{amount}", money(d))
+                  : d < 0
+                    ? t.cardLess.replace("{amount}", money(d))
+                    : t.cardSame
+              )
+            );
+          }
+        }
+
+        const key = notes.map((n) => n.textContent).join("|");
+        const existing = p.card.querySelector(`:scope > .${ROW}`);
+        if (existing?.getAttribute("data-key") === key) continue;
+        const row = document.createElement("div");
+        row.className = ROW;
+        row.setAttribute("data-key", key);
+        notes.forEach((n) => row.appendChild(n));
+        if (existing) existing.replaceWith(row);
+        else p.card.prepend(row);
+      }
+
+      const searching = Boolean(root.querySelector('[class*="SearchProgressbar"]'));
+      if (searching) sawProgress = true;
+      const prices = priced.map((p) => p.price).filter((n): n is number => n !== null);
+      const next: Omit<Stats, "settled"> = {
+        searching,
+        total: priced.length,
+        within: within.length ? within.length - 1 : 0,
+        over: filtering ? priced.length - within.length : 0,
+        pickPrice: pick?.price ?? null,
+        cheapest: prices.length ? Math.min(...prices) : null,
+        comparable: budget <= 0 || comparable,
+      };
+      const key = JSON.stringify(next);
+      if (key !== lastKey) {
+        lastKey = key;
+        lastChange = Date.now();
+      }
+      const calm = Date.now() - lastChange;
+      const settled = !searching && (priced.length > 0 || sawProgress) && calm >= (sawProgress ? 1000 : 4000);
+      setStats((prev) => {
+        const merged = { ...next, settled };
+        return JSON.stringify(prev) === JSON.stringify(merged) ? prev : merged;
+      });
+    }
+
+    pass();
+    const id = window.setInterval(pass, 800);
+    return () => window.clearInterval(id);
+  }, [locale, budget, currency, t]);
+
+  // The two buttons open the hidden groups through attributes on the host.
+  useEffect(() => {
+    const host = document.getElementById("tpwl-tickets");
+    if (!host) return;
+    if (showWithin) host.setAttribute("data-show-within", "");
+    else host.removeAttribute("data-show-within");
+    if (showOver) host.setAttribute("data-show-over", "");
+    else host.removeAttribute("data-show-over");
+  }, [showWithin, showOver]);
+
+  const hasBudget = budget > 0;
+  const noneWithin = hasBudget && stats.settled && stats.comparable && stats.total > 0 && stats.pickPrice === null;
+  const picked = hasBudget && stats.comparable && stats.pickPrice !== null;
+
+  const toggle = (on: boolean) =>
+    `inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-bold ring-1 transition ${
+      on ? "bg-navy-900 text-white ring-navy-900" : "bg-white text-navy-800 ring-mist-300 hover:ring-navy-300"
+    }`;
+
+  return (
+    <div
+      className={`rounded-2xl p-4 ring-1 sm:p-5 ${noneWithin ? "bg-rose-50 ring-rose-200" : "bg-white shadow-sm ring-black/5"}`}
+      aria-live="polite"
+    >
+      {/* The answer, first. */}
+      {!stats.settled && !picked && (
+        <p className="flex items-center gap-2 text-sm font-semibold text-navy-600">
+          <span className="h-2.5 w-2.5 animate-pulse rounded-full bg-sun-400" aria-hidden="true" />
+          {t.guideSearching}
+        </p>
+      )}
+
+      {picked && (
+        <div className="flex items-start gap-3">
+          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-sun-400 text-navy-950">
+            <Icon name="plane" className="h-5 w-5" />
+          </span>
+          <div>
+            <p className="font-display text-lg font-extrabold text-navy-950">{t.guidePickedTitle}</p>
+            <p className="mt-0.5 text-sm text-navy-600">
+              {t.guidePickedBody
+                .replace("{price}", money(stats.pickPrice!))
+                .replace("{count}", String(travelers))
+                .replace("{left}", money(budget - stats.pickPrice!))}
+            </p>
+          </div>
+        </div>
+      )}
+
+      {noneWithin && stats.cheapest !== null && (
+        <div>
+          <p className="font-display text-lg font-extrabold text-rose-900">{t.guideNoneTitle}</p>
+          <p className="mt-1 text-sm leading-relaxed text-rose-900/90">
+            {t.guideNoneBody
+              .replace("{city}", cityName)
+              .replace("{amount}", money(stats.cheapest))
+              .replace("{count}", String(travelers))
+              .replace("{budget}", money(budget))
+              .replace("{over}", money(stats.cheapest - budget))}
+          </p>
+        </div>
+      )}
+
+      {!hasBudget && stats.settled && (
+        <p className="text-sm text-navy-600">{t.guideNoBudget.replace("{count}", String(travelers))}</p>
+      )}
+      {hasBudget && stats.settled && !stats.comparable && (
+        <p className="text-sm text-navy-600">{t.guideOtherCurrency}</p>
+      )}
+      {stats.settled && stats.total === 0 && <p className="text-sm text-navy-600">{t.guideNoResults}</p>}
+
+      {/* The choice to see more stays with the traveller. */}
+      {hasBudget && stats.comparable && (stats.within > 0 || stats.over > 0) && (
+        <div className="mt-4 flex flex-wrap gap-2">
+          {stats.within > 0 && (
+            <button type="button" aria-pressed={showWithin} onClick={() => setShowWithin((v) => !v)} className={toggle(showWithin)}>
+              {showWithin ? t.guideHideWithin : t.guideShowWithin.replace("{count}", String(stats.within))}
+            </button>
+          )}
+          {stats.over > 0 && (
+            <button type="button" aria-pressed={showOver} onClick={() => setShowOver((v) => !v)} className={toggle(showOver)}>
+              {showOver ? t.guideHideOver : t.guideShowOver.replace("{count}", String(stats.over))}
+            </button>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}

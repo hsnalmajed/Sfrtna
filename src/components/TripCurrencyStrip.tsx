@@ -92,7 +92,7 @@ export default function TripCurrencyStrip({
   const name = (c: Currency) => (locale === "ar" ? c.nameAr : c.nameEn);
 
   const fmt = (value: number, decimals: number) =>
-    value.toLocaleString(locale === "ar" ? "ar-SA" : "en-US", {
+    value.toLocaleString("en-US", {
       minimumFractionDigits: decimals,
       maximumFractionDigits: decimals,
     });
@@ -110,12 +110,10 @@ export default function TripCurrencyStrip({
   const converted = hasAmount ? (reversed ? typed / rate : typed * rate) : null;
 
   return (
-    <section className="mb-5 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-black/5 sm:px-6">
+    <section className="h-full rounded-2xl bg-white p-5 shadow-sm ring-1 ring-black/5">
       <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-4">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">
-            {dict.results.currencyHeading}
-          </p>
+          <p className="text-xs font-bold text-navy-500">{dict.results.currencyHeading}</p>
 
           <p className="mt-2 flex flex-wrap items-baseline gap-x-2 text-lg font-extrabold text-gray-900">
             <Flag currency={from} />

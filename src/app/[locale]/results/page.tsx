@@ -5,11 +5,11 @@ import { useParams, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { getDictionary } from "@/lib/dictionaries";
 import type { RoomType, Locale, SearchParams, TripType } from "@/lib/types";
-import EntryRequirementsPanel from "@/components/EntryRequirementsPanel";
 import TripCurrencyStrip from "@/components/TripCurrencyStrip";
 import FlightMetasearch from "@/components/FlightMetasearch";
-import FlightBudgetBar from "@/components/FlightBudgetBar";
-import FlightCardNotes from "@/components/FlightCardNotes";
+import FlightResultsGuide from "@/components/FlightResultsGuide";
+import VisaBadge from "@/components/VisaBadge";
+import { visaStatusFor } from "@/data/visaStatus";
 import Icon from "@/components/ui/Icon";
 import { currencyForCountry } from "@/lib/currencies";
 import { parseChildrenAges, serializeChildrenAges } from "@/lib/searchParamsUtil";
@@ -110,6 +110,15 @@ function ResultsContent() {
   // weights), so this is only used to *say so* — a total with no headcount
   // beside it reads as a per-person price and gets doubled in someone's head.
   const travelers = search.adults + (search.childrenAges?.length ?? 0) + (search.infants ?? 0);
+  const prettyDate = (iso: string) =>
+    iso
+      ? new Date(`${iso}T00:00:00Z`).toLocaleDateString(locale === "ar" ? "ar-u-ca-gregory-nu-latn" : "en-GB", {
+          weekday: "short",
+          day: "numeric",
+          month: "long",
+          timeZone: "UTC",
+        })
+      : "";
 
   const nights = search.returnDate ? nightsBetween(search.departDate, search.returnDate) : 0;
 
@@ -151,7 +160,16 @@ function ResultsContent() {
   // The money they leave with and the money they'll spend. Both have to
   // resolve, and to different currencies, for the strip to have anything to
   // say — a Riyadh-to-Dammam trip doesn't need an exchange rate.
+  const originAirport = findAirport(search.origin);
+  const originCityName = originAirport ? (locale === "ar" ? originAirport.cityAr : originAirport.cityEn) : search.origin;
   const homeCurrency = currencyForCountry(originCountry?.code);
+  const visa = destinationCountry ? visaStatusFor(destinationCountry.code) : undefined;
+  const visaLabels = {
+    free: dict.visa.statusFree,
+    arrival: dict.visa.statusArrival,
+    eta: dict.visa.statusEta,
+    required: dict.visa.statusRequired,
+  };
   const tripCurrency = currencyForCountry(destinationCountry?.code);
   const showCurrencyStrip =
     Boolean(homeCurrency && tripCurrency) && homeCurrency!.code !== tripCurrency!.code;
@@ -273,7 +291,7 @@ function ResultsContent() {
             <h1 className="flex flex-wrap items-center gap-x-3.5 gap-y-1 font-display text-h1 font-extrabold text-white">
               {search.origin && (
                 <>
-                  <span>{search.origin}</span>
+                  <span>{originCityName}</span>
                   <span
                     className="inline-flex items-center gap-1.5 text-sun-400"
                     aria-hidden="true"
@@ -287,20 +305,26 @@ function ResultsContent() {
               <span>{destinationCityName ?? search.destination}</span>
             </h1>
 
-            <p className="mt-3.5 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-sm font-semibold text-white/70">
-              <span>{search.departDate}</span>
+            {/* The trip in words a traveller checks at a glance: the days,
+                how many are flying, and — because it decides whether this
+                trip can happen at all — the visa, when we have confirmed it. */}
+            <p className="mt-3.5 flex flex-wrap items-center gap-x-2.5 gap-y-2 text-sm font-semibold text-white/80">
+              <span>{prettyDate(search.departDate)}</span>
               {search.returnDate && (
                 <>
-                  <span className="text-white/30" aria-hidden="true">
-                    ·
+                  <span className="text-sun-400" aria-hidden="true">
+                    {locale === "ar" ? "←" : "→"}
                   </span>
-                  <span>{search.returnDate}</span>
+                  <span>{prettyDate(search.returnDate)}</span>
                 </>
               )}
               <span className="text-white/30" aria-hidden="true">
                 ·
               </span>
-              <span>{dict.results.title}</span>
+              <span>{dict.results.travellersCount.replace("{count}", String(travelers))}</span>
+              {visa && destinationCountry && (
+                <VisaBadge category={visa.category} label={visaLabels[visa.category]} className="ms-1" />
+              )}
             </p>
           </div>
 
@@ -315,43 +339,54 @@ function ResultsContent() {
       </section>
 
       <div className="mx-auto max-w-6xl px-4 pb-10 pt-8 sm:px-6">
-      {/* Whether they can actually enter the country comes before what it
-          costs — a fare is no use to someone who needs a visa they don't
-          have, and finding that out after choosing a trip is too late. */}
-      {destinationCountry && <EntryRequirementsPanel countryCode={destinationCountry.code} locale={locale} />}
-
-      {/* What a riyal is worth where they're going — asked on this page
-          anyway, and better answered before they price anything. */}
-      {showCurrencyStrip && homeCurrency && tripCurrency && (
-        <TripCurrencyStrip from={homeCurrency} to={tripCurrency} locale={locale} />
-      )}
-
-      {/* The flights, live.
-
-          This page used to lead with fares from Travelpayouts' price cache —
-          a price somebody was once quoted, for one seat, with no duration, no
-          stops and no baggage. It read like an offer and behaved like a
-          rumour: a trip priced at 1,500 riyals here opened at the agency for
-          three times that. The widget below is the actual search, for these
-          exact dates and this exact party, and the fare on the card is the
-          fare on the agency's payment page. So it is not a second opinion
-          under our own numbers any more; it is the numbers. */}
-      {/* The budget against the fares the widget is showing — see
-          FlightBudgetBar for how it reads them and when it stays quiet. */}
-      <FlightBudgetBar
+      {/* 1. The answer: the flight picked within the budget, and the way
+          to the others — see FlightResultsGuide. */}
+      <FlightResultsGuide
         locale={locale}
         budget={search.budgetTotal}
         currency={search.currency}
         travelers={travelers}
+        cityName={destinationCityName ?? search.destination}
       />
-      <FlightCardNotes locale={locale} budget={search.budgetTotal} currency={search.currency} />
 
-      <FlightMetasearch
-        locale={locale}
-        heading={dict.results.liveSearchTitle}
-        note={dict.results.liveSearchNote}
-        prefill={flightSearchCode(search)}
-      />
+      {/* 2. The flights themselves — the live search, for these exact dates
+          and this party; the fare on the card is the fare at the agency. */}
+      <div className="mt-5">
+        <FlightMetasearch locale={locale} prefill={flightSearchCode(search)} hideSearchForm />
+      </div>
+
+      {/* 3. Before they go: the visa and the money, side by side. */}
+      {destinationCountry && destinationCountry.code !== "SA" && (
+        <section className="mt-10">
+          <h2 className="mb-3 font-display text-h3 font-extrabold text-navy-950">
+            {dict.results.essentialsTitle.replace(
+              "{country}",
+              locale === "ar" ? destinationCountry.nameAr : destinationCountry.nameEn
+            )}
+          </h2>
+          <div className="grid gap-4 md:grid-cols-2">
+            <div className="h-full rounded-2xl bg-white p-5 shadow-sm ring-1 ring-black/5">
+              <p className="text-xs font-bold text-navy-500">{dict.results.visaCardTitle}</p>
+              <div className="mt-2">
+                {visa ? (
+                  <VisaBadge category={visa.category} label={visaLabels[visa.category]} />
+                ) : (
+                  <p className="text-sm text-navy-700">{dict.results.visaCardUnknown}</p>
+                )}
+              </div>
+              <Link
+                href={`/${locale}/visa/${destinationCountry.code}`}
+                className="mt-4 inline-block rounded-xl bg-navy-900 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-navy-800"
+              >
+                {dict.results.visaCardLink}
+              </Link>
+            </div>
+            {showCurrencyStrip && homeCurrency && tripCurrency && (
+              <TripCurrencyStrip from={homeCurrency} to={tripCurrency} locale={locale} />
+            )}
+          </div>
+        </section>
+      )}
 
       {/* The next half of the trip. We cannot see whether the flight was
           booked — that happens at the agency — so this is offered, not

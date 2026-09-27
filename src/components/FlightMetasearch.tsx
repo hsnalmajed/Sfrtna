@@ -41,10 +41,18 @@ export default function FlightMetasearch({
   note,
   tone = "light",
   prefill,
+  hideSearchForm = false,
 }: {
   locale: Locale;
-  heading: string;
-  note: string;
+  heading?: string;
+  note?: string;
+  /**
+   * Keep the widget's own search bar out of sight. On the results page it
+   * repeated the trip we already show, with a second language switch and
+   * links out to the partner's hotels and multi-city search; the page's
+   * "Edit search" does that job. It still runs — only hidden.
+   */
+  hideSearchForm?: boolean;
   /** "dark" puts the block on a navy background and boxes it in white. */
   tone?: "light" | "dark";
   /** The trip, as flightSearchCode writes it — e.g. "RUH1611IST23112". */
@@ -84,18 +92,18 @@ export default function FlightMetasearch({
 
   const dark = tone === "dark";
   return (
-    <section className={dark ? "" : "mt-8"} dir={locale === "ar" ? "rtl" : "ltr"}>
-      <h2
-        className={`mb-1 font-display text-h3 font-extrabold ${dark ? "text-white" : "text-navy-900"}`}
-      >
-        {heading}
-      </h2>
-      <p className={`mb-4 text-sm ${dark ? "text-white/70" : "text-navy-500"}`}>{note}</p>
+    <section className={dark || !heading ? "" : "mt-8"} dir={locale === "ar" ? "rtl" : "ltr"}>
+      {heading && (
+        <h2 className={`mb-1 font-display text-h3 font-extrabold ${dark ? "text-white" : "text-navy-900"}`}>
+          {heading}
+        </h2>
+      )}
+      {note && <p className={`mb-4 text-sm ${dark ? "text-white/70" : "text-navy-500"}`}>{note}</p>}
       {/* The widget fills these two. Keep the ids exactly as they are: the
           script looks them up by name and silently does nothing otherwise. */}
       <div className={dark ? "rounded-3xl bg-white p-3 shadow-sun sm:p-4" : ""}>
-        <div id="tpwl-search" />
-        <div id="tpwl-tickets" className="mt-4 empty:mt-0" />
+        <div id="tpwl-search" className={hideSearchForm ? "hidden" : undefined} />
+        <div id="tpwl-tickets" className={hideSearchForm ? "" : "mt-4 empty:mt-0"} />
       </div>
     </section>
   );
