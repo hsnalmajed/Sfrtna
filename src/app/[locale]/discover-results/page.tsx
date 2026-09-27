@@ -8,6 +8,7 @@ import type { RoomType, DestinationCategory, DestinationSuggestion, Locale, Rout
 import DestinationCard from "@/components/DestinationCard";
 import PricesUnavailable from "@/components/PricesUnavailable";
 import RouteCard from "@/components/RouteCard";
+import { findAirport } from "@/lib/airports";
 import { parseChildrenAges } from "@/lib/searchParamsUtil";
 
 export default function DiscoverResultsPage() {
@@ -135,7 +136,14 @@ function DiscoverResultsContent() {
   const hasResults = mode === "routes" ? routes.length > 0 : singleSuggestions.length > 0;
   // "RUH مطار الملك خالد الدولي - الرياض" → "الرياض": the city, as the
   // route line names it.
-  const originLabel = origin.includes(" - ") ? origin.split(" - ").pop()!.trim() : origin.slice(0, 3).toUpperCase();
+  const originAirport = findAirport(origin.slice(0, 3));
+  const originLabel = origin.includes(" - ")
+    ? origin.split(" - ").pop()!.trim()
+    : originAirport
+      ? locale === "ar"
+        ? originAirport.cityAr
+        : originAirport.cityEn
+      : origin.slice(0, 3).toUpperCase();
   const withinCount = routes.filter((r) => r.withinBudget).length;
 
   return (
