@@ -50,7 +50,66 @@ async function fareCoverage(month: string) {
   };
 }
 
+/**
+ * `?seasoncov=1`: for every city in season this month, whether each fare
+ * source has a price from Riyadh — to choose the source that covers them all.
+ */
+async function seasonCoverage(offset: number) {
+  const { citiesInSeason } = await import("@/lib/citySeasons");
+  const { CITY_AIRPORTS } = await import("@/data/cityAirports");
+  const token = process.env.TRAVELPAYOUTS_TOKEN || "";
+  const now = new Date();
+  const m = now.getMonth() + 1;
+  const months = [0, 1, 2].map((k) => {
+    const d = new Date(Date.UTC(now.getFullYear(), m - 1 + k, 1));
+    return d.toISOString().slice(0, 7);
+  });
+  const get = async (url: string) => {
+    try {
+      const r = await fetch(url, { headers: { "X-Access-Token": token }, cache: "no-store" });
+      return r.ok ? await r.json() : null;
+    } catch {
+      return null;
+    }
+  };
+  const base = "https://api.travelpayouts.com";
+  const codes = citiesInSeason(m)
+    .map((c) => CITY_AIRPORTS[c.slug]?.iata)
+    .filter((x): x is string => Boolean(x));
+  const seen = (rows: { destination?: string; destination_airport?: string }[] | undefined) =>
+    new Set((rows ?? []).flatMap((r) => [r.destination, r.destination_airport]));
+  const ow = await Promise.all(
+    months.map((mm) => get(`${base}/aviasales/v3/prices_for_dates?origin=RUH&departure_at=${mm}&one_way=true&unique=true&sorting=price&limit=1000&currency=sar`))
+  );
+  const owSets = ow.map((j) => seen(j?.data));
+  const missing = codes.filter((c) => !owSets.some((s) => s.has(c)));
+  // Per-destination endpoints for a slice of the missing ones.
+  const slice = missing.slice(offset, offset + 12);
+  const grouped = await Promise.all(
+    slice.map((d) =>
+      get(`${base}/aviasales/v3/grouped_prices?origin=RUH&destination=${d}&group_by=departure_at&currency=sar`)
+    )
+  );
+  const latest = await Promise.all(
+    slice.map((d) => get(`${base}/v2/prices/latest?origin=RUH&destination=${d}&period_type=year&one_way=true&limit=5&currency=sar`))
+  );
+  return {
+    months,
+    total: codes.length,
+    oneWayByMonth: owSets.map((s) => codes.filter((c) => s.has(c)).length),
+    oneWayAnyMonth: codes.length - missing.length,
+    missing,
+    perDestination: slice.map((d, i) => ({
+      d,
+      grouped: Object.keys(grouped[i]?.data ?? {}).length,
+      latest: (latest[i]?.data ?? []).length,
+    })),
+  };
+}
+
 export async function GET(req: Request) {
+  const sc = new URL(req.url).searchParams.get("seasoncov");
+  if (sc !== null) return NextResponse.json(await seasonCoverage(Number(sc) || 0));
   const faresMonth = new URL(req.url).searchParams.get("fares");
   if (faresMonth && /^\d{4}-\d{2}$/.test(faresMonth)) {
     return NextResponse.json(await fareCoverage(faresMonth));
