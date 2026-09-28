@@ -50,7 +50,12 @@ export const CITY_CLIMATE: Record<string, CityClimate> = {
   "trabzon": { high: [10.8, 11.7, 13.2, 16.9, 20.6, 24.1, 26, 26.9, 24.6, 21.2, 17, 13.5], rainyDays: [12.8, 10.2, 13.7, 11.1, 12.8, 10.9, 9.4, 8.9, 12.2, 13.7, 10.8, 11.1] },
   "izmir": { high: [12.1, 13.4, 15.8, 20.1, 24.7, 29.7, 33.6, 34.2, 29.7, 24.1, 18.8, 14.1], rainyDays: [11.6, 10.1, 9.2, 6.1, 5.6, 4, 0.8, 0.9, 2.4, 4.5, 7.5, 10.8] },
   "bursa": { high: [9.4, 11.8, 14.9, 20, 24.4, 28.6, 32.7, 33.9, 29.3, 23.3, 17.7, 12.3], rainyDays: [12.6, 10.6, 10.9, 8.1, 8.9, 8.8, 3.5, 3.1, 6, 8.3, 8.6, 11.5] },
-  "dubai": { high: [22.1, 22.2, 23.8, 26.5, 29.8, 32.5, 34.4, 35, 33.8, 31.7, 28.3, 24.5], rainyDays: [3.1, 1.9, 3, 1.8, 0.3, 0.8, 0.6, 0.7, 0.7, 0.6, 2.2, 2.5] },
+  // Dubai: not NASA POWER — its grid cell is mostly sea and ran 5–6 °C cool
+  // in summer. These are the WMO 1991–2020 climate normals for Dubai
+  // International Airport (WMO 41194): mean daily maximum and days with
+  // ≥ 1 mm of precipitation, as published in the WMO normals archive
+  // (nodc.noaa.gov …/Region-2-WMO-Normals-9120/UAE/CSV/DubaiIntlAirport_41194.csv).
+  "dubai": { high: [24.4, 26.1, 28.9, 33.7, 38.2, 40.3, 41.5, 41.9, 39.5, 35.9, 30.7, 26.5], rainyDays: [2.8, 2.4, 3.4, 1.5, 1.0, 0.0, 2.0, 0.0, 1.0, 2.0, 1.9, 3.4] },
   "abu-dhabi": { high: [22.7, 23.8, 26.8, 30.7, 34.8, 37, 38.6, 39.2, 37.3, 34.1, 29.5, 25], rainyDays: [2.1, 1.1, 1.9, 1.4, 0.2, 0.5, 0.3, 0.6, 0.2, 0.3, 1.4, 1.5] },
   "sharjah": { high: [23.7, 25.3, 28.2, 32.3, 36.7, 39.7, 40.7, 40.6, 38.9, 35.4, 30.4, 26], rainyDays: [3, 2, 2.8, 1.4, 0.3, 0.4, 0.6, 0.6, 0.3, 0.8, 1.9, 2.5] },
   "ras-al-khaimah": { high: [22.4, 23.7, 26.6, 30.8, 35.3, 37.3, 37.3, 36.7, 35.7, 33.3, 28.6, 24.5], rainyDays: [3.6, 2.6, 3.1, 1.3, 0.2, 0.6, 0.6, 0.4, 0.4, 0.8, 2.4, 2.8] },

@@ -46,7 +46,9 @@ export interface CityInSeason {
  * shown, labelled; no verdict is drawn from them. (Checked against known
  * averages on 26 Sep 2026 — see src/data/cityClimate.ts.)
  */
-export const UNRELIABLE_CLIMATE: ReadonlySet<string> = new Set(["dubai"]);
+export const UNRELIABLE_CLIMATE: ReadonlySet<string> = new Set<string>([]);
+// (Dubai was here until 28 Sep 2026; it now uses the WMO 1991–2020 normals
+// for Dubai International Airport — see cityClimate.ts.)
 
 export function hasReliableClimate(slug: string): boolean {
   return Boolean(CITY_CLIMATE[slug]) && !UNRELIABLE_CLIMATE.has(slug);

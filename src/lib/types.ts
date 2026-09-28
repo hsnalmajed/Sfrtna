@@ -201,6 +201,8 @@ export interface DestinationPlace {
   rainyDays?: number;
   /** In season that month by the site's rule; undefined when we can't say. */
   inSeason?: boolean;
+  /** What kind of month it is there: winter, spring … or wet / dry season. */
+  seasonKind?: "winter" | "spring" | "summer" | "autumn" | "wet" | "dry";
   /** Confirmed entry status for a Saudi passport. */
   visa?: "free" | "arrival" | "eta" | "required";
 }

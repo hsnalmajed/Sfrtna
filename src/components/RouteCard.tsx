@@ -131,6 +131,7 @@ export default function RouteCard({
                   >
                     {s.place.inSeason ? "☀️ " : ""}
                     {(s.place.inSeason ? d.inSeason : d.notInSeason).replace("{month}", monthName(Number(s.arrive.slice(5, 7)), locale))}
+                    {s.place.seasonKind && ` · ${(dict.citySeasons.kinds as Record<string, string>)[s.place.seasonKind]}`}
                   </span>
                 )}
                 {s.place?.high !== undefined && (

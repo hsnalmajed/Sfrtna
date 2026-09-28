@@ -76,6 +76,12 @@ export const VISA_STATUS: Record<string, VisaStatus> = {
   OM: { category: "free", source: "https://www.fm.gov.om/en/visitors/entry-visas/", quote: "Oman MFA: \"Citizens of GCC countries (the Kingdom of Bahrain, the State of Kuwait, the State of Qatar, the Kingdom of Saudi Arabia and the United Arab Emirates) do not require visas to enter Oman.\"" },
   KE: { category: "eta", source: "https://www.etakenya.go.ke/", quote: "eTA Kenya (official): \"All travelers to Kenya are required to submit information prior to departure.\"" },
   SC: { category: "eta", source: "https://seychelles.govtas.com/", quote: "Seychelles Travel Authorisation (official): \"All travelers to the Seychelles are required to complete [a travel authorisation] prior to departure.\"" },
+  // Added 28 Sep 2026 for the suggest-a-destination list.
+  AE: { category: "free", source: "https://u.ae/en/information-and-services/visa-and-emirates-id/Visa-information/do-you-need-an-entry-permit-or-a-visa-to-enter-the-uae", quote: "UAE Government official platform: \"GCC citizens do not need a visa to enter the UAE.\"" },
+  BH: { category: "free", source: "https://www.bahrainairport.bh/passports-visas", quote: "Bahrain Airport (official): \"All visitors entering the Kingdom of Bahrain need to obtain a visa, except for citizens of Gulf Cooperation Council (GCC) countries.\"" },
+  AZ: { category: "free", source: "https://evisa.gov.az/en/countries", quote: "Azerbaijan official e-visa portal: \"from February 15, 2026 to February 15, 2027, citizens of the Kingdom of Saudi Arabia ... are eligible to enter the territory of the Republic of Azerbaijan visa-free 3 times within 1 year.\"", until: "2027-02-15" },
+  EG: { category: "eta", source: "https://www.visa2egypt.gov.eg/eVisa/FAQ", quote: "Egypt e-Visa Portal (official): \"Nationals of the countries listed below may be issued with an e-Visa upon application\" — the list includes Saudi Arabia" },
+  TH: { category: "free", source: "https://www.mfa.go.th/en/content/pb-summary-03092026-en", quote: "Thai MFA, revision of visa exemption schemes effective 15 September 2026: \"30-day visa exemption\" list includes \"Saudi Arabia\" (image.mfa.go.th summary, 22 May 2026)" },
 };
 
 export function visaStatusFor(code: string): VisaStatus | undefined {

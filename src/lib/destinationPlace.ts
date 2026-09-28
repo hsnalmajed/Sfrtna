@@ -7,7 +7,7 @@
 import { COUNTRY_CITIES } from "@/lib/cities";
 import { CITY_AIRPORTS } from "@/data/cityAirports";
 import { CITY_CLIMATE } from "@/data/cityClimate";
-import { hasReliableClimate, isInSeason } from "@/lib/citySeasons";
+import { hasReliableClimate, isInSeason, seasonKindFor } from "@/lib/citySeasons";
 import { visaStatusFor } from "@/data/visaStatus";
 import type { DestinationPlace } from "@/lib/types";
 
@@ -37,6 +37,7 @@ export function placeForDestination(code: string, nameEn: string, month: number)
     high: climate && valid ? climate.high[month - 1] : undefined,
     rainyDays: climate && valid ? climate.rainyDays[month - 1] : undefined,
     inSeason: climate && reliable && valid ? isInSeason(climate, month) : undefined,
+    seasonKind: valid ? seasonKindFor(city.slug, month) : undefined,
     visa: visaStatusFor(city.countryCode)?.category,
   };
 }

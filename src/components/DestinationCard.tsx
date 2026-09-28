@@ -128,6 +128,7 @@ export default function DestinationCard({
           >
             {place.inSeason ? "☀️ " : ""}
             {(place.inSeason ? d.inSeason : d.notInSeason).replace("{month}", monthLabel)}
+            {place.seasonKind && ` · ${(dict.citySeasons.kinds as Record<string, string>)[place.seasonKind]}`}
           </span>
         )}
         <div className="absolute inset-x-0 bottom-0 p-4">
@@ -195,7 +196,17 @@ export default function DestinationCard({
                   })}
             </span>
           )}
-          {place?.visa && <VisaBadge category={place.visa} label={visaLabels[place.visa]} className="!px-2.5 !py-1" />}
+          {place?.visa ? (
+            <VisaBadge category={place.visa} label={visaLabels[place.visa]} className="!px-2.5 !py-1" />
+          ) : place ? (
+            // Not confirmed at the official source yet: say so, and where to check.
+            <Link
+              href={`/${locale}/visa/${place.countryCode}`}
+              className="rounded-full bg-mist-100 px-2.5 py-1 text-xs font-bold text-navy-700 ring-1 ring-mist-200 hover:ring-navy-300"
+            >
+              🛂 {d.visaCheck}
+            </Link>
+          ) : null}
         </div>
 
         {suggestion.withinBudget && (
