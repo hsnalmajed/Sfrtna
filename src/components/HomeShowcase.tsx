@@ -37,6 +37,8 @@ export interface ShowcaseCity {
   landmarks: string[];
   /** The city's English name, which the hotel partners search by. */
   hotelCity: string;
+  /** Lowest round-trip fare seen this month from Riyadh, per person, SAR. */
+  fare?: number;
 }
 
 export interface ShowcaseTool {
@@ -78,6 +80,9 @@ interface ShowcaseDict {
   seasonRainMany: string;
   seasonMethod: string;
   seasonTapHint: string;
+  seasonFare: string;
+  seasonFareNote: string;
+  summaryFare: string;
   monthName: string;
   summaryWeather: string;
   summaryBestMonths: string;
@@ -283,9 +288,17 @@ export default function HomeShowcase({
           <span className="inline-flex rounded-full bg-navy-990/65 px-2 py-0.5 text-xs font-bold text-sun-300 backdrop-blur-sm">
             {dict.seasonHigh.replace("{high}", String(Math.round(c.high)))}
           </span>
-          <span className="inline-flex rounded-full bg-navy-990/65 px-2 py-0.5 text-xs font-bold text-sea-200 backdrop-blur-sm">
-            {rainText(c.rainyDays)}
-          </span>
+          {/* The fare matters more than the rain; the rain only shows where
+              no fare was seen, so the card is never left with one number. */}
+          {c.fare ? (
+            <span className="inline-flex rounded-full bg-sun-400 px-2 py-0.5 text-xs font-extrabold text-navy-950">
+              {dict.seasonFare.replace("{price}", c.fare.toLocaleString("en-US"))}
+            </span>
+          ) : (
+            <span className="inline-flex rounded-full bg-navy-990/65 px-2 py-0.5 text-xs font-bold text-sea-200 backdrop-blur-sm">
+              {rainText(c.rainyDays)}
+            </span>
+          )}
         </div>
       </div>
     </button>
@@ -347,6 +360,12 @@ export default function HomeShowcase({
               <p className="mt-2 text-sm text-white/75">{dict.summaryBestMonths.replace("{months}", openCity.bestMonths)}</p>
             )}
           </section>
+
+          {openCity.fare && (
+            <p className="rounded-2xl bg-sun-400/10 px-4 py-3 text-sm font-bold text-sun-200 ring-1 ring-sun-400/30">
+              ✈️ {dict.summaryFare.replace("{price}", openCity.fare.toLocaleString("en-US"))}
+            </p>
+          )}
 
           <div className="grid gap-4 sm:grid-cols-2">
             {/* Visa: only a status we confirmed at the source. */}
@@ -531,6 +550,7 @@ export default function HomeShowcase({
                   </div>
                 )}
                 <p className="mt-3 text-sm font-semibold text-white/75">👆 {dict.seasonTapHint}</p>
+                {seasonCities.some((c) => c.fare) && <p className="mt-1 text-xs text-white/60">{dict.seasonFareNote}</p>}
                 <p className="mt-2 text-xs text-white/45">
                   {dict.seasonMethod}{" "}
                   <Link href={`/${locale}/seasons`} className="font-bold text-white/70 underline-offset-2 hover:underline">

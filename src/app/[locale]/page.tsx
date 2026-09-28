@@ -9,6 +9,7 @@ import { visaStatusFor } from "@/data/visaStatus";
 import { currencyForCountry } from "@/lib/currencies";
 import { fetchRates, rateBetween, type Rates } from "@/lib/rates";
 import { cachedJson } from "@/lib/edgeCache";
+import { SEASON_FARE_ORIGIN, seasonFares } from "@/lib/seasonFares";
 import { CITY_AIRPORTS } from "@/data/cityAirports";
 import { heroImage as heroImageOf, heroPhotoForToday } from "@/lib/heroPhotos";
 import { monthName } from "@/lib/seasons";
@@ -48,9 +49,12 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
   const heroPick = heroPhotoForToday();
   // Rates for the city summaries' "1 riyal ≈ …" line — cached for a few
   // hours, so the homepage does not spend a subrequest on them every visit.
-  const [cityPhotos, rates] = await Promise.all([
+  const now = new Date();
+  const monthKey = `${now.getFullYear()}-${String(month).padStart(2, "0")}`;
+  const [cityPhotos, rates, fares] = await Promise.all([
     fetchCityPhotos(seasonOrder),
     cachedJson<Rates>("rates-usd", 6 * 3600, fetchRates),
+    seasonFares(monthKey),
   ]);
   const heroImage = heroImageOf(heroPick);
   const heroPhoto = heroImage.url;
@@ -117,6 +121,7 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
       flightKm: airport?.km ?? undefined,
       ...citySummary(c.code, c.slug),
       hotelCity: c.nameEn,
+      fare: airport && airport.iata !== SEASON_FARE_ORIGIN ? fares[airport.iata] : undefined,
     };
   });
 
@@ -269,6 +274,9 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
             seasonRainMany: dict.home.seasonRainMany,
             seasonMethod: dict.home.seasonMethod,
             seasonTapHint: dict.home.seasonTapHint,
+            seasonFare: dict.home.seasonFare,
+            seasonFareNote: dict.home.seasonFareNote.replace("{month}", monthName(month, loc)),
+            summaryFare: dict.home.summaryFare.replace("{month}", monthName(month, loc)),
             monthName: monthName(month, loc),
             summaryWeather: dict.home.summaryWeather,
             summaryBestMonths: dict.home.summaryBestMonths,

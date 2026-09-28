@@ -336,13 +336,19 @@ interface TpV3Row {
  * `when` is a day (YYYY-MM-DD) or a month (YYYY-MM). Prices are observed
  * fares, the same as the rest of this source, and are labelled so.
  */
-export async function oneWayFaresFrom(origin: string, when: string, currency: string): Promise<Map<string, OneWayFare>> {
+export async function oneWayFaresFrom(
+  origin: string,
+  when: string,
+  currency: string,
+  /** Round-trip fares instead (the price then covers both ways). */
+  roundTrip = false
+): Promise<Map<string, OneWayFare>> {
   const out = new Map<string, OneWayFare>();
   if (!token() || !origin || !when) return out;
   const url = new URL(`${BASE}/aviasales/v3/prices_for_dates`);
   url.searchParams.set("origin", origin);
   url.searchParams.set("departure_at", when);
-  url.searchParams.set("one_way", "true");
+  url.searchParams.set("one_way", roundTrip ? "false" : "true");
   url.searchParams.set("unique", "true");
   url.searchParams.set("sorting", "price");
   url.searchParams.set("limit", "1000");
