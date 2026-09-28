@@ -575,8 +575,12 @@ function FlightCard({
                   </div>
                   <div className="text-end">
                     <p className="font-display text-lg font-black text-navy-950 sm:text-xl">
-                      {l.plusDays > 0 && <span className="me-1 align-top text-xs font-extrabold text-amber-700">+{l.plusDays}</span>}
                       {l.arrTime}
+                      {l.plusDays > 0 && (
+                        <sup dir="ltr" className="ms-1 text-xs font-extrabold text-amber-700">
+                          +{l.plusDays}
+                        </sup>
+                      )}
                     </p>
                     <p className="text-xs font-bold text-navy-700">
                       {l.arrCode} <span className="font-semibold text-navy-500">{l.arrCity}</span>
@@ -602,16 +606,12 @@ function FlightCard({
           </div>
           {overBy !== undefined && (
             <p className="rounded-lg bg-rose-50 px-3 py-1.5 text-xs font-bold text-rose-800">
-              {t.cardOver.replace("{amount}", money(overBy))}
+              <Amount template={t.cardOver} amount={money(overBy)} />
             </p>
           )}
           {diff !== undefined && (
             <p className="rounded-lg bg-mist-50 px-3 py-1.5 text-xs font-bold text-navy-700">
-              {diff > 0
-                ? t.cardMore.replace("{amount}", money(diff))
-                : diff < 0
-                  ? t.cardLess.replace("{amount}", money(diff))
-                  : t.cardSame}
+              {diff === 0 ? t.cardSame : <Amount template={diff > 0 ? t.cardMore : t.cardLess} amount={money(diff)} />}
             </p>
           )}
           <button
@@ -630,5 +630,18 @@ function FlightCard({
 
       {foot && <div className="border-t border-mist-100 p-3 sm:p-4">{foot}</div>}
     </article>
+  );
+}
+
+/** A sentence with an amount in it, the amount kept left-to-right ("+9 SAR"). */
+function Amount({ template, amount }: { template: string; amount: string }) {
+  const [before, after = ""] = template.split("{amount}");
+  const plus = before.endsWith("+");
+  return (
+    <>
+      {plus ? before.slice(0, -1) : before}
+      <bdi dir="ltr">{plus ? `+${amount}` : amount}</bdi>
+      {after}
+    </>
   );
 }
