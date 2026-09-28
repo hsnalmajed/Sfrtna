@@ -121,7 +121,7 @@ export async function POST(req: NextRequest) {
       ...within.filter((r) => r.place?.inSeason).sort(byPrice),
       ...within.filter((r) => !r.place?.inSeason).sort(byPrice),
       ...results.filter((r) => !r.withinBudget).sort(byPrice),
-    ].slice(0, 12);
+    ];
 
     return NextResponse.json({ mode: "single", suggestions });
   }

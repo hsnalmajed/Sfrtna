@@ -4,6 +4,7 @@ import { Suspense, useEffect, useMemo, useState } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { getDictionary } from "@/lib/dictionaries";
+import ResultsBand from "@/components/ResultsBand";
 import type { Locale, MultiCityLegInput, MultiCityTripResult } from "@/lib/types";
 
 export default function MultiCityResultsPage() {
@@ -127,29 +128,24 @@ function MultiCityResultsContent() {
   const isMock = Boolean(result?.isMock) && process.env.NODE_ENV !== "development";
 
   return (
-    <div className="mx-auto max-w-4xl px-4 pb-10 pt-28 sm:px-6 sm:pt-32">
-      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <h1 className="text-2xl font-extrabold tracking-tight text-navy-950 sm:text-3xl">{m.resultsTitle}</h1>
-          {legs.length >= 2 && (
-            <p className="mt-1.5 text-navy-500">
-              {m.searchSummary
-                .replace("{count}", String(legs.length))
-                .replace("{first}", dateLabel(legs[0].date))
-                .replace("{last}", dateLabel(legs[legs.length - 1].date))
-                .replace("{budget}", money(Number(budget)))}
-            </p>
-          )}
-        </div>
-        <Link
-          href={`/${locale}?${editSearchParams}#plan`}
-          className="inline-flex items-center gap-1.5 rounded-full bg-white px-4 py-2.5 text-sm font-bold text-navy-800 shadow-sm ring-1 ring-mist-200 transition hover:-translate-y-0.5 hover:shadow-md"
-        >
-          <span aria-hidden="true">{locale === "ar" ? "→" : "←"}</span>
-          {m.backToSearch}
-        </Link>
-      </div>
-
+    <div className="bg-mist-50">
+    <ResultsBand
+      locale={locale}
+      title={m.resultsTitle}
+      facts={
+        legs.length >= 2
+          ? m.searchSummary
+              .replace("{count}", String(legs.length))
+              .replace("{first}", dateLabel(legs[0].date))
+              .replace("{last}", dateLabel(legs[legs.length - 1].date))
+              .replace("{budget}", money(Number(budget)))
+              .split(" · ")
+          : []
+      }
+      backHref={`/${locale}?${editSearchParams}#plan`}
+      backLabel={m.backToSearch}
+    />
+    <div className="mx-auto max-w-4xl px-4 pb-10 pt-6 sm:px-6">
       {loading && (
         <div className="space-y-4">
           {legs.map((_, i) => (
@@ -250,6 +246,7 @@ function MultiCityResultsContent() {
           )}
         </>
       )}
+    </div>
     </div>
   );
 }

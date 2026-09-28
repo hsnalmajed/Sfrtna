@@ -2,12 +2,14 @@
 
 import { Suspense, useEffect, useMemo, useState } from "react";
 import { useParams, useSearchParams } from "next/navigation";
-import Link from "next/link";
 import { getDictionary } from "@/lib/dictionaries";
 import type { RoomType, DestinationCategory, DestinationSuggestion, Locale, RouteSuggestion, TripType } from "@/lib/types";
 import DestinationCard from "@/components/DestinationCard";
 import PricesUnavailable from "@/components/PricesUnavailable";
 import RouteCard from "@/components/RouteCard";
+import ResultsBand from "@/components/ResultsBand";
+import { VISA_STYLES } from "@/components/VisaBadge";
+import { VISA_ORDER, type VisaCategory } from "@/data/visaStatus";
 import { findAirport } from "@/lib/airports";
 import { parseChildrenAges } from "@/lib/searchParamsUtil";
 
@@ -144,119 +146,225 @@ function DiscoverResultsContent() {
         ? originAirport.cityAr
         : originAirport.cityEn
       : origin.slice(0, 3).toUpperCase();
-  const withinCount = routes.filter((r) => r.withinBudget).length;
+  // ── Filters: season and visa, on what the search found ─────────────
+  const [seasonOnly, setSeasonOnly] = useState(false);
+  const [visaFilter, setVisaFilter] = useState<VisaCategory | "all">("all");
+  const [showOver, setShowOver] = useState(false);
+  type Place = DestinationSuggestion["place"];
+  const placeOk = (p: Place) =>
+    (!seasonOnly || p?.inSeason === true) && (visaFilter === "all" || p?.visa === visaFilter);
+  const singles = singleSuggestions.filter((s) => placeOk(s.place));
+  const routeList = routes.filter((r) => r.stops.every((st) => placeOk(st.place)));
+  const items = mode === "routes" ? routeList : singles;
+  const within = items.filter((x) => x.withinBudget);
+  const over = items.filter((x) => !x.withinBudget).sort((a, b) => a.totalPrice - b.totalPrice);
+  const filtered = seasonOnly || visaFilter !== "all";
+  const money = (n: number) => `${Math.abs(n).toLocaleString("en-US")} ${currency}`;
+  const d = dict.discoverResults;
+
+  // The visa statuses that actually occur in these results, easiest first.
+  const visasPresent = VISA_ORDER.filter((v) =>
+    mode === "routes"
+      ? routes.some((r) => r.stops.some((st) => st.place?.visa === v))
+      : singleSuggestions.some((s) => s.place?.visa === v)
+  );
+  const visaLabels: Record<VisaCategory, string> = {
+    free: dict.visa.statusFree,
+    arrival: dict.visa.statusArrival,
+    eta: dict.visa.statusEta,
+    required: dict.visa.statusRequired,
+  };
+  const pretty = (iso: string) =>
+    iso
+      ? new Date(`${iso}T00:00:00Z`).toLocaleDateString(locale === "ar" ? "ar-u-ca-gregory-nu-latn" : "en-GB", {
+          day: "numeric",
+          month: "long",
+          timeZone: "UTC",
+        })
+      : "";
+  const travellers = Number(adults) + childrenAges.length + Number(infants);
+
+  const chip = (on: boolean) =>
+    `inline-flex items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-bold ring-1 transition ${
+      on ? "bg-navy-900 text-white ring-navy-900" : "bg-white text-navy-800 ring-mist-300 hover:ring-navy-300"
+    }`;
+
+  const renderSingle = (list: DestinationSuggestion[]) => (
+    <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {list.map((s) => (
+        <DestinationCard
+          key={s.destinationCode}
+          suggestion={s}
+          locale={locale}
+          origin={origin}
+          departDate={departDate}
+          returnDate={returnDate}
+          travelers={{ adults: Number(adults), childrenAges, infants: Number(infants) }}
+          currency={currency}
+          directOnly={directOnly}
+          baggageIncluded={baggageIncluded}
+          photo={s.place ? photos[`${s.place.countryCode}/${s.place.citySlug}`] : undefined}
+        />
+      ))}
+    </div>
+  );
+  const renderRoutes = (list: RouteSuggestion[]) => (
+    <div className="space-y-5">
+      {list.map((r) => (
+        <RouteCard
+          key={r.stops.map((x) => x.code).join("-")}
+          route={r}
+          locale={locale}
+          originLabel={originLabel}
+          travelers={{ adults: Number(adults), childrenAges, infants: Number(infants) }}
+          currency={currency}
+          directOnly={directOnly}
+          baggageIncluded={baggageIncluded}
+          photos={photos}
+        />
+      ))}
+    </div>
+  );
 
   return (
-    <div className="mx-auto max-w-6xl px-4 pb-10 pt-28 sm:px-6 sm:pt-32">
-      <div className="flex items-center justify-between flex-wrap gap-3 mb-6">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">{dict.discoverResults.title}</h1>
-          <p className="text-gray-500 mt-1.5">
-            {dict.discoverResults.searchLine
-              .replace("{origin}", originLabel)
-              .replace(
-                "{date}",
-                departDate
-                  ? new Date(`${departDate}T00:00:00Z`).toLocaleDateString(locale === "ar" ? "ar-u-ca-gregory-nu-latn" : "en-GB", {
-                      day: "numeric",
-                      month: "long",
-                      timeZone: "UTC",
-                    })
-                  : ""
-              )
-              .replace("{budget}", `${Number(budget).toLocaleString("en-US")} ${currency}`)}
+    <div className="bg-mist-50">
+      <ResultsBand
+        locale={locale}
+        eyebrow={d.eyebrow}
+        title={mode === "routes" ? d.titleRoutes : d.title}
+        facts={[
+          dict.discoverResults.searchLine.split(" · ")[0].replace("{origin}", originLabel),
+          returnDate ? `${pretty(departDate)} ${locale === "ar" ? "←" : "→"} ${pretty(returnDate)}` : pretty(departDate),
+          dict.results.travellersCount.replace("{count}", String(travellers)),
+          d.budgetFact.replace("{budget}", money(Number(budget))),
+        ]}
+        backHref={`/${locale}?${editSearchParams}#plan`}
+        backLabel={d.backToSearch}
+      />
+
+      <div className="mx-auto max-w-6xl px-4 pb-10 pt-6 sm:px-6">
+        {showGenerated && isGeneratedData && !loading && (
+          <div className="mb-6 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+            Generated data (no provider key configured). Hidden in production.
+          </div>
+        )}
+
+        {!loading && !error && pricesUnavailable && (
+          <PricesUnavailable
+            locale={locale}
+            dict={dict}
+            exploreHref={`/${locale}/attractions`}
+            planHref={`/${locale}/itinerary`}
+          />
+        )}
+
+        {/* The filters, first: in season, and the visa a Saudi passport needs. */}
+        {!loading && !error && !pricesUnavailable && hasResults && (
+          <div className="mb-5 space-y-3 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-black/5">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="me-1 text-xs font-bold text-navy-500">{d.filterSeason}</span>
+              <button type="button" aria-pressed={!seasonOnly} onClick={() => setSeasonOnly(false)} className={chip(!seasonOnly)}>
+                {d.seasonAll}
+              </button>
+              <button type="button" aria-pressed={seasonOnly} onClick={() => setSeasonOnly(true)} className={chip(seasonOnly)}>
+                {d.seasonOnly}
+              </button>
+            </div>
+            {visasPresent.length > 0 && (
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="me-1 text-xs font-bold text-navy-500">{d.filterVisa}</span>
+                <button type="button" aria-pressed={visaFilter === "all"} onClick={() => setVisaFilter("all")} className={chip(visaFilter === "all")}>
+                  {d.visaAll}
+                </button>
+                {visasPresent.map((v) => (
+                  <button key={v} type="button" aria-pressed={visaFilter === v} onClick={() => setVisaFilter(v)} className={chip(visaFilter === v)}>
+                    <span className={`inline-block h-2.5 w-2.5 rounded-full ${VISA_STYLES[v].dot}`} aria-hidden="true" />
+                    {visaLabels[v]}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {mode === "routes" && !loading && within.length > 0 && (
+          <div className="mb-5 rounded-xl bg-sea-50 px-4 py-3 text-sm leading-relaxed text-navy-800 ring-1 ring-sea-100">
+            ℹ️ {d.routesNotice.replace("{budget}", money(Number(budget)))}
+          </div>
+        )}
+
+        {loading && (
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="h-48 animate-pulse rounded-2xl bg-white ring-1 ring-black/5" />
+            ))}
+          </div>
+        )}
+
+        {!loading && error && (
+          <p className="py-4 text-center text-sm text-red-600">
+            {locale === "ar" ? "حدث خطأ أثناء البحث، حاول مرة أخرى." : "Something went wrong while searching. Please try again."}
           </p>
-          <p className="mt-1 text-sm text-gray-500">{dict.discoverResults.subtitle}
-          </p>
-        </div>
-        <Link
-          href={`/${locale}?${editSearchParams}#plan`}
-          className="inline-flex items-center gap-1.5 rounded-full bg-white px-4 py-2.5 text-sm font-bold text-brand-800 shadow-sm ring-1 ring-brand-100 transition hover:-translate-y-0.5 hover:shadow-md hover:ring-brand-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2"
-        >
-          <span aria-hidden="true">{locale === "ar" ? "→" : "←"}</span>
-          {dict.discoverResults.backToSearch}
-        </Link>
+        )}
+
+        {!loading && !error && !pricesUnavailable && !hasResults && (
+          <p className="py-10 text-center text-navy-500">{d.noResults}</p>
+        )}
+
+        {/* Within budget: the answer. */}
+        {!loading && !pricesUnavailable && within.length > 0 &&
+          (mode === "routes" ? renderRoutes(within as RouteSuggestion[]) : renderSingle(within as DestinationSuggestion[]))}
+
+        {/* Nothing fits: say what it would take. */}
+        {!loading && !pricesUnavailable && hasResults && within.length === 0 && over.length > 0 && (
+          <div className="rounded-2xl bg-rose-50 p-5 text-sm leading-relaxed text-rose-900 ring-1 ring-rose-200">
+            {d.noneWithinFiltered
+              .replace("{amount}", money(over[0].totalPrice))
+              .replace("{over}", money(over[0].totalPrice - Number(budget)))}
+          </div>
+        )}
+        {!loading && !pricesUnavailable && hasResults && items.length === 0 && (
+          <div className="rounded-2xl bg-white p-6 text-center shadow-sm ring-1 ring-black/5">
+            <p className="text-navy-600">{d.noMatch}</p>
+            {filtered && (
+              <button
+                type="button"
+                onClick={() => {
+                  setSeasonOnly(false);
+                  setVisaFilter("all");
+                }}
+                className="mt-3 rounded-full bg-navy-900 px-4 py-2 text-sm font-bold text-white"
+              >
+                {d.clearFilters}
+              </button>
+            )}
+          </div>
+        )}
+
+        {/* Over budget: there, on request. */}
+        {!loading && !pricesUnavailable && over.length > 0 && (
+          <div className="mt-8">
+            <button
+              type="button"
+              aria-expanded={showOver}
+              onClick={() => setShowOver((v) => !v)}
+              className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-bold text-rose-800 shadow-sm ring-1 ring-rose-200 transition hover:ring-rose-300"
+            >
+              {showOver
+                ? d.hideOver
+                : (mode === "routes" ? d.showOverRoutes : d.showOverDest).replace("{count}", String(over.length))}
+              <span aria-hidden="true" className={`transition ${showOver ? "rotate-180" : ""}`}>
+                ▾
+              </span>
+            </button>
+            {showOver && (
+              <div className="mt-4">
+                {mode === "routes" ? renderRoutes(over as RouteSuggestion[]) : renderSingle(over as DestinationSuggestion[])}
+              </div>
+            )}
+          </div>
+        )}
       </div>
-
-      {showGenerated && isGeneratedData && !loading && (
-        <div className="mb-6 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
-          Generated data (no provider key configured). Hidden in production.
-        </div>
-      )}
-
-      {!loading && !error && pricesUnavailable && (
-        <PricesUnavailable
-          locale={locale}
-          dict={dict}
-          exploreHref={`/${locale}/attractions`}
-          planHref={`/${locale}/itinerary`}
-        />
-      )}
-
-      {mode === "routes" && !loading && hasResults && (
-        <div className="mb-6 rounded-xl bg-sea-50 px-4 py-3 text-sm leading-relaxed text-navy-800 ring-1 ring-sea-100">
-          ℹ️{" "}
-          {withinCount > 0
-            ? dict.discoverResults.routesNotice.replace("{budget}", `${Number(budget).toLocaleString("en-US")} ${currency}`)
-            : dict.discoverResults.routesNoneWithin}
-        </div>
-      )}
-
-      {loading && (
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="h-48 rounded-2xl bg-white ring-1 ring-black/5 animate-pulse" />
-          ))}
-        </div>
-      )}
-
-      {!loading && error && (
-        <p className="text-red-600 py-4 text-center text-sm">
-          {locale === "ar" ? "حدث خطأ أثناء البحث، حاول مرة أخرى." : "Something went wrong while searching. Please try again."}
-        </p>
-      )}
-
-      {!loading && !error && !pricesUnavailable && !hasResults && (
-        <p className="text-gray-500 py-10 text-center">{dict.discoverResults.noResults}</p>
-      )}
-
-      {!loading && !pricesUnavailable && mode === "single" && singleSuggestions.length > 0 && (
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {singleSuggestions.map((s) => (
-            <DestinationCard
-              key={s.destinationCode}
-              suggestion={s}
-              locale={locale}
-              origin={origin}
-              departDate={departDate}
-              returnDate={returnDate}
-              travelers={{ adults: Number(adults), childrenAges, infants: Number(infants) }}
-              currency={currency}
-              directOnly={directOnly}
-              baggageIncluded={baggageIncluded}
-              photo={s.place ? photos[`${s.place.countryCode}/${s.place.citySlug}`] : undefined}
-            />
-          ))}
-        </div>
-      )}
-
-      {!loading && mode === "routes" && routes.length > 0 && (
-        <div className="space-y-5">
-          {routes.map((r) => (
-            <RouteCard
-              key={r.stops.map((x) => x.code).join("-")}
-              route={r}
-              locale={locale}
-              originLabel={originLabel}
-              travelers={{ adults: Number(adults), childrenAges, infants: Number(infants) }}
-              currency={currency}
-              directOnly={directOnly}
-              baggageIncluded={baggageIncluded}
-              photos={photos}
-            />
-          ))}
-        </div>
-      )}
     </div>
   );
 }

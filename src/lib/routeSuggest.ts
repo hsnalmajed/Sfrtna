@@ -162,6 +162,8 @@ export async function suggestRoutes(q: RouteQuery): Promise<RouteSuggestion[]> {
   const within = unique
     .filter((r) => r.withinBudget)
     .sort((a, b) => inSeason(b) - inSeason(a) || a.totalPrice - b.totalPrice);
-  if (within.length > 0) return within.slice(0, 8);
-  return unique.sort((a, b) => a.totalPrice - b.totalPrice).slice(0, 4);
+  // The page filters by season and visa and keeps what is over budget behind
+  // a button, so it gets enough of both to do that with.
+  const over = unique.filter((r) => !r.withinBudget).sort((a, b) => a.totalPrice - b.totalPrice);
+  return [...within.slice(0, 24), ...over.slice(0, 8)];
 }
