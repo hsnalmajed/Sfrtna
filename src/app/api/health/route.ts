@@ -107,7 +107,41 @@ async function seasonCoverage(offset: number) {
   };
 }
 
+/** `?exact=YYYY-MM-DD,YYYY-MM-DD`: exact-date fare coverage for the suggest list. */
+async function exactCoverage(dep: string, ret: string) {
+  const { DESTINATIONS } = await import("@/lib/destinations");
+  const token = process.env.TRAVELPAYOUTS_TOKEN || "";
+  const base = "https://api.travelpayouts.com";
+  const get = async (url: string) => {
+    try {
+      const r = await fetch(url, { headers: { "X-Access-Token": token }, cache: "no-store" });
+      return r.ok ? await r.json() : null;
+    } catch {
+      return null;
+    }
+  };
+  return Promise.all(
+    DESTINATIONS.map(async (d) => {
+      const [v3, v1] = await Promise.all([
+        get(`${base}/aviasales/v3/prices_for_dates?origin=RUH&destination=${d.code}&departure_at=${dep}&return_at=${ret}&sorting=price&limit=5&currency=sar`),
+        get(`${base}/v1/prices/cheap?origin=RUH&destination=${d.code}&depart_date=${dep}&return_date=${ret}&currency=sar`),
+      ]);
+      const v1rows = Object.values((v1?.data ?? {}) as Record<string, Record<string, { price?: number }>>).flatMap((b) => Object.values(b));
+      return {
+        d: d.code,
+        v3: (v3?.data ?? []).map((r: { price: number }) => r.price).slice(0, 3),
+        v1: v1rows.map((r) => r.price).slice(0, 3),
+      };
+    })
+  );
+}
+
 export async function GET(req: Request) {
+  const ex = new URL(req.url).searchParams.get("exact");
+  if (ex && /^\d{4}-\d{2}-\d{2},\d{4}-\d{2}-\d{2}$/.test(ex)) {
+    const [dep, ret] = ex.split(",");
+    return NextResponse.json(await exactCoverage(dep, ret));
+  }
   const sc = new URL(req.url).searchParams.get("seasoncov");
   if (sc !== null) return NextResponse.json(await seasonCoverage(Number(sc) || 0));
   const faresMonth = new URL(req.url).searchParams.get("fares");
