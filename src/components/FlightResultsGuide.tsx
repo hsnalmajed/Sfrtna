@@ -79,10 +79,10 @@ const CSS = `
 .${MORE} [aria-pressed="true"] .arr{transform:rotate(180deg)}
 /* The pick first, then what else fits, then what does not, then "more". */
 :host([data-sfr-filter]) [data-sfr-list]{display:flex !important;flex-direction:column}
-:host([data-sfr-filter]) [data-sfr-state="featured"]{order:0}
-:host([data-sfr-filter]) [data-sfr-state="within"]{order:1;box-shadow:0 0 0 1.5px #9fdcf3 !important}
-:host([data-sfr-filter]) [data-sfr-state="over"]{order:2;box-shadow:0 0 0 1.5px #fecdd3 !important}
-:host([data-sfr-filter]) [data-sfr-list] > [class*="TicketsWidget-module__moreTickets"]{order:3}
+:host([data-sfr-filter]) [data-sfr-state="featured"]{order:-1 !important}
+:host([data-sfr-filter]) [data-sfr-state="within"]{box-shadow:0 0 0 1.5px #9fdcf3 !important}
+:host([data-sfr-filter]) [data-sfr-state="over"]{box-shadow:0 0 0 1.5px #fecdd3 !important}
+:host([data-sfr-filter]) [data-sfr-list] > [class*="TicketsWidget-module__moreTickets"]{order:99999999}
 .${ROW} .over{background:#e11d48;color:#fff}
 :host([data-sfr-filter]:not([data-show-within])) [data-sfr-state="within"]{display:none !important}
 :host([data-sfr-filter]:not([data-show-over])) [data-sfr-state="over"]{display:none !important}
@@ -246,6 +246,11 @@ export default function FlightResultsGuide({
               : "over";
         if (state) p.card.setAttribute("data-sfr-state", state);
         else p.card.removeAttribute("data-sfr-state");
+        // Opened groups read cheapest first, so the smallest difference is
+        // the first one seen.
+        const rank = filtering && p.price !== null ? String(Math.round(p.price)) : "";
+        const el = p.card as HTMLElement;
+        if (el.style.order !== rank) el.style.order = rank;
 
         // The notes row: facts on one side, budget on the other.
         const facts: HTMLElement[] = [];
