@@ -46,16 +46,20 @@ const STYLE_ID = "sfr-guide-style";
 const ROW = "sfr-notes";
 
 const CSS = `
-.${ROW}{grid-column:1 / -1;display:flex;flex-wrap:wrap;gap:6px;padding:12px 16px 2px;font-family:inherit}
-.${ROW} span{display:inline-flex;align-items:center;gap:4px;border-radius:999px;padding:4px 10px;font-size:12.5px;font-weight:700;line-height:1.3}
+/* One tidy line across the top of the card: the flight's facts on one side,
+   all the same shape and size; where it stands against the budget on the
+   other. Only the pick and the budget carry colour, so they are what the eye
+   finds first. */
+.${ROW}{grid-column:1 / -1;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 16px;padding:12px 16px 10px;margin-bottom:2px;border-bottom:1px dashed #dfe6ef;font-family:inherit}
+.${ROW} .grp{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.${ROW} span{display:inline-flex;align-items:center;gap:5px;height:28px;border-radius:8px;padding:0 10px;font-size:12.5px;font-weight:700;line-height:1;white-space:nowrap}
 .${ROW} .pick{background:#ffa630;color:#062653;font-weight:900}
-.${ROW} .direct{background:#e6f6fc;color:#0b2d5b;box-shadow:inset 0 0 0 1px #84d2f3}
-.${ROW} .stop{background:#fff4e5;color:#7a3d00;box-shadow:inset 0 0 0 1px #ffc978}
-.${ROW} .bag-in{background:#e6f6fc;color:#0b2d5b}
-.${ROW} .bag-out{background:#f1f4f8;color:#3b4a60}
-.${ROW} .fits{background:#0b2d5b;color:#fff}
-.${ROW} .diff{background:#f1f4f8;color:#0b2d5b;box-shadow:inset 0 0 0 1px #cfd8e3}
-.${ROW} .over{background:#fff1f2;color:#9f1239;box-shadow:inset 0 0 0 1px #fecdd3}
+.${ROW} .fact{background:#f1f5fa;color:#0b2d5b}
+.${ROW} .fact.warn{color:#8a4b00}
+.${ROW} .fact.muted{color:#5b6b82}
+.${ROW} .fits{background:#e7f6ee;color:#135d3a}
+.${ROW} .over{background:#fff1f2;color:#9f1239}
+.${ROW} .diff{background:transparent;color:#3b4a60;box-shadow:inset 0 0 0 1px #d5dde8}
 [data-sfr-tag]{font-weight:800 !important;font-size:13px !important;padding:3px 12px !important;border-radius:999px !important}
 [data-sfr-tag="best"]{background:#ffa630 !important;color:#062653 !important}
 [data-sfr-tag="cheapest"]{background:#3bb6e4 !important;color:#062653 !important}
@@ -222,15 +226,16 @@ export default function FlightResultsGuide({
         if (state) p.card.setAttribute("data-sfr-state", state);
         else p.card.removeAttribute("data-sfr-state");
 
-        // The notes row.
-        const notes: HTMLElement[] = [];
-        if (state === "featured") notes.push(chip("pick", t.cardPicked));
+        // The notes row: facts on one side, budget on the other.
+        const facts: HTMLElement[] = [];
+        const money2: HTMLElement[] = [];
+        if (state === "featured") facts.push(chip("pick", `⭐ ${t.cardPicked.replace(/^⭐\s*/, "")}`));
         const legs = [...p.card.querySelectorAll('[class*="Flight-module__cardFlight___"]')];
         legs.forEach((leg, i) => {
           const label = legs.length === 2 ? (i === 0 ? t.cardOutbound : t.cardReturn) : t.cardLeg;
           const stops = [...leg.querySelectorAll('[class*="cardFlightTravelLineTransfer"]')];
           if (stops.length === 0) {
-            notes.push(chip("direct", `✈ ${label}: ${t.cardDirect}`));
+            facts.push(chip("fact", `✈ ${label} · ${t.cardDirect}`));
             return;
           }
           const where = stops
@@ -241,18 +246,18 @@ export default function FlightResultsGuide({
             })
             .join("، ");
           const count = stops.length === 1 ? t.cardOneStop : t.cardStops.replace("{count}", String(stops.length));
-          notes.push(chip("stop", `↺ ${label}: ${count} — ${where}`));
+          facts.push(chip("fact warn", `✈ ${label} · ${count} — ${where}`));
         });
         const bag = p.card.querySelector('[class*="cardLeftBaggageLeftPc"]')?.textContent || "";
-        if (bag.includes("+")) notes.push(chip("bag-out", `🧳 ${t.cardBagExtra}`));
-        else if (/تشمل الأمتعة|baggage included/i.test(p.card.textContent || "")) notes.push(chip("bag-in", `🧳 ${t.cardBagIn}`));
+        if (bag.includes("+")) facts.push(chip("fact muted", `🧳 ${t.cardBagExtra}`));
+        else if (/تشمل الأمتعة|baggage included/i.test(p.card.textContent || "")) facts.push(chip("fact", `🧳 ${t.cardBagIn}`));
 
         if (filtering && p.price !== null) {
-          if (state === "over") notes.push(chip("over", t.cardOver.replace("{amount}", money(p.price - budget))));
-          else notes.push(chip("fits", t.cardFits.replace("{amount}", money(budget - p.price))));
+          if (state === "over") money2.push(chip("over", t.cardOver.replace("{amount}", money(p.price - budget))));
+          else money2.push(chip("fits", `✓ ${t.cardFits.replace("{amount}", money(budget - p.price))}`));
           if (state === "within" && pick?.price != null) {
             const d = p.price - pick.price;
-            notes.push(
+            money2.push(
               chip(
                 "diff",
                 d > 0
@@ -264,14 +269,20 @@ export default function FlightResultsGuide({
             );
           }
         }
-
+        const notes = [...facts, ...money2];
         const key = notes.map((n) => n.textContent).join("|");
         const existing = p.card.querySelector(`:scope > .${ROW}`);
         if (existing?.getAttribute("data-key") === key) continue;
         const row = document.createElement("div");
         row.className = ROW;
         row.setAttribute("data-key", key);
-        notes.forEach((n) => row.appendChild(n));
+        for (const items of [facts, money2]) {
+          if (items.length === 0) continue;
+          const g = document.createElement("div");
+          g.className = "grp";
+          items.forEach((n) => g.appendChild(n));
+          row.appendChild(g);
+        }
         if (existing) existing.replaceWith(row);
         else p.card.prepend(row);
       }
