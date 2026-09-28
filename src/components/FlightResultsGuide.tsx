@@ -796,12 +796,14 @@ function FlightCard({
                   />
                 </span>
                 <span className="min-w-0 flex-1 text-xs font-bold text-navy-800">
-                  <span className="block whitespace-nowrap">{t.bagAdd}</span>
-                  {flight.bagAllowance && <span className="block font-semibold text-navy-500">{flight.bagAllowance}</span>}
+                  <span className="block">{t.bagAdd}</span>
+                  <span className="mt-0.5 flex items-center justify-between gap-2">
+                    <span className="font-semibold text-navy-500">{flight.bagAllowance}</span>
+                    <bdi dir="ltr" className="font-extrabold text-navy-950">
+                      +{money(flight.bagExtra)}
+                    </bdi>
+                  </span>
                 </span>
-                <bdi dir="ltr" className="text-xs font-extrabold text-navy-950">
-                  +{money(flight.bagExtra)}
-                </bdi>
               </label>
               {bagOver > 0 && (
                 <p className="border-t border-mist-100 px-3 py-2 text-xs font-bold text-rose-700">
