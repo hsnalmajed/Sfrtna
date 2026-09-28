@@ -333,6 +333,7 @@ export default function FlightResultsGuide({
         const next = document.createElement("div");
         next.className = MORE;
         next.setAttribute("data-key", key);
+        next.addEventListener("click", (e) => e.stopPropagation());
         const button = (cls: string, label: string, open: boolean, which: "within" | "over") => {
           const b = document.createElement("button");
           b.type = "button";
@@ -344,7 +345,16 @@ export default function FlightResultsGuide({
           arr.setAttribute("aria-hidden", "true");
           arr.textContent = "▼";
           b.append(arr);
-          b.addEventListener("click", () => window.dispatchEvent(new CustomEvent(TOGGLE_EVENT, { detail: which })));
+          // The whole card opens the widget's ticket drawer on click; this
+          // button must not.
+          for (const type of ["pointerdown", "mousedown", "pointerup", "mouseup"]) {
+            b.addEventListener(type, (e) => e.stopPropagation());
+          }
+          b.addEventListener("click", (e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            window.dispatchEvent(new CustomEvent(TOGGLE_EVENT, { detail: which }));
+          });
           next.appendChild(b);
         };
         if (withinCount > 0) button("b-within", withinLabel, openW, "within");
