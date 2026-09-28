@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Locale } from "@/lib/types";
 import { getDictionary } from "@/lib/dictionaries";
 import { findAirport } from "@/lib/airports";
@@ -44,6 +44,8 @@ import Icon from "@/components/ui/Icon";
 
 const STYLE_ID = "sfr-guide-style";
 const ROW = "sfr-notes";
+const MORE = "sfr-more";
+const TOGGLE_EVENT = "sfr-guide-toggle";
 
 const CSS = `
 /* One tidy line across the top of the card: the flight's facts on one side,
@@ -58,13 +60,30 @@ const CSS = `
 .${ROW} .fact.warn{color:#8a4b00}
 .${ROW} .fact.muted{color:#5b6b82}
 .${ROW} .fits{background:#e7f6ee;color:#135d3a}
-.${ROW} .over{background:#fff1f2;color:#9f1239}
 .${ROW} .diff{background:transparent;color:#3b4a60;box-shadow:inset 0 0 0 1px #d5dde8}
 [data-sfr-tag]{font-weight:800 !important;font-size:13px !important;padding:3px 12px !important;border-radius:999px !important}
 [data-sfr-tag="best"]{background:#ffa630 !important;color:#062653 !important}
 [data-sfr-tag="cheapest"]{background:#3bb6e4 !important;color:#062653 !important}
 [data-sfr-state="featured"]{box-shadow:0 0 0 2px #ffa630,0 12px 30px -12px rgba(6,38,83,.35) !important}
 [class*="DirectFlights-module__root"]{display:none !important}
+/* The two ways on, at the foot of the picked flight's own card. */
+.${MORE}{grid-column:1 / -1;display:flex;flex-wrap:wrap;gap:10px;padding:12px 16px 14px;border-top:1px dashed #dfe6ef;font-family:inherit}
+.${MORE} button{flex:1 1 240px;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;border:0;border-radius:12px;padding:8px 16px;font:inherit;font-size:14px;font-weight:800;line-height:1.3;cursor:pointer;transition:transform .15s,box-shadow .15s,background .15s}
+.${MORE} button:hover{transform:translateY(-1px)}
+.${MORE} button:focus-visible{outline:2px solid #ffa630;outline-offset:2px}
+.${MORE} .b-within{background:#e8f6fc;color:#0b2d5b;box-shadow:inset 0 0 0 1.5px #3bb6e4}
+.${MORE} .b-within[aria-pressed="true"]{background:#0b2d5b;color:#fff;box-shadow:none}
+.${MORE} .b-over{background:linear-gradient(135deg,#e11d48,#f97316);color:#fff;box-shadow:0 8px 20px -8px rgba(225,29,72,.6)}
+.${MORE} .b-over[aria-pressed="true"]{background:#fff1f2;color:#9f1239;box-shadow:inset 0 0 0 1.5px #fda4af}
+.${MORE} .arr{font-size:12px;transition:transform .2s}
+.${MORE} [aria-pressed="true"] .arr{transform:rotate(180deg)}
+/* The pick first, then what else fits, then what does not, then "more". */
+:host([data-sfr-filter]) [data-sfr-list]{display:flex !important;flex-direction:column}
+:host([data-sfr-filter]) [data-sfr-state="featured"]{order:0}
+:host([data-sfr-filter]) [data-sfr-state="within"]{order:1;box-shadow:0 0 0 1.5px #9fdcf3 !important}
+:host([data-sfr-filter]) [data-sfr-state="over"]{order:2;box-shadow:0 0 0 1.5px #fecdd3 !important}
+:host([data-sfr-filter]) [data-sfr-list] > [class*="TicketsWidget-module__moreTickets"]{order:3}
+.${ROW} .over{background:#e11d48;color:#fff}
 :host([data-sfr-filter]:not([data-show-within])) [data-sfr-state="within"]{display:none !important}
 :host([data-sfr-filter]:not([data-show-over])) [data-sfr-state="over"]{display:none !important}
 :host([data-sfr-filter]:not([data-show-within]):not([data-show-over])) [class*="TicketsWidget-module__moreTickets"]{display:none !important}
@@ -149,7 +168,8 @@ export default function FlightResultsGuide({
   const [showWithin, setShowWithin] = useState(false);
   const [showOver, setShowOver] = useState(false);
   const money = (n: number) => moneyIn(currency, n);
-
+  // Lets the show/hide effect redraw the in-card buttons at once.
+  const refresh = useRef<() => void>(() => {});
 
   // Read the cards, mark them, write their notes — every second, since the
   // widget re-draws them whenever it sorts, filters or loads more.
@@ -209,6 +229,7 @@ export default function FlightResultsGuide({
         within.find((p) => p.best) ??
         (within.length ? within.reduce((a, b) => ((a.price ?? 0) <= (b.price ?? 0) ? a : b)) : null);
 
+      if (cards[0]?.parentElement) cards[0].parentElement.setAttribute("data-sfr-list", "");
       if (filtering) host.setAttribute("data-sfr-filter", "");
       else host.removeAttribute("data-sfr-filter");
       // Nothing fits: no list to filter, so no filter column beside it.
@@ -287,6 +308,51 @@ export default function FlightResultsGuide({
         else p.card.prepend(row);
       }
 
+      // The other options, and the flights over budget, open from the
+      // picked flight's own card — not from a panel above it.
+      const withinCount = within.length ? within.length - 1 : 0;
+      const overPrices = filtering
+        ? priced.filter((p) => p.price !== null && p.price > budget).map((p) => p.price as number)
+        : [];
+      for (const p of priced) {
+        const bar = p.card.querySelector(`:scope > .${MORE}`);
+        if (p !== pick || (withinCount === 0 && overPrices.length === 0)) {
+          bar?.remove();
+          continue;
+        }
+        const openW = host.hasAttribute("data-show-within");
+        const openO = host.hasAttribute("data-show-over");
+        const overLabel = openO
+          ? t.guideHideOver
+          : t.guideShowOver
+              .replace("{count}", String(overPrices.length))
+              .replace("{amount}", overPrices.length ? money(Math.min(...overPrices) - budget) : "");
+        const withinLabel = openW ? t.guideHideWithin : t.guideShowWithin.replace("{count}", String(withinCount));
+        const key = `${withinCount}|${overPrices.length}|${withinLabel}|${overLabel}`;
+        if (bar?.getAttribute("data-key") === key) continue;
+        const next = document.createElement("div");
+        next.className = MORE;
+        next.setAttribute("data-key", key);
+        const button = (cls: string, label: string, open: boolean, which: "within" | "over") => {
+          const b = document.createElement("button");
+          b.type = "button";
+          b.className = cls;
+          b.setAttribute("aria-pressed", String(open));
+          b.append(document.createTextNode(label));
+          const arr = document.createElement("span");
+          arr.className = "arr";
+          arr.setAttribute("aria-hidden", "true");
+          arr.textContent = "▼";
+          b.append(arr);
+          b.addEventListener("click", () => window.dispatchEvent(new CustomEvent(TOGGLE_EVENT, { detail: which })));
+          next.appendChild(b);
+        };
+        if (withinCount > 0) button("b-within", withinLabel, openW, "within");
+        if (overPrices.length > 0) button("b-over", overLabel, openO, "over");
+        if (bar) bar.replaceWith(next);
+        else p.card.appendChild(next);
+      }
+
       const searching = Boolean(root.querySelector('[class*="SearchProgressbar"]'));
       if (searching) sawProgress = true;
       const prices = priced.map((p) => p.price).filter((n): n is number => n !== null);
@@ -312,6 +378,7 @@ export default function FlightResultsGuide({
       });
     }
 
+    refresh.current = pass;
     pass();
     const id = window.setInterval(pass, 800);
     return () => window.clearInterval(id);
@@ -325,16 +392,24 @@ export default function FlightResultsGuide({
     else host.removeAttribute("data-show-within");
     if (showOver) host.setAttribute("data-show-over", "");
     else host.removeAttribute("data-show-over");
+    refresh.current();
   }, [showWithin, showOver]);
+
+  // The buttons inside the card live in the widget's shadow root; they
+  // reach this component through a window event.
+  useEffect(() => {
+    const onToggle = (e: Event) => {
+      const which = (e as CustomEvent<string>).detail;
+      if (which === "within") setShowWithin((v) => !v);
+      if (which === "over") setShowOver((v) => !v);
+    };
+    window.addEventListener(TOGGLE_EVENT, onToggle);
+    return () => window.removeEventListener(TOGGLE_EVENT, onToggle);
+  }, []);
 
   const hasBudget = budget > 0;
   const noneWithin = hasBudget && stats.settled && stats.comparable && stats.total > 0 && stats.pickPrice === null;
   const picked = hasBudget && stats.comparable && stats.pickPrice !== null;
-
-  const toggle = (on: boolean) =>
-    `inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-bold ring-1 transition ${
-      on ? "bg-navy-900 text-white ring-navy-900" : "bg-white text-navy-800 ring-mist-300 hover:ring-navy-300"
-    }`;
 
   return (
     <div
@@ -388,20 +463,25 @@ export default function FlightResultsGuide({
       )}
       {stats.settled && stats.total === 0 && <p className="text-sm text-navy-600">{t.guideNoResults}</p>}
 
-      {/* The choice to see more stays with the traveller. */}
-      {hasBudget && stats.comparable && (stats.within > 0 || stats.over > 0) && (
-        <div className="mt-4 flex flex-wrap gap-2">
-          {stats.within > 0 && (
-            <button type="button" aria-pressed={showWithin} onClick={() => setShowWithin((v) => !v)} className={toggle(showWithin)}>
-              {showWithin ? t.guideHideWithin : t.guideShowWithin.replace("{count}", String(stats.within))}
-            </button>
-          )}
-          {stats.over > 0 && (
-            <button type="button" aria-pressed={showOver} onClick={() => setShowOver((v) => !v)} className={toggle(showOver)}>
-              {showOver ? t.guideHideOver : t.guideShowOver.replace("{count}", String(stats.over))}
-            </button>
-          )}
-        </div>
+      {/* Nothing fits, so there is no card to hold the button: it sits here. */}
+      {noneWithin && stats.over > 0 && (
+        <button
+          type="button"
+          aria-pressed={showOver}
+          onClick={() => setShowOver((v) => !v)}
+          className={`mt-4 inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-extrabold transition hover:-translate-y-px ${
+            showOver
+              ? "bg-white text-rose-800 ring-1 ring-rose-300"
+              : "bg-gradient-to-l from-rose-600 to-orange-500 text-white shadow-[0_8px_20px_-8px_rgba(225,29,72,0.6)]"
+          }`}
+        >
+          {showOver
+            ? t.guideHideOver
+            : t.guideShowOver
+                .replace("{count}", String(stats.over))
+                .replace("{amount}", money((stats.cheapest ?? budget) - budget))}
+          <span aria-hidden="true" className={`text-xs transition ${showOver ? "rotate-180" : ""}`}>▼</span>
+        </button>
       )}
     </div>
   );
