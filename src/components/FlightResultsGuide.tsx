@@ -182,12 +182,13 @@ function ticketsRoot(): ShadowRoot | null {
 function cardById(id: string): Element | null {
   return ticketsRoot()?.querySelector(`[data-testid="${CSS.escape(id)}"]`) ?? null;
 }
-/** "4س 25دقيقة" / "4h 25m" → 265. */
+/** "4س 25دقيقة" / "1يوم 3س" / "1d 3h 25m" → minutes. */
 function minutesOf(text: string): number {
   const s = western(text);
+  const d = s.match(/(\d+)\s*(?:يوم|أيام|ايام|d)/i);
   const h = s.match(/(\d+)\s*(?:س|h)/i);
   const m = s.match(/(\d+)\s*(?:د|m)/i);
-  return (h ? Number(h[1]) * 60 : 0) + (m ? Number(m[1]) : 0);
+  return (d ? Number(d[1]) * 1440 : 0) + (h ? Number(h[1]) * 60 : 0) + (m ? Number(m[1]) : 0);
 }
 
 type Tab = "best" | "cheapest" | "fastest";
