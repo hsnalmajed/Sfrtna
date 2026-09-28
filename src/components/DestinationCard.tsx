@@ -164,7 +164,13 @@ export default function DestinationCard({
             </p>
             {flight.priceOnly && (
               <p className="text-xs text-navy-400">
-                {flight.datesApproximate ? dict.results.approxDatesNote : dict.results.priceObserved}
+                {flight.nearDays === 0
+                  ? dict.results.priceForYourDates
+                  : flight.nearDays !== undefined
+                    ? dict.results.priceNearDates.replace("{n}", String(flight.nearDays))
+                    : flight.datesApproximate
+                      ? dict.results.approxDatesNote
+                      : dict.results.priceObserved}
               </p>
             )}
           </div>

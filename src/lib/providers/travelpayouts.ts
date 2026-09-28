@@ -385,3 +385,58 @@ export async function oneWayFaresFrom(
   }
   return out;
 }
+
+/** The cheapest one-way fare seen for each departure day of a month. */
+export interface DayFare {
+  price: number;
+  airline: string;
+  transfers: number | null;
+}
+
+/**
+ * Per-day one-way fares, origin → destination, for the month of `month`
+ * (YYYY-MM): { "YYYY-MM-DD": fare per seat }.
+ *
+ * This is what prices a trip for *its* dates: the fare on the day out plus
+ * the fare on the day back. Checked on 28 Sep 2026 against the live search —
+ * Riyadh–Baku, 25 Oct to 1 Nov: 660 out + the return day ≈ 1,300 a person;
+ * the live search's cheapest was 1,299. The month's single lowest fare, which
+ * this replaces, had said 788.
+ */
+export async function dayFares(
+  origin: string,
+  destination: string,
+  month: string,
+  currency: string
+): Promise<Map<string, DayFare>> {
+  const out = new Map<string, DayFare>();
+  if (!token() || !origin || !destination || !month) return out;
+  const url = new URL(`${BASE}/aviasales/v3/grouped_prices`);
+  url.searchParams.set("origin", origin);
+  url.searchParams.set("destination", destination);
+  url.searchParams.set("departure_at", month);
+  url.searchParams.set("group_by", "departure_at");
+  url.searchParams.set("currency", currency.toLowerCase());
+  try {
+    const res = await fetch(url.toString(), {
+      headers: { "X-Access-Token": token(), Accept: "application/json" },
+    });
+    if (!res.ok) return out;
+    const body = (await res.json()) as {
+      data?: Record<string, { price?: number; airline?: string; transfers?: number }>;
+    };
+    for (const [day, row] of Object.entries(body.data ?? {})) {
+      const price = Number(row?.price);
+      if (!Number.isFinite(price) || price <= 0) continue;
+      const code = (row.airline || "").toUpperCase();
+      out.set(day.slice(0, 10), {
+        price: Math.round(price),
+        airline: AIRLINE_NAMES[code] || code || "—",
+        transfers: typeof row.transfers === "number" ? row.transfers : null,
+      });
+    }
+  } catch {
+    // Empty: the caller says "no fare seen" rather than guess.
+  }
+  return out;
+}

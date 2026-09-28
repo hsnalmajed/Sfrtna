@@ -3,7 +3,9 @@ import { resolveIata, searchFlights, searchHotels } from "@/lib/flights";
 import { suggestRoutes } from "@/lib/routeSuggest";
 import { DESTINATIONS } from "@/lib/destinations";
 import { placeForDestination } from "@/lib/destinationPlace";
+import { dayFares, type DayFare } from "@/lib/providers/travelpayouts";
 import type {
+  FlightOffer,
   DestinationSuggestion,
   DiscoverParams,
   SearchParams,
@@ -14,6 +16,66 @@ function addDays(dateStr: string, days: number) {
   const d = new Date(dateStr);
   d.setDate(d.getDate() + days);
   return d.toISOString().slice(0, 10);
+}
+
+/** The fare on `date`, or the nearest seen within two days either side. */
+function nearest(map: Map<string, DayFare>, date: string): { fare: DayFare; off: number } | null {
+  for (let off = 0; off <= 2; off++) {
+    for (const sign of off === 0 ? [0] : [-1, 1]) {
+      const day = addDays(date, sign * off);
+      const fare = map.get(day);
+      if (fare) return { fare, off };
+    }
+  }
+  return null;
+}
+
+/**
+ * The trip's flight, priced from its own days: the cheapest fare seen on the
+ * day out, plus the cheapest seen on the day back. Checked against the live
+ * search (see dayFares) this lands within a few riyals, where the month's
+ * lowest fare — the old method — was off by hundreds either way.
+ */
+async function datedFlight(
+  params: DiscoverParams,
+  destination: (typeof DESTINATIONS)[number],
+  returnDate: string | undefined
+): Promise<FlightOffer | null> {
+  const origin = resolveIata(params.origin);
+  const [outMap, backMap] = await Promise.all([
+    dayFares(origin, destination.code, params.departDate.slice(0, 7), params.currency),
+    returnDate ? dayFares(destination.code, origin, returnDate.slice(0, 7), params.currency) : Promise.resolve(null),
+  ]);
+  const out = nearest(outMap, params.departDate);
+  const back = returnDate && backMap ? nearest(backMap, returnDate) : null;
+  if (!out || (returnDate && !back)) return null;
+  if (params.directFlightsOnly && (out.fare.transfers !== 0 || (back && back.fare.transfers !== 0))) return null;
+  const perSeat = out.fare.price + (back?.fare.price ?? 0);
+  const paying = Math.max(1, params.adults + (params.childrenAges?.length ?? 0));
+  const transfers = [out.fare.transfers, back?.fare.transfers].filter((t) => t !== undefined);
+  const known = transfers.every((t) => t !== null);
+  return {
+    id: `day-${destination.code}-${params.departDate}-${returnDate ?? ""}`,
+    airline: back && back.fare.airline !== out.fare.airline ? `${out.fare.airline} / ${back.fare.airline}` : out.fare.airline,
+    airlineCode: "",
+    origin,
+    destination: destination.code,
+    departTime: params.departDate,
+    arriveTime: params.departDate,
+    durationMinutes: 0,
+    stops: known ? Math.max(...(transfers as number[])) : 0,
+    stopsKnown: known,
+    price: perSeat * paying,
+    pricePerPerson: perSeat,
+    currency: params.currency.toUpperCase(),
+    isMock: false,
+    bookingHint: "Aviasales",
+    layoverCity: null,
+    layoverDurationMinutes: null,
+    baggageIncluded: false,
+    priceOnly: true,
+    nearDays: Math.max(out.off, back?.off ?? 0),
+  };
 }
 
 async function suggestForDestination(
@@ -47,8 +109,15 @@ async function suggestForDestination(
   const wantsFlight = params.tripType !== "hotel";
   const wantsHotel = params.tripType !== "flight";
 
+  // With a live fare source, flights are priced from the trip's own days;
+  // without one (local development) the sample search stands in.
+  const dated = Boolean(process.env.TRAVELPAYOUTS_TOKEN);
   const [flights, hotels] = await Promise.all([
-    wantsFlight ? searchFlights(searchParams) : Promise.resolve([]),
+    wantsFlight
+      ? dated
+        ? datedFlight(params, destination, searchParams.returnDate).then((f) => (f ? [f] : []))
+        : searchFlights(searchParams)
+      : Promise.resolve([]),
     wantsHotel ? searchHotels(searchParams, nights) : Promise.resolve([]),
   ]);
 

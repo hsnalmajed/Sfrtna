@@ -70,6 +70,11 @@ export interface FlightOffer {
   /** True when `stops` is something the source actually told us. */
   stopsKnown?: boolean;
   /**
+   * Priced from the fares seen on the trip's own days: 0 when both days had
+   * a fare, otherwise how many days away the nearest seen fare was.
+   */
+  nearDays?: number;
+  /**
    * The fare for one adult, when `price` is that fare multiplied by the
    * party. Cached sources quote a single seat; the card shows both so nobody
    * compares our total against a per-seat price on the partner's site.
