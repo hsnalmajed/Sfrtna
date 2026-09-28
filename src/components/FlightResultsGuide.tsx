@@ -78,7 +78,8 @@ function css(bookLabel: string): string {
 
 /* "Book this flight" instead of the widget's "Select ticket". */
 [class*="FlightCard-module__cardLeftButton"] > span{display:none !important}
-[class*="FlightCard-module__cardLeftButton"]::after{content:"${label}";font-weight:800}
+/* The widget uses ::after as a transparent hover overlay; it becomes the label. */
+[class*="FlightCard-module__cardLeftButton"]::after{content:"${label}" !important;position:static !important;opacity:1 !important;background:none !important;width:auto !important;height:auto !important;inset:auto !important;font-family:inherit;font-weight:800}
 
 /* The two ways on, under the picked flight's booking button. */
 .${MORE}{display:flex;flex-direction:column;gap:8px;width:100%;margin-top:12px;font-family:inherit}
@@ -294,7 +295,8 @@ export default function FlightResultsGuide({
         legs.forEach((leg, i) => {
           const label = legs.length === 2 ? (i === 0 ? t.cardOutbound : t.cardReturn) : t.cardLeg;
           const ends = [...leg.querySelectorAll('[class*="cardFlightInfo"]')];
-          const duration = text(leg.querySelector('[class*="cardFlightTravelTop"]')).replace(/^[^:]*:\s*/, "");
+          // "رحلة مباشرةمدة الرحلة: 4س 10دقيقة" → "4س 10دقيقة".
+          const duration = text(leg.querySelector('[class*="cardFlightTravelTime"]')).replace(/^.*:\s*/, "");
           minutes += minutesOf(duration);
           const stops = [...leg.querySelectorAll('[class*="cardFlightTravelLineTransfer"]')];
           let stopsText: string = t.cardDirect;
@@ -355,13 +357,26 @@ export default function FlightResultsGuide({
         }
 
         if (state && p.price !== null) {
-          const company = p.card.querySelector('[data-role="flight-card-air-company"]');
+          // Each airline at the top of the card: its logo, and its name as
+          // text or, when several share a card, in the logo's tooltip.
+          const companies = [
+            ...(p.card.querySelector('[class*="FlightCard-module__cardTop___"]') ?? p.card).querySelectorAll(
+              '[class*="AirCompany-module__cardAirCompany___"]'
+            ),
+          ];
+          const names = [
+            ...new Set(
+              companies
+                .map((c) => text(c.querySelector('[data-role="flight-card-air-company"]')) || text(c.querySelector('[class*="Tooltip-module__text"]')))
+                .filter(Boolean)
+            ),
+          ];
           collected.push({
             id: p.card.getAttribute("data-testid") || "",
             state,
             price: p.price,
-            airline: text(company),
-            logo: company?.querySelector("img")?.getAttribute("src") || "",
+            airline: names.join(" + "),
+            logo: companies[0]?.querySelector("img")?.getAttribute("src") || "",
             legs: legsOut,
             minutes,
             bag,
