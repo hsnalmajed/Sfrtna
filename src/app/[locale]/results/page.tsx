@@ -9,6 +9,7 @@ import TripCurrencyStrip from "@/components/TripCurrencyStrip";
 import FlightMetasearch from "@/components/FlightMetasearch";
 import FlightResultsGuide from "@/components/FlightResultsGuide";
 import VisaBadge from "@/components/VisaBadge";
+import VisaRequirementsDialog from "@/components/VisaRequirementsDialog";
 import { visaStatusFor } from "@/data/visaStatus";
 import Icon from "@/components/ui/Icon";
 import { currencyForCountry } from "@/lib/currencies";
@@ -164,6 +165,7 @@ function ResultsContent() {
   const originCityName = originAirport ? (locale === "ar" ? originAirport.cityAr : originAirport.cityEn) : search.origin;
   const homeCurrency = currencyForCountry(originCountry?.code);
   const visa = destinationCountry ? visaStatusFor(destinationCountry.code) : undefined;
+  const [visaOpen, setVisaOpen] = useState(false);
   const visaLabels = {
     free: dict.visa.statusFree,
     arrival: dict.visa.statusArrival,
@@ -355,6 +357,10 @@ function ResultsContent() {
         <FlightMetasearch locale={locale} prefill={flightSearchCode(search)} hideSearchForm />
       </div>
 
+      {visaOpen && destinationCountry && (
+        <VisaRequirementsDialog countryCode={destinationCountry.code} locale={locale} onClose={() => setVisaOpen(false)} />
+      )}
+
       {/* 3. Before they go: the visa and the money, side by side. */}
       {destinationCountry && destinationCountry.code !== "SA" && (
         <section className="mt-10">
@@ -365,21 +371,33 @@ function ResultsContent() {
             )}
           </h2>
           <div className="grid gap-4 md:grid-cols-2">
-            <div className="h-full rounded-2xl bg-white p-5 shadow-sm ring-1 ring-black/5">
-              <p className="text-xs font-bold text-navy-500">{dict.results.visaCardTitle}</p>
-              <div className="mt-2">
+            {/* Visa: the status at a glance, the whole story one tap away. */}
+            <div className="relative flex h-full flex-col overflow-hidden rounded-2xl bg-gradient-to-br from-navy-900 to-navy-990 p-5 text-white shadow-[var(--shadow-card)] ring-1 ring-white/10">
+              <span className="absolute inset-x-0 top-0 h-1 bg-gradient-to-l from-sun-300 to-sun-500" aria-hidden="true" />
+              <div className="flex items-center gap-3">
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-sun-400 text-xl" aria-hidden="true">
+                  🛂
+                </span>
+                <div>
+                  <p className="font-display text-base font-extrabold">{dict.results.visaCardTitle}</p>
+                  <p className="text-xs text-white/60">{dict.results.visaCardHint}</p>
+                </div>
+              </div>
+              <div className="mt-4">
                 {visa ? (
-                  <VisaBadge category={visa.category} label={visaLabels[visa.category]} />
+                  <VisaBadge category={visa.category} label={visaLabels[visa.category]} className="!text-sm" />
                 ) : (
-                  <p className="text-sm text-navy-700">{dict.results.visaCardUnknown}</p>
+                  <p className="text-sm text-white/80">{dict.results.visaCardUnknown}</p>
                 )}
               </div>
-              <Link
-                href={`/${locale}/visa/${destinationCountry.code}`}
-                className="mt-4 inline-block rounded-xl bg-navy-900 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-navy-800"
+              <button
+                type="button"
+                onClick={() => setVisaOpen(true)}
+                aria-haspopup="dialog"
+                className="mt-auto w-full rounded-xl bg-sun-400 px-4 py-3 text-sm font-extrabold text-navy-950 shadow-[var(--shadow-sun)] transition hover:bg-sun-300 sm:mt-5"
               >
                 {dict.results.visaCardLink}
-              </Link>
+              </button>
             </div>
             {showCurrencyStrip && homeCurrency && tripCurrency && (
               <TripCurrencyStrip from={homeCurrency} to={tripCurrency} locale={locale} />
@@ -407,8 +425,8 @@ function ResultsContent() {
               </p>
               <p className="mt-1 text-sm text-white/70">
                 {dict.results.hotelNextBody
-                  .replace("{checkIn}", search.departDate)
-                  .replace("{checkOut}", search.returnDate || "")
+                  .replace("{checkIn}", prettyDate(search.departDate))
+                  .replace("{checkOut}", prettyDate(search.returnDate || ""))
                   .replace("{nights}", nights === 1 ? dict.hotelResults.oneNight : dict.hotelResults.nights.replace("{count}", String(nights)))}
               </p>
             </div>

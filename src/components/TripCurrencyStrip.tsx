@@ -110,52 +110,54 @@ export default function TripCurrencyStrip({
   const converted = hasAmount ? (reversed ? typed / rate : typed * rate) : null;
 
   return (
-    <section className="h-full rounded-2xl bg-white p-5 shadow-sm ring-1 ring-black/5">
-      <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-4">
+    // Navy with a gold edge, the same card as the visa one beside it: the
+    // two things to settle before flying, set apart from the page.
+    <section className="relative flex h-full flex-col overflow-hidden rounded-2xl bg-gradient-to-br from-navy-900 to-navy-990 p-5 text-white shadow-[var(--shadow-card)] ring-1 ring-white/10">
+      <span className="absolute inset-x-0 top-0 h-1 bg-gradient-to-l from-sun-300 to-sun-500" aria-hidden="true" />
+      <div className="flex items-center gap-3">
+        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-sun-400 text-xl" aria-hidden="true">
+          💱
+        </span>
         <div>
-          <p className="text-xs font-bold text-navy-500">{dict.results.currencyHeading}</p>
-
-          <p className="mt-2 flex flex-wrap items-baseline gap-x-2 text-lg font-extrabold text-gray-900">
-            <Flag currency={from} />
-            <span>
-              1 {name(from)} ={" "}
-              <span className="text-brand-800">
-                {fmt(rate, to.decimals)} {name(to)}
-              </span>
-            </span>
-            <Flag currency={to} />
+          <p className="font-display text-base font-extrabold">
+            {dict.results.currencyHeading}: {name(to)}
           </p>
-
-          <p className="mt-1 text-sm text-gray-500">
-            100 {name(to)} ={" "}
-            <span className="font-bold text-gray-700">
-              {fmt(reverse, from.decimals)} {name(from)}
-            </span>
-          </p>
-        </div>
-
-        <div className="flex flex-wrap items-center gap-2">
-          <button
-            type="button"
-            aria-expanded={converting}
-            onClick={() => setConverting((v) => !v)}
-            className="rounded-xl border border-brand-200 px-4 py-2.5 text-sm font-bold text-brand-800 transition hover:bg-brand-50"
-          >
-            {converting ? dict.results.currencyConvertClose : dict.results.currencyConvert}
-          </button>
-          <a
-            href={googleRateUrl(hasAmount ? typed : 1, source_.code, target.code)}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="rounded-xl border border-gray-200 px-4 py-2.5 text-sm font-medium text-gray-600 transition hover:border-gray-300"
-          >
-            {dict.currency.checkOnGoogle}
-          </a>
+          <p className="text-xs text-white/60">{dict.results.currencyCardHint}</p>
         </div>
       </div>
 
+      <p className="mt-4 flex flex-wrap items-center gap-x-2 text-lg font-extrabold">
+        <Flag currency={from} />
+        <span>
+          1 {name(from)} = <span className="text-sun-400">{fmt(rate, to.decimals)} {name(to)}</span>
+        </span>
+        <Flag currency={to} />
+      </p>
+      <p className="mt-1 text-sm text-white/70">
+        100 {name(to)} = <span className="font-bold text-white">{fmt(reverse, from.decimals)} {name(from)}</span>
+      </p>
+
+      <div className="mt-auto flex flex-wrap items-center gap-2 pt-4">
+        <button
+          type="button"
+          aria-expanded={converting}
+          onClick={() => setConverting((v) => !v)}
+          className="flex-1 rounded-xl bg-white/10 px-4 py-3 text-sm font-bold text-white ring-1 ring-white/20 transition hover:bg-white/20"
+        >
+          {converting ? dict.results.currencyConvertClose : dict.results.currencyConvert}
+        </button>
+        <a
+          href={googleRateUrl(hasAmount ? typed : 1, source_.code, target.code)}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="rounded-xl px-3 py-3 text-xs font-semibold text-white/70 transition hover:text-white"
+        >
+          {dict.currency.checkOnGoogle} ↗
+        </a>
+      </div>
+
       {converting && (
-        <div className="mt-4 rounded-xl border border-brand-100 bg-brand-50/60 p-4">
+        <div className="mt-4 rounded-xl bg-white p-4 text-navy-950">
           <div className="flex flex-wrap items-end gap-3">
             <div className="min-w-[10rem] flex-1">
               <label
@@ -200,7 +202,7 @@ export default function TripCurrencyStrip({
         </div>
       )}
 
-      <p className="mt-3 text-xs leading-relaxed text-gray-400">
+      <p className="mt-3 text-xs leading-relaxed text-white/45">
         {dict.results.currencyNote}
         {source ? ` · ${source}` : ""}
       </p>
