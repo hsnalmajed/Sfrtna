@@ -15,8 +15,7 @@ import { cachedJson } from "@/lib/edgeCache";
 
 export const SEASON_FARE_ORIGIN = "RUH";
 
-/** { IATA: price per person, in SAR } for departures in `month` (YYYY-MM). */
-export async function seasonFares(month: string): Promise<Record<string, number>> {
+async function faresFor(month: string): Promise<Record<string, number>> {
   const table = await cachedJson<Record<string, number>>(
     `season-fares:${SEASON_FARE_ORIGIN}:${month}`,
     6 * 3600,
@@ -29,4 +28,19 @@ export async function seasonFares(month: string): Promise<Record<string, number>
     }
   );
   return table ?? {};
+}
+
+/**
+ * { IATA: price per person, in SAR }: the lowest round trip seen departing in
+ * any of `months` (YYYY-MM). Two months, not one, so that late in a month —
+ * when few of its departures are left to be seen — a city still has a fare.
+ * The page names both months.
+ */
+export async function seasonFares(months: string[]): Promise<Record<string, number>> {
+  const tables = await Promise.all(months.map(faresFor));
+  const out: Record<string, number> = {};
+  for (const t of tables) for (const [code, price] of Object.entries(t)) {
+    if (!(code in out) || price < out[code]) out[code] = price;
+  }
+  return out;
 }

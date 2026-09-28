@@ -51,10 +51,15 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
   // hours, so the homepage does not spend a subrequest on them every visit.
   const now = new Date();
   const monthKey = `${now.getFullYear()}-${String(month).padStart(2, "0")}`;
+  const nextMonth = month === 12 ? 1 : month + 1;
+  const nextKey = `${month === 12 ? now.getFullYear() + 1 : now.getFullYear()}-${String(nextMonth).padStart(2, "0")}`;
+  const fareMonths = isAr
+    ? `${monthName(month, loc)} و${monthName(nextMonth, loc)}`
+    : `${monthName(month, loc)} and ${monthName(nextMonth, loc)}`;
   const [cityPhotos, rates, fares] = await Promise.all([
     fetchCityPhotos(seasonOrder),
     cachedJson<Rates>("rates-usd", 6 * 3600, fetchRates),
-    seasonFares(monthKey),
+    seasonFares([monthKey, nextKey]),
   ]);
   const heroImage = heroImageOf(heroPick);
   const heroPhoto = heroImage.url;
@@ -275,8 +280,8 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
             seasonMethod: dict.home.seasonMethod,
             seasonTapHint: dict.home.seasonTapHint,
             seasonFare: dict.home.seasonFare,
-            seasonFareNote: dict.home.seasonFareNote.replace("{month}", monthName(month, loc)),
-            summaryFare: dict.home.summaryFare.replace("{month}", monthName(month, loc)),
+            seasonFareNote: dict.home.seasonFareNote.replace("{month}", fareMonths),
+            summaryFare: dict.home.summaryFare.replace("{month}", fareMonths),
             monthName: monthName(month, loc),
             summaryWeather: dict.home.summaryWeather,
             summaryBestMonths: dict.home.summaryBestMonths,
