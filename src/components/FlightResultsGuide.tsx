@@ -102,6 +102,7 @@ function clean(el: Element | null | undefined): string {
   return (el?.textContent || "").replace(/[\u202a-\u202e]/g, "").replace(/\s+/g, " ").trim();
 }
 
+
 interface Stop {
   city: string;
   wait: string;
@@ -117,15 +118,29 @@ interface Leg {
   /** Days later than it left: "+1" on the arrival time. */
   plusDays: number;
   duration: string;
+  minutes: number;
   stops: Stop[];
 }
 interface Flight {
   id: string;
+  /** The fare as found, without an added bag — what the budget is held to. */
   price: number;
   airlines: string[];
   logos: string[];
   legs: Leg[];
+  /** Average length of its flights, in minutes. */
+  avgMinutes: number;
+  /** Most stops on any one way. */
+  maxStops: number;
+  /** "in": the fare includes a checked bag; "extra": one can be added. */
   bag: "in" | "extra" | null;
+  /** What adding the bag costs, as the widget prices it. */
+  bagExtra: number | null;
+  /** "1×23 كجم". */
+  bagAllowance: string;
+  /** The traveller added the bag here; `total` is then the widget's own new fare. */
+  bagOn: boolean;
+  total: number;
   best: boolean;
 }
 
@@ -136,8 +151,9 @@ interface State {
   filtering: boolean;
   comparable: boolean;
   total: number;
-  pick: Flight | null;
-  within: Flight[];
+  /** Within the budget, cheapest first. */
+  fits: Flight[];
+  /** Over the budget, cheapest first. */
   over: Flight[];
   hasMore: boolean;
 }
@@ -148,15 +164,34 @@ const EMPTY: State = {
   filtering: false,
   comparable: true,
   total: 0,
-  pick: null,
-  within: [],
+  fits: [],
   over: [],
   hasMore: false,
 };
 
+/**
+ * Cards where the traveller added a bag through our switch, with the fare
+ * they had before it. The widget then shows the fare with the bag; we keep
+ * holding the flight to the budget by the fare without it.
+ */
+const bagBase = new Map<string, number>();
+
 function ticketsRoot(): ShadowRoot | null {
   return document.getElementById("tpwl-tickets")?.shadowRoot ?? null;
 }
+function cardById(id: string): Element | null {
+  return ticketsRoot()?.querySelector(`[data-testid="${CSS.escape(id)}"]`) ?? null;
+}
+/** "4س 25دقيقة" / "4h 25m" → 265. */
+function minutesOf(text: string): number {
+  const s = western(text);
+  const h = s.match(/(\d+)\s*(?:س|h)/i);
+  const m = s.match(/(\d+)\s*(?:د|m)/i);
+  return (h ? Number(h[1]) * 60 : 0) + (m ? Number(m[1]) : 0);
+}
+
+type Tab = "best" | "cheapest" | "fastest";
+type Sort = "cheapest" | "fastest";
 
 export default function FlightResultsGuide({
   locale,
@@ -174,9 +209,18 @@ export default function FlightResultsGuide({
 }) {
   const t = getDictionary(locale).results;
   const [state, setState] = useState<State>(EMPTY);
+  const [tab, setTab] = useState<Tab>("best");
   const [showWithin, setShowWithin] = useState(false);
   const [showOver, setShowOver] = useState(false);
+  const [sort, setSort] = useState<Sort>("cheapest");
+  const [onlyDirect, setOnlyDirect] = useState(false);
+  const [onlyBag, setOnlyBag] = useState(false);
   const money = (n: number) => moneyIn(currency, n);
+  const dur = (min: number) => {
+    const h = Math.floor(min / 60);
+    const m = Math.round(min % 60);
+    return `${h}${t.durHours} ${String(m).padStart(2, "0")}${t.durMinutes}`;
+  };
 
   // Read the widget's cards every 800ms: it re-draws them whenever it
   // sorts, loads more, or refreshes a fare.
@@ -189,7 +233,8 @@ export default function FlightResultsGuide({
     let lastChange = Date.now();
     let sawProgress = false;
 
-    function read(card: Element, price: number, best: boolean): Flight {
+    function read(card: Element, shown: number, best: boolean): Flight {
+      const id = card.getAttribute("data-testid") || "";
       const top = card.querySelector('[class*="FlightCard-module__cardTop___"]') ?? card;
       const companies = [...top.querySelectorAll('[class*="AirCompany-module__cardAirCompany___"]')];
       const airlines = [
@@ -214,6 +259,7 @@ export default function FlightResultsGuide({
           const wait = clean(s).replace(code, "").replace(/transfer/i, "").trim();
           return { city: cityOf(code), wait };
         });
+        const duration = clean(leg.querySelector('[class*="cardFlightTravelTime"]')).replace(/^.*:\s*/, "");
         return {
           depTime: part(dep, "cardFlightTime"),
           depCode: part(dep, "cardFlightAirport"),
@@ -223,13 +269,40 @@ export default function FlightResultsGuide({
           arrCode: part(arr, "cardFlightAirport"),
           arrCity: part(arr, "cardFlightCity"),
           plusDays,
-          duration: clean(leg.querySelector('[class*="cardFlightTravelTime"]')).replace(/^.*:\s*/, ""),
+          duration,
+          minutes: minutesOf(duration),
           stops,
         };
       });
-      const bagText = card.querySelector('[class*="cardLeftBaggageLeftPc"]')?.textContent || "";
-      const bag = bagText.includes("+") ? "extra" : /تشمل الأمتعة|baggage included/i.test(card.textContent || "") ? "in" : null;
-      return { id: card.getAttribute("data-testid") || "", price, airlines, logos, legs, bag, best };
+
+      // Baggage, as the widget prices it: "+308 ر.س" beside its switch
+      // when a bag can be added; the allowance in its tooltip.
+      const bagBox = card.querySelector('[class*="cardLeftBaggage"]');
+      const bagLabel = clean(card.querySelector('[class*="cardLeftBaggageLeftPc"]'));
+      const allowance = western(clean(card.querySelector('[class*="cardTooltipBaggageItem"]'))).match(/(\d+)\s*x\s*(\d+)/i);
+      const checked = Boolean((bagBox?.querySelector("input") as HTMLInputElement | null)?.checked);
+      const base = bagBase.get(id);
+      const bagOn = checked && base !== undefined;
+      const price = bagOn ? (base as number) : shown;
+      const bag: Flight["bag"] = bagOn || bagLabel.includes("+") ? "extra" : /تشمل الأمتعة|baggage included/i.test(bagLabel) ? "in" : null;
+      const bagExtra = bagOn ? shown - price : bagLabel.includes("+") ? amountOf(bagLabel.split("+")[1] ?? "") : null;
+
+      const minutes = legs.map((l) => l.minutes).filter((m) => m > 0);
+      return {
+        id,
+        price,
+        airlines,
+        logos,
+        legs,
+        avgMinutes: minutes.length ? minutes.reduce((a, b) => a + b, 0) / minutes.length : 0,
+        maxStops: legs.reduce((m, l) => Math.max(m, l.stops.length), 0),
+        bag,
+        bagExtra,
+        bagAllowance: allowance ? `${allowance[1]}×${allowance[2]} ${locale === "ar" ? "كجم" : "kg"}` : "",
+        bagOn,
+        total: shown,
+        best,
+      };
     }
 
     function pass() {
@@ -259,23 +332,12 @@ export default function FlightResultsGuide({
         ? priced.filter((p) => p.price !== null).map((p) => read(p.card, p.price as number, p.best))
         : [];
       const fits = flights.filter((f) => f.price <= budget).sort((a, b) => a.price - b.price);
-      const pick = fits.find((f) => f.best) ?? fits[0] ?? null;
-      const within = fits.filter((f) => f !== pick);
       const over = flights.filter((f) => f.price > budget).sort((a, b) => a.price - b.price);
 
       const searching = Boolean(root.querySelector('[class*="SearchProgressbar"]'));
       if (searching) sawProgress = true;
       const hasMore = Boolean(root.querySelector('[class*="TicketsWidget-module__moreTickets"]'));
-      const base = {
-        searching,
-        filtering,
-        comparable: budget <= 0 || comparable,
-        total: priced.length,
-        pick,
-        within,
-        over,
-        hasMore,
-      };
+      const base = { searching, filtering, comparable: budget <= 0 || comparable, total: priced.length, fits, over, hasMore };
       const key = JSON.stringify(base);
       if (key !== lastKey) {
         lastKey = key;
@@ -296,8 +358,15 @@ export default function FlightResultsGuide({
 
   /** The widget opens this flight's offers, as its own button would. */
   const book = useCallback((id: string) => {
-    const card = ticketsRoot()?.querySelector(`[data-testid="${CSS.escape(id)}"]`);
-    (card?.querySelector('[class*="FlightCard-module__cardLeftButton"]') as HTMLElement | null)?.click();
+    (cardById(id)?.querySelector('[class*="FlightCard-module__cardLeftButton"]') as HTMLElement | null)?.click();
+  }, []);
+  /** Add or remove the bag through the widget's own switch, so its fare is the one booked. */
+  const toggleBag = useCallback((f: Flight) => {
+    const input = cardById(f.id)?.querySelector('[class*="cardLeftBaggage"] input') as HTMLInputElement | null;
+    if (!input) return;
+    if (!input.checked) bagBase.set(f.id, f.price);
+    else window.setTimeout(() => bagBase.delete(f.id), 4000);
+    input.click();
   }, []);
   const loadMore = useCallback(() => {
     const more = ticketsRoot()?.querySelector('[class*="TicketsWidget-module__moreTickets"]');
@@ -305,18 +374,49 @@ export default function FlightResultsGuide({
   }, []);
 
   const hasBudget = budget > 0;
-  const { pick, within, over } = state;
-  const noneWithin = hasBudget && state.settled && state.filtering && !pick;
+  const { fits, over } = state;
+  const bestFit = fits.find((f) => f.best) ?? fits[0] ?? null;
+  const cheapestFit = fits[0] ?? null;
+  const fastestFit = fits.length
+    ? fits.reduce((a, b) => (b.avgMinutes > 0 && (a.avgMinutes === 0 || b.avgMinutes < a.avgMinutes) ? b : a))
+    : null;
+  const shown = tab === "cheapest" ? cheapestFit : tab === "fastest" ? fastestFit : bestFit;
+  const others = fits.filter((f) => f !== shown);
+  const noneWithin = hasBudget && state.settled && state.filtering && !shown;
   const flightsLabel = (n: number) =>
     countLabel(n, { one: t.flightsOne, two: t.flightsTwo, few: t.flightsFew, many: t.flightsMany });
   const overFrom = over.length ? over[0].price - budget : 0;
-  const card = {
-    locale,
-    t,
-    money,
-    travelers,
-    onBook: book,
-  };
+
+  const refine = (list: Flight[]) =>
+    list
+      .filter((f) => (!onlyDirect || f.maxStops === 0) && (!onlyBag || f.bag === "in" || f.bagOn))
+      .sort((a, b) => (sort === "fastest" ? a.avgMinutes - b.avgMinutes || a.price - b.price : a.price - b.price));
+  const withinShown = refine(others);
+  const overShown = refine(over);
+
+  const card = { locale, t, money, travelers, budget, onBook: book, onBag: toggleBag };
+
+  const chip = (on: boolean, onClick: () => void, label: string) => (
+    <button
+      type="button"
+      aria-pressed={on}
+      onClick={onClick}
+      className={`rounded-full px-4 py-2 text-sm font-bold transition ${
+        on ? "bg-navy-950 text-white" : "bg-white text-navy-800 ring-1 ring-mist-300 hover:ring-navy-300"
+      }`}
+    >
+      {label}
+    </button>
+  );
+  const controls = (
+    <div className="mb-3 mt-4 flex flex-wrap items-center gap-2">
+      {chip(sort === "cheapest", () => setSort("cheapest"), t.tabCheapest)}
+      {chip(sort === "fastest", () => setSort("fastest"), t.tabFastest)}
+      <span className="mx-1 h-6 w-px bg-mist-300" aria-hidden="true" />
+      {chip(onlyDirect, () => setOnlyDirect((v) => !v), t.chipDirect)}
+      {chip(onlyBag, () => setOnlyBag((v) => !v), t.chipBag)}
+    </div>
+  );
 
   const overToggle = over.length > 0 && (
     <button
@@ -335,30 +435,66 @@ export default function FlightResultsGuide({
     </button>
   );
 
+  const tabs: { key: Tab; label: string; f: Flight | null }[] = [
+    { key: "best", label: t.tabBest, f: bestFit },
+    { key: "cheapest", label: t.tabCheapest, f: cheapestFit },
+    { key: "fastest", label: t.tabFastest, f: fastestFit },
+  ];
+
   return (
     <section aria-live="polite">
-      {/* The answer, in a line. */}
-      {!state.settled && !pick && (
+      {!state.settled && !shown && (
         <p className="flex items-center gap-2 rounded-2xl bg-white px-5 py-4 text-sm font-semibold text-navy-600 shadow-sm ring-1 ring-black/5">
           <span className="h-2.5 w-2.5 animate-pulse rounded-full bg-sun-400" aria-hidden="true" />
           {t.guideSearching}
         </p>
       )}
 
-      {pick && (
+      {shown && (
         <>
-          <div className="mb-4 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+          <div className="mb-3 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
             <h2 className="font-display text-xl font-extrabold text-navy-950">{t.guidePickedTitle}</h2>
-            <p className="text-sm font-semibold text-navy-600">{t.pickLeft.replace("{amount}", money(budget - pick.price))}</p>
+            <p className="text-sm font-semibold text-navy-600">{t.pickLeft.replace("{amount}", money(budget - shown.price))}</p>
+          </div>
+
+          {/* Best, cheapest, fastest — within the budget, at a glance. */}
+          <div role="tablist" className="mb-6 grid grid-cols-3 overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-mist-200">
+            {tabs.map(({ key, label, f }, i) => {
+              const on = tab === key;
+              return (
+                <button
+                  key={key}
+                  type="button"
+                  role="tab"
+                  aria-selected={on}
+                  disabled={!f}
+                  onClick={() => setTab(key)}
+                  className={`px-3 py-3 text-start transition sm:px-5 ${i > 0 ? "border-s border-mist-200" : ""} ${
+                    on ? "bg-navy-950 text-white" : "text-navy-950 hover:bg-mist-50"
+                  }`}
+                >
+                  <span className={`block text-sm font-bold ${on ? "text-white/80" : "text-navy-600"}`}>{label}</span>
+                  <span className="mt-0.5 block font-display text-lg font-black sm:text-xl">
+                    {f ? <bdi dir="ltr">{money(f.price)}</bdi> : "—"}
+                  </span>
+                  {f && f.avgMinutes > 0 && (
+                    <span className={`block text-xs ${on ? "text-white/70" : "text-navy-500"}`}>
+                      {t.tabAvg.replace("{d}", dur(f.avgMinutes))}
+                    </span>
+                  )}
+                </button>
+              );
+            })}
           </div>
 
           <FlightCard
             {...card}
-            flight={pick}
+            flight={shown}
             featured
+            badge={tab === "cheapest" ? t.badgeCheapest : tab === "fastest" ? t.badgeFastest : t.pickBadge}
             aside={overToggle || null}
             foot={
-              within.length > 0 && (
+              others.length > 0 && (
                 <button
                   type="button"
                   aria-expanded={showWithin}
@@ -371,7 +507,7 @@ export default function FlightResultsGuide({
                   <span className="min-w-0 flex-1">
                     <span className="flex items-center gap-2 text-base font-extrabold text-navy-950">
                       {showWithin ? t.allWithinHide : t.withinBarTitle}
-                      <span className="rounded-full bg-navy-900 px-2 py-0.5 text-xs font-black text-white">{within.length}</span>
+                      <span className="rounded-full bg-navy-900 px-2 py-0.5 text-xs font-black text-white">{others.length}</span>
                     </span>
                     <span className="mt-0.5 block text-xs font-semibold text-navy-500">{t.withinBarSub}</span>
                   </span>
@@ -382,13 +518,19 @@ export default function FlightResultsGuide({
           />
 
           {showWithin && (
-            <ol className="mt-3 space-y-3">
-              {within.map((f) => (
-                <li key={f.id}>
-                  <FlightCard {...card} flight={f} diff={f.price - pick.price} />
-                </li>
-              ))}
-            </ol>
+            <>
+              {controls}
+              <ol className="space-y-3">
+                {withinShown.map((f) => (
+                  <li key={f.id}>
+                    <FlightCard {...card} flight={f} diff={f.price - shown.price} />
+                  </li>
+                ))}
+              </ol>
+              {withinShown.length === 0 && (
+                <p className="rounded-2xl bg-white px-5 py-4 text-sm text-navy-600 ring-1 ring-mist-200">{t.listNone}</p>
+              )}
+            </>
           )}
         </>
       )}
@@ -409,13 +551,19 @@ export default function FlightResultsGuide({
       )}
 
       {showOver && over.length > 0 && (
-        <ol className="mt-3 space-y-3">
-          {over.map((f) => (
-            <li key={f.id}>
-              <FlightCard {...card} flight={f} overBy={f.price - budget} diff={pick ? f.price - pick.price : undefined} />
-            </li>
-          ))}
-        </ol>
+        <>
+          {!showWithin && controls}
+          <ol className={`space-y-3 ${showWithin ? "mt-3" : ""}`}>
+            {overShown.map((f) => (
+              <li key={f.id}>
+                <FlightCard {...card} flight={f} overBy={f.price - budget} diff={shown ? f.price - shown.price : undefined} />
+              </li>
+            ))}
+          </ol>
+          {overShown.length === 0 && (
+            <p className="rounded-2xl bg-white px-5 py-4 text-sm text-navy-600 ring-1 ring-mist-200">{t.listNone}</p>
+          )}
+        </>
       )}
 
       {(showWithin || showOver) && state.hasMore && (
@@ -448,12 +596,10 @@ export default function FlightResultsGuide({
 type Dict = ReturnType<typeof getDictionary>["results"];
 
 /**
- * One flight, as a card: the airline and what the fare includes; each way
- * as departure — the line with its length and stops — arrival; and beside
- * it the total and the booking button. The pick adds its badge, the
- * over-budget box under the button and the "other flights" bar along its
- * foot; the others add their difference from the pick, or how far over
- * budget they are.
+ * One flight, as a card: the airline and two tags — direct (blue) or its
+ * stops (light red), bag included (green) or not (grey); each way as
+ * departure — the line with its length and stops — arrival; and beside it
+ * the total, the bag switch with its price, and the booking button.
  */
 function FlightCard({
   flight,
@@ -461,8 +607,11 @@ function FlightCard({
   t,
   money,
   travelers,
+  budget,
   onBook,
+  onBag,
   featured = false,
+  badge,
   aside,
   foot,
   diff,
@@ -473,16 +622,20 @@ function FlightCard({
   t: Dict;
   money: (n: number) => string;
   travelers: number;
+  budget: number;
   onBook: (id: string) => void;
+  onBag: (f: Flight) => void;
   featured?: boolean;
+  badge?: string;
   aside?: React.ReactNode;
   foot?: React.ReactNode;
   diff?: number;
   overBy?: number;
 }) {
   const isAr = locale === "ar";
-  const allDirect = flight.legs.length > 0 && flight.legs.every((l) => l.stops.length === 0);
   const labels = flight.legs.length === 2 ? [t.cardOutbound, t.cardReturn] : flight.legs.map(() => t.cardLeg);
+  const pay = flight.bagOn ? flight.total : flight.price;
+  const bagOver = flight.bagOn && budget > 0 ? flight.total - budget : 0;
 
   return (
     <article
@@ -490,10 +643,10 @@ function FlightCard({
         featured ? "mt-5 ring-2 ring-sun-400 shadow-[0_18px_40px_-24px_rgba(6,38,83,0.45)]" : "ring-1 ring-mist-200"
       }`}
     >
-      {featured && (
+      {featured && badge && (
         <span className="absolute -top-4 start-6 inline-flex items-center gap-1.5 rounded-full bg-sun-400 px-4 py-1.5 text-sm font-extrabold text-navy-950 shadow-sm">
           <Icon name="star" className="h-4 w-4" />
-          {t.pickBadge}
+          {badge}
         </span>
       )}
 
@@ -519,18 +672,30 @@ function FlightCard({
               </p>
             </div>
             <div className="flex flex-wrap gap-1.5">
-              {allDirect && (
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-mist-50 px-3 py-1.5 text-xs font-bold text-navy-800 ring-1 ring-mist-200">
-                  <Icon name="plane" className="h-3.5 w-3.5" />
-                  {t.allDirect}
-                </span>
-              )}
-              {flight.bag && (
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-mist-50 px-3 py-1.5 text-xs font-bold text-navy-800 ring-1 ring-mist-200">
+              {flight.legs.length > 0 &&
+                (flight.maxStops === 0 ? (
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-sky-50 px-3 py-1.5 text-xs font-bold text-sky-800 ring-1 ring-sky-200">
+                    <Icon name="plane" className="h-3.5 w-3.5" />
+                    {t.chipDirect}
+                  </span>
+                ) : (
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-rose-50 px-3 py-1.5 text-xs font-bold text-rose-700 ring-1 ring-rose-200">
+                    <Icon name="route" className="h-3.5 w-3.5" />
+                    {t.chipStops.replace("{n}", String(flight.maxStops))}
+                  </span>
+                ))}
+              {flight.bag === "in" || flight.bagOn ? (
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1.5 text-xs font-bold text-emerald-800 ring-1 ring-emerald-200">
                   <Icon name="luggage" className="h-3.5 w-3.5" />
-                  {flight.bag === "in" ? t.cardBagIn : t.cardBagExtra}
+                  {t.cardBagIn}
+                  {flight.bagAllowance && <span className="font-semibold">· {flight.bagAllowance}</span>}
                 </span>
-              )}
+              ) : flight.bag === "extra" ? (
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-mist-100 px-3 py-1.5 text-xs font-bold text-navy-600 ring-1 ring-mist-200">
+                  <Icon name="luggage" className="h-3.5 w-3.5" />
+                  {t.cardBagExtra}
+                </span>
+              ) : null}
             </div>
           </div>
 
@@ -556,19 +721,19 @@ function FlightCard({
                   </div>
                   <div className="min-w-0 text-center">
                     <p className="text-xs font-semibold text-navy-500">{l.duration}</p>
-                    <div className="my-1 flex items-center gap-1.5 text-navy-300" aria-hidden="true">
+                    <div className="my-1 flex items-center gap-1.5" aria-hidden="true">
                       <span className="h-2 w-2 rounded-full ring-2 ring-navy-200" />
                       <span className="h-px flex-1 bg-navy-200" />
                       {l.stops.map((_, k) => (
-                        <span key={k} className="h-2 w-2 rounded-full bg-amber-500" />
+                        <span key={k} className="h-2 w-2 rounded-full bg-rose-400" />
                       ))}
                       {l.stops.length > 0 && <span className="h-px flex-1 bg-navy-200" />}
                       <span className="h-2 w-2 rounded-full ring-2 ring-navy-200" />
                     </div>
-                    <p className={`truncate text-xs font-bold ${l.stops.length ? "text-amber-700" : "text-navy-600"}`}>
+                    <p className={`truncate text-xs font-bold ${l.stops.length ? "text-rose-700" : "text-sky-700"}`}>
                       {l.stops.length === 0
                         ? t.legDirect
-                        : `${l.stops.length === 1 ? t.cardOneStop : t.cardStops.replace("{count}", String(l.stops.length))} · ${l.stops
+                        : `${t.chipStops.replace("{n}", String(l.stops.length))} · ${l.stops
                             .map((s) => (s.wait ? `${s.city} (${s.wait})` : s.city))
                             .join("، ")}`}
                     </p>
@@ -577,7 +742,7 @@ function FlightCard({
                     <p className="font-display text-lg font-black text-navy-950 sm:text-xl">
                       {l.arrTime}
                       {l.plusDays > 0 && (
-                        <sup dir="ltr" className="ms-1 text-xs font-extrabold text-amber-700">
+                        <sup dir="ltr" className="ms-1 text-xs font-extrabold text-rose-700">
                           +{l.plusDays}
                         </sup>
                       )}
@@ -592,7 +757,7 @@ function FlightCard({
           </div>
         </div>
 
-        {/* The price and the way to book. */}
+        {/* The price, the bag, and the way to book. */}
         <div className="flex flex-col gap-3 border-t border-mist-100 p-4 sm:p-5 md:border-s md:border-t-0">
           <div>
             <p className="flex items-center gap-1.5 text-xs font-semibold text-navy-500">
@@ -600,10 +765,51 @@ function FlightCard({
               {t.priceTotalLabel}
             </p>
             <p className="mt-1 font-display text-3xl font-black text-navy-950">
-              <bdi dir="ltr">{money(flight.price)}</bdi>
+              <bdi dir="ltr">{money(pay)}</bdi>
             </p>
-            <p className="mt-0.5 text-xs text-navy-500">{t.travellersCount.replace("{count}", String(travelers))}</p>
+            <p className="mt-0.5 text-xs text-navy-500">
+              {t.travellersCount.replace("{count}", String(travelers))}
+              {flight.bagOn && ` · ${t.bagAdded}`}
+            </p>
           </div>
+
+          {flight.bag === "extra" && flight.bagExtra !== null && (
+            <div className="rounded-xl ring-1 ring-mist-200">
+              <label className="flex cursor-pointer items-center gap-3 px-3 py-2.5">
+                <input
+                  type="checkbox"
+                  checked={flight.bagOn}
+                  onChange={() => onBag(flight)}
+                  className="peer sr-only"
+                />
+                <span
+                  aria-hidden="true"
+                  className={`relative h-5 w-9 shrink-0 rounded-full transition peer-focus-visible:ring-2 peer-focus-visible:ring-sun-400 ${
+                    flight.bagOn ? "bg-emerald-600" : "bg-mist-300"
+                  }`}
+                >
+                  <span
+                    className={`absolute top-0.5 h-4 w-4 rounded-full bg-white shadow transition-all ${
+                      flight.bagOn ? "start-[18px]" : "start-0.5"
+                    }`}
+                  />
+                </span>
+                <span className="min-w-0 flex-1 text-xs font-bold text-navy-800">
+                  {t.bagAdd}
+                  {flight.bagAllowance && <span className="block font-semibold text-navy-500">{flight.bagAllowance}</span>}
+                </span>
+                <bdi dir="ltr" className="text-xs font-extrabold text-navy-950">
+                  +{money(flight.bagExtra)}
+                </bdi>
+              </label>
+              {bagOver > 0 && (
+                <p className="border-t border-mist-100 px-3 py-2 text-xs font-bold text-rose-700">
+                  <Amount template={t.bagOverBudget} amount={money(bagOver)} />
+                </p>
+              )}
+            </div>
+          )}
+
           {overBy !== undefined && (
             <p className="rounded-lg bg-rose-50 px-3 py-1.5 text-xs font-bold text-rose-800">
               <Amount template={t.cardOver} amount={money(overBy)} />
