@@ -136,7 +136,34 @@ async function exactCoverage(dep: string, ret: string) {
   );
 }
 
+/** `?days=DEST`: per-day fares for October from Riyadh, three ways of asking. */
+async function dayFares(dest: string) {
+  const token = process.env.TRAVELPAYOUTS_TOKEN || "";
+  const base = "https://api.travelpayouts.com/aviasales/v3/grouped_prices";
+  const get = async (q: string) => {
+    try {
+      const r = await fetch(`${base}?origin=RUH&destination=${dest}&group_by=departure_at&currency=sar&${q}`, {
+        headers: { "X-Access-Token": token },
+        cache: "no-store",
+      });
+      const j = r.ok ? await r.json() : null;
+      const data = (j?.data ?? {}) as Record<string, { price: number; return_at?: string }>;
+      return Object.entries(data).map(([day, v]) => `${day}:${v.price}${v.return_at ? "→" + v.return_at.slice(5, 10) : ""}`);
+    } catch {
+      return ["error"];
+    }
+  };
+  const [rt, rt7, ow] = await Promise.all([
+    get("departure_at=2026-10"),
+    get("departure_at=2026-10&trip_duration=7"),
+    get("departure_at=2026-10&one_way=true"),
+  ]);
+  return { dest, rt, rt7, ow };
+}
+
 export async function GET(req: Request) {
+  const days = new URL(req.url).searchParams.get("days");
+  if (days && /^[A-Z]{3}$/.test(days)) return NextResponse.json(await dayFares(days));
   const ex = new URL(req.url).searchParams.get("exact");
   if (ex && /^\d{4}-\d{2}-\d{2},\d{4}-\d{2}-\d{2}$/.test(ex)) {
     const [dep, ret] = ex.split(",");
