@@ -8,7 +8,7 @@ import type { RoomType, Locale, SearchParams, TripType } from "@/lib/types";
 import TripCurrencyStrip from "@/components/TripCurrencyStrip";
 import FlightMetasearch from "@/components/FlightMetasearch";
 import FlightResultsGuide from "@/components/FlightResultsGuide";
-import VisaBadge from "@/components/VisaBadge";
+import VisaBadge, { VISA_STYLES } from "@/components/VisaBadge";
 import VisaRequirementsDialog from "@/components/VisaRequirementsDialog";
 import { visaStatusFor } from "@/data/visaStatus";
 import Icon from "@/components/ui/Icon";
@@ -341,7 +341,69 @@ function ResultsContent() {
       </section>
 
       <div className="mx-auto max-w-6xl px-4 pb-10 pt-8 sm:px-6">
-      {/* 1. The answer: the flight picked within the budget, and the way
+      {/* 1. Before anything is priced: can they go, and what is the money.
+          A fare is no use to someone who needs a visa they can't get in
+          time, so the answer sits above the flights, not under them. */}
+      {destinationCountry && destinationCountry.code !== "SA" && (
+        <section className="mb-6">
+          <h2 className="mb-3 font-display text-h3 font-extrabold text-navy-950">
+            {dict.results.essentialsTitle.replace(
+              "{country}",
+              locale === "ar" ? destinationCountry.nameAr : destinationCountry.nameEn
+            )}
+          </h2>
+          <div className="grid gap-4 md:grid-cols-2">
+            {/* Visa: the answer in large type, the whole card opens the rest. */}
+            <button
+              type="button"
+              onClick={() => setVisaOpen(true)}
+              aria-haspopup="dialog"
+              className="group relative flex h-full flex-col overflow-hidden rounded-2xl bg-gradient-to-br from-navy-900 to-navy-990 p-5 text-start text-white shadow-[var(--shadow-card)] ring-1 ring-white/10 transition hover:-translate-y-0.5 hover:ring-sun-400/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400"
+            >
+              <span className="absolute inset-x-0 top-0 h-1 bg-gradient-to-l from-sun-300 to-sun-500" aria-hidden="true" />
+              <p className="flex items-center gap-2 text-sm font-bold text-white/70">
+                <span aria-hidden="true">🛂</span>
+                {dict.results.visaCardTitle}
+              </p>
+              {visa ? (
+                <div className={`mt-3 flex items-start gap-3 rounded-xl px-4 py-3 ring-1 ${VISA_STYLES[visa.category].chip}`}>
+                  <span className="text-2xl leading-none" aria-hidden="true">
+                    {VISA_STYLES[visa.category].icon}
+                  </span>
+                  <span>
+                    <span className="block font-display text-lg font-black">{visaLabels[visa.category]}</span>
+                    <span className="mt-0.5 block text-sm font-medium opacity-90">
+                      {{
+                        free: dict.results.visaExplainFree,
+                        arrival: dict.results.visaExplainArrival,
+                        eta: dict.results.visaExplainEta,
+                        required: dict.results.visaExplainRequired,
+                      }[visa.category].replace(
+                        "{country}",
+                        locale === "ar" ? destinationCountry.nameAr : destinationCountry.nameEn
+                      )}
+                    </span>
+                  </span>
+                </div>
+              ) : (
+                <div className="mt-3 rounded-xl bg-white/10 px-4 py-3 ring-1 ring-white/20">
+                  <span className="block font-display text-lg font-black">🛂 {dict.results.visaCheckTitle}</span>
+                  <span className="mt-0.5 block text-sm text-white/80">{dict.results.visaCardUnknown}</span>
+                </div>
+              )}
+              <span className="mt-4 inline-flex items-center gap-1.5 self-start rounded-full bg-sun-400 px-4 py-2 text-sm font-extrabold text-navy-950 shadow-[var(--shadow-sun)] transition group-hover:bg-sun-300">
+                {dict.results.visaCardLink}
+                <span aria-hidden="true">{locale === "ar" ? "←" : "→"}</span>
+              </span>
+            </button>
+            {showCurrencyStrip && homeCurrency && tripCurrency && (
+              <TripCurrencyStrip from={homeCurrency} to={tripCurrency} locale={locale} />
+            )}
+          </div>
+        </section>
+      )}
+
+      {/* 2. The answer: the flight picked within the budget, and the way
           to the others — see FlightResultsGuide. */}
       <FlightResultsGuide
         locale={locale}
@@ -351,7 +413,7 @@ function ResultsContent() {
         cityName={destinationCityName ?? search.destination}
       />
 
-      {/* 2. The flights themselves — the live search, for these exact dates
+      {/* 3. The flights themselves — the live search, for these exact dates
           and this party; the fare on the card is the fare at the agency. */}
       <div className="mt-5">
         <FlightMetasearch locale={locale} prefill={flightSearchCode(search)} hideSearchForm />
@@ -359,51 +421,6 @@ function ResultsContent() {
 
       {visaOpen && destinationCountry && (
         <VisaRequirementsDialog countryCode={destinationCountry.code} locale={locale} onClose={() => setVisaOpen(false)} />
-      )}
-
-      {/* 3. Before they go: the visa and the money, side by side. */}
-      {destinationCountry && destinationCountry.code !== "SA" && (
-        <section className="mt-10">
-          <h2 className="mb-3 font-display text-h3 font-extrabold text-navy-950">
-            {dict.results.essentialsTitle.replace(
-              "{country}",
-              locale === "ar" ? destinationCountry.nameAr : destinationCountry.nameEn
-            )}
-          </h2>
-          <div className="grid gap-4 md:grid-cols-2">
-            {/* Visa: the status at a glance, the whole story one tap away. */}
-            <div className="relative flex h-full flex-col overflow-hidden rounded-2xl bg-gradient-to-br from-navy-900 to-navy-990 p-5 text-white shadow-[var(--shadow-card)] ring-1 ring-white/10">
-              <span className="absolute inset-x-0 top-0 h-1 bg-gradient-to-l from-sun-300 to-sun-500" aria-hidden="true" />
-              <div className="flex items-center gap-3">
-                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-sun-400 text-xl" aria-hidden="true">
-                  🛂
-                </span>
-                <div>
-                  <p className="font-display text-base font-extrabold">{dict.results.visaCardTitle}</p>
-                  <p className="text-xs text-white/60">{dict.results.visaCardHint}</p>
-                </div>
-              </div>
-              <div className="mt-4">
-                {visa ? (
-                  <VisaBadge category={visa.category} label={visaLabels[visa.category]} className="!text-sm" />
-                ) : (
-                  <p className="text-sm text-white/80">{dict.results.visaCardUnknown}</p>
-                )}
-              </div>
-              <button
-                type="button"
-                onClick={() => setVisaOpen(true)}
-                aria-haspopup="dialog"
-                className="mt-auto w-full rounded-xl bg-sun-400 px-4 py-3 text-sm font-extrabold text-navy-950 shadow-[var(--shadow-sun)] transition hover:bg-sun-300 sm:mt-5"
-              >
-                {dict.results.visaCardLink}
-              </button>
-            </div>
-            {showCurrencyStrip && homeCurrency && tripCurrency && (
-              <TripCurrencyStrip from={homeCurrency} to={tripCurrency} locale={locale} />
-            )}
-          </div>
-        </section>
       )}
 
       {/* The next half of the trip. We cannot see whether the flight was
