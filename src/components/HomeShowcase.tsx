@@ -614,9 +614,6 @@ export default function HomeShowcase({
                           <span className={`block font-display font-extrabold ${compact ? "text-base" : "text-lg sm:text-h3"}`}>
                             {c.title}
                           </span>
-                          <span className={`mt-0.5 block text-xs sm:text-sm ${on ? "text-navy-700" : "text-white/60"}`}>
-                            {c.hint}
-                          </span>
                         </span>
                       </button>
                     );
