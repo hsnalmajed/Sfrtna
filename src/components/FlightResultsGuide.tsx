@@ -776,7 +776,7 @@ function FlightCard({
 
           {flight.bag === "extra" && flight.bagExtra !== null && (
             <div className="rounded-xl ring-1 ring-mist-200">
-              <label className="flex cursor-pointer items-center gap-3 px-3 py-2.5">
+              <label className="flex cursor-pointer items-center gap-2.5 px-3 py-2.5">
                 <input
                   type="checkbox"
                   checked={flight.bagOn}
@@ -796,7 +796,7 @@ function FlightCard({
                   />
                 </span>
                 <span className="min-w-0 flex-1 text-xs font-bold text-navy-800">
-                  {t.bagAdd}
+                  <span className="block whitespace-nowrap">{t.bagAdd}</span>
                   {flight.bagAllowance && <span className="block font-semibold text-navy-500">{flight.bagAllowance}</span>}
                 </span>
                 <bdi dir="ltr" className="text-xs font-extrabold text-navy-950">
