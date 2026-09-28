@@ -749,13 +749,24 @@ function OptionsDialog({
  * The difference, as a signed amount. Forced to LTR so the sign stays glued
  * to the front of the number inside an Arabic line.
  */
-function Delta({ diff, currency }: { diff: number; currency: string }) {
+function Delta({ diff, currency, template }: { diff: number; currency: string; template: string }) {
   const tone =
     diff > 0 ? "bg-rose-50 text-rose-700 ring-rose-200" : diff < 0 ? "bg-emerald-50 text-emerald-700 ring-emerald-200" : "bg-mist-100 text-navy-600 ring-mist-200";
   return (
-    <span dir="ltr" className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-extrabold ring-1 ${tone}`}>
-      {diff > 0 ? "+" : diff < 0 ? "−" : ""}
-      {Math.round(Math.abs(diff)).toLocaleString("en-US")} {currency}
+    <span className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-extrabold ring-1 ${tone}`}>
+      {template.split("{amount}").map((part, i) =>
+        i === 0 ? (
+          part
+        ) : (
+          <span key={i}>
+            <bdi dir="ltr">
+              {diff > 0 ? "+" : diff < 0 ? "−" : ""}
+              {Math.round(Math.abs(diff)).toLocaleString("en-US")} {currency}
+            </bdi>
+            {part}
+          </span>
+        )
+      )}
     </span>
   );
 }
@@ -828,7 +839,7 @@ function OptionRow({
               {t.cardOver.replace("{amount}", money(over))}
             </span>
           )}
-          {!isPick && pick && <Delta diff={option.price - pick.price} currency={currency} />}
+          {!isPick && pick && <Delta diff={option.price - pick.price} currency={currency} template={t.dialogVsPick} />}
           <span dir="ltr" className="font-display text-base font-black text-navy-950">
             {money(option.price)}
           </span>
