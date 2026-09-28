@@ -282,6 +282,8 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
             seasonFare: dict.home.seasonFare,
             seasonFareNote: dict.home.seasonFareNote.replace("{month}", fareMonths),
             summaryFare: dict.home.summaryFare.replace("{month}", fareMonths),
+            seasonFareOneWay: dict.home.seasonFareOneWay,
+            summaryFareOneWay: dict.home.summaryFareOneWay.replace("{month}", fareMonths),
             monthName: monthName(month, loc),
             summaryWeather: dict.home.summaryWeather,
             summaryBestMonths: dict.home.summaryBestMonths,
