@@ -30,39 +30,22 @@ async function faresFor(month: string, roundTrip: boolean): Promise<Record<strin
   return table ?? {};
 }
 
-export interface SeasonFare {
-  price: number;
-  /** false: only a one-way fare was seen, and the page says "one way". */
-  roundTrip: boolean;
-}
-
-function lowest(tables: Record<string, number>[]): Record<string, number> {
+/**
+ * The lowest one-way fare per person from Riyadh, in SAR, seen for departures
+ * in any of `months` (YYYY-MM) — two months, so that late in a month a city
+ * still has a fare.
+ *
+ * One way, not return: it is the number a traveller can read the same way on
+ * every card, and the source holds one-way fares for many more routes than
+ * return ones. A city the source has no fare for is simply absent — checked
+ * on 28 Sep 2026, per-destination endpoints add almost nothing (Beirut and
+ * Aqaba only), so nothing is gained by guessing the rest.
+ */
+export async function seasonFares(months: string[]): Promise<Record<string, number>> {
+  const tables = await Promise.all(months.map((m) => faresFor(m, false)));
   const out: Record<string, number> = {};
   for (const t of tables) for (const [code, price] of Object.entries(t)) {
     if (!(code in out) || price < out[code]) out[code] = price;
   }
-  return out;
-}
-
-/**
- * The lowest fare seen per person, in SAR, departing in any of `months`
- * (YYYY-MM) — two months, so that late in a month a city still has a fare.
- *
- * A round trip when the source has seen one. The source holds round-trip
- * fares from Riyadh to fewer places than one-way ones (checked 28 Sep 2026:
- * 139 destinations against 220 for October — none at all for Athens or
- * Beirut), so where only a one-way fare was seen, that is given, marked as
- * one-way. Never a doubled one-way passed off as a return.
- */
-export async function seasonFares(months: string[]): Promise<Record<string, SeasonFare>> {
-  const [rt, ow] = await Promise.all([
-    Promise.all(months.map((m) => faresFor(m, true))),
-    Promise.all(months.map((m) => faresFor(m, false))),
-  ]);
-  const round = lowest(rt);
-  const oneWay = lowest(ow);
-  const out: Record<string, SeasonFare> = {};
-  for (const [code, price] of Object.entries(oneWay)) out[code] = { price, roundTrip: false };
-  for (const [code, price] of Object.entries(round)) out[code] = { price, roundTrip: true };
   return out;
 }

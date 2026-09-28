@@ -42,7 +42,6 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
   // Istanbul's. Ordered so the first six come from six countries.
   const month = new Date().getMonth() + 1;
   const inSeasonCities = citiesInSeason(month);
-  const seasonOrder = varietyFirst(inSeasonCities, inSeasonCities.length);
 
   // A different corner of the world each day — see heroPhotos.ts for the
   // brief these are chosen against.
@@ -56,10 +55,22 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
   const fareMonths = isAr
     ? `${monthName(month, loc)} و${monthName(nextMonth, loc)}`
     : `${monthName(month, loc)} and ${monthName(nextMonth, loc)}`;
-  const [cityPhotos, rates, fares] = await Promise.all([
+  // Every season card carries a real one-way fare, so the strip shows the
+  // cities the fare source has seen a price for; the rest of the month's
+  // cities are on the seasons page (see seasonFares.ts for why some have none).
+  const fares = await seasonFares([monthKey, nextKey]);
+  const fareFor = (slug: string) => {
+    const iata = CITY_AIRPORTS[slug]?.iata;
+    return iata && iata !== SEASON_FARE_ORIGIN ? fares[iata] : undefined;
+  };
+  const priced = inSeasonCities.filter((c) => fareFor(c.slug) !== undefined);
+  // If the fare source is down, the strip still shows the month's cities
+  // (with their weather) rather than disappearing.
+  const shown = priced.length > 0 ? priced : inSeasonCities;
+  const seasonOrder = varietyFirst(shown, shown.length);
+  const [cityPhotos, rates] = await Promise.all([
     fetchCityPhotos(seasonOrder),
     cachedJson<Rates>("rates-usd", 6 * 3600, fetchRates),
-    seasonFares([monthKey, nextKey]),
   ]);
   const heroImage = heroImageOf(heroPick);
   const heroPhoto = heroImage.url;
@@ -126,7 +137,7 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
       flightKm: airport?.km ?? undefined,
       ...citySummary(c.code, c.slug),
       hotelCity: c.nameEn,
-      fare: airport && airport.iata !== SEASON_FARE_ORIGIN ? fares[airport.iata] : undefined,
+      fare: fareFor(c.slug),
     };
   });
 
@@ -282,8 +293,7 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
             seasonFare: dict.home.seasonFare,
             seasonFareNote: dict.home.seasonFareNote.replace("{month}", fareMonths),
             summaryFare: dict.home.summaryFare.replace("{month}", fareMonths),
-            seasonFareOneWay: dict.home.seasonFareOneWay,
-            summaryFareOneWay: dict.home.summaryFareOneWay.replace("{month}", fareMonths),
+
             monthName: monthName(month, loc),
             summaryWeather: dict.home.summaryWeather,
             summaryBestMonths: dict.home.summaryBestMonths,

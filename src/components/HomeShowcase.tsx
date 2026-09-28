@@ -37,8 +37,8 @@ export interface ShowcaseCity {
   landmarks: string[];
   /** The city's English name, which the hotel partners search by. */
   hotelCity: string;
-  /** Lowest fare seen from Riyadh, per person, SAR; one-way when no return was seen. */
-  fare?: { price: number; roundTrip: boolean };
+  /** Lowest one-way fare seen from Riyadh this month or next, per person, SAR. */
+  fare?: number;
 }
 
 export interface ShowcaseTool {
@@ -81,8 +81,6 @@ interface ShowcaseDict {
   seasonMethod: string;
   seasonTapHint: string;
   seasonFare: string;
-  seasonFareOneWay: string;
-  summaryFareOneWay: string;
   seasonFareNote: string;
   summaryFare: string;
   monthName: string;
@@ -294,7 +292,7 @@ export default function HomeShowcase({
               no fare was seen, so the card is never left with one number. */}
           {c.fare ? (
             <span className="inline-flex rounded-full bg-sun-400 px-2 py-0.5 text-xs font-extrabold text-navy-950">
-              {(c.fare.roundTrip ? dict.seasonFare : dict.seasonFareOneWay).replace("{price}", c.fare.price.toLocaleString("en-US"))}
+              {dict.seasonFare.replace("{price}", c.fare.toLocaleString("en-US"))}
             </span>
           ) : (
             <span className="inline-flex rounded-full bg-navy-990/65 px-2 py-0.5 text-xs font-bold text-sea-200 backdrop-blur-sm">
@@ -365,7 +363,7 @@ export default function HomeShowcase({
 
           {openCity.fare && (
             <p className="rounded-2xl bg-sun-400/10 px-4 py-3 text-sm font-bold text-sun-200 ring-1 ring-sun-400/30">
-              ✈️ {(openCity.fare.roundTrip ? dict.summaryFare : dict.summaryFareOneWay).replace("{price}", openCity.fare.price.toLocaleString("en-US"))}
+              ✈️ {dict.summaryFare.replace("{price}", openCity.fare.toLocaleString("en-US"))}
             </p>
           )}
 
