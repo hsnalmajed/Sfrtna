@@ -10,7 +10,51 @@ import { travelpayouts } from "@/lib/providers/travelpayouts";
  * present. Without this, a page showing sample prices gives no way to tell a
  * missing key from a source that answered with nothing.
  */
-export async function GET() {
+/**
+ * `?fares=YYYY-MM`: how many destinations each fare endpoint answers for from
+ * Riyadh that month, and whether a few popular ones are there — to tell a
+ * route the source has no data for from one our query misses. Counts and
+ * cities only; no credential is ever printed.
+ */
+async function fareCoverage(month: string) {
+  const token = process.env.TRAVELPAYOUTS_TOKEN || "";
+  const get = async (url: string) => {
+    try {
+      const r = await fetch(url, { headers: { "X-Access-Token": token }, cache: "no-store" });
+      return r.ok ? await r.json() : { status: r.status };
+    } catch (e) {
+      return { error: String(e).slice(0, 80) };
+    }
+  };
+  const base = "https://api.travelpayouts.com";
+  const v3 = (unique: boolean, oneWay: boolean) =>
+    `${base}/aviasales/v3/prices_for_dates?origin=RUH&departure_at=${month}&one_way=${oneWay}&unique=${unique}&sorting=price&limit=1000&currency=sar`;
+  const dests = (j: { data?: { destination?: string }[] }) => new Set((j.data ?? []).map((r) => r.destination));
+  const [a, b, c] = await Promise.all([get(v3(true, false)), get(v3(false, false)), get(v3(true, true))]);
+  const probe = ["ATH", "BEY", "LIS", "OPO", "SFO", "TNG", "SLL"];
+  const cheap = await Promise.all(
+    probe.map((d) => get(`${base}/v1/prices/cheap?origin=RUH&destination=${d}&depart_date=${month}&currency=sar`))
+  );
+  const da = dests(a), db = dests(b), dc = dests(c);
+  return {
+    v3UniqueRound: da.size,
+    v3AllRound: db.size,
+    v3UniqueOneWay: dc.size,
+    probe: probe.map((d, i) => ({
+      d,
+      inUnique: da.has(d),
+      inAll: db.has(d),
+      inOneWay: dc.has(d),
+      v1cheap: Object.keys((cheap[i] as { data?: Record<string, unknown> }).data ?? {}).length > 0,
+    })),
+  };
+}
+
+export async function GET(req: Request) {
+  const faresMonth = new URL(req.url).searchParams.get("fares");
+  if (faresMonth && /^\d{4}-\d{2}$/.test(faresMonth)) {
+    return NextResponse.json(await fareCoverage(faresMonth));
+  }
   const configured = configuredProviders().map((p) => p.name);
 
   let probe: { ok: boolean; offers: number; error?: string } = { ok: false, offers: 0 };
