@@ -60,9 +60,11 @@ export function hasReliableClimate(slug: string): boolean {
  * the dry season otherwise.
  *
  * The second condition is what keeps dry cities just inside the tropic —
- * Jeddah at 21°N, Abha at 18°N — on the calendar their people use: Abha runs
- * from 19 °C in January to 30 °C in summer with almost no rain, so January
- * there is winter, not "dry season".
+ * Jeddah at 21°N — on the calendar their people use: Jeddah runs from 29 °C
+ * in January to 42 °C in June with almost no rain, so January there is
+ * winter, not "dry season". (Abha, at 18°N, was kept on that calendar too
+ * until the 2021–2025 figures: its August now averages 12 rainy days, so it
+ * reads as a rainy-season city — 12 in August, 2 in September.)
  */
 export type SeasonKind = "winter" | "spring" | "summer" | "autumn" | "wet" | "dry";
 
