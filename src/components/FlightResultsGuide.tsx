@@ -55,7 +55,7 @@ function css(bookLabel: string): string {
   const label = bookLabel.replace(/["\\]/g, "");
   return `
 [class*="DirectFlights-module__root"]{display:none !important}
-/* Its nearby-dates strip: ours, from fares seen, sits under the pick. */
+/* Its nearby-dates strip: prices there are not the live ones. */
 [class*="FlightMatrix"]{display:none !important}
 /* "Book this flight" instead of the widget's "Select ticket", where its own
    cards are shown (no budget, or another currency). */
