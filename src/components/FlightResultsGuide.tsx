@@ -431,8 +431,11 @@ export default function FlightResultsGuide({
   const meets = (f: Flight) => (!directOnly || f.maxStops === 0) && (!bagIncluded || f.bag === "in");
   const prefsSet = directOnly || bagIncluded;
   const prefsMatch = !prefsSet || [...state.fits, ...state.over].some(meets);
-  const fits = prefsSet && prefsMatch ? state.fits.filter(meets) : state.fits;
-  const over = prefsSet && prefsMatch ? state.over.filter(meets) : state.over;
+  // Until every flight is in, a flight that ignores the preferences is not
+  // shown as the answer: the one that meets them may still be loading.
+  const waitForPrefs = prefsSet && !prefsMatch && !state.settled;
+  const fits = waitForPrefs ? [] : prefsSet && prefsMatch ? state.fits.filter(meets) : state.fits;
+  const over = waitForPrefs ? [] : prefsSet && prefsMatch ? state.over.filter(meets) : state.over;
   const prefsLabel = [directOnly ? t.chipDirect : "", bagIncluded ? t.chipBag : ""].filter(Boolean).join(" · ");
   const bestFit = fits.find((f) => f.best) ?? fits[0] ?? null;
   const cheapestFit = fits[0] ?? null;
