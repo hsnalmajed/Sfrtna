@@ -55,6 +55,8 @@ function css(bookLabel: string): string {
   const label = bookLabel.replace(/["\\]/g, "");
   return `
 [class*="DirectFlights-module__root"]{display:none !important}
+/* Its nearby-dates strip: ours, from fares seen, sits under the pick. */
+[class*="FlightMatrix"]{display:none !important}
 /* "Book this flight" instead of the widget's "Select ticket", where its own
    cards are shown (no budget, or another currency). */
 [class*="FlightCard-module__cardLeftButton"] > span{display:none !important}
@@ -216,6 +218,7 @@ export default function FlightResultsGuide({
   const [sort, setSort] = useState<Sort>("cheapest");
   const [onlyDirect, setOnlyDirect] = useState(false);
   const [onlyBag, setOnlyBag] = useState(false);
+  const [limit, setLimit] = useState(10);
   const money = (n: number) => moneyIn(currency, n);
   const dur = (min: number) => {
     const h = Math.floor(min / 60);
@@ -233,6 +236,7 @@ export default function FlightResultsGuide({
     let lastKey = "";
     let lastChange = Date.now();
     let sawProgress = false;
+    let autoLoaded = false;
 
     function read(card: Element, shown: number, best: boolean): Flight {
       const id = card.getAttribute("data-testid") || "";
@@ -337,7 +341,15 @@ export default function FlightResultsGuide({
 
       const searching = Boolean(root.querySelector('[class*="SearchProgressbar"]'));
       if (searching) sawProgress = true;
-      const hasMore = Boolean(root.querySelector('[class*="TicketsWidget-module__moreTickets"]'));
+      const moreButton = root.querySelector('[class*="TicketsWidget-module__moreTickets"]');
+      // The widget shows its ten cheapest first — often all low-cost fares
+      // without a bag. Load the rest once the search is done, so "best",
+      // "fastest" and "bag included" are chosen from every flight found.
+      if (filtering && !searching && sawProgress && !autoLoaded && moreButton) {
+        autoLoaded = true;
+        ((moreButton.querySelector("button") ?? moreButton) as HTMLElement).click();
+      }
+      const hasMore = Boolean(moreButton);
       const base = { searching, filtering, comparable: budget <= 0 || comparable, total: priced.length, fits, over, hasMore };
       const key = JSON.stringify(base);
       if (key !== lastKey) {
@@ -353,7 +365,7 @@ export default function FlightResultsGuide({
     }
 
     pass();
-    const id = window.setInterval(pass, 800);
+    const id = window.setInterval(pass, 1000);
     return () => window.clearInterval(id);
   }, [locale, budget, currency, t]);
 
@@ -392,8 +404,11 @@ export default function FlightResultsGuide({
     list
       .filter((f) => (!onlyDirect || f.maxStops === 0) && (!onlyBag || f.bag === "in" || f.bagOn))
       .sort((a, b) => (sort === "fastest" ? a.avgMinutes - b.avgMinutes || a.price - b.price : a.price - b.price));
-  const withinShown = refine(others);
-  const overShown = refine(over);
+  const withinAll = refine(others);
+  const overAll = refine(over);
+  const withinShown = withinAll.slice(0, limit);
+  const overShown = overAll.slice(0, limit);
+  const moreHidden = (showWithin && withinAll.length > limit) || (showOver && overAll.length > limit);
 
   const card = { locale, t, money, travelers, budget, onBook: book, onBag: toggleBag };
 
@@ -567,11 +582,11 @@ export default function FlightResultsGuide({
         </>
       )}
 
-      {(showWithin || showOver) && state.hasMore && (
+      {(showWithin || showOver) && (moreHidden || state.hasMore) && (
         <div className="mt-4 text-center">
           <button
             type="button"
-            onClick={loadMore}
+            onClick={() => (moreHidden ? setLimit((n) => n + 10) : loadMore())}
             className="rounded-full bg-white px-5 py-2.5 text-sm font-bold text-navy-800 ring-1 ring-mist-300 transition hover:ring-navy-300"
           >
             {t.dialogLoadMore}

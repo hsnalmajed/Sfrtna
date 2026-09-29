@@ -8,6 +8,7 @@ import type { RoomType, Locale, SearchParams, TripType } from "@/lib/types";
 import TripCurrencyInline from "@/components/TripCurrencyInline";
 import FlightMetasearch from "@/components/FlightMetasearch";
 import FlightResultsGuide from "@/components/FlightResultsGuide";
+import NearbyDates from "@/components/NearbyDates";
 import VisaBadge from "@/components/VisaBadge";
 import VisaRequirementsDialog from "@/components/VisaRequirementsDialog";
 import { visaStatusFor } from "@/data/visaStatus";
@@ -290,50 +291,53 @@ function ResultsContent() {
                 plane between them say "this is your trip" faster than the
                 same two codes in a sentence — and it is the one piece of
                 the page the traveller scans to check they searched right. */}
-            <div className="flex flex-wrap items-center justify-between gap-4">
-              <h1 className="flex flex-wrap items-center gap-x-3.5 gap-y-1 font-display text-h1 font-extrabold text-white">
-                {search.origin && (
-                  <>
-                    <span>{originCityName}</span>
-                    <span
-                      className="inline-flex items-center gap-1.5 text-sun-400"
-                      aria-hidden="true"
-                    >
-                      <span className="h-px w-6 bg-sun-400/50 sm:w-9" />
-                      <span className="text-h3">✈</span>
-                      <span className="h-px w-6 bg-sun-400/50 sm:w-9" />
-                    </span>
-                  </>
-                )}
-                <span>{destinationCityName ?? search.destination}</span>
-              </h1>
-              <Link
-                href={`/${locale}?${editSearchParams}#plan`}
-                className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-white/10 px-4 py-2.5 text-sm font-bold text-white ring-1 ring-white/20 backdrop-blur-md transition hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400"
-              >
-                <span aria-hidden="true">{locale === "ar" ? "→" : "←"}</span>
-                {dict.results.backToSearch}
-              </Link>
-            </div>
+            <h1 className="flex flex-wrap items-center gap-x-3.5 gap-y-1 font-display text-h1 font-extrabold text-white">
+              {search.origin && (
+                <>
+                  <span>{originCityName}</span>
+                  <span
+                    className="inline-flex items-center gap-1.5 text-sun-400"
+                    aria-hidden="true"
+                  >
+                    <span className="h-px w-6 bg-sun-400/50 sm:w-9" />
+                    <span className="text-h3">✈</span>
+                    <span className="h-px w-6 bg-sun-400/50 sm:w-9" />
+                  </span>
+                </>
+              )}
+              <span>{destinationCityName ?? search.destination}</span>
+            </h1>
 
             {/* The trip, and what decides whether it can happen, in one line
                 in the order it is checked: the days, how many are flying,
                 the visa and its requirements, what a riyal is worth there,
                 and a converter for any other amount. */}
             <div className="mt-4 flex flex-wrap items-center gap-x-2.5 gap-y-2.5 text-sm font-semibold text-white/80">
-              <span>{prettyDate(search.departDate)}</span>
-              {search.returnDate && (
-                <>
-                  <span className="text-sun-400" aria-hidden="true">
-                    {locale === "ar" ? "←" : "→"}
-                  </span>
-                  <span>{prettyDate(search.returnDate)}</span>
-                </>
-              )}
-              <span className="text-white/30" aria-hidden="true">
-                ·
-              </span>
-              <span>{dict.results.travellersCount.replace("{count}", String(travelers))}</span>
+              {/* The search itself, as the box it was typed into: tap it to
+                  change it. A summary that looks like a field is where a
+                  traveller looks to edit — a separate button is easy to miss. */}
+              <Link
+                href={`/${locale}?${editSearchParams}#plan`}
+                className="group inline-flex items-center gap-2.5 rounded-full bg-white py-1.5 pe-1.5 ps-4 text-sm font-bold text-navy-950 shadow-sm transition hover:ring-2 hover:ring-sun-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400"
+              >
+                <Icon name="calendar" className="h-4 w-4 text-navy-500" />
+                <span>{prettyDate(search.departDate)}</span>
+                {search.returnDate && (
+                  <>
+                    <span className="text-navy-400" aria-hidden="true">
+                      {locale === "ar" ? "←" : "→"}
+                    </span>
+                    <span>{prettyDate(search.returnDate)}</span>
+                  </>
+                )}
+                <span className="h-4 w-px bg-mist-300" aria-hidden="true" />
+                <Icon name="users" className="h-4 w-4 text-navy-500" />
+                <span>{dict.results.travellersCount.replace("{count}", String(travelers))}</span>
+                <span className="inline-flex items-center gap-1 rounded-full bg-sun-400 px-3 py-1 text-xs font-extrabold text-navy-950 transition group-hover:bg-sun-300">
+                  <span aria-hidden="true">✎</span>
+                  {dict.results.editSearch}
+                </span>
+              </Link>
 
               {destinationCountry && destinationCountry.code !== "SA" && (
                 <>
@@ -375,6 +379,36 @@ function ResultsContent() {
         travelers={travelers}
         cityName={destinationCityName ?? search.destination}
       />
+
+      {search.origin && search.destination && search.departDate && (
+        <NearbyDates
+          locale={locale}
+          origin={search.origin}
+          destination={search.destination}
+          depart={search.departDate}
+          back={search.returnDate || ""}
+          currency={search.currency}
+          paying={search.adults + (search.childrenAges?.length ?? 0)}
+          budget={search.budgetTotal}
+          hrefFor={(d, r) => {
+            const p = new URLSearchParams({
+              tripType: "flight",
+              origin: search.origin,
+              destination: search.destination,
+              departDate: d,
+              returnDate: r,
+              adults: String(search.adults),
+              childrenAges: serializeChildrenAges(search.childrenAges || []),
+              infants: String(search.infants || 0),
+              budget: String(search.budgetTotal),
+              currency: search.currency,
+              directOnly: String(search.directFlightsOnly),
+              baggageIncluded: String(Boolean(search.baggageIncluded)),
+            });
+            return `/${locale}/results?${p}`;
+          }}
+        />
+      )}
 
       {/* 3. The flights themselves — the live search, for these exact dates
           and this party; the fare on the card is the fare at the agency. */}
