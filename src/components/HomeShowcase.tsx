@@ -281,6 +281,13 @@ export default function HomeShowcase({
         fallback={<div className="absolute inset-0 -z-10 bg-gradient-to-br from-navy-700 to-navy-990" />}
       />
       <div className="scrim-soft absolute inset-0 -z-10" />
+      {/* Which season it is there this month: autumn in Istanbul, the dry
+          season in Bali — the word a traveller packs by. */}
+      {c.seasonKind && (
+        <span className="absolute start-2 top-2 rounded-full bg-white/90 px-2.5 py-0.5 text-xs font-extrabold text-navy-900 shadow-sm backdrop-blur-sm">
+          {c.seasonKind}
+        </span>
+      )}
       <div className="absolute inset-x-0 bottom-0 p-3">
         <p className="truncate font-display text-sm font-extrabold text-white drop-shadow-sm sm:text-base">{c.name}</p>
         <p className="truncate text-xs font-semibold text-white/70">{c.countryName}</p>

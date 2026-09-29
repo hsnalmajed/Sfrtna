@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { warmFlightSearch } from "@/components/FlightMetasearch";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { DestinationCategory, FlightRoute, Locale, TravelerCounts } from "@/lib/types";
 import { getDictionary } from "@/lib/dictionaries";
@@ -85,6 +86,11 @@ export default function TripPlanner({
   /** "dark" when the form sits on the hero photograph — see formTone.ts. */
   tone?: FormTone;
 }) {
+  // The results page runs the partner's flight search; fetch its script
+  // and open its connections while this form is being filled in.
+  useEffect(() => {
+    warmFlightSearch();
+  }, []);
   const dict = getDictionary(locale);
   const router = useRouter();
   const urlParams = useSearchParams();

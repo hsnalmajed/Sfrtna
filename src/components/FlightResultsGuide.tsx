@@ -399,7 +399,9 @@ export default function FlightResultsGuide({
     }
 
     pass();
-    const id = window.setInterval(pass, 1000);
+    // Every 400 ms while the search runs, so the answer shows the moment the
+    // first fares land; once settled the observer above keeps reads rare.
+    const id = window.setInterval(pass, 400);
     return () => {
       window.clearInterval(id);
       observer.disconnect();

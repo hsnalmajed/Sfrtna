@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { preconnect, preload } from "react-dom";
 import type { Locale } from "@/lib/types";
 
 /**
@@ -33,7 +34,18 @@ import type { Locale } from "@/lib/types";
  * rebuilding it if a dark section ever wants the widget.
  */
 
-const WIDGET_SRC = "https://tpwgt.com/wl_web/main.js?wl_id=22604";
+export const WIDGET_SRC = "https://tpwgt.com/wl_web/main.js?wl_id=22604";
+
+/**
+ * Warm the flight search before it is needed: connections to the widget's
+ * hosts and its script, fetched while the traveller is still on the form,
+ * so the results page starts searching the moment it opens.
+ */
+export function warmFlightSearch() {
+  preconnect("https://tpwgt.com");
+  preconnect("https://tickets-api.eu-north-1.apistp.com");
+  preload(WIDGET_SRC, { as: "script" });
+}
 
 export default function FlightMetasearch({
   locale,
@@ -58,6 +70,7 @@ export default function FlightMetasearch({
   /** The trip, as flightSearchCode writes it — e.g. "RUH1611IST23112". */
   prefill?: string | null;
 }) {
+  warmFlightSearch();
   useEffect(() => {
     // The widget takes its starting trip from this one parameter, and reads
     // it when its script runs — so it goes on the address before the script
