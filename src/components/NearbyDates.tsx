@@ -15,14 +15,12 @@ interface Day {
 /**
  * The same trip a few days either side.
  *
- * The traveller's own dates show the live price from this page's search —
- * the same figure as the tabs and the card below. Only one live search runs
- * at a time, so the other days cannot have live prices; what we have for
- * them are fares seen recently, which run a few per cent off live ones. A
- * seen price beside a live one would be two different numbers for the same
- * kind of thing, so the other days are compared with the traveller's own
- * dates *in the seen data* — "about 13% cheaper" — and tapping one runs its
- * live search. Days with no fare seen are left out.
+ * Rule for the whole site: a price shown is the price at the partner —
+ * the live one — or no price at all. The traveller's own dates show the
+ * live price from this page's search, the same figure as the tabs and the
+ * card below. The other days have no live price (one live search runs at a
+ * time), so they show none, and no estimate either: each opens its own
+ * live search. Only days with flights seen recently are offered.
  */
 export default function NearbyDates({
   locale,
@@ -70,15 +68,11 @@ export default function NearbyDates({
 
   // Worth showing with the live price for the traveller's dates, a seen
   // price for them to compare against, and at least two other days.
-  const base = (days ?? []).find((d) => d.offset === 0);
   const others = (days ?? []).filter((d) => d.offset !== 0);
-  if (live === null || !base || others.length < 2) return null;
+  if (live === null || others.length < 2) return null;
+  const base: Day = { offset: 0, depart, return: back, total: live, direct: false };
 
-  // Each day against the traveller's own, in the same seen data.
-  const pct = (d: Day) => Math.round(((d.total - base.total) / base.total) * 100);
   const list = [...others, base].sort((a, b) => a.offset - b.offset);
-  const best = others.reduce((a, b) => (b.total < a.total ? b : a));
-  const bestPct = pct(best);
   const label = (iso: string) =>
     new Date(`${iso}T00:00:00Z`).toLocaleDateString(locale === "ar" ? "ar-u-ca-gregory-nu-latn" : "en-GB", {
       weekday: "short",
@@ -95,8 +89,6 @@ export default function NearbyDates({
       <div className="-mx-1 mt-4 flex gap-2 overflow-x-auto px-1 pb-1">
         {list.map((d) => {
           const isYours = d.offset === 0;
-          const p = isYours ? 0 : pct(d);
-          const isBest = !isYours && d === best && bestPct <= -3;
           const body = (
             <>
               {isYours && <span className="mb-1 block text-xs font-extrabold text-navy-900">{t.nearbyYours}</span>}
@@ -120,25 +112,11 @@ export default function NearbyDates({
                   </span>
                 </>
               ) : (
-                <span
-                  className={`mt-2 block text-sm font-extrabold ${
-                    p <= -3 ? "text-emerald-700" : p >= 3 ? "text-navy-500" : "text-navy-700"
-                  }`}
-                >
-                  {p <= -3
-                    ? t.nearbyCheaperPct.replace("{n}", String(-p))
-                    : p >= 3
-                      ? t.nearbyDearerPct.replace("{n}", String(p))
-                      : t.nearbySimilar}
+                <span className="mt-2 inline-flex items-center gap-1 text-xs font-extrabold text-sea-700">
+                  {t.nearbyShowLive}
+                  <span aria-hidden="true">{locale === "ar" ? "←" : "→"}</span>
                 </span>
               )}
-              <span className="mt-1 flex min-h-[18px] flex-wrap justify-center gap-1">
-                {isBest && (
-                  <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-extrabold text-emerald-800 ring-1 ring-emerald-200">
-                    {t.nearbyCheapest}
-                  </span>
-                )}
-              </span>
             </>
           );
           const cls = `min-w-[140px] flex-1 rounded-xl px-3 py-2.5 text-center transition ${
