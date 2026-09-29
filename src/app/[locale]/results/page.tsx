@@ -8,7 +8,6 @@ import type { RoomType, Locale, SearchParams, TripType } from "@/lib/types";
 import TripCurrencyInline from "@/components/TripCurrencyInline";
 import FlightMetasearch from "@/components/FlightMetasearch";
 import FlightResultsGuide from "@/components/FlightResultsGuide";
-import NearbyDates from "@/components/NearbyDates";
 import VisaBadge from "@/components/VisaBadge";
 import VisaRequirementsDialog from "@/components/VisaRequirementsDialog";
 import { visaStatusFor } from "@/data/visaStatus";
@@ -387,38 +386,6 @@ function ResultsContent() {
         currency={search.currency}
         travelers={travelers}
         cityName={destinationCityName ?? search.destination}
-        nearby={(live, liveSettled) =>
-          search.origin && search.destination && search.departDate ? (
-            <NearbyDates
-              locale={locale}
-              origin={search.origin}
-              destination={search.destination}
-              depart={search.departDate}
-              back={search.returnDate || ""}
-              currency={search.currency}
-              paying={search.adults + (search.childrenAges?.length ?? 0)}
-              live={live}
-              liveSettled={liveSettled}
-              hrefFor={(d, r) => {
-                const p = new URLSearchParams({
-                  tripType: "flight",
-                  origin: search.origin,
-                  destination: search.destination,
-                  departDate: d,
-                  returnDate: r,
-                  adults: String(search.adults),
-                  childrenAges: serializeChildrenAges(search.childrenAges || []),
-                  infants: String(search.infants || 0),
-                  budget: String(search.budgetTotal),
-                  currency: search.currency,
-                  directOnly: String(search.directFlightsOnly),
-                  baggageIncluded: String(Boolean(search.baggageIncluded)),
-                });
-                return `/${locale}/results?${p}`;
-              }}
-            />
-          ) : null
-        }
       />
 
 
