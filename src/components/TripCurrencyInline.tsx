@@ -59,27 +59,31 @@ export default function TripCurrencyInline({
 
   if (rate == null) return null;
   const name = (c: Currency) => (locale === "ar" ? c.nameAr : c.nameEn);
+  // In the band's single line: "ريال سعودي", not "الريال السعودي".
+  const short = (c: Currency) => (locale === "ar" ? c.nameAr.replace(/(^|\s)ال/g, "$1") : c.nameEn);
   const fmt = (value: number, decimals: number) =>
     value.toLocaleString("en-US", { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
 
   return (
     <>
-      <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3.5 py-1.5 text-sm font-bold text-white ring-1 ring-white/15">
-        <Flag currency={from} />
-        <span>
-          1 {name(from)} = <span className="text-sun-400">{fmt(rate, to.decimals)} {name(to)}</span>
+      <span className="inline-flex items-center overflow-hidden rounded-full bg-white/10 text-sm font-bold text-white ring-1 ring-white/15">
+        <span className="inline-flex items-center gap-2 px-3.5 py-1.5">
+          <Flag currency={from} />
+          <span>
+            1 {short(from)} = <span className="text-sun-400">{fmt(rate, to.decimals)} {short(to)}</span>
+          </span>
+          <Flag currency={to} />
         </span>
-        <Flag currency={to} />
+        <button
+          type="button"
+          aria-haspopup="dialog"
+          onClick={() => setOpen(true)}
+          className="inline-flex items-center gap-1.5 self-stretch border-s border-white/15 bg-white px-3.5 py-1.5 font-extrabold text-navy-950 transition hover:bg-sun-100"
+        >
+          <span aria-hidden="true">🧮</span>
+          {dict.results.currencyConvert}
+        </button>
       </span>
-      <button
-        type="button"
-        aria-haspopup="dialog"
-        onClick={() => setOpen(true)}
-        className="inline-flex items-center gap-1.5 rounded-full bg-white px-3.5 py-1.5 text-sm font-extrabold text-navy-950 transition hover:bg-sun-100"
-      >
-        <span aria-hidden="true">🧮</span>
-        {dict.results.currencyConvert}
-      </button>
       {open && (
         <ConverterDialog
           from={from}
