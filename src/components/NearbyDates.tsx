@@ -66,6 +66,9 @@ export default function NearbyDates({
   if (!days || days.filter((d) => d.offset !== 0).length < 2) return null;
 
   const cheapest = Math.min(...days.map((d) => d.total));
+  // "Within budget" only says something when the dates asked for are not.
+  const yoursDay = days.find((d) => d.offset === 0);
+  const markFits = budget > 0 && (!yoursDay || yoursDay.total > budget);
   const label = (iso: string) =>
     new Date(`${iso}T00:00:00Z`).toLocaleDateString(locale === "ar" ? "ar-u-ca-gregory-nu-latn" : "en-GB", {
       weekday: "short",
@@ -82,7 +85,7 @@ export default function NearbyDates({
       <div className="-mx-1 mt-4 flex gap-2 overflow-x-auto px-1 pb-1">
         {days.map((d) => {
           const yours = d.offset === 0;
-          const fits = budget > 0 && d.total <= budget;
+          const fits = markFits && d.total <= budget;
           const isCheapest = d.total === cheapest;
           const body = (
             <>

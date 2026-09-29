@@ -237,6 +237,14 @@ export default function FlightResultsGuide({
     let lastChange = Date.now();
     let sawProgress = false;
     let autoLoaded = false;
+    // Reading two hundred cards takes tens of milliseconds; once the search
+    // has settled, read again only when the widget has changed something.
+    let dirty = true;
+    let settledOnce = false;
+    let watched: ShadowRoot | null = null;
+    const observer = new MutationObserver(() => {
+      dirty = true;
+    });
 
     function read(card: Element, shown: number, best: boolean): Flight {
       const id = card.getAttribute("data-testid") || "";
@@ -320,6 +328,14 @@ export default function FlightResultsGuide({
         style.textContent = css(t.cardBook);
         root.appendChild(style);
       }
+      if (watched !== root) {
+        observer.disconnect();
+        observer.observe(root, { childList: true, subtree: true, characterData: true, attributes: true });
+        watched = root;
+        dirty = true;
+      }
+      if (!dirty && settledOnce) return;
+      dirty = false;
 
       const cards = [...root.querySelectorAll('[class*="FlightCard-module__card___"]')];
       const priced = cards.map((card) => {
@@ -358,6 +374,8 @@ export default function FlightResultsGuide({
       }
       const calm = Date.now() - lastChange;
       const settled = !searching && (priced.length > 0 || sawProgress) && calm >= (sawProgress ? 1000 : 4000);
+      if (settled) settledOnce = true;
+      else dirty = true; // keep reading until the search has settled
       setState((prev) => {
         const next = { ...base, settled };
         return JSON.stringify(prev) === JSON.stringify(next) ? prev : next;
@@ -366,7 +384,10 @@ export default function FlightResultsGuide({
 
     pass();
     const id = window.setInterval(pass, 1000);
-    return () => window.clearInterval(id);
+    return () => {
+      window.clearInterval(id);
+      observer.disconnect();
+    };
   }, [locale, budget, currency, t]);
 
   /** The widget opens this flight's offers, as its own button would. */
