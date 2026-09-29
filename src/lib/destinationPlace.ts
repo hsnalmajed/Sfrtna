@@ -7,7 +7,7 @@
 import { COUNTRY_CITIES } from "@/lib/cities";
 import { CITY_AIRPORTS } from "@/data/cityAirports";
 import { CITY_CLIMATE } from "@/data/cityClimate";
-import { hasReliableClimate, isInSeason, seasonKindFor } from "@/lib/citySeasons";
+import { isCityInSeason, seasonKindFor } from "@/lib/citySeasons";
 import { visaStatusFor } from "@/data/visaStatus";
 import type { DestinationPlace } from "@/lib/types";
 
@@ -28,7 +28,6 @@ export function placeForDestination(code: string, nameEn: string, month: number)
   const city = findCity(code.toUpperCase(), nameEn);
   if (!city) return undefined;
   const climate = CITY_CLIMATE[city.slug];
-  const reliable = hasReliableClimate(city.slug);
   const valid = month >= 1 && month <= 12;
   return {
     countryCode: city.countryCode,
@@ -36,7 +35,9 @@ export function placeForDestination(code: string, nameEn: string, month: number)
     cityNameEn: city.nameEn,
     high: climate && valid ? climate.high[month - 1] : undefined,
     rainyDays: climate && valid ? climate.rainyDays[month - 1] : undefined,
-    inSeason: climate && reliable && valid ? isInSeason(climate, month) : undefined,
+    // Undefined when the city has no sourced season: the card then says
+    // nothing about the season rather than "not in season".
+    inSeason: valid ? isCityInSeason(city.slug, month) : undefined,
     seasonKind: valid ? seasonKindFor(city.slug, month) : undefined,
     visa: visaStatusFor(city.countryCode)?.category,
   };

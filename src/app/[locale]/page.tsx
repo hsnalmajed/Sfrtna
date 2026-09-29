@@ -4,7 +4,7 @@ import { COUNTRY_GUIDES } from "@/lib/countryGuides";
 import { COUNTRY_CITIES } from "@/lib/cities";
 import { findCountry } from "@/lib/countries";
 import { fetchCityPhotos } from "@/lib/countryPhotos";
-import { citiesInSeason, seasonKindFor, seasonMonthsForCity, varietyFirst } from "@/lib/citySeasons";
+import { citiesInSeason, citySeason, seasonKindFor, varietyFirst } from "@/lib/citySeasons";
 import { visaStatusFor } from "@/data/visaStatus";
 import { currencyForCountry } from "@/lib/currencies";
 import { fetchRates, rateBetween, type Rates } from "@/lib/rates";
@@ -36,10 +36,10 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
   const guideCodes = Object.keys(COUNTRY_GUIDES);
   const cityCount = guideCodes.reduce((n, code) => n + (COUNTRY_CITIES[code]?.length ?? 0), 0);
 
-  // This month, and the cities whose own measured weather is at its best in
-  // it — see citySeasons.ts for the rule and the source. Cities, not
-  // countries: a season belongs to a place, and Antalya's October is not
-  // Istanbul's. Ordered so the first six come from six countries.
+  // This month, and the cities whose tourism board or guide names it among
+  // their best — checked against their recent weather; see citySeasons.ts.
+  // Cities, not countries: a season belongs to a place, and Antalya's October
+  // is not Istanbul's. Ordered so the first six come from six countries.
   const month = new Date().getMonth() + 1;
   const inSeasonCities = citiesInSeason(month);
 
@@ -92,12 +92,14 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
   };
   const citySummary = (code: string, slug: string) => {
     const kind = seasonKindFor(slug, month);
+    const season = citySeason(slug);
     const visa = visaStatusFor(code);
     const cur = currencyForCountry(code);
     const perSar = cur && rates && cur.code !== "SAR" ? rateBetween("SAR", cur.code, rates) : null;
     return {
       seasonKind: kind ? kindNames[kind] : undefined,
-      bestMonths: seasonMonthsForCity(slug).map((m) => monthName(m, loc)).join("، "),
+      bestMonths: (season?.months ?? []).map((m) => monthName(m, loc)).join(isAr ? "، " : ", "),
+      bestMonthsSource: season ? (isAr ? season.source.nameAr : season.source.nameEn) : undefined,
       visa: visa ? { category: visa.category, label: visaNames[visa.category] } : undefined,
       currency: cur
         ? {
@@ -297,6 +299,7 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
             monthName: monthName(month, loc),
             summaryWeather: dict.home.summaryWeather,
             summaryBestMonths: dict.home.summaryBestMonths,
+            summarySource: dict.home.summarySource,
             summaryVisa: dict.home.summaryVisa,
             summaryVisaUnknown: dict.home.summaryVisaUnknown,
             summaryVisaMore: dict.home.summaryVisaMore,

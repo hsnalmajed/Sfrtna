@@ -1,30 +1,29 @@
-// When each city is in season — from its own measured weather.
+// When each city is in season.
 //
-// The country guides carry a hand-written "best months" line, and for a
-// country that spans a continent's worth of climate that line is only ever
-// right for some of it: Antalya in October is not Istanbul in October, and
-// Salalah's monsoon summer is Muscat's furnace. So the season is decided per
-// city, from two numbers a traveller actually feels, both averaged over
-// twenty years of NASA's daily record for that city's coordinates (see
-// src/data/cityClimate.ts for the source and how it was collected):
+// The months come from someone who knows the place — the city's or
+// country's tourism board where it names months, otherwise a travel guide —
+// with the page they were read from (src/data/citySeasonSources.ts). They
+// used to come from a comfort rule applied to NASA's weather numbers
+// (18–32 °C, 8 rainy days or fewer), which knew nothing about what a city is
+// for: it put London "out of season" all year and Salalah's monsoon, the
+// reason people go, off the calendar.
 //
-//   - the typical afternoon high (mean daily maximum, °C)
-//   - the days in the month with at least 1 mm of rain
+// The weather still checks the source. A month the source names is dropped
+// when the city's recent weather (2021–2025, src/data/cityClimate.ts)
+// contradicts it outright — an average afternoon of 36 °C or more, or under
+// 10 °C — because no one's best month is either. Every drop is shown on the
+// page beside the source's own months, so nothing is hidden.
 //
-// A month is "in season" for a city when both are comfortable:
-//
-//   18 °C ≤ afternoon high ≤ 32 °C,  and  rainy days ≤ 8.
-//
-// The band is deliberately wider on the warm side than a European guide's
-// would be — the people using this live with Gulf summers — and the rule is
-// printed on the page with the numbers beside every city, so nobody has to
-// take "in season" on trust.
+// What kind of month it is (winter, rainy season…) is still worked out from
+// the weather and the city's latitude: see seasonKindFor.
 
-import { CITY_CLIMATE, type CityClimate } from "@/data/cityClimate";
+import { CITY_CLIMATE } from "@/data/cityClimate";
 import { CITY_COORDS } from "@/data/cityCoords";
+import { CITY_SEASON_SOURCES, SEASON_SOURCES, type CitySeasonSource, type SeasonSource } from "@/data/citySeasonSources";
 import { COUNTRY_CITIES } from "@/lib/cities";
 
-export const SEASON_RULE = { minHigh: 18, maxHigh: 32, maxRainyDays: 8 } as const;
+/** A sourced month outside these afternoon highs (°C) is not kept. */
+export const WEATHER_LIMITS = { minHigh: 10, maxHigh: 36 } as const;
 
 export interface CityInSeason {
   code: string;
@@ -38,17 +37,11 @@ export interface CityInSeason {
 }
 
 /**
- * Cities whose climate figures we know to be wrong, and so give no season.
- *
- * Dubai's NASA grid cell is mostly sea, which cools it: the data gives a
- * 35 °C August against about 41 °C measured in the city, and would call
- * April and October "in season" when they are not. Its numbers are still
- * shown, labelled; no verdict is drawn from them. (Checked against known
- * averages on 26 Sep 2026 — see src/data/cityClimate.ts.)
+ * Cities whose climate figures we know to be wrong. Empty since Dubai moved
+ * to the WMO normals (28 Sep 2026 — see cityClimate.ts); kept so a future
+ * bad cell has somewhere to go.
  */
 export const UNRELIABLE_CLIMATE: ReadonlySet<string> = new Set<string>([]);
-// (Dubai was here until 28 Sep 2026; it now uses the WMO 1991–2020 normals
-// for Dubai International Airport — see cityClimate.ts.)
 
 export function hasReliableClimate(slug: string): boolean {
   return Boolean(CITY_CLIMATE[slug]) && !UNRELIABLE_CLIMATE.has(slug);
@@ -91,31 +84,66 @@ export function seasonKindFor(slug: string, month: number): SeasonKind | undefin
   return point.lat < 0 ? flip[kind] : kind;
 }
 
-export function isInSeason(climate: CityClimate, month: number): boolean {
-  const high = climate.high[month - 1];
-  const wet = climate.rainyDays[month - 1];
-  return (
-    high >= SEASON_RULE.minHigh && high <= SEASON_RULE.maxHigh && wet <= SEASON_RULE.maxRainyDays
-  );
+export interface CitySeason {
+  /** Months in season, 1–12, January first. */
+  months: number[];
+  /** Months the source names that the weather rules out, January first. */
+  dropped: { month: number; high: number }[];
+  /** The source's own months, January first. */
+  sourceMonths: number[];
+  source: SeasonSource;
+  url: string;
+  broad: boolean;
 }
 
-/** The months (1–12) a city is in season. */
+const byCalendar = (a: number, b: number) => a - b;
+
+/** The city's season with its source, or undefined when it has none. */
+export function citySeason(slug: string): CitySeason | undefined {
+  const entry: CitySeasonSource | undefined = CITY_SEASON_SOURCES[slug];
+  if (!entry) return undefined;
+  const climate = hasReliableClimate(slug) ? CITY_CLIMATE[slug] : undefined;
+  const sourceMonths = [...entry.months].sort(byCalendar);
+  const dropped: CitySeason["dropped"] = [];
+  const months: number[] = [];
+  for (const m of sourceMonths) {
+    const high = climate?.high[m - 1];
+    if (high !== undefined && (high < WEATHER_LIMITS.minHigh || high >= WEATHER_LIMITS.maxHigh)) {
+      dropped.push({ month: m, high });
+    } else {
+      months.push(m);
+    }
+  }
+  return { months, dropped, sourceMonths, source: SEASON_SOURCES[entry.source], url: entry.url, broad: Boolean(entry.broad) };
+}
+
+/** The months (1–12, January first) a city is in season; empty when unsourced. */
 export function seasonMonthsForCity(slug: string): number[] {
-  const climate = CITY_CLIMATE[slug];
-  if (!climate || !hasReliableClimate(slug)) return [];
-  return Array.from({ length: 12 }, (_, i) => i + 1).filter((m) => isInSeason(climate, m));
+  return citySeason(slug)?.months ?? [];
+}
+
+/** Whether the city has a sourced season at all. */
+export function hasSeasonSource(slug: string): boolean {
+  return Boolean(CITY_SEASON_SOURCES[slug]);
+}
+
+/** In season in `month` (1–12); undefined when the city has no sourced season. */
+export function isCityInSeason(slug: string, month: number): boolean | undefined {
+  const season = citySeason(slug);
+  return season ? season.months.includes(month) : undefined;
 }
 
 /**
  * Every city in season in a month, most comfortable first — closest to a
- * 25 °C afternoon, fewest rainy days.
+ * 25 °C afternoon, fewest rainy days. Only cities with a climate record are
+ * listed, since the cards show the month's weather.
  */
 export function citiesInSeason(month: number): CityInSeason[] {
   const out: CityInSeason[] = [];
   for (const [code, cities] of Object.entries(COUNTRY_CITIES)) {
     for (const city of cities) {
       const climate = CITY_CLIMATE[city.slug];
-      if (!climate || !hasReliableClimate(city.slug) || !isInSeason(climate, month)) continue;
+      if (!climate || !isCityInSeason(city.slug, month)) continue;
       out.push({
         code,
         slug: city.slug,
