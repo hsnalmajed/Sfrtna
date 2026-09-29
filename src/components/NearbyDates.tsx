@@ -10,18 +10,19 @@ interface Day {
   return: string;
   total: number;
   direct: boolean;
-  foundAt: string | null;
 }
 
 /**
  * The same trip a few days either side.
  *
  * The traveller's own dates show the live price from this page's search —
- * the same figure as the tabs and the card below, never a different one.
- * The other days show the last fare seen for them (a real round-trip quote
- * for those two exact days, with how long ago it was seen), since only one
- * live search runs at a time; tapping a day runs its live search. Days with
- * no fare seen are left out.
+ * the same figure as the tabs and the card below. Only one live search runs
+ * at a time, so the other days cannot have live prices; what we have for
+ * them are fares seen recently, which run a few per cent off live ones. A
+ * seen price beside a live one would be two different numbers for the same
+ * kind of thing, so the other days are compared with the traveller's own
+ * dates *in the seen data* — "about 13% cheaper" — and tapping one runs its
+ * live search. Days with no fare seen are left out.
  */
 export default function NearbyDates({
   locale,
@@ -31,11 +32,9 @@ export default function NearbyDates({
   back,
   currency,
   paying,
-  budget,
   hrefFor,
   live,
   liveSettled,
-  hasChildren,
 }: {
   locale: Locale;
   origin: string;
@@ -45,18 +44,13 @@ export default function NearbyDates({
   currency: string;
   /** Seats paid at a fare: adults and children. */
   paying: number;
-  budget: number;
   hrefFor: (depart: string, back: string) => string;
   /** The live cheapest fare for the traveller's own dates, from the search on this page. */
   live: number | null;
   liveSettled: boolean;
-  /** Children usually fly for less: a seen adult fare × heads is then an upper figure. */
-  hasChildren: boolean;
 }) {
   const t = getDictionary(locale).results;
   const [days, setDays] = useState<Day[] | null>(null);
-  // When the fares came back: "seen N hours ago" is counted from then.
-  const [now, setNow] = useState(0);
 
   useEffect(() => {
     let cancelled = false;
@@ -64,9 +58,7 @@ export default function NearbyDates({
     fetch(`/api/nearby-dates?${q}`)
       .then((r) => (r.ok ? r.json() : Promise.reject(new Error("failed"))))
       .then((d: { days: Day[] }) => {
-        if (cancelled) return;
-        setNow(Date.now());
-        setDays(d.days ?? []);
+        if (!cancelled) setDays(d.days ?? []);
       })
       .catch(() => {
         if (!cancelled) setDays([]);
@@ -76,25 +68,17 @@ export default function NearbyDates({
     };
   }, [origin, destination, depart, back, currency, paying]);
 
-  // Worth showing only with the live price for the traveller's dates to
-  // compare against, and at least two other days seen.
+  // Worth showing with the live price for the traveller's dates, a seen
+  // price for them to compare against, and at least two other days.
+  const base = (days ?? []).find((d) => d.offset === 0);
   const others = (days ?? []).filter((d) => d.offset !== 0);
-  if (live === null || others.length < 2) return null;
+  if (live === null || !base || others.length < 2) return null;
 
-  const yours: Day = { offset: 0, depart, return: back, total: live, direct: false, foundAt: null };
-  const list = [...others, yours].sort((a, b) => a.offset - b.offset);
-  const cheapest = Math.min(...list.map((d) => d.total));
-  // "Within budget" only says something when the dates asked for are not.
-  const markFits = budget > 0 && live > budget;
-  const seenAgo = (iso: string | null) => {
-    if (!iso) return "";
-    const ms = now - new Date(iso).getTime();
-    if (!now || !Number.isFinite(ms)) return "";
-    const hours = Math.max(1, Math.round(ms / 3600000));
-    return hours < 24
-      ? t.nearbySeenHours.replace("{n}", String(hours))
-      : t.nearbySeenDays.replace("{n}", String(Math.round(hours / 24)));
-  };
+  // Each day against the traveller's own, in the same seen data.
+  const pct = (d: Day) => Math.round(((d.total - base.total) / base.total) * 100);
+  const list = [...others, base].sort((a, b) => a.offset - b.offset);
+  const best = others.reduce((a, b) => (b.total < a.total ? b : a));
+  const bestPct = pct(best);
   const label = (iso: string) =>
     new Date(`${iso}T00:00:00Z`).toLocaleDateString(locale === "ar" ? "ar-u-ca-gregory-nu-latn" : "en-GB", {
       weekday: "short",
@@ -111,8 +95,8 @@ export default function NearbyDates({
       <div className="-mx-1 mt-4 flex gap-2 overflow-x-auto px-1 pb-1">
         {list.map((d) => {
           const isYours = d.offset === 0;
-          const fits = markFits && d.total <= budget;
-          const isCheapest = d.total === cheapest;
+          const p = isYours ? 0 : pct(d);
+          const isBest = !isYours && d === best && bestPct <= -3;
           const body = (
             <>
               {isYours && <span className="mb-1 block text-xs font-extrabold text-navy-900">{t.nearbyYours}</span>}
@@ -126,24 +110,32 @@ export default function NearbyDates({
                   <span className="font-semibold text-navy-600">{label(d.return)}</span>
                 </span>
               )}
-              <span className="mt-1.5 block font-display text-base font-black text-navy-950">
-                <bdi dir="ltr">
-                  {!isYours && hasChildren ? "≈ " : ""}
-                  {money(d.total)}
-                </bdi>
-              </span>
-              <span className={`block text-[10px] font-semibold ${isYours ? "text-emerald-700" : "text-navy-400"}`}>
-                {isYours ? (liveSettled ? t.nearbyLive : t.nearbyLiveSoFar) : seenAgo(d.foundAt)}
-              </span>
+              {isYours ? (
+                <>
+                  <span className="mt-1.5 block font-display text-base font-black text-navy-950">
+                    <bdi dir="ltr">{money(live)}</bdi>
+                  </span>
+                  <span className="block text-[10px] font-bold text-emerald-700">
+                    {liveSettled ? t.nearbyLive : t.nearbyLiveSoFar}
+                  </span>
+                </>
+              ) : (
+                <span
+                  className={`mt-2 block text-sm font-extrabold ${
+                    p <= -3 ? "text-emerald-700" : p >= 3 ? "text-navy-500" : "text-navy-700"
+                  }`}
+                >
+                  {p <= -3
+                    ? t.nearbyCheaperPct.replace("{n}", String(-p))
+                    : p >= 3
+                      ? t.nearbyDearerPct.replace("{n}", String(p))
+                      : t.nearbySimilar}
+                </span>
+              )}
               <span className="mt-1 flex min-h-[18px] flex-wrap justify-center gap-1">
-                {isCheapest && (
+                {isBest && (
                   <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-extrabold text-emerald-800 ring-1 ring-emerald-200">
                     {t.nearbyCheapest}
-                  </span>
-                )}
-                {fits && !isCheapest && (
-                  <span className="rounded-full bg-sky-50 px-2 py-0.5 text-[10px] font-bold text-sky-800 ring-1 ring-sky-200">
-                    {t.nearbyFits}
                   </span>
                 )}
               </span>

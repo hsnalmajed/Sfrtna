@@ -397,10 +397,8 @@ function ResultsContent() {
               back={search.returnDate || ""}
               currency={search.currency}
               paying={search.adults + (search.childrenAges?.length ?? 0)}
-              budget={search.budgetTotal}
               live={live}
               liveSettled={liveSettled}
-              hasChildren={(search.childrenAges?.length ?? 0) > 0}
               hrefFor={(d, r) => {
                 const p = new URLSearchParams({
                   tripType: "flight",
