@@ -444,7 +444,17 @@ export default function FlightResultsGuide({
     : null;
   const shown = tab === "cheapest" ? cheapestFit : tab === "fastest" ? fastestFit : bestFit;
   const others = fits.filter((f) => f !== shown);
-  const noneWithin = hasBudget && state.settled && state.filtering && !shown;
+  // Nothing fits — said as soon as the first fares are in, not after the
+  // whole search: the cheapest so far is a real fare, labelled "so far",
+  // and becomes "start from" once every agency has answered. Should a fare
+  // within budget turn up later, this gives way to it.
+  const noneWithin = hasBudget && state.filtering && !shown && over.length > 0 && !waitForPrefs;
+  const noneBody = (state.settled ? t.guideNoneBody : t.guideNoneSoFar)
+    .replace("{city}", cityName)
+    .replace("{amount}", money(over[0]?.price ?? 0))
+    .replace("{count}", String(travelers))
+    .replace("{budget}", money(budget))
+    .replace("{over}", money((over[0]?.price ?? budget) - budget));
   // Nothing fits: say so over the page, once, when every flight is in —
   // not from the first ten, whose cheapest may not be the cheapest.
   const [noneDismissed, setNoneDismissed] = useState(false);
@@ -519,16 +529,13 @@ export default function FlightResultsGuide({
       )}
 
       {/* The search, while it runs: at the top, where the answer will be. */}
-      {(state.searching || (!state.settled && !shown)) && (
+      {(state.searching || (!state.settled && !shown)) && !noneWithin && (
         <div className="mb-6 overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-black/5">
           <div className="flex flex-wrap items-center justify-between gap-2 px-5 py-4">
             <p className="flex items-center gap-2 text-sm font-semibold text-navy-700">
               <span className="h-2.5 w-2.5 animate-pulse rounded-full bg-sun-400" aria-hidden="true" />
               {t.guideSearching}
             </p>
-            {state.total > 0 && (
-              <p className="text-xs font-bold text-navy-500">{t.searchFound.replace("{count}", flightsLabel(state.total))}</p>
-            )}
           </div>
           <div className="h-1 w-full overflow-hidden bg-sun-100" aria-hidden="true">
             <div className="sfr-progress h-full w-1/3 rounded-full bg-sun-400" />
@@ -630,12 +637,9 @@ export default function FlightResultsGuide({
       {noneWithin && !noneDismissed && over.length > 0 && (
         <NoneWithinDialog
           title={t.guideNoneTitle}
-          body={t.guideNoneBody
-            .replace("{city}", cityName)
-            .replace("{amount}", money(over[0].price))
-            .replace("{count}", String(travelers))
-            .replace("{budget}", money(budget))
-            .replace("{over}", money(overFrom))}
+          body={noneBody}
+          searching={!state.settled}
+          searchingLabel={t.guideStillSearching}
           showLabel={t.noneShowFlights}
           editLabel={t.noneEditSearch}
           closeLabel={t.closeOptions}
@@ -651,14 +655,7 @@ export default function FlightResultsGuide({
       {noneWithin && state.total > 0 && over.length > 0 && (
         <div className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-black/5">
           <p className="font-display text-lg font-extrabold text-navy-950">{t.guideNoneTitle}</p>
-          <p className="mt-1 text-sm leading-relaxed text-navy-600">
-            {t.guideNoneBody
-              .replace("{city}", cityName)
-              .replace("{amount}", money(over[0].price))
-              .replace("{count}", String(travelers))
-              .replace("{budget}", money(budget))
-              .replace("{over}", money(overFrom))}
-          </p>
+          <p className="mt-1 text-sm leading-relaxed text-navy-600">{noneBody}</p>
           <div className="mt-4">{overToggle}</div>
         </div>
       )}
@@ -971,6 +968,8 @@ function Amount({ template, amount }: { template: string; amount: string }) {
 function NoneWithinDialog({
   title,
   body,
+  searching,
+  searchingLabel,
   showLabel,
   editLabel,
   closeLabel,
@@ -980,6 +979,8 @@ function NoneWithinDialog({
 }: {
   title: string;
   body: string;
+  searching: boolean;
+  searchingLabel: string;
   showLabel: string;
   editLabel: string;
   closeLabel: string;
@@ -1032,6 +1033,12 @@ function NoneWithinDialog({
           {title}
         </h2>
         <p className="mt-2 text-sm leading-relaxed text-navy-700">{body}</p>
+        {searching && (
+          <p className="mt-2 flex items-center gap-2 text-xs font-semibold text-navy-500">
+            <span className="h-2 w-2 animate-pulse rounded-full bg-sun-400" aria-hidden="true" />
+            {searchingLabel}
+          </p>
+        )}
         <div className="mt-6 flex flex-col gap-2 sm:flex-row">
           <a
             href={editHref}
