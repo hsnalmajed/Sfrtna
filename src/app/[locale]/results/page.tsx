@@ -282,7 +282,7 @@ function ResultsContent() {
           className="absolute inset-0 -z-10 bg-[radial-gradient(90%_60%_at_85%_0%,rgb(255_166_48/0.14),transparent_70%)]"
           aria-hidden="true"
         />
-        <div className="mx-auto flex max-w-6xl flex-wrap items-end justify-between gap-5 px-4 sm:px-6">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <div className="min-w-0">
             <p className="eyebrow eyebrow-light mb-2.5">{dict.results.subtitle}</p>
 
@@ -290,26 +290,32 @@ function ResultsContent() {
                 plane between them say "this is your trip" faster than the
                 same two codes in a sentence — and it is the one piece of
                 the page the traveller scans to check they searched right. */}
-            <h1 className="flex flex-wrap items-center gap-x-3.5 gap-y-1 font-display text-h1 font-extrabold text-white">
-              {search.origin && (
-                <>
-                  <span>{originCityName}</span>
-                  <span
-                    className="inline-flex items-center gap-1.5 text-sun-400"
-                    aria-hidden="true"
-                  >
-                    <span className="h-px w-6 bg-sun-400/50 sm:w-9" />
-                    <span className="text-h3">✈</span>
-                    <span className="h-px w-6 bg-sun-400/50 sm:w-9" />
-                  </span>
-                </>
-              )}
-              <span>{destinationCityName ?? search.destination}</span>
-            </h1>
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <h1 className="flex flex-wrap items-center gap-x-3.5 gap-y-1 font-display text-h1 font-extrabold text-white">
+                {search.origin && (
+                  <>
+                    <span>{originCityName}</span>
+                    <span
+                      className="inline-flex items-center gap-1.5 text-sun-400"
+                      aria-hidden="true"
+                    >
+                      <span className="h-px w-6 bg-sun-400/50 sm:w-9" />
+                      <span className="text-h3">✈</span>
+                      <span className="h-px w-6 bg-sun-400/50 sm:w-9" />
+                    </span>
+                  </>
+                )}
+                <span>{destinationCityName ?? search.destination}</span>
+              </h1>
+              <Link
+                href={`/${locale}?${editSearchParams}#plan`}
+                className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-white/10 px-4 py-2.5 text-sm font-bold text-white ring-1 ring-white/20 backdrop-blur-md transition hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400"
+              >
+                <span aria-hidden="true">{locale === "ar" ? "→" : "←"}</span>
+                {dict.results.backToSearch}
+              </Link>
+            </div>
 
-            {/* The trip in words a traveller checks at a glance: the days,
-                how many are flying, and — because it decides whether this
-                trip can happen at all — the visa, when we have confirmed it. */}
             {/* The trip, and what decides whether it can happen, in one line
                 in the order it is checked: the days, how many are flying,
                 the visa and its requirements, what a riyal is worth there,
@@ -356,13 +362,6 @@ function ResultsContent() {
             </div>
           </div>
 
-          <Link
-            href={`/${locale}?${editSearchParams}#plan`}
-            className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-white/10 px-4 py-2.5 text-sm font-bold text-white ring-1 ring-white/20 backdrop-blur-md transition hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400"
-          >
-            <span aria-hidden="true">{locale === "ar" ? "→" : "←"}</span>
-            {dict.results.backToSearch}
-          </Link>
         </div>
       </section>
 
