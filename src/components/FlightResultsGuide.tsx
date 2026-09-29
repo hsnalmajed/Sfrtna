@@ -499,7 +499,7 @@ export default function FlightResultsGuide({
               {t.guideSearching}
             </p>
             {state.total > 0 && (
-              <p className="text-xs font-bold text-navy-500">{t.searchFound.replace("{count}", String(state.total))}</p>
+              <p className="text-xs font-bold text-navy-500">{t.searchFound.replace("{count}", flightsLabel(state.total))}</p>
             )}
           </div>
           <div className="h-1 w-full overflow-hidden bg-sun-100" aria-hidden="true">
