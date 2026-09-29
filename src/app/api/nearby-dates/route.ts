@@ -1,19 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
 import { resolveIata } from "@/lib/flights";
-import { dayFares } from "@/lib/providers/travelpayouts";
+import { dayFares, weekMatrix, type MatrixFare } from "@/lib/providers/travelpayouts";
 import { cachedJson } from "@/lib/edgeCache";
 
 /**
  * Fares seen for the same trip a few days earlier or later.
  *
- * Each day is priced as it is sold on the partner's side: the cheapest
- * one-way fare seen for that outbound day plus the cheapest seen for the
- * return day, the stay kept the same length. Only exact days are used — a
- * day with no fare seen is left out, never filled from a neighbour. These
- * are observed fares, not live ones, and the page says so.
- *
- * Four calls at most (the outbound and return months either side of a
- * month's end), each cached for three hours.
+ * A return trip is priced from round-trip fares actually quoted for those
+ * exact two days (the partner's week matrix), with when each was seen — not
+ * from two one-ways added up, which ran several per cent off the live
+ * price. A one-way trip uses the cheapest one-way seen that day. A day with
+ * no fare seen is left out, never filled from a neighbour. These are
+ * observed fares, not live ones; the page shows the live price for the
+ * traveller's own dates beside them and says which is which.
  */
 
 type DayRow = { price: number; transfers: number | null };
@@ -55,36 +54,58 @@ export async function GET(req: NextRequest) {
   }
 
   const offsets = Array.from({ length: RANGE * 2 + 1 }, (_, i) => i - RANGE);
-  const outMonths = [...new Set(offsets.map((o) => shift(depart, o).slice(0, 7)))];
-  const backMonths = back ? [...new Set(offsets.map((o) => shift(back, o).slice(0, 7)))] : [];
-  const [outTables, backTables] = await Promise.all([
-    Promise.all(outMonths.map((m) => monthFares(origin, destination, m, currency))),
-    Promise.all(backMonths.map((m) => monthFares(destination, origin, m, currency))),
-  ]);
-  const outFares = Object.assign({}, ...outTables) as Record<string, DayRow>;
-  const backFares = Object.assign({}, ...backTables) as Record<string, DayRow>;
-
   const tomorrow = shift(new Date().toISOString().slice(0, 10), 1);
+
+  if (back) {
+    const rows =
+      (await cachedJson<MatrixFare[]>(`weekmatrix:${origin}:${destination}:${depart}:${back}:${currency}`, 3600, async () => {
+        const r = await weekMatrix(origin, destination, depart, back, currency);
+        return r.length ? r : null;
+      })) ?? [];
+    const days = offsets
+      .map((offset) => {
+        const d = shift(depart, offset);
+        const r = shift(back, offset);
+        if (d < tomorrow) return null;
+        // Several quotes can exist for one pair of days; the lowest is the fare.
+        const quotes = rows.filter((x) => x.depart === d && x.return === r);
+        if (!quotes.length) return null;
+        const best = quotes.reduce((a, b) => (b.price < a.price ? b : a));
+        return {
+          offset,
+          depart: d,
+          return: r,
+          perSeat: best.price,
+          total: best.price * paying,
+          direct: best.changes === 0,
+          foundAt: best.foundAt,
+        };
+      })
+      .filter(Boolean);
+    return NextResponse.json({ currency, days, ...(sp.get("debug") ? { rows } : {}) });
+  }
+
+  const outMonths = [...new Set(offsets.map((o) => shift(depart, o).slice(0, 7)))];
+  const outFares = Object.assign(
+    {},
+    ...(await Promise.all(outMonths.map((m) => monthFares(origin, destination, m, currency))))
+  ) as Record<string, DayRow>;
   const days = offsets
     .map((offset) => {
       const d = shift(depart, offset);
-      const r = back ? shift(back, offset) : "";
       if (d < tomorrow) return null;
       const out = outFares[d];
-      const ret = r ? backFares[r] : undefined;
-      if (!out || (r && !ret)) return null;
-      const perSeat = out.price + (ret?.price ?? 0);
-      const stops = [out.transfers, ret?.transfers].filter((t) => t !== undefined);
+      if (!out) return null;
       return {
         offset,
         depart: d,
-        return: r,
-        perSeat,
-        total: perSeat * paying,
-        direct: stops.length > 0 && stops.every((t) => t === 0),
+        return: "",
+        perSeat: out.price,
+        total: out.price * paying,
+        direct: out.transfers === 0,
+        foundAt: null,
       };
     })
     .filter(Boolean);
-
   return NextResponse.json({ currency, days });
 }

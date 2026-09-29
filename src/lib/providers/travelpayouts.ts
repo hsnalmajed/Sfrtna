@@ -440,3 +440,55 @@ export async function dayFares(
   }
   return out;
 }
+
+export interface MatrixFare {
+  depart: string;
+  return: string;
+  /** Round-trip fare for one adult, as last seen. */
+  price: number;
+  changes: number | null;
+  /** When the fare was seen (ISO). */
+  foundAt: string | null;
+}
+
+/**
+ * Round-trip fares seen for the dates either side of a trip (±3 days on
+ * each end) — v2 week-matrix. Each row is a real round-trip fare somebody
+ * was quoted, for one adult, with when it was seen; not a sum of one-ways.
+ */
+export async function weekMatrix(
+  origin: string,
+  destination: string,
+  depart: string,
+  back: string,
+  currency: string
+): Promise<MatrixFare[]> {
+  if (!token() || !origin || !destination || !depart || !back) return [];
+  const url = new URL(`${BASE}/v2/prices/week-matrix`);
+  url.searchParams.set("origin", origin);
+  url.searchParams.set("destination", destination);
+  url.searchParams.set("depart_date", depart);
+  url.searchParams.set("return_date", back);
+  url.searchParams.set("currency", currency.toLowerCase());
+  url.searchParams.set("show_to_affiliates", "true");
+  try {
+    const res = await fetch(url.toString(), {
+      headers: { "X-Access-Token": token(), Accept: "application/json" },
+    });
+    if (!res.ok) return [];
+    const body = (await res.json()) as {
+      data?: { value?: number; depart_date?: string; return_date?: string; number_of_changes?: number; found_at?: string }[];
+    };
+    return (body.data ?? [])
+      .filter((r) => Number(r.value) > 0 && r.depart_date && r.return_date)
+      .map((r) => ({
+        depart: String(r.depart_date).slice(0, 10),
+        return: String(r.return_date).slice(0, 10),
+        price: Math.round(Number(r.value)),
+        changes: typeof r.number_of_changes === "number" ? r.number_of_changes : null,
+        foundAt: r.found_at ?? null,
+      }));
+  } catch {
+    return [];
+  }
+}

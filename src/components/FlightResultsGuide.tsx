@@ -214,8 +214,9 @@ export default function FlightResultsGuide({
   currency: string;
   travelers: number;
   cityName: string;
-  /** Shown above the pick: the same trip on nearby dates. */
-  nearby?: React.ReactNode;
+  /** Shown above the pick: the same trip on nearby dates, given the live
+   *  cheapest fare for the traveller's own dates once the search has one. */
+  nearby?: (liveCheapest: number | null, settled: boolean) => React.ReactNode;
 }) {
   const t = getDictionary(locale).results;
   const [state, setState] = useState<State>(EMPTY);
@@ -508,7 +509,13 @@ export default function FlightResultsGuide({
         </div>
       )}
 
-      {nearby}
+      {nearby?.(
+        [fits[0]?.price, over[0]?.price].filter((n): n is number => n !== undefined).reduce<number | null>(
+          (a, b) => (a === null || b < a ? b : a),
+          null
+        ),
+        state.settled
+      )}
 
       {shown && (
         <>
