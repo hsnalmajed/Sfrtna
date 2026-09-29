@@ -287,9 +287,12 @@ function DiscoverResultsContent() {
           </div>
         )}
 
-        {mode === "routes" && !loading && within.length > 0 && (
+        {/* The fares that chose these are seen ones, not live: they pick,
+            they are not shown. The live price is one tap away on each. */}
+        {!loading && hasResults && !pricesUnavailable && (
           <div className="mb-5 rounded-xl bg-sea-50 px-4 py-3 text-sm leading-relaxed text-navy-800 ring-1 ring-sea-100">
-            ℹ️ {d.routesNotice.replace("{budget}", money(Number(budget)))}
+            ℹ️ {d.pickedNotice.replace("{budget}", money(Number(budget)))}
+            {mode === "routes" && <> {d.routesNotice}</>}
           </div>
         )}
 
@@ -318,9 +321,7 @@ function DiscoverResultsContent() {
         {/* Nothing fits: say what it would take. */}
         {!loading && !pricesUnavailable && hasResults && within.length === 0 && over.length > 0 && (
           <div className="rounded-2xl bg-rose-50 p-5 text-sm leading-relaxed text-rose-900 ring-1 ring-rose-200">
-            {d.noneWithinFiltered
-              .replace("{amount}", money(over[0].totalPrice))
-              .replace("{over}", money(over[0].totalPrice - Number(budget)))}
+            {d.noneWithinFiltered}
           </div>
         )}
         {!loading && !pricesUnavailable && hasResults && items.length === 0 && (

@@ -25,8 +25,10 @@ function addDaysIso(dateStr: string, days: number): string {
  * and has checked, and left out when we don't know it. Then the two ways on:
  * book this flight, or find a hotel in the same city for the same dates.
  *
- * Flights and hotels are separate searches now, so the only budget here is
- * the flight budget; nothing is subtracted for a hotel we have not priced.
+ * No price is printed here. The destination was chosen because the fares
+ * seen for it lately fit the budget, but a seen fare is not the price at
+ * the booking site, and a site built on budgets shows the live price or
+ * none. "See the live price and book" opens the live search for this trip.
  */
 export default function DestinationCard({
   suggestion,
@@ -60,9 +62,6 @@ export default function DestinationCard({
   const countryName = country ? (isAr ? country.nameAr : country.nameEn) : "";
   const month = Number(departDate.slice(5, 7));
   const monthLabel = month >= 1 && month <= 12 ? monthName(month, locale) : "";
-  const fmt = (n: number) => `${Math.abs(n).toLocaleString("en-US")} ${suggestion.currency}`;
-  const paying = Math.max(1, travelers.adults + travelers.childrenAges.length);
-  const flight = suggestion.flight;
 
   // The link describes the same trip the card priced: the IATA code the
   // fare was searched on, and the same dates and filters.
@@ -138,45 +137,6 @@ export default function DestinationCard({
       </div>
 
       <div className="flex flex-1 flex-col p-4">
-        {/* The fare: the whole party's total, and what that is per seat. */}
-        <div className="flex items-end justify-between gap-3">
-          <div>
-            <p className="font-display text-2xl font-black text-navy-950">{fmt(suggestion.totalPrice)}</p>
-            <p className="text-xs text-navy-500">
-              {d.totalFor.replace("{count}", String(paying))}
-              {flight?.pricePerPerson && paying > 1 && (
-                <> · {d.perPersonShort.replace("{price}", fmt(flight.pricePerPerson))}</>
-              )}
-            </p>
-          </div>
-          {!suggestion.withinBudget && (
-            <span className="rounded-full bg-rose-50 px-2.5 py-1 text-xs font-bold text-rose-700 ring-1 ring-rose-200">
-              {d.overBudgetBy.replace("{amount}", fmt(suggestion.remainingBudget))}
-            </span>
-          )}
-        </div>
-
-        {flight && (
-          <div className="mt-2 text-sm text-navy-700">
-            <p>
-              ✈️ {flight.airline}
-              {(!flight.priceOnly || flight.stopsKnown) &&
-                ` · ${flight.stops === 0 ? dict.results.stopsNone : `${flight.stops} ${dict.results.stops}`}`}
-            </p>
-            {flight.priceOnly && (
-              <p className="text-xs text-navy-400">
-                {flight.nearDays === 0
-                  ? dict.results.priceForYourDates
-                  : flight.nearDays !== undefined
-                    ? dict.results.priceNearDates.replace("{n}", String(flight.nearDays))
-                    : flight.datesApproximate
-                      ? dict.results.approxDatesNote
-                      : dict.results.priceObserved}
-              </p>
-            )}
-          </div>
-        )}
-
         {/* Weather that month and the visa, side by side. */}
         <div className="mt-3 flex flex-wrap items-center gap-1.5">
           {place?.high !== undefined && (
@@ -208,13 +168,6 @@ export default function DestinationCard({
             </Link>
           ) : null}
         </div>
-
-        {suggestion.withinBudget && (
-          <div className="mt-3 flex items-center justify-between border-t border-mist-100 pt-3 text-sm">
-            <span className="text-navy-500">{d.remainingFlight}</span>
-            <span className="font-bold text-emerald-700">{fmt(suggestion.remainingBudget)}</span>
-          </div>
-        )}
 
         <div className="mt-auto space-y-2 pt-4">
           <Link

@@ -23,11 +23,10 @@ function shortPlace(text: string): string {
 /**
  * A multi-city trip: the flights the traveller listed, one card each.
  *
- * Every card ends in its own booking button, which opens our live flight
- * search for that one-way flight — the same partner search, with the same
- * commission, as any other trip. The prices on the cards are fares seen
- * recently for each flight on its own, and the page says so; the live price
- * is the one on the partner's page.
+ * Every card ends in its own button, which opens our live flight search for
+ * that one-way flight — the same partner search, with the same commission,
+ * as any other trip. No price is printed on the cards: the ones we have are
+ * fares seen recently, and the site shows the live price or none.
  */
 function MultiCityResultsContent() {
   const params = useParams();
@@ -123,9 +122,6 @@ function MultiCityResultsContent() {
       baggageIncluded: String(baggageIncluded),
     })}`;
 
-  const paying = Math.max(1, Number(adults) + (childrenAges ? childrenAges.split(",").length : 0));
-  const pricedCount = result?.legs.filter((l) => l.flight).length ?? 0;
-  const isMock = Boolean(result?.isMock) && process.env.NODE_ENV !== "development";
 
   return (
     <div className="bg-mist-50">
@@ -168,7 +164,6 @@ function MultiCityResultsContent() {
 
           <ol className="space-y-4">
             {result.legs.map((leg, i) => {
-              const f = isMock ? null : leg.flight;
               return (
                 <li key={i} className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-navy-950/10">
                   <div className="flex flex-wrap items-center gap-2">
@@ -198,21 +193,7 @@ function MultiCityResultsContent() {
                   </div>
 
                   <div className="mt-4 flex flex-wrap items-end justify-between gap-3 border-t border-dashed border-mist-200 pt-4">
-                    {f ? (
-                      <div>
-                        <p className="font-display text-xl font-black text-navy-950">{money(f.price)}</p>
-                        <p className="text-xs text-navy-500">
-                          {dict.discoverResults.totalFor.replace("{count}", String(paying))} · ✈️ {f.airline}
-                        </p>
-                        {f.priceOnly && (
-                          <p className="mt-0.5 text-xs text-navy-400">
-                            {f.datesApproximate ? dict.results.approxDatesNote : dict.results.priceObserved}
-                          </p>
-                        )}
-                      </div>
-                    ) : (
-                      <p className="max-w-sm text-sm text-navy-600">{m.legNotPriced}</p>
-                    )}
+                    <p className="max-w-sm text-xs text-navy-500">{m.legLiveHint}</p>
                     <Link
                       href={legHref(leg)}
                       className="rounded-xl bg-sun-400 px-5 py-3 text-sm font-extrabold text-navy-950 shadow-[var(--shadow-sun)] transition hover:bg-sun-300"
@@ -225,25 +206,6 @@ function MultiCityResultsContent() {
             })}
           </ol>
 
-          {!isMock && pricedCount > 0 && (
-            <div className="mt-5 rounded-2xl bg-navy-950 p-5 text-white">
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <p className="text-sm text-white/70">
-                  {result.allPriced
-                    ? m.totalSeparate
-                    : m.totalPartial.replace("{count}", String(pricedCount)).replace("{all}", String(result.legs.length))}
-                </p>
-                <p className="font-display text-2xl font-black text-sun-400">{money(result.totalPrice)}</p>
-              </div>
-              {result.allPriced && result.budgetTotal > 0 && (
-                <p className={`mt-2 text-sm font-bold ${result.withinBudget ? "text-emerald-300" : "text-rose-300"}`}>
-                  {result.withinBudget
-                    ? `${m.remaining}: ${money(result.remainingBudget)}`
-                    : m.overBudget.replace("{amount}", money(result.remainingBudget))}
-                </p>
-              )}
-            </div>
-          )}
         </>
       )}
     </div>

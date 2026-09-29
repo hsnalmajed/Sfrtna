@@ -19,8 +19,9 @@ function addDays(iso: string, days: number): string {
  *
  * Read top to bottom the way the trip happens — the countries with how long
  * in each and whether it is a good time there, then every flight with its
- * day and fare and its own booking button, then what the whole route costs
- * against the flight budget.
+ * day and its own button to the live price. The route was chosen because
+ * the fares seen for its flights lately fit the budget; those seen fares are
+ * not shown, since the site prints the live price or none.
  */
 export default function RouteCard({
   route,
@@ -45,7 +46,6 @@ export default function RouteCard({
   const d = dict.discoverResults;
   const isAr = locale === "ar";
   const arrow = isAr ? "←" : "→";
-  const money = (n: number) => `${Math.abs(n).toLocaleString("en-US")} ${route.currency}`;
   const dateLabel = (iso: string) =>
     new Date(`${iso}T00:00:00Z`).toLocaleDateString(isAr ? "ar-u-ca-gregory-nu-latn" : "en-GB", {
       day: "numeric",
@@ -80,10 +80,6 @@ export default function RouteCard({
         <p className="font-display text-lg font-black">
           {[originLabel, ...route.stops.map((s) => (isAr ? s.nameAr : s.nameEn)), originLabel].join(` ${arrow} `)}
         </p>
-        <div className="text-end">
-          <p className="font-display text-xl font-black text-sun-400">{money(route.totalPrice)}</p>
-          <p className="text-xs text-white/60">{d.routeTotal}</p>
-        </div>
       </div>
 
       {/* The countries. */}
@@ -179,15 +175,7 @@ export default function RouteCard({
                     {nameOf(leg.from)} {arrow} {nameOf(leg.to)}
                     <span className="ms-2 font-semibold text-navy-500">{dateLabel(leg.date)}</span>
                   </p>
-                  <p className="text-xs text-navy-500">
-                    ✈️ {leg.airline}
-                    {leg.transfers !== null &&
-                      ` · ${leg.transfers === 0 ? dict.results.stopsNone : `${leg.transfers} ${dict.results.stops}`}`}
-                    {" · "}
-                    {leg.approximate ? dict.results.approxDatesNote : dict.results.priceObserved}
-                  </p>
                 </div>
-                <p className="font-display text-base font-black text-navy-950">{money(leg.price)}</p>
                 <Link
                   href={href}
                   className="rounded-lg bg-sun-400 px-3 py-2 text-xs font-extrabold text-navy-950 transition hover:bg-sun-300"
@@ -199,14 +187,6 @@ export default function RouteCard({
           })}
         </ol>
 
-        <div className="mt-3 flex items-center justify-between text-sm">
-          <span className="text-navy-500">{route.withinBudget ? d.remainingFlight : ""}</span>
-          <span className={`font-bold ${route.withinBudget ? "text-emerald-700" : "text-rose-700"}`}>
-            {route.withinBudget
-              ? money(route.remainingBudget)
-              : d.overBudgetBy.replace("{amount}", money(route.remainingBudget))}
-          </span>
-        </div>
       </div>
     </article>
   );
