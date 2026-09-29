@@ -6,7 +6,7 @@ import Link from "next/link";
 import { getDictionary } from "@/lib/dictionaries";
 import type { RoomType, Locale, SearchParams, TripType } from "@/lib/types";
 import TripCurrencyInline from "@/components/TripCurrencyInline";
-import FlightMetasearch from "@/components/FlightMetasearch";
+import FlightMetasearch, { warmFlightSearch } from "@/components/FlightMetasearch";
 import FlightResultsGuide from "@/components/FlightResultsGuide";
 import VisaBadge from "@/components/VisaBadge";
 import VisaRequirementsDialog from "@/components/VisaRequirementsDialog";
@@ -36,6 +36,10 @@ function nightsBetween(a: string, b: string) {
  */
 
 export default function ResultsPage() {
+  // Outside the Suspense boundary, so the static page's own <head> already
+  // asks for the flight widget's script and opens its connections — fetched
+  // alongside the page's code instead of after it has hydrated.
+  warmFlightSearch();
   return (
     <Suspense fallback={null}>
       <ResultsContent />

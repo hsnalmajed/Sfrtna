@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { preconnect, preload } from "react-dom";
+import { preconnect, preloadModule } from "react-dom";
 import type { Locale } from "@/lib/types";
 
 /**
@@ -44,7 +44,8 @@ export const WIDGET_SRC = "https://tpwgt.com/wl_web/main.js?wl_id=22604";
 export function warmFlightSearch() {
   preconnect("https://tpwgt.com");
   preconnect("https://tickets-api.eu-north-1.apistp.com");
-  preload(WIDGET_SRC, { as: "script" });
+  // A module script: only a module preload is reused when it is added.
+  preloadModule(WIDGET_SRC);
 }
 
 export default function FlightMetasearch({
