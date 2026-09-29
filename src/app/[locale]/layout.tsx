@@ -44,18 +44,12 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
 
   return (
     <html lang={loc} dir={dict.dir} className="h-full antialiased">
-      <head>
-        {/*
-          Travelpayouts Drive.
-          
-          Their account — and with it the API token that makes the prices on
-          this site real rather than sample data — is gated behind this script
-          being live on the domain. It is the partner's own loader, async, and
-          carries the site's public marker; nothing about it is a secret and
-          nothing on the page waits for it.
-        */}
-        <script async src="https://tp-em.com/NTc3Njgz.js?t=577683" data-cmp-ab="2" />
-      </head>
+      {/*
+        No Travelpayouts Drive script. It was loaded site-wide and opened
+        Klook pages over ours on click (seen 29 Sep 2026); a traveller who
+        tapped to take a screenshot landed on a tours site. Flight bookings
+        earn through the flight widget's own links and are not affected.
+      */}
       {/*
         No top padding on <main>. The header is fixed and transparent at rest,
         and every page opens on a hero that deliberately runs underneath it —
