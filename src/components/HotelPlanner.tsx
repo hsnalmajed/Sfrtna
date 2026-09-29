@@ -76,7 +76,6 @@ export default function HotelPlanner({
     return s === "room" || s === "apartment" ? s : "";
   });
   const [breakfast, setBreakfast] = useState(sp.get("breakfast") === "true");
-  const [extrasOpen, setExtrasOpen] = useState(false);
   const [errors, setErrors] = useState<FieldErrors>({});
 
   const guests = occupancy(travelers);
@@ -250,25 +249,16 @@ export default function HotelPlanner({
       {/* The hotel's own preferences — only when we are the ones choosing. */}
       {mode === "discover" && (
         <div className={`mt-5 border-t pt-4 ${divider}`}>
-          <button
-            type="button"
-            onClick={() => setExtrasOpen((v) => !v)}
-            aria-expanded={extrasOpen}
-            className="flex w-full items-center justify-between gap-3 text-start"
-          >
+          <p className="flex items-center gap-2">
             <span className={sectionTitle}>
               {dict.form.extrasTitle}{" "}
               <span className={`font-normal ${dark ? "text-white/50" : "text-navy-500"}`}>
                 {dict.form.extrasOptional}
               </span>
             </span>
-            <Icon
-              name="chevron"
-              className={`h-4 w-4 transition ${extrasOpen ? "rotate-180" : ""} ${dark ? "text-white/60" : "text-navy-500"}`}
-            />
-          </button>
+          </p>
 
-          <div className={`${extrasOpen ? "flex" : "hidden"} mt-3 flex-col gap-4`}>
+          <div className="mt-3 flex flex-col gap-4">
             <div className="grid grid-cols-1 items-end gap-x-4 gap-y-4 sm:grid-cols-2 lg:grid-cols-[minmax(0,11rem)_minmax(0,11rem)_1fr]">
               <div>
                 <FieldLabel dark={dark} icon="star" htmlFor="hotel-stars">

@@ -147,7 +147,6 @@ export default function TripPlanner({
   const [errors, setErrors] = useState<FieldErrors>({});
   // The optional row is always open on a wide screen, where it costs one
   // line; on a phone it folds away behind its heading.
-  const [extrasOpen, setExtrasOpen] = useState(false);
 
   /**
    * The currency follows the departure city until the traveller says
@@ -624,28 +623,19 @@ export default function TripPlanner({
       )}
 
       {/* ── 4. Optional, and saying so ─────────────────────────────────
-          Folded behind its heading on every screen: the search button stays
-          close to the fields that matter, and whoever wants more opens it. */}
+          Always open: folded away, travellers did not see them, and a
+          preference no one sees is one no one sets. */}
       <div className={`mt-5 border-t pt-4 ${divider}`}>
-        <button
-          type="button"
-          onClick={() => setExtrasOpen((v) => !v)}
-          aria-expanded={extrasOpen}
-          className="flex w-full items-center justify-between gap-3 text-start"
-        >
+        <p className="flex items-center gap-2">
           <span className={sectionTitle}>
             {dict.form.extrasTitle}{" "}
             <span className={`font-normal ${dark ? "text-white/50" : "text-navy-500"}`}>
               {dict.form.extrasOptional}
             </span>
           </span>
-          <Icon
-            name="chevron"
-            className={`h-4 w-4 transition ${extrasOpen ? "rotate-180" : ""} ${dark ? "text-white/60" : "text-navy-500"}`}
-          />
-        </button>
+        </p>
 
-        <div className={`${extrasOpen ? "flex" : "hidden"} mt-3 flex-col gap-4`}>
+        <div className="mt-3 flex flex-col gap-4">
           {/* The one question only the suggest tab asks. */}
           {mode === "discover" && (
             <div>

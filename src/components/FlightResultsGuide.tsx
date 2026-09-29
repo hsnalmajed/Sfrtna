@@ -208,6 +208,8 @@ export default function FlightResultsGuide({
   travelers,
   cityName,
   editHref,
+  directOnly = false,
+  bagIncluded = false,
 }: {
   locale: Locale;
   /** The flight budget for the whole party; 0 when none was given. */
@@ -217,6 +219,9 @@ export default function FlightResultsGuide({
   cityName: string;
   /** Back to the search form, filled in. */
   editHref: string;
+  /** Preferences from the search form: held to on the pick and the lists. */
+  directOnly?: boolean;
+  bagIncluded?: boolean;
 }) {
   const t = getDictionary(locale).results;
   const [state, setState] = useState<State>(EMPTY);
@@ -224,8 +229,8 @@ export default function FlightResultsGuide({
   const [showWithin, setShowWithin] = useState(false);
   const [showOver, setShowOver] = useState(false);
   const [sort, setSort] = useState<Sort>("cheapest");
-  const [onlyDirect, setOnlyDirect] = useState(false);
-  const [onlyBag, setOnlyBag] = useState(false);
+  const [onlyDirect, setOnlyDirect] = useState(directOnly);
+  const [onlyBag, setOnlyBag] = useState(bagIncluded);
   const [limit, setLimit] = useState(10);
   const money = (n: number) => moneyIn(currency, n);
   const dur = (min: number) => {
@@ -419,7 +424,16 @@ export default function FlightResultsGuide({
   }, []);
 
   const hasBudget = budget > 0;
-  const { fits, over } = state;
+  // The traveller's preferences from the search form — direct only, a
+  // checked bag in the fare — decide what can be picked. A bag counts only
+  // when the fare includes it, so the price shown is the price with it.
+  // When nothing found meets them, say so and show everything found.
+  const meets = (f: Flight) => (!directOnly || f.maxStops === 0) && (!bagIncluded || f.bag === "in");
+  const prefsSet = directOnly || bagIncluded;
+  const prefsMatch = !prefsSet || [...state.fits, ...state.over].some(meets);
+  const fits = prefsSet && prefsMatch ? state.fits.filter(meets) : state.fits;
+  const over = prefsSet && prefsMatch ? state.over.filter(meets) : state.over;
+  const prefsLabel = [directOnly ? t.chipDirect : "", bagIncluded ? t.chipBag : ""].filter(Boolean).join(" · ");
   const bestFit = fits.find((f) => f.best) ?? fits[0] ?? null;
   const cheapestFit = fits[0] ?? null;
   const fastestFit = fits.length
@@ -495,6 +509,12 @@ export default function FlightResultsGuide({
 
   return (
     <section aria-live="polite">
+      {state.settled && prefsSet && !prefsMatch && state.total > 0 && (
+        <p className="mb-4 rounded-xl bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-900 ring-1 ring-amber-200">
+          {t.prefsNoMatch.replace("{prefs}", prefsLabel)}
+        </p>
+      )}
+
       {/* The search, while it runs: at the top, where the answer will be. */}
       {(state.searching || (!state.settled && !shown)) && (
         <div className="mb-6 overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-black/5">
@@ -517,7 +537,12 @@ export default function FlightResultsGuide({
       {shown && (
         <>
           <div className="mb-3 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-            <h2 className="font-display text-xl font-extrabold text-navy-950">{t.guidePickedTitle}</h2>
+            <div>
+              <h2 className="font-display text-xl font-extrabold text-navy-950">{t.guidePickedTitle}</h2>
+              {prefsSet && prefsMatch && (
+                <p className="mt-1 text-sm font-semibold text-navy-600">{t.prefsApplied.replace("{prefs}", prefsLabel)}</p>
+              )}
+            </div>
             <p className="text-sm font-semibold text-navy-600">{t.pickLeft.replace("{amount}", money(budget - shown.price))}</p>
           </div>
 

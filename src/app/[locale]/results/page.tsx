@@ -387,6 +387,8 @@ function ResultsContent() {
         travelers={travelers}
         cityName={destinationCityName ?? search.destination}
         editHref={`/${locale}?${editSearchParams}#plan`}
+        directOnly={Boolean(search.directFlightsOnly)}
+        bagIncluded={Boolean(search.baggageIncluded)}
       />
 
 
