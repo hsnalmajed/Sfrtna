@@ -79,7 +79,7 @@ export default function NearbyDates({
   const money = (n: number) => `${Math.round(n).toLocaleString("en-US")} ${currency}`;
 
   return (
-    <section className="mt-6 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-mist-200 sm:p-5">
+    <section className="mb-6 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-mist-200 sm:p-5">
       <h2 className="font-display text-lg font-extrabold text-navy-950">{t.nearbyTitle}</h2>
       <p className="mt-1 text-xs text-navy-500">{t.nearbyNote}</p>
       <div className="-mx-1 mt-4 flex gap-2 overflow-x-auto px-1 pb-1">
@@ -89,8 +89,17 @@ export default function NearbyDates({
           const isCheapest = d.total === cheapest;
           const body = (
             <>
-              <span className="block text-xs font-bold text-navy-500">{yours ? t.nearbyYours : label(d.depart)}</span>
-              {d.return && <span className="block text-[11px] text-navy-400">← {label(d.return)}</span>}
+              {yours && <span className="mb-1 block text-xs font-extrabold text-navy-900">{t.nearbyYours}</span>}
+              <span className="flex items-center justify-center gap-1.5 text-xs">
+                <span className="rounded bg-sky-50 px-1.5 py-0.5 text-[10px] font-extrabold text-sky-800">{t.nearbyOut}</span>
+                <span className="font-bold text-navy-800">{label(d.depart)}</span>
+              </span>
+              {d.return && (
+                <span className="mt-1 flex items-center justify-center gap-1.5 text-xs">
+                  <span className="rounded bg-mist-100 px-1.5 py-0.5 text-[10px] font-extrabold text-navy-700">{t.nearbyBack}</span>
+                  <span className="font-semibold text-navy-600">{label(d.return)}</span>
+                </span>
+              )}
               <span className="mt-1.5 block font-display text-base font-black text-navy-950">
                 <bdi dir="ltr">{money(d.total)}</bdi>
               </span>
@@ -108,7 +117,7 @@ export default function NearbyDates({
               </span>
             </>
           );
-          const cls = `min-w-[118px] flex-1 rounded-xl px-3 py-2.5 text-center transition ${
+          const cls = `min-w-[140px] flex-1 rounded-xl px-3 py-2.5 text-center transition ${
             yours ? "bg-navy-950/[0.04] ring-2 ring-navy-900" : "ring-1 ring-mist-200 hover:ring-navy-300 hover:shadow-sm"
           }`;
           return yours ? (

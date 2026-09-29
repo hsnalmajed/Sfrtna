@@ -66,21 +66,19 @@ export default function TripCurrencyInline({
 
   return (
     <>
-      <span className="inline-flex items-center overflow-hidden rounded-full bg-white/10 text-sm font-bold text-white ring-1 ring-white/15">
-        <span className="inline-flex items-center gap-2 px-3.5 py-1.5">
-          <Flag currency={from} />
+      <span className="inline-flex shrink-0 items-center overflow-hidden whitespace-nowrap rounded-full bg-white/10 text-[13px] font-bold text-white ring-1 ring-white/15">
+        <span className="inline-flex items-center gap-2 px-3 py-1.5">
+          <Flag currency={to} />
           <span>
             1 {short(from)} = <span className="text-sun-400">{fmt(rate, to.decimals)} {short(to)}</span>
           </span>
-          <Flag currency={to} />
         </span>
         <button
           type="button"
           aria-haspopup="dialog"
           onClick={() => setOpen(true)}
-          className="inline-flex items-center gap-1.5 self-stretch border-s border-white/15 bg-white px-3.5 py-1.5 font-extrabold text-navy-950 transition hover:bg-sun-100"
+          className="inline-flex items-center gap-1.5 self-stretch border-s border-white/15 bg-white px-3 py-1.5 font-extrabold text-navy-950 transition hover:bg-sun-100"
         >
-          <span aria-hidden="true">🧮</span>
           {dict.results.currencyConvert}
         </button>
       </span>

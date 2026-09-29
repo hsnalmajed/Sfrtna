@@ -68,6 +68,10 @@ function css(bookLabel: string): string {
 :host([data-sfr-filter]) [class*="FlightFilters-module__filerContainer"],
 :host([data-sfr-filter]) [class*="FlightFiltersMobileMenu-module__root"]{display:none !important}
 :host([data-sfr-filter]) [class*="TicketsWidget-module__wrapper"]{grid-column:1 / -1 !important}
+/* With a budget, our page is the list: the widget's own results, its
+   placeholders and its progress bar stay hidden (still running, so its
+   buttons open the offers). Our search bar sits at the top instead. */
+:host([data-sfr-own]) [class*="TicketsWidget-module__root"]{display:none !important}
 `;
 }
 
@@ -202,6 +206,7 @@ export default function FlightResultsGuide({
   currency,
   travelers,
   cityName,
+  nearby,
 }: {
   locale: Locale;
   /** The flight budget for the whole party; 0 when none was given. */
@@ -209,6 +214,8 @@ export default function FlightResultsGuide({
   currency: string;
   travelers: number;
   cityName: string;
+  /** Shown above the pick: the same trip on nearby dates. */
+  nearby?: React.ReactNode;
 }) {
   const t = getDictionary(locale).results;
   const [state, setState] = useState<State>(EMPTY);
@@ -348,6 +355,9 @@ export default function FlightResultsGuide({
       const filtering = comparable && priced.length > 0;
       if (filtering) host.setAttribute("data-sfr-filter", "");
       else host.removeAttribute("data-sfr-filter");
+      // Until a fare shows otherwise, assume it can be held to the budget.
+      if (budget > 0 && (priced.length === 0 || comparable)) host.setAttribute("data-sfr-own", "");
+      else host.removeAttribute("data-sfr-own");
 
       const flights = filtering
         ? priced.filter((p) => p.price !== null).map((p) => read(p.card, p.price as number, p.best))
@@ -480,12 +490,25 @@ export default function FlightResultsGuide({
 
   return (
     <section aria-live="polite">
-      {!state.settled && !shown && (
-        <p className="flex items-center gap-2 rounded-2xl bg-white px-5 py-4 text-sm font-semibold text-navy-600 shadow-sm ring-1 ring-black/5">
-          <span className="h-2.5 w-2.5 animate-pulse rounded-full bg-sun-400" aria-hidden="true" />
-          {t.guideSearching}
-        </p>
+      {/* The search, while it runs: at the top, where the answer will be. */}
+      {(state.searching || (!state.settled && !shown)) && (
+        <div className="mb-6 overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-black/5">
+          <div className="flex flex-wrap items-center justify-between gap-2 px-5 py-4">
+            <p className="flex items-center gap-2 text-sm font-semibold text-navy-700">
+              <span className="h-2.5 w-2.5 animate-pulse rounded-full bg-sun-400" aria-hidden="true" />
+              {t.guideSearching}
+            </p>
+            {state.total > 0 && (
+              <p className="text-xs font-bold text-navy-500">{t.searchFound.replace("{count}", String(state.total))}</p>
+            )}
+          </div>
+          <div className="h-1 w-full overflow-hidden bg-sun-100" aria-hidden="true">
+            <div className="sfr-progress h-full w-1/3 rounded-full bg-sun-400" />
+          </div>
+        </div>
       )}
+
+      {nearby}
 
       {shown && (
         <>

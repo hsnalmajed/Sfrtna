@@ -122,6 +122,16 @@ function ResultsContent() {
         })
       : "";
 
+  // "25 أكتوبر" — the header's one line has no room for the weekday.
+  const shortDate = (iso: string) =>
+    iso
+      ? new Date(`${iso}T00:00:00Z`).toLocaleDateString(locale === "ar" ? "ar-u-ca-gregory-nu-latn" : "en-GB", {
+          day: "numeric",
+          month: "long",
+          timeZone: "UTC",
+        })
+      : "";
+
   const nights = search.returnDate ? nightsBetween(search.departDate, search.returnDate) : 0;
 
   // Bridges the destination airport to its country so we can link into the
@@ -312,22 +322,22 @@ function ResultsContent() {
                 in the order it is checked: the days, how many are flying,
                 the visa and its requirements, what a riyal is worth there,
                 and a converter for any other amount. */}
-            <div className="mt-4 flex flex-wrap items-center gap-x-2.5 gap-y-2.5 text-sm font-semibold text-white/80">
+            <div className="mt-4 flex flex-wrap items-center gap-2 text-sm font-semibold text-white/80 lg:flex-nowrap">
               {/* The search itself, as the box it was typed into: tap it to
                   change it. A summary that looks like a field is where a
                   traveller looks to edit — a separate button is easy to miss. */}
               <Link
                 href={`/${locale}?${editSearchParams}#plan`}
-                className="group inline-flex items-center gap-2.5 rounded-full bg-white py-1.5 pe-1.5 ps-4 text-sm font-bold text-navy-950 shadow-sm transition hover:ring-2 hover:ring-sun-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400"
+                className="group inline-flex shrink-0 items-center gap-2 rounded-full bg-white py-1.5 pe-1.5 ps-3.5 text-[13px] font-bold text-navy-950 shadow-sm transition hover:ring-2 hover:ring-sun-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400"
               >
                 <Icon name="calendar" className="h-4 w-4 text-navy-500" />
-                <span>{prettyDate(search.departDate)}</span>
+                <span>{shortDate(search.departDate)}</span>
                 {search.returnDate && (
                   <>
                     <span className="text-navy-400" aria-hidden="true">
                       {locale === "ar" ? "←" : "→"}
                     </span>
-                    <span>{prettyDate(search.returnDate)}</span>
+                    <span>{shortDate(search.returnDate)}</span>
                   </>
                 )}
                 <span className="h-4 w-px bg-mist-300" aria-hidden="true" />
@@ -341,9 +351,8 @@ function ResultsContent() {
 
               {destinationCountry && destinationCountry.code !== "SA" && (
                 <>
-                  <span className="mx-1 hidden h-6 w-px bg-white/20 sm:block" aria-hidden="true" />
                   {visa ? (
-                    <VisaBadge category={visa.category} label={visaLabels[visa.category]} className="!px-3.5 !py-1.5 !text-sm" />
+                    <VisaBadge category={visa.category} label={visaLabels[visa.category]} className="shrink-0 !px-3 !py-1.5 !text-[13px]" />
                   ) : (
                     <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3.5 py-1.5 text-sm font-bold text-white ring-1 ring-white/15">
                       🛂 {dict.results.visaCheckTitle}
@@ -353,9 +362,9 @@ function ResultsContent() {
                     type="button"
                     onClick={() => setVisaOpen(true)}
                     aria-haspopup="dialog"
-                    className="inline-flex items-center gap-1.5 rounded-full bg-sun-400 px-3.5 py-1.5 text-sm font-extrabold text-navy-950 shadow-[var(--shadow-sun)] transition hover:bg-sun-300"
+                    className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-sun-400 px-3 py-1.5 text-[13px] font-extrabold text-navy-950 shadow-[var(--shadow-sun)] transition hover:bg-sun-300"
                   >
-                    {dict.results.visaCardLink}
+                    {dict.results.visaReqShort}
                     <span aria-hidden="true">{locale === "ar" ? "←" : "→"}</span>
                   </button>
                   {showCurrencyStrip && homeCurrency && tripCurrency && (
@@ -378,37 +387,39 @@ function ResultsContent() {
         currency={search.currency}
         travelers={travelers}
         cityName={destinationCityName ?? search.destination}
+        nearby={
+          search.origin && search.destination && search.departDate ? (
+            <NearbyDates
+              locale={locale}
+              origin={search.origin}
+              destination={search.destination}
+              depart={search.departDate}
+              back={search.returnDate || ""}
+              currency={search.currency}
+              paying={search.adults + (search.childrenAges?.length ?? 0)}
+              budget={search.budgetTotal}
+              hrefFor={(d, r) => {
+                const p = new URLSearchParams({
+                  tripType: "flight",
+                  origin: search.origin,
+                  destination: search.destination,
+                  departDate: d,
+                  returnDate: r,
+                  adults: String(search.adults),
+                  childrenAges: serializeChildrenAges(search.childrenAges || []),
+                  infants: String(search.infants || 0),
+                  budget: String(search.budgetTotal),
+                  currency: search.currency,
+                  directOnly: String(search.directFlightsOnly),
+                  baggageIncluded: String(Boolean(search.baggageIncluded)),
+                });
+                return `/${locale}/results?${p}`;
+              }}
+            />
+          ) : null
+        }
       />
 
-      {search.origin && search.destination && search.departDate && (
-        <NearbyDates
-          locale={locale}
-          origin={search.origin}
-          destination={search.destination}
-          depart={search.departDate}
-          back={search.returnDate || ""}
-          currency={search.currency}
-          paying={search.adults + (search.childrenAges?.length ?? 0)}
-          budget={search.budgetTotal}
-          hrefFor={(d, r) => {
-            const p = new URLSearchParams({
-              tripType: "flight",
-              origin: search.origin,
-              destination: search.destination,
-              departDate: d,
-              returnDate: r,
-              adults: String(search.adults),
-              childrenAges: serializeChildrenAges(search.childrenAges || []),
-              infants: String(search.infants || 0),
-              budget: String(search.budgetTotal),
-              currency: search.currency,
-              directOnly: String(search.directFlightsOnly),
-              baggageIncluded: String(Boolean(search.baggageIncluded)),
-            });
-            return `/${locale}/results?${p}`;
-          }}
-        />
-      )}
 
       {/* 3. The flights themselves — the live search, for these exact dates
           and this party; the fare on the card is the fare at the agency. */}

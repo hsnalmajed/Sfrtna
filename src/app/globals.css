@@ -758,3 +758,26 @@ select optgroup {
     content: "";
   }
 }
+
+/* The flight search's progress bar: a gold band sliding across. */
+@keyframes sfrProgress {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(300%);
+  }
+}
+.sfr-progress {
+  animation: sfrProgress 1.4s ease-in-out infinite;
+}
+[dir="rtl"] .sfr-progress {
+  animation-direction: reverse;
+}
+@media (prefers-reduced-motion: reduce) {
+  .sfr-progress {
+    animation: none;
+    width: 100%;
+    opacity: 0.6;
+  }
+}
