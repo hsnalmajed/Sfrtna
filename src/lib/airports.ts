@@ -200,9 +200,24 @@ export const AIRPORTS: Airport[] = [
   { iata: "SEZ", nameAr: "مطار سيشل الدولي", nameEn: "Seychelles International Airport", cityAr: "فيكتوريا", cityEn: "Victoria", countryAr: "سيشل", countryEn: "Seychelles" },
 ];
 
+/**
+ * City codes that stand for every airport of a city ("PAR" is CDG and ORY),
+ * mapped to its main airport for the city, country and names. Searches and
+ * suggestions use them, and without this the page read "PAR" for Paris.
+ */
+const CITY_CODES: Record<string, string> = {
+  PAR: "CDG", LON: "LHR", NYC: "JFK", MIL: "MXP", ROM: "FCO", TYO: "HND", MOW: "SVO",
+  WAS: "IAD", CHI: "ORD", STO: "ARN", BUH: "OTP", SEL: "ICN", BJS: "PEK", SHA: "PVG",
+  OSA: "KIX", JKT: "CGK", YTO: "YYZ", SAO: "GRU", RIO: "GIG", BUE: "EZE", REK: "KEF",
+};
+
 export function findAirport(code: string): Airport | undefined {
   const c = code.trim().toUpperCase();
-  return AIRPORTS.find((a) => a.iata === c);
+  const exact = AIRPORTS.find((a) => a.iata === c);
+  if (exact || !CITY_CODES[c]) return exact;
+  const main = AIRPORTS.find((a) => a.iata === CITY_CODES[c]);
+  // The city, under its own code: "PAR — باريس", not one of its airports.
+  return main ? { ...main, iata: c, nameAr: main.cityAr, nameEn: main.cityEn } : undefined;
 }
 
 export function airportLabel(code: string, locale: "ar" | "en"): string {

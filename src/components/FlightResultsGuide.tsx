@@ -1,6 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import type { Locale } from "@/lib/types";
 import { getDictionary } from "@/lib/dictionaries";
 import { findAirport } from "@/lib/airports";
@@ -206,6 +207,7 @@ export default function FlightResultsGuide({
   currency,
   travelers,
   cityName,
+  editHref,
 }: {
   locale: Locale;
   /** The flight budget for the whole party; 0 when none was given. */
@@ -213,6 +215,8 @@ export default function FlightResultsGuide({
   currency: string;
   travelers: number;
   cityName: string;
+  /** Back to the search form, filled in. */
+  editHref: string;
 }) {
   const t = getDictionary(locale).results;
   const [state, setState] = useState<State>(EMPTY);
@@ -424,6 +428,10 @@ export default function FlightResultsGuide({
   const shown = tab === "cheapest" ? cheapestFit : tab === "fastest" ? fastestFit : bestFit;
   const others = fits.filter((f) => f !== shown);
   const noneWithin = hasBudget && state.settled && state.filtering && !shown;
+  // Nothing fits: say so over the page, once, when every flight is in —
+  // not from the first ten, whose cheapest may not be the cheapest.
+  const [noneDismissed, setNoneDismissed] = useState(false);
+  const closeNone = useCallback(() => setNoneDismissed(true), []);
   const flightsLabel = (n: number) =>
     countLabel(n, { one: t.flightsOne, two: t.flightsTwo, few: t.flightsFew, many: t.flightsMany });
   const overFrom = over.length ? over[0].price - budget : 0;
@@ -589,6 +597,27 @@ export default function FlightResultsGuide({
             </>
           )}
         </>
+      )}
+
+      {noneWithin && !noneDismissed && over.length > 0 && (
+        <NoneWithinDialog
+          title={t.guideNoneTitle}
+          body={t.guideNoneBody
+            .replace("{city}", cityName)
+            .replace("{amount}", money(over[0].price))
+            .replace("{count}", String(travelers))
+            .replace("{budget}", money(budget))
+            .replace("{over}", money(overFrom))}
+          showLabel={t.noneShowFlights}
+          editLabel={t.noneEditSearch}
+          closeLabel={t.closeOptions}
+          editHref={editHref}
+          onShow={() => {
+            setNoneDismissed(true);
+            setShowOver(true);
+          }}
+          onClose={closeNone}
+        />
       )}
 
       {noneWithin && state.total > 0 && over.length > 0 && (
@@ -907,5 +936,91 @@ function Amount({ template, amount }: { template: string; amount: string }) {
       <bdi dir="ltr">{plus ? `+${amount}` : amount}</bdi>
       {after}
     </>
+  );
+}
+
+/** "No flight fits your budget": the cheapest real fare, and the two ways on. */
+function NoneWithinDialog({
+  title,
+  body,
+  showLabel,
+  editLabel,
+  closeLabel,
+  editHref,
+  onShow,
+  onClose,
+}: {
+  title: string;
+  body: string;
+  showLabel: string;
+  editLabel: string;
+  closeLabel: string;
+  editHref: string;
+  onShow: () => void;
+  onClose: () => void;
+}) {
+  const panelRef = useRef<HTMLDivElement>(null);
+  const headingId = useId();
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", onKey);
+    panelRef.current?.focus();
+    return () => document.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
+  return createPortal(
+    <div
+      className="fixed inset-0 z-[100] flex items-end justify-center sm:items-center sm:p-6"
+      role="presentation"
+      onMouseDown={(e) => {
+        if (!panelRef.current?.contains(e.target as Node)) onClose();
+      }}
+    >
+      <div className="absolute inset-0 bg-navy-990/70 backdrop-blur-sm" aria-hidden="true" />
+      <div
+        ref={panelRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={headingId}
+        tabIndex={-1}
+        className="relative w-full max-w-md overflow-hidden rounded-t-3xl bg-white p-6 shadow-2xl outline-none sm:rounded-2xl"
+      >
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label={closeLabel}
+          className="absolute end-3 top-3 rounded-lg p-2 text-navy-400 transition hover:bg-mist-100 hover:text-navy-800"
+        >
+          <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2">
+            <path strokeLinecap="round" d="M6 6l12 12M18 6L6 18" />
+          </svg>
+        </button>
+        <span className="flex h-12 w-12 items-center justify-center rounded-full bg-rose-50 text-2xl" aria-hidden="true">
+          💸
+        </span>
+        <h2 id={headingId} className="mt-4 font-display text-xl font-extrabold text-navy-950">
+          {title}
+        </h2>
+        <p className="mt-2 text-sm leading-relaxed text-navy-700">{body}</p>
+        <div className="mt-6 flex flex-col gap-2 sm:flex-row">
+          <a
+            href={editHref}
+            className="flex flex-1 items-center justify-center rounded-xl bg-sun-400 px-4 py-3 text-sm font-extrabold text-navy-950 transition hover:bg-sun-300"
+          >
+            {editLabel}
+          </a>
+          <button
+            type="button"
+            onClick={onShow}
+            className="flex flex-1 items-center justify-center rounded-xl bg-white px-4 py-3 text-sm font-bold text-navy-800 ring-1 ring-mist-300 transition hover:ring-navy-300"
+          >
+            {showLabel}
+          </button>
+        </div>
+      </div>
+    </div>,
+    document.body
   );
 }

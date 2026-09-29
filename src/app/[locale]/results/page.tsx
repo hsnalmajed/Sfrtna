@@ -386,6 +386,7 @@ function ResultsContent() {
         currency={search.currency}
         travelers={travelers}
         cityName={destinationCityName ?? search.destination}
+        editHref={`/${locale}?${editSearchParams}#plan`}
       />
 
 
