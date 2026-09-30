@@ -20,15 +20,22 @@ const normalsPath = join(root, "src/data/climate/normals.json");
 const have = existsSync(seasonsPath) && existsSync(normalsPath);
 
 const load = () => ({
-  seasons: JSON.parse(readFileSync(seasonsPath, "utf8")) as { meta: { scoringVersion: string }; records: Record<string, SeasonRecord[]> },
+  seasons: JSON.parse(readFileSync(seasonsPath, "utf8")) as {
+    meta: { scoringVersion: string; withheld: Record<string, string>; missing: string[] };
+    records: Record<string, SeasonRecord[]>;
+  },
   normals: JSON.parse(readFileSync(normalsPath, "utf8")),
 });
 
-test("every Sfrtna destination has 12 classified months", { skip: !have }, () => {
+test("every Sfrtna destination has 12 classified months, or is listed as withheld/missing with a reason", { skip: !have }, () => {
   const { seasons } = load();
   for (const id of Object.keys(DESTINATION_TYPES)) {
     const recs = seasons.records[id];
-    assert.ok(recs, `${id} missing`);
+    if (!recs) {
+      const why = seasons.meta.withheld[id] ?? seasons.meta.missing.find((m) => m.startsWith(`${id}:`));
+      assert.ok(why, `${id} missing without a reason`);
+      continue;
+    }
     assert.equal(recs.length, 12, id);
     for (const r of recs) assert.ok(r.classification !== null || r.averageHighC === null, `${id} ${r.month}`);
   }

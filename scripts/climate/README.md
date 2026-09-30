@@ -34,6 +34,23 @@ cityCoords.ts ──► destinations.json ──► fetch_era5land.py ──► 
 - **Coasts and islands:** ERA5-Land has no values over the sea. When a
   destination's own cell is empty, the nearest land cell within 25 km is used
   and recorded (distance, cell). Beyond that, a station override is required.
+- **Cell height:** a 9 km cell's average ground height can be far from the
+  town's (a valley town whose cell reaches into the mountains reads several
+  degrees too cold). `fetch_static.py` downloads the ERA5-Land orography and
+  land-sea mask (ECMWF, ERA5-Land documentation page) and each destination's
+  ground height (OpenTopoData, SRTM 90 m / ASTER 30 m); `check_cells.py`
+  compares them and suggests a neighbouring land cell whose height is closer.
+  Decisions go in `cell_overrides.json` with the reason: a cell to use
+  instead, a reference place for islands whose stored coordinate is their
+  interior (e.g. Bali → Denpasar), an accepted difference, or `withhold`.
+  A destination whose best cell is still more than 400 m off, or that is
+  withheld, is not published (listed in `travelSeasons.json` → `meta.withheld`)
+  until a station override is added. Temperatures are never shifted by a
+  lapse rate.
+- **Known model bias:** ERA5-Land counts more ≥ 1 mm days than rain gauges
+  (drizzle), most in the humid tropics and on wet coasts. The scoring leans on
+  the monthly total more than on the day count; `reports/coverage.md` lists the
+  months to check against a station.
 - **Station overrides** (`station_overrides.json`, optional): official
   1991–2020 normals from a national met service / WMO / NOAA NCEI for a
   station that represents the city. Each entry must carry `stationName`,
@@ -56,7 +73,11 @@ pip install "cdsapi>=0.7.2" pandas numpy timezonefinder
 node scripts/climate/export_destinations.mts
 python3 scripts/climate/fetch_era5land.py --probe   # checks access, prints columns
 python3 scripts/climate/fetch_era5land.py           # ~150 point requests; resumable
-python3 scripts/climate/build_normals.py
+python3 scripts/climate/fetch_static.py             # orography, land-sea mask, town heights
+pip install xarray netCDF4 && python3 scripts/climate/check_cells.py   # → raw/cell_check.json
+#   decide in cell_overrides.json, then fetch_era5land.py again (downloads only the changed cells)
+python3 scripts/climate/build_normals.py            # resumable (raw/normals_cache/); refuses incomplete files
+python3 scripts/climate/test_build_normals.py
 node scripts/climate/generate_seasons.mts
 node --test src/lib/travelSeason/*.test.ts
 ```

@@ -86,8 +86,34 @@ def rh_from(t_c, td_c):
     return 100.0 * np.exp(a * td_c / (b + td_c)) / np.exp(a * t_c / (b + t_c))
 
 
-def normals_for(path: Path, tz: str):
-    df = pd.read_csv(path)
+EXPECTED_HOURS = 262_992  # 1991-01-01 00:00 to 2020-12-31 23:00 UTC
+
+
+def read_complete(path: Path, full_period: bool = True):
+    """Read the hourly CSV and insist on every hour of the period. A short
+    read (a network-mounted folder can return a file partially) is retried,
+    and a file that stays short stops the build rather than yielding normals
+    from fewer hours than it claims."""
+    import io
+    import time
+
+    for attempt in range(5):
+        data = path.read_bytes()
+        if len(data) == path.stat().st_size:
+            df = pd.read_csv(io.BytesIO(data))
+            if not full_period:
+                return df
+            if len(df) == EXPECTED_HOURS and pd.to_datetime(df[col(df, "time")].iloc[[0, -1]]).tolist() == [
+                pd.Timestamp("1991-01-01 00:00:00"),
+                pd.Timestamp("2020-12-31 23:00:00"),
+            ]:
+                return df
+        time.sleep(2 * (attempt + 1))
+    raise SystemExit(f"{path.name}: incomplete after 5 reads ({len(data):,} of {path.stat().st_size:,} bytes) — re-download it")
+
+
+def normals_for(path: Path, tz: str, full_period: bool = True):
+    df = read_complete(path, full_period)
     t = pd.to_datetime(df[col(df, "time")], utc=True).dt.tz_convert(tz)
     h = pd.DataFrame({"t": df[col(df, "t2m")] - 273.15})
     h["td"] = df[col(df, "d2m")] - 273.15
@@ -173,6 +199,27 @@ def normals_for(path: Path, tz: str):
     return months
 
 
+def cached_normals(did: str, tz: str):
+    """normals_for, remembered in raw/normals_cache/ against the CSV's size,
+    modification time and this pipeline version, so an interrupted build
+    resumes where it stopped instead of re-reading every file."""
+    csv = RAW / f"{did}.csv"
+    st = csv.stat()
+    key = {"size": st.st_size, "mtime": int(st.st_mtime), "tz": tz, "pipelineVersion": PIPELINE_VERSION}
+    cache = RAW / "normals_cache" / f"{did}.json"
+    if cache.exists():
+        try:
+            c = json.loads(cache.read_text(encoding="utf-8"))
+            if c["key"] == key:
+                return c["months"]
+        except (ValueError, KeyError):
+            pass
+    months = normals_for(csv, tz)
+    cache.parent.mkdir(exist_ok=True)
+    cache.write_text(json.dumps({"key": key, "months": months}), encoding="utf-8")
+    return months
+
+
 def main():
     from timezonefinder import TimezoneFinder
 
@@ -194,9 +241,22 @@ def main():
         "destinations": {},
         "missing": [],
     }
+    # Height of the town vs. the cell used (check_cells.py) and any decision
+    # recorded for it (cell_overrides.json) — carried into the provenance so
+    # the scoring can lower confidence where the cell does not represent the town.
+    cell_check = {}
+    if (RAW / "cell_check.json").exists():
+        cell_check = json.loads((RAW / "cell_check.json").read_text(encoding="utf-8"))["destinations"]
+    decisions = {}
+    if (HERE / "cell_overrides.json").exists():
+        decisions = json.loads((HERE / "cell_overrides.json").read_text(encoding="utf-8"))["overrides"]
     metas = sorted(RAW.glob("*.meta.json"))
     for mp in metas:
-        meta = json.loads(mp.read_text())
+        try:
+            meta = json.loads(mp.read_text(encoding="utf-8"))
+        except (ValueError, OSError):
+            log(f"{mp.name}: unreadable metadata, skipped (re-run the fetch)")
+            continue
         did = meta["id"]
         tz = tf.timezone_at(lat=meta["usedLatitude"], lng=meta["usedLongitude"]) or tf.timezone_at(
             lat=meta["requestedLatitude"], lng=meta["requestedLongitude"]
@@ -204,13 +264,18 @@ def main():
         if not tz:
             out["missing"].append({"id": did, "why": "no time zone found"})
             continue
-        months = normals_for(RAW / f"{did}.csv", tz)
+        months = cached_normals(did, tz)
+        cc = cell_check.get(did, {})
+        # Town height is known only for the stored coordinate, not for a reference place.
+        same_cell = not meta.get("reference") and cc.get("usedCell") == [round(meta["usedLatitude"], 2), round(meta["usedLongitude"], 2)]
+        dec = decisions.get(did, {})
         out["destinations"][did] = {
             "countryCode": meta["countryCode"],
             "latitude": meta["requestedLatitude"],
             "longitude": meta["requestedLongitude"],
             "coordinateSource": meta["coordinateSource"],
             "geocode": meta.get("geocode"),
+            "reference": meta.get("reference"),
             "months": months,
             "provenance": {
                 "kind": "era5-land",
@@ -222,6 +287,13 @@ def main():
                 "usedLon": meta["usedLongitude"],
                 "distanceKm": meta["distanceKm"],
                 "gridNote": meta["gridNote"],
+                "cellOverrideReason": meta.get("cellOverrideReason"),
+                "referencePlace": (meta.get("reference") or {}).get("display_name"),
+                "townElevationM": cc.get("townElevationM") if same_cell else None,
+                "cellElevationM": cc.get("usedCellElevationM") if same_cell else None,
+                "elevationDifferenceM": cc.get("differenceM") if same_cell else None,
+                "elevationAccepted": dec.get("reason") if dec.get("accept") else None,
+                "withheldReason": dec.get("withhold"),
                 "timezone": tz,
                 "retrievedAt": meta["retrievedAt"],
                 "generatedAt": now,
@@ -230,12 +302,15 @@ def main():
         }
         log(f"{did}: tz {tz}, Jan {months[0]['highC']}/{months[0]['lowC']} °C, Jul {months[6]['highC']}/{months[6]['lowC']} °C")
     for nd in sorted(RAW.glob("*.nodata.json")):
-        out["missing"].append({"id": json.loads(nd.read_text())["id"], "why": "no ERA5-Land land cell within search radius"})
+        nid = json.loads(nd.read_text(encoding="utf-8"))["id"]
+        if nid in out["destinations"]:
+            continue  # a later try (e.g. an elevation-matched cell) had no data; the earlier download stands
+        out["missing"].append({"id": nid, "why": "no ERA5-Land land cell within search radius"})
 
     # Station overrides (official 1991–2020 normals) — see README.md.
     ov_path = HERE / "station_overrides.json"
     if ov_path.exists():
-        for did, ov in json.loads(ov_path.read_text()).items():
+        for did, ov in json.loads(ov_path.read_text(encoding="utf-8")).items():
             required = ["stationName", "stationId", "latitude", "longitude", "distanceKm", "period", "source", "url", "retrievedAt", "months"]
             missing = [k for k in required if k not in ov]
             if missing:
@@ -265,7 +340,7 @@ def main():
             out["missing"] = [m for m in out["missing"] if m["id"] != did]
 
     OUT.parent.mkdir(parents=True, exist_ok=True)
-    OUT.write_text(json.dumps(out, ensure_ascii=False, indent=1) + "\n")
+    OUT.write_text(json.dumps(out, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     log(f"\n{len(out['destinations'])} destinations → {OUT.relative_to(ROOT)}; missing: {[m['id'] for m in out['missing']]}")
 
 

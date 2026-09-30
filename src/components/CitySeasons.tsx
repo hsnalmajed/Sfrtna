@@ -6,56 +6,50 @@ import type { Locale } from "@/lib/types";
 import type { Continent } from "@/lib/countries";
 import { CONTINENT_ORDER } from "@/components/DestinationFilters";
 import { searchMatches } from "@/lib/search";
-import { countLabel } from "@/lib/format";
+import { CLASS_DOT } from "@/lib/travelSeason/labels";
 import Photo from "@/components/Photo";
-import Icon from "@/components/ui/Icon";
 
 /**
- * "When should I travel?", city by city.
+ * "When to travel?", city by city — a view onto the travel-season records
+ * (src/data/climate/travelSeasons.json), never a calculation of its own.
  *
- * Two questions, two layouts, both always one tap away:
- *   by month  "Where is good in March?"    → only the cities in season then
- *   by city   "When should I go to Kyoto?" → one city's best months, who says
- *                                             so, and all twelve months
- *
- * The page opens on this month's cities rather than on a question: the tabs
- * at the top name both questions, so nobody has to answer one before seeing
- * anything, and the common case — "where now?" — costs no click.
- *
- * Best months come from a tourism board or a named guide (see
- * src/data/citySeasonSources.ts); what kind of month it is comes from the
- * weather (src/lib/citySeasons.ts).
+ *   by month  "Where is good in March?"    → destinations rated EXCELLENT /
+ *                                             VERY_GOOD (optionally GOOD)
+ *   by city   "When should I go to Kyoto?" → all twelve months with their
+ *                                             rating, season, typical low–high,
+ *                                             weather and why
  */
 
-type SeasonKindName = "winter" | "spring" | "summer" | "autumn" | "wet" | "dry";
+type Cls = "EXCELLENT" | "VERY_GOOD" | "GOOD" | "ACCEPTABLE" | "NOT_RECOMMENDED";
+type SeasonName = "winter" | "spring" | "summer" | "autumn";
+type Pattern = "rainy_season" | "dry_season" | "snow_season" | null;
+
+export interface SeasonMonth {
+  classification: Cls | null;
+  finalScore: number | null;
+  season: SeasonName;
+  pattern: Pattern;
+  phase: "start" | "peak" | "end" | null;
+  high: number | null;
+  low: number | null;
+  rainDays: number | null;
+  summary: string | null;
+  reason: string | null;
+  tourismListed: boolean;
+}
 
 export interface SeasonCity {
   code: string;
   slug: string;
   name: string;
   countryName: string;
-  /** Both languages' names of the city and country, for search. */
   keywords: string;
   continent: Continent;
   photo?: string;
-  /** Mean daily high, °C, Jan–Dec. */
-  high: number[];
-  /** Mean rainy days (≥ 1 mm), Jan–Dec. */
-  rainyDays: number[];
-  /** Season kind per month, Jan–Dec. */
-  kind: SeasonKindName[];
-  /** In season per month, Jan–Dec. */
-  inSeason: boolean[];
-  /** Who names the best months; absent when no source was found. */
-  season?: {
-    source: string;
-    official: boolean;
-    url: string;
-    broad: boolean;
-    dropped: { month: number; high: number }[];
-  };
-  /** The weather figures are WMO normals, not NASA POWER. */
-  weatherFromWmo: boolean;
+  /** January first. */
+  months: SeasonMonth[];
+  tourism: { name: string; url: string; official: boolean; broad: boolean } | null;
+  climate: { station: string | null; distanceKm: number; period: string };
 }
 
 interface Dict {
@@ -69,90 +63,107 @@ interface Dict {
   nowLabel: string;
   inSeasonInMonth: string;
   noneInMonth: string;
+  showGood: string;
   citySearch: string;
   cityNoMatch: string;
   pickCity: string;
   cityYearTitle: string;
   bestMonths: string;
-  sourceLabel: string;
+  noBestMonths: string;
   sourceBroad: string;
-  dropped: string;
-  noSource: string;
-  inSeasonLabel: string;
-  high: string;
-  rainOne: string;
-  rainTwo: string;
-  rainFew: string;
-  rainMany: string;
-  rainNone: string;
-  kinds: Record<SeasonKindName, string>;
-  methodTitle: string;
-  methodSource: string;
-  methodWeather: string;
-  methodNone: string;
-  methodKind: string;
-  weatherSource: string;
-  weatherSourceWmo: string;
-  allContinents: string;
-  continents: Record<Continent, string>;
+  officialBadge: string;
   viewCity: string;
   openSource: string;
-  officialBadge: string;
+  kinds: Record<string, string>;
+  allContinents: string;
+  continents: Record<Continent, string>;
+  ts: {
+    classes: Record<Cls, string>;
+    phases: Record<"start" | "peak" | "end", string>;
+    patterns: Record<"rainy_season" | "dry_season" | "snow_season", string>;
+    highLow: string;
+    rainDays: string;
+    rainDaysNone: string;
+    reasonLabel: string;
+    climateNote: string;
+    sourceAndMethod: string;
+    climateSourceLabel: string;
+    climateSourceValue: string;
+    climateSourceStation: string;
+    climatePeriodLabel: string;
+    methodologyLabel: string;
+    methodologyLink: string;
+    lastUpdatedLabel: string;
+    tourismLabel: string;
+    tourismNone: string;
+  };
 }
 
-const KIND_STYLE: Record<SeasonKindName, string> = {
-  winter: "bg-sky-100 text-sky-900",
-  spring: "bg-emerald-100 text-emerald-900",
-  summer: "bg-amber-100 text-amber-900",
-  autumn: "bg-orange-100 text-orange-900",
-  wet: "bg-sea-100 text-sea-900",
-  dry: "bg-sun-100 text-sun-900",
+const CLASS_STYLE: Record<Cls, string> = {
+  EXCELLENT: "bg-emerald-600 text-white",
+  VERY_GOOD: "bg-emerald-100 text-emerald-900 ring-1 ring-emerald-300",
+  GOOD: "bg-amber-100 text-amber-900 ring-1 ring-amber-300",
+  ACCEPTABLE: "bg-orange-100 text-orange-900 ring-1 ring-orange-300",
+  NOT_RECOMMENDED: "bg-rose-100 text-rose-900 ring-1 ring-rose-300",
 };
-const KIND_ICON: Record<SeasonKindName, string> = {
-  winter: "❄️",
-  spring: "🌸",
-  summer: "☀️",
-  autumn: "🍂",
-  wet: "🌧",
-  dry: "🌤",
+const TILE_STYLE: Record<Cls, string> = {
+  EXCELLENT: "bg-emerald-50 ring-emerald-400",
+  VERY_GOOD: "bg-emerald-50/60 ring-emerald-200",
+  GOOD: "bg-amber-50/60 ring-amber-200",
+  ACCEPTABLE: "bg-orange-50/60 ring-orange-200",
+  NOT_RECOMMENDED: "bg-rose-50/60 ring-rose-200",
 };
+const SEASON_ICON: Record<SeasonName, string> = { winter: "❄️", spring: "🌸", summer: "☀️", autumn: "🍂" };
 
 const MONTHS = Array.from({ length: 12 }, (_, i) => i + 1);
+const GOOD_CLASSES: Cls[] = ["EXCELLENT", "VERY_GOOD"];
 
 export default function CitySeasons({
   locale,
   cities,
   currentMonth,
-  unsourcedCount,
+  updated,
   dict,
 }: {
   locale: Locale;
   cities: SeasonCity[];
   currentMonth: number;
-  unsourcedCount: number;
+  updated: string;
   dict: Dict;
 }) {
   const [mode, setMode] = useState<"month" | "city">("month");
   const [month, setMonth] = useState(currentMonth);
   const [continent, setContinent] = useState<Continent | "all">("all");
+  const [withGood, setWithGood] = useState(false);
   const [query, setQuery] = useState("");
   const [citySlug, setCitySlug] = useState("");
+  const [cityMonth, setCityMonth] = useState(currentMonth);
   const top = useRef<HTMLDivElement>(null);
   const isAr = locale === "ar";
-  const listSep = isAr ? "، " : ", ";
+  const t = dict.ts;
 
-  const rain = (days: number) => {
-    const n = Math.round(days);
-    if (n === 0) return dict.rainNone;
-    return countLabel(n, { one: dict.rainOne, two: dict.rainTwo, few: dict.rainFew, many: dict.rainMany });
-  };
+  const temps = (m: SeasonMonth) =>
+    m.high === null
+      ? null
+      : m.low === null
+        ? `${Math.round(m.high)}°`
+        : t.highLow.replace("{low}", String(Math.round(m.low))).replace("{high}", String(Math.round(m.high)));
+  const rain = (m: SeasonMonth) =>
+    m.rainDays === null ? null : Math.round(m.rainDays) === 0 ? t.rainDaysNone : t.rainDays.replace("{days}", String(Math.round(m.rainDays)));
+  const seasonText = (m: SeasonMonth) =>
+    `${SEASON_ICON[m.season]} ${dict.kinds[m.season]}${m.pattern ? ` · ${t.patterns[m.pattern]}` : ""}`;
+  const badge = (c: Cls) => `${CLASS_DOT[c]} ${t.classes[c]}`;
 
+  const shownClasses: Cls[] = withGood ? [...GOOD_CLASSES, "GOOD"] : GOOD_CLASSES;
   const inMonth = useMemo(() => {
-    const score = (c: SeasonCity) => Math.abs(c.high[month - 1] - 25) + c.rainyDays[month - 1] * 0.5;
     return cities
-      .filter((c) => c.inSeason[month - 1] && (continent === "all" || c.continent === continent))
-      .sort((a, b) => score(a) - score(b));
-  }, [cities, month, continent]);
+      .filter((c) => {
+        const r = c.months[month - 1];
+        return r.classification && shownClasses.includes(r.classification) && (continent === "all" || c.continent === continent);
+      })
+      .sort((a, b) => (b.months[month - 1].finalScore ?? 0) - (a.months[month - 1].finalScore ?? 0));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cities, month, continent, withGood]);
 
   const cityMatches = useMemo(() => {
     const q = query.trim();
@@ -162,8 +173,9 @@ export default function CitySeasons({
 
   const city = cities.find((c) => c.slug === citySlug);
 
-  const openCity = (slug: string) => {
+  const openCity = (slug: string, m?: number) => {
     setCitySlug(slug);
+    setCityMonth(m ?? currentMonth);
     setQuery("");
     setMode("city");
     top.current?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -179,9 +191,55 @@ export default function CitySeasons({
     { m: "city" as const, icon: "🏙", title: dict.modeCityTitle, q: dict.modeCityQ, hint: dict.modeCityHint },
   ];
 
+  const sourceAndMethod = (c: SeasonCity) => (
+    <details className="group mt-4 rounded-xl bg-mist-50 px-4 py-3 text-sm text-navy-700 ring-1 ring-mist-200">
+      <summary className="cursor-pointer list-none font-bold text-navy-900">
+        <span aria-hidden="true">ⓘ</span> {t.sourceAndMethod}
+      </summary>
+      <dl className="mt-2 space-y-1.5 text-xs leading-relaxed">
+        <div>
+          <dt className="inline font-bold">{t.climateSourceLabel}: </dt>
+          <dd className="inline">
+            {c.climate.station
+              ? t.climateSourceStation.replace("{station}", c.climate.station).replace("{km}", String(c.climate.distanceKm))
+              : t.climateSourceValue.replace("{km}", String(c.climate.distanceKm))}
+          </dd>
+        </div>
+        <div>
+          <dt className="inline font-bold">{t.climatePeriodLabel}: </dt>
+          <dd className="inline">{c.climate.period}</dd>
+        </div>
+        <div>
+          <dt className="inline font-bold">{t.tourismLabel}: </dt>
+          <dd className="inline">
+            {c.tourism ? (
+              <a href={c.tourism.url} target="_blank" rel="noopener noreferrer" className="font-bold text-sea-700 underline">
+                {c.tourism.name} <span aria-hidden="true">↗</span>
+              </a>
+            ) : (
+              t.tourismNone
+            )}
+          </dd>
+        </div>
+        <div>
+          <dt className="inline font-bold">{t.methodologyLabel}: </dt>
+          <dd className="inline">
+            <Link href={`/${locale}/methodology/travel-seasons`} className="font-bold text-sea-700 underline">
+              {t.methodologyLink}
+            </Link>
+          </dd>
+        </div>
+        <div>
+          <dt className="inline font-bold">{t.lastUpdatedLabel}: </dt>
+          <dd className="inline">{updated}</dd>
+        </div>
+        <p className="pt-1 text-navy-500">{t.climateNote}</p>
+      </dl>
+    </details>
+  );
+
   return (
     <div ref={top} className="scroll-mt-24">
-      {/* The two questions, as tabs. Each says which question it answers. */}
       <div role="tablist" className="grid gap-3 sm:grid-cols-2">
         {modes.map((o) => {
           const active = mode === o.m;
@@ -217,16 +275,9 @@ export default function CitySeasons({
 
       {mode === "month" && (
         <div className="mt-6">
-          {/* January to December, all visible, this month marked. */}
           <div className="grid grid-cols-4 gap-2 sm:grid-cols-6 lg:grid-cols-12">
             {MONTHS.map((m) => (
-              <button
-                key={m}
-                type="button"
-                aria-pressed={m === month}
-                onClick={() => setMonth(m)}
-                className={`relative px-1 text-center ${pill(m === month)}`}
-              >
+              <button key={m} type="button" aria-pressed={m === month} onClick={() => setMonth(m)} className={`relative px-1 text-center ${pill(m === month)}`}>
                 {dict.monthNames[m - 1]}
                 {m === currentMonth && (
                   <span
@@ -240,52 +291,62 @@ export default function CitySeasons({
               </button>
             ))}
           </div>
-          <div className="mt-3 flex flex-wrap gap-2">
+          <div className="mt-3 flex flex-wrap items-center gap-2">
             {(["all", ...CONTINENT_ORDER] as (Continent | "all")[]).map((c) => (
               <button key={c} type="button" aria-pressed={continent === c} onClick={() => setContinent(c)} className={`text-xs ${pill(continent === c)}`}>
                 {c === "all" ? dict.allContinents : dict.continents[c]}
               </button>
             ))}
+            <label className="ms-auto inline-flex cursor-pointer items-center gap-2 text-xs font-bold text-navy-700">
+              <input type="checkbox" checked={withGood} onChange={(e) => setWithGood(e.target.checked)} className="h-4 w-4 accent-navy-900" />
+              {dict.showGood}
+            </label>
           </div>
 
-          <h2 className="mb-4 mt-6 font-display text-xl font-extrabold text-navy-900">
+          <h2 className="mb-1 mt-6 font-display text-xl font-extrabold text-navy-900">
             {dict.inSeasonInMonth.replace("{month}", dict.monthNames[month - 1]).replace("{count}", String(inMonth.length))}
           </h2>
+          <p className="mb-4 text-xs text-navy-500">
+            {t.climateNote}{" "}
+            <Link href={`/${locale}/methodology/travel-seasons`} className="font-bold text-sea-700 hover:underline">
+              {t.methodologyLink}
+            </Link>
+          </p>
 
           {inMonth.length === 0 ? (
             <p className="rounded-xl bg-mist-50 px-4 py-10 text-center text-sm text-navy-500">{dict.noneInMonth}</p>
           ) : (
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+            <div className="grid grid-cols-1 gap-3 min-[420px]:grid-cols-2 lg:grid-cols-3">
               {inMonth.map((c) => {
-                const kind = c.kind[month - 1];
+                const r = c.months[month - 1];
                 return (
                   <button
                     key={c.slug}
                     type="button"
-                    onClick={() => openCity(c.slug)}
-                    className="group relative isolate block aspect-[4/5] overflow-hidden rounded-2xl text-start sm:aspect-[4/3] ring-1 ring-navy-950/5 transition hover:-translate-y-0.5 hover:shadow-[var(--shadow-lift)]"
+                    onClick={() => openCity(c.slug, month)}
+                    className="group flex overflow-hidden rounded-2xl bg-white text-start shadow-[var(--shadow-card)] ring-1 ring-navy-950/5 transition hover:-translate-y-0.5 hover:shadow-[var(--shadow-lift)]"
                   >
-                    <Photo
-                      src={c.photo}
-                      className="absolute inset-0 -z-10 h-full w-full object-cover transition duration-300 group-hover:scale-105"
-                      fallback={<div className="absolute inset-0 -z-10 bg-gradient-to-br from-navy-700 to-navy-990" />}
-                    />
-                    <div className="scrim-soft absolute inset-0 -z-10" />
-                    <span className={`absolute start-2 top-2 inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-bold ${KIND_STYLE[kind]}`}>
-                      <span aria-hidden="true">{KIND_ICON[kind]}</span>
-                      {dict.kinds[kind]}
-                    </span>
-                    <div className="absolute inset-x-0 bottom-0 p-3">
-                      <p className="truncate font-display font-extrabold text-white">{c.name}</p>
-                      <p className="truncate text-xs text-white/70">{c.countryName}</p>
-                      <div className="mt-1.5 flex flex-wrap gap-1">
-                        <span className="rounded-full bg-navy-990/65 px-2 py-0.5 text-xs font-bold text-sun-300">
-                          {dict.high.replace("{high}", String(Math.round(c.high[month - 1])))}
+                    <div className="relative w-24 shrink-0 sm:w-28">
+                      <Photo
+                        src={c.photo}
+                        className="absolute inset-0 h-full w-full object-cover"
+                        fallback={<div className="absolute inset-0 bg-gradient-to-br from-navy-700 to-navy-990" />}
+                      />
+                    </div>
+                    <div className="min-w-0 flex-1 p-3">
+                      <p className="truncate font-display font-extrabold text-navy-900">
+                        {c.name} <span className="text-xs font-semibold text-navy-500">· {c.countryName}</span>
+                      </p>
+                      {r.classification && (
+                        <span className={`mt-1.5 inline-block rounded-full px-2 py-0.5 text-xs font-extrabold ${CLASS_STYLE[r.classification]}`}>
+                          {badge(r.classification)}
                         </span>
-                        <span className="rounded-full bg-navy-990/65 px-2 py-0.5 text-xs font-bold text-sea-200">
-                          {rain(c.rainyDays[month - 1])}
-                        </span>
-                      </div>
+                      )}
+                      <p className="mt-1.5 text-xs font-semibold text-navy-700">{seasonText(r)}</p>
+                      <p className="mt-0.5 text-xs text-navy-700">
+                        {temps(r) && <span dir="ltr">🌡️ {temps(r)}</span>}
+                        {r.summary && <span> · {r.summary}</span>}
+                      </p>
                     </div>
                   </button>
                 );
@@ -332,105 +393,134 @@ export default function CitySeasons({
                   {dict.cityYearTitle.replace("{city}", city.name)}
                   <span className="ms-2 text-sm font-semibold text-navy-500">{city.countryName}</span>
                 </h2>
-                <Link
-                  href={`/${locale}/attractions/${city.code}/${city.slug}`}
-                  className="inline-flex items-center gap-1 text-sm font-bold text-sea-600 hover:underline"
-                >
+                <Link href={`/${locale}/attractions/${city.code}/${city.slug}`} className="inline-flex items-center gap-1 text-sm font-bold text-sea-600 hover:underline">
                   {dict.viewCity} <span aria-hidden="true">{isAr ? "←" : "→"}</span>
                 </Link>
               </div>
 
-              {city.season && city.inSeason.some(Boolean) ? (
-                <div className="mt-4 rounded-xl bg-emerald-50 p-4 ring-1 ring-emerald-200">
-                  <p className="text-xs font-extrabold uppercase tracking-wide text-emerald-800">{dict.bestMonths}</p>
-                  <div className="mt-2 flex flex-wrap gap-1.5">
-                    {MONTHS.filter((m) => city.inSeason[m - 1]).map((m) => (
-                      <span key={m} className="rounded-full bg-white px-3 py-1 text-sm font-extrabold text-emerald-900 ring-1 ring-emerald-300">
-                        {dict.monthNames[m - 1]}
-                      </span>
-                    ))}
-                  </div>
-                  <p className="mt-3 text-sm text-navy-700">
-                    <span className="font-bold">{dict.sourceLabel}:</span>{" "}
-                    <a
-                      href={city.season.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      title={dict.openSource}
-                      className="font-bold text-sea-700 underline decoration-sea-300 underline-offset-2 hover:decoration-sea-600"
-                    >
-                      {city.season.source} <span aria-hidden="true">↗</span>
-                    </a>
-                    {city.season.official && (
-                      <span className="ms-2 inline-flex items-center gap-0.5 rounded-full bg-navy-900 px-2 py-0.5 align-middle text-[11px] font-bold text-white">
-                        <Icon name="shield" className="h-3 w-3" />
-                        {dict.officialBadge}
-                      </span>
+              {/* Best months, and who else names them. */}
+              {(() => {
+                const best = MONTHS.filter((m) => {
+                  const c = city.months[m - 1].classification;
+                  return c !== null && GOOD_CLASSES.includes(c);
+                });
+                return (
+                  <div className="mt-4 rounded-xl bg-emerald-50 p-4 ring-1 ring-emerald-200">
+                    <p className="text-xs font-extrabold text-emerald-800">{dict.bestMonths}</p>
+                    {best.length ? (
+                      <div className="mt-2 flex flex-wrap gap-1.5">
+                        {best.map((m) => (
+                          <button
+                            key={m}
+                            type="button"
+                            onClick={() => setCityMonth(m)}
+                            className="rounded-full bg-white px-3 py-1 text-sm font-extrabold text-emerald-900 ring-1 ring-emerald-300 hover:ring-emerald-500"
+                          >
+                            {CLASS_DOT[city.months[m - 1].classification as Cls]} {dict.monthNames[m - 1]}
+                          </button>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="mt-1 text-sm text-navy-700">{dict.noBestMonths}</p>
                     )}
-                  </p>
-                  {city.season.broad && <p className="mt-1 text-xs text-navy-500">{dict.sourceBroad}</p>}
-                  {city.season.dropped.length > 0 && (
-                    <p className="mt-2 text-xs leading-relaxed text-amber-900">
-                      {dict.dropped.replace(
-                        "{list}",
-                        city.season.dropped.map((x) => `${dict.monthNames[x.month - 1]} (${Math.round(x.high)}°)`).join(listSep)
+                    <p className="mt-3 text-sm text-navy-700">
+                      <span className="font-bold">{t.tourismLabel}:</span>{" "}
+                      {city.tourism ? (
+                        <>
+                          <a
+                            href={city.tourism.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            title={dict.openSource}
+                            className="font-bold text-sea-700 underline decoration-sea-300 underline-offset-2 hover:decoration-sea-600"
+                          >
+                            {city.tourism.name} <span aria-hidden="true">↗</span>
+                          </a>
+                          {city.tourism.official && (
+                            <span className="ms-2 rounded-full bg-navy-900 px-2 py-0.5 align-middle text-[11px] font-bold text-white">
+                              {dict.officialBadge}
+                            </span>
+                          )}
+                        </>
+                      ) : (
+                        t.tourismNone
                       )}
                     </p>
-                  )}
-                </div>
-              ) : (
-                <p className="mt-4 rounded-xl bg-sun-50 px-4 py-3 text-sm leading-relaxed text-sun-900 ring-1 ring-sun-200">{dict.noSource}</p>
-              )}
+                    {city.tourism?.broad && <p className="mt-1 text-xs text-navy-500">{dict.sourceBroad}</p>}
+                  </div>
+                );
+              })()}
 
+              {/* The chosen month in full. */}
+              {(() => {
+                const r = city.months[cityMonth - 1];
+                return (
+                  <div className="mt-4 rounded-xl p-4 ring-1 ring-mist-200">
+                    <p className="font-display text-lg font-extrabold text-navy-900">
+                      {city.name} — {dict.monthNames[cityMonth - 1]}
+                    </p>
+                    {r.classification && (
+                      <span className={`mt-2 inline-block rounded-full px-3 py-1 text-sm font-extrabold ${CLASS_STYLE[r.classification]}`}>
+                        {badge(r.classification)}
+                      </span>
+                    )}
+                    {r.phase && <span className="ms-2 text-xs font-bold text-emerald-800">{t.phases[r.phase]}</span>}
+                    <ul className="mt-2 space-y-1 text-sm text-navy-800">
+                      <li>{seasonText(r)}</li>
+                      {temps(r) && (
+                        <li>
+                          🌡️ <span dir="ltr">{temps(r)}</span>
+                        </li>
+                      )}
+                      {r.summary && <li>🌦️ {r.summary}</li>}
+                      {rain(r) && <li>{rain(r)}</li>}
+                    </ul>
+                    {r.reason && (
+                      <p className="mt-2 text-sm text-navy-700">
+                        <span className="font-bold">{t.reasonLabel}:</span> {r.reason}
+                      </p>
+                    )}
+                  </div>
+                );
+              })()}
+
+              {/* All twelve months, January to December. */}
               <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-6">
                 {MONTHS.map((m) => {
-                  const kind = city.kind[m - 1];
-                  const good = city.inSeason[m - 1];
+                  const r = city.months[m - 1];
+                  const selected = m === cityMonth;
                   return (
-                    <div key={m} className={`rounded-xl p-3 ring-1 ${good ? "bg-emerald-50 ring-emerald-300" : "bg-mist-50 ring-mist-200"}`}>
-                      <div className="flex items-center justify-between gap-1">
-                        <p className="text-sm font-extrabold text-navy-900">
-                          {dict.monthNames[m - 1]}
-                          {m === currentMonth && <span className="ms-1 text-[10px] font-bold text-sun-700">• {dict.nowLabel}</span>}
+                    <button
+                      key={m}
+                      type="button"
+                      aria-pressed={selected}
+                      onClick={() => setCityMonth(m)}
+                      className={`rounded-xl p-3 text-start ring-1 transition ${r.classification ? TILE_STYLE[r.classification] : "bg-mist-50 ring-mist-200"} ${
+                        selected ? "ring-2 ring-navy-900" : ""
+                      }`}
+                    >
+                      <p className="text-sm font-extrabold text-navy-900">
+                        {dict.monthNames[m - 1]}
+                        {m === currentMonth && <span className="ms-1 text-[10px] font-bold text-sun-700">• {dict.nowLabel}</span>}
+                      </p>
+                      {r.classification && <p className="mt-1 text-[11px] font-extrabold leading-snug text-navy-900">{badge(r.classification)}</p>}
+                      <p className="mt-1 text-xs text-navy-700">{seasonText(r)}</p>
+                      {temps(r) && (
+                        <p className="mt-1 text-sm font-bold text-navy-800" dir="ltr">
+                          {temps(r)}
                         </p>
-                        {good && (
-                          <span className="inline-flex items-center gap-0.5 text-xs font-bold text-emerald-800">
-                            <Icon name="check" className="h-3.5 w-3.5" />
-                            {dict.inSeasonLabel}
-                          </span>
-                        )}
-                      </div>
-                      <span className={`mt-1.5 inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-bold ${KIND_STYLE[kind]}`}>
-                        <span aria-hidden="true">{KIND_ICON[kind]}</span>
-                        {dict.kinds[kind]}
-                      </span>
-                      <p className="mt-1.5 text-sm font-bold text-navy-800">{dict.high.replace("{high}", String(Math.round(city.high[m - 1])))}</p>
-                      <p className="text-xs text-navy-600">{rain(city.rainyDays[m - 1])}</p>
-                    </div>
+                      )}
+                      {r.summary && <p className="text-[11px] leading-snug text-navy-600">{r.summary}</p>}
+                    </button>
                   );
                 })}
               </div>
-              <p className="mt-3 text-xs text-navy-500">{city.weatherFromWmo ? dict.weatherSourceWmo : dict.weatherSource}</p>
+
+              {sourceAndMethod(city)}
             </section>
           )}
         </div>
       )}
-
-      <details className="group mt-8 rounded-xl bg-mist-100 px-4 py-3 text-sm text-navy-700 ring-1 ring-mist-200">
-        <summary className="cursor-pointer list-none font-bold text-navy-900">
-          <span className="inline-block transition group-open:rotate-90 rtl:group-open:-rotate-90" aria-hidden="true">
-            {isAr ? "◂" : "▸"}
-          </span>{" "}
-          {dict.methodTitle}
-        </summary>
-        <ul className="mt-2 list-disc space-y-1.5 ps-5 text-xs leading-relaxed">
-          <li>{dict.methodSource}</li>
-          <li>{dict.methodWeather}</li>
-          <li>{dict.methodNone.replace("{count}", String(unsourcedCount))}</li>
-          <li>{dict.methodKind}</li>
-          <li>{dict.weatherSource}</li>
-        </ul>
-      </details>
     </div>
   );
 }

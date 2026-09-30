@@ -1,3 +1,7 @@
+// DEPRECATED (30 Sep 2026): superseded by the ERA5-Land 1991–2020 normals in
+// src/data/climate/normals.json. Only the deprecated src/lib/citySeasons.ts
+// still imports it. Kept, not deleted, until the owner decides.
+//
 // Generated, not written by hand.
 //
 // Each city's typical weather, month by month, from NASA POWER — NASA's

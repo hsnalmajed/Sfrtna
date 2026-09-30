@@ -8,8 +8,7 @@ import { sectionHero } from "@/lib/sectionHero";
 import { monthName } from "@/lib/seasons";
 import { COUNTRY_CITIES } from "@/lib/cities";
 import { findCountry } from "@/lib/countries";
-import { CITY_CLIMATE, CLIMATE_FROM_WMO } from "@/data/cityClimate";
-import { citySeason, seasonKindFor } from "@/lib/citySeasons";
+import { SEASONS_META, seasonRecords } from "@/lib/travelSeason/site";
 import { fetchCityPhotos } from "@/lib/countryPhotos";
 
 // Photos come from Pexels, same as the rest of the site.
@@ -28,22 +27,19 @@ export async function generateMetadata({ params }: PageProps<"/[locale]/seasons"
 }
 
 /**
- * "When should I travel?" — city by city.
- *
- * Each city's best months come from its tourism board or a named guide, with
- * the page they were read from (src/data/citySeasonSources.ts), checked
- * against its 2021–2025 weather (src/lib/citySeasons.ts). What kind of month
- * it is — winter, rainy season — is worked out from the weather.
+ * "When to travel?" — every destination, every month, from the single
+ * travel-season dataset (src/data/climate/travelSeasons.json via
+ * src/lib/travelSeason/site.ts). The home page's "best in <month>" reads the
+ * same records; nothing here is computed on the page.
  */
 export default async function SeasonsPage({ params }: PageProps<"/[locale]/seasons">) {
   const { locale } = await params;
   const loc = (locale === "en" ? "en" : "ar") as Locale;
   const dict = getDictionary(loc);
-  const d = dict.citySeasons;
   const isAr = loc === "ar";
 
   const list = Object.entries(COUNTRY_CITIES).flatMap(([code, cs]) =>
-    cs.filter((c) => CITY_CLIMATE[c.slug]).map((c) => ({ code, ...c }))
+    cs.filter((c) => seasonRecords(c.slug)).map((c) => ({ code, ...c }))
   );
 
   const [hero, photos] = await Promise.all([
@@ -51,42 +47,57 @@ export default async function SeasonsPage({ params }: PageProps<"/[locale]/seaso
     fetchCityPhotos(list.map((c) => ({ code: c.code, slug: c.slug, nameEn: c.nameEn }))),
   ]);
 
-  const months = Array.from({ length: 12 }, (_, i) => i + 1);
   const cities: SeasonCity[] = list.flatMap((c) => {
     const country = findCountry(c.code);
-    const climate = CITY_CLIMATE[c.slug];
-    if (!country || !climate) return [];
-    const season = citySeason(c.slug);
+    const recs = seasonRecords(c.slug);
+    if (!country || !recs) return [];
+    const first = recs[0];
     return [
       {
         code: c.code,
         slug: c.slug,
         name: isAr ? c.nameAr : c.nameEn,
         countryName: isAr ? country.nameAr : country.nameEn,
-        // Both spellings are searchable, so typing "Paris" finds باريس.
         keywords: `${c.nameAr} ${c.nameEn} ${country.nameAr} ${country.nameEn}`,
         continent: country.continent,
         photo: photos.get(`${c.code}/${c.slug}`),
-        high: climate.high,
-        rainyDays: climate.rainyDays,
-        kind: months.map((m) => seasonKindFor(c.slug, m) ?? "spring"),
-        inSeason: months.map((m) => Boolean(season?.months.includes(m))),
-        season: season
-          ? {
-              source: isAr ? season.source.nameAr : season.source.nameEn,
-              official: season.source.official,
-              url: season.url,
-              broad: season.broad,
-              dropped: season.dropped,
-            }
-          : undefined,
-        weatherFromWmo: CLIMATE_FROM_WMO.has(c.slug),
+        months: recs.map((r) => ({
+          classification: r.classification,
+          finalScore: r.finalScore,
+          season: r.season,
+          pattern: r.climatePattern,
+          phase: r.favorablePhase,
+          high: r.averageHighC,
+          low: r.averageLowC,
+          rainDays: r.precipitationDays,
+          summary: isAr ? r.weatherSummaryAr : r.weatherSummaryEn,
+          reason: isAr ? r.reasonAr : r.reasonEn,
+          tourismListed: r.tourismSignal === "listed",
+        })),
+        tourism:
+          first.tourismSignal === "unavailable"
+            ? null
+            : {
+                name: (isAr ? first.tourismSourceNameAr : first.tourismSourceName) ?? "",
+                url: first.tourismSourceUrl ?? "",
+                official: Boolean(first.tourismOfficial),
+                broad: Boolean(first.tourismBroad),
+              },
+        climate: {
+          station: first.climateStation,
+          distanceKm: Math.round(first.climateDistanceKm),
+          period: first.climatePeriod,
+        },
       },
     ];
   });
 
   const month = new Date().getMonth() + 1;
-  const unsourced = cities.filter((c) => !c.season).length;
+  const updated = new Date(SEASONS_META.generatedAt).toLocaleDateString(isAr ? "ar-SA-u-ca-gregory-nu-latn" : "en-GB", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
 
   return (
     <div>
@@ -97,11 +108,17 @@ export default async function SeasonsPage({ params }: PageProps<"/[locale]/seaso
           locale={loc}
           cities={cities}
           currentMonth={month}
-          unsourcedCount={unsourced}
+          updated={updated}
           dict={{
-            ...d,
-            monthNames: [...d.monthNames],
-            kinds: { ...d.kinds },
+            ...dict.citySeasons,
+            monthNames: [...dict.citySeasons.monthNames],
+            kinds: { ...dict.citySeasons.kinds },
+            ts: {
+              ...dict.travelSeasons,
+              classes: { ...dict.travelSeasons.classes },
+              phases: { ...dict.travelSeasons.phases },
+              patterns: { ...dict.travelSeasons.patterns },
+            },
             allContinents: dict.filters.allContinents,
             continents: dict.attractions.continents,
           }}

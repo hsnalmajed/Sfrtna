@@ -24,6 +24,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/attractions", priority: 0.9 },
     { path: "/maps", priority: 0.8 },
     { path: "/seasons", priority: 0.8 },
+    { path: "/methodology/travel-seasons", priority: 0.4 },
     { path: "/visa", priority: 0.9 },
     { path: "/currency", priority: 0.7 },
     { path: "/itinerary", priority: 0.7 },

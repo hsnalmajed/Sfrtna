@@ -52,7 +52,7 @@ def main():
         # Too few years: normals are null, not 0.
         p2 = Path(d) / "short.csv"
         synthetic(p2, years=range(1991, 2001))
-        short = bn.normals_for(p2, "Asia/Riyadh")
+        short = bn.normals_for(p2, "Asia/Riyadh", full_period=False)
         assert short[0]["highC"] is None and short[0]["precipMm"] is None, short[0]
     print("build_normals arithmetic: all checks passed")
 

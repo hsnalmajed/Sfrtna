@@ -1,3 +1,8 @@
+// DEPRECATED (30 Sep 2026): nothing on the site reads this file any more.
+// Seasons now come from the travel-season engine and its single dataset —
+// src/lib/travelSeason/ and src/data/climate/travelSeasons.json. Kept, not
+// deleted, until the owner decides; do not import it in new code.
+//
 // When each city is in season.
 //
 // The months come from someone who knows the place — the city's or

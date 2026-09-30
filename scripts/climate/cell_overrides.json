@@ -1,0 +1,66 @@
+{
+ "about": "Decisions about which ERA5-Land cell represents a destination, from check_cells.py (town height from OpenTopoData SRTM/ASTER vs. cell height = ERA5-Land geopotential / 9.80665). An entry with latitude/longitude makes fetch_era5land.py download exactly that cell. An entry with accept=true keeps the cell and records why its height difference does not count against confidence. Temperatures are never shifted by a lapse rate. An entry with withhold keeps the destination off the site, with the reason, until a station override is added.",
+ "decidedAt": "2026-09-30",
+ "overrides": {
+  "batumi": {
+   "triedCell": {
+    "latitude": 41.6,
+    "longitude": 41.6
+   },
+   "reason": "Own cell averages 353 m against the town's 10 m. The lower neighbour (41.6, 41.6; 191 m) returned no ERA5-Land series, so the original nearest land cell is kept and confidence stays reduced."
+  },
+  "bursa": {
+   "latitude": 40.2,
+   "longitude": 28.9,
+   "reason": "Own cell averages 562 m (the slopes of Uludağ) against the city's 236 m; the cell 14.4 km away on the Bursa plain averages 258 m."
+  },
+  "byblos": {
+   "latitude": 34.2,
+   "longitude": 35.7,
+   "reason": "Own cell averages 561 m (Mount Lebanon foothills) against the town's 42 m; the cell 9.7 km away averages 365 m — still higher than the town, so confidence stays reduced."
+  },
+  "izmir": {
+   "latitude": 38.5,
+   "longitude": 27.0,
+   "reason": "Own cell averages 225 m against the city's 9 m; the cell 14.3 km away on the coastal plain averages 29 m."
+  },
+  "kazbegi": {
+   "latitude": 42.6,
+   "longitude": 44.6,
+   "reason": "Own cell averages 2,810 m (Kazbek massif) against the village's 1,744 m; the cell 7.3 km away averages 2,652 m — the best available but still far above the village, so confidence stays low."
+  },
+  "tbilisi": {
+   "latitude": 41.6,
+   "longitude": 44.9,
+   "reason": "Own cell averages 647 m (hills around the city) against the centre's 425 m; the cell 13.2 km away in the Mtkvari valley averages 472 m."
+  },
+  "zermatt": {
+   "latitude": 45.9,
+   "longitude": 7.7,
+   "reason": "Own cell averages 2,996 m (the Matterhorn massif) against the village's 1,609 m; the cell 14 km away averages 2,516 m — still far above the village, so confidence stays low."
+  },
+  "penang": {
+   "accept": true,
+   "reason": "The stored coordinate is the island's interior (Penang Hill, 604 m); visitors stay on the coast (George Town, Batu Ferringhi, near sea level), which the cell used (85 m) represents better than the coordinate does."
+  },
+  "interlaken": {
+   "latitude": 46.7,
+   "longitude": 7.7,
+   "reason": "Own cell averages 1,314 m (the peaks either side of the valley) against the town's 566 m; the cell 12.2 km away averages 839 m — the closest available, still higher than the town."
+  },
+  "petra": {
+   "latitude": 30.3,
+   "longitude": 35.3,
+   "reason": "Own cell averages 916 m (the Sharah mountains) against Wadi Musa's 451 m at the stored coordinate; the cell 9.2 km away averages 393 m."
+  },
+  "bali": {
+   "referenceGeocode": "Denpasar, Bali, Indonesia",
+   "reason": "The stored coordinate is the middle of the island (1,314 m, the volcanic highlands). Most visitors stay in the south (Kuta, Seminyak, Sanur, Nusa Dua, around Denpasar), so Denpasar's climate is used; Ubud, inland, is its own destination."
+  },
+  "madeira": {
+   "referenceGeocode": "Funchal, Madeira, Portugal",
+   "reason": "The stored coordinate is the middle of the island (1,272 m). Most visitors stay in Funchal on the south coast, whose climate is used.",
+   "withhold": "Funchal's nearest ERA5-Land land cell (5.7 km) averages 548 m — the mountainside above the town — while the town centre is near sea level, so its temperatures would read too cold. Needs a station override (Funchal observatory normals)."
+  }
+ }
+}

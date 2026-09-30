@@ -38,6 +38,19 @@ export interface ClimateProvenance {
   gridNote: string;
   stationName?: string | null;
   stationId?: string | null;
+  /** Why an elevation-matched neighbour was used (cell_overrides.json). */
+  cellOverrideReason?: string | null;
+  /** The named place whose climate is used, when the stored coordinate is an island's interior. */
+  referencePlace?: string | null;
+  /** Ground height of the destination and mean height of the cell used, m. */
+  townElevationM?: number | null;
+  cellElevationM?: number | null;
+  /** cellElevationM − townElevationM. */
+  elevationDifferenceM?: number | null;
+  /** Set when a reviewer accepted the difference, with the reason. */
+  elevationAccepted?: string | null;
+  /** Set when a reviewer kept the destination off the site, with the reason. */
+  withheldReason?: string | null;
   timezone: string;
   retrievedAt: string;
   generatedAt: string;
@@ -95,6 +108,8 @@ export interface SeasonRecord {
   precipitationDays: number | null;
   relativeHumidity: number | null;
   dewPointC: number | null;
+  /** Heat index of the average high (NOAA/Rothfusz), °C; null below the threshold. */
+  heatIndexC: number | null;
   windSpeedMs: number | null;
   snowCoverPct: number | null;
 
@@ -140,6 +155,8 @@ export interface SeasonRecord {
   climateGridInfo: string;
   climateStation: string | null;
   climateDistanceKm: number;
+  /** Cell height minus town height, m (null when unknown or reviewed and accepted). */
+  climateElevationDifferenceM: number | null;
   climateRetrievedAt: string;
 
   scoringVersion: string;

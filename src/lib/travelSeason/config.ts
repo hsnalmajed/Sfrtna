@@ -44,7 +44,7 @@ export const SCORING = {
 
   profiles: {
     city: {
-      idealHigh: [18, 28], perDegreeBelow: 6, perDegreeAbove: 7,
+      idealHigh: [20, 28], perDegreeBelow: 6, perDegreeAbove: 9,
       idealLow: [8, 22], perDegreeLowBelow: 3, perDegreeLowAbove: 5,
       dewPointComfort: 16, dewPointOppressive: 25,
     },
@@ -54,17 +54,17 @@ export const SCORING = {
       dewPointComfort: 18, dewPointOppressive: 26,
     },
     nature: {
-      idealHigh: [15, 27], perDegreeBelow: 5, perDegreeAbove: 7,
+      idealHigh: [15, 27], perDegreeBelow: 6, perDegreeAbove: 8,
       idealLow: [5, 20], perDegreeLowBelow: 3, perDegreeLowAbove: 5,
       dewPointComfort: 16, dewPointOppressive: 25,
     },
     mountain: {
-      idealHigh: [13, 25], perDegreeBelow: 5, perDegreeAbove: 6,
+      idealHigh: [13, 25], perDegreeBelow: 6, perDegreeAbove: 7,
       idealLow: [3, 18], perDegreeLowBelow: 3, perDegreeLowAbove: 5,
       dewPointComfort: 15, dewPointOppressive: 24,
     },
     desert: {
-      idealHigh: [20, 30], perDegreeBelow: 6, perDegreeAbove: 7,
+      idealHigh: [20, 30], perDegreeBelow: 6, perDegreeAbove: 9,
       idealLow: [8, 22], perDegreeLowBelow: 3, perDegreeLowAbove: 5,
       dewPointComfort: 16, dewPointOppressive: 25,
     },
@@ -75,11 +75,17 @@ export const SCORING = {
       dewPointComfort: 20, dewPointOppressive: 27,
     },
     mixed: {
-      idealHigh: [18, 29], perDegreeBelow: 6, perDegreeAbove: 7,
+      idealHigh: [20, 29], perDegreeBelow: 6, perDegreeAbove: 9,
       idealLow: [8, 22], perDegreeLowBelow: 3, perDegreeLowAbove: 5,
       dewPointComfort: 16, dewPointOppressive: 25,
     },
   } satisfies Record<Exclude<DestinationType, "ski">, ThermalProfile>,
+
+  /**
+   * A destination's first type is its main one. When another of its types
+   * suits the month better, the score moves this share of the way towards it.
+   */
+  secondaryTypeShare: 0.5,
 
   /** A ski trip is judged on snow, not warmth. */
   ski: {
@@ -95,18 +101,35 @@ export const SCORING = {
   /** Sub-score weights for every profile except ski. Sum to 1. */
   weights: { high: 0.35, low: 0.1, humidity: 0.2, precipitation: 0.3, wind: 0.05 },
 
-  /** Humidity only costs when it is warm enough to feel muggy. */
+  /** Humidity only counts when it is warm enough to feel muggy; below this it is left out of the month's score. */
   humidityAppliesFromHighC: 20,
+
+  /**
+   * A month is only as good as its weakest essential part: a perfect
+   * temperature does not make up for rain every other day. The weighted
+   * score is multiplied by base + (1 − base) × (lowest of these sub-scores) / 100.
+   */
+  weakest: { base: 0.6, factors: ["high", "precipitation", "humidity"] as const },
+
+  /**
+   * Heat index (NOAA, Rothfusz regression) of the average high at the
+   * relative humidity it has at that hour — from the month's mean dew point.
+   * Used only by the heat caps below; it is not a forecast of any day.
+   */
+  heatIndexFromHighC: 27,
 
   precipitation: {
     /** Days with ≥ 1 mm: 100 up to `daysGood`, 0 from `daysBad`. */
-    daysGood: 5,
+    daysGood: 8,
     daysBad: 20,
     /** Monthly total: 100 up to `mmGood`, 0 from `mmBad`. */
-    mmGood: 50,
-    mmBad: 400,
+    mmGood: 60,
+    mmBad: 450,
     /** Share of the precipitation score taken by rain days (the rest by mm). */
-    daysShare: 0.6,
+    // ERA5-Land counts more ≥ 1 mm days than rain gauges do (light drizzle in
+    // the model), most in the humid tropics and on wet coasts, so the monthly
+    // total carries more of the weight than the day count.
+    daysShare: 0.35,
   },
 
   wind: {
@@ -121,15 +144,17 @@ export const SCORING = {
    * met. Evaluated in order; the lowest applicable cap wins.
    */
   caps: [
-    { id: "extremeHeat", when: { highAtLeast: 40 }, cap: 20 },
-    { id: "veryHot", when: { highAtLeast: 37 }, cap: 40 },
-    { id: "heatStress", when: { highAtLeast: 32, dewPointAtLeast: 24 }, cap: 40 },
+    { id: "extremeHeat", when: { highAtLeast: 40 }, cap: 25 },
+    { id: "extremeHeatIndex", when: { heatIndexAtLeast: 45 }, cap: 25 },
+    { id: "veryHot", when: { highAtLeast: 37 }, cap: 50 },
+    // NOAA's "danger" category starts at a heat index of 103 °F (39.4 °C).
+    { id: "hotHumid", when: { heatIndexAtLeast: 40 }, cap: 50 },
     { id: "extremeRain", when: { precipMmAtLeast: 450 }, cap: 30 },
-    { id: "monsoonRain", when: { precipDaysAtLeast: 22 }, cap: 40 },
+    { id: "monsoonRain", when: { precipDaysAtLeast: 22, precipMmAtLeast: 250 }, cap: 50 },
     { id: "heavyRain", when: { precipMmAtLeast: 300 }, cap: 55 },
     // Cold caps do not apply to ski destinations.
-    { id: "extremeCold", when: { highAtMost: 0 }, cap: 20, exceptSki: true },
-    { id: "veryCold", when: { highAtMost: 5 }, cap: 40, exceptSki: true },
+    { id: "extremeCold", when: { highAtMost: 0 }, cap: 30, exceptSki: true },
+    { id: "veryCold", when: { highAtMost: 5 }, cap: 50, exceptSki: true },
   ],
 
   relative: {
@@ -150,25 +175,53 @@ export const SCORING = {
 
   classes: [
     // Evaluated top-down; the first match wins.
-    { id: "EXCELLENT", minFinal: 85, minClimate: 78 },
-    { id: "VERY_GOOD", minFinal: 72, minClimate: 62 },
+    // EXCELLENT also needs the month to be within `excellentWithinBest`
+    // points of the destination's own best month (see below).
+    { id: "EXCELLENT", minFinal: 85, minClimate: 85 },
+    { id: "VERY_GOOD", minFinal: 72, minClimate: 70 },
     { id: "GOOD", minFinal: 58, minClimate: 0 },
     { id: "ACCEPTABLE", minFinal: 42, minClimate: 0 },
     { id: "NOT_RECOMMENDED", minFinal: 0, minClimate: 0 },
   ],
 
+  /**
+   * "Not recommended climatically" is kept for months where one of the
+   * universal limits applies (extreme heat or heat index, monsoon-scale rain,
+   * deep cold); an ordinary cool or damp month is at worst ACCEPTABLE.
+   */
+  notRecommendedNeedsCap: true,
+
+  /**
+   * "Best time" is the destination's best stretch, not every good month: its
+   * climate score must be within this many points of the best month's. (Climate
+   * rather than final score, so a tourism source naming one month does not
+   * push an equally good unnamed month out.)
+   */
+  excellentWithinBest: 8,
+
   confidence: {
     climateComplete: 35,
     climatePartial: 15,
-    gridExact: 20,
-    gridNearbyKm: 5,
-    gridNearby: 15,
+    /** The destination's own 0.1° cell (its centre can be up to ~8 km away). */
+    gridOwnCell: 20,
+    /** A neighbouring land cell within this distance… */
+    gridNearbyKm: 12,
+    gridNearby: 12,
+    /** …or further (up to the 25 km search limit). */
     gridFar: 5,
     stationOverride: 20,
     reanalysis: 15,
     tourismOfficial: 25,
     tourismGuide: 18,
     tourismNone: 0,
+    /**
+     * Town height vs. the height of the cell used (check_cells.py): a cell
+     * much higher or lower than the town reads too cold or too warm.
+     */
+    elevationOkM: 150,
+    elevationPoorM: 400,
+    elevationPenaltySome: 10,
+    elevationPenaltyLarge: 30,
     /** Levels. */
     high: 75,
     medium: 50,

@@ -4,7 +4,7 @@ import { COUNTRY_GUIDES } from "@/lib/countryGuides";
 import { COUNTRY_CITIES } from "@/lib/cities";
 import { findCountry } from "@/lib/countries";
 import { fetchCityPhotos } from "@/lib/countryPhotos";
-import { citiesInSeason, citySeason, seasonKindFor, varietyFirst } from "@/lib/citySeasons";
+import { bestForMonth, bestMonths, seasonRecord, CLASS_DOT } from "@/lib/travelSeason/site";
 import { visaStatusFor } from "@/data/visaStatus";
 import { currencyForCountry } from "@/lib/currencies";
 import { fetchRates, rateBetween, type Rates } from "@/lib/rates";
@@ -36,12 +36,12 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
   const guideCodes = Object.keys(COUNTRY_GUIDES);
   const cityCount = guideCodes.reduce((n, code) => n + (COUNTRY_CITIES[code]?.length ?? 0), 0);
 
-  // This month, and the cities whose tourism board or guide names it among
-  // their best — checked against their recent weather; see citySeasons.ts.
-  // Cities, not countries: a season belongs to a place, and Antalya's October
-  // is not Istanbul's. Ordered so the first six come from six countries.
+  // This month's best destinations — read from the single travel-season
+  // dataset the "When to travel?" page uses (src/lib/travelSeason/site.ts):
+  // EXCELLENT and VERY_GOOD cities, never low-confidence ones, GOOD only when
+  // too few, ranked with one country each first. No calculation here.
   const month = new Date().getMonth() + 1;
-  const inSeasonCities = citiesInSeason(month);
+  const inSeasonCities = bestForMonth(month);
 
   // A different corner of the world each day — see heroPhotos.ts for the
   // brief these are chosen against.
@@ -67,7 +67,7 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
   // If the fare source is down, the strip still shows the month's cities
   // (with their weather) rather than disappearing.
   const shown = priced.length > 0 ? priced : inSeasonCities;
-  const seasonOrder = varietyFirst(shown, shown.length);
+  const seasonOrder = shown;
   const [cityPhotos, rates] = await Promise.all([
     fetchCityPhotos(seasonOrder),
     cachedJson<Rates>("rates-usd", 6 * 3600, fetchRates),
@@ -84,6 +84,7 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
   // confirmed visa statuses, the currency table and the country guide.
   // Nothing here is filled in when unknown — a missing field stays missing.
   const kindNames = dict.citySeasons.kinds as Record<string, string>;
+  const ts = dict.travelSeasons;
   const visaNames = {
     free: dict.visa.statusFree,
     arrival: dict.visa.statusArrival,
@@ -91,15 +92,21 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
     required: dict.visa.statusRequired,
   };
   const citySummary = (code: string, slug: string) => {
-    const kind = seasonKindFor(slug, month);
-    const season = citySeason(slug);
+    const r = seasonRecord(slug, month);
+    const best = bestMonths(slug);
     const visa = visaStatusFor(code);
     const cur = currencyForCountry(code);
     const perSar = cur && rates && cur.code !== "SAR" ? rateBetween("SAR", cur.code, rates) : null;
     return {
-      seasonKind: kind ? kindNames[kind] : undefined,
-      bestMonths: (season?.months ?? []).map((m) => monthName(m, loc)).join(isAr ? "، " : ", "),
-      bestMonthsSource: season ? (isAr ? season.source.nameAr : season.source.nameEn) : undefined,
+      seasonKind: r
+        ? [kindNames[r.season], r.climatePattern ? (ts.patterns as Record<string, string>)[r.climatePattern] : null].filter(Boolean).join(" · ")
+        : undefined,
+      classLabel: r?.classification ? `${CLASS_DOT[r.classification]} ${ts.classes[r.classification]}` : undefined,
+      low: r?.averageLowC ?? null,
+      weatherSummary: r ? ((isAr ? r.weatherSummaryAr : r.weatherSummaryEn) ?? undefined) : undefined,
+      reason: r ? ((isAr ? r.reasonAr : r.reasonEn) ?? undefined) : undefined,
+      bestMonths: best.map((m) => monthName(m, loc)).join(isAr ? "، " : ", "),
+      bestMonthsSource: r?.tourismSignal === "listed" ? ((isAr ? r.tourismSourceNameAr : r.tourismSourceName) ?? undefined) : undefined,
       visa: visa ? { category: visa.category, label: visaNames[visa.category] } : undefined,
       currency: cur
         ? {
@@ -130,8 +137,8 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
       name: isAr ? c.nameAr : c.nameEn,
       countryName: nameOf(c.code),
       photo: cityPhotos.get(`${c.code}/${c.slug}`),
-      high: c.high,
-      rainyDays: c.rainyDays,
+      high: c.record.averageHighC ?? 0,
+      rainyDays: c.record.precipitationDays ?? 0,
       flightHref: airport
         ? `/${loc}?${new URLSearchParams({ product: "flights", mode: "known", destination: airport.iata })}#plan`
         : undefined,
@@ -300,6 +307,9 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
             summaryWeather: dict.home.summaryWeather,
             summaryBestMonths: dict.home.summaryBestMonths,
             summarySource: dict.home.summarySource,
+            climateNote: ts.climateNote,
+            methodologyLink: ts.methodologyLink,
+            highLow: ts.highLow,
             summaryVisa: dict.home.summaryVisa,
             summaryVisaUnknown: dict.home.summaryVisaUnknown,
             summaryVisaMore: dict.home.summaryVisaMore,

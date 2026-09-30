@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { CLASS_DOT } from "@/lib/travelSeason/labels";
 import type { Locale, RouteSuggestion, TravelerCounts } from "@/lib/types";
 import { getDictionary } from "@/lib/dictionaries";
 import { serializeChildrenAges } from "@/lib/searchParamsUtil";
@@ -119,14 +120,14 @@ export default function RouteCard({
                 </div>
               </div>
               <div className="flex flex-wrap items-center gap-1.5 p-3">
-                {s.place?.inSeason !== undefined && (
+                {s.place?.classification && (
                   <span
                     className={`rounded-full px-2.5 py-1 text-xs font-bold ${
                       s.place.inSeason ? "bg-emerald-100 text-emerald-900" : "bg-mist-100 text-navy-700"
                     }`}
                   >
-                    {s.place.inSeason ? "☀️ " : ""}
-                    {(s.place.inSeason ? d.inSeason : d.notInSeason).replace("{month}", monthName(Number(s.arrive.slice(5, 7)), locale))}
+                    {monthName(Number(s.arrive.slice(5, 7)), locale)}: {CLASS_DOT[s.place.classification]}{" "}
+                    {dict.travelSeasons.classes[s.place.classification]}
                     {s.place.seasonKind && ` · ${(dict.citySeasons.kinds as Record<string, string>)[s.place.seasonKind]}`}
                   </span>
                 )}

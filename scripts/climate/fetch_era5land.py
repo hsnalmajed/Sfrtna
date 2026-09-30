@@ -23,10 +23,18 @@ first, and the first with data is used; the distance is recorded. Nothing
 further away is ever used — a destination with no land cell nearby is left
 for a station override (see README.md) rather than given another place's
 climate.
+
+Elevation: a cell whose average height is far from the town's (a valley town
+whose 9 km cell reaches into the mountains) reads too cold. check_cells.py
+compares heights and suggests a better neighbouring cell; the chosen ones go,
+with the reason, in cell_overrides.json, and this script then downloads
+exactly that cell instead of searching (refetching when the stored download
+came from another cell).
 """
 from __future__ import annotations
 
 import io
+import os
 import json
 import math
 import sys
@@ -153,20 +161,50 @@ def retrieve(client, lat, lon, target: Path, date=PERIOD):
     return req
 
 
+def cell_overrides() -> dict:
+    p = HERE / "cell_overrides.json"
+    if not p.exists():
+        return {}
+    return {
+        k: v
+        for k, v in json.loads(p.read_text(encoding="utf-8"))["overrides"].items()
+        if "latitude" in v or "referenceGeocode" in v
+    }
+
+
 def fetch_one(client, d):
     RAW.mkdir(exist_ok=True)
     out_csv = RAW / f"{d['id']}.csv"
     out_meta = RAW / f"{d['id']}.meta.json"
-    if out_csv.exists() and out_meta.exists():
-        log(f"  {d['id']}: already downloaded")
-        return
+    override = cell_overrides().get(d["id"])
+    if out_csv.exists() and out_meta.exists() and out_meta.stat().st_size > 0:
+        old = json.loads(out_meta.read_text(encoding="utf-8"))
+        if override is None:
+            same = True
+        elif "latitude" in override:
+            same = abs(old["usedLatitude"] - override["latitude"]) < 0.051 and abs(old["usedLongitude"] - override["longitude"]) < 0.051
+        else:
+            same = (old.get("reference") or {}).get("query") == override["referenceGeocode"]
+        if same:
+            log(f"  {d['id']}: already downloaded")
+            return
     geo = None
     lat, lon = d.get("latitude"), d.get("longitude")
     if lat is None:
-        lat, lon, geo = geocode(d["geocode"])
+        old_meta = json.loads(out_meta.read_text(encoding="utf-8")) if out_meta.exists() and out_meta.stat().st_size > 0 else None
+        if old_meta:  # geocoded before: keep the same point
+            lat, lon, geo = old_meta["requestedLatitude"], old_meta["requestedLongitude"], old_meta.get("geocode")
+        else:
+            lat, lon, geo = geocode(d["geocode"])
+    reference = None
+    if override and "referenceGeocode" in override:
+        # The destination is an island or region whose stored coordinate is its
+        # interior; visitors stay in a named place, whose climate is used.
+        lat, lon, reference = geocode(override["referenceGeocode"])
     tried = []
-    for (clat, clon) in candidates(lat, lon):
-        tmp = RAW / f"{d['id']}.part"
+    cells = [(override["latitude"], override["longitude"])] if override and "latitude" in override else candidates(lat, lon)
+    for (clat, clon) in cells:
+        tmp = RAW / f"{d['id']}.{os.getpid()}.part"
         req = retrieve(client, clat, clon, tmp)
         df = read_csv_payload(tmp)
         tried.append({"latitude": clat, "longitude": clon, "hasData": bool(has_land_data(df))})
@@ -189,25 +227,62 @@ def fetch_one(client, d):
             "usedLatitude": used_lat,
             "usedLongitude": used_lon,
             "distanceKm": round(dist, 2),
-            "gridNote": "destination's own grid cell" if len(tried) == 1 else "nearest ERA5-Land land cell",
+            "gridNote": "elevation-matched ERA5-Land cell (cell_overrides.json)" if override and "latitude" in override
+            else ("reference place's own grid cell" if len(tried) == 1 else "nearest ERA5-Land land cell to the reference place") if reference
+            else "destination's own grid cell" if len(tried) == 1 else "nearest ERA5-Land land cell",
+            "reference": reference,
+            "cellOverrideReason": override.get("reason") if override else None,
             "cellsTried": tried,
             "dataset": DATASET,
             "datasetUrl": DATASET_URL,
             "request": req,
             "retrievedAt": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         }
-        out_meta.write_text(json.dumps(meta, indent=1, ensure_ascii=False))
+        out_meta.write_text(json.dumps(meta, indent=1, ensure_ascii=False), encoding="utf-8")
         log(f"  {d['id']}: {len(df):,} hours from ({used_lat}, {used_lon}), {dist:.1f} km away")
         return
-    (RAW / f"{d['id']}.nodata.json").write_text(json.dumps({"id": d["id"], "tried": tried}, indent=1))
+    (RAW / f"{d['id']}.nodata.json").write_text(json.dumps({"id": d["id"], "tried": tried}, indent=1), encoding="utf-8")
     log(f"  {d['id']}: NO LAND CELL within {MAX_SEARCH_KM} km — needs a station override")
+
+
+def credentials_file() -> dict | None:
+    """Read the CDS url and key from the user's own config file, tolerating
+    what Notepad does (a .txt suffix, a byte-order mark). Logs only whether
+    the file and its two entries exist — never their values."""
+    import os
+
+    if os.environ.get("CDSAPI_URL") and os.environ.get("CDSAPI_KEY"):
+        log("credentials: from CDSAPI_URL / CDSAPI_KEY environment variables")
+        return {"url": os.environ["CDSAPI_URL"], "key": os.environ["CDSAPI_KEY"]}
+    home = Path.home()
+    rc = Path(os.environ["CDSAPI_RC"]) if os.environ.get("CDSAPI_RC") else home / ".cdsapirc"
+    if not rc.exists():
+        for alt in (home / ".cdsapirc.txt", home / ".cdsapirc.txt.txt", HERE.parent.parent / ".cdsapirc"):
+            if alt.exists():
+                rc = alt
+                break
+    if not rc.exists():
+        log(f"credentials: {rc} not found")
+        return None
+    text = rc.read_text(encoding="utf-8-sig", errors="replace").replace("\ufeff", "")
+    cfg = {}
+    for line in text.splitlines():
+        if ":" in line:
+            k, v = line.split(":", 1)
+            cfg[k.strip().lower()] = v.strip()
+    log(f"credentials: {rc} - has url: {bool(cfg.get('url'))}, has key: {bool(cfg.get('key'))}")
+    return cfg if cfg.get("url") and cfg.get("key") else None
 
 
 def main():
     import cdsapi
 
+    cfg = credentials_file()
+    if not cfg:
+        log("credentials: missing - put url and key in %USERPROFILE%\\.cdsapirc")
+        sys.exit(1)
     args = [a for a in sys.argv[1:] if not a.startswith("--")]
-    client = cdsapi.Client(quiet=True)
+    client = cdsapi.Client(url=cfg["url"], key=cfg["key"], quiet=True)
     if "--probe" in sys.argv:
         tmp = HERE / "probe.csv"
         try:
@@ -220,9 +295,15 @@ def main():
         log(df.head(3).to_string())
         tmp.unlink(missing_ok=True)
         return
-    dests = json.loads((HERE / "destinations.json").read_text())["destinations"]
+    dests = json.loads((HERE / "destinations.json").read_text(encoding="utf-8"))["destinations"]
     if args:
         dests = [d for d in dests if d["id"] in args]
+    part = next((a.split("=", 1)[1] for a in sys.argv if a.startswith("--part=")), None)
+    if part:  # --part=k/n: every n-th destination from k, for parallel runs
+        k, n = (int(x) for x in part.split("/"))
+        dests = [d for i, d in enumerate(dests) if i % n == k]
+    if "--reverse" in sys.argv:
+        dests = dests[::-1]
     for i, d in enumerate(dests, 1):
         log(f"[{i}/{len(dests)}] {d['id']}")
         for attempt in range(3):

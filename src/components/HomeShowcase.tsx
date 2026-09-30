@@ -26,8 +26,16 @@ export interface ShowcaseCity {
   flightHref?: string;
   flightAirport?: string;
   flightKm?: number;
-  /** This month's season where the city is ("autumn", "dry season"…). */
+  /** This month's season where the city is, and its climate pattern ("Autumn · Dry season"). */
   seasonKind?: string;
+  /** The travel-season rating with its dot ("🟢 Best time to visit"). */
+  classLabel?: string;
+  /** Typical average low, °C; null when unknown. */
+  low?: number | null;
+  /** "Mild and mostly dry" — from the normals, by rule. */
+  weatherSummary?: string;
+  /** Why the month got its rating. */
+  reason?: string;
   /** The city's in-season months, already named and joined. */
   bestMonths: string;
   /** Who names those months (a tourism board or a guide). */
@@ -89,6 +97,9 @@ interface ShowcaseDict {
   summaryWeather: string;
   summaryBestMonths: string;
   summarySource: string;
+  climateNote: string;
+  methodologyLink: string;
+  highLow: string;
   summaryVisa: string;
   summaryVisaUnknown: string;
   summaryVisaMore: string;
@@ -284,19 +295,18 @@ export default function HomeShowcase({
         fallback={<div className="absolute inset-0 -z-10 bg-gradient-to-br from-navy-700 to-navy-990" />}
       />
       <div className="scrim-soft absolute inset-0 -z-10" />
-      {/* Which season it is there this month: autumn in Istanbul, the dry
-          season in Bali — the word a traveller packs by. */}
-      {c.seasonKind && (
-        <span className="absolute start-2 top-2 rounded-full bg-white/90 px-2.5 py-0.5 text-xs font-extrabold text-navy-900 shadow-sm backdrop-blur-sm">
-          {c.seasonKind}
+      {/* The month's rating there, in the site-wide wording. */}
+      {c.classLabel && (
+        <span className="absolute start-2 top-2 max-w-[calc(100%-1rem)] truncate rounded-full bg-white/90 px-2.5 py-0.5 text-xs font-extrabold text-navy-900 shadow-sm backdrop-blur-sm">
+          {c.classLabel}
         </span>
       )}
       <div className="absolute inset-x-0 bottom-0 p-3">
         <p className="truncate font-display text-sm font-extrabold text-white drop-shadow-sm sm:text-base">{c.name}</p>
         <p className="truncate text-xs font-semibold text-white/70">{c.countryName}</p>
         <div className="mt-1.5 flex flex-wrap gap-1">
-          <span className="inline-flex rounded-full bg-navy-990/65 px-2 py-0.5 text-xs font-bold text-sun-300 backdrop-blur-sm">
-            {dict.seasonHigh.replace("{high}", String(Math.round(c.high)))}
+          <span className="inline-flex rounded-full bg-navy-990/65 px-2 py-0.5 text-xs font-bold text-sun-300 backdrop-blur-sm" dir="ltr">
+            🌡 {c.low !== null && c.low !== undefined ? dict.highLow.replace("{low}", String(Math.round(c.low))).replace("{high}", String(Math.round(c.high))) : `${Math.round(c.high)}°`}
           </span>
           {/* The fare matters more than the rain; the rain only shows where
               no fare was seen, so the card is never left with one number. */}
@@ -358,14 +368,19 @@ export default function HomeShowcase({
               {dict.summaryWeather.replace("{month}", dict.monthName)}
               {openCity.seasonKind && <span className="text-sun-300"> · {openCity.seasonKind}</span>}
             </h3>
+            {openCity.classLabel && <p className="mt-2 text-base font-extrabold text-white">{openCity.classLabel}</p>}
             <div className="mt-2 flex flex-wrap gap-2">
-              <span className="rounded-full bg-navy-990/70 px-3 py-1 text-sm font-bold text-sun-300">
-                {dict.seasonHigh.replace("{high}", String(Math.round(openCity.high)))}
+              <span className="rounded-full bg-navy-990/70 px-3 py-1 text-sm font-bold text-sun-300" dir="ltr">
+                🌡 {openCity.low !== null && openCity.low !== undefined ? dict.highLow.replace("{low}", String(Math.round(openCity.low))).replace("{high}", String(Math.round(openCity.high))) : `${Math.round(openCity.high)}°`}
               </span>
+              {openCity.weatherSummary && (
+                <span className="rounded-full bg-navy-990/70 px-3 py-1 text-sm font-bold text-white">{openCity.weatherSummary}</span>
+              )}
               <span className="rounded-full bg-navy-990/70 px-3 py-1 text-sm font-bold text-sea-200">
                 {rainText(openCity.rainyDays)}
               </span>
             </div>
+            {openCity.reason && <p className="mt-2 text-sm text-white/80">{openCity.reason}</p>}
             {openCity.bestMonths && (
               <p className="mt-2 text-sm text-white/75">
                 {dict.summaryBestMonths.replace("{months}", openCity.bestMonths)}
@@ -374,6 +389,12 @@ export default function HomeShowcase({
                 )}
               </p>
             )}
+            <p className="mt-3 text-xs text-white/55">
+              {dict.climateNote}{" "}
+              <Link href={`/${locale}/methodology/travel-seasons`} className="text-sea-300 hover:underline">
+                {dict.methodologyLink}
+              </Link>
+            </p>
           </section>
 
           {openCity.fare && (

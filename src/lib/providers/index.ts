@@ -12,11 +12,15 @@ import { travelpayouts } from "./travelpayouts";
  * one supplier is not comparing; it is reselling one company's opinion.
  *
  * Adding a source is adding a file next to this one and a line below.
+ *
+ * A function rather than a constant: travelpayouts.ts imports flights.ts,
+ * which imports this file, so when a page loads travelpayouts first the
+ * binding is not initialised yet while this module is evaluated.
  */
-const PROVIDERS: PriceProvider[] = [travelpayouts];
+const providers = (): PriceProvider[] => [travelpayouts];
 
 export function configuredProviders(): PriceProvider[] {
-  return PROVIDERS.filter((p) => p.isConfigured());
+  return providers().filter((p) => p.isConfigured());
 }
 
 /** True when at least one real source can answer — the pages key off this. */

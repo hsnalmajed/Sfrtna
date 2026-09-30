@@ -4,6 +4,7 @@
 import { SCORING, type Classification } from "./config.ts";
 import type { CapHit, MonthClimate, TourismSignalInput } from "./types.ts";
 import type { SubScores } from "./engine.ts";
+import { heatIndexC } from "./heat.ts";
 
 export interface Bilingual {
   ar: string;
@@ -59,7 +60,8 @@ export function weatherSummary(m: MonthClimate): Bilingual | null {
 const CAP_TEXT: Record<string, (m: MonthClimate) => Bilingual> = {
   extremeHeat: (m) => ({ ar: `حرارة شديدة جدًا (متوسط العظمى ${Math.round(m.highC ?? 0)}°)`, en: `Extreme heat (average high ${Math.round(m.highC ?? 0)}°)` }),
   veryHot: (m) => ({ ar: `حرارة شديدة (متوسط العظمى ${Math.round(m.highC ?? 0)}°)`, en: `Very hot (average high ${Math.round(m.highC ?? 0)}°)` }),
-  heatStress: () => ({ ar: "حرارة مع رطوبة خانقة", en: "Heat with oppressive humidity" }),
+  extremeHeatIndex: (m) => ({ ar: `حرارة ورطوبة خطرتان (الحرارة المحسوسة نحو ${Math.round(heatIndexC(m) ?? 0)}°)`, en: `Dangerous heat and humidity (feels like about ${Math.round(heatIndexC(m) ?? 0)}°)` }),
+  hotHumid: (m) => ({ ar: `حرارة مع رطوبة خانقة (الحرارة المحسوسة نحو ${Math.round(heatIndexC(m) ?? 0)}°)`, en: `Heat with oppressive humidity (feels like about ${Math.round(heatIndexC(m) ?? 0)}°)` }),
   extremeRain: () => ({ ar: "أمطار غزيرة جدًا", en: "Very heavy rainfall" }),
   monsoonRain: () => ({ ar: "أمطار في معظم أيام الشهر", en: "Rain on most days of the month" }),
   heavyRain: () => ({ ar: "أمطار غزيرة", en: "Heavy rainfall" }),

@@ -55,7 +55,7 @@ async function fareCoverage(month: string) {
  * source has a price from Riyadh — to choose the source that covers them all.
  */
 async function seasonCoverage(offset: number) {
-  const { citiesInSeason } = await import("@/lib/citySeasons");
+  const { bestForMonth } = await import("@/lib/travelSeason/site");
   const { CITY_AIRPORTS } = await import("@/data/cityAirports");
   const token = process.env.TRAVELPAYOUTS_TOKEN || "";
   const now = new Date();
@@ -73,7 +73,7 @@ async function seasonCoverage(offset: number) {
     }
   };
   const base = "https://api.travelpayouts.com";
-  const codes = citiesInSeason(m)
+  const codes = bestForMonth(m)
     .map((c) => CITY_AIRPORTS[c.slug]?.iata)
     .filter((x): x is string => Boolean(x));
   const seen = (rows: { destination?: string; destination_airport?: string }[] | undefined) =>

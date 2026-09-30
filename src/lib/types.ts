@@ -199,10 +199,14 @@ export interface DestinationPlace {
   /** Mean afternoon high and rainy days in the month of travel. */
   high?: number;
   rainyDays?: number;
-  /** In season that month by the site's rule; undefined when we can't say. */
+  /** Typical average low in the month of travel, °C. */
+  low?: number;
+  /** EXCELLENT or VERY_GOOD that month; undefined when we can't say. */
   inSeason?: boolean;
-  /** What kind of month it is there: winter, spring … or wet / dry season. */
-  seasonKind?: "winter" | "spring" | "summer" | "autumn" | "wet" | "dry";
+  /** The month's travel-season rating (src/lib/travelSeason). */
+  classification?: "EXCELLENT" | "VERY_GOOD" | "GOOD" | "ACCEPTABLE" | "NOT_RECOMMENDED";
+  /** The season there that month, by hemisphere. */
+  seasonKind?: "winter" | "spring" | "summer" | "autumn";
   /** Confirmed entry status for a Saudi passport. */
   visa?: "free" | "arrival" | "eta" | "required";
 }

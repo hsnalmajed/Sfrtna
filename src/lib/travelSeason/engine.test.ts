@@ -9,7 +9,7 @@
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { scoreDestination, seasonFor, favorablePhases, climatePatterns } from "./engine.ts";
+import { scoreDestination, seasonFor, favorablePhases, climatePatterns, heatIndexC, classify, confidenceFor } from "./engine.ts";
 import type { DestinationClimate, MonthClimate, TourismSignalInput } from "./types.ts";
 import type { DestinationType } from "./config.ts";
 import { SCORING } from "./config.ts";
@@ -68,7 +68,8 @@ test("Riyadh-like July is not the best time because it is dry", () => {
     recommendedMonths: [6, 7, 8], broad: false, lastVerified: "2026-01-01",
   });
   assert.equal(withSource[6].classification, "NOT_RECOMMENDED");
-  assert.ok((withSource[6].finalScore ?? 100) <= 20);
+  const extremeCap = SCORING.caps.find((c) => c.id === "extremeHeat")!.cap;
+  assert.ok((withSource[6].finalScore ?? 100) <= extremeCap);
 });
 
 test("the wettest monsoon month is not the best time just because it is warm", () => {
@@ -165,4 +166,55 @@ test("scoring config is versioned", () => {
   assert.match(SCORING.version, /^\d+\.\d+$/);
   const w = SCORING.weights;
   assert.ok(Math.abs(w.high + w.low + w.humidity + w.precipitation + w.wind - 1) < 1e-9);
+});
+
+test("hot and humid is capped even when the thermometer alone looks fine", () => {
+  // 36 °C with a 23 °C dew point — a Red Sea / Gulf coast summer.
+  const hot = m(36, 29, 0, 0, 23);
+  const hi = heatIndexC(hot) ?? 0;
+  assert.ok(hi >= 40, `heat index ${hi}`);
+  const coast = dest("coast", 21.5, Array.from({ length: 12 }, (_, i) => (i === 6 ? hot : m(28, 20, 5, 1, 12))));
+  const jul = run(coast, ["city", "beach"])[6];
+  assert.ok(jul.caps.some((c) => c.id === "hotHumid"));
+  assert.ok(["ACCEPTABLE", "NOT_RECOMMENDED"].includes(jul.classification as string));
+  // Dry heat of the same temperature is not called humid.
+  assert.equal((heatIndexC(m(36, 22, 0, 0, 2)) ?? 0) < 36, true);
+});
+
+test("one poor essential factor pulls the whole month down", () => {
+  // Ideal temperatures but rain on 19 days out of 30.
+  const wetMild = m(24, 15, 180, 19, 12);
+  const dryMild = m(24, 15, 20, 2, 12);
+  const d = dest("wet", 45, Array.from({ length: 12 }, (_, i) => (i === 0 ? wetMild : dryMild)));
+  const recs = run(d, ["city"]);
+  assert.ok((recs[0].climateScore ?? 100) < 70, `wet month ${recs[0].climateScore}`);
+  assert.ok((recs[1].climateScore ?? 0) >= 90);
+});
+
+test("a cold city month is not a good time", () => {
+  // Istanbul/Trabzon-like February: 8 °C high, frequent rain.
+  const d = dest("cold", 41, Array.from({ length: 12 }, (_, i) => (i === 1 ? m(8, 3, 90, 13, 3) : m(24, 16, 30, 4, 12))));
+  const feb = run(d, ["city"])[1];
+  assert.ok(["ACCEPTABLE", "NOT_RECOMMENDED"].includes(feb.classification as string), `${feb.classification} ${feb.finalScore}`);
+});
+
+test("best time means close to the destination's own best month", () => {
+  assert.equal(classify(88, 86, 90), "EXCELLENT");
+  assert.equal(classify(88, 86, 99), "VERY_GOOD");
+});
+
+test("a cell far higher than the town lowers confidence", () => {
+  const months = desert.months;
+  const base = { ...desert.provenance, townElevationM: 1600, cellElevationM: 1650, elevationDifferenceM: 50 };
+  const far = { ...base, cellElevationM: 2500, elevationDifferenceM: 900 };
+  const accepted = { ...far, elevationAccepted: "reviewed" };
+  const a = confidenceFor(months, base, null).score;
+  const b = confidenceFor(months, far, null).score;
+  assert.ok(b < a);
+  assert.equal(confidenceFor(months, accepted, null).score, a);
+});
+
+test("not recommended needs an extreme condition", () => {
+  assert.equal(classify(30, 30, 90, false), "ACCEPTABLE");
+  assert.equal(classify(30, 30, 90, true), "NOT_RECOMMENDED");
 });

@@ -57,6 +57,7 @@ const generatedAt = new Date().toISOString();
 const records: Record<string, SeasonRecord[]> = {};
 const qaRecords: Record<string, SeasonRecord[]> = {};
 const errors: string[] = [];
+const withheld: Record<string, { reason: string; records: SeasonRecord[] }> = {};
 
 for (const d of destList) {
   const n = normals.destinations[d.id];
@@ -71,6 +72,18 @@ for (const d of destList) {
   }
   const climate: DestinationClimate = { id: d.id, countryCode: n.countryCode, latitude: n.latitude, longitude: n.longitude, months: n.months, provenance: n.provenance };
   const recs = scoreDestination(climate, types, d.qa ? null : tourismFor(d.id), generatedAt);
+  const dz = recs[0].climateElevationDifferenceM;
+  if (!d.qa && n.provenance.withheldReason) {
+    withheld[d.id] = { reason: n.provenance.withheldReason, records: recs };
+    continue;
+  }
+  if (!d.qa && dz !== null && Math.abs(dz) > SCORING.confidence.elevationPoorM) {
+    // The best cell available is still far higher or lower than the town:
+    // its temperatures would be several degrees off. Not published until a
+    // station override (station_overrides.json) is added.
+    withheld[d.id] = { reason: `ERA5-Land cell ${dz > 0 ? "+" : ""}${dz} m from the town's height`, records: recs };
+    continue;
+  }
   (d.qa ? qaRecords : records)[d.id] = recs;
 }
 
@@ -87,6 +100,8 @@ writeFileSync(
         climatePeriod: normals.meta.period,
         normalsGeneratedAt: normals.meta.generatedAt,
         generatedAt,
+        withheld: Object.fromEntries(Object.entries(withheld).map(([k, v]) => [k, v.reason])),
+        missing: errors,
       },
       records,
     },
@@ -101,7 +116,7 @@ const fmt = (x: number | null, nd = 0) => (x === null ? "—" : x.toFixed(nd));
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 const QA_IDS = ["riyadh", "jeddah", "abha", "dubai", "muscat", "trabzon", "istanbul", "antalya", "london", "paris", "zurich", "reykjavik", "bangkok", "singapore", "bali", "male", "tokyo", "sapporo", "new-york", "miami", "cape-town", "sydney", "queenstown", "cairo", "marrakesh", "coronet-peak", "zermatt"];
-const all = { ...records, ...qaRecords };
+const all = { ...records, ...qaRecords, ...Object.fromEntries(Object.entries(withheld).map(([k, v]) => [k, v.records])) };
 const csv = ["city,month,high_c,low_c,precip_mm,rain_days,rh_pct,dew_c,climate_score,tourism_signal,final_score,classification,confidence,season,pattern,phase,caps,reason_en"];
 let md = `# Quality test — scoring v${SCORING.version}\n\nClimate: ${normals.meta.dataset}, ${normals.meta.period}. Generated ${generatedAt}.\n\n`;
 for (const id of QA_IDS) {
@@ -111,10 +126,10 @@ for (const id of QA_IDS) {
     continue;
   }
   const p = recs[0];
-  md += `## ${id} — ${p.destinationTypes.join(" + ")} — ${p.climateGridInfo}\n\n`;
-  md += "| Month | High | Low | Rain mm | Rain days | RH % | Climate | Tourism | Final | Class | Reason |\n|---|---|---|---|---|---|---|---|---|---|---|\n";
+  md += `## ${id} — ${p.destinationTypes.join(" + ")} — ${p.climateGridInfo} — confidence ${p.confidenceLevel} (${p.confidenceScore})${p.climateElevationDifferenceM !== null ? ` — cell ${p.climateElevationDifferenceM > 0 ? "+" : ""}${p.climateElevationDifferenceM} m vs town` : ""}\n\n`;
+  md += "| Month | High | Low | Rain mm | Rain days | RH % | Heat index | Climate | Tourism | Final | Class | Reason |\n|---|---|---|---|---|---|---|---|---|---|---|---|\n";
   for (const r of recs) {
-    md += `| ${MONTHS[r.month - 1]} | ${fmt(r.averageHighC)} | ${fmt(r.averageLowC)} | ${fmt(r.precipitationMm)} | ${fmt(r.precipitationDays, 1)} | ${fmt(r.relativeHumidity)} | ${fmt(r.climateScore)} | ${r.tourismSignal} | ${fmt(r.finalScore)} | ${r.classification ?? "—"}${r.favorablePhase ? ` (${r.favorablePhase})` : ""} | ${r.reasonEn ?? "—"} |\n`;
+    md += `| ${MONTHS[r.month - 1]} | ${fmt(r.averageHighC)} | ${fmt(r.averageLowC)} | ${fmt(r.precipitationMm)} | ${fmt(r.precipitationDays, 1)} | ${fmt(r.relativeHumidity)} | ${fmt(r.heatIndexC)} | ${fmt(r.climateScore)} | ${r.tourismSignal} | ${fmt(r.finalScore)} | ${r.classification ?? "—"}${r.favorablePhase ? ` (${r.favorablePhase})` : ""} | ${r.reasonEn ?? "—"} |\n`;
     csv.push([id, r.month, r.averageHighC, r.averageLowC, r.precipitationMm, r.precipitationDays, r.relativeHumidity, r.dewPointC, r.climateScore, r.tourismSignal, r.finalScore, r.classification, r.confidenceLevel, r.season, r.climatePattern, r.favorablePhase, r.caps.map((c) => c.id).join("+"), JSON.stringify(r.reasonEn ?? "")].join(","));
   }
   md += "\n";
@@ -142,8 +157,34 @@ const cov = [
   `- With official station override: ${station.length}`,
   `- Low-confidence: ${lowConf.length}${lowConf.length ? ` (${lowConf.map((d) => d.id).join(", ")})` : ""}`,
   `- Grid point more than 5 km away: ${farGrid.length}${farGrid.length ? ` (${farGrid.map((d) => `${d.id} ${normals.destinations[d.id].provenance.distanceKm} km`).join(", ")})` : ""}`,
+  `- Withheld from the site (cell height too far from the town's; needs a station override): ${Object.keys(withheld).length}${Object.keys(withheld).length ? ` (${Object.entries(withheld).map(([k, v]) => `${k}: ${v.reason}`).join("; ")})` : ""}`,
   `- Errors: ${errors.length}`,
   ...errors.map((e) => `  - ${e}`),
+  "",
+  "## Needs manual review",
+  "",
+  "### Cell height far from the town's (more than 150 m, not accepted)",
+  "",
+  ...site
+    .filter((d) => records[d.id] && Math.abs(records[d.id][0].climateElevationDifferenceM ?? 0) > SCORING.confidence.elevationOkM)
+    .map((d) => {
+      const pv = normals.destinations[d.id].provenance as DestinationClimate["provenance"];
+      return `- ${d.id}: town ${pv.townElevationM} m, cell ${pv.cellElevationM} m (${records[d.id][0].confidenceLevel} confidence)`;
+    }),
+  "",
+  "### Possible model drizzle (15+ rain days a month averaging under 6 mm per rain day)",
+  "",
+  "ERA5-Land tends to count more light-rain days than rain gauges. These months are worth checking against a station before a rain-day figure is quoted.",
+  "",
+  ...site
+    .filter((d) => records[d.id])
+    .map((d) => ({ d, ms: records[d.id].filter((r) => (r.precipitationDays ?? 0) >= 15 && (r.precipitationMm ?? 0) / (r.precipitationDays || 1) < 6) }))
+    .filter((x) => x.ms.length)
+    .map(({ d, ms }) => `- ${d.id}: ${ms.map((r) => `${MONTHS[r.month - 1]} ${fmt(r.precipitationDays, 1)} d / ${fmt(r.precipitationMm)} mm`).join(", ")}`),
+  "",
+  "### No tourism source (climate-only rating)",
+  "",
+  site.filter((d) => !CITY_SEASON_SOURCES[d.id]).map((d) => d.id).join(", "),
   "",
 ].join("\n");
 writeFileSync(join(reportDir, "coverage.md"), cov);

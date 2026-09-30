@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { CLASS_DOT } from "@/lib/travelSeason/labels";
 import type { DestinationSuggestion, Locale, TravelerCounts } from "@/lib/types";
 import { getDictionary } from "@/lib/dictionaries";
 import { serializeChildrenAges } from "@/lib/searchParamsUtil";
@@ -119,14 +120,14 @@ export default function DestinationCard({
           }
         />
         <div className="scrim-soft absolute inset-0" />
-        {place?.inSeason !== undefined && monthLabel && (
+        {place?.classification && (
           <span
             className={`absolute start-3 top-3 rounded-full px-2.5 py-1 text-xs font-bold shadow-sm ${
               place.inSeason ? "bg-emerald-100 text-emerald-900" : "bg-white/90 text-navy-700"
             }`}
           >
-            {place.inSeason ? "☀️ " : ""}
-            {(place.inSeason ? d.inSeason : d.notInSeason).replace("{month}", monthLabel)}
+            {monthLabel ? `${monthLabel}: ` : ""}
+            {CLASS_DOT[place.classification]} {dict.travelSeasons.classes[place.classification]}
             {place.seasonKind && ` · ${(dict.citySeasons.kinds as Record<string, string>)[place.seasonKind]}`}
           </span>
         )}

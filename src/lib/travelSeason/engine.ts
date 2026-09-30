@@ -8,8 +8,10 @@
 //   1. Climate suitability (absolute): the month is scored against each trip
 //      profile the destination carries (city, beach, mountain, ski…) from its
 //      average high and low, humidity (dew point), rain (days and mm) and wind
-//      — the best profile wins — then capped by universal limits (extreme
-//      heat, heat with humidity, monsoon-scale rain, deep cold for non-ski).
+//      — the main profile counts most, another can lift it part of the way —
+//      multiplied down when one essential part
+//      (temperature, rain, humidity) is poor, then capped by universal limits
+//      (extreme heat or heat index, monsoon-scale rain, deep cold for non-ski).
 //   2. Relative ranking: the destination's best three months get a small
 //      bonus, but only when already good in absolute terms, so the least bad
 //      of twelve bad months is never "the best time".
@@ -18,7 +20,8 @@
 //      source means no adjustment, never an invented one. The caps still
 //      apply afterwards, so no source can rescue 42 °C.
 //   4. Classification by final score, with a minimum climate score for the
-//      top two classes.
+//      top two classes; "best time" (EXCELLENT) also has to be close to the
+//      destination's own best month.
 
 import { SCORING, type Classification, type DestinationType, type ThermalProfile } from "./config.ts";
 import type {
@@ -33,6 +36,9 @@ import type {
   TourismSignalInput,
 } from "./types.ts";
 import { reasonText, weatherSummary } from "./text.ts";
+import { heatIndexC } from "./heat.ts";
+
+export { heatIndexC };
 
 const clamp = (x: number, lo = 0, hi = 100) => Math.min(hi, Math.max(lo, x));
 const round1 = (x: number) => Math.round(x * 10) / 10;
@@ -132,18 +138,22 @@ function scoreProfile(m: MonthClimate, type: Exclude<DestinationType, "ski">): S
     m.dewPointC === null
       ? null
       : m.highC < SCORING.humidityAppliesFromHighC
-        ? 100
+        ? null // too cool for humidity to matter: it neither costs nor earns points
         : falling(m.dewPointC, prof.dewPointComfort, prof.dewPointOppressive);
   const precipitation = precipitationScore(m);
   const wind = windScore(m);
   const w = SCORING.weights;
-  const score = weighted([
+  const base = weighted([
     [high, w.high],
     [low, w.low],
     [humidity, w.humidity],
     [precipitation, w.precipitation],
     [wind, w.wind],
   ]);
+  const parts: Record<(typeof SCORING.weakest.factors)[number], number | null> = { high, precipitation, humidity };
+  const known = SCORING.weakest.factors.map((f) => parts[f]).filter((x): x is number => x !== null);
+  const weakest = known.length ? Math.min(...known) : 100;
+  const score = base * (SCORING.weakest.base + ((1 - SCORING.weakest.base) * weakest) / 100);
   const thermal = weighted([
     [high, w.high],
     [low, w.low],
@@ -172,15 +182,22 @@ function scoreSki(m: MonthClimate): SubScores | null {
   return { profile: "ski", thermal: high, high, low: null, humidity: null, precipitation, wind, snow, other: weighted([[snow, 0.8], [wind, 0.2]]), score };
 }
 
-/** Best profile for the month, before caps. */
+/**
+ * The month's score for the destination, before caps. The first type is the
+ * destination's main one; another type can lift the score only part of the
+ * way (SCORING.secondaryTypeShare of the gap), so a city that also has
+ * hiking is not judged purely as a hike in its cool, wet months.
+ */
 export function bestProfileScore(m: MonthClimate, types: DestinationType[]): SubScores | null {
   const list = types.length ? types : (["city"] as DestinationType[]);
-  let best: SubScores | null = null;
-  for (const t of list) {
-    const s = t === "ski" ? scoreSki(m) : scoreProfile(m, t);
-    if (s && (!best || s.score > best.score)) best = s;
-  }
-  return best;
+  const scored = list.map((t) => (t === "ski" ? scoreSki(m) : scoreProfile(m, t)));
+  const primary = scored[0];
+  let other: SubScores | null = null;
+  for (const s of scored.slice(1)) if (s && (!other || s.score > other.score)) other = s;
+  if (!primary) return other;
+  if (!other || other.score <= primary.score) return primary;
+  const score = primary.score + SCORING.secondaryTypeShare * (other.score - primary.score);
+  return { ...other, score };
 }
 
 /** Universal caps that apply to the month. */
@@ -193,7 +210,10 @@ export function capsFor(m: MonthClimate, types: DestinationType[]): CapHit[] {
     const checks: boolean[] = [];
     if (w.highAtLeast !== undefined) checks.push(m.highC !== null && m.highC >= w.highAtLeast);
     if (w.highAtMost !== undefined) checks.push(m.highC !== null && m.highC <= w.highAtMost);
-    if (w.dewPointAtLeast !== undefined) checks.push(m.dewPointC !== null && m.dewPointC >= w.dewPointAtLeast);
+    if (w.heatIndexAtLeast !== undefined) {
+      const hi = heatIndexC(m);
+      checks.push(hi !== null && hi >= w.heatIndexAtLeast);
+    }
     if (w.precipMmAtLeast !== undefined) checks.push(m.precipMm !== null && m.precipMm >= w.precipMmAtLeast);
     if (w.precipDaysAtLeast !== undefined) checks.push(m.precipDays !== null && m.precipDays >= w.precipDaysAtLeast);
     if (checks.length && checks.every(Boolean)) hits.push({ id: c.id, cap: c.cap });
@@ -203,9 +223,18 @@ export function capsFor(m: MonthClimate, types: DestinationType[]): CapHit[] {
 
 // ── Classification, confidence, phases ─────────────────────────────────────
 
-export function classify(finalScore: number, climateScore: number): Classification {
+/**
+ * Class of a month. `bestClimate` is the destination's highest climate score
+ * in the year: a month far below it is not "the best time", however good.
+ * `capped` says whether a universal limit applies: without one (no extreme
+ * heat, heat index, rain or cold) a month is at worst "less favourable".
+ */
+export function classify(finalScore: number, climateScore: number, bestClimate = climateScore, capped = true): Classification {
   for (const c of SCORING.classes) {
-    if (finalScore >= c.minFinal && climateScore >= c.minClimate) return c.id;
+    if (finalScore < c.minFinal || climateScore < c.minClimate) continue;
+    if (c.id === "EXCELLENT" && climateScore < bestClimate - SCORING.excellentWithinBest) continue;
+    if (c.id === "NOT_RECOMMENDED" && !capped && SCORING.notRecommendedNeedsCap) return "ACCEPTABLE";
+    return c.id;
   }
   return "NOT_RECOMMENDED";
 }
@@ -244,6 +273,12 @@ export function favorablePhases(classes: (Classification | null)[], finals: (num
   return out;
 }
 
+/** Cell minus town height, m — null for stations, unknown heights, or a reviewed and accepted difference. */
+export function elevationDifference(prov: DestinationClimate["provenance"]): number | null {
+  if (prov.kind === "station" || prov.elevationAccepted) return null;
+  return prov.elevationDifferenceM ?? null;
+}
+
 export function confidenceFor(
   months: MonthClimate[],
   prov: DestinationClimate["provenance"],
@@ -254,9 +289,17 @@ export function confidenceFor(
     (m) => m.highC !== null && m.lowC !== null && m.precipMm !== null && m.precipDays !== null && m.dewPointC !== null
   );
   let score: number = complete ? c.climateComplete : c.climatePartial;
-  score += prov.distanceKm <= 0.5 ? c.gridExact : prov.distanceKm <= c.gridNearbyKm ? c.gridNearby : c.gridFar;
+  score +=
+    prov.kind === "station" || prov.gridNote === "destination's own grid cell" || prov.gridNote.startsWith("elevation-matched")
+      ? c.gridOwnCell
+      : prov.distanceKm <= c.gridNearbyKm
+        ? c.gridNearby
+        : c.gridFar;
   score += prov.kind === "station" ? c.stationOverride : c.reanalysis;
   score += tourism ? (tourism.official ? c.tourismOfficial : c.tourismGuide) : c.tourismNone;
+  const dz = elevationDifference(prov);
+  if (dz !== null && Math.abs(dz) > c.elevationPoorM) score -= c.elevationPenaltyLarge;
+  else if (dz !== null && Math.abs(dz) > c.elevationOkM) score -= c.elevationPenaltySome;
   score = clamp(score);
   const level: ConfidenceLevel = score >= c.high ? "high" : score >= c.medium ? "medium" : "low";
   return { score, level };
@@ -313,7 +356,9 @@ export function scoreDestination(
     adjustments.push({ relative, tourism: tour, signal });
   });
 
-  const classes = finals.map((f, i) => (f === null ? null : classify(f, climateScores[i] as number)));
+  const knownClimate = climateScores.filter((c): c is number => c !== null);
+  const bestClimate = knownClimate.length ? Math.max(...knownClimate) : 0;
+  const classes = finals.map((f, i) => (f === null ? null : classify(f, climateScores[i] as number, bestClimate, caps[i].length > 0)));
   const phases = favorablePhases(classes, finals);
   const conf = confidenceFor(months, prov, tourism);
 
@@ -339,6 +384,7 @@ export function scoreDestination(
       precipitationDays: m.precipDays,
       relativeHumidity: m.relativeHumidity,
       dewPointC: m.dewPointC,
+      heatIndexC: heatIndexC(m),
       windSpeedMs: m.windMs,
       snowCoverPct: m.snowCoverPct,
       destinationTypes: types,
@@ -376,6 +422,7 @@ export function scoreDestination(
       climateGridInfo: `${prov.gridNote}: ${prov.usedLat.toFixed(2)}, ${prov.usedLon.toFixed(2)} (${prov.distanceKm.toFixed(1)} km)`,
       climateStation: prov.stationName ?? null,
       climateDistanceKm: prov.distanceKm,
+      climateElevationDifferenceM: elevationDifference(prov),
       climateRetrievedAt: prov.retrievedAt,
       scoringVersion: SCORING.version,
       generatedAt,
