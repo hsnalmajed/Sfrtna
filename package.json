@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "cf:preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
-    "cf:deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy"
+    "cf:deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "test:seasons": "node --test src/lib/travelSeason/*.test.ts"
   },
   "dependencies": {
     "@fontsource/cairo": "^5.3.0",

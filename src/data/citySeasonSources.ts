@@ -33,6 +33,9 @@
 //   tokyo, kyoto, osaka, hiroshima, guangzhou, guba, tbilisi,
 //   johannesburg, durban, beirut, byblos, baalbek.
 
+/** The day every entry below was last read on its source page. */
+export const TOURISM_LAST_VERIFIED = "2026-09-29";
+
 export type SeasonSourceKey =
   | "experienceOman"
   | "visitSaudi"

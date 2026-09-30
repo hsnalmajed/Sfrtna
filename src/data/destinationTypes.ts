@@ -1,0 +1,190 @@
+// What kind of trip each destination is for — editorial, version 1.0, and
+// open to review.
+//
+// These tags do not change a single climate figure. They only choose which
+// trip profile(s) a month is judged against (src/lib/travelSeason/config.ts):
+// 31 °C is a fine beach afternoon and a hard city one. A month is scored once
+// per tag and the best tag wins; the universal caps (extreme heat, monsoon
+// rain, deep cold) apply whatever the tag.
+//
+// Assigned by what each place is chiefly visited for: "beach" only where the
+// city itself is a beach destination, "tropical" for places inside the
+// tropics with a tropical climate, "desert" where the city sits in or trades
+// on desert, "mountain"/"nature" for towns visited for their landscape. No
+// destination is tagged "ski" yet: none of the 145 is primarily a ski resort.
+
+import type { DestinationType } from "../lib/travelSeason/config.ts";
+
+export const DESTINATION_TYPES_VERSION = "1.0";
+
+export const DESTINATION_TYPES: Record<string, DestinationType[]> = {
+  // Saudi Arabia
+  riyadh: ["city", "desert"],
+  jeddah: ["city", "beach"],
+  makkah: ["city"],
+  madinah: ["city"],
+  alula: ["desert", "nature"],
+  abha: ["mountain", "nature"],
+  // Türkiye
+  istanbul: ["city"],
+  antalya: ["beach", "city"],
+  cappadocia: ["nature"],
+  trabzon: ["nature", "city"],
+  izmir: ["city", "beach"],
+  bursa: ["city", "nature"],
+  // UAE, Qatar, Kuwait, Bahrain, Oman
+  dubai: ["city", "beach", "desert"],
+  "abu-dhabi": ["city", "beach", "desert"],
+  sharjah: ["city"],
+  "ras-al-khaimah": ["beach", "desert", "nature"],
+  doha: ["city", "desert"],
+  "al-wakrah": ["beach", "desert"],
+  "kuwait-city": ["city", "desert"],
+  manama: ["city"],
+  muscat: ["city", "beach"],
+  salalah: ["nature", "beach"],
+  nizwa: ["desert", "nature"],
+  // Egypt, Morocco, Jordan, Tunisia, Lebanon
+  cairo: ["city", "desert"],
+  luxor: ["city", "desert"],
+  aswan: ["city", "desert"],
+  alexandria: ["city", "beach"],
+  "sharm-el-sheikh": ["beach", "desert"],
+  marrakesh: ["city", "desert"],
+  casablanca: ["city"],
+  fes: ["city"],
+  chefchaouen: ["mountain", "nature"],
+  tangier: ["city", "beach"],
+  amman: ["city"],
+  petra: ["desert", "nature"],
+  aqaba: ["beach", "desert"],
+  tunis: ["city"],
+  sousse: ["beach", "city"],
+  djerba: ["beach"],
+  beirut: ["city"],
+  byblos: ["city", "beach"],
+  baalbek: ["city"],
+  // Europe
+  london: ["city"],
+  edinburgh: ["city"],
+  manchester: ["city"],
+  oxford: ["city"],
+  paris: ["city"],
+  nice: ["city", "beach"],
+  lyon: ["city"],
+  marseille: ["city", "beach"],
+  barcelona: ["city", "beach"],
+  madrid: ["city"],
+  granada: ["city"],
+  seville: ["city"],
+  cordoba: ["city"],
+  rome: ["city"],
+  venice: ["city"],
+  florence: ["city"],
+  milan: ["city"],
+  naples: ["city"],
+  athens: ["city"],
+  santorini: ["beach"],
+  mykonos: ["beach"],
+  thessaloniki: ["city"],
+  zurich: ["city"],
+  geneva: ["city"],
+  interlaken: ["mountain", "nature"],
+  lucerne: ["city", "nature"],
+  vienna: ["city"],
+  salzburg: ["city"],
+  innsbruck: ["mountain", "city"],
+  amsterdam: ["city"],
+  rotterdam: ["city"],
+  "the-hague": ["city"],
+  berlin: ["city"],
+  munich: ["city"],
+  hamburg: ["city"],
+  frankfurt: ["city"],
+  lisbon: ["city"],
+  porto: ["city"],
+  madeira: ["nature"],
+  // South & South-East Asia
+  male: ["beach", "tropical"],
+  colombo: ["city", "tropical"],
+  kandy: ["city", "tropical"],
+  galle: ["beach", "tropical"],
+  ella: ["mountain", "nature", "tropical"],
+  bali: ["beach", "tropical"],
+  ubud: ["nature", "tropical"],
+  jakarta: ["city", "tropical"],
+  yogyakarta: ["city", "tropical"],
+  bangkok: ["city", "tropical"],
+  phuket: ["beach", "tropical"],
+  "chiang-mai": ["city", "nature", "tropical"],
+  pattaya: ["beach", "tropical"],
+  "kuala-lumpur": ["city", "tropical"],
+  penang: ["city", "beach", "tropical"],
+  langkawi: ["beach", "tropical"],
+  malacca: ["city", "tropical"],
+  singapore: ["city", "tropical"],
+  hanoi: ["city"],
+  "ho-chi-minh-city": ["city", "tropical"],
+  "da-nang": ["beach", "city", "tropical"],
+  "hoi-an": ["city", "beach", "tropical"],
+  delhi: ["city"],
+  agra: ["city"],
+  jaipur: ["city", "desert"],
+  mumbai: ["city", "tropical"],
+  goa: ["beach", "tropical"],
+  // East Asia
+  tokyo: ["city"],
+  kyoto: ["city"],
+  osaka: ["city"],
+  hiroshima: ["city"],
+  seoul: ["city"],
+  busan: ["city", "beach"],
+  jeju: ["nature", "beach"],
+  beijing: ["city"],
+  shanghai: ["city"],
+  xian: ["city"],
+  guangzhou: ["city"],
+  // Americas
+  "new-york": ["city"],
+  "los-angeles": ["city", "beach"],
+  "las-vegas": ["city", "desert"],
+  "san-francisco": ["city"],
+  miami: ["city", "beach"],
+  "mexico-city": ["city"],
+  cancun: ["beach", "tropical"],
+  guadalajara: ["city"],
+  "rio-de-janeiro": ["city", "beach", "tropical"],
+  "sao-paulo": ["city"],
+  salvador: ["city", "beach", "tropical"],
+  // Caucasus
+  baku: ["city"],
+  gabala: ["mountain", "nature"],
+  guba: ["mountain", "nature"],
+  tbilisi: ["city"],
+  batumi: ["city", "beach"],
+  kazbegi: ["mountain", "nature"],
+  // Africa
+  "cape-town": ["city", "beach", "nature"],
+  johannesburg: ["city"],
+  durban: ["city", "beach"],
+  nairobi: ["city", "nature"],
+  mombasa: ["beach", "tropical"],
+  // Oceania
+  sydney: ["city", "beach"],
+  melbourne: ["city"],
+  brisbane: ["city"],
+  "gold-coast": ["beach"],
+};
+
+/**
+ * Quality-test destinations that are not (yet) on the site. Used only by
+ * the QA report, never published.
+ */
+export const QA_DESTINATION_TYPES: Record<string, DestinationType[]> = {
+  reykjavik: ["city", "nature"],
+  sapporo: ["city"],
+  queenstown: ["mountain", "nature"],
+  // Ski fields, to test the ski profile on real data.
+  "coronet-peak": ["ski"],
+  zermatt: ["ski", "mountain"],
+};
