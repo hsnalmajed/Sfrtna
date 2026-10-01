@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getDictionary } from "@/lib/dictionaries";
@@ -56,24 +57,19 @@ export default async function CountryAttractionsPage({
 
   const cities = COUNTRY_CITIES[country.code] ?? [];
 
-  const [photos, cityOverviews, placeCounts] = await Promise.all([
+  const [photos, cityOverviews] = await Promise.all([
     // Full resolution: this one photo is the full-width hero, not a card.
     fetchCountryPhotos([country.code], { full: true }),
     // A photo for every city card.
     fetchCityOverviews(cities),
-    // How many places each city's page lists — the same query that page
-    // runs (cached a week), so the two numbers agree. A city whose places
-    // could not be fetched just shows no count.
-    Promise.all(cities.map((c) => fetchPlacesAroundCities([c], { locale: loc }).then((p) => p.length).catch(() => 0))),
   ]);
 
-  const cityCards: CityCard[] = cities.map((c, i) => {
+  const cityCards: CityCard[] = cities.map((c) => {
     const overview = cityOverviews.get(c.slug);
     return {
       slug: c.slug,
       name: loc === "ar" ? c.nameAr : c.nameEn,
       photo: overview?.photo,
-      subtitle: placeCounts[i] ? `📍 ${placeCountLabel(placeCounts[i], dict.attractions)}` : undefined,
     };
   });
 
@@ -156,11 +152,46 @@ export default async function CountryAttractionsPage({
               🏙️ {cityCountLabel(cities.length, dict.attractions)}
             </p>
             <p className="text-sm text-gray-500 mb-4 ms-3">{dict.attractions.chooseCitySubtitle}</p>
-            <CityGallery cities={cityCards} hrefBase={`/${loc}/attractions/${country.code}`} />
+            {/* The cards show at once; each city's place count follows when
+                its places arrive, so the page never waits on them. */}
+            <Suspense fallback={<CityGallery cities={cityCards} hrefBase={`/${loc}/attractions/${country.code}`} />}>
+              <CityGalleryWithCounts cards={cityCards} locale={loc} hrefBase={`/${loc}/attractions/${country.code}`} />
+            </Suspense>
           </section>
         )}
 
       </div>
     </div>
   );
+}
+
+/** How long the country page waits for a city's places before showing its card without a count. */
+const COUNT_BUDGET_MS = 6000;
+
+async function CityGalleryWithCounts({
+  cards,
+  locale,
+  hrefBase,
+}: {
+  cards: CityCard[];
+  locale: Locale;
+  hrefBase: string;
+}) {
+  const dict = getDictionary(locale);
+  // How many places each city's page lists — the same query that page runs
+  // (cached a week), so the two numbers agree. A city whose places are not
+  // back within the budget, or could not be fetched, just shows no count.
+  const counts = await Promise.all(
+    cards.map((c) =>
+      Promise.race([
+        fetchPlacesAroundCities([{ slug: c.slug, nameEn: c.name }], { locale }).then((p) => p.length),
+        new Promise<number>((resolve) => setTimeout(() => resolve(0), COUNT_BUDGET_MS)),
+      ]).catch(() => 0)
+    )
+  );
+  const withCounts = cards.map((c, i) => ({
+    ...c,
+    subtitle: counts[i] ? `📍 ${placeCountLabel(counts[i], dict.attractions)}` : undefined,
+  }));
+  return <CityGallery cities={withCounts} hrefBase={hrefBase} />;
 }
