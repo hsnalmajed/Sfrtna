@@ -715,6 +715,10 @@ export const dictionaries = {
       busyDay: "يوم مزدحم",
       daySpread: "أبعد مسافة بين أماكن هذا اليوم: {km} كم",
       pdf: "تحميل PDF",
+      pdfCardTitle: "احفظ خطتك PDF",
+      pdfCardBody: "ملف مرتّب بشعار سفرتنا — جاهز للطباعة والإرسال لمن يرافقك.",
+      mapsCardTitle: "خذ أماكنك على قوقل ماب",
+      mapsCardBody: "{count} من خطتك في ملف واحد، تفتحه على خرائط قوقل في جوالك.",
       pdfHint: "في نافذة الطباعة اختر «حفظ كملف PDF».",
       mapsKml: "تحميل المواقع لقوقل ماب",
       mapsHint:
@@ -1941,6 +1945,10 @@ export const dictionaries = {
       busyDay: "Busy day",
       daySpread: "Furthest apart today: {km} km",
       pdf: "Download PDF",
+      pdfCardTitle: "Save your plan as a PDF",
+      pdfCardBody: "A tidy document on Sfrtna's letterhead — ready to print or send to whoever's coming.",
+      mapsCardTitle: "Take your places to Google Maps",
+      mapsCardBody: "{count} from your plan in one file, on Google Maps on your phone.",
       pdfHint: "In the print window, choose “Save as PDF”.",
       mapsKml: "Download locations for Google Maps",
       mapsHint:

@@ -652,11 +652,12 @@ function PlanView({
             <button type="button" onClick={onEdit} className={`${btn} text-navy-700 ring-1 ring-mist-300 hover:ring-navy-300`}>
               ✏️ {t.edit}
             </button>
-            <button type="button" onClick={downloadKml} className={`${btn} bg-sea-600 text-white hover:bg-sea-700`}>
-              🗺️ {t.mapsKml}
+            {/* Compact copies of the two big actions below, for when the page is scrolled. */}
+            <button type="button" onClick={() => window.print()} title={t.pdf} aria-label={t.pdf} className={`${btn} !px-3 bg-sun-400 text-navy-950 hover:bg-sun-300`}>
+              📄 <span className="hidden sm:inline">PDF</span>
             </button>
-            <button type="button" onClick={() => window.print()} title={t.pdfHint} className={`${btn} bg-sun-400 text-navy-950 hover:bg-sun-300`}>
-              📄 {t.pdf}
+            <button type="button" onClick={downloadKml} title={t.mapsKml} aria-label={t.mapsKml} className={`${btn} !px-3 bg-sea-600 text-white hover:bg-sea-700`}>
+              🗺️ <span className="hidden sm:inline">Google Maps</span>
             </button>
           </div>
         </div>
@@ -681,12 +682,58 @@ function PlanView({
             ⚠️ {t.autoShort}
           </p>
         )}
-        <p className="print:hidden mt-3 rounded-2xl bg-sea-50 px-4 py-3 text-xs leading-relaxed text-navy-700 ring-1 ring-sea-100">
-          🗺️ {t.mapsHint}{" "}
-          <a href={GOOGLE_MY_MAPS_URL} target="_blank" rel="noopener noreferrer" className="font-bold text-sea-700 underline">
-            {t.openMyMaps} ↗
-          </a>
-        </p>
+        {/* Take it with you: the two things a traveller does with a finished plan. */}
+        <div className="print:hidden mt-5 grid gap-3 sm:grid-cols-2">
+          <button
+            type="button"
+            onClick={() => window.print()}
+            className="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-sun-300 via-sun-400 to-sun-500 p-5 text-start text-navy-950 shadow-[var(--shadow-sun)] ring-1 ring-sun-500/40 transition duration-300 hover:-translate-y-1 hover:shadow-[0_18px_40px_-12px_rgba(245,158,11,0.6)]"
+          >
+            <span className="pointer-events-none absolute -end-6 -top-8 text-[7rem] leading-none opacity-15 transition duration-500 group-hover:rotate-6 group-hover:scale-110" aria-hidden="true">
+              📄
+            </span>
+            <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/80 text-2xl shadow-sm" aria-hidden="true">
+              📄
+            </span>
+            <span className="mt-3 block font-display text-xl font-black">{t.pdfCardTitle}</span>
+            <span className="mt-1 block text-sm font-semibold text-navy-900/75">{t.pdfCardBody}</span>
+            <span className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-navy-900 px-4 py-2 text-sm font-extrabold text-white transition group-hover:gap-2.5">
+              {t.pdf} <span aria-hidden="true">{isAr ? "←" : "→"}</span>
+            </span>
+          </button>
+
+          <div className="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-sea-500 via-sea-600 to-navy-900 p-5 text-white shadow-[var(--shadow-lift)] ring-1 ring-white/10 transition duration-300 hover:-translate-y-1">
+            <span className="pointer-events-none absolute -end-6 -top-8 text-[7rem] leading-none opacity-15 transition duration-500 group-hover:-rotate-6 group-hover:scale-110" aria-hidden="true">
+              🗺️
+            </span>
+            <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/15 text-2xl ring-1 ring-white/25" aria-hidden="true">
+              📍
+            </span>
+            <span className="mt-3 block font-display text-xl font-black">{t.mapsCardTitle}</span>
+            <span className="mt-1 block text-sm font-semibold text-white/80">
+              {t.mapsCardBody.replace("{count}", placesText(all.filter(hasCoords).length))}
+            </span>
+            <span className="mt-4 flex flex-wrap items-center gap-2">
+              <button
+                type="button"
+                onClick={downloadKml}
+                className="inline-flex items-center gap-1.5 rounded-full bg-white px-4 py-2 text-sm font-extrabold text-sea-800 transition hover:gap-2.5"
+              >
+                ⬇️ {t.mapsKml}
+              </button>
+              <a
+                href={GOOGLE_MY_MAPS_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs font-bold text-white/85 underline underline-offset-2 hover:text-white"
+              >
+                {t.openMyMaps} ↗
+              </a>
+            </span>
+            <span className="mt-3 block text-[11px] leading-relaxed text-white/65">{t.mapsHint}</span>
+          </div>
+        </div>
+        <p className="print:hidden mt-2 text-center text-[11px] text-navy-400">💡 {t.pdfHint}</p>
 
         <ol className="mt-5 space-y-4">
           {plan.days.map((items, i) => {
