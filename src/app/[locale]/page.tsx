@@ -163,7 +163,6 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
 
   const tools = [
     { href: `/${loc}/attractions`, icon: "🏛", title: dict.home.toolAttractions, body: dict.home.toolAttractionsBody },
-    { href: `/${loc}/maps`, icon: "🗺", title: dict.home.toolMaps, body: dict.home.toolMapsBody },
     { href: `/${loc}/visa`, icon: "🛂", title: dict.home.toolVisa, body: dict.home.toolVisaBody },
     { href: `/${loc}/currency`, icon: "💱", title: dict.home.toolCurrency, body: dict.home.toolCurrencyBody },
   ];

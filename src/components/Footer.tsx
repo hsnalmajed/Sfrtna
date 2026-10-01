@@ -18,7 +18,6 @@ export default function Footer({ locale }: { locale: Locale }) {
 
   const explore = [
     { href: `/${locale}/attractions`, label: dict.nav.attractions },
-    { href: `/${locale}/maps`, label: dict.nav.maps },
     { href: `/${locale}/seasons`, label: dict.nav.seasons },
   ];
   const tools = [
