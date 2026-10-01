@@ -132,6 +132,11 @@ export const dictionaries = {
       viewCity: "معالم المدينة",
       showGood: "إظهار «وقت جيد للزيارة» أيضًا",
       noBestMonths: "لا يوجد شهر مصنّف «أفضل وقت للزيارة» أو «وقت ممتاز للزيارة» لهذه المدينة — راجع الأشهر أدناه.",
+      viewYear: "السنة كاملة",
+      close: "إغلاق",
+      prevMonth: "الشهر السابق",
+      nextMonth: "الشهر التالي",
+      tapMonth: "اضغط على أي شهر لرؤية تفاصيله",
     },
 
     seasons: {
@@ -1293,6 +1298,11 @@ export const dictionaries = {
       viewCity: "City guide",
       showGood: "Also show \"Good time to visit\"",
       noBestMonths: "No month is rated \"Best\" or \"Excellent time to visit\" for this city — see the months below.",
+      viewYear: "The whole year",
+      close: "Close",
+      prevMonth: "Previous month",
+      nextMonth: "Next month",
+      tapMonth: "Tap any month for its details",
     },
 
     seasons: {
