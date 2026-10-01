@@ -58,7 +58,11 @@ export default function HotelPlanner({
   const sp = preset !== undefined ? new URLSearchParams(preset) : urlParams;
   const dark = tone === "dark";
 
-  const [mode, setMode] = useState<HotelMode>(sp.get("hmode") === "discover" ? "discover" : "known");
+  // Arriving with a city and no hotel (from a city's "Book your trip") means
+  // hotels in that city: the discover search, with the city filled in.
+  const [mode, setMode] = useState<HotelMode>(
+    sp.get("hmode") === "discover" || (!sp.get("hmode") && sp.get("city") && !sp.get("hotel")) ? "discover" : "known"
+  );
   const [hotel, setHotel] = useState(sp.get("hotel") || "");
   const [city, setCity] = useState(sp.get("city") || "");
   const [checkIn, setCheckIn] = useState(sp.get("checkIn") || "");
