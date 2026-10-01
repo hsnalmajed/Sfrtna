@@ -3,8 +3,6 @@ import { getDictionary } from "@/lib/dictionaries";
 import type { Locale } from "@/lib/types";
 import Logo from "@/components/ui/Logo";
 
-const PARTNER_NAMES = ["Booking.com", "Almosafer", "Wego", "Skyscanner", "flynas", "flyadeal"];
-
 /**
  * The footer closes the page the way the hero opened it — navy, an orange
  * rule, display type — so a visitor who scrolls the whole way lands
@@ -46,7 +44,7 @@ export default function Footer({ locale }: { locale: Locale }) {
     <footer className="mt-20 bg-navy-990">
       <div className="h-px bg-gradient-to-r from-transparent via-sun-400/60 to-transparent" />
       <div className="mx-auto max-w-6xl px-4 py-14 text-sm sm:px-6">
-        <div className="grid grid-cols-2 gap-x-8 gap-y-10 border-b border-white/10 pb-10 sm:grid-cols-[1.4fr_0.7fr_0.7fr_0.8fr_1fr]">
+        <div className="grid grid-cols-2 gap-x-8 gap-y-10 border-b border-white/10 pb-10 sm:grid-cols-[1.4fr_0.8fr_0.8fr_0.8fr]">
           <div className="col-span-2 max-w-sm space-y-4 sm:col-span-1">
             <span className="inline-flex rounded-xl bg-white px-3 py-2 shadow-sm">
               <Logo variant="full" alt={`${dict.siteNameAr} ${dict.siteNameEn}`} className="h-16 w-auto" />
@@ -97,22 +95,6 @@ export default function Footer({ locale }: { locale: Locale }) {
                 </li>
               ))}
             </ul>
-          </div>
-
-          <div>
-            <p className="mb-3.5 text-2xs font-bold uppercase tracking-[0.18em] text-sun-400/85">
-              {dict.footer.partnersHeading}
-            </p>
-            <div className="flex flex-wrap gap-1.5">
-              {PARTNER_NAMES.map((name) => (
-                <span
-                  key={name}
-                  className="rounded-full bg-white/[0.06] px-2.5 py-1 text-2xs font-medium text-white/55 ring-1 ring-white/10"
-                >
-                  {name}
-                </span>
-              ))}
-            </div>
           </div>
         </div>
 

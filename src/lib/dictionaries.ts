@@ -1163,7 +1163,6 @@ export const dictionaries = {
       exploreHeading: "اكتشف",
       toolsHeading: "أدوات المسافر",
       legalHeading: "الموقع",
-      partnersHeading: "نقارن أسعارك عبر",
     },
   },
   en: {
@@ -2307,7 +2306,6 @@ export const dictionaries = {
       exploreHeading: "Explore",
       toolsHeading: "Traveller tools",
       legalHeading: "The site",
-      partnersHeading: "We compare your price across",
     },
   },
 } as const;
