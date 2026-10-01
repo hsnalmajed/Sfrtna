@@ -218,3 +218,19 @@ test("not recommended needs an extreme condition", () => {
   assert.equal(classify(30, 30, 90, false), "ACCEPTABLE");
   assert.equal(classify(30, 30, 90, true), "NOT_RECOMMENDED");
 });
+
+test("a city warm all year is named by its rainy and dry seasons, not winter", () => {
+  // Ho Chi Minh City-like: 30–34 °C all year, dry Dec–Apr, rainy May–Oct.
+  const mm = [15, 5, 15, 60, 220, 300, 290, 280, 310, 260, 120, 50];
+  const d = dest("hcmc", 10.8, mm.map((p, i) => m(31 + (i === 3 ? 3 : 0), 23, p, p > 100 ? 22 : 3, 21)));
+  const recs = run(d, ["city", "tropical"]);
+  assert.equal(recs[0].seasonType, "tropical");
+  assert.ok(!recs[0].seasonNameAr.includes("شتاء"), recs[0].seasonNameAr);
+  assert.equal(recs[1].seasonNameAr, "موسم الجفاف");
+  assert.equal(recs[6].seasonNameAr, "موسم الأمطار");
+  // A temperate city's rainy or snowy winter says so.
+  const wet = dest("wet", 45, Array.from({ length: 12 }, (_, i) => (i === 0 ? m(6, 1, 120, 14, 2) : i === 1 ? m(-2, -8, 40, 8, -6, { snowCoverPct: 80 }) : m(10 + i, 4 + i, 40, 6, 6))));
+  const w = run(wet, ["city"]);
+  assert.equal(w[0].seasonNameAr, "شتاء ممطر");
+  assert.equal(w[1].seasonNameAr, "شتاء مع ثلوج");
+});

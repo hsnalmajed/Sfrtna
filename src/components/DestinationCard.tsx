@@ -128,7 +128,7 @@ export default function DestinationCard({
           >
             {monthLabel ? `${monthLabel}: ` : ""}
             {CLASS_DOT[place.classification]} {dict.travelSeasons.classes[place.classification]}
-            {place.seasonKind && ` · ${(dict.citySeasons.kinds as Record<string, string>)[place.seasonKind]}`}
+            {place.seasonName && ` · ${isAr ? place.seasonName.ar : place.seasonName.en}`}
           </span>
         )}
         <div className="absolute inset-x-0 bottom-0 p-4">

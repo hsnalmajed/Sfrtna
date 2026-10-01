@@ -66,6 +66,8 @@ export default async function SeasonsPage({ params }: PageProps<"/[locale]/seaso
           finalScore: r.finalScore,
           season: r.season,
           pattern: r.climatePattern,
+          seasonName: isAr ? r.seasonNameAr : r.seasonNameEn,
+          seasonIcon: r.seasonIcon,
           phase: r.favorablePhase,
           high: r.averageHighC,
           low: r.averageLowC,

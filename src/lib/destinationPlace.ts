@@ -38,7 +38,7 @@ export function placeForDestination(code: string, nameEn: string, month: number)
     rainyDays: r?.precipitationDays ?? undefined,
     inSeason: r?.classification ? r.classification === "EXCELLENT" || r.classification === "VERY_GOOD" : undefined,
     classification: r?.classification ?? undefined,
-    seasonKind: r?.season,
+    seasonName: r ? { ar: r.seasonNameAr, en: r.seasonNameEn, icon: r.seasonIcon } : undefined,
     visa: visaStatusFor(city.countryCode)?.category,
   };
 }

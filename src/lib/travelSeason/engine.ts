@@ -35,7 +35,7 @@ import type {
   SeasonRecord,
   TourismSignalInput,
 } from "./types.ts";
-import { reasonText, weatherSummary } from "./text.ts";
+import { reasonText, seasonName, weatherSummary } from "./text.ts";
 import { heatIndexC } from "./heat.ts";
 
 export { heatIndexC };
@@ -315,6 +315,14 @@ export function scoreDestination(
 ): SeasonRecord[] {
   const { months, provenance: prov } = climate;
   const patterns = climatePatterns(months);
+  const highs = months.map((m) => m.highC).filter((x): x is number => x !== null);
+  const sn = SCORING.seasonNames;
+  const temperate =
+    Math.abs(climate.latitude) >= sn.tropicLatitude ||
+    (highs.length > 0 && Math.max(...highs) - Math.min(...highs) >= sn.temperateMinRangeC);
+  const yearMm = months.map((m) => m.precipMm);
+  const yearMeanHighC = highs.length ? highs.reduce((a, b) => a + b, 0) / highs.length : null;
+  const yearHasWetDry = patterns.some((p) => p === "rainy_season" || p === "dry_season");
 
   const subs = months.map((m) => bestProfileScore(m, types));
   const caps = months.map((m) => capsFor(m, types));
@@ -367,6 +375,17 @@ export function scoreDestination(
     const month = i + 1;
     const cls = classes[i];
     const summary = weatherSummary(m);
+    const name = seasonName({
+      temperate,
+      season: seasonFor(climate.latitude, month),
+      month: m,
+      yearMm,
+      yearMeanHighC,
+      pattern: patterns[i],
+      prevPattern: patterns[(i + 11) % 12],
+      nextPattern: patterns[(i + 1) % 12],
+      yearHasWetDry,
+    });
     const reason = cls ? reasonText({ month: m, sub: s, caps: caps[i], signal: adjustments[i].signal, tourism, classification: cls }) : null;
     return {
       destinationId: climate.id,
@@ -377,6 +396,10 @@ export function scoreDestination(
       hemisphere: climate.latitude < 0 ? "south" : "north",
       season: seasonFor(climate.latitude, month),
       climatePattern: patterns[i],
+      seasonType: temperate ? "temperate" : "tropical",
+      seasonNameAr: name.ar,
+      seasonNameEn: name.en,
+      seasonIcon: name.icon,
       averageHighC: m.highC,
       averageLowC: m.lowC,
       meanTemperatureC: m.meanC,

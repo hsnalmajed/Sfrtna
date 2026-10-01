@@ -248,13 +248,40 @@ export const SCORING = {
     cool: 15,
     mild: 25,
     warm: 31,
-    // Humid when warm and the dew point is at least this.
-    humidDewPoint: 20,
+    // Humidity words, from the mean dew point, once the high reaches humidFromHighC:
+    // "some humidity" from the first, "humid" from the second, "very humid" from the third.
+    moderateHumidDewPoint: 18,
+    humidDewPoint: 21,
+    veryHumidDewPoint: 24,
     humidFromHighC: 25,
-    // Rain words by days with ≥ 1 mm.
-    dryDays: 4,
+    // Rain words. "Mostly dry" by the monthly total (the model's day count
+    // runs high, see precipitation.daysShare), or by few days with little rain.
     dryMm: 30,
+    dryDays: 4,
+    dryDaysMaxMm: 40,
     occasionalDays: 10,
+  },
+
+  /**
+   * What to call the month. A destination inside the tropics whose average
+   * highs change by less than `temperateMinRangeC` over the year is warm all
+   * year, so it is described by its rainy and dry seasons ("winter" means
+   * nothing at 31 °C); everywhere else has winter, spring, summer and autumn
+   * by hemisphere. A month is called rainy when it is one of the wetter
+   * months of its own year — at least `rainyShareOfMedian` × the year's
+   * median month, `rainyMinMm` and `rainyMinDays` — or in a rainy-season
+   * month; snowy from `snowCoverPct` of the grid cell snow-covered.
+   */
+  seasonNames: {
+    tropicLatitude: 23.44,
+    temperateMinRangeC: 8,
+    rainyShareOfMedian: 1.25,
+    rainyMinMm: 60,
+    rainyMinDays: 10,
+    snowCoverPct: 50,
+    // "Hot all year" from this mean of the twelve average highs, "warm all year" from the second.
+    hotAllYearC: 28,
+    warmAllYearC: 22,
   },
 
   /** Home page: classes shown, and the fallback when too few. */

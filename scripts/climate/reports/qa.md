@@ -1,6 +1,6 @@
 # Quality test — scoring v1.0
 
-Climate: ERA5-Land hourly time-series (reanalysis-era5-land-timeseries), 1991–2020. Generated 2026-09-30T09:00:49.670Z.
+Climate: ERA5-Land hourly time-series (reanalysis-era5-land-timeseries), 1991–2020. Generated 2026-10-01T05:33:18.458Z.
 
 ## riyadh — city + desert — destination's own grid cell: 24.60, 46.70 (4.6 km) — confidence high (95) — cell +27 m vs town
 

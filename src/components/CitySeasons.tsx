@@ -29,6 +29,9 @@ export interface SeasonMonth {
   finalScore: number | null;
   season: SeasonName;
   pattern: Pattern;
+  /** What the month is there ("Rainy winter", "Dry season") and its icon. */
+  seasonName: string;
+  seasonIcon: string;
   phase: "start" | "peak" | "end" | null;
   high: number | null;
   low: number | null;
@@ -113,7 +116,6 @@ const TILE_STYLE: Record<Cls, string> = {
   ACCEPTABLE: "bg-orange-50/60 ring-orange-200",
   NOT_RECOMMENDED: "bg-rose-50/60 ring-rose-200",
 };
-const SEASON_ICON: Record<SeasonName, string> = { winter: "❄️", spring: "🌸", summer: "☀️", autumn: "🍂" };
 
 const MONTHS = Array.from({ length: 12 }, (_, i) => i + 1);
 const GOOD_CLASSES: Cls[] = ["EXCELLENT", "VERY_GOOD"];
@@ -150,8 +152,7 @@ export default function CitySeasons({
         : t.highLow.replace("{low}", String(Math.round(m.low))).replace("{high}", String(Math.round(m.high)));
   const rain = (m: SeasonMonth) =>
     m.rainDays === null ? null : Math.round(m.rainDays) === 0 ? t.rainDaysNone : t.rainDays.replace("{days}", String(Math.round(m.rainDays)));
-  const seasonText = (m: SeasonMonth) =>
-    `${SEASON_ICON[m.season]} ${dict.kinds[m.season]}${m.pattern ? ` · ${t.patterns[m.pattern]}` : ""}`;
+  const seasonText = (m: SeasonMonth) => `${m.seasonIcon} ${m.seasonName}`;
   const badge = (c: Cls) => `${CLASS_DOT[c]} ${t.classes[c]}`;
 
   const shownClasses: Cls[] = withGood ? [...GOOD_CLASSES, "GOOD"] : GOOD_CLASSES;

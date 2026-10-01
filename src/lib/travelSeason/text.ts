@@ -2,7 +2,7 @@
 // no model writes them, and no number in them is anything but a stored value.
 
 import { SCORING, type Classification } from "./config.ts";
-import type { CapHit, MonthClimate, TourismSignalInput } from "./types.ts";
+import type { CapHit, ClimatePattern, MonthClimate, Season, TourismSignalInput } from "./types.ts";
 import type { SubScores } from "./engine.ts";
 import { heatIndexC } from "./heat.ts";
 
@@ -31,30 +31,114 @@ export function weatherSummary(m: MonthClimate): Bilingual | null {
   const snowy = m.snowCoverPct !== null && m.snowCoverPct >= SCORING.patterns.snowCoverPct;
   if (t === "cold" && snowy) return { ar: "بارد مع احتمالية ثلوج", en: "Cold and snowy" };
 
-  const humid = m.dewPointC !== null && m.dewPointC >= s.humidDewPoint && m.highC >= s.humidFromHighC;
+  const dew = m.dewPointC;
+  const warmEnough = m.highC >= s.humidFromHighC;
+  const humidity: "very" | "humid" | "some" | null =
+    dew === null || !warmEnough
+      ? null
+      : dew >= s.veryHumidDewPoint
+        ? "very"
+        : dew >= s.humidDewPoint
+          ? "humid"
+          : dew >= s.moderateHumidDewPoint
+            ? "some"
+            : null;
+  const mm = m.precipMm;
   const days = m.precipDays;
   const rain: "dry" | "occasional" | "frequent" | null =
-    days === null
+    days === null && mm === null
       ? null
-      : days <= s.dryDays && (m.precipMm === null || m.precipMm <= s.dryMm)
+      : (mm !== null && mm <= s.dryMm) || (days !== null && days <= s.dryDays && (mm === null || mm <= s.dryDaysMaxMm))
         ? "dry"
-        : days <= s.occasionalDays
+        : days === null || days <= s.occasionalDays
           ? "occasional"
           : "frequent";
 
   const w = TEMP[t];
-  if (humid) {
-    if (rain === "frequent") return { ar: `${w.ar} ورطب مع أمطار متكررة`, en: `${w.en} and humid with frequent rain` };
-    if (rain === "occasional") return { ar: `${w.ar} ورطب مع أمطار متفرقة`, en: `${w.en} and humid with occasional rain` };
-    return { ar: `${w.ar} ورطب`, en: `${w.en} and humid` };
-  }
+  const hum: Record<"very" | "humid" | "some", Bilingual> = {
+    very: { ar: `${w.ar} وشديد الرطوبة`, en: `${w.en} and very humid` },
+    humid: { ar: `${w.ar} ورطب`, en: `${w.en} and humid` },
+    some: { ar: `${w.ar} مع رطوبة معتدلة`, en: `${w.en} with some humidity` },
+  };
+  const base = humidity ? hum[humidity] : w;
   if (rain === "dry") {
-    if (t === "hot") return { ar: "حار وجاف", en: "Hot and dry" };
-    return { ar: `${w.ar} وجاف غالبًا`, en: `${w.en} and mostly dry` };
+    if (!humidity && t === "hot") return { ar: "حار وجاف", en: "Hot and dry" };
+    return humidity
+      ? { ar: `${base.ar}، وجاف غالبًا`, en: `${base.en}, mostly dry` }
+      : { ar: `${w.ar} وجاف غالبًا`, en: `${w.en} and mostly dry` };
   }
-  if (rain === "occasional") return { ar: `${w.ar} مع أمطار متفرقة`, en: `${w.en} with occasional rain` };
-  if (rain === "frequent") return { ar: `${w.ar} مع أمطار متكررة`, en: `${w.en} with frequent rain` };
-  return w;
+  if (rain === "occasional") return { ar: `${base.ar} مع أمطار متفرقة`, en: `${base.en} with occasional rain` };
+  if (rain === "frequent") return { ar: `${base.ar} مع أمطار متكررة`, en: `${base.en} with frequent rain` };
+  return base;
+}
+
+export interface SeasonName extends Bilingual {
+  icon: string;
+}
+
+const SEASON_WORD: Record<Season, Bilingual & { icon: string }> = {
+  winter: { ar: "شتاء", en: "Winter", icon: "❄️" },
+  spring: { ar: "ربيع", en: "Spring", icon: "🌸" },
+  summer: { ar: "صيف", en: "Summer", icon: "☀️" },
+  autumn: { ar: "خريف", en: "Autumn", icon: "🍂" },
+};
+
+/**
+ * What to call the month where the destination is: "Rainy winter", "Snowy
+ * winter", "Summer" — or, for a destination warm all year, its rainy or dry
+ * season ("Start of the rainy season"). See SCORING.seasonNames.
+ */
+export function seasonName(args: {
+  temperate: boolean;
+  season: Season;
+  month: MonthClimate;
+  /** The twelve months' totals, mm, for "wetter than usual here". */
+  yearMm: (number | null)[];
+  /** Mean of the twelve average highs, °C. */
+  yearMeanHighC: number | null;
+  pattern: ClimatePattern;
+  prevPattern: ClimatePattern;
+  nextPattern: ClimatePattern;
+  yearHasWetDry: boolean;
+}): SeasonName {
+  const n = SCORING.seasonNames;
+  const m = args.month;
+  const known = args.yearMm.filter((x): x is number => x !== null).sort((a, b) => a - b);
+  const median = known.length ? (known[(known.length - 1) >> 1] + known[known.length >> 1]) / 2 : null;
+  const rainy =
+    args.pattern === "rainy_season" ||
+    (m.precipMm !== null &&
+      m.precipDays !== null &&
+      median !== null &&
+      m.precipMm >= n.rainyMinMm &&
+      m.precipDays >= n.rainyMinDays &&
+      m.precipMm >= n.rainyShareOfMedian * median);
+  if (args.temperate) {
+    const w = SEASON_WORD[args.season];
+    if (m.snowCoverPct !== null && m.snowCoverPct >= n.snowCoverPct)
+      return { ar: `${w.ar} مع ثلوج`, en: `Snowy ${w.en.toLowerCase()}`, icon: "❄️" };
+    if (rainy) return { ar: `${w.ar} ممطر`, en: `Rainy ${w.en.toLowerCase()}`, icon: "🌧️" };
+    return w;
+  }
+  if (args.pattern === "rainy_season") return { ar: "موسم الأمطار", en: "Rainy season", icon: "🌧️" };
+  if (args.pattern === "dry_season") return { ar: "موسم الجفاف", en: "Dry season", icon: "☀️" };
+  if (args.yearHasWetDry) {
+    if (args.nextPattern === "rainy_season") return { ar: "بداية موسم الأمطار", en: "Start of the rainy season", icon: "🌦️" };
+    if (args.prevPattern === "rainy_season") return { ar: "نهاية موسم الأمطار", en: "End of the rainy season", icon: "🌦️" };
+    if (args.nextPattern === "dry_season") return { ar: "بداية موسم الجفاف", en: "Start of the dry season", icon: "🌤️" };
+    if (args.prevPattern === "dry_season") return { ar: "نهاية موسم الجفاف", en: "End of the dry season", icon: "🌤️" };
+    return { ar: "بين موسمي الأمطار والجفاف", en: "Between the rainy and dry seasons", icon: "🌦️" };
+  }
+  const mean = args.yearMeanHighC ?? 0;
+  const allYear: Bilingual =
+    mean >= n.hotAllYearC
+      ? { ar: "حار طوال العام", en: "Hot all year" }
+      : mean >= n.warmAllYearC
+        ? { ar: "دافئ طوال العام", en: "Warm all year" }
+        : { ar: "معتدل طوال العام", en: "Mild all year" };
+  return rainy
+    ? { ar: `${allYear.ar}، ذروة الأمطار`, en: `${allYear.en}, peak rains`, icon: "🌧️" }
+    : { ...allYear, icon: "🌴" };
 }
 
 const CAP_TEXT: Record<string, (m: MonthClimate) => Bilingual> = {

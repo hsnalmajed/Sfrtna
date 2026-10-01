@@ -205,8 +205,8 @@ export interface DestinationPlace {
   inSeason?: boolean;
   /** The month's travel-season rating (src/lib/travelSeason). */
   classification?: "EXCELLENT" | "VERY_GOOD" | "GOOD" | "ACCEPTABLE" | "NOT_RECOMMENDED";
-  /** The season there that month, by hemisphere. */
-  seasonKind?: "winter" | "spring" | "summer" | "autumn";
+  /** What the month is there ("Rainy winter", "Dry season"), with its icon. */
+  seasonName?: { ar: string; en: string; icon: string };
   /** Confirmed entry status for a Saudi passport. */
   visa?: "free" | "arrival" | "eta" | "required";
 }

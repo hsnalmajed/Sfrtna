@@ -128,7 +128,7 @@ export default function RouteCard({
                   >
                     {monthName(Number(s.arrive.slice(5, 7)), locale)}: {CLASS_DOT[s.place.classification]}{" "}
                     {dict.travelSeasons.classes[s.place.classification]}
-                    {s.place.seasonKind && ` · ${(dict.citySeasons.kinds as Record<string, string>)[s.place.seasonKind]}`}
+                    {s.place.seasonName && ` · ${isAr ? s.place.seasonName.ar : s.place.seasonName.en}`}
                   </span>
                 )}
                 {s.place?.high !== undefined && (

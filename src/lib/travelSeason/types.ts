@@ -100,6 +100,15 @@ export interface SeasonRecord {
   hemisphere: "north" | "south";
   season: Season;
   climatePattern: ClimatePattern;
+  /**
+   * "temperate": winter/spring/summer/autumn are named; "tropical": warm all
+   * year, so the month is named by its rainy or dry season instead.
+   */
+  seasonType: "temperate" | "tropical";
+  /** What to call the month there ("Rainy winter", "Start of the rainy season"). */
+  seasonNameAr: string;
+  seasonNameEn: string;
+  seasonIcon: string;
 
   averageHighC: number | null;
   averageLowC: number | null;

@@ -83,7 +83,6 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
   // already holds and has checked: the city's own weather record, the
   // confirmed visa statuses, the currency table and the country guide.
   // Nothing here is filled in when unknown — a missing field stays missing.
-  const kindNames = dict.citySeasons.kinds as Record<string, string>;
   const ts = dict.travelSeasons;
   const visaNames = {
     free: dict.visa.statusFree,
@@ -98,9 +97,7 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
     const cur = currencyForCountry(code);
     const perSar = cur && rates && cur.code !== "SAR" ? rateBetween("SAR", cur.code, rates) : null;
     return {
-      seasonKind: r
-        ? [kindNames[r.season], r.climatePattern ? (ts.patterns as Record<string, string>)[r.climatePattern] : null].filter(Boolean).join(" · ")
-        : undefined,
+      seasonKind: r ? `${r.seasonIcon} ${isAr ? r.seasonNameAr : r.seasonNameEn}` : undefined,
       classLabel: r?.classification ? `${CLASS_DOT[r.classification]} ${ts.classes[r.classification]}` : undefined,
       low: r?.averageLowC ?? null,
       weatherSummary: r ? ((isAr ? r.weatherSummaryAr : r.weatherSummaryEn) ?? undefined) : undefined,

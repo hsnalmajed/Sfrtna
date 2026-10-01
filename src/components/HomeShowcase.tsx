@@ -26,7 +26,7 @@ export interface ShowcaseCity {
   flightHref?: string;
   flightAirport?: string;
   flightKm?: number;
-  /** This month's season where the city is, and its climate pattern ("Autumn · Dry season"). */
+  /** What the month is there, with its icon ("🌧️ Rainy winter", "☀️ Dry season"). */
   seasonKind?: string;
   /** The travel-season rating with its dot ("🟢 Best time to visit"). */
   classLabel?: string;
@@ -304,6 +304,7 @@ export default function HomeShowcase({
       <div className="absolute inset-x-0 bottom-0 p-3">
         <p className="truncate font-display text-sm font-extrabold text-white drop-shadow-sm sm:text-base">{c.name}</p>
         <p className="truncate text-xs font-semibold text-white/70">{c.countryName}</p>
+        {c.seasonKind && <p className="mt-0.5 truncate text-xs font-bold text-sun-200">{c.seasonKind}</p>}
         <div className="mt-1.5 flex flex-wrap gap-1">
           <span className="inline-flex rounded-full bg-navy-990/65 px-2 py-0.5 text-xs font-bold text-sun-300 backdrop-blur-sm" dir="ltr">
             🌡 {c.low !== null && c.low !== undefined ? dict.highLow.replace("{low}", String(Math.round(c.low))).replace("{high}", String(Math.round(c.high))) : `${Math.round(c.high)}°`}
