@@ -342,6 +342,11 @@ export default function SearchForm({
               </div>
             )}
 
+            <div>
+              <label className={labelClass}>{dict.travelers.label}</label>
+              <TravelersPicker locale={locale} value={travelers} onChange={setTravelers} tone={tone} />
+            </div>
+
             <div
               data-field="departDate"
               className={showReturnDate && tone !== "dark" ? "sm:col-span-2" : undefined}
@@ -362,7 +367,7 @@ export default function SearchForm({
                 withReturn={showReturnDate}
                 required
                 tone={tone}
-                fareRoute={{ origin, destination, currency: effectiveCurrency }}
+                fareRoute={{ origin, destination, currency: effectiveCurrency, seats: travelers.adults + travelers.childrenAges.length }}
                 error={errors.departDate || errors.returnDate}
                 onChange={({ departDate: d, returnDate: r }) => {
                   setDepartDate(d);
@@ -370,11 +375,6 @@ export default function SearchForm({
                   setErrors((prev) => ({ ...prev, departDate: "", returnDate: "" }));
                 }}
               />
-            </div>
-
-            <div>
-              <label className={labelClass}>{dict.travelers.label}</label>
-              <TravelersPicker locale={locale} value={travelers} onChange={setTravelers} tone={tone} />
             </div>
 
             <div className={tone === "dark" ? "contents" : "grid grid-cols-2 gap-3"}>

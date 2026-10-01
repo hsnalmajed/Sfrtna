@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { dayFares } from "@/lib/providers/travelpayouts";
+import { routeDayFares } from "@/lib/providers/travelpayouts";
 import { strictIata } from "@/lib/flights";
 import { cachedJson } from "@/lib/edgeCache";
 
@@ -21,15 +21,19 @@ export async function GET(req: NextRequest) {
   if (!/^[A-Z]{3}$/.test(origin) || !/^[A-Z]{3}$/.test(destination) || origin === destination || !/^\d{4}-\d{2}$/.test(month) || !/^[A-Z]{3}$/.test(currency)) {
     return NextResponse.json({ fares: {} }, { status: 400 });
   }
-  const fares = await cachedJson<Record<string, number>>(`day-fares:${origin}:${destination}:${month}:${currency}`, 6 * 3600, async () => {
-    const map = await dayFares(origin, destination, month, currency);
-    if (map.size === 0) return null;
-    const out: Record<string, number> = {};
-    for (const [day, f] of map) out[day] = f.price;
-    return out;
-  });
+  const cached = await cachedJson<{ fares: Record<string, number>; sources: Record<string, number> }>(
+    `day-fares2:${origin}:${destination}:${month}:${currency}`,
+    3 * 3600,
+    async () => {
+      const { fares, sources } = await routeDayFares(origin, destination, month, currency);
+      if (fares.size === 0) return null;
+      const out: Record<string, number> = {};
+      for (const [day, f] of fares) out[day] = f.price;
+      return { fares: out, sources };
+    }
+  );
   return NextResponse.json(
-    { origin, destination, currency, fares: fares ?? {} },
+    { origin, destination, currency, fares: cached?.fares ?? {}, sources: cached?.sources ?? {} },
     { headers: { "Cache-Control": "public, max-age=1800" } }
   );
 }

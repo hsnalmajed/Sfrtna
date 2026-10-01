@@ -440,3 +440,86 @@ export async function dayFares(
   }
   return out;
 }
+
+
+/** Airport → its city's code, where the city has several airports (FCO → ROM). */
+const CITY_OF_AIRPORT: Record<string, string> = {
+  CDG: "PAR", ORY: "PAR", LHR: "LON", LGW: "LON", STN: "LON", JFK: "NYC", EWR: "NYC", MXP: "MIL", LIN: "MIL",
+  FCO: "ROM", CIA: "ROM", HND: "TYO", NRT: "TYO", SVO: "MOW", DME: "MOW", VKO: "MOW", IAD: "WAS", DCA: "WAS",
+  ORD: "CHI", ARN: "STO", OTP: "BUH", ICN: "SEL", GMP: "SEL", PEK: "BJS", PKX: "BJS", PVG: "SHA", KIX: "OSA",
+  CGK: "JKT", YYZ: "YTO", GRU: "SAO", GIG: "RIO", EZE: "BUE", KEF: "REK", IST: "IST", SAW: "IST", DXB: "DXB", DWC: "DXB",
+};
+
+/**
+ * The cheapest one-way fare seen for every day of a month on a route, from
+ * every place the partner's data keeps it: fares grouped by day, and the full
+ * list of fares for the month — each asked for the airport and for its city
+ * (Rome is FCO and ROM). The lowest per day wins. Days nobody has searched
+ * recently have no fare, and stay without one: nothing is estimated.
+ *
+ * `sources` says how many days each query contributed — for checking coverage.
+ */
+export async function routeDayFares(
+  origin: string,
+  destination: string,
+  month: string,
+  currency: string
+): Promise<{ fares: Map<string, DayFare>; sources: Record<string, number> }> {
+  const fares = new Map<string, DayFare>();
+  const sources: Record<string, number> = {};
+  if (!token() || !origin || !destination || !month) return { fares, sources };
+  const froms = [...new Set([origin, CITY_OF_AIRPORT[origin] ?? origin])];
+  const tos = [...new Set([destination, CITY_OF_AIRPORT[destination] ?? destination])];
+
+  const take = (label: string, day: string, price: number, airline: string, transfers: number | null) => {
+    if (!day.startsWith(month) || !Number.isFinite(price) || price <= 0) return;
+    sources[label] = (sources[label] ?? 0) + 1;
+    const prev = fares.get(day);
+    if (!prev || price < prev.price) fares.set(day, { price: Math.round(price), airline, transfers });
+  };
+
+  const jobs: Promise<void>[] = [];
+  for (const from of froms) {
+    for (const to of tos) {
+      // 1. One row per day.
+      jobs.push(
+        dayFares(from, to, month, currency).then((m) => {
+          for (const [day, f] of m) take(`grouped ${from}-${to}`, day, f.price, f.airline, f.transfers);
+        })
+      );
+      // 2. Every fare seen for the month, one way.
+      jobs.push(
+        (async () => {
+          const url = new URL(`${BASE}/aviasales/v3/prices_for_dates`);
+          url.searchParams.set("origin", from);
+          url.searchParams.set("destination", to);
+          url.searchParams.set("departure_at", month);
+          url.searchParams.set("one_way", "true");
+          url.searchParams.set("unique", "false");
+          url.searchParams.set("sorting", "price");
+          url.searchParams.set("limit", "1000");
+          url.searchParams.set("currency", currency.toLowerCase());
+          try {
+            const res = await fetch(url.toString(), { headers: { "X-Access-Token": token(), Accept: "application/json" } });
+            if (!res.ok) return;
+            const body = (await res.json()) as { data?: TpV3Row[] };
+            for (const row of body.data ?? []) {
+              const code = (row.airline || "").toUpperCase();
+              take(
+                `dates ${from}-${to}`,
+                (row.departure_at || "").slice(0, 10),
+                Number(row.price),
+                AIRLINE_NAMES[code] || code || "—",
+                typeof row.transfers === "number" ? row.transfers : null
+              );
+            }
+          } catch {
+            // That source adds nothing this time.
+          }
+        })()
+      );
+    }
+  }
+  await Promise.all(jobs);
+  return { fares, sources };
+}

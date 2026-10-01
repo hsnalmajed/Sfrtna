@@ -450,6 +450,12 @@ export default function TripPlanner({
           </div>
         )}
 
+        {/* Before the dates: the fares under each day are for this many seats. */}
+        <div>
+          <FieldLabel dark={dark} icon="users">{dict.travelers.label}</FieldLabel>
+          <TravelersPicker locale={locale} value={travelers} onChange={setTravelers} tone={tone} />
+        </div>
+
         {!listsLegs && (
         <div data-field="departDate">
           <FieldLabel dark={dark} icon="calendar">
@@ -462,7 +468,11 @@ export default function TripPlanner({
             withReturn={showReturnDate}
             required
             tone={tone}
-            fareRoute={showDestination ? { origin, destination, currency: effectiveCurrency } : undefined}
+            fareRoute={
+              showDestination
+                ? { origin, destination, currency: effectiveCurrency, seats: travelers.adults + travelers.childrenAges.length }
+                : undefined
+            }
             error={errors.departDate || errors.returnDate}
             onChange={({ departDate: d, returnDate: r }) => {
               setDepartDate(d);
@@ -472,11 +482,6 @@ export default function TripPlanner({
           />
         </div>
         )}
-
-        <div>
-          <FieldLabel dark={dark} icon="users">{dict.travelers.label}</FieldLabel>
-          <TravelersPicker locale={locale} value={travelers} onChange={setTravelers} tone={tone} />
-        </div>
 
         <BudgetInput
           id="plan-budget"

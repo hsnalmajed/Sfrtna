@@ -134,7 +134,7 @@ export default function DateRangeInput({
    * back on the return pass (/api/day-fares). Omitted, or with either end
    * empty, the calendar is plain.
    */
-  fareRoute?: { origin: string; destination: string; currency?: string };
+  fareRoute?: { origin: string; destination: string; currency?: string; seats?: number };
 }) {
   const dict = getDictionary(locale);
   const isAr = locale === "ar";
@@ -157,6 +157,9 @@ export default function DateRangeInput({
   const fareFrom = fareRoute ? (picking === "return" && withReturn ? fareRoute.destination : fareRoute.origin).trim() : "";
   const fareTo = fareRoute ? (picking === "return" && withReturn ? fareRoute.origin : fareRoute.destination).trim() : "";
   const fareCurrency = (fareRoute?.currency || "SAR").toUpperCase();
+  // The fare is per seat; the calendar shows it for the party (adults and
+  // children — each takes a seat).
+  const seats = Math.max(1, fareRoute?.seats ?? 1);
 
   // Close on an outside click or Escape. Subscribe-only: no state is written
   // in the effect body.
@@ -208,9 +211,18 @@ export default function DateRangeInput({
   }, [open, fareFrom, fareTo, fareCurrency, monthKeys.join(",")]);
 
   const visibleFares: Record<string, number> = {};
-  for (const month of monthKeys) Object.assign(visibleFares, fareTable[fareKey(month)] ?? {});
+  for (const month of monthKeys) {
+    for (const [day, price] of Object.entries(fareTable[fareKey(month)] ?? {})) visibleFares[day] = price * seats;
+  }
   const futureFares = Object.entries(visibleFares).filter(([day]) => day >= today);
   const cheapest = futureFares.length ? Math.min(...futureFares.map(([, p]) => p)) : null;
+  const dearest = futureFares.length ? Math.max(...futureFares.map(([, p]) => p)) : null;
+  /** Green for the cheapest day, through amber, to orange for the dearest. */
+  const fareColour = (price: number): { background: string; color: string } => {
+    const t = cheapest !== null && dearest !== null && dearest > cheapest ? (price - cheapest) / (dearest - cheapest) : 0;
+    const hue = Math.round(145 - t * 120);
+    return { background: `hsl(${hue} 80% 90%)`, color: `hsl(${hue} 75% 26%)` };
+  };
   const showFares = Boolean(fareFrom && fareTo && fareFrom !== fareTo);
   const compact = (n: number) => (n >= 10000 ? `${(n / 1000).toFixed(n >= 100000 ? 0 : 1)}k` : n.toLocaleString("en-US"));
 
@@ -399,13 +411,10 @@ export default function DateRangeInput({
                         <span>{Number(day.slice(8))}</span>
                         {showFares && day >= today && visibleFares[day] !== undefined && (
                           <span
-                            className={`text-[9px] leading-tight ${
-                              visibleFares[day] === cheapest
-                                ? "rounded bg-emerald-600 px-1 font-black text-white"
-                                : day === departDate || day === returnDate
-                                  ? "font-bold text-navy-900"
-                                  : "font-semibold text-navy-500"
+                            className={`mt-0.5 rounded px-1 text-[9px] font-bold leading-tight ${
+                              visibleFares[day] === cheapest ? "!bg-emerald-600 font-black !text-white" : ""
                             }`}
+                            style={visibleFares[day] === cheapest ? undefined : fareColour(visibleFares[day])}
                           >
                             {compact(visibleFares[day])}
                           </span>
@@ -422,7 +431,9 @@ export default function DateRangeInput({
             <p className="mt-3 flex items-start gap-1.5 rounded-xl bg-emerald-50 px-3 py-2 text-[11px] leading-relaxed text-emerald-900 ring-1 ring-emerald-100">
               <span aria-hidden="true">💡</span>
               <span>
-                {dict.form.fareLegend.replace("{currency}", fareCurrency === "SAR" && isAr ? "ر.س" : fareCurrency)}
+                {dict.form.fareLegend
+                  .replace("{currency}", fareCurrency === "SAR" && isAr ? "ر.س" : fareCurrency)
+                  .replace("{seats}", String(seats))}
                 {picking === "return" && withReturn ? ` · ${dict.form.fareLegendReturn}` : ""}
               </span>
             </p>

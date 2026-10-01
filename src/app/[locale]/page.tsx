@@ -51,11 +51,6 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
   // hours, so the homepage does not spend a subrequest on them every visit.
   const now = new Date();
   const monthKey = `${now.getFullYear()}-${String(month).padStart(2, "0")}`;
-  const nextMonth = month === 12 ? 1 : month + 1;
-  const nextKey = `${month === 12 ? now.getFullYear() + 1 : now.getFullYear()}-${String(nextMonth).padStart(2, "0")}`;
-  const fareMonths = isAr
-    ? `${monthName(month, loc)} و${monthName(nextMonth, loc)}`
-    : `${monthName(month, loc)} and ${monthName(nextMonth, loc)}`;
   // Every season card carries a real one-way fare, so the strip shows the
   // cities the fare source has seen a price for; the rest of the month's
   // cities are on the seasons page (see seasonFares.ts for why some have none).
@@ -63,7 +58,8 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
   // them (Al-Ahsa → Dammam), else Riyadh — see src/lib/origin.ts.
   const origin = await userOrigin();
   const originName = isAr ? origin.cityAr : origin.cityEn;
-  const fares = await seasonFares(origin.iata, [monthKey, nextKey]);
+  // This month only: the card says "in October", so the fare is October's.
+  const fares = await seasonFares(origin.iata, [monthKey]);
   const fareFor = (slug: string) => {
     const iata = CITY_AIRPORTS[slug]?.iata;
     return iata && iata !== origin.iata ? fares[iata] : undefined;
@@ -309,8 +305,8 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
             seasonRainMany: dict.home.seasonRainMany,
             seasonTapHint: dict.home.seasonTapHint,
             seasonFare: dict.home.seasonFare,
-            seasonFareNote: dict.home.seasonFareNote.replace("{month}", fareMonths).replace("{origin}", originName),
-            summaryFare: dict.home.summaryFare.replace("{month}", fareMonths).replace("{origin}", originName),
+            seasonFareNote: dict.home.seasonFareNote.replace("{month}", monthName(month, loc)).replace("{origin}", originName),
+            summaryFare: dict.home.summaryFare.replace("{month}", monthName(month, loc)).replace("{origin}", originName),
             originFrom: dict.home.originFrom,
             originChange: dict.home.originChange,
             originSearch: dict.home.originSearch,

@@ -625,7 +625,11 @@ export default function HomeShowcase({
                   </div>
                 )}
                 <p className="mt-3 text-sm font-semibold text-white/75">👆 {dict.seasonTapHint}</p>
-                {seasonCities.some((c) => c.fare) && <p className="mt-1 text-xs text-white/60">{dict.seasonFareNote}</p>}
+                {seasonCities.some((c) => c.fare) && (
+                  <p className="mt-2 rounded-xl bg-sun-400/10 px-3 py-2 text-xs font-semibold leading-relaxed text-sun-200 ring-1 ring-sun-400/25">
+                    {dict.seasonFareNote}
+                  </p>
+                )}
                 <p className="mt-2 text-xs text-white/45">
                   <Link href={`/${locale}/seasons`} className="font-bold text-white/70 underline-offset-2 hover:underline">
                     {dict.seasonCta}
