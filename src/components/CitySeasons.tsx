@@ -49,6 +49,9 @@ export interface SeasonCity {
   keywords: string;
   continent: Continent;
   photo?: string;
+  /** For the booking forms: the city's airport and its English name (hotel search). */
+  airport?: string;
+  nameEn?: string;
   /** January first. */
   months: SeasonMonth[];
 }
@@ -73,6 +76,7 @@ interface Dict {
   noBestMonths: string;
   viewCity: string;
   viewYear: string;
+  bookTrip: string;
   close: string;
   prevMonth: string;
   nextMonth: string;
@@ -125,7 +129,8 @@ export default function CitySeasons({
   initialCity?: string;
 }) {
   const startCity = initialCity && cities.some((c) => c.slug === initialCity) ? initialCity : "";
-  const [mode, setMode] = useState<"month" | "city">(startCity ? "city" : "month");
+  // Nothing chosen on arrival: the visitor picks "by month" or "by city".
+  const [mode, setMode] = useState<"month" | "city" | null>(startCity ? "city" : null);
   const [month, setMonth] = useState(currentMonth);
   const [continent, setContinent] = useState<Continent | "all">("all");
   const [withGood, setWithGood] = useState(false);
@@ -448,9 +453,7 @@ export default function CitySeasons({
               currentMonth={currentMonth}
               locale={locale}
               dict={dict}
-              showYear={mode === "month"}
               onMonth={(m) => setDialog({ slug: c.slug, month: m })}
-              onYear={() => openCity(c.slug)}
               onClose={() => setDialog(null)}
             />
           ) : null;
@@ -470,9 +473,7 @@ function MonthDialog({
   currentMonth,
   locale,
   dict,
-  showYear,
   onMonth,
-  onYear,
   onClose,
 }: {
   city: SeasonCity;
@@ -480,10 +481,7 @@ function MonthDialog({
   currentMonth: number;
   locale: Locale;
   dict: Dict;
-  /** Opened from "by month": offer the city's whole year too. */
-  showYear: boolean;
   onMonth: (m: number) => void;
-  onYear: () => void;
   onClose: () => void;
 }) {
   const isAr = locale === "ar";
@@ -650,21 +648,23 @@ function MonthDialog({
             </div>
           )}
 
-          <div className="mt-5 flex flex-col gap-2 sm:flex-row">
-            {showYear && (
-              <button
-                type="button"
-                onClick={onYear}
-                className="flex-1 rounded-xl bg-navy-900 px-4 py-3 text-sm font-extrabold text-white transition hover:bg-navy-800"
-              >
-                🗓 {dict.viewYear}
-              </button>
-            )}
+          {/* Two ways on: read about the city, or book it — the booking form
+              opens with this city already filled in. */}
+          <div className="mt-5 grid grid-cols-2 gap-2">
             <Link
               href={`/${locale}/attractions/${city.code}/${city.slug}`}
-              className="flex-1 rounded-xl bg-sun-400 px-4 py-3 text-center text-sm font-extrabold text-navy-950 transition hover:bg-sun-300"
+              className="flex items-center justify-center gap-1.5 rounded-xl bg-white px-4 py-3 text-center text-sm font-extrabold text-navy-900 ring-2 ring-navy-900 transition hover:bg-navy-50"
             >
               🏛 {dict.viewCity}
+            </Link>
+            <Link
+              href={`/${locale}?${new URLSearchParams({
+                ...(city.airport ? { destination: city.airport } : {}),
+                ...(city.nameEn ? { city: city.nameEn } : {}),
+              }).toString()}#plan`}
+              className="flex items-center justify-center gap-1.5 rounded-xl bg-sun-400 px-4 py-3 text-center text-sm font-extrabold text-navy-950 shadow-[var(--shadow-sun)] transition hover:bg-sun-300"
+            >
+              ✈️ {dict.bookTrip}
             </Link>
           </div>
         </div>

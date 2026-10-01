@@ -10,6 +10,7 @@ import { COUNTRY_CITIES } from "@/lib/cities";
 import { findCountry } from "@/lib/countries";
 import { seasonRecords } from "@/lib/travelSeason/site";
 import { fetchCityPhotos } from "@/lib/countryPhotos";
+import { CITY_AIRPORTS } from "@/data/cityAirports";
 
 // Photos come from Pexels, same as the rest of the site.
 export const dynamic = "force-dynamic";
@@ -61,6 +62,8 @@ export default async function SeasonsPage({ params, searchParams }: PageProps<"/
         keywords: `${c.nameAr} ${c.nameEn} ${country.nameAr} ${country.nameEn}`,
         continent: country.continent,
         photo: photos.get(`${c.code}/${c.slug}`),
+        airport: CITY_AIRPORTS[c.slug]?.iata || undefined,
+        nameEn: c.nameEn,
         months: recs.map((r) => ({
           classification: r.classification,
           finalScore: r.finalScore,
