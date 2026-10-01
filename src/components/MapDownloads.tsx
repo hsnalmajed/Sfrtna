@@ -21,6 +21,7 @@ export default function MapDownloads({
   title,
   fileBase,
   dict,
+  compactLabel,
 }: {
   pins: MapPin[];
   /** Shown inside the file — this is the name the maps app displays. */
@@ -32,6 +33,8 @@ export default function MapDownloads({
    */
   fileBase: string;
   dict: DownloadsDict;
+  /** One line of two buttons ("Download all locations: GPX · KML") instead of the panel. */
+  compactLabel?: string;
 }) {
   // The names were already resolved to the reader's language upstream, so the
   // pins read the same on their phone as they do here.
@@ -56,6 +59,22 @@ export default function MapDownloads({
 
   function handleKml() {
     downloadText(toKML(places, title), safeFileName(fileBase, "kml"), "application/vnd.google-earth.kml+xml");
+  }
+
+  if (compactLabel) {
+    const pill =
+      "inline-flex items-center gap-1 rounded-full bg-white px-3 py-1.5 text-xs font-bold text-navy-800 ring-1 ring-mist-300 transition hover:ring-sun-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400";
+    return (
+      <div className="flex flex-wrap items-center gap-2">
+        <span className="text-xs font-bold text-navy-600">📥 {compactLabel}</span>
+        <button type="button" onClick={handleGpx} className={pill} title={dict.downloadGpxHint}>
+          🧭 GPX
+        </button>
+        <button type="button" onClick={handleKml} className={pill} title={dict.downloadKmlHint}>
+          🌍 KML
+        </button>
+      </div>
+    );
   }
 
   const buttonClass =

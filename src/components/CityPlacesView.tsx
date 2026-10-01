@@ -50,7 +50,12 @@ export default function CityPlacesView({
   plannerDict: React.ComponentProps<typeof CityPlacesPlanner>["dict"];
   mapDict: React.ComponentProps<typeof AttractionsMap>["dict"];
   downloadsDict: React.ComponentProps<typeof MapDownloads>["dict"];
-  labels: { viewList: string; viewMap: string; showOnMap: string };
+  labels: {
+    viewList: string;
+    viewMap: string;
+    showOnMap: string;
+    downloadAll: string;
+  };
 }) {
   const [view, setView] = useState<CityView>(initialView);
   const [focusKey, setFocusKey] = useState<string | null>(null);
@@ -70,7 +75,7 @@ export default function CityPlacesView({
           category: p.category,
           englishOnly: p.englishOnly,
         })),
-    [places]
+    [places],
   );
 
   // The address bar says which view is open, so a shared link opens the
@@ -89,9 +94,13 @@ export default function CityPlacesView({
       switchTo("map");
       // After the list is hidden and the map is in: the page is much shorter
       // by then, and scrolling before that lands below the view switcher.
-      requestAnimationFrame(() => requestAnimationFrame(() => top.current?.scrollIntoView({ block: "start" })));
+      requestAnimationFrame(() =>
+        requestAnimationFrame(() =>
+          top.current?.scrollIntoView({ block: "start" }),
+        ),
+      );
     },
-    [switchTo]
+    [switchTo],
   );
 
   const backToList = useCallback(() => {
@@ -102,36 +111,64 @@ export default function CityPlacesView({
       requestAnimationFrame(() => {
         const el = key ? document.getElementById(`place-${key}`) : null;
         (el ?? top.current)?.scrollIntoView({ block: el ? "center" : "start" });
-      })
+      }),
     );
   }, [focusKey, switchTo]);
 
   const tab = (v: CityView) =>
     `inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-bold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400 ${
-      view === v ? "bg-navy-900 text-white shadow-sm" : "text-navy-600 hover:bg-mist-100"
+      view === v
+        ? "bg-navy-900 text-white shadow-sm"
+        : "text-navy-600 hover:bg-mist-100"
     }`;
 
   return (
     <div ref={top} className="scroll-mt-28">
-      <div role="tablist" aria-label={`${labels.viewList} / ${labels.viewMap}`} className="mb-5 inline-flex rounded-full bg-white p-1 shadow-sm ring-1 ring-mist-200">
-        <button type="button" role="tab" aria-selected={view === "list"} onClick={backToList} className={tab("list")}>
-          <span aria-hidden="true">📋</span>
-          {labels.viewList}
-          <span className={view === "list" ? "text-white/60" : "text-navy-400"}>{places.length}</span>
-        </button>
-        <button
-          type="button"
-          role="tab"
-          aria-selected={view === "map"}
-          onClick={() => {
-            setFocusKey(null);
-            switchTo("map");
-          }}
-          className={tab("map")}
+      {/* Every location at once, from either view — for a phone's offline map app. */}
+      <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+        <div
+          role="tablist"
+          aria-label={`${labels.viewList} / ${labels.viewMap}`}
+          className="inline-flex rounded-full bg-white p-1 shadow-sm ring-1 ring-mist-200"
         >
-          <span aria-hidden="true">🗺️</span>
-          {labels.viewMap}
-        </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={view === "list"}
+            onClick={backToList}
+            className={tab("list")}
+          >
+            <span aria-hidden="true">📋</span>
+            {labels.viewList}
+            <span
+              className={view === "list" ? "text-white/60" : "text-navy-400"}
+            >
+              {places.length}
+            </span>
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={view === "map"}
+            onClick={() => {
+              setFocusKey(null);
+              switchTo("map");
+            }}
+            className={tab("map")}
+          >
+            <span aria-hidden="true">🗺️</span>
+            {labels.viewMap}
+          </button>
+        </div>
+        {pins.length > 0 && (
+          <MapDownloads
+            pins={pins}
+            title={mapTitle}
+            fileBase={fileBase}
+            dict={downloadsDict}
+            compactLabel={labels.downloadAll}
+          />
+        )}
       </div>
 
       {/* The list stays mounted (only hidden) so the day planner keeps its picks. */}
@@ -161,7 +198,6 @@ export default function CityPlacesView({
             focusKey={focusKey}
             onShowList={backToList}
           />
-          <MapDownloads pins={pins} title={mapTitle} fileBase={fileBase} dict={downloadsDict} />
         </div>
       )}
     </div>

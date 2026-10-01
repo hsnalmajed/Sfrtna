@@ -206,14 +206,28 @@ export default function CityPlacesExplorer({
                 />
 
                 <div className="flex flex-1 flex-col p-4">
-                  <h3
-                    className="font-bold leading-snug text-gray-900"
-                    // An English name inside an Arabic page needs its own
-                    // direction, or trailing punctuation jumps to the wrong end.
-                    dir={p.englishOnly ? "ltr" : undefined}
-                  >
-                    {p.name}
-                  </h3>
+                  <div className="flex items-start justify-between gap-2">
+                    <h3
+                      className="font-bold leading-snug text-gray-900"
+                      // An English name inside an Arabic page needs its own
+                      // direction, or trailing punctuation jumps to the wrong end.
+                      dir={p.englishOnly ? "ltr" : undefined}
+                    >
+                      {p.name}
+                    </h3>
+                    {/* This one place on the map, on the same page. */}
+                    {onShowOnMap && p.lat !== undefined && p.lon !== undefined && (
+                      <button
+                        type="button"
+                        onClick={() => onShowOnMap(p)}
+                        title={showOnMapLabel}
+                        aria-label={`${showOnMapLabel}: ${p.name}`}
+                        className="-mt-0.5 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-sun-50 text-base ring-1 ring-sun-200 transition hover:bg-sun-100 hover:ring-sun-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400"
+                      >
+                        <span aria-hidden="true">📍</span>
+                      </button>
+                    )}
+                  </div>
 
                   {p.description && (
                     <p
@@ -237,16 +251,6 @@ export default function CityPlacesExplorer({
 
                   {p.lat !== undefined && p.lon !== undefined && (
                     <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1.5">
-                      {onShowOnMap && (
-                        <button
-                          type="button"
-                          onClick={() => onShowOnMap(p)}
-                          className="inline-flex items-center gap-1 text-xs font-bold text-brand-800 hover:underline"
-                        >
-                          <span aria-hidden="true">📍</span>
-                          {showOnMapLabel}
-                        </button>
-                      )}
                       <a
                         href={`https://www.google.com/maps/search/?api=1&query=${p.lat},${p.lon}`}
                         target="_blank"

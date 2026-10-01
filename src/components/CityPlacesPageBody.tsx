@@ -252,6 +252,7 @@ export default async function CityPlacesPageBody({
                 viewList: dict.attractions.viewList,
                 viewMap: dict.attractions.viewMap,
                 showOnMap: dict.attractions.showOnMap,
+                downloadAll: dict.attractions.downloadAll,
               }}
             />
 
