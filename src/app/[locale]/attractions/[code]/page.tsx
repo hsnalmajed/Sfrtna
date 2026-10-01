@@ -6,7 +6,7 @@ import { getDictionary } from "@/lib/dictionaries";
 import type { Locale } from "@/lib/types";
 import { findCountry } from "@/lib/countries";
 import { COUNTRY_CITIES } from "@/lib/cities";
-import { fetchCityOverviews, fetchPlacesAroundCities } from "@/lib/mapPins";
+import { cityPlaceCount, fetchCityOverviews } from "@/lib/mapPins";
 import { fetchCountryPhotos } from "@/lib/countryPhotos";
 import { cityCountLabel, placeCountLabel } from "@/lib/format";
 import CityGallery, { type CityCard } from "@/components/CityGallery";
@@ -165,9 +165,6 @@ export default async function CountryAttractionsPage({
   );
 }
 
-/** How long the country page waits for a city's places before showing its card without a count. */
-const COUNT_BUDGET_MS = 6000;
-
 async function CityGalleryWithCounts({
   cards,
   locale,
@@ -178,17 +175,10 @@ async function CityGalleryWithCounts({
   hrefBase: string;
 }) {
   const dict = getDictionary(locale);
-  // How many places each city's page lists — the same query that page runs
-  // (cached a week), so the two numbers agree. A city whose places are not
-  // back within the budget, or could not be fetched, just shows no count.
-  const counts = await Promise.all(
-    cards.map((c) =>
-      Promise.race([
-        fetchPlacesAroundCities([{ slug: c.slug, nameEn: c.name }], { locale }).then((p) => p.length),
-        new Promise<number>((resolve) => setTimeout(() => resolve(0), COUNT_BUDGET_MS)),
-      ]).catch(() => 0)
-    )
-  );
+  // How many places each city's page lists — the count that page stores
+  // (cached a week), so the two numbers agree. A city with no count yet
+  // just shows none.
+  const counts = await Promise.all(cards.map((c) => cityPlaceCount({ slug: c.slug, nameEn: c.name }, { locale })));
   const withCounts = cards.map((c, i) => ({
     ...c,
     subtitle: counts[i] ? `📍 ${placeCountLabel(counts[i], dict.attractions)}` : undefined,

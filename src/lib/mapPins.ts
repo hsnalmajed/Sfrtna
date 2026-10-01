@@ -13,7 +13,7 @@
 // on import, so the pin *type* has to live outside it.)
 
 import { CITY_COORDS } from "@/data/cityCoords";
-import { cachedJson } from "@/lib/edgeCache";
+import { cachedJson, readJson, writeJson } from "@/lib/edgeCache";
 import { findCountry } from "@/lib/countries";
 import { searchPexelsPhotos, type PexelsQuery } from "@/lib/pexels";
 import type { PinCategory } from "@/lib/pinStyles";
@@ -215,6 +215,29 @@ function toPlace(el: OverpassElement, locale: Locale): Place | null {
  * photographs, and a Pexels search per pin would spend the month's allowance
  * on one page.
  */
+function countKey(slug: string, radius: number): string {
+  return `placecount:${slug}:${radius}`;
+}
+
+/**
+ * How many places a city's page lists, for its card on the country page.
+ *
+ * Read from the small count the city's page leaves behind. When there is
+ * none yet, the places are fetched — but the card waits at most `budgetMs`
+ * and shows no number rather than holding the page.
+ */
+export async function cityPlaceCount(
+  city: PinCentre,
+  { locale, budgetMs = 4000, radius = 15000 }: { locale: Locale; budgetMs?: number; radius?: number }
+): Promise<number> {
+  const stored = await readJson<number>(countKey(city.slug, radius));
+  if (typeof stored === "number") return stored;
+  return Promise.race([
+    fetchPlacesAroundCities([city], { locale, radius }).then((p) => p.length),
+    new Promise<number>((resolve) => setTimeout(() => resolve(0), budgetMs)),
+  ]).catch(() => 0);
+}
+
 export async function fetchPlacesAroundCities(
   centres: PinCentre[],
   {
@@ -237,6 +260,11 @@ export async function fetchPlacesAroundCities(
         const place = toPlace(el, locale);
         if (place) places.push(place);
         if (places.length >= perCity) break;
+      }
+      // Remember the city's full count on its own (a few bytes), so the
+      // country page can show it without loading every city's places.
+      if (perCity === Infinity && places.length > 0) {
+        await writeJson(countKey(c.slug, radius), places.length, 604800);
       }
       return places;
     })
