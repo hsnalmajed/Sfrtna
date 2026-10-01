@@ -63,6 +63,7 @@ export default function Header({ locale }: { locale: Locale }) {
    * A seven-item bar on a phone is a scroll; four fit.
    */
   const navLinks = [
+    { href: `/${locale}`, label: dict.nav.home },
     { href: `/${locale}/attractions`, label: dict.nav.destinations },
     { href: `/${locale}/seasons`, label: dict.nav.whenToTravel },
   ];
