@@ -87,7 +87,6 @@ interface ShowcaseDict {
   seasonRainTwo: string;
   seasonRainFew: string;
   seasonRainMany: string;
-  seasonMethod: string;
   seasonTapHint: string;
   seasonFare: string;
   seasonFareNote: string;
@@ -95,9 +94,6 @@ interface ShowcaseDict {
   monthName: string;
   summaryWeather: string;
   summaryBestMonths: string;
-  summarySource: string;
-  climateNote: string;
-  methodologyLink: string;
   highLow: string;
   summaryVisa: string;
   summaryVisaUnknown: string;
@@ -386,7 +382,6 @@ export default function HomeShowcase({
                 {dict.summaryBestMonths.replace("{months}", openCity.bestMonths)}
               </p>
             )}
-            <p className="mt-3 text-xs text-white/55">{dict.climateNote}</p>
           </section>
 
           {openCity.fare && (
@@ -580,7 +575,6 @@ export default function HomeShowcase({
                 <p className="mt-3 text-sm font-semibold text-white/75">👆 {dict.seasonTapHint}</p>
                 {seasonCities.some((c) => c.fare) && <p className="mt-1 text-xs text-white/60">{dict.seasonFareNote}</p>}
                 <p className="mt-2 text-xs text-white/45">
-                  {dict.seasonMethod}{" "}
                   <Link href={`/${locale}/seasons`} className="font-bold text-white/70 underline-offset-2 hover:underline">
                     {dict.seasonCta}
                   </Link>

@@ -70,10 +70,7 @@ interface Dict {
   cityYearTitle: string;
   bestMonths: string;
   noBestMonths: string;
-  sourceBroad: string;
-  officialBadge: string;
   viewCity: string;
-  openSource: string;
   kinds: Record<string, string>;
   allContinents: string;
   continents: Record<Continent, string>;
@@ -85,18 +82,6 @@ interface Dict {
     rainDays: string;
     rainDaysNone: string;
     reasonLabel: string;
-    climateNote: string;
-    sourceAndMethod: string;
-    climateSourceLabel: string;
-    climateSourceValue: string;
-    climateSourceStation: string;
-    climateSourceGridFallback: string;
-    climatePeriodLabel: string;
-    methodologyLabel: string;
-    methodologyLink: string;
-    lastUpdatedLabel: string;
-    tourismLabel: string;
-    tourismNone: string;
   };
 }
 
@@ -257,7 +242,7 @@ export default function CitySeasons({
           <h2 className="mb-1 mt-6 font-display text-xl font-extrabold text-navy-900">
             {dict.inSeasonInMonth.replace("{month}", dict.monthNames[month - 1]).replace("{count}", String(inMonth.length))}
           </h2>
-          <p className="mb-4 text-xs text-navy-500">{t.climateNote}</p>
+          <div className="mb-4" />
 
           {inMonth.length === 0 ? (
             <p className="rounded-xl bg-mist-50 px-4 py-10 text-center text-sm text-navy-500">{dict.noneInMonth}</p>
@@ -442,7 +427,6 @@ export default function CitySeasons({
                 })}
               </div>
 
-              <p className="mt-4 text-xs text-navy-500">{t.climateNote}</p>
             </section>
           )}
         </div>
