@@ -461,6 +461,11 @@ export const dictionaries = {
       summaryHotels: "ابحث عن فندق في {city}",
       summaryAirport: "أقرب مطار: {airport} (يبعد {km} كم)",
       summaryClose: "إغلاق",
+      cardVisaFree: "بدون تأشيرة",
+      cardVisaArrival: "تأشيرة عند الوصول",
+      cardVisaEta: "تأشيرة/تصريح إلكتروني",
+      cardVisaRequired: "تأشيرة مسبقة",
+      cardVisaUnknown: "تحقّق من التأشيرة",
       summaryBackTo: "رجوع إلى {city}",
 
       toolsEyebrow: "أدوات المسافر",
@@ -1613,6 +1618,11 @@ export const dictionaries = {
       summaryHotels: "Find a hotel in {city}",
       summaryAirport: "Nearest airport: {airport} ({km} km away)",
       summaryClose: "Close",
+      cardVisaFree: "No visa",
+      cardVisaArrival: "Visa on arrival",
+      cardVisaEta: "e-Visa / e-authorisation",
+      cardVisaRequired: "Visa in advance",
+      cardVisaUnknown: "Check the visa",
       summaryBackTo: "Back to {city}",
 
       toolsEyebrow: "Traveller tools",

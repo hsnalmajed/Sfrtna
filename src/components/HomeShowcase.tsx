@@ -10,7 +10,7 @@ import Icon, { type IconName } from "@/components/ui/Icon";
 import { PLAN_EVENT, type PlanProduct } from "@/lib/planEvents";
 import TripPlanner from "@/components/TripPlanner";
 import HotelPlanner from "@/components/HotelPlanner";
-import VisaBadge from "@/components/VisaBadge";
+import VisaBadge, { VISA_STYLES } from "@/components/VisaBadge";
 import VisaRequirementsDialog from "@/components/VisaRequirementsDialog";
 import type { VisaCategory } from "@/data/visaStatus";
 
@@ -41,7 +41,8 @@ export interface ShowcaseCity {
   bestMonths: string;
   /** Who names those months (a tourism board or a guide). */
   /** Confirmed entry status for a Saudi passport; absent when unconfirmed. */
-  visa?: { category: VisaCategory; label: string };
+  /** Confirmed at the official source only; `short` is the card's wording. */
+  visa?: { category: VisaCategory; label: string; short: string };
   currency?: { code: string; name: string; rateLine?: string };
   /** The country guide's best-known sights. */
   landmarks: string[];
@@ -108,6 +109,7 @@ interface ShowcaseDict {
   summaryAirport: string;
   summaryClose: string;
   summaryBackTo: string;
+  cardVisaUnknown: string;
   toolsSubtitle: string;
   toolCta: string;
   stepsTitle: string;
@@ -307,7 +309,17 @@ export default function HomeShowcase({
         <p className="truncate font-display text-sm font-extrabold text-white drop-shadow-sm sm:text-base">{c.name}</p>
         <p className="truncate text-xs font-semibold text-white/70">{c.countryName}</p>
         {c.seasonKind && <p className="mt-0.5 truncate text-xs font-bold text-sun-200">{c.seasonKind}</p>}
-        <div className="mt-1.5 flex flex-wrap gap-1">
+        {/* Entry for a Saudi passport: the confirmed status, or a plain
+            "check" where we have not confirmed one. */}
+        <span
+          className={`mt-1.5 inline-flex max-w-full items-center gap-1 truncate rounded-full px-2 py-0.5 text-xs font-bold ring-1 ${
+            c.visa ? VISA_STYLES[c.visa.category].chip : "bg-white/85 text-navy-800 ring-white/40"
+          }`}
+        >
+          <span aria-hidden="true">{c.visa ? VISA_STYLES[c.visa.category].icon : "🛂"}</span>
+          <span className="truncate">{c.visa ? c.visa.short : dict.cardVisaUnknown}</span>
+        </span>
+        <div className="mt-1 flex flex-wrap gap-1">
           <span className="inline-flex rounded-full bg-navy-990/65 px-2 py-0.5 text-xs font-bold text-sun-300 backdrop-blur-sm" dir="ltr">
             🌡 {c.low !== null && c.low !== undefined ? dict.highLow.replace("{low}", String(Math.round(c.low))).replace("{high}", String(Math.round(c.high))) : `${Math.round(c.high)}°`}
           </span>

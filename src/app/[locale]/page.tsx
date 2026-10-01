@@ -90,6 +90,13 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
     eta: dict.visa.statusEta,
     required: dict.visa.statusRequired,
   };
+  // The card's shorter wording; the summary keeps the full one.
+  const visaShort = {
+    free: dict.home.cardVisaFree,
+    arrival: dict.home.cardVisaArrival,
+    eta: dict.home.cardVisaEta,
+    required: dict.home.cardVisaRequired,
+  };
   const citySummary = (code: string, slug: string) => {
     const r = seasonRecord(slug, month);
     const best = bestMonths(slug);
@@ -103,7 +110,9 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
       weatherSummary: r ? ((isAr ? r.weatherSummaryAr : r.weatherSummaryEn) ?? undefined) : undefined,
       reason: r ? ((isAr ? r.reasonAr : r.reasonEn) ?? undefined) : undefined,
       bestMonths: best.map((m) => monthName(m, loc)).join(isAr ? "، " : ", "),
-      visa: visa ? { category: visa.category, label: visaNames[visa.category] } : undefined,
+      visa: visa
+        ? { category: visa.category, label: visaNames[visa.category], short: visaShort[visa.category] }
+        : undefined,
       currency: cur
         ? {
             code: cur.code,
@@ -314,6 +323,7 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
             summaryAirport: dict.home.summaryAirport,
             summaryClose: dict.home.summaryClose,
             summaryBackTo: dict.home.summaryBackTo,
+            cardVisaUnknown: dict.home.cardVisaUnknown,
             toolsSubtitle: dict.home.toolsSubtitle,
             toolCta: dict.home.toolCta,
             stepsTitle: dict.home.stepsTitle,
