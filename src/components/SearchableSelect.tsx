@@ -30,6 +30,7 @@ export default function SearchableSelect({
   searchPlaceholder,
   emptyText,
   placeholder,
+  labelClassName = "text-gray-700",
 }: {
   value: string;
   options: SearchableOption[];
@@ -39,6 +40,8 @@ export default function SearchableSelect({
   emptyText: string;
   /** Shown on the closed button when nothing is selected yet. */
   placeholder?: string;
+  /** The label's colour — light on a dark panel. */
+  labelClassName?: string;
 }) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
@@ -82,7 +85,7 @@ export default function SearchableSelect({
 
   return (
     <div className="relative" ref={containerRef}>
-      <span className="mb-1.5 block text-sm font-bold text-gray-700">{label}</span>
+      <span className={`mb-1.5 block text-sm font-bold ${labelClassName}`}>{label}</span>
 
       <button
         type="button"

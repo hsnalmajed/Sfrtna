@@ -83,8 +83,7 @@ export default async function CurrencyPage({ params, searchParams }: PageProps<"
 
         {rates && updated && (
           <p className="mt-3 text-center text-xs text-navy-400">
-            🕒 {dict.currency.updatedAt.replace("{when}", `${updated} UTC`)} ·{" "}
-            {dict.currency.sourceNote.replace("{source}", rates.source)}
+            🕒 {dict.currency.updatedAt.replace("{when}", `${updated} UTC`)}
           </p>
         )}
       </div>
