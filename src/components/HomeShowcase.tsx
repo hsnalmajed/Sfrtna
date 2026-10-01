@@ -299,25 +299,28 @@ export default function HomeShowcase({
         fallback={<div className="absolute inset-0 -z-10 bg-gradient-to-br from-navy-700 to-navy-990" />}
       />
       <div className="scrim-soft absolute inset-0 -z-10" />
-      {/* The month's rating there, in the site-wide wording. */}
-      {c.classLabel && (
-        <span className="absolute start-2 top-2 max-w-[calc(100%-1rem)] truncate rounded-full bg-white/90 px-2.5 py-0.5 text-xs font-extrabold text-navy-900 shadow-sm backdrop-blur-sm">
-          {c.classLabel}
-        </span>
-      )}
-      <div className="absolute inset-x-0 bottom-0 p-3">
-        <p className="truncate font-display text-sm font-extrabold text-white drop-shadow-sm sm:text-base">{c.name}</p>
-        <p className="truncate text-xs font-semibold text-white/70">{c.countryName}</p>
+      {/* Top: the month's rating there, in the site-wide wording, and under
+          it the entry status for a Saudi passport. */}
+      <div className="absolute start-2 top-2 flex max-w-[calc(100%-1rem)] flex-col items-start gap-1">
+        {c.classLabel && (
+          <span className="max-w-full truncate rounded-full bg-white/90 px-2.5 py-0.5 text-xs font-extrabold text-navy-900 shadow-sm backdrop-blur-sm">
+            {c.classLabel}
+          </span>
+        )}
         {/* Entry for a Saudi passport: the confirmed status, or a plain
             "check" where we have not confirmed one. */}
         <span
-          className={`mt-1 inline-flex max-w-full items-center gap-1 truncate rounded-full px-2 py-0.5 text-xs font-bold ring-1 ${
+          className={`inline-flex max-w-full items-center gap-1 truncate rounded-full px-2.5 py-0.5 text-xs font-bold shadow-sm ring-1 ${
             c.visa ? VISA_STYLES[c.visa.category].chip : "bg-white/85 text-navy-800 ring-white/40"
           }`}
         >
           <span aria-hidden="true">{c.visa ? VISA_STYLES[c.visa.category].icon : "🛂"}</span>
           <span className="truncate">{c.visa ? c.visa.short : dict.cardVisaUnknown}</span>
         </span>
+      </div>
+      <div className="absolute inset-x-0 bottom-0 p-3">
+        <p className="truncate font-display text-sm font-extrabold text-white drop-shadow-sm sm:text-base">{c.name}</p>
+        <p className="truncate text-xs font-semibold text-white/70">{c.countryName}</p>
         {/* The season and its temperatures, side by side on one line. */}
         <div className="mt-1.5 flex flex-wrap items-center gap-1">
           {c.seasonKind && (
