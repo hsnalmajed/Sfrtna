@@ -34,7 +34,6 @@ const destinations = [...coordsSrc.matchAll(/^ {2}"([a-z-]+)": \{ lat: (-?[\d.]+
 // fetch_era5land.py resolves each query with OpenStreetMap Nominatim and
 // records the result it used.
 const qa = [
-  { id: "reykjavik", countryCode: "IS", name: "Reykjavík", geocode: "Reykjavík, Iceland" },
   { id: "sapporo", countryCode: "JP", name: "Sapporo", geocode: "Sapporo, Hokkaido, Japan" },
   { id: "queenstown", countryCode: "NZ", name: "Queenstown", geocode: "Queenstown, Otago, New Zealand" },
   { id: "coronet-peak", countryCode: "NZ", name: "Coronet Peak ski area", geocode: "Coronet Peak, Otago, New Zealand" },

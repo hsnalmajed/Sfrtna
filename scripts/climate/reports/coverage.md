@@ -1,18 +1,86 @@
-# Coverage — scoring v1.1, 2026-10-01T07:07:36.027Z
+# Coverage — scoring v1.1, 2026-10-01T07:22:39.093Z
 
-- Total destinations: 145
-- With coordinates: 145
+- Total destinations: 214
+- With coordinates: 214
 - Missing coordinates: 0
-- With climate data: 143
+- With climate data: 144
 - With tourism source: 113
-- Climate-only: 31
-- With official station normals (WMO 1991–2020) for at least one parameter: 95; for temperatures: 92
+- Climate-only: 32
+- With official station normals (WMO 1991–2020) for at least one parameter: 96; for temperatures: 93
 - On ERA5-Land only: 47
 - On the NASA POWER fallback: 1 (male)
 - Low-confidence: 0
 - Temperatures from a grid point more than 5 km away: 30 (alula 6.08 km, abu-dhabi 5.62 km, al-wakrah 6.3 km, kuwait-city 9.22 km, salalah 9.18 km, tangier 7.75 km, amman 5.84 km, petra 9.19 km, edinburgh 5.98 km, manchester 5.19 km, venice 7.49 km, naples 8.23 km, mykonos 5.75 km, thessaloniki 7.07 km, porto 5.6 km, madeira 5.66 km, ella 6.15 km, ubud 5.29 km, xian 5.83 km, hanoi 5.72 km, da-nang 8.04 km, batumi 7.77 km, kazbegi 7.26 km, mombasa 6.69 km, cancun 7.94 km, guadalajara 5.06 km, rio-de-janeiro 9.36 km, sao-paulo 6.46 km, beirut 10.85 km, byblos 9.68 km)
 - Withheld from the site (cell height too far from the town's; needs a station override): 2 (madeira: Funchal's nearest ERA5-Land land cell (5.7 km) averages 548 m — the mountainside above the town — while the town centre is near sea level, so its temperatures would read too cold. Needs a station override (Funchal observatory normals).; kazbegi: ERA5-Land cell +908 m from the town's height)
-- Errors: 0
+- Errors: 68
+  - moscow: no climate normals (not fetched)
+  - saint-petersburg: no climate normals (not fetched)
+  - kazan: no climate normals (not fetched)
+  - sochi: no climate normals (not fetched)
+  - sarajevo: no climate normals (not fetched)
+  - mostar: no climate normals (not fetched)
+  - tirana: no climate normals (not fetched)
+  - durres: no climate normals (not fetched)
+  - saranda: no climate normals (not fetched)
+  - kotor: no climate normals (not fetched)
+  - budva: no climate normals (not fetched)
+  - podgorica: no climate normals (not fetched)
+  - belgrade: no climate normals (not fetched)
+  - novi-sad: no climate normals (not fetched)
+  - zagreb: no climate normals (not fetched)
+  - split: no climate normals (not fetched)
+  - dubrovnik: no climate normals (not fetched)
+  - prague: no climate normals (not fetched)
+  - karlovy-vary: no climate normals (not fetched)
+  - budapest: no climate normals (not fetched)
+  - warsaw: no climate normals (not fetched)
+  - krakow: no climate normals (not fetched)
+  - zakopane: no climate normals (not fetched)
+  - dublin: no climate normals (not fetched)
+  - galway: no climate normals (not fetched)
+  - brussels: no climate normals (not fetched)
+  - bruges: no climate normals (not fetched)
+  - stockholm: no climate normals (not fetched)
+  - oslo: no climate normals (not fetched)
+  - bergen: no climate normals (not fetched)
+  - tromso: no climate normals (not fetched)
+  - copenhagen: no climate normals (not fetched)
+  - helsinki: no climate normals (not fetched)
+  - rovaniemi: no climate normals (not fetched)
+  - ljubljana: no climate normals (not fetched)
+  - bled: no climate normals (not fetched)
+  - larnaca: no climate normals (not fetched)
+  - limassol: no climate normals (not fetched)
+  - paphos: no climate normals (not fetched)
+  - valletta: no climate normals (not fetched)
+  - bucharest: no climate normals (not fetched)
+  - brasov: no climate normals (not fetched)
+  - yerevan: no climate normals (not fetched)
+  - almaty: no climate normals (not fetched)
+  - astana: no climate normals (not fetched)
+  - tashkent: no climate normals (not fetched)
+  - samarkand: no climate normals (not fetched)
+  - bukhara: no climate normals (not fetched)
+  - bishkek: no climate normals (not fetched)
+  - karakol: no climate normals (not fetched)
+  - islamabad: no climate normals (not fetched)
+  - lahore: no climate normals (not fetched)
+  - kathmandu: no climate normals (not fetched)
+  - pokhara: no climate normals (not fetched)
+  - manila: no climate normals (not fetched)
+  - cebu: no climate normals (not fetched)
+  - boracay: no climate normals (not fetched)
+  - siem-reap: no climate normals (not fetched)
+  - phnom-penh: no climate normals (not fetched)
+  - zanzibar: no climate normals (not fetched)
+  - arusha: no climate normals (not fetched)
+  - port-louis: no climate normals (not fetched)
+  - grand-baie: no climate normals (not fetched)
+  - mahe: no climate normals (not fetched)
+  - toronto: no climate normals (not fetched)
+  - vancouver: no climate normals (not fetched)
+  - montreal: no climate normals (not fetched)
+  - banff: no climate normals (not fetched)
 
 ## Needs manual review
 
@@ -41,7 +109,8 @@ ERA5-Land tends to count more light-rain days than rain gauges. These months are
 - nairobi: Apr 22.1 d / 117 mm, May 17.8 d / 94 mm, Nov 20.1 d / 91 mm
 - mombasa: Mar 16.6 d / 64 mm, Apr 26.7 d / 134 mm, Jun 22.6 d / 92 mm, Jul 23.1 d / 74 mm, Aug 21.3 d / 60 mm, Sep 18.0 d / 53 mm, Oct 18.6 d / 85 mm, Nov 22.3 d / 83 mm, Dec 18.6 d / 64 mm
 - cancun: Jul 17.2 d / 96 mm, Aug 21.2 d / 124 mm
+- reykjavik: Jan 15.3 d / 87 mm, Sep 15.0 d / 87 mm
 
 ### No tourism source (climate-only rating)
 
-makkah, madinah, trabzon, bursa, sharjah, kuwait-city, manama, nizwa, alexandria, fes, chefchaouen, lyon, marseille, granada, cordoba, thessaloniki, salzburg, innsbruck, madeira, singapore, tokyo, kyoto, osaka, hiroshima, guangzhou, guba, tbilisi, johannesburg, durban, beirut, byblos, baalbek
+makkah, madinah, trabzon, bursa, sharjah, kuwait-city, manama, nizwa, alexandria, fes, chefchaouen, lyon, marseille, granada, cordoba, thessaloniki, salzburg, innsbruck, madeira, singapore, tokyo, kyoto, osaka, hiroshima, guangzhou, guba, tbilisi, johannesburg, durban, beirut, byblos, baalbek, moscow, saint-petersburg, kazan, sochi, sarajevo, mostar, tirana, durres, saranda, kotor, budva, podgorica, belgrade, novi-sad, zagreb, split, dubrovnik, prague, karlovy-vary, budapest, warsaw, krakow, zakopane, dublin, galway, brussels, bruges, stockholm, oslo, bergen, tromso, copenhagen, helsinki, rovaniemi, ljubljana, bled, larnaca, limassol, paphos, valletta, bucharest, brasov, reykjavik, yerevan, almaty, astana, tashkent, samarkand, bukhara, bishkek, karakol, islamabad, lahore, kathmandu, pokhara, manila, cebu, boracay, siem-reap, phnom-penh, zanzibar, arusha, port-louis, grand-baie, mahe, toronto, vancouver, montreal, banff

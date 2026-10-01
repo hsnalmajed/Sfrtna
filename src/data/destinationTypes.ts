@@ -15,7 +15,7 @@
 
 import type { DestinationType } from "../lib/travelSeason/config.ts";
 
-export const DESTINATION_TYPES_VERSION = "1.1";
+export const DESTINATION_TYPES_VERSION = "1.2";
 
 export const DESTINATION_TYPES: Record<string, DestinationType[]> = {
   // Saudi Arabia
@@ -174,6 +174,76 @@ export const DESTINATION_TYPES: Record<string, DestinationType[]> = {
   melbourne: ["city"],
   brisbane: ["city"],
   "gold-coast": ["beach"],
+  // Batch 1 of the country expansion (1 Oct 2026)
+  moscow: ["city"],
+  "saint-petersburg": ["city"],
+  kazan: ["city"],
+  sochi: ["beach", "city", "mountain"],
+  sarajevo: ["city", "mountain"],
+  mostar: ["city"],
+  tirana: ["city"],
+  durres: ["beach", "city"],
+  saranda: ["beach"],
+  kotor: ["city", "beach"],
+  budva: ["beach", "city"],
+  podgorica: ["city"],
+  belgrade: ["city"],
+  "novi-sad": ["city"],
+  zagreb: ["city"],
+  split: ["beach", "city"],
+  dubrovnik: ["city", "beach"],
+  prague: ["city"],
+  "karlovy-vary": ["city", "nature"],
+  budapest: ["city"],
+  warsaw: ["city"],
+  krakow: ["city"],
+  zakopane: ["mountain", "nature"],
+  dublin: ["city"],
+  galway: ["city", "nature"],
+  brussels: ["city"],
+  bruges: ["city"],
+  stockholm: ["city"],
+  oslo: ["city"],
+  bergen: ["city", "nature"],
+  tromso: ["nature", "city"],
+  copenhagen: ["city"],
+  helsinki: ["city"],
+  rovaniemi: ["nature", "city"],
+  ljubljana: ["city"],
+  bled: ["nature", "mountain"],
+  larnaca: ["beach", "city"],
+  limassol: ["beach", "city"],
+  paphos: ["beach", "city"],
+  valletta: ["city", "beach"],
+  bucharest: ["city"],
+  brasov: ["city", "mountain"],
+  reykjavik: ["city", "nature"],
+  yerevan: ["city"],
+  almaty: ["city", "mountain"],
+  astana: ["city"],
+  tashkent: ["city"],
+  samarkand: ["city"],
+  bukhara: ["city", "desert"],
+  bishkek: ["city", "mountain"],
+  karakol: ["mountain", "nature"],
+  islamabad: ["city", "nature"],
+  lahore: ["city"],
+  kathmandu: ["city", "mountain"],
+  pokhara: ["nature", "mountain"],
+  manila: ["city", "tropical"],
+  cebu: ["city", "beach", "tropical"],
+  boracay: ["beach", "tropical"],
+  "siem-reap": ["city", "tropical"],
+  "phnom-penh": ["city", "tropical"],
+  zanzibar: ["beach", "tropical"],
+  arusha: ["nature", "city"],
+  "port-louis": ["city", "beach", "tropical"],
+  "grand-baie": ["beach", "tropical"],
+  mahe: ["beach", "tropical"],
+  toronto: ["city"],
+  vancouver: ["city", "nature"],
+  montreal: ["city"],
+  banff: ["mountain", "nature"],
 };
 
 /**
@@ -181,7 +251,6 @@ export const DESTINATION_TYPES: Record<string, DestinationType[]> = {
  * the QA report, never published.
  */
 export const QA_DESTINATION_TYPES: Record<string, DestinationType[]> = {
-  reykjavik: ["city", "nature"],
   sapporo: ["city"],
   queenstown: ["mountain", "nature"],
   // Ski fields, to test the ski profile on real data.

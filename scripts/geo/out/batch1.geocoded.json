@@ -1,0 +1,1553 @@
+{
+ "source": "OpenStreetMap Nominatim",
+ "retrievedAt": "2026-10-01T07:11:25+00:00",
+ "cities": {
+  "moscow": {
+   "country": "RU",
+   "query": "Moscow",
+   "plain": {
+    "lat": 55.62558,
+    "lon": 37.60639,
+    "display_name": "Moscow, Central Federal District, Russia",
+    "osm_type": "relation",
+    "osm_id": 102269,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Moscow&countrycodes=ru&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 55.75054,
+    "lon": 37.61748,
+    "display_name": "Moscow, Central Federal District, Russia",
+    "osm_type": "relation",
+    "osm_id": 2555133,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Moscow&countrycodes=ru&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "saint-petersburg": {
+   "country": "RU",
+   "query": "Saint Petersburg",
+   "plain": {
+    "lat": 59.96067,
+    "lon": 30.15866,
+    "display_name": "Saint Petersburg, Northwestern Federal District, Russia",
+    "osm_type": "relation",
+    "osm_id": 337422,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Saint+Petersburg&countrycodes=ru&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 59.93873,
+    "lon": 30.31623,
+    "display_name": "Saint Petersburg, Northwestern Federal District, Russia",
+    "osm_type": "relation",
+    "osm_id": 421007,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Saint+Petersburg&countrycodes=ru&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "kazan": {
+   "country": "RU",
+   "query": "Kazan",
+   "plain": {
+    "lat": 55.79465,
+    "lon": 49.1115,
+    "display_name": "Kazan, городской округ Казань, Tatarstan, Volga Federal District, Russia",
+    "osm_type": "relation",
+    "osm_id": 3437391,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Kazan&countrycodes=ru&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 55.79465,
+    "lon": 49.1115,
+    "display_name": "Kazan, городской округ Казань, Tatarstan, Volga Federal District, Russia",
+    "osm_type": "relation",
+    "osm_id": 3437391,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Kazan&countrycodes=ru&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "sochi": {
+   "country": "RU",
+   "query": "Sochi",
+   "plain": {
+    "lat": 43.58548,
+    "lon": 39.72311,
+    "display_name": "Sochi, town district of Sochi, Krasnodar Krai, Southern Federal District, Russia",
+    "osm_type": "relation",
+    "osm_id": 1430508,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Sochi&countrycodes=ru&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 43.58548,
+    "lon": 39.72311,
+    "display_name": "Sochi, town district of Sochi, Krasnodar Krai, Southern Federal District, Russia",
+    "osm_type": "relation",
+    "osm_id": 1430508,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Sochi&countrycodes=ru&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "sarajevo": {
+   "country": "BA",
+   "query": "Sarajevo",
+   "plain": {
+    "lat": 43.85707,
+    "lon": 18.41261,
+    "display_name": "Sarajevo, Mjesna zajednica Trg oslobođenja-Centar, Centar Municipality, City of Sarajevo, Sarajevo Canton, Federation of Bosnia and Herzegovina, 71000, Bosnia and Herzegovina",
+    "osm_type": "relation",
+    "osm_id": 15445108,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Sarajevo&countrycodes=ba&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": null,
+   "chosen": "plain"
+  },
+  "mostar": {
+   "country": "BA",
+   "query": "Mostar",
+   "plain": {
+    "lat": 43.34359,
+    "lon": 17.80766,
+    "display_name": "Mostar, Local community Centar II, City of Mostar, Herzegovina-Neretva County, Federation of Bosnia and Herzegovina, Bosnia and Herzegovina",
+    "osm_type": "relation",
+    "osm_id": 8480923,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Mostar&countrycodes=ba&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": null,
+   "chosen": "plain"
+  },
+  "tirana": {
+   "country": "AL",
+   "query": "Tirana",
+   "plain": {
+    "lat": 41.32815,
+    "lon": 19.81844,
+    "display_name": "Tirana, Tirana Municipality, Tirana County, 1001-1028, Albania",
+    "osm_type": "relation",
+    "osm_id": 1250106,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Tirana&countrycodes=al&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 41.32815,
+    "lon": 19.81844,
+    "display_name": "Tirana, Tirana Municipality, Tirana County, 1001-1028, Albania",
+    "osm_type": "relation",
+    "osm_id": 1250106,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Tirana&countrycodes=al&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "durres": {
+   "country": "AL",
+   "query": "Durrës",
+   "plain": {
+    "lat": 41.31325,
+    "lon": 19.44623,
+    "display_name": "Bashkia Durrës, Durrës County, Albania",
+    "osm_type": "relation",
+    "osm_id": 1249871,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Durr%C3%ABs&countrycodes=al&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 41.31325,
+    "lon": 19.44623,
+    "display_name": "Bashkia Durrës, Durrës County, Albania",
+    "osm_type": "relation",
+    "osm_id": 1249871,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Durr%C3%ABs&countrycodes=al&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "saranda": {
+   "country": "AL",
+   "query": "Sarandë",
+   "plain": {
+    "lat": 39.87522,
+    "lon": 20.00653,
+    "display_name": "Saranda, Bashkia Sarandë, Vlorë County, 9701, Albania",
+    "osm_type": "relation",
+    "osm_id": 1255541,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Sarand%C3%AB&countrycodes=al&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 39.87522,
+    "lon": 20.00653,
+    "display_name": "Saranda, Bashkia Sarandë, Vlorë County, 9701, Albania",
+    "osm_type": "relation",
+    "osm_id": 1255541,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Sarand%C3%AB&countrycodes=al&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "kotor": {
+   "country": "ME",
+   "query": "Kotor",
+   "plain": {
+    "lat": 42.42492,
+    "lon": 18.77133,
+    "display_name": "Kotor, Kotor Municipality, 85339, Montenegro",
+    "osm_type": "relation",
+    "osm_id": 18452118,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Kotor&countrycodes=me&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 42.42492,
+    "lon": 18.77133,
+    "display_name": "Kotor, Kotor Municipality, 85339, Montenegro",
+    "osm_type": "relation",
+    "osm_id": 18452118,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Kotor&countrycodes=me&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "budva": {
+   "country": "ME",
+   "query": "Budva",
+   "plain": {
+    "lat": 42.28857,
+    "lon": 18.84195,
+    "display_name": "Budva, Budva Municipality, Montenegro",
+    "osm_type": "relation",
+    "osm_id": 18019999,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Budva&countrycodes=me&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 42.28857,
+    "lon": 18.84195,
+    "display_name": "Budva, Budva Municipality, Montenegro",
+    "osm_type": "relation",
+    "osm_id": 18019999,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Budva&countrycodes=me&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "podgorica": {
+   "country": "ME",
+   "query": "Podgorica",
+   "plain": {
+    "lat": 42.44152,
+    "lon": 19.26211,
+    "display_name": "Podgorica, Podgorica Capital City, Montenegro",
+    "osm_type": "relation",
+    "osm_id": 8882104,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Podgorica&countrycodes=me&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 42.44152,
+    "lon": 19.26211,
+    "display_name": "Podgorica, Podgorica Capital City, Montenegro",
+    "osm_type": "relation",
+    "osm_id": 8882104,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Podgorica&countrycodes=me&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "belgrade": {
+   "country": "RS",
+   "query": "Belgrade",
+   "plain": {
+    "lat": 44.81533,
+    "lon": 20.44566,
+    "display_name": "Belgrade, City of Belgrade, Central Serbia, Serbia",
+    "osm_type": "relation",
+    "osm_id": 2728438,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Belgrade&countrycodes=rs&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 44.81781,
+    "lon": 20.4569,
+    "display_name": "Belgrade, Stari Grad Urban Municipality, City of Belgrade, Central Serbia, 11000, Serbia",
+    "osm_type": "node",
+    "osm_id": 60571493,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Belgrade&countrycodes=rs&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "novi-sad": {
+   "country": "RS",
+   "query": "Novi Sad",
+   "plain": {
+    "lat": 45.25513,
+    "lon": 19.84518,
+    "display_name": "Novi Sad, City of Novi Sad, South Backa Administrative District, Vojvodina, Serbia",
+    "osm_type": "relation",
+    "osm_id": 9273976,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Novi+Sad&countrycodes=rs&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 45.25513,
+    "lon": 19.84518,
+    "display_name": "Novi Sad, City of Novi Sad, South Backa Administrative District, Vojvodina, Serbia",
+    "osm_type": "relation",
+    "osm_id": 9273976,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Novi+Sad&countrycodes=rs&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "zagreb": {
+   "country": "HR",
+   "query": "Zagreb",
+   "plain": {
+    "lat": 45.8131,
+    "lon": 15.97728,
+    "display_name": "City of Zagreb, Croatia",
+    "osm_type": "relation",
+    "osm_id": 226224,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Zagreb&countrycodes=hr&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 45.8131,
+    "lon": 15.97728,
+    "display_name": "City of Zagreb, Croatia",
+    "osm_type": "relation",
+    "osm_id": 226224,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Zagreb&countrycodes=hr&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "split": {
+   "country": "HR",
+   "query": "Split, Croatia",
+   "plain": {
+    "lat": 43.51164,
+    "lon": 16.43997,
+    "display_name": "Split, Grad Split, Split-Dalmatia County, Croatia",
+    "osm_type": "relation",
+    "osm_id": 11153757,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Split%2C+Croatia&countrycodes=hr&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 43.51164,
+    "lon": 16.43997,
+    "display_name": "Split, Grad Split, Split-Dalmatia County, Croatia",
+    "osm_type": "relation",
+    "osm_id": 11153757,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Split%2C+Croatia&countrycodes=hr&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "dubrovnik": {
+   "country": "HR",
+   "query": "Dubrovnik",
+   "plain": {
+    "lat": 42.6491,
+    "lon": 18.09395,
+    "display_name": "Dubrovnik, Dubrovnik-Neretva County, Croatia",
+    "osm_type": "relation",
+    "osm_id": 8796464,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Dubrovnik&countrycodes=hr&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 42.6491,
+    "lon": 18.09395,
+    "display_name": "Dubrovnik, Dubrovnik-Neretva County, Croatia",
+    "osm_type": "relation",
+    "osm_id": 8796464,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Dubrovnik&countrycodes=hr&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "prague": {
+   "country": "CZ",
+   "query": "Prague",
+   "plain": {
+    "lat": 50.08747,
+    "lon": 14.42125,
+    "display_name": "Prague, Czechia",
+    "osm_type": "relation",
+    "osm_id": 435514,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Prague&countrycodes=cz&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 50.08747,
+    "lon": 14.42125,
+    "display_name": "Prague, Czechia",
+    "osm_type": "relation",
+    "osm_id": 435514,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Prague&countrycodes=cz&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "karlovy-vary": {
+   "country": "CZ",
+   "query": "Karlovy Vary",
+   "plain": {
+    "lat": 50.23062,
+    "lon": 12.87014,
+    "display_name": "Karlovy Vary, okres Karlovy Vary, Karlovy Vary Region, Czechia",
+    "osm_type": "relation",
+    "osm_id": 439482,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Karlovy+Vary&countrycodes=cz&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 50.23062,
+    "lon": 12.87014,
+    "display_name": "Karlovy Vary, okres Karlovy Vary, Karlovy Vary Region, Czechia",
+    "osm_type": "relation",
+    "osm_id": 439482,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Karlovy+Vary&countrycodes=cz&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "budapest": {
+   "country": "HU",
+   "query": "Budapest",
+   "plain": {
+    "lat": 47.49788,
+    "lon": 19.04024,
+    "display_name": "Budapest, Central Hungary, Hungary",
+    "osm_type": "relation",
+    "osm_id": 1244004,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Budapest&countrycodes=hu&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 47.49788,
+    "lon": 19.04024,
+    "display_name": "Budapest, Central Hungary, Hungary",
+    "osm_type": "relation",
+    "osm_id": 1244004,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Budapest&countrycodes=hu&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "warsaw": {
+   "country": "PL",
+   "query": "Warsaw",
+   "plain": {
+    "lat": 52.23196,
+    "lon": 21.00672,
+    "display_name": "Warsaw, Masovian Voivodeship, Poland",
+    "osm_type": "relation",
+    "osm_id": 336075,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Warsaw&countrycodes=pl&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 52.23196,
+    "lon": 21.00672,
+    "display_name": "Warsaw, Masovian Voivodeship, Poland",
+    "osm_type": "relation",
+    "osm_id": 336075,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Warsaw&countrycodes=pl&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "krakow": {
+   "country": "PL",
+   "query": "Kraków",
+   "plain": {
+    "lat": 50.06195,
+    "lon": 19.93686,
+    "display_name": "Krakow, Lesser Poland Voivodeship, Poland",
+    "osm_type": "relation",
+    "osm_id": 449696,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Krak%C3%B3w&countrycodes=pl&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 50.06195,
+    "lon": 19.93686,
+    "display_name": "Krakow, Lesser Poland Voivodeship, Poland",
+    "osm_type": "relation",
+    "osm_id": 449696,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Krak%C3%B3w&countrycodes=pl&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "zakopane": {
+   "country": "PL",
+   "query": "Zakopane",
+   "plain": {
+    "lat": 49.29691,
+    "lon": 19.95048,
+    "display_name": "Zakopane, Tatra County, Lesser Poland Voivodeship, Poland",
+    "osm_type": "relation",
+    "osm_id": 2431742,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Zakopane&countrycodes=pl&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 49.29691,
+    "lon": 19.95048,
+    "display_name": "Zakopane, Tatra County, Lesser Poland Voivodeship, Poland",
+    "osm_type": "relation",
+    "osm_id": 2431742,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Zakopane&countrycodes=pl&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "dublin": {
+   "country": "IE",
+   "query": "Dublin",
+   "plain": {
+    "lat": 53.34938,
+    "lon": -6.26056,
+    "display_name": "Dublin, County Dublin, Leinster, Ireland",
+    "osm_type": "relation",
+    "osm_id": 1109531,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Dublin&countrycodes=ie&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 53.34938,
+    "lon": -6.26056,
+    "display_name": "Dublin, County Dublin, Leinster, Ireland",
+    "osm_type": "relation",
+    "osm_id": 1109531,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Dublin&countrycodes=ie&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "galway": {
+   "country": "IE",
+   "query": "Galway",
+   "plain": {
+    "lat": 53.27441,
+    "lon": -9.04906,
+    "display_name": "Galway, County Galway, Connacht, Ireland",
+    "osm_type": "relation",
+    "osm_id": 1390623,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Galway&countrycodes=ie&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 53.27441,
+    "lon": -9.04906,
+    "display_name": "Galway, County Galway, Connacht, Ireland",
+    "osm_type": "relation",
+    "osm_id": 1390623,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Galway&countrycodes=ie&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "brussels": {
+   "country": "BE",
+   "query": "Brussels",
+   "plain": {
+    "lat": 50.84674,
+    "lon": 4.35249,
+    "display_name": "Brussels, Brussels-Capital, Belgium",
+    "osm_type": "relation",
+    "osm_id": 58274,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Brussels&countrycodes=be&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 50.84674,
+    "lon": 4.35249,
+    "display_name": "Brussels, Brussels-Capital, Belgium",
+    "osm_type": "relation",
+    "osm_id": 58274,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Brussels&countrycodes=be&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "bruges": {
+   "country": "BE",
+   "query": "Bruges",
+   "plain": {
+    "lat": 51.20855,
+    "lon": 3.22677,
+    "display_name": "Bruges, Brugge, West Flanders, Flanders, Belgium",
+    "osm_type": "relation",
+    "osm_id": 562654,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Bruges&countrycodes=be&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 51.20855,
+    "lon": 3.22677,
+    "display_name": "Bruges, Brugge, West Flanders, Flanders, Belgium",
+    "osm_type": "relation",
+    "osm_id": 562654,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Bruges&countrycodes=be&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "stockholm": {
+   "country": "SE",
+   "query": "Stockholm",
+   "plain": {
+    "lat": 59.32512,
+    "lon": 18.07109,
+    "display_name": "Stockholm, Stockholm Municipality, Stockholm County, 111 29, Sweden",
+    "osm_type": "node",
+    "osm_id": 25929985,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Stockholm&countrycodes=se&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 59.32512,
+    "lon": 18.07109,
+    "display_name": "Stockholm, Stockholm Municipality, Stockholm County, 111 29, Sweden",
+    "osm_type": "node",
+    "osm_id": 25929985,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Stockholm&countrycodes=se&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "oslo": {
+   "country": "NO",
+   "query": "Oslo",
+   "plain": {
+    "lat": 59.91333,
+    "lon": 10.73897,
+    "display_name": "Oslo, Norway",
+    "osm_type": "relation",
+    "osm_id": 406091,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Oslo&countrycodes=no&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 59.91333,
+    "lon": 10.73897,
+    "display_name": "Oslo, Norway",
+    "osm_type": "relation",
+    "osm_id": 406091,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Oslo&countrycodes=no&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "bergen": {
+   "country": "NO",
+   "query": "Bergen",
+   "plain": {
+    "lat": 60.39431,
+    "lon": 5.32592,
+    "display_name": "Bergen, Vestland, Norway",
+    "osm_type": "relation",
+    "osm_id": 404159,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Bergen&countrycodes=no&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 60.39431,
+    "lon": 5.32592,
+    "display_name": "Bergen, Vestland, Norway",
+    "osm_type": "relation",
+    "osm_id": 404159,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Bergen&countrycodes=no&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "tromso": {
+   "country": "NO",
+   "query": "Tromsø",
+   "plain": {
+    "lat": 69.65163,
+    "lon": 18.95586,
+    "display_name": "Tromsø, Troms, Norway",
+    "osm_type": "relation",
+    "osm_id": 407754,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Troms%C3%B8&countrycodes=no&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 69.65163,
+    "lon": 18.95586,
+    "display_name": "Tromsø, Troms, Norway",
+    "osm_type": "relation",
+    "osm_id": 407754,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Troms%C3%B8&countrycodes=no&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "copenhagen": {
+   "country": "DK",
+   "query": "Copenhagen",
+   "plain": {
+    "lat": 55.68672,
+    "lon": 12.57007,
+    "display_name": "Copenhagen, Copenhagen Municipality, Capital Region of Denmark, 1357, Denmark",
+    "osm_type": "node",
+    "osm_id": 13707878,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Copenhagen&countrycodes=dk&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 55.68672,
+    "lon": 12.57007,
+    "display_name": "Copenhagen, Copenhagen Municipality, Capital Region of Denmark, 1357, Denmark",
+    "osm_type": "node",
+    "osm_id": 13707878,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Copenhagen&countrycodes=dk&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "helsinki": {
+   "country": "FI",
+   "query": "Helsinki",
+   "plain": {
+    "lat": 60.16662,
+    "lon": 24.94354,
+    "display_name": "Helsinki, Helsinki sub-region, Uusimaa, Mainland Finland, Finland",
+    "osm_type": "relation",
+    "osm_id": 34914,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Helsinki&countrycodes=fi&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 60.16662,
+    "lon": 24.94354,
+    "display_name": "Helsinki, Helsinki sub-region, Uusimaa, Mainland Finland, Finland",
+    "osm_type": "relation",
+    "osm_id": 34914,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Helsinki&countrycodes=fi&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "rovaniemi": {
+   "country": "FI",
+   "query": "Rovaniemi",
+   "plain": {
+    "lat": 66.50255,
+    "lon": 25.73039,
+    "display_name": "Rovaniemi, Rovaniemi sub-region, Lapland, Mainland Finland, Finland",
+    "osm_type": "relation",
+    "osm_id": 2528474,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Rovaniemi&countrycodes=fi&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 66.50255,
+    "lon": 25.73039,
+    "display_name": "Rovaniemi, Rovaniemi sub-region, Lapland, Mainland Finland, Finland",
+    "osm_type": "relation",
+    "osm_id": 2528474,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Rovaniemi&countrycodes=fi&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "ljubljana": {
+   "country": "SI",
+   "query": "Ljubljana",
+   "plain": {
+    "lat": 46.05003,
+    "lon": 14.50693,
+    "display_name": "Ljubljana, Upravna Enota Ljubljana, 1000, Slovenia",
+    "osm_type": "node",
+    "osm_id": 6968827,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Ljubljana&countrycodes=si&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 46.05003,
+    "lon": 14.50693,
+    "display_name": "Ljubljana, Upravna Enota Ljubljana, 1000, Slovenia",
+    "osm_type": "node",
+    "osm_id": 6968827,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Ljubljana&countrycodes=si&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "bled": {
+   "country": "SI",
+   "query": "Bled",
+   "plain": {
+    "lat": 46.36842,
+    "lon": 14.11006,
+    "display_name": "Bled, 4260, Slovenia",
+    "osm_type": "node",
+    "osm_id": 862116228,
+    "type": "town",
+    "url": "https://nominatim.openstreetmap.org/search?q=Bled&countrycodes=si&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 46.36842,
+    "lon": 14.11006,
+    "display_name": "Bled, 4260, Slovenia",
+    "osm_type": "node",
+    "osm_id": 862116228,
+    "type": "town",
+    "url": "https://nominatim.openstreetmap.org/search?q=Bled&countrycodes=si&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "larnaca": {
+   "country": "CY",
+   "query": "Larnaca",
+   "plain": {
+    "lat": 34.92361,
+    "lon": 33.62362,
+    "display_name": "Larnaca, Δήμος Λάρνακας, Larnaca District, Cyprus",
+    "osm_type": "relation",
+    "osm_id": 533154,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Larnaca&countrycodes=cy&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 34.92361,
+    "lon": 33.62362,
+    "display_name": "Larnaca, Δήμος Λάρνακας, Larnaca District, Cyprus",
+    "osm_type": "relation",
+    "osm_id": 533154,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Larnaca&countrycodes=cy&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "limassol": {
+   "country": "CY",
+   "query": "Limassol",
+   "plain": {
+    "lat": 34.68529,
+    "lon": 33.03327,
+    "display_name": "Limassol, Limassol Municipality, Limassol District, Cyprus, 3085, Cyprus",
+    "osm_type": "node",
+    "osm_id": 9331795,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Limassol&countrycodes=cy&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 34.68529,
+    "lon": 33.03327,
+    "display_name": "Limassol, Limassol Municipality, Limassol District, Cyprus, 3085, Cyprus",
+    "osm_type": "node",
+    "osm_id": 9331795,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Limassol&countrycodes=cy&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "paphos": {
+   "country": "CY",
+   "query": "Paphos",
+   "plain": {
+    "lat": 34.7744,
+    "lon": 32.42316,
+    "display_name": "Paphos Municipality, Paphos District, Cyprus",
+    "osm_type": "relation",
+    "osm_id": 533386,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Paphos&countrycodes=cy&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 34.7744,
+    "lon": 32.42316,
+    "display_name": "Paphos Municipality, Paphos District, Cyprus",
+    "osm_type": "relation",
+    "osm_id": 533386,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Paphos&countrycodes=cy&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "valletta": {
+   "country": "MT",
+   "query": "Valletta",
+   "plain": {
+    "lat": 35.899,
+    "lon": 14.51366,
+    "display_name": "Valletta, Port Region, Malta",
+    "osm_type": "relation",
+    "osm_id": 7510580,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Valletta&countrycodes=mt&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 35.899,
+    "lon": 14.51366,
+    "display_name": "Valletta, Port Region, Malta",
+    "osm_type": "relation",
+    "osm_id": 7510580,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Valletta&countrycodes=mt&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "bucharest": {
+   "country": "RO",
+   "query": "Bucharest",
+   "plain": {
+    "lat": 44.43614,
+    "lon": 26.10268,
+    "display_name": "Bucharest, Romania",
+    "osm_type": "relation",
+    "osm_id": 377733,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Bucharest&countrycodes=ro&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 44.43614,
+    "lon": 26.10268,
+    "display_name": "Bucharest, Romania",
+    "osm_type": "relation",
+    "osm_id": 377733,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Bucharest&countrycodes=ro&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "brasov": {
+   "country": "RO",
+   "query": "Brașov",
+   "plain": {
+    "lat": 45.65251,
+    "lon": 25.61057,
+    "display_name": "Brasov, Zona Metropolitană Brașov, Brașov, Romania",
+    "osm_type": "relation",
+    "osm_id": 10367676,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Bra%C8%99ov&countrycodes=ro&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 45.65251,
+    "lon": 25.61057,
+    "display_name": "Brasov, Zona Metropolitană Brașov, Brașov, Romania",
+    "osm_type": "relation",
+    "osm_id": 10367676,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Bra%C8%99ov&countrycodes=ro&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "reykjavik": {
+   "country": "IS",
+   "query": "Reykjavík",
+   "plain": {
+    "lat": 64.14598,
+    "lon": -21.94224,
+    "display_name": "Reykjavik, Capital Region, Iceland",
+    "osm_type": "relation",
+    "osm_id": 2580605,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Reykjav%C3%ADk&countrycodes=is&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 64.14598,
+    "lon": -21.94224,
+    "display_name": "Reykjavik, Capital Region, Iceland",
+    "osm_type": "relation",
+    "osm_id": 2580605,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Reykjav%C3%ADk&countrycodes=is&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "yerevan": {
+   "country": "AM",
+   "query": "Yerevan",
+   "plain": {
+    "lat": 40.17771,
+    "lon": 44.51262,
+    "display_name": "Yerevan, Armenia",
+    "osm_type": "relation",
+    "osm_id": 364087,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Yerevan&countrycodes=am&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 40.17771,
+    "lon": 44.51262,
+    "display_name": "Yerevan, Armenia",
+    "osm_type": "relation",
+    "osm_id": 364087,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Yerevan&countrycodes=am&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "almaty": {
+   "country": "KZ",
+   "query": "Almaty",
+   "plain": {
+    "lat": 43.23639,
+    "lon": 76.94573,
+    "display_name": "Almaty, Kazakhstan",
+    "osm_type": "relation",
+    "osm_id": 2465058,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Almaty&countrycodes=kz&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 43.23639,
+    "lon": 76.94573,
+    "display_name": "Almaty, Kazakhstan",
+    "osm_type": "relation",
+    "osm_id": 2465058,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Almaty&countrycodes=kz&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "astana": {
+   "country": "KZ",
+   "query": "Astana",
+   "plain": {
+    "lat": 51.12828,
+    "lon": 71.43047,
+    "display_name": "Astana, 010000, Kazakhstan",
+    "osm_type": "relation",
+    "osm_id": 3087156,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Astana&countrycodes=kz&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 51.12828,
+    "lon": 71.43047,
+    "display_name": "Astana, 010000, Kazakhstan",
+    "osm_type": "relation",
+    "osm_id": 3087156,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Astana&countrycodes=kz&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "tashkent": {
+   "country": "UZ",
+   "query": "Tashkent",
+   "plain": {
+    "lat": 41.31234,
+    "lon": 69.27871,
+    "display_name": "Tashkent, 100000, Uzbekistan",
+    "osm_type": "relation",
+    "osm_id": 2216724,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Tashkent&countrycodes=uz&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 41.31234,
+    "lon": 69.27871,
+    "display_name": "Tashkent, 100000, Uzbekistan",
+    "osm_type": "relation",
+    "osm_id": 2216724,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Tashkent&countrycodes=uz&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "samarkand": {
+   "country": "UZ",
+   "query": "Samarkand",
+   "plain": {
+    "lat": 39.655,
+    "lon": 66.9757,
+    "display_name": "Samarkand City, Samarqand Region, 140000, Uzbekistan",
+    "osm_type": "relation",
+    "osm_id": 15589846,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Samarkand&countrycodes=uz&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 39.655,
+    "lon": 66.9757,
+    "display_name": "Samarkand City, Samarqand Region, 140000, Uzbekistan",
+    "osm_type": "relation",
+    "osm_id": 15589846,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Samarkand&countrycodes=uz&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "bukhara": {
+   "country": "UZ",
+   "query": "Bukhara",
+   "plain": {
+    "lat": 39.77598,
+    "lon": 64.41515,
+    "display_name": "Bukhara, Bukhara Region, Uzbekistan",
+    "osm_type": "relation",
+    "osm_id": 13070474,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Bukhara&countrycodes=uz&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 39.77598,
+    "lon": 64.41515,
+    "display_name": "Bukhara, Bukhara Region, Uzbekistan",
+    "osm_type": "relation",
+    "osm_id": 13070474,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Bukhara&countrycodes=uz&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "bishkek": {
+   "country": "KG",
+   "query": "Bishkek",
+   "plain": {
+    "lat": 42.87614,
+    "lon": 74.60367,
+    "display_name": "Bishkek City, Kyrgyzstan",
+    "osm_type": "relation",
+    "osm_id": 8493930,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Bishkek&countrycodes=kg&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 42.87614,
+    "lon": 74.60367,
+    "display_name": "Bishkek City, Kyrgyzstan",
+    "osm_type": "relation",
+    "osm_id": 8493930,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Bishkek&countrycodes=kg&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "karakol": {
+   "country": "KG",
+   "query": "Karakol",
+   "plain": {
+    "lat": 42.49174,
+    "lon": 78.39686,
+    "display_name": "Karakol City, Issyk-Kul Region, Kyrgyzstan",
+    "osm_type": "relation",
+    "osm_id": 15585749,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Karakol&countrycodes=kg&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 42.49174,
+    "lon": 78.39686,
+    "display_name": "Karakol City, Issyk-Kul Region, Kyrgyzstan",
+    "osm_type": "relation",
+    "osm_id": 15585749,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Karakol&countrycodes=kg&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "islamabad": {
+   "country": "PK",
+   "query": "Islamabad",
+   "plain": {
+    "lat": 33.69381,
+    "lon": 73.06515,
+    "display_name": "Islamabad, Zone 1, Islamabad Capital Territory, 44000, Pakistan",
+    "osm_type": "node",
+    "osm_id": 316440978,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Islamabad&countrycodes=pk&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 33.69381,
+    "lon": 73.06515,
+    "display_name": "Islamabad, Zone 1, Islamabad Capital Territory, 44000, Pakistan",
+    "osm_type": "node",
+    "osm_id": 316440978,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Islamabad&countrycodes=pk&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "lahore": {
+   "country": "PK",
+   "query": "Lahore",
+   "plain": {
+    "lat": 31.56568,
+    "lon": 74.31418,
+    "display_name": "Lahore, Lahore City Tehsil, Lahore District, Lahore Division, Punjab, 54100, Pakistan",
+    "osm_type": "node",
+    "osm_id": 1886594378,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Lahore&countrycodes=pk&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 31.56568,
+    "lon": 74.31418,
+    "display_name": "Lahore, Lahore Division, Punjab, 54100, Pakistan",
+    "osm_type": "node",
+    "osm_id": 1886594378,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Lahore&countrycodes=pk&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "kathmandu": {
+   "country": "NP",
+   "query": "Kathmandu",
+   "plain": {
+    "lat": 27.70832,
+    "lon": 85.32058,
+    "display_name": "Kathmandu Metropolitan City, Kathmandu, Bagamati Province, Nepal",
+    "osm_type": "relation",
+    "osm_id": 12394677,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Kathmandu&countrycodes=np&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 27.70832,
+    "lon": 85.32058,
+    "display_name": "Kathmandu Metropolitan City, Kathmandu, Bagamati Province, Nepal",
+    "osm_type": "relation",
+    "osm_id": 12394677,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Kathmandu&countrycodes=np&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "pokhara": {
+   "country": "NP",
+   "query": "Pokhara",
+   "plain": {
+    "lat": 28.20954,
+    "lon": 83.9914,
+    "display_name": "Pokhara, Kaski, Gandaki Province, Nepal",
+    "osm_type": "relation",
+    "osm_id": 6104486,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Pokhara&countrycodes=np&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 28.20954,
+    "lon": 83.9914,
+    "display_name": "Pokhara, Kaski, Gandaki Province, Nepal",
+    "osm_type": "relation",
+    "osm_id": 6104486,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Pokhara&countrycodes=np&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "manila": {
+   "country": "PH",
+   "query": "Manila",
+   "plain": {
+    "lat": 14.59045,
+    "lon": 120.98036,
+    "display_name": "Manila, Capital District, Metro Manila, Philippines",
+    "osm_type": "relation",
+    "osm_id": 103703,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Manila&countrycodes=ph&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 14.59045,
+    "lon": 120.98036,
+    "display_name": "Manila, Capital District, Metro Manila, Philippines",
+    "osm_type": "relation",
+    "osm_id": 103703,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Manila&countrycodes=ph&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "cebu": {
+   "country": "PH",
+   "query": "Cebu City",
+   "plain": {
+    "lat": 10.29349,
+    "lon": 123.90182,
+    "display_name": "Cebu City, Central Visayas, Philippines",
+    "osm_type": "relation",
+    "osm_id": 12455830,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Cebu+City&countrycodes=ph&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 10.29349,
+    "lon": 123.90182,
+    "display_name": "Cebu City, Central Visayas, Philippines",
+    "osm_type": "relation",
+    "osm_id": 12455830,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Cebu+City&countrycodes=ph&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "boracay": {
+   "country": "PH",
+   "query": "Boracay",
+   "plain": {
+    "lat": 11.96937,
+    "lon": 121.92273,
+    "display_name": "Boracay, Caticlan, Malay, Aklan, Western Visayas, 5608, Philippines",
+    "osm_type": "relation",
+    "osm_id": 958902,
+    "type": "island",
+    "url": "https://nominatim.openstreetmap.org/search?q=Boracay&countrycodes=ph&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": null,
+   "chosen": "plain"
+  },
+  "siem-reap": {
+   "country": "KH",
+   "query": "Siem Reap",
+   "plain": {
+    "lat": 13.36176,
+    "lon": 103.85903,
+    "display_name": "Siem Reap, 123456, Cambodia",
+    "osm_type": "node",
+    "osm_id": 257838557,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Siem+Reap&countrycodes=kh&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 13.36176,
+    "lon": 103.85903,
+    "display_name": "Siem Reap, 123456, Cambodia",
+    "osm_type": "node",
+    "osm_id": 257838557,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Siem+Reap&countrycodes=kh&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "phnom-penh": {
+   "country": "KH",
+   "query": "Phnom Penh",
+   "plain": {
+    "lat": 11.57304,
+    "lon": 104.85781,
+    "display_name": "Phnom Penh, Cambodia",
+    "osm_type": "relation",
+    "osm_id": 2199033,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Phnom+Penh&countrycodes=kh&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 11.56827,
+    "lon": 104.92244,
+    "display_name": "Phnom Penh, Khan Daun Penh, Phnom Penh, 120203, Cambodia",
+    "osm_type": "node",
+    "osm_id": 560229438,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Phnom+Penh&countrycodes=kh&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "zanzibar": {
+   "country": "TZ",
+   "query": "Zanzibar City",
+   "plain": {
+    "lat": -6.16649,
+    "lon": 39.20743,
+    "display_name": "Zanzibar City, Mjini, Zanzibar Urban/West, Zanzibar, 71109, Tanzania",
+    "osm_type": "node",
+    "osm_id": 3320526612,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Zanzibar+City&countrycodes=tz&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": -6.16649,
+    "lon": 39.20743,
+    "display_name": "Zanzibar City, Mjini, Zanzibar Urban/West, Zanzibar, 71109, Tanzania",
+    "osm_type": "node",
+    "osm_id": 3320526612,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Zanzibar+City&countrycodes=tz&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "arusha": {
+   "country": "TZ",
+   "query": "Arusha",
+   "plain": {
+    "lat": -3.36968,
+    "lon": 36.68808,
+    "display_name": "Arusha, Arusha Municipal, Arusha, Northern Zone, 23103, Tanzania",
+    "osm_type": "node",
+    "osm_id": 255603098,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Arusha&countrycodes=tz&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": -3.36968,
+    "lon": 36.68808,
+    "display_name": "Arusha, Arusha Municipal, Arusha, Northern Zone, 23103, Tanzania",
+    "osm_type": "node",
+    "osm_id": 255603098,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Arusha&countrycodes=tz&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "port-louis": {
+   "country": "MU",
+   "query": "Port Louis",
+   "plain": {
+    "lat": -20.16245,
+    "lon": 57.5028,
+    "display_name": "Port Louis, 11317, Mauritius",
+    "osm_type": "node",
+    "osm_id": 243819778,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Port+Louis&countrycodes=mu&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": -20.16245,
+    "lon": 57.5028,
+    "display_name": "Port Louis, 11317, Mauritius",
+    "osm_type": "node",
+    "osm_id": 243819778,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Port+Louis&countrycodes=mu&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "grand-baie": {
+   "country": "MU",
+   "query": "Grand Baie",
+   "plain": {
+    "lat": -20.01302,
+    "lon": 57.58463,
+    "display_name": "Grand Baie, Grand Baie VCA, East, Rivière du Rempart District, 30529, Mauritius",
+    "osm_type": "node",
+    "osm_id": 1663012341,
+    "type": "town",
+    "url": "https://nominatim.openstreetmap.org/search?q=Grand+Baie&countrycodes=mu&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": null,
+   "chosen": "plain"
+  },
+  "mahe": {
+   "country": "SC",
+   "query": "Mahé, Seychelles",
+   "plain": {
+    "lat": -4.6838,
+    "lon": 55.49264,
+    "display_name": "Mahé, Seychelles",
+    "osm_type": "relation",
+    "osm_id": 9435209,
+    "type": "island",
+    "url": "https://nominatim.openstreetmap.org/search?q=Mah%C3%A9%2C+Seychelles&countrycodes=sc&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": null,
+   "chosen": "plain"
+  },
+  "toronto": {
+   "country": "CA",
+   "query": "Toronto",
+   "plain": {
+    "lat": 43.65348,
+    "lon": -79.38393,
+    "display_name": "Toronto, Ontario, Canada",
+    "osm_type": "relation",
+    "osm_id": 324211,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Toronto&countrycodes=ca&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 43.65348,
+    "lon": -79.38393,
+    "display_name": "Toronto, Ontario, Canada",
+    "osm_type": "relation",
+    "osm_id": 324211,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Toronto&countrycodes=ca&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "vancouver": {
+   "country": "CA",
+   "query": "Vancouver",
+   "plain": {
+    "lat": 49.26087,
+    "lon": -123.11395,
+    "display_name": "Vancouver, Metro Vancouver Regional District, British Columbia, Canada",
+    "osm_type": "relation",
+    "osm_id": 1852574,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Vancouver&countrycodes=ca&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 49.26087,
+    "lon": -123.11395,
+    "display_name": "Vancouver, Metro Vancouver Regional District, British Columbia, Canada",
+    "osm_type": "relation",
+    "osm_id": 1852574,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Vancouver&countrycodes=ca&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "montreal": {
+   "country": "CA",
+   "query": "Montreal",
+   "plain": {
+    "lat": 45.50318,
+    "lon": -73.56981,
+    "display_name": "Montreal, Urban agglomeration of Montreal, Montreal (administrative region), Quebec, Canada",
+    "osm_type": "relation",
+    "osm_id": 1634158,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Montreal&countrycodes=ca&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 45.50318,
+    "lon": -73.56981,
+    "display_name": "Montreal, Urban agglomeration of Montreal, Montreal (administrative region), Quebec, Canada",
+    "osm_type": "relation",
+    "osm_id": 1634158,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Montreal&countrycodes=ca&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "banff": {
+   "country": "CA",
+   "query": "Banff, Alberta",
+   "plain": {
+    "lat": 51.17508,
+    "lon": -115.57208,
+    "display_name": "Banff, Alberta, Canada",
+    "osm_type": "relation",
+    "osm_id": 8452792,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Banff%2C+Alberta&countrycodes=ca&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 51.17508,
+    "lon": -115.57208,
+    "display_name": "Banff, Alberta, Canada",
+    "osm_type": "relation",
+    "osm_id": 8452792,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Banff%2C+Alberta&countrycodes=ca&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  }
+ }
+}

@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-30T06:58:41.691Z",
+ "generatedAt": "2026-10-01T07:19:02.881Z",
  "destinations": [
   {
    "id": "riyadh",
@@ -1307,14 +1307,625 @@
    "qa": false
   },
   {
+   "id": "moscow",
+   "countryCode": "RU",
+   "name": "Moscow",
+   "latitude": 55.75054,
+   "longitude": 37.61748,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "saint-petersburg",
+   "countryCode": "RU",
+   "name": "Saint Petersburg",
+   "latitude": 59.93873,
+   "longitude": 30.31623,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "kazan",
+   "countryCode": "RU",
+   "name": "Kazan",
+   "latitude": 55.79465,
+   "longitude": 49.1115,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "sochi",
+   "countryCode": "RU",
+   "name": "Sochi",
+   "latitude": 43.58548,
+   "longitude": 39.72311,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "sarajevo",
+   "countryCode": "BA",
+   "name": "Sarajevo",
+   "latitude": 43.85707,
+   "longitude": 18.41261,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "mostar",
+   "countryCode": "BA",
+   "name": "Mostar",
+   "latitude": 43.34359,
+   "longitude": 17.80766,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "tirana",
+   "countryCode": "AL",
+   "name": "Tirana",
+   "latitude": 41.32815,
+   "longitude": 19.81844,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "durres",
+   "countryCode": "AL",
+   "name": "Durrës",
+   "latitude": 41.31325,
+   "longitude": 19.44623,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "saranda",
+   "countryCode": "AL",
+   "name": "Sarandë",
+   "latitude": 39.87522,
+   "longitude": 20.00653,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "kotor",
+   "countryCode": "ME",
+   "name": "Kotor",
+   "latitude": 42.42492,
+   "longitude": 18.77133,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "budva",
+   "countryCode": "ME",
+   "name": "Budva",
+   "latitude": 42.28857,
+   "longitude": 18.84195,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "podgorica",
+   "countryCode": "ME",
+   "name": "Podgorica",
+   "latitude": 42.44152,
+   "longitude": 19.26211,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "belgrade",
+   "countryCode": "RS",
+   "name": "Belgrade",
+   "latitude": 44.81781,
+   "longitude": 20.4569,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "novi-sad",
+   "countryCode": "RS",
+   "name": "Novi Sad",
+   "latitude": 45.25513,
+   "longitude": 19.84518,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "zagreb",
+   "countryCode": "HR",
+   "name": "Zagreb",
+   "latitude": 45.8131,
+   "longitude": 15.97728,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "split",
+   "countryCode": "HR",
+   "name": "Split",
+   "latitude": 43.51164,
+   "longitude": 16.43997,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "dubrovnik",
+   "countryCode": "HR",
+   "name": "Dubrovnik",
+   "latitude": 42.6491,
+   "longitude": 18.09395,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "prague",
+   "countryCode": "CZ",
+   "name": "Prague",
+   "latitude": 50.08747,
+   "longitude": 14.42125,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "karlovy-vary",
+   "countryCode": "CZ",
+   "name": "Karlovy Vary",
+   "latitude": 50.23062,
+   "longitude": 12.87014,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "budapest",
+   "countryCode": "HU",
+   "name": "Budapest",
+   "latitude": 47.49788,
+   "longitude": 19.04024,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "warsaw",
+   "countryCode": "PL",
+   "name": "Warsaw",
+   "latitude": 52.23196,
+   "longitude": 21.00672,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "krakow",
+   "countryCode": "PL",
+   "name": "Kraków",
+   "latitude": 50.06195,
+   "longitude": 19.93686,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "zakopane",
+   "countryCode": "PL",
+   "name": "Zakopane",
+   "latitude": 49.29691,
+   "longitude": 19.95048,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "dublin",
+   "countryCode": "IE",
+   "name": "Dublin",
+   "latitude": 53.34938,
+   "longitude": -6.26056,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "galway",
+   "countryCode": "IE",
+   "name": "Galway",
+   "latitude": 53.27441,
+   "longitude": -9.04906,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "brussels",
+   "countryCode": "BE",
+   "name": "Brussels",
+   "latitude": 50.84674,
+   "longitude": 4.35249,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "bruges",
+   "countryCode": "BE",
+   "name": "Bruges",
+   "latitude": 51.20855,
+   "longitude": 3.22677,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "stockholm",
+   "countryCode": "SE",
+   "name": "Stockholm",
+   "latitude": 59.32512,
+   "longitude": 18.07109,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "oslo",
+   "countryCode": "NO",
+   "name": "Oslo",
+   "latitude": 59.91333,
+   "longitude": 10.73897,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "bergen",
+   "countryCode": "NO",
+   "name": "Bergen",
+   "latitude": 60.39431,
+   "longitude": 5.32592,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "tromso",
+   "countryCode": "NO",
+   "name": "Tromsø",
+   "latitude": 69.65163,
+   "longitude": 18.95586,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "copenhagen",
+   "countryCode": "DK",
+   "name": "Copenhagen",
+   "latitude": 55.68672,
+   "longitude": 12.57007,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "helsinki",
+   "countryCode": "FI",
+   "name": "Helsinki",
+   "latitude": 60.16662,
+   "longitude": 24.94354,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "rovaniemi",
+   "countryCode": "FI",
+   "name": "Rovaniemi",
+   "latitude": 66.50255,
+   "longitude": 25.73039,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "ljubljana",
+   "countryCode": "SI",
+   "name": "Ljubljana",
+   "latitude": 46.05003,
+   "longitude": 14.50693,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "bled",
+   "countryCode": "SI",
+   "name": "Bled",
+   "latitude": 46.36842,
+   "longitude": 14.11006,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "larnaca",
+   "countryCode": "CY",
+   "name": "Larnaca",
+   "latitude": 34.92361,
+   "longitude": 33.62362,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "limassol",
+   "countryCode": "CY",
+   "name": "Limassol",
+   "latitude": 34.68529,
+   "longitude": 33.03327,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "paphos",
+   "countryCode": "CY",
+   "name": "Paphos",
+   "latitude": 34.7744,
+   "longitude": 32.42316,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "valletta",
+   "countryCode": "MT",
+   "name": "Valletta",
+   "latitude": 35.899,
+   "longitude": 14.51366,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "bucharest",
+   "countryCode": "RO",
+   "name": "Bucharest",
+   "latitude": 44.43614,
+   "longitude": 26.10268,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "brasov",
+   "countryCode": "RO",
+   "name": "Brașov",
+   "latitude": 45.65251,
+   "longitude": 25.61057,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
    "id": "reykjavik",
    "countryCode": "IS",
    "name": "Reykjavík",
-   "geocode": "Reykjavík, Iceland",
-   "latitude": null,
-   "longitude": null,
-   "coordinateSource": null,
-   "qa": true
+   "latitude": 64.14598,
+   "longitude": -21.94224,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "yerevan",
+   "countryCode": "AM",
+   "name": "Yerevan",
+   "latitude": 40.17771,
+   "longitude": 44.51262,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "almaty",
+   "countryCode": "KZ",
+   "name": "Almaty",
+   "latitude": 43.23639,
+   "longitude": 76.94573,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "astana",
+   "countryCode": "KZ",
+   "name": "Astana",
+   "latitude": 51.12828,
+   "longitude": 71.43047,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "tashkent",
+   "countryCode": "UZ",
+   "name": "Tashkent",
+   "latitude": 41.31234,
+   "longitude": 69.27871,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "samarkand",
+   "countryCode": "UZ",
+   "name": "Samarkand",
+   "latitude": 39.655,
+   "longitude": 66.9757,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "bukhara",
+   "countryCode": "UZ",
+   "name": "Bukhara",
+   "latitude": 39.77598,
+   "longitude": 64.41515,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "bishkek",
+   "countryCode": "KG",
+   "name": "Bishkek",
+   "latitude": 42.87614,
+   "longitude": 74.60367,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "karakol",
+   "countryCode": "KG",
+   "name": "Karakol",
+   "latitude": 42.49174,
+   "longitude": 78.39686,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "islamabad",
+   "countryCode": "PK",
+   "name": "Islamabad",
+   "latitude": 33.69381,
+   "longitude": 73.06515,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "lahore",
+   "countryCode": "PK",
+   "name": "Lahore",
+   "latitude": 31.56568,
+   "longitude": 74.31418,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "kathmandu",
+   "countryCode": "NP",
+   "name": "Kathmandu",
+   "latitude": 27.70832,
+   "longitude": 85.32058,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "pokhara",
+   "countryCode": "NP",
+   "name": "Pokhara",
+   "latitude": 28.20954,
+   "longitude": 83.9914,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "manila",
+   "countryCode": "PH",
+   "name": "Manila",
+   "latitude": 14.59045,
+   "longitude": 120.98036,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "cebu",
+   "countryCode": "PH",
+   "name": "Cebu City",
+   "latitude": 10.29349,
+   "longitude": 123.90182,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "boracay",
+   "countryCode": "PH",
+   "name": "Boracay",
+   "latitude": 11.96937,
+   "longitude": 121.92273,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "siem-reap",
+   "countryCode": "KH",
+   "name": "Siem Reap",
+   "latitude": 13.36176,
+   "longitude": 103.85903,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "phnom-penh",
+   "countryCode": "KH",
+   "name": "Phnom Penh",
+   "latitude": 11.56827,
+   "longitude": 104.92244,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "zanzibar",
+   "countryCode": "TZ",
+   "name": "Zanzibar",
+   "latitude": -6.16649,
+   "longitude": 39.20743,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "arusha",
+   "countryCode": "TZ",
+   "name": "Arusha",
+   "latitude": -3.36968,
+   "longitude": 36.68808,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "port-louis",
+   "countryCode": "MU",
+   "name": "Port Louis",
+   "latitude": -20.16245,
+   "longitude": 57.5028,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "grand-baie",
+   "countryCode": "MU",
+   "name": "Grand Baie",
+   "latitude": -20.01302,
+   "longitude": 57.58463,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "mahe",
+   "countryCode": "SC",
+   "name": "Mahé",
+   "latitude": -4.6838,
+   "longitude": 55.49264,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "toronto",
+   "countryCode": "CA",
+   "name": "Toronto",
+   "latitude": 43.65348,
+   "longitude": -79.38393,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "vancouver",
+   "countryCode": "CA",
+   "name": "Vancouver",
+   "latitude": 49.26087,
+   "longitude": -123.11395,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "montreal",
+   "countryCode": "CA",
+   "name": "Montreal",
+   "latitude": 45.50318,
+   "longitude": -73.56981,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "banff",
+   "countryCode": "CA",
+   "name": "Banff",
+   "latitude": 51.17508,
+   "longitude": -115.57208,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
   },
   {
    "id": "sapporo",

@@ -61,6 +61,10 @@
    "referenceGeocode": "Funchal, Madeira, Portugal",
    "reason": "The stored coordinate is the middle of the island (1,272 m). Most visitors stay in Funchal on the south coast, whose climate is used.",
    "withhold": "Funchal's nearest ERA5-Land land cell (5.7 km) averages 548 m — the mountainside above the town — while the town centre is near sea level, so its temperatures would read too cold. Needs a station override (Funchal observatory normals)."
+  },
+  "mahe": {
+   "referenceGeocode": "Victoria, Seychelles",
+   "reason": "The stored coordinate is the middle of Mahé island (its mountainous interior). Visitors stay on the coast; Victoria, the capital on the north-east coast, is used."
   }
  }
 }
