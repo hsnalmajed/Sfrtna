@@ -31,6 +31,7 @@ export default function SearchableSelect({
   emptyText,
   placeholder,
   labelClassName = "text-gray-700",
+  buttonClassName = "",
 }: {
   value: string;
   options: SearchableOption[];
@@ -42,6 +43,8 @@ export default function SearchableSelect({
   placeholder?: string;
   /** The label's colour — light on a dark panel. */
   labelClassName?: string;
+  /** Extra classes for the closed button (a taller one, say). */
+  buttonClassName?: string;
 }) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
@@ -92,7 +95,7 @@ export default function SearchableSelect({
         onClick={() => setOpen((v) => !v)}
         aria-haspopup="listbox"
         aria-expanded={open}
-        className="flex w-full items-center justify-between gap-2 rounded-xl border border-gray-200 bg-white px-4 py-3 text-start text-sm font-semibold text-gray-800 outline-none transition hover:border-brand-300 focus:border-brand-400 focus:ring-4 focus:ring-brand-100"
+        className={`flex w-full items-center justify-between gap-2 rounded-xl border border-gray-200 bg-white px-4 py-3 text-start text-sm font-semibold text-gray-800 outline-none transition hover:border-brand-300 focus:border-brand-400 focus:ring-4 focus:ring-brand-100 ${buttonClassName}`}
       >
         <span className={`truncate ${selected || value ? "" : "font-normal text-gray-400"}`}>
           {selected?.label || value || placeholder}
