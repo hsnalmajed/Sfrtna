@@ -32,8 +32,9 @@ export async function generateMetadata({ params }: PageProps<"/[locale]/seasons"
  * src/lib/travelSeason/site.ts). The home page's "best in <month>" reads the
  * same records; nothing here is computed on the page.
  */
-export default async function SeasonsPage({ params }: PageProps<"/[locale]/seasons">) {
+export default async function SeasonsPage({ params, searchParams }: PageProps<"/[locale]/seasons">) {
   const { locale } = await params;
+  const cityParam = (await searchParams).city;
   const loc = (locale === "en" ? "en" : "ar") as Locale;
   const dict = getDictionary(loc);
   const isAr = loc === "ar";
@@ -91,6 +92,7 @@ export default async function SeasonsPage({ params }: PageProps<"/[locale]/seaso
           locale={loc}
           cities={cities}
           currentMonth={month}
+          initialCity={typeof cityParam === "string" ? cityParam : undefined}
           dict={{
             ...dict.citySeasons,
             monthNames: [...dict.citySeasons.monthNames],

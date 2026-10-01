@@ -79,3 +79,44 @@ export function placeCountLabel(
     few: dict.placeFew,
   });
 }
+
+/**
+ * Months (1–12) as ranges: [4, 5, 6, 9, 10] → "April – June, September –
+ * October". A run may wrap round the year: [11, 12, 1, 2] → "November –
+ * February".
+ */
+export function monthRanges(months: number[], name: (m: number) => string, locale: "ar" | "en"): string {
+  const set = new Set(months);
+  if (set.size === 0) return "";
+  if (set.size === 12) return locale === "ar" ? "طوال العام" : "All year";
+  const runs: [number, number][] = [];
+  for (let m = 1; m <= 12; m++) {
+    const prev = m === 1 ? 12 : m - 1;
+    if (!set.has(m) || set.has(prev)) continue; // not the start of a run
+    let end = m;
+    while (set.has(end === 12 ? 1 : end + 1) && (end === 12 ? 1 : end + 1) !== m) end = end === 12 ? 1 : end + 1;
+    runs.push([m, end]);
+  }
+  return runs
+    .map(([a, b]) => (a === b ? name(a) : `${name(a)} – ${name(b)}`))
+    .join(locale === "ar" ? "، " : ", ");
+}
+
+/**
+ * Roughly how long a flight from Riyadh takes, in whole hours: the
+ * great-circle distance at a typical cruise speed, plus half an hour for
+ * climb and descent. Precise enough to tell a weekend break from a long
+ * haul; never presented as a schedule. Undefined under 200 km.
+ */
+export function flightHoursFromRiyadh(to: { lat: number; lon: number }): number | undefined {
+  const from = { lat: 24.7136, lon: 46.6753 };
+  const R = 6371;
+  const dLat = ((to.lat - from.lat) * Math.PI) / 180;
+  const dLon = ((to.lon - from.lon) * Math.PI) / 180;
+  const h =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos((from.lat * Math.PI) / 180) * Math.cos((to.lat * Math.PI) / 180) * Math.sin(dLon / 2) ** 2;
+  const km = R * 2 * Math.atan2(Math.sqrt(h), Math.sqrt(1 - h));
+  if (km <= 200) return undefined;
+  return Math.max(1, Math.round(km / 800 + 0.5));
+}

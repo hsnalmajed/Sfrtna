@@ -6,7 +6,11 @@ import { findCountry } from "@/lib/countries";
 import { findCity } from "@/lib/cities";
 import { fetchCityOverviews, fetchPlacesAroundCities } from "@/lib/mapPins";
 import { fetchCityHighlights } from "@/lib/guideHighlights";
-import { placeCountLabel } from "@/lib/format";
+import { countLabel, flightHoursFromRiyadh, monthRanges, placeCountLabel } from "@/lib/format";
+import { monthName } from "@/lib/seasons";
+import { bestMonths } from "@/lib/travelSeason/site";
+import { CITY_COORDS } from "@/data/cityCoords";
+import CountryQuickFacts, { type QuickFact } from "@/components/CountryQuickFacts";
 import { BOOKING_SHORT_LABELS } from "@/lib/countryGuides";
 import { fetchCitiesForCountry, fetchToursForCity } from "@/lib/viator";
 import { type PlaceListItem } from "@/components/CityPlacesExplorer";
@@ -137,6 +141,36 @@ export default async function CityPlacesPageBody({
 
   const cityName = loc === "ar" ? cityEntry.nameAr : cityEntry.nameEn;
 
+  // What depends on the city rather than the country: when to go there, how
+  // long the flight from Riyadh is, and how much there is to see.
+  const facts: QuickFact[] = [];
+  const best = bestMonths(cityEntry.slug);
+  if (best.length) {
+    facts.push({
+      icon: "🗓️",
+      label: dict.attractions.factBestMonths,
+      value: monthRanges(best, (m) => monthName(m, loc), loc),
+      href: `/${loc}/seasons?city=${cityEntry.slug}`,
+    });
+  }
+  const point = CITY_COORDS[cityEntry.slug];
+  const hours = point ? flightHoursFromRiyadh(point) : undefined;
+  if (hours) {
+    facts.push({
+      icon: "✈️",
+      label: dict.attractions.factFlightTime,
+      value: countLabel(hours, {
+        one: dict.attractions.factFlightOne,
+        two: dict.attractions.factFlightTwo,
+        few: dict.attractions.factFlightFew,
+        many: dict.attractions.factFlightMany,
+      }),
+    });
+  }
+  if (items.length) {
+    facts.push({ icon: "📍", label: dict.attractions.factPlaces, value: placeCountLabel(items.length, dict.attractions) });
+  }
+
   return (
     <div>
       <PageHero
@@ -167,6 +201,7 @@ export default async function CityPlacesPageBody({
       </PageHero>
 
       <div className="mx-auto max-w-6xl px-4 sm:px-6 py-10">
+        <CountryQuickFacts locale={loc} facts={facts} heading={dict.attractions.quickFactsHeading} />
         {tours.length > 0 && (
           <section className="mb-10">
             <SectionHeading title={dict.attractions.toursHeading} />
@@ -187,8 +222,6 @@ export default async function CityPlacesPageBody({
           </p>
         ) : (
           <>
-            <p className="mb-4 text-sm text-gray-500">📍 {placeCountLabel(items.length, dict.attractions)}</p>
-
             <CityPlacesView
               locale={loc}
               initialView={initialView}

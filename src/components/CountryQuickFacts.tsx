@@ -22,17 +22,21 @@ export default function CountryQuickFacts({
   locale,
   facts,
   heading,
+  lead,
 }: {
   locale: Locale;
   facts: QuickFact[];
   heading: string;
+  /** A wider first card (the visa card on a country page). */
+  lead?: React.ReactNode;
 }) {
-  if (facts.length === 0) return null;
+  if (facts.length === 0 && !lead) return null;
 
   return (
     <section className="mb-8">
       <p className="eyebrow mb-3">{heading}</p>
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+        {lead}
         {facts.map((f) => {
           const tone = "bg-white text-navy-900";
           const body = (

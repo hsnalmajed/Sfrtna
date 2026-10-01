@@ -4,20 +4,16 @@ import { notFound } from "next/navigation";
 import { getDictionary } from "@/lib/dictionaries";
 import type { Locale } from "@/lib/types";
 import { findCountry } from "@/lib/countries";
-import { COUNTRY_GUIDES } from "@/lib/countryGuides";
 import { COUNTRY_CITIES } from "@/lib/cities";
-import { fetchCityOverviews } from "@/lib/mapPins";
+import { fetchCityOverviews, fetchPlacesAroundCities } from "@/lib/mapPins";
 import { fetchCountryPhotos } from "@/lib/countryPhotos";
-import { cityCountLabel, countLabel, placeCountLabel } from "@/lib/format";
+import { cityCountLabel, placeCountLabel } from "@/lib/format";
 import CityGallery, { type CityCard } from "@/components/CityGallery";
-import VisaWarning from "@/components/VisaWarning";
-import VisaOfficialLinks from "@/components/VisaOfficialLinks";
+import VisaQuickCard from "@/components/VisaQuickCard";
 import PageHero from "@/components/ui/PageHero";
-import SectionHeading from "@/components/ui/SectionHeading";
 import { pageMetadata, absoluteUrl, touristDestinationJsonLd } from "@/lib/seo";
 import CountryQuickFacts, { type QuickFact } from "@/components/CountryQuickFacts";
 import { currencyForCountry } from "@/lib/currencies";
-import { COUNTRY_CENTROIDS } from "@/lib/countryCentroids";
 
 /**
  * A title that says which country.
@@ -58,26 +54,26 @@ export default async function CountryAttractionsPage({
   const country = findCountry(code);
   if (!country) notFound();
 
-  const guide = COUNTRY_GUIDES[country.code];
   const cities = COUNTRY_CITIES[country.code] ?? [];
 
-  const [photos, cityOverviews] = await Promise.all([
+  const [photos, cityOverviews, placeCounts] = await Promise.all([
     // Full resolution: this one photo is the full-width hero, not a card.
     fetchCountryPhotos([country.code], { full: true }),
-    // A photo and a real place count for every city, so the visitor can see
-    // what's behind a card before opening it.
+    // A photo for every city card.
     fetchCityOverviews(cities),
+    // How many places each city's page lists — the same query that page
+    // runs (cached a week), so the two numbers agree. A city whose places
+    // could not be fetched just shows no count.
+    Promise.all(cities.map((c) => fetchPlacesAroundCities([c], { locale: loc }).then((p) => p.length).catch(() => 0))),
   ]);
 
-  const cityCards: CityCard[] = cities.map((c) => {
+  const cityCards: CityCard[] = cities.map((c, i) => {
     const overview = cityOverviews.get(c.slug);
     return {
       slug: c.slug,
       name: loc === "ar" ? c.nameAr : c.nameEn,
       photo: overview?.photo,
-      subtitle: overview?.count
-        ? placeCountLabel(overview.count, dict.attractions)
-        : undefined,
+      subtitle: placeCounts[i] ? `📍 ${placeCountLabel(placeCounts[i], dict.attractions)}` : undefined,
     };
   });
 
@@ -95,13 +91,6 @@ export default async function CountryAttractionsPage({
   const currency = currencyForCountry(country.code);
   const quickFacts: QuickFact[] = [];
 
-  if (guide) {
-    quickFacts.push({
-      icon: "🗓️",
-      label: dict.attractions.factBestMonths,
-      value: loc === "ar" ? guide.bestMonthsAr : guide.bestMonthsEn,
-    });
-  }
   if (currency) {
     quickFacts.push({
       icon: "💱",
@@ -109,41 +98,6 @@ export default async function CountryAttractionsPage({
       value: `${loc === "ar" ? currency.nameAr : currency.nameEn} (${currency.code})`,
       href: `/${loc}/currency`,
     });
-  }
-  {
-    // Roughly how long the flight is from Riyadh. A great-circle distance at
-    // a typical cruise speed, rounded to the half hour and labelled
-    // "about" — precise enough to tell a weekend break from a long haul,
-    // which is the decision it informs, and not presented as a schedule.
-    const from = { lat: 24.7136, lon: 46.6753 };
-    const to = COUNTRY_CENTROIDS[country.code];
-    if (to) {
-      const R = 6371;
-      const dLat = ((to.lat - from.lat) * Math.PI) / 180;
-      const dLon = ((to.lon - from.lon) * Math.PI) / 180;
-      const h =
-        Math.sin(dLat / 2) ** 2 +
-        Math.cos((from.lat * Math.PI) / 180) *
-          Math.cos((to.lat * Math.PI) / 180) *
-          Math.sin(dLon / 2) ** 2;
-      const km = R * 2 * Math.atan2(Math.sqrt(h), Math.sqrt(1 - h));
-      if (km > 200) {
-        const hours = Math.round((km / 800 + 0.5) * 2) / 2;
-        quickFacts.push({
-          icon: "✈️",
-          label: dict.attractions.factFlightTime,
-          // Half-hours round to the nearest whole for the label, since
-          // "about 3.5 hours" implies a precision a great-circle estimate
-          // does not have.
-          value: countLabel(Math.round(hours), {
-            one: dict.attractions.factFlightOne,
-            two: dict.attractions.factFlightTwo,
-            few: dict.attractions.factFlightFew,
-            many: dict.attractions.factFlightMany,
-          }),
-        });
-      }
-    }
   }
   if (cities.length > 0) {
     quickFacts.push({
@@ -176,10 +130,14 @@ export default async function CountryAttractionsPage({
       </PageHero>
 
       <div className="mx-auto max-w-5xl px-4 sm:px-6 py-10">
+        {/* Everything about the country itself at the top — the visa first.
+            When to go and how long the flight is depend on the city, so they
+            are on each city's page. */}
         <CountryQuickFacts
           locale={loc}
           facts={quickFacts}
           heading={dict.attractions.quickFactsHeading}
+          lead={<VisaQuickCard countryCode={country.code} locale={loc} />}
         />
 
         {/* The one thing this page is for. A country has no attractions of its
@@ -202,38 +160,6 @@ export default async function CountryAttractionsPage({
           </section>
         )}
 
-        {/* Entry requirements belong on the page where someone is deciding
-            whether this country is even possible for them. We state no
-            status of our own — only where to check and where to apply. */}
-        <section className="mb-8">
-          <SectionHeading
-            title={dict.visa.headingForCountry.replace(
-              "{country}",
-              loc === "ar" ? country.nameAr : country.nameEn
-            )}
-          />
-
-          <VisaWarning
-            dict={{
-              warningTitle: dict.visa.warningTitle,
-              warningBody: dict.visa.warningBody,
-              checkIata: dict.visa.checkIata,
-              checkMofa: dict.visa.checkMofa,
-            }}
-            showLinks={false}
-          />
-
-          <div className="mt-4">
-            <VisaOfficialLinks countryCode={country.code} locale={loc} showChecklist={false} />
-          </div>
-
-          <Link
-            href={`/${loc}/visa/${country.code}`}
-            className="mt-3 inline-block text-xs font-bold text-brand-700 hover:underline"
-          >
-            {dict.visa.openDetails} {loc === "ar" ? "←" : "→"}
-          </Link>
-        </section>
       </div>
     </div>
   );

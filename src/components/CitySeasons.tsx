@@ -108,18 +108,22 @@ export default function CitySeasons({
   cities,
   currentMonth,
   dict,
+  initialCity,
 }: {
   locale: Locale;
   cities: SeasonCity[];
   currentMonth: number;
   dict: Dict;
+  /** Opens "by city" on this city (`?city=<slug>`, from a city page). */
+  initialCity?: string;
 }) {
-  const [mode, setMode] = useState<"month" | "city">("month");
+  const startCity = initialCity && cities.some((c) => c.slug === initialCity) ? initialCity : "";
+  const [mode, setMode] = useState<"month" | "city">(startCity ? "city" : "month");
   const [month, setMonth] = useState(currentMonth);
   const [continent, setContinent] = useState<Continent | "all">("all");
   const [withGood, setWithGood] = useState(false);
   const [query, setQuery] = useState("");
-  const [citySlug, setCitySlug] = useState("");
+  const [citySlug, setCitySlug] = useState(startCity);
   const [cityMonth, setCityMonth] = useState(currentMonth);
   const top = useRef<HTMLDivElement>(null);
   const isAr = locale === "ar";
