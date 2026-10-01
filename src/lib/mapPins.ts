@@ -131,7 +131,8 @@ function query(lat: number, lon: number, radius: number): string {
   const clauses = WANTED.map(
     (w) => `nwr(around:${radius},${lat},${lon})["${w.tag}"~"^(${w.values.join("|")})$"]["name"];`
   ).join("\n");
-  return `[out:json][timeout:20];(\n${clauses}\n);out center 400;`;
+  // No limit on the number returned: a city shows every place it has.
+  return `[out:json][timeout:60];(\n${clauses}\n);out center;`;
 }
 
 function categoryOf(tags: Record<string, string>): { category: PinCategory; kind: string } {
@@ -158,7 +159,7 @@ async function fetchAround(lat: number, lon: number, radius: number): Promise<Ov
   // below never persisted on this deployment, and an Overpass POST per city
   // per page view is slow for the visitor and unkind to a volunteer-run
   // service. A failure on every mirror is not cached.
-  const found = await cachedJson<OverpassElement[]>(`overpass:${lat},${lon},${radius}`, 604800, async () => {
+  const found = await cachedJson<OverpassElement[]>(`overpass:all:${lat},${lon},${radius}`, 604800, async () => {
     const body = `data=${encodeURIComponent(query(lat, lon, radius))}`;
     for (const url of OVERPASS) {
       try {
@@ -218,7 +219,7 @@ export async function fetchPlacesAroundCities(
   centres: PinCentre[],
   {
     locale,
-    perCity = 300,
+    perCity = Infinity,
     radius = 15000,
   }: { locale: Locale; perCity?: number; radius?: number; withPhotos?: boolean }
 ): Promise<Place[]> {
