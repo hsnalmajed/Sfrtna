@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Hourly ERA5-Land (raw/<id>.csv) → 1991–2020 monthly climate normals per
-destination → src/data/climate/normals.json.
+destination → src/data/climate/era5land.json (merged with station normals by merge_sources.py).
 
     pip install pandas numpy timezonefinder
     python3 scripts/climate/build_normals.py
@@ -47,7 +47,7 @@ import pandas as pd
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent.parent
 RAW = HERE / "raw"
-OUT = ROOT / "src" / "data" / "climate" / "normals.json"
+OUT = ROOT / "src" / "data" / "climate" / "era5land.json"
 PIPELINE_VERSION = "1.0"
 YEARS = (1991, 2020)
 MIN_YEARS = 24

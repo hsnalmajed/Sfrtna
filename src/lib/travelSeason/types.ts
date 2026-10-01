@@ -24,7 +24,7 @@ export interface MonthClimate {
 
 export interface ClimateProvenance {
   /** "era5-land" or "station". */
-  kind: "era5-land" | "station";
+  kind: "era5-land" | "station" | "nasa-power";
   source: string;
   dataset: string;
   datasetUrl: string;
@@ -64,7 +64,34 @@ export interface DestinationClimate {
   longitude: number;
   /** January first. */
   months: MonthClimate[];
+  /** The gridded dataset the figures start from (ERA5-Land, or NASA POWER as a fallback). */
   provenance: ClimateProvenance;
+  /** The official station whose 1991–2020 normals replaced some parameters, if any. */
+  station?: StationNormalsInfo | null;
+  /** Where each parameter came from: "station", "era5-land", "nasa-power" (with a note when converted). */
+  parameterSources?: Partial<Record<keyof MonthClimate, string>>;
+}
+
+export interface StationNormalsInfo {
+  /** NCEI 8-character id; the WMO station number is its last five digits. */
+  id: string;
+  wmoId: string;
+  wigosId: string | null;
+  name: string;
+  country: string;
+  latitude: number;
+  longitude: number;
+  elevationM: number;
+  distanceKm: number;
+  elevationDifferenceM: number | null;
+  source: string;
+  url: string;
+  files: string;
+  retrievedAt: string;
+  /** Which parameters were taken from the station ("Tmax", "rain mm"…). */
+  parameters: string[];
+  /** Mean over the year of ERA5-Land's average high minus the station's, °C (a plausibility check). */
+  era5MinusStationHighC?: number | null;
 }
 
 export interface TourismSignalInput {
@@ -163,6 +190,10 @@ export interface SeasonRecord {
   climatePeriod: string;
   climateGridInfo: string;
   climateStation: string | null;
+  /** WMO station number when station normals are used. */
+  climateStationWmoId: string | null;
+  /** Where each figure came from (see DestinationClimate.parameterSources). */
+  parameterSources: Partial<Record<keyof MonthClimate, string>>;
   climateDistanceKm: number;
   /** Cell height minus town height, m (null when unknown or reviewed and accepted). */
   climateElevationDifferenceM: number | null;

@@ -15,7 +15,7 @@
 
 import type { DestinationType } from "../lib/travelSeason/config.ts";
 
-export const DESTINATION_TYPES_VERSION = "1.0";
+export const DESTINATION_TYPES_VERSION = "1.1";
 
 export const DESTINATION_TYPES: Record<string, DestinationType[]> = {
   // Saudi Arabia
@@ -29,7 +29,7 @@ export const DESTINATION_TYPES: Record<string, DestinationType[]> = {
   istanbul: ["city"],
   antalya: ["beach", "city"],
   cappadocia: ["nature"],
-  trabzon: ["nature", "city"],
+  trabzon: ["city", "nature"],
   izmir: ["city", "beach"],
   bursa: ["city", "nature"],
   // UAE, Qatar, Kuwait, Bahrain, Oman

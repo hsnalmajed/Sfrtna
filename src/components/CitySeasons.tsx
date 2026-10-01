@@ -52,7 +52,7 @@ export interface SeasonCity {
   /** January first. */
   months: SeasonMonth[];
   tourism: { name: string; url: string; official: boolean; broad: boolean } | null;
-  climate: { station: string | null; distanceKm: number; period: string };
+  climate: { station: string | null; wmo: string | null; distanceKm: number; period: string; grid: string };
 }
 
 interface Dict {
@@ -93,6 +93,7 @@ interface Dict {
     climateSourceLabel: string;
     climateSourceValue: string;
     climateSourceStation: string;
+    climateSourceGridFallback: string;
     climatePeriodLabel: string;
     methodologyLabel: string;
     methodologyLink: string;
@@ -202,8 +203,14 @@ export default function CitySeasons({
           <dt className="inline font-bold">{t.climateSourceLabel}: </dt>
           <dd className="inline">
             {c.climate.station
-              ? t.climateSourceStation.replace("{station}", c.climate.station).replace("{km}", String(c.climate.distanceKm))
-              : t.climateSourceValue.replace("{km}", String(c.climate.distanceKm))}
+              ? t.climateSourceStation
+                  .replace("{station}", c.climate.station)
+                  .replace("{wmo}", c.climate.wmo ?? "—")
+                  .replace("{km}", String(c.climate.distanceKm))
+                  .replace("{grid}", c.climate.grid === "nasa-power" ? "NASA POWER" : "Copernicus ERA5-Land")
+              : c.climate.grid === "nasa-power"
+                ? t.climateSourceGridFallback
+                : t.climateSourceValue.replace("{km}", String(c.climate.distanceKm))}
           </dd>
         </div>
         <div>

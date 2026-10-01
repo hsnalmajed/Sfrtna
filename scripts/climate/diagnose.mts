@@ -39,7 +39,9 @@ const m = n.months[month - 1];
 
 console.log(`\n${id} — month ${month} — scoring v${SCORING.version}`);
 console.log("\nClimate inputs (1991–2020 normals):", m);
-console.log("Source:", n.provenance);
+console.log("Gridded source:", n.provenance);
+console.log("Station normals:", n.station ?? "none (no representative WMO 1991–2020 station)");
+console.log("Each parameter from:", n.parameterSources);
 console.log("Destination types:", types.join(" + ") || "(none → city)");
 console.log("\nSub-scores per profile:");
 for (const t of types.length ? types : (["city"] as DestinationType[])) {
@@ -47,7 +49,7 @@ for (const t of types.length ? types : (["city"] as DestinationType[])) {
   console.log(`  ${t.padEnd(9)}`, s ? { high: s.high, low: s.low, humidity: s.humidity, precipitation: s.precipitation, wind: s.wind, snow: s.snow, score: +s.score.toFixed(1) } : "not scorable");
 }
 console.log("Caps:", capsFor(m, types));
-const recs = scoreDestination({ id, countryCode: n.countryCode, latitude: n.latitude, longitude: n.longitude, months: n.months, provenance: n.provenance }, types, tourism, "diagnose");
+const recs = scoreDestination({ id, countryCode: n.countryCode, latitude: n.latitude, longitude: n.longitude, months: n.months, provenance: n.provenance, station: n.station ?? null, parameterSources: n.parameterSources }, types, tourism, "diagnose");
 const r = recs[month - 1];
 console.log("\nResult:", {
   scoredAs: r.scoredAs, rawClimateScore: r.rawClimateScore, climateScore: r.climateScore, relativeRank: r.relativeRank, relativeBonus: r.relativeBonus,

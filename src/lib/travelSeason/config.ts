@@ -54,12 +54,12 @@ export const SCORING = {
       dewPointComfort: 18, dewPointOppressive: 26,
     },
     nature: {
-      idealHigh: [15, 27], perDegreeBelow: 6, perDegreeAbove: 8,
+      idealHigh: [17, 27], perDegreeBelow: 8, perDegreeAbove: 8,
       idealLow: [5, 20], perDegreeLowBelow: 3, perDegreeLowAbove: 5,
       dewPointComfort: 16, dewPointOppressive: 25,
     },
     mountain: {
-      idealHigh: [13, 25], perDegreeBelow: 6, perDegreeAbove: 7,
+      idealHigh: [17, 26], perDegreeBelow: 8, perDegreeAbove: 7,
       idealLow: [3, 18], perDegreeLowBelow: 3, perDegreeLowAbove: 5,
       dewPointComfort: 15, dewPointOppressive: 24,
     },
@@ -177,19 +177,24 @@ export const SCORING = {
     // Evaluated top-down; the first match wins.
     // EXCELLENT also needs the month to be within `excellentWithinBest`
     // points of the destination's own best month (see below).
-    { id: "EXCELLENT", minFinal: 85, minClimate: 85 },
-    { id: "VERY_GOOD", minFinal: 72, minClimate: 70 },
-    { id: "GOOD", minFinal: 58, minClimate: 0 },
-    { id: "ACCEPTABLE", minFinal: 42, minClimate: 0 },
-    { id: "NOT_RECOMMENDED", minFinal: 0, minClimate: 0 },
+    // minHigh: the daytime-temperature sub-score alone must reach this — a
+    // cool or hot month is not "excellent" because it happens to be dry.
+    { id: "EXCELLENT", minFinal: 85, minClimate: 85, minHigh: 85 },
+    { id: "VERY_GOOD", minFinal: 72, minClimate: 70, minHigh: 75 },
+    { id: "GOOD", minFinal: 58, minClimate: 0, minHigh: 0 },
+    { id: "ACCEPTABLE", minFinal: 42, minClimate: 0, minHigh: 0 },
+    { id: "NOT_RECOMMENDED", minFinal: 0, minClimate: 0, minHigh: 0 },
   ],
 
   /**
    * "Not recommended climatically" is kept for months where one of the
    * universal limits applies (extreme heat or heat index, monsoon-scale rain,
-   * deep cold); an ordinary cool or damp month is at worst ACCEPTABLE.
+   * deep cold) — one whose cap is at most `notRecommendedMaxCap`; an ordinary
+   * cool or damp month, or one that is only heavy-rain capped, is at worst
+   * ACCEPTABLE.
    */
   notRecommendedNeedsCap: true,
+  notRecommendedMaxCap: 50,
 
   /**
    * "Best time" is the destination's best stretch, not every good month: its

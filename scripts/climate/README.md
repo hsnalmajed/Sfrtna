@@ -19,6 +19,23 @@ cityCoords.ts ──► destinations.json ──► fetch_era5land.py ──► 
                         src/data/climate/travelSeasons.json + reports/
 ```
 
+## Source priority
+
+1. **Official station normals** — WMO Climatological Standard Normals
+   1991–2020 from each national meteorological service, published by NOAA
+   NCEI (accession 0253808, files with ≥ 24 years: `fetch_wmo_normals.py`),
+   from a station within 25 km and 150 m of the destination's height, used
+   parameter by parameter when all 12 months exist (`merge_sources.py`).
+2. **Copernicus ERA5-Land** 1991–2020 at the destination's coordinates —
+   everything else (`fetch_era5land.py`, `build_normals.py` → `era5land.json`).
+3. **NASA POWER** 1991–2020 — only where ERA5-Land has no data for the
+   destination (`fetch_power.py`); a failed request falls through automatically.
+4. **ERA5-HEAT (UTCI)** for thermal comfort — `probe_utci.py` checks access
+   (the dataset has its own licence to accept on the CDS page).
+
+`src/data/climate/normals.json` is the merged result; each destination lists
+the station used and the source of every parameter (`parameterSources`).
+
 ## Data
 
 - **Climate:** Copernicus Climate Change Service (C3S), **ERA5-Land hourly
@@ -76,7 +93,10 @@ python3 scripts/climate/fetch_era5land.py           # ~150 point requests; resum
 python3 scripts/climate/fetch_static.py             # orography, land-sea mask, town heights
 pip install xarray netCDF4 && python3 scripts/climate/check_cells.py   # → raw/cell_check.json
 #   decide in cell_overrides.json, then fetch_era5land.py again (downloads only the changed cells)
-python3 scripts/climate/build_normals.py            # resumable (raw/normals_cache/); refuses incomplete files
+python3 scripts/climate/build_normals.py            # → src/data/climate/era5land.json; resumable; refuses incomplete files
+python3 scripts/climate/fetch_wmo_normals.py        # official station normals → raw/wmo/
+python3 scripts/climate/fetch_power.py              # NASA POWER for anything ERA5-Land could not serve
+python3 scripts/climate/merge_sources.py            # → src/data/climate/normals.json + reports/stations.md
 python3 scripts/climate/test_build_normals.py
 node scripts/climate/generate_seasons.mts
 node --test src/lib/travelSeason/*.test.ts

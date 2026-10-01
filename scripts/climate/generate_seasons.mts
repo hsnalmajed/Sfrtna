@@ -70,10 +70,13 @@ for (const d of destList) {
     errors.push(`${d.id}: no destination type`);
     continue;
   }
-  const climate: DestinationClimate = { id: d.id, countryCode: n.countryCode, latitude: n.latitude, longitude: n.longitude, months: n.months, provenance: n.provenance };
+  const climate: DestinationClimate = {
+    id: d.id, countryCode: n.countryCode, latitude: n.latitude, longitude: n.longitude, months: n.months,
+    provenance: n.provenance, station: n.station ?? null, parameterSources: n.parameterSources,
+  };
   const recs = scoreDestination(climate, types, d.qa ? null : tourismFor(d.id), generatedAt);
   const dz = recs[0].climateElevationDifferenceM;
-  if (!d.qa && n.provenance.withheldReason) {
+  if (!d.qa && n.provenance.withheldReason && n.parameterSources?.highC !== "station") {
     withheld[d.id] = { reason: n.provenance.withheldReason, records: recs };
     continue;
   }
@@ -142,9 +145,11 @@ const site = destList.filter((d) => !d.qa);
 const withCoords = site.filter((d) => normals.destinations[d.id] || true); // every site destination has coordinates in cityCoords.ts
 const withClimate = site.filter((d) => records[d.id]);
 const withTourism = site.filter((d) => CITY_SEASON_SOURCES[d.id]);
-const station = site.filter((d) => normals.destinations[d.id]?.provenance.kind === "station");
+const station = site.filter((d) => normals.destinations[d.id]?.station);
+const stationTemps = site.filter((d) => normals.destinations[d.id]?.parameterSources?.highC === "station");
+const powerOnly = site.filter((d) => normals.destinations[d.id]?.provenance.kind === "nasa-power");
 const lowConf = site.filter((d) => records[d.id]?.[0].confidenceLevel === "low");
-const farGrid = site.filter((d) => (normals.destinations[d.id]?.provenance.distanceKm ?? 0) > 5);
+const farGrid = site.filter((d) => normals.destinations[d.id]?.parameterSources?.highC !== "station" && (normals.destinations[d.id]?.provenance.distanceKm ?? 0) > 5);
 const cov = [
   `# Coverage — scoring v${SCORING.version}, ${generatedAt}`,
   "",
@@ -154,9 +159,11 @@ const cov = [
   `- With climate data: ${withClimate.length}`,
   `- With tourism source: ${withTourism.length}`,
   `- Climate-only: ${withClimate.length - withTourism.filter((d) => records[d.id]).length}`,
-  `- With official station override: ${station.length}`,
+  `- With official station normals (WMO 1991–2020) for at least one parameter: ${station.length}; for temperatures: ${stationTemps.length}`,
+  `- On ERA5-Land only: ${withClimate.length - station.filter((d) => records[d.id]).length - powerOnly.length}`,
+  `- On the NASA POWER fallback: ${powerOnly.length}${powerOnly.length ? ` (${powerOnly.map((d) => d.id).join(", ")})` : ""}`,
   `- Low-confidence: ${lowConf.length}${lowConf.length ? ` (${lowConf.map((d) => d.id).join(", ")})` : ""}`,
-  `- Grid point more than 5 km away: ${farGrid.length}${farGrid.length ? ` (${farGrid.map((d) => `${d.id} ${normals.destinations[d.id].provenance.distanceKm} km`).join(", ")})` : ""}`,
+  `- Temperatures from a grid point more than 5 km away: ${farGrid.length}${farGrid.length ? ` (${farGrid.map((d) => `${d.id} ${normals.destinations[d.id].provenance.distanceKm} km`).join(", ")})` : ""}`,
   `- Withheld from the site (cell height too far from the town's; needs a station override): ${Object.keys(withheld).length}${Object.keys(withheld).length ? ` (${Object.entries(withheld).map(([k, v]) => `${k}: ${v.reason}`).join("; ")})` : ""}`,
   `- Errors: ${errors.length}`,
   ...errors.map((e) => `  - ${e}`),

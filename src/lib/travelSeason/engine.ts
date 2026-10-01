@@ -229,9 +229,9 @@ export function capsFor(m: MonthClimate, types: DestinationType[]): CapHit[] {
  * `capped` says whether a universal limit applies: without one (no extreme
  * heat, heat index, rain or cold) a month is at worst "less favourable".
  */
-export function classify(finalScore: number, climateScore: number, bestClimate = climateScore, capped = true): Classification {
+export function classify(finalScore: number, climateScore: number, bestClimate = climateScore, capped = true, highScore = 100): Classification {
   for (const c of SCORING.classes) {
-    if (finalScore < c.minFinal || climateScore < c.minClimate) continue;
+    if (finalScore < c.minFinal || climateScore < c.minClimate || highScore < c.minHigh) continue;
     if (c.id === "EXCELLENT" && climateScore < bestClimate - SCORING.excellentWithinBest) continue;
     if (c.id === "NOT_RECOMMENDED" && !capped && SCORING.notRecommendedNeedsCap) return "ACCEPTABLE";
     return c.id;
@@ -273,16 +273,25 @@ export function favorablePhases(classes: (Classification | null)[], finals: (num
   return out;
 }
 
-/** Cell minus town height, m — null for stations, unknown heights, or a reviewed and accepted difference. */
-export function elevationDifference(prov: DestinationClimate["provenance"]): number | null {
-  if (prov.kind === "station" || prov.elevationAccepted) return null;
+/** True when the temperatures come from an official station's normals. */
+export function stationTemperatures(climate: Pick<DestinationClimate, "parameterSources">): boolean {
+  return climate.parameterSources?.highC === "station";
+}
+
+/**
+ * Cell minus town height, m — null for station temperatures, unknown heights,
+ * or a reviewed and accepted difference.
+ */
+export function elevationDifference(prov: DestinationClimate["provenance"], stationTemps = false): number | null {
+  if (stationTemps || prov.kind === "station" || prov.elevationAccepted) return null;
   return prov.elevationDifferenceM ?? null;
 }
 
 export function confidenceFor(
   months: MonthClimate[],
   prov: DestinationClimate["provenance"],
-  tourism: TourismSignalInput | null
+  tourism: TourismSignalInput | null,
+  stationTemps = false
 ): { score: number; level: ConfidenceLevel } {
   const c = SCORING.confidence;
   const complete = months.every(
@@ -290,14 +299,14 @@ export function confidenceFor(
   );
   let score: number = complete ? c.climateComplete : c.climatePartial;
   score +=
-    prov.kind === "station" || prov.gridNote === "destination's own grid cell" || prov.gridNote.startsWith("elevation-matched")
+    stationTemps || prov.kind === "station" || prov.gridNote === "destination's own grid cell" || prov.gridNote.startsWith("elevation-matched")
       ? c.gridOwnCell
       : prov.distanceKm <= c.gridNearbyKm
         ? c.gridNearby
         : c.gridFar;
-  score += prov.kind === "station" ? c.stationOverride : c.reanalysis;
+  score += stationTemps || prov.kind === "station" ? c.stationOverride : c.reanalysis;
   score += tourism ? (tourism.official ? c.tourismOfficial : c.tourismGuide) : c.tourismNone;
-  const dz = elevationDifference(prov);
+  const dz = elevationDifference(prov, stationTemps);
   if (dz !== null && Math.abs(dz) > c.elevationPoorM) score -= c.elevationPenaltyLarge;
   else if (dz !== null && Math.abs(dz) > c.elevationOkM) score -= c.elevationPenaltySome;
   score = clamp(score);
@@ -366,9 +375,11 @@ export function scoreDestination(
 
   const knownClimate = climateScores.filter((c): c is number => c !== null);
   const bestClimate = knownClimate.length ? Math.max(...knownClimate) : 0;
-  const classes = finals.map((f, i) => (f === null ? null : classify(f, climateScores[i] as number, bestClimate, caps[i].length > 0)));
+  const classes = finals.map((f, i) => (f === null ? null : classify(f, climateScores[i] as number, bestClimate, caps[i].some((c) => c.cap <= SCORING.notRecommendedMaxCap), subs[i]?.high ?? 100)));
   const phases = favorablePhases(classes, finals);
-  const conf = confidenceFor(months, prov, tourism);
+  const stationTemps = stationTemperatures(climate);
+  const st = climate.station ?? null;
+  const conf = confidenceFor(months, prov, tourism, stationTemps);
 
   return months.map((m, i) => {
     const s = subs[i];
@@ -438,14 +449,18 @@ export function scoreDestination(
       weatherSummaryEn: summary?.en ?? null,
       reasonAr: reason?.ar ?? null,
       reasonEn: reason?.en ?? null,
-      climateSource: prov.source,
-      climateDataset: prov.dataset,
-      climateDatasetUrl: prov.datasetUrl,
+      climateSource: st ? `${st.source}; other parameters: ${prov.source}` : prov.source,
+      climateDataset: st ? `WMO 1991–2020 station normals + ${prov.dataset}` : prov.dataset,
+      climateDatasetUrl: st ? st.url : prov.datasetUrl,
       climatePeriod: prov.period,
-      climateGridInfo: `${prov.gridNote}: ${prov.usedLat.toFixed(2)}, ${prov.usedLon.toFixed(2)} (${prov.distanceKm.toFixed(1)} km)`,
-      climateStation: prov.stationName ?? null,
-      climateDistanceKm: prov.distanceKm,
-      climateElevationDifferenceM: elevationDifference(prov),
+      climateGridInfo:
+        (st ? `station ${st.name} (WMO ${st.wmoId}), ${st.distanceKm.toFixed(1)} km; ` : "") +
+        `${prov.gridNote}: ${prov.usedLat.toFixed(2)}, ${prov.usedLon.toFixed(2)} (${prov.distanceKm.toFixed(1)} km)`,
+      climateStation: st ? st.name : (prov.stationName ?? null),
+      climateStationWmoId: st ? st.wmoId : null,
+      parameterSources: climate.parameterSources ?? {},
+      climateDistanceKm: st && stationTemps ? st.distanceKm : prov.distanceKm,
+      climateElevationDifferenceM: elevationDifference(prov, stationTemps),
       climateRetrievedAt: prov.retrievedAt,
       scoringVersion: SCORING.version,
       generatedAt,

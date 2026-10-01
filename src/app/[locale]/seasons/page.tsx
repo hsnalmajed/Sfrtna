@@ -86,9 +86,11 @@ export default async function SeasonsPage({ params }: PageProps<"/[locale]/seaso
                 broad: Boolean(first.tourismBroad),
               },
         climate: {
-          station: first.climateStation,
+          station: first.climateStation ? first.climateStation.replace(/_/g, " ") : null,
+          wmo: first.climateStationWmoId,
           distanceKm: Math.round(first.climateDistanceKm),
           period: first.climatePeriod,
+          grid: Object.values(first.parameterSources).includes("nasa-power") ? "nasa-power" : "era5-land",
         },
       },
     ];

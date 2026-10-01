@@ -50,7 +50,7 @@ test("stored records match the current scoring version (no drift)", { skip: !hav
     const tourism = e
       ? { sourceName: SEASON_SOURCES[e.source].nameEn, sourceNameAr: SEASON_SOURCES[e.source].nameAr, sourceUrl: e.url, official: SEASON_SOURCES[e.source].official, recommendedMonths: e.months, broad: Boolean(e.broad), lastVerified: TOURISM_LAST_VERIFIED }
       : null;
-    const again = scoreDestination({ id, countryCode: n.countryCode, latitude: n.latitude, longitude: n.longitude, months: n.months, provenance: n.provenance }, DESTINATION_TYPES[id], tourism, "x");
+    const again = scoreDestination({ id, countryCode: n.countryCode, latitude: n.latitude, longitude: n.longitude, months: n.months, provenance: n.provenance, station: n.station ?? null, parameterSources: n.parameterSources }, DESTINATION_TYPES[id], tourism, "x");
     again.forEach((r, i) => {
       assert.equal(recs[i].finalScore, r.finalScore, `${id} ${i + 1}`);
       assert.equal(recs[i].classification, r.classification, `${id} ${i + 1}`);

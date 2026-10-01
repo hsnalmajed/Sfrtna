@@ -14,6 +14,11 @@ export async function generateMetadata({ params }: PageProps<"/[locale]/methodol
 
 const SOURCES = [
   {
+    nameAr: "المعدلات المناخية الرسمية 1991–2020 لمحطات الرصد (هيئات الأرصاد الوطنية عبر WMO) — NOAA NCEI",
+    nameEn: "WMO Climatological Standard Normals 1991–2020 (national weather services) — NOAA NCEI",
+    url: "https://www.ncei.noaa.gov/products/wmo-climate-normals",
+  },
+  {
     nameAr: "بيانات ERA5-Land (سلسلة ساعية) — خدمة كوبرنيكوس لتغيّر المناخ",
     nameEn: "ERA5-Land hourly time-series — Copernicus Climate Change Service",
     url: "https://cds.climate.copernicus.eu/datasets/reanalysis-era5-land-timeseries",
@@ -27,6 +32,11 @@ const SOURCES = [
     nameAr: "Muñoz Sabater وآخرون (2021): ERA5-Land، مجلة Earth System Science Data",
     nameEn: "Muñoz Sabater et al. (2021): ERA5-Land, Earth System Science Data",
     url: "https://essd.copernicus.org/articles/13/4349/2021/",
+  },
+  {
+    nameAr: "NASA POWER — بديل حين يتعذّر ERA5-Land",
+    nameEn: "NASA POWER — fallback where ERA5-Land cannot serve a city",
+    url: "https://power.larc.nasa.gov",
   },
   {
     nameAr: "معادلة مؤشر الحرارة (الحرارة المحسوسة) — هيئة الأرصاد الأمريكية NOAA",
