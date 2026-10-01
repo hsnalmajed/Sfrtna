@@ -1,40 +1,40 @@
 # Quality test — scoring v1.1
 
-Climate: ERA5-Land hourly time-series (reanalysis-era5-land-timeseries), 1991–2020. Generated 2026-10-01T06:04:56.559Z.
+Climate: ERA5-Land hourly time-series (reanalysis-era5-land-timeseries), 1991–2020. Generated 2026-10-01T07:07:36.027Z.
 
 ## riyadh — city + desert — station RiyadhOld (WMO 40438), 8.3 km; destination's own grid cell: 24.60, 46.70 (4.6 km) — confidence high (100)
 
 | Month | High | Low | Rain mm | Rain days | RH % | Heat index | Climate | Tourism | Final | Class | Reason |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| Jan | 20 | 9 | 15 | 2.1 | 48 | — | 100 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain — and named by Saudi Tourism Authority (Visit Saudi). |
-| Feb | 24 | 12 | 6 | 1.0 | 36 | — | 100 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain — and named by Saudi Tourism Authority (Visit Saudi). |
-| Mar | 28 | 15 | 21 | 2.7 | 30 | 27 | 100 | listed | 100 | EXCELLENT (end) | Comfortable temperatures, with little rain — and named by Saudi Tourism Authority (Visit Saudi). |
-| Apr | 34 | 21 | 24 | 3.4 | 25 | 31 | 72 | listed | 80 | GOOD | High temperatures, with little rain — and named by Saudi Tourism Authority (Visit Saudi). |
-| May | 39 | 26 | 5 | 0.8 | 16 | 36 | 42 | listed | 42 | NOT_RECOMMENDED | Very hot (average high 39°) — and named by Saudi Tourism Authority (Visit Saudi). |
-| Jun | 43 | 28 | 0 | 0.0 | 10 | 39 | 25 | listed | 25 | NOT_RECOMMENDED | Extreme heat (average high 43°) — and named by Saudi Tourism Authority (Visit Saudi). |
+| Jan | 20 | 9 | 15 | 2.1 | 48 | — | 100 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain. |
+| Feb | 24 | 12 | 6 | 1.0 | 36 | — | 100 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain. |
+| Mar | 28 | 15 | 21 | 2.7 | 30 | 27 | 100 | listed | 100 | EXCELLENT (end) | Comfortable temperatures, with little rain. |
+| Apr | 34 | 21 | 24 | 3.4 | 25 | 31 | 72 | listed | 80 | GOOD | High temperatures, with little rain. |
+| May | 39 | 26 | 5 | 0.8 | 16 | 36 | 42 | listed | 42 | NOT_RECOMMENDED | Very hot (average high 39°). |
+| Jun | 43 | 28 | 0 | 0.0 | 10 | 39 | 25 | listed | 25 | NOT_RECOMMENDED | Extreme heat (average high 43°). |
 | Jul | 43 | 29 | 0 | 0.0 | 10 | 39 | 25 | unlisted | 21 | NOT_RECOMMENDED | Extreme heat (average high 43°). |
 | Aug | 44 | 30 | 0 | 0.1 | 12 | 40 | 25 | unlisted | 21 | NOT_RECOMMENDED | Extreme heat (average high 44°). |
 | Sep | 40 | 26 | 0 | 0.0 | 14 | 37 | 25 | unlisted | 21 | NOT_RECOMMENDED | Extreme heat (average high 40°). |
 | Oct | 35 | 21 | 1 | 0.3 | 20 | 33 | 63 | unlisted | 59 | GOOD | High temperatures, with little rain. |
 | Nov | 28 | 16 | 11 | 1.7 | 36 | 27 | 100 | unlisted | 96 | EXCELLENT (start) | Comfortable temperatures, with little rain. |
-| Dec | 22 | 11 | 15 | 1.9 | 46 | — | 100 | listed | 100 | EXCELLENT (peak) | Comfortable temperatures, with little rain — and named by Saudi Tourism Authority (Visit Saudi). |
+| Dec | 22 | 11 | 15 | 1.9 | 46 | — | 100 | listed | 100 | EXCELLENT (peak) | Comfortable temperatures, with little rain. |
 
 ## jeddah — city + beach — station Jeddah_KAIA (WMO 41024), 17.8 km; destination's own grid cell: 21.60, 39.20 (6.1 km) — confidence high (100)
 
 | Month | High | Low | Rain mm | Rain days | RH % | Heat index | Climate | Tourism | Final | Class | Reason |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| Jan | 29 | 19 | 12 | 1.1 | 59 | 29 | 97 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain — and named by Saudi Tourism Authority (Visit Saudi). |
-| Feb | 30 | 19 | 3 | 0.3 | 58 | 30 | 94 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain — and named by Saudi Tourism Authority (Visit Saudi). |
-| Mar | 32 | 20 | 3 | 0.4 | 57 | 32 | 88 | listed | 96 | VERY_GOOD (end) | Comfortable temperatures, with little rain — and named by Saudi Tourism Authority (Visit Saudi). |
+| Jan | 29 | 19 | 12 | 1.1 | 59 | 29 | 97 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain. |
+| Feb | 30 | 19 | 3 | 0.3 | 58 | 30 | 94 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain. |
+| Mar | 32 | 20 | 3 | 0.4 | 57 | 32 | 88 | listed | 96 | VERY_GOOD (end) | Comfortable temperatures, with little rain. |
 | Apr | 35 | 23 | 2 | 0.2 | 54 | 36 | 71 | unlisted | 67 | GOOD | Fair temperatures, with little rain. |
 | May | 37 | 25 | 0 | 0.1 | 52 | 40 | 50 | unlisted | 46 | ACCEPTABLE | Very hot (average high 37°). |
 | Jun | 38 | 26 | 0 | 0.0 | 53 | 43 | 47 | unlisted | 43 | ACCEPTABLE | Very hot (average high 38°). |
 | Jul | 39 | 28 | 0 | 0.1 | 50 | 44 | 42 | unlisted | 38 | NOT_RECOMMENDED | Very hot (average high 39°). |
 | Aug | 39 | 29 | 1 | 0.2 | 57 | 46 | 25 | unlisted | 21 | NOT_RECOMMENDED | Dangerous heat and humidity (feels like about 46°). |
-| Sep | 37 | 27 | 0 | 0.0 | 64 | 45 | 25 | listed | 25 | NOT_RECOMMENDED | Dangerous heat and humidity (feels like about 45°) — and named by Saudi Tourism Authority (Visit Saudi). |
-| Oct | 37 | 25 | 2 | 0.4 | 63 | 42 | 49 | listed | 50 | ACCEPTABLE | Heat with oppressive humidity (feels like about 42°) — and named by Saudi Tourism Authority (Visit Saudi). |
-| Nov | 33 | 23 | 27 | 1.9 | 61 | 35 | 74 | listed | 82 | VERY_GOOD (start) | Comfortable temperatures, with little rain — and named by Saudi Tourism Authority (Visit Saudi). |
-| Dec | 31 | 21 | 9 | 0.7 | 59 | 31 | 91 | listed | 100 | EXCELLENT (peak) | Comfortable temperatures, with little rain — and named by Saudi Tourism Authority (Visit Saudi). |
+| Sep | 37 | 27 | 0 | 0.0 | 64 | 45 | 25 | listed | 25 | NOT_RECOMMENDED | Dangerous heat and humidity (feels like about 45°). |
+| Oct | 37 | 25 | 2 | 0.4 | 63 | 42 | 49 | listed | 50 | ACCEPTABLE | Heat with oppressive humidity (feels like about 42°). |
+| Nov | 33 | 23 | 27 | 1.9 | 61 | 35 | 74 | listed | 82 | VERY_GOOD (start) | Comfortable temperatures, with little rain. |
+| Dec | 31 | 21 | 9 | 0.7 | 59 | 31 | 91 | listed | 100 | EXCELLENT (peak) | Comfortable temperatures, with little rain. |
 
 ## abha — mountain + nature — station Abha (WMO 41112), 16.6 km; destination's own grid cell: 18.20, 42.50 (1.9 km) — confidence high (100)
 
@@ -45,10 +45,10 @@ Climate: ERA5-Land hourly time-series (reanalysis-era5-land-timeseries), 1991–
 | Mar | 24 | 12 | 35 | 1.9 | 60 | — | 100 | unlisted | 100 | EXCELLENT | Comfortable temperatures, with little rain. |
 | Apr | 26 | 14 | 39 | 4.7 | 56 | — | 100 | unlisted | 96 | EXCELLENT | Comfortable temperatures, with little rain. |
 | May | 29 | 15 | 26 | 3.8 | 47 | 28 | 87 | unlisted | 83 | VERY_GOOD (end) | Fair temperatures, with little rain. |
-| Jun | 31 | 17 | 8 | 1.7 | 36 | 30 | 75 | listed | 83 | GOOD | High temperatures, with little rain — and named by Saudi Tourism Authority (Visit Saudi). |
-| Jul | 31 | 18 | 22 | 3.5 | 43 | 30 | 76 | listed | 84 | GOOD | High temperatures, with little rain — and named by Saudi Tourism Authority (Visit Saudi). |
-| Aug | 31 | 17 | 26 | 4.1 | 51 | 30 | 78 | listed | 86 | GOOD | Fair temperatures, with little rain — and named by Saudi Tourism Authority (Visit Saudi). |
-| Sep | 30 | 16 | 6 | 1.0 | 36 | 28 | 82 | listed | 90 | VERY_GOOD (start) | Fair temperatures, with little rain — and named by Saudi Tourism Authority (Visit Saudi). |
+| Jun | 31 | 17 | 8 | 1.7 | 36 | 30 | 75 | listed | 83 | GOOD | High temperatures, with little rain. |
+| Jul | 31 | 18 | 22 | 3.5 | 43 | 30 | 76 | listed | 84 | GOOD | High temperatures, with little rain. |
+| Aug | 31 | 17 | 26 | 4.1 | 51 | 30 | 78 | listed | 86 | GOOD | Fair temperatures, with little rain. |
+| Sep | 30 | 16 | 6 | 1.0 | 36 | 28 | 82 | listed | 90 | VERY_GOOD (start) | Fair temperatures, with little rain. |
 | Oct | 26 | 12 | 4 | 0.7 | 40 | — | 99 | unlisted | 95 | EXCELLENT | Comfortable temperatures, with little rain. |
 | Nov | 23 | 10 | 7 | 1.0 | 61 | — | 100 | unlisted | 96 | EXCELLENT | Comfortable temperatures, with little rain. |
 | Dec | 21 | 8 | 2 | 0.5 | 66 | — | 100 | unlisted | 96 | EXCELLENT | Comfortable temperatures, with little rain. |
@@ -57,26 +57,26 @@ Climate: ERA5-Land hourly time-series (reanalysis-era5-land-timeseries), 1991–
 
 | Month | High | Low | Rain mm | Rain days | RH % | Heat index | Climate | Tourism | Final | Class | Reason |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| Jan | 24 | 15 | 21 | 2.8 | 63 | — | 100 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain — and named by Lonely Planet. |
-| Feb | 26 | 16 | 10 | 2.4 | 61 | — | 100 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain — and named by Lonely Planet. |
-| Mar | 29 | 19 | 22 | 3.4 | 56 | 29 | 97 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain — and named by Lonely Planet. |
-| Apr | 34 | 22 | 3 | 1.5 | 47 | 34 | 78 | listed | 86 | VERY_GOOD (end) | Comfortable temperatures, with little rain — and named by Lonely Planet. |
+| Jan | 24 | 15 | 21 | 2.8 | 63 | — | 100 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain. |
+| Feb | 26 | 16 | 10 | 2.4 | 61 | — | 100 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain. |
+| Mar | 29 | 19 | 22 | 3.4 | 56 | 29 | 97 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain. |
+| Apr | 34 | 22 | 3 | 1.5 | 47 | 34 | 78 | listed | 86 | VERY_GOOD (end) | Comfortable temperatures, with little rain. |
 | May | 38 | 26 | 0 | 1.0 | 44 | 40 | 50 | unlisted | 46 | ACCEPTABLE | Very hot (average high 38°). |
 | Jun | 40 | 29 | 0 | 0.0 | 50 | 46 | 25 | unlisted | 21 | NOT_RECOMMENDED | Extreme heat (average high 40°). |
 | Jul | 42 | 31 | 1 | 2.0 | 50 | 50 | 25 | unlisted | 21 | NOT_RECOMMENDED | Extreme heat (average high 42°). |
 | Aug | 42 | 32 | 0 | 0.0 | 49 | 50 | 25 | unlisted | 21 | NOT_RECOMMENDED | Extreme heat (average high 42°). |
 | Sep | 40 | 29 | 0 | 1.0 | 54 | 47 | 25 | unlisted | 21 | NOT_RECOMMENDED | Dangerous heat and humidity (feels like about 47°). |
 | Oct | 36 | 25 | 2 | 2.0 | 57 | 39 | 58 | unlisted | 54 | ACCEPTABLE | High temperatures, with little rain. |
-| Nov | 31 | 21 | 6 | 1.9 | 58 | 31 | 90 | listed | 98 | VERY_GOOD (start) | Comfortable temperatures, with little rain — and named by Lonely Planet. |
-| Dec | 27 | 17 | 15 | 3.4 | 63 | — | 100 | listed | 100 | EXCELLENT (peak) | Comfortable temperatures, with little rain — and named by Lonely Planet. |
+| Nov | 31 | 21 | 6 | 1.9 | 58 | 31 | 90 | listed | 98 | VERY_GOOD (start) | Comfortable temperatures, with little rain. |
+| Dec | 27 | 17 | 15 | 3.4 | 63 | — | 100 | listed | 100 | EXCELLENT (peak) | Comfortable temperatures, with little rain. |
 
 ## muscat — city + beach — station MinaSuQa (WMO 41258), 2.8 km; destination's own grid cell: 23.60, 58.60 (1.5 km) — confidence high (95) — cell +98 m vs town
 
 | Month | High | Low | Rain mm | Rain days | RH % | Heat index | Climate | Tourism | Final | Class | Reason |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| Jan | 23 | 17 | 10 | 2.6 | 66 | — | 100 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain — and named by Oman Ministry of Heritage and Tourism (Experience Oman). |
-| Feb | 24 | 18 | 5 | 1.6 | 64 | — | 100 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain — and named by Oman Ministry of Heritage and Tourism (Experience Oman). |
-| Mar | 27 | 20 | 6 | 1.8 | 61 | — | 100 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain — and named by Oman Ministry of Heritage and Tourism (Experience Oman). |
+| Jan | 23 | 17 | 10 | 2.6 | 66 | — | 100 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain. |
+| Feb | 24 | 18 | 5 | 1.6 | 64 | — | 100 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain. |
+| Mar | 27 | 20 | 6 | 1.8 | 61 | — | 100 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain. |
 | Apr | 31 | 24 | 6 | 0.9 | 53 | 31 | 91 | unlisted | 87 | VERY_GOOD (end) | Comfortable temperatures, with little rain. |
 | May | 34 | 28 | 1 | 0.1 | 49 | 36 | 68 | unlisted | 64 | GOOD | Fair temperatures, with little rain. |
 | Jun | 35 | 30 | 8 | 0.3 | 56 | 40 | 50 | unlisted | 46 | ACCEPTABLE | Heat with oppressive humidity (feels like about 40°). |
@@ -84,8 +84,8 @@ Climate: ERA5-Land hourly time-series (reanalysis-era5-land-timeseries), 1991–
 | Aug | 33 | 28 | 0 | 0.2 | 65 | 39 | 51 | unlisted | 47 | ACCEPTABLE | Comfortable temperatures, with high humidity. |
 | Sep | 33 | 27 | 1 | 0.1 | 63 | 36 | 61 | unlisted | 57 | ACCEPTABLE | Comfortable temperatures, with high humidity. |
 | Oct | 31 | 25 | 1 | 0.3 | 58 | 33 | 83 | unlisted | 79 | VERY_GOOD (start) | Comfortable temperatures, with little rain. |
-| Nov | 28 | 22 | 9 | 1.1 | 62 | 28 | 98 | listed | 100 | EXCELLENT (peak) | Comfortable temperatures, with little rain — and named by Oman Ministry of Heritage and Tourism (Experience Oman). |
-| Dec | 24 | 19 | 6 | 2.3 | 65 | — | 100 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain — and named by Oman Ministry of Heritage and Tourism (Experience Oman). |
+| Nov | 28 | 22 | 9 | 1.1 | 62 | 28 | 98 | listed | 100 | EXCELLENT (peak) | Comfortable temperatures, with little rain. |
+| Dec | 24 | 19 | 6 | 2.3 | 65 | — | 100 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain. |
 
 ## trabzon — city + nature — station Trabzon_Bolge (WMO 17037), 3.0 km; nearest ERA5-Land land cell: 41.00, 39.60 (10.9 km) — confidence high (75)
 
@@ -110,15 +110,15 @@ Climate: ERA5-Land hourly time-series (reanalysis-era5-land-timeseries), 1991–
 |---|---|---|---|---|---|---|---|---|---|---|---|
 | Jan | 9 | 4 | 74 | 10.0 | 81 | — | 50 | unlisted | 46 | ACCEPTABLE | Cold weather, with little rain. |
 | Feb | 10 | 4 | 77 | 10.3 | 80 | — | 51 | unlisted | 47 | ACCEPTABLE | Cold weather, with little rain. |
-| Mar | 12 | 5 | 60 | 8.6 | 76 | — | 64 | listed | 72 | GOOD | Cold weather, with little rain — and named by Lonely Planet. |
-| Apr | 17 | 9 | 47 | 6.7 | 73 | — | 86 | listed | 94 | VERY_GOOD (start) | Fair temperatures, with little rain — and named by Lonely Planet. |
-| May | 22 | 13 | 33 | 4.1 | 74 | — | 100 | listed | 100 | EXCELLENT (peak) | Comfortable temperatures, with little rain — and named by Lonely Planet. |
+| Mar | 12 | 5 | 60 | 8.6 | 76 | — | 64 | listed | 72 | GOOD | Cold weather, with little rain. |
+| Apr | 17 | 9 | 47 | 6.7 | 73 | — | 86 | listed | 94 | VERY_GOOD (start) | Fair temperatures, with little rain. |
+| May | 22 | 13 | 33 | 4.1 | 74 | — | 100 | listed | 100 | EXCELLENT (peak) | Comfortable temperatures, with little rain. |
 | Jun | 27 | 18 | 31 | 4.3 | 70 | — | 97 | unlisted | 93 | EXCELLENT | Comfortable temperatures, with little rain. |
 | Jul | 30 | 21 | 19 | 2.2 | 69 | 31 | 79 | unlisted | 75 | VERY_GOOD (end) | Comfortable temperatures, with little rain. |
 | Aug | 30 | 21 | 23 | 3.3 | 70 | 31 | 76 | unlisted | 72 | GOOD | Fair temperatures, with little rain. |
-| Sep | 26 | 17 | 42 | 5.1 | 72 | — | 100 | listed | 100 | EXCELLENT (start) | Comfortable temperatures, with little rain — and named by Lonely Planet. |
-| Oct | 21 | 14 | 75 | 6.8 | 78 | — | 98 | listed | 100 | EXCELLENT (end) | Comfortable temperatures, with little rain — and named by Lonely Planet. |
-| Nov | 16 | 9 | 70 | 7.6 | 79 | — | 79 | listed | 87 | GOOD | Fair temperatures, with little rain — and named by Lonely Planet. |
+| Sep | 26 | 17 | 42 | 5.1 | 72 | — | 100 | listed | 100 | EXCELLENT (start) | Comfortable temperatures, with little rain. |
+| Oct | 21 | 14 | 75 | 6.8 | 78 | — | 98 | listed | 100 | EXCELLENT (end) | Comfortable temperatures, with little rain. |
+| Nov | 16 | 9 | 70 | 7.6 | 79 | — | 79 | listed | 87 | GOOD | Fair temperatures, with little rain. |
 | Dec | 11 | 6 | 88 | 11.0 | 81 | — | 56 | unlisted | 52 | ACCEPTABLE | Cold weather. |
 
 ## antalya — beach + city — station AntalyaHavalimani (WMO 17300), 8.8 km; nearest ERA5-Land land cell: 36.90, 30.80 (8.8 km) — confidence high (93)
@@ -127,15 +127,15 @@ Climate: ERA5-Land hourly time-series (reanalysis-era5-land-timeseries), 1991–
 |---|---|---|---|---|---|---|---|---|---|---|---|
 | Jan | 15 | 6 | 214 | 9.6 | 67 | — | 52 | unlisted | 48 | ACCEPTABLE | Fair temperatures. |
 | Feb | 16 | 7 | 111 | 7.4 | 65 | — | 63 | unlisted | 59 | GOOD | Fair temperatures, with little rain. |
-| Mar | 19 | 8 | 105 | 5.7 | 64 | — | 75 | listed | 83 | VERY_GOOD (start) | Comfortable temperatures, with little rain — and named by Rough Guides. |
-| Apr | 22 | 11 | 64 | 4.7 | 66 | — | 91 | listed | 99 | VERY_GOOD | Comfortable temperatures, with little rain — and named by Rough Guides. |
-| May | 26 | 16 | 40 | 3.5 | 65 | — | 100 | listed | 100 | EXCELLENT (peak) | Comfortable temperatures, with little rain — and named by Rough Guides. |
+| Mar | 19 | 8 | 105 | 5.7 | 64 | — | 75 | listed | 83 | VERY_GOOD (start) | Comfortable temperatures, with little rain. |
+| Apr | 22 | 11 | 64 | 4.7 | 66 | — | 91 | listed | 99 | VERY_GOOD | Comfortable temperatures, with little rain. |
+| May | 26 | 16 | 40 | 3.5 | 65 | — | 100 | listed | 100 | EXCELLENT (peak) | Comfortable temperatures, with little rain. |
 | Jun | 32 | 20 | 8 | 1.9 | 58 | 32 | 100 | unlisted | 100 | EXCELLENT | Comfortable temperatures, with little rain. |
 | Jul | 35 | 23 | 2 | 1.3 | 56 | 37 | 81 | unlisted | 77 | VERY_GOOD | Fair temperatures, with little rain. |
 | Aug | 35 | 24 | 2 | 1.1 | 57 | 37 | 80 | unlisted | 76 | VERY_GOOD | Fair temperatures, with little rain. |
-| Sep | 32 | 20 | 20 | 2.1 | 58 | 32 | 100 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain — and named by Rough Guides. |
-| Oct | 27 | 16 | 82 | 4.4 | 58 | 27 | 97 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain — and named by Rough Guides. |
-| Nov | 22 | 11 | 148 | 5.8 | 62 | — | 84 | listed | 92 | VERY_GOOD (end) | Comfortable temperatures — and named by Rough Guides. |
+| Sep | 32 | 20 | 20 | 2.1 | 58 | 32 | 100 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain. |
+| Oct | 27 | 16 | 82 | 4.4 | 58 | 27 | 97 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain. |
+| Nov | 22 | 11 | 148 | 5.8 | 62 | — | 84 | listed | 92 | VERY_GOOD (end) | Comfortable temperatures. |
 | Dec | 17 | 7 | 274 | 8.9 | 68 | — | 54 | unlisted | 50 | ACCEPTABLE | Fair temperatures. |
 
 ## london — city — station London (WMO 03770), 0.4 km; destination's own grid cell: 51.50, -0.10 (2.1 km) — confidence high (93)
@@ -147,9 +147,9 @@ Climate: ERA5-Land hourly time-series (reanalysis-era5-land-timeseries), 1991–
 | Mar | 12 | 5 | 37 | 8.7 | 80 | — | 62 | unlisted | 58 | ACCEPTABLE | Cold weather, with little rain. |
 | Apr | 15 | 7 | 42 | 8.9 | 76 | — | 76 | unlisted | 72 | GOOD | Fair temperatures, with little rain. |
 | May | 18 | 10 | 45 | 7.9 | 74 | — | 92 | unlisted | 88 | EXCELLENT (start) | Comfortable temperatures, with little rain. |
-| Jun | 21 | 13 | 50 | 8.7 | 74 | — | 99 | listed | 100 | EXCELLENT (peak) | Comfortable temperatures, with little rain — and named by Lonely Planet. |
-| Jul | 24 | 15 | 43 | 8.1 | 73 | — | 100 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain — and named by Lonely Planet. |
-| Aug | 23 | 15 | 55 | 8.6 | 75 | — | 99 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain — and named by Lonely Planet. |
+| Jun | 21 | 13 | 50 | 8.7 | 74 | — | 99 | listed | 100 | EXCELLENT (peak) | Comfortable temperatures, with little rain. |
+| Jul | 24 | 15 | 43 | 8.1 | 73 | — | 100 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain. |
+| Aug | 23 | 15 | 55 | 8.6 | 75 | — | 99 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain. |
 | Sep | 20 | 12 | 50 | 8.6 | 78 | — | 99 | unlisted | 99 | EXCELLENT | Comfortable temperatures, with little rain. |
 | Oct | 16 | 10 | 67 | 11.0 | 82 | — | 77 | unlisted | 73 | VERY_GOOD (end) | Fair temperatures, with little rain. |
 | Nov | 12 | 6 | 66 | 10.8 | 87 | — | 59 | unlisted | 55 | ACCEPTABLE | Cold weather, with little rain. |
@@ -161,14 +161,14 @@ Climate: ERA5-Land hourly time-series (reanalysis-era5-land-timeseries), 1991–
 |---|---|---|---|---|---|---|---|---|---|---|---|
 | Jan | 8 | 3 | 48 | 9.9 | 84 | — | 45 | unlisted | 41 | ACCEPTABLE | Cold weather, with little rain. |
 | Feb | 9 | 3 | 42 | 9.1 | 78 | — | 50 | unlisted | 46 | ACCEPTABLE | Cold weather, with little rain. |
-| Mar | 13 | 6 | 45 | 9.5 | 69 | — | 65 | listed | 73 | GOOD | Cold weather, with little rain — and named by Lonely Planet. |
-| Apr | 17 | 8 | 46 | 8.6 | 63 | — | 83 | listed | 91 | VERY_GOOD (start) | Fair temperatures, with little rain — and named by Lonely Planet. |
-| May | 20 | 11 | 69 | 9.2 | 65 | — | 97 | listed | 100 | EXCELLENT (peak) | Comfortable temperatures, with little rain — and named by Lonely Planet. |
+| Mar | 13 | 6 | 45 | 9.5 | 69 | — | 65 | listed | 73 | GOOD | Cold weather, with little rain. |
+| Apr | 17 | 8 | 46 | 8.6 | 63 | — | 83 | listed | 91 | VERY_GOOD (start) | Fair temperatures, with little rain. |
+| May | 20 | 11 | 69 | 9.2 | 65 | — | 97 | listed | 100 | EXCELLENT (peak) | Comfortable temperatures, with little rain. |
 | Jun | 23 | 14 | 51 | 8.3 | 64 | — | 99 | unlisted | 95 | EXCELLENT | Comfortable temperatures, with little rain. |
 | Jul | 26 | 16 | 59 | 7.4 | 61 | — | 100 | unlisted | 100 | EXCELLENT | Comfortable temperatures, with little rain. |
 | Aug | 26 | 16 | 58 | 8.1 | 62 | — | 100 | unlisted | 100 | EXCELLENT | Comfortable temperatures, with little rain. |
-| Sep | 22 | 13 | 45 | 7.5 | 68 | — | 100 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain — and named by Lonely Planet. |
-| Oct | 17 | 10 | 55 | 9.5 | 78 | — | 82 | listed | 90 | VERY_GOOD (end) | Fair temperatures, with little rain — and named by Lonely Planet. |
+| Sep | 22 | 13 | 45 | 7.5 | 68 | — | 100 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain. |
+| Oct | 17 | 10 | 55 | 9.5 | 78 | — | 82 | listed | 90 | VERY_GOOD (end) | Fair temperatures, with little rain. |
 | Nov | 11 | 6 | 54 | 10.4 | 84 | — | 58 | unlisted | 54 | ACCEPTABLE | Cold weather, with little rain. |
 | Dec | 8 | 4 | 62 | 11.4 | 84 | — | 45 | unlisted | 41 | ACCEPTABLE | Cold weather. |
 
@@ -181,10 +181,10 @@ Climate: ERA5-Land hourly time-series (reanalysis-era5-land-timeseries), 1991–
 | Mar | 10 | 2 | 71 | 10.5 | 72 | — | 52 | unlisted | 48 | ACCEPTABLE | Cold weather, with little rain. |
 | Apr | 15 | 5 | 80 | 10.8 | 65 | — | 71 | unlisted | 67 | GOOD | Cold weather. |
 | May | 19 | 9 | 128 | 12.4 | 69 | — | 79 | unlisted | 75 | VERY_GOOD (start) | Comfortable temperatures. |
-| Jun | 22 | 13 | 128 | 12.1 | 70 | — | 84 | listed | 92 | VERY_GOOD | Comfortable temperatures — and named by Lonely Planet. |
-| Jul | 24 | 14 | 126 | 12.2 | 69 | — | 84 | listed | 96 | VERY_GOOD | Comfortable temperatures — and named by Lonely Planet. |
-| Aug | 24 | 14 | 119 | 11.8 | 72 | — | 86 | listed | 98 | EXCELLENT | Comfortable temperatures — and named by Lonely Planet. |
-| Sep | 19 | 11 | 87 | 9.9 | 79 | — | 90 | listed | 100 | EXCELLENT (end) | Comfortable temperatures — and named by Lonely Planet. |
+| Jun | 22 | 13 | 128 | 12.1 | 70 | — | 84 | listed | 92 | VERY_GOOD | Comfortable temperatures. |
+| Jul | 24 | 14 | 126 | 12.2 | 69 | — | 84 | listed | 96 | VERY_GOOD | Comfortable temperatures. |
+| Aug | 24 | 14 | 119 | 11.8 | 72 | — | 86 | listed | 98 | EXCELLENT | Comfortable temperatures. |
+| Sep | 19 | 11 | 87 | 9.9 | 79 | — | 90 | listed | 100 | EXCELLENT (end) | Comfortable temperatures. |
 | Oct | 14 | 7 | 85 | 10.1 | 85 | — | 68 | unlisted | 64 | GOOD | Cold weather. |
 | Nov | 8 | 3 | 76 | 10.0 | 87 | — | 44 | unlisted | 40 | ACCEPTABLE | Cold weather, with little rain. |
 | Dec | 4 | -1 | 83 | 11.5 | 87 | — | 31 | unlisted | 27 | NOT_RECOMMENDED | Very cold. |
@@ -210,8 +210,8 @@ Climate: ERA5-Land hourly time-series (reanalysis-era5-land-timeseries), 1991–
 
 | Month | High | Low | Rain mm | Rain days | RH % | Heat index | Climate | Tourism | Final | Class | Reason |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| Jan | 33 | 23 | 24 | 1.9 | 66 | 34 | 81 | listed | 93 | VERY_GOOD | Comfortable temperatures, with little rain — and named by Lonely Planet. |
-| Feb | 34 | 25 | 21 | 1.9 | 68 | 37 | 73 | listed | 81 | VERY_GOOD (end) | Comfortable temperatures, with little rain — and named by Lonely Planet. |
+| Jan | 33 | 23 | 24 | 1.9 | 66 | 34 | 81 | listed | 93 | VERY_GOOD | Comfortable temperatures, with little rain. |
+| Feb | 34 | 25 | 21 | 1.9 | 68 | 37 | 73 | listed | 81 | VERY_GOOD (end) | Comfortable temperatures, with little rain. |
 | Mar | 35 | 26 | 51 | 3.4 | 70 | 40 | 60 | unlisted | 56 | ACCEPTABLE | Fair temperatures, with little rain. |
 | Apr | 36 | 27 | 93 | 5.4 | 70 | 42 | 50 | unlisted | 46 | ACCEPTABLE | Heat with oppressive humidity (feels like about 42°). |
 | May | 35 | 27 | 217 | 12.4 | 75 | 42 | 40 | unlisted | 36 | NOT_RECOMMENDED | Heat with oppressive humidity (feels like about 42°). |
@@ -220,8 +220,8 @@ Climate: ERA5-Land hourly time-series (reanalysis-era5-land-timeseries), 1991–
 | Aug | 33 | 26 | 227 | 15.6 | 79 | 39 | 45 | unlisted | 41 | ACCEPTABLE | Comfortable temperatures, with high humidity. |
 | Sep | 33 | 25 | 336 | 18.0 | 82 | 39 | 36 | unlisted | 32 | ACCEPTABLE | Heavy rainfall. |
 | Oct | 33 | 25 | 289 | 14.4 | 82 | 38 | 44 | unlisted | 40 | ACCEPTABLE | Comfortable temperatures, with high humidity. |
-| Nov | 33 | 25 | 45 | 3.8 | 71 | 36 | 76 | listed | 88 | VERY_GOOD (start) | Comfortable temperatures, with little rain — and named by Lonely Planet. |
-| Dec | 32 | 23 | 12 | 1.0 | 62 | 33 | 84 | listed | 96 | VERY_GOOD (peak) | Comfortable temperatures, with little rain — and named by Lonely Planet. |
+| Nov | 33 | 25 | 45 | 3.8 | 71 | 36 | 76 | listed | 88 | VERY_GOOD (start) | Comfortable temperatures, with little rain. |
+| Dec | 32 | 23 | 12 | 1.0 | 62 | 33 | 84 | listed | 96 | VERY_GOOD (peak) | Comfortable temperatures, with little rain. |
 
 ## singapore — city + tropical — station ChangiAirport (WMO 48698), 16.9 km; nearest ERA5-Land land cell: 1.30, 103.80 (5.9 km) — confidence high (75)
 
@@ -247,13 +247,13 @@ Climate: ERA5-Land hourly time-series (reanalysis-era5-land-timeseries), 1991–
 | Jan | 27 | 24 | 296 | 28.9 | 86 | 30 | 47 | unlisted | 43 | ACCEPTABLE | Rain on most days of the month. |
 | Feb | 27 | 24 | 256 | 26.4 | 86 | 30 | 50 | unlisted | 46 | ACCEPTABLE | Rain on most days of the month. |
 | Mar | 27 | 24 | 228 | 27.2 | 85 | 30 | 53 | unlisted | 49 | ACCEPTABLE | Comfortable temperatures, with high humidity. |
-| Apr | 28 | 25 | 149 | 23.8 | 85 | 31 | 57 | listed | 65 | GOOD | Comfortable temperatures, with high humidity — and named by Lonely Planet. |
-| May | 27 | 25 | 87 | 19.0 | 83 | 30 | 65 | listed | 73 | GOOD | Comfortable temperatures — and named by Lonely Planet. |
-| Jun | 27 | 24 | 64 | 17.3 | 82 | — | 72 | listed | 80 | VERY_GOOD (start) | Comfortable temperatures — and named by Lonely Planet. |
-| Jul | 26 | 23 | 56 | 16.5 | 81 | — | 78 | listed | 90 | VERY_GOOD | Comfortable temperatures — and named by Lonely Planet. |
-| Aug | 26 | 23 | 43 | 15.4 | 81 | — | 80 | listed | 92 | VERY_GOOD (peak) | Comfortable temperatures — and named by Lonely Planet. |
-| Sep | 26 | 23 | 58 | 16.3 | 83 | — | 76 | listed | 88 | VERY_GOOD (end) | Comfortable temperatures — and named by Lonely Planet. |
-| Oct | 27 | 24 | 79 | 19.5 | 85 | 30 | 66 | listed | 74 | GOOD | Comfortable temperatures — and named by Lonely Planet. |
+| Apr | 28 | 25 | 149 | 23.8 | 85 | 31 | 57 | listed | 65 | GOOD | Comfortable temperatures, with high humidity. |
+| May | 27 | 25 | 87 | 19.0 | 83 | 30 | 65 | listed | 73 | GOOD | Comfortable temperatures. |
+| Jun | 27 | 24 | 64 | 17.3 | 82 | — | 72 | listed | 80 | VERY_GOOD (start) | Comfortable temperatures. |
+| Jul | 26 | 23 | 56 | 16.5 | 81 | — | 78 | listed | 90 | VERY_GOOD | Comfortable temperatures. |
+| Aug | 26 | 23 | 43 | 15.4 | 81 | — | 80 | listed | 92 | VERY_GOOD (peak) | Comfortable temperatures. |
+| Sep | 26 | 23 | 58 | 16.3 | 83 | — | 76 | listed | 88 | VERY_GOOD (end) | Comfortable temperatures. |
+| Oct | 27 | 24 | 79 | 19.5 | 85 | 30 | 66 | listed | 74 | GOOD | Comfortable temperatures. |
 | Nov | 27 | 24 | 178 | 24.2 | 85 | 30 | 56 | unlisted | 52 | ACCEPTABLE | Comfortable temperatures, with high humidity. |
 | Dec | 27 | 24 | 272 | 27.8 | 85 | 30 | 49 | unlisted | 45 | ACCEPTABLE | Rain on most days of the month. |
 
@@ -261,9 +261,9 @@ Climate: ERA5-Land hourly time-series (reanalysis-era5-land-timeseries), 1991–
 
 | Month | High | Low | Rain mm | Rain days | RH % | Heat index | Climate | Tourism | Final | Class | Reason |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| Jan | 31 | 26 | 87 | 5.5 | 79 | 35 | 67 | listed | 79 | GOOD | Comfortable temperatures, with high humidity — and named by Lonely Planet. |
-| Feb | 31 | 26 | 38 | 3.2 | 78 | 36 | 69 | listed | 81 | GOOD | Comfortable temperatures, with high humidity — and named by Lonely Planet. |
-| Mar | 32 | 27 | 49 | 4.5 | 77 | 37 | 66 | listed | 78 | GOOD | Comfortable temperatures, with high humidity — and named by Lonely Planet. |
+| Jan | 31 | 26 | 87 | 5.5 | 79 | 35 | 67 | listed | 79 | GOOD | Comfortable temperatures, with high humidity. |
+| Feb | 31 | 26 | 38 | 3.2 | 78 | 36 | 69 | listed | 81 | GOOD | Comfortable temperatures, with high humidity. |
+| Mar | 32 | 27 | 49 | 4.5 | 77 | 37 | 66 | listed | 78 | GOOD | Comfortable temperatures, with high humidity. |
 | Apr | 32 | 27 | 127 | 8.5 | 78 | 38 | 59 | unlisted | 55 | ACCEPTABLE | Comfortable temperatures, with high humidity. |
 | May | 32 | 27 | 238 | 15.0 | 81 | 39 | 47 | unlisted | 43 | ACCEPTABLE | Comfortable temperatures, with high humidity. |
 | Jun | 31 | 26 | 146 | 12.9 | 82 | 38 | 53 | unlisted | 49 | ACCEPTABLE | Comfortable temperatures, with high humidity. |
@@ -317,9 +317,9 @@ Climate: ERA5-Land hourly time-series (reanalysis-era5-land-timeseries), 1991–
 | Mar | 10 | 2 | 109 | 9.1 | 68 | — | 51 | unlisted | 47 | ACCEPTABLE | Cold weather. |
 | Apr | 17 | 8 | 104 | 9.0 | 68 | — | 80 | unlisted | 76 | VERY_GOOD (start) | Fair temperatures. |
 | May | 22 | 13 | 101 | 9.6 | 72 | — | 92 | unlisted | 92 | EXCELLENT | Comfortable temperatures. |
-| Jun | 27 | 18 | 115 | 9.0 | 72 | — | 92 | listed | 100 | EXCELLENT (peak) | Comfortable temperatures — and named by Lonely Planet. |
-| Jul | 29 | 21 | 117 | 8.3 | 70 | 30 | 80 | listed | 88 | VERY_GOOD | Comfortable temperatures — and named by Lonely Planet. |
-| Aug | 29 | 21 | 116 | 8.2 | 73 | 29 | 85 | listed | 93 | VERY_GOOD | Comfortable temperatures, with little rain — and named by Lonely Planet. |
+| Jun | 27 | 18 | 115 | 9.0 | 72 | — | 92 | listed | 100 | EXCELLENT (peak) | Comfortable temperatures. |
+| Jul | 29 | 21 | 117 | 8.3 | 70 | 30 | 80 | listed | 88 | VERY_GOOD | Comfortable temperatures. |
+| Aug | 29 | 21 | 116 | 8.2 | 73 | 29 | 85 | listed | 93 | VERY_GOOD | Comfortable temperatures, with little rain. |
 | Sep | 25 | 17 | 110 | 7.2 | 74 | — | 94 | unlisted | 94 | EXCELLENT | Comfortable temperatures, with little rain. |
 | Oct | 18 | 11 | 111 | 7.4 | 73 | — | 88 | unlisted | 84 | VERY_GOOD (end) | Comfortable temperatures, with little rain. |
 | Nov | 12 | 6 | 91 | 7.2 | 72 | — | 62 | unlisted | 58 | GOOD | Cold weather, with little rain. |
@@ -329,8 +329,8 @@ Climate: ERA5-Land hourly time-series (reanalysis-era5-land-timeseries), 1991–
 
 | Month | High | Low | Rain mm | Rain days | RH % | Heat index | Climate | Tourism | Final | Class | Reason |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| Jan | 25 | 16 | 47 | 5.3 | 71 | — | 100 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain — and named by Lonely Planet. |
-| Feb | 26 | 17 | 54 | 4.8 | 71 | — | 100 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain — and named by Lonely Planet. |
+| Jan | 25 | 16 | 47 | 5.3 | 71 | — | 100 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain. |
+| Feb | 26 | 17 | 54 | 4.8 | 71 | — | 100 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain. |
 | Mar | 27 | 19 | 62 | 4.5 | 69 | 28 | 99 | unlisted | 99 | EXCELLENT | Comfortable temperatures, with little rain. |
 | Apr | 29 | 21 | 86 | 5.4 | 69 | 30 | 91 | unlisted | 87 | VERY_GOOD (end) | Comfortable temperatures, with little rain. |
 | May | 30 | 23 | 161 | 8.5 | 73 | 33 | 70 | unlisted | 66 | GOOD | Comfortable temperatures. |
@@ -340,15 +340,15 @@ Climate: ERA5-Land hourly time-series (reanalysis-era5-land-timeseries), 1991–
 | Sep | 32 | 25 | 260 | 15.4 | 81 | 37 | 43 | unlisted | 39 | ACCEPTABLE | Comfortable temperatures, with high humidity. |
 | Oct | 30 | 23 | 194 | 11.3 | 77 | 33 | 62 | unlisted | 58 | GOOD | Comfortable temperatures. |
 | Nov | 27 | 20 | 90 | 6.3 | 72 | 28 | 91 | unlisted | 87 | VERY_GOOD (start) | Comfortable temperatures, with little rain. |
-| Dec | 26 | 18 | 62 | 5.6 | 73 | — | 98 | listed | 100 | EXCELLENT (peak) | Comfortable temperatures, with little rain — and named by Lonely Planet. |
+| Dec | 26 | 18 | 62 | 5.6 | 73 | — | 98 | listed | 100 | EXCELLENT (peak) | Comfortable temperatures, with little rain. |
 
 ## cape-town — city + beach + nature — station CapeTown (WMO 68816), 17.5 km; nearest ERA5-Land land cell: -34.00, 18.40 (8.1 km) — confidence high (93)
 
 | Month | High | Low | Rain mm | Rain days | RH % | Heat index | Climate | Tourism | Final | Class | Reason |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| Jan | 27 | 17 | 9 | 1.8 | 74 | 27 | 98 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain — and named by Lonely Planet. |
-| Feb | 27 | 17 | 10 | 1.8 | 75 | 28 | 99 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain — and named by Lonely Planet. |
-| Mar | 26 | 15 | 12 | 2.5 | 76 | — | 99 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain — and named by Lonely Planet. |
+| Jan | 27 | 17 | 9 | 1.8 | 74 | 27 | 98 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain. |
+| Feb | 27 | 17 | 10 | 1.8 | 75 | 28 | 99 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain. |
+| Mar | 26 | 15 | 12 | 2.5 | 76 | — | 99 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain. |
 | Apr | 24 | 12 | 40 | 5.0 | 78 | — | 100 | unlisted | 100 | EXCELLENT | Comfortable temperatures, with little rain. |
 | May | 21 | 10 | 61 | 7.4 | 81 | — | 100 | unlisted | 100 | EXCELLENT | Comfortable temperatures, with little rain. |
 | Jun | 18 | 8 | 92 | 10.1 | 79 | — | 89 | unlisted | 85 | VERY_GOOD | Comfortable temperatures. |
@@ -357,7 +357,7 @@ Climate: ERA5-Land hourly time-series (reanalysis-era5-land-timeseries), 1991–
 | Sep | 20 | 9 | 44 | 6.8 | 76 | — | 98 | unlisted | 94 | EXCELLENT | Comfortable temperatures, with little rain. |
 | Oct | 22 | 12 | 28 | 4.2 | 74 | — | 99 | unlisted | 95 | EXCELLENT | Comfortable temperatures, with little rain. |
 | Nov | 24 | 13 | 25 | 4.0 | 73 | — | 99 | unlisted | 95 | EXCELLENT | Comfortable temperatures, with little rain. |
-| Dec | 26 | 16 | 13 | 2.6 | 73 | — | 99 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain — and named by Lonely Planet. |
+| Dec | 26 | 16 | 13 | 2.6 | 73 | — | 99 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain. |
 
 ## sydney — city + beach — station SydneyObservatoryHill (WMO 94768), 1.0 km; destination's own grid cell: -33.90, 151.20 (3.4 km) — confidence high (100)
 
@@ -365,15 +365,15 @@ Climate: ERA5-Land hourly time-series (reanalysis-era5-land-timeseries), 1991–
 |---|---|---|---|---|---|---|---|---|---|---|---|
 | Jan | 27 | 20 | 91 | 8.2 | 67 | 28 | 93 | unlisted | 89 | EXCELLENT | Comfortable temperatures, with little rain. |
 | Feb | 28 | 20 | 132 | 9.0 | 68 | 28 | 88 | unlisted | 84 | VERY_GOOD | Comfortable temperatures. |
-| Mar | 26 | 18 | 118 | 10.1 | 67 | — | 89 | listed | 97 | VERY_GOOD | Comfortable temperatures — and named by Tourism Australia. |
-| Apr | 24 | 15 | 114 | 7.9 | 66 | — | 94 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain — and named by Tourism Australia. |
-| May | 22 | 12 | 101 | 7.9 | 65 | — | 95 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain — and named by Tourism Australia. |
+| Mar | 26 | 18 | 118 | 10.1 | 67 | — | 89 | listed | 97 | VERY_GOOD | Comfortable temperatures. |
+| Apr | 24 | 15 | 114 | 7.9 | 66 | — | 94 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain. |
+| May | 22 | 12 | 101 | 7.9 | 65 | — | 95 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain. |
 | Jun | 18 | 10 | 143 | 9.3 | 67 | — | 83 | unlisted | 79 | VERY_GOOD | Comfortable temperatures. |
 | Jul | 18 | 9 | 80 | 7.2 | 62 | — | 91 | unlisted | 87 | VERY_GOOD | Comfortable temperatures, with little rain. |
 | Aug | 20 | 10 | 75 | 5.6 | 56 | — | 97 | unlisted | 93 | EXCELLENT | Comfortable temperatures, with little rain. |
-| Sep | 22 | 12 | 63 | 5.8 | 57 | — | 100 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain — and named by Tourism Australia. |
-| Oct | 24 | 15 | 68 | 7.6 | 60 | — | 99 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain — and named by Tourism Australia. |
-| Nov | 25 | 17 | 91 | 8.7 | 63 | — | 95 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain — and named by Tourism Australia. |
+| Sep | 22 | 12 | 63 | 5.8 | 57 | — | 100 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain. |
+| Oct | 24 | 15 | 68 | 7.6 | 60 | — | 99 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain. |
+| Nov | 25 | 17 | 91 | 8.7 | 63 | — | 95 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain. |
 | Dec | 27 | 18 | 73 | 7.9 | 64 | — | 99 | unlisted | 99 | EXCELLENT | Comfortable temperatures, with little rain. |
 
 ## queenstown — mountain + nature — destination's own grid cell: -45.00, 168.70 (4.7 km) — confidence medium (60) — cell +396 m vs town
@@ -400,15 +400,15 @@ Climate: ERA5-Land hourly time-series (reanalysis-era5-land-timeseries), 1991–
 | Jan | 19 | 10 | 5 | 1.3 | 59 | — | 95 | unlisted | 91 | EXCELLENT | Comfortable temperatures, with little rain. |
 | Feb | 21 | 11 | 4 | 2.0 | 54 | — | 100 | unlisted | 100 | EXCELLENT | Comfortable temperatures, with little rain. |
 | Mar | 24 | 13 | 6 | 1.2 | 50 | — | 100 | unlisted | 100 | EXCELLENT | Comfortable temperatures, with little rain. |
-| Apr | 28 | 16 | 1 | 1.3 | 44 | 27 | 100 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain — and named by Lonely Planet. |
-| May | 32 | 19 | 0 | 0.6 | 43 | 30 | 80 | listed | 88 | VERY_GOOD (end) | Fair temperatures, with little rain — and named by Lonely Planet. |
+| Apr | 28 | 16 | 1 | 1.3 | 44 | 27 | 100 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain. |
+| May | 32 | 19 | 0 | 0.6 | 43 | 30 | 80 | listed | 88 | VERY_GOOD (end) | Fair temperatures, with little rain. |
 | Jun | 35 | 22 | 0 | 0.6 | 46 | 34 | 66 | unlisted | 62 | GOOD | High temperatures, with little rain. |
 | Jul | 35 | 24 | 0 | 0.7 | 51 | 35 | 63 | unlisted | 59 | GOOD | High temperatures, with little rain. |
 | Aug | 35 | 24 | 0 | 1.0 | 54 | 35 | 62 | unlisted | 58 | GOOD | High temperatures, with little rain. |
 | Sep | 33 | 23 | 0 | 0.7 | 54 | 33 | 72 | unlisted | 68 | GOOD | High temperatures, with little rain. |
-| Oct | 30 | 20 | 1 | 0.1 | 57 | 29 | 94 | listed | 100 | EXCELLENT (start) | Comfortable temperatures, with little rain — and named by Lonely Planet. |
-| Nov | 25 | 16 | 4 | 0.6 | 59 | — | 100 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain — and named by Lonely Planet. |
-| Dec | 21 | 12 | 3 | 0.8 | 60 | — | 100 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain — and named by Lonely Planet. |
+| Oct | 30 | 20 | 1 | 0.1 | 57 | 29 | 94 | listed | 100 | EXCELLENT (start) | Comfortable temperatures, with little rain. |
+| Nov | 25 | 16 | 4 | 0.6 | 59 | — | 100 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain. |
+| Dec | 21 | 12 | 3 | 0.8 | 60 | — | 100 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain. |
 
 ## marrakesh — city + desert — station MARRAKECH (WMO 60230), 4.1 km; destination's own grid cell: 31.60, -8.00 (3.0 km) — confidence high (93)
 
@@ -416,14 +416,14 @@ Climate: ERA5-Land hourly time-series (reanalysis-era5-land-timeseries), 1991–
 |---|---|---|---|---|---|---|---|---|---|---|---|
 | Jan | 19 | 6 | 25 | 3.0 | 26 | — | 95 | unlisted | 91 | EXCELLENT | Comfortable temperatures, with little rain. |
 | Feb | 21 | 8 | 26 | 3.7 | 28 | — | 100 | unlisted | 96 | EXCELLENT | Comfortable temperatures, with little rain. |
-| Mar | 24 | 10 | 35 | 4.7 | 27 | — | 100 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain — and named by Lonely Planet. |
-| Apr | 26 | 12 | 26 | 2.9 | 26 | — | 100 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain — and named by Lonely Planet. |
-| May | 29 | 15 | 10 | 1.5 | 22 | 28 | 95 | listed | 100 | EXCELLENT (end) | Comfortable temperatures, with little rain — and named by Lonely Planet. |
+| Mar | 24 | 10 | 35 | 4.7 | 27 | — | 100 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain. |
+| Apr | 26 | 12 | 26 | 2.9 | 26 | — | 100 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain. |
+| May | 29 | 15 | 10 | 1.5 | 22 | 28 | 95 | listed | 100 | EXCELLENT (end) | Comfortable temperatures, with little rain. |
 | Jun | 34 | 18 | 3 | 0.6 | 19 | 31 | 72 | unlisted | 68 | GOOD | High temperatures, with little rain. |
 | Jul | 38 | 21 | 2 | 0.3 | 15 | 34 | 50 | unlisted | 46 | ACCEPTABLE | Very hot (average high 38°). |
 | Aug | 37 | 21 | 5 | 0.8 | 15 | 34 | 50 | unlisted | 46 | ACCEPTABLE | Very hot (average high 37°). |
-| Sep | 33 | 19 | 15 | 1.3 | 16 | 30 | 78 | listed | 86 | VERY_GOOD (start) | Fair temperatures, with little rain — and named by Lonely Planet. |
-| Oct | 29 | 16 | 19 | 2.4 | 17 | 27 | 98 | listed | 100 | EXCELLENT (peak) | Comfortable temperatures, with little rain — and named by Lonely Planet. |
+| Sep | 33 | 19 | 15 | 1.3 | 16 | 30 | 78 | listed | 86 | VERY_GOOD (start) | Fair temperatures, with little rain. |
+| Oct | 29 | 16 | 19 | 2.4 | 17 | 27 | 98 | listed | 100 | EXCELLENT (peak) | Comfortable temperatures, with little rain. |
 | Nov | 23 | 11 | 30 | 3.8 | 21 | — | 100 | unlisted | 100 | EXCELLENT | Comfortable temperatures, with little rain. |
 | Dec | 20 | 7 | 24 | 4.1 | 24 | — | 100 | unlisted | 96 | EXCELLENT | Comfortable temperatures, with little rain. |
 

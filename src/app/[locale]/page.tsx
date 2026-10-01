@@ -103,7 +103,6 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
       weatherSummary: r ? ((isAr ? r.weatherSummaryAr : r.weatherSummaryEn) ?? undefined) : undefined,
       reason: r ? ((isAr ? r.reasonAr : r.reasonEn) ?? undefined) : undefined,
       bestMonths: best.map((m) => monthName(m, loc)).join(isAr ? "، " : ", "),
-      bestMonthsSource: r?.tourismSignal === "listed" ? ((isAr ? r.tourismSourceNameAr : r.tourismSourceName) ?? undefined) : undefined,
       visa: visa ? { category: visa.category, label: visaNames[visa.category] } : undefined,
       currency: cur
         ? {

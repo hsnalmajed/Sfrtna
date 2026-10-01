@@ -189,11 +189,8 @@ export function reasonText(args: {
 
   const ar = parts.slice(0, 2).map((p) => p.ar).join("، و");
   const en = parts.slice(0, 2).map((p, i) => (i === 0 ? p.en : p.en.charAt(0).toLowerCase() + p.en.slice(1))).join(", with ");
-  let tailAr = "";
-  let tailEn = "";
-  if (signal === "listed" && tourism) {
-    tailAr = ` — ومن الأشهر التي يذكرها ${tourism.sourceNameAr}`;
-    tailEn = ` — and named by ${tourism.sourceName}`;
-  }
-  return { ar: `${ar}${tailAr}.`, en: `${en}${tailEn}.` };
+  // The tourism source counts in the score but is not named to visitors.
+  void signal;
+  void tourism;
+  return { ar: `${ar}.`, en: `${en}.` };
 }

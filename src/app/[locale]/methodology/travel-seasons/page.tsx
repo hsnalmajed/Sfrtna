@@ -9,7 +9,12 @@ export async function generateMetadata({ params }: PageProps<"/[locale]/methodol
   const { locale } = await params;
   const loc = (locale === "en" ? "en" : "ar") as Locale;
   const t = getDictionary(loc).travelSeasons;
-  return pageMetadata({ locale: loc, path: "/methodology/travel-seasons", title: t.methodTitle, description: t.methodLead });
+  // Internal reference: how the ratings are made and from which data. Not
+  // linked from the site and kept out of search results.
+  return {
+    ...pageMetadata({ locale: loc, path: "/methodology/travel-seasons", title: t.methodTitle, description: t.methodLead }),
+    robots: { index: false, follow: false },
+  };
 }
 
 const SOURCES = [

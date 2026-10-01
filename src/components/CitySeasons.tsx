@@ -38,7 +38,6 @@ export interface SeasonMonth {
   rainDays: number | null;
   summary: string | null;
   reason: string | null;
-  tourismListed: boolean;
 }
 
 export interface SeasonCity {
@@ -51,8 +50,6 @@ export interface SeasonCity {
   photo?: string;
   /** January first. */
   months: SeasonMonth[];
-  tourism: { name: string; url: string; official: boolean; broad: boolean } | null;
-  climate: { station: string | null; wmo: string | null; distanceKm: number; period: string; grid: string };
 }
 
 interface Dict {
@@ -125,13 +122,11 @@ export default function CitySeasons({
   locale,
   cities,
   currentMonth,
-  updated,
   dict,
 }: {
   locale: Locale;
   cities: SeasonCity[];
   currentMonth: number;
-  updated: string;
   dict: Dict;
 }) {
   const [mode, setMode] = useState<"month" | "city">("month");
@@ -193,58 +188,6 @@ export default function CitySeasons({
     { m: "city" as const, icon: "🏙", title: dict.modeCityTitle, q: dict.modeCityQ, hint: dict.modeCityHint },
   ];
 
-  const sourceAndMethod = (c: SeasonCity) => (
-    <details className="group mt-4 rounded-xl bg-mist-50 px-4 py-3 text-sm text-navy-700 ring-1 ring-mist-200">
-      <summary className="cursor-pointer list-none font-bold text-navy-900">
-        <span aria-hidden="true">ⓘ</span> {t.sourceAndMethod}
-      </summary>
-      <dl className="mt-2 space-y-1.5 text-xs leading-relaxed">
-        <div>
-          <dt className="inline font-bold">{t.climateSourceLabel}: </dt>
-          <dd className="inline">
-            {c.climate.station
-              ? t.climateSourceStation
-                  .replace("{station}", c.climate.station)
-                  .replace("{wmo}", c.climate.wmo ?? "—")
-                  .replace("{km}", String(c.climate.distanceKm))
-                  .replace("{grid}", c.climate.grid === "nasa-power" ? "NASA POWER" : "Copernicus ERA5-Land")
-              : c.climate.grid === "nasa-power"
-                ? t.climateSourceGridFallback
-                : t.climateSourceValue.replace("{km}", String(c.climate.distanceKm))}
-          </dd>
-        </div>
-        <div>
-          <dt className="inline font-bold">{t.climatePeriodLabel}: </dt>
-          <dd className="inline">{c.climate.period}</dd>
-        </div>
-        <div>
-          <dt className="inline font-bold">{t.tourismLabel}: </dt>
-          <dd className="inline">
-            {c.tourism ? (
-              <a href={c.tourism.url} target="_blank" rel="noopener noreferrer" className="font-bold text-sea-700 underline">
-                {c.tourism.name} <span aria-hidden="true">↗</span>
-              </a>
-            ) : (
-              t.tourismNone
-            )}
-          </dd>
-        </div>
-        <div>
-          <dt className="inline font-bold">{t.methodologyLabel}: </dt>
-          <dd className="inline">
-            <Link href={`/${locale}/methodology/travel-seasons`} className="font-bold text-sea-700 underline">
-              {t.methodologyLink}
-            </Link>
-          </dd>
-        </div>
-        <div>
-          <dt className="inline font-bold">{t.lastUpdatedLabel}: </dt>
-          <dd className="inline">{updated}</dd>
-        </div>
-        <p className="pt-1 text-navy-500">{t.climateNote}</p>
-      </dl>
-    </details>
-  );
 
   return (
     <div ref={top} className="scroll-mt-24">
@@ -314,12 +257,7 @@ export default function CitySeasons({
           <h2 className="mb-1 mt-6 font-display text-xl font-extrabold text-navy-900">
             {dict.inSeasonInMonth.replace("{month}", dict.monthNames[month - 1]).replace("{count}", String(inMonth.length))}
           </h2>
-          <p className="mb-4 text-xs text-navy-500">
-            {t.climateNote}{" "}
-            <Link href={`/${locale}/methodology/travel-seasons`} className="font-bold text-sea-700 hover:underline">
-              {t.methodologyLink}
-            </Link>
-          </p>
+          <p className="mb-4 text-xs text-navy-500">{t.climateNote}</p>
 
           {inMonth.length === 0 ? (
             <p className="rounded-xl bg-mist-50 px-4 py-10 text-center text-sm text-navy-500">{dict.noneInMonth}</p>
@@ -366,16 +304,20 @@ export default function CitySeasons({
 
       {mode === "city" && (
         <div className="mt-6">
-          <div className="relative max-w-md">
+          <div className="relative mx-auto max-w-xl">
+            <span aria-hidden="true" className="pointer-events-none absolute inset-y-0 start-4 flex items-center text-lg">
+              🔎
+            </span>
             <input
+              type="search"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder={dict.citySearch}
               aria-label={dict.citySearch}
-              className="w-full rounded-xl border border-mist-200 bg-white px-4 py-3 text-sm text-navy-900 outline-none focus:border-sea-400 focus:ring-4 focus:ring-sea-100"
+              className="w-full rounded-full border-2 border-mist-200 bg-white py-3.5 pe-5 ps-12 text-base font-semibold text-navy-900 shadow-[var(--shadow-card)] outline-none transition placeholder:font-normal placeholder:text-navy-400 focus:border-sun-400 focus:ring-4 focus:ring-sun-400/20"
             />
             {query.trim() && (
-              <ul className="absolute inset-x-0 top-full z-20 mt-1 overflow-hidden rounded-xl bg-white shadow-[var(--shadow-lift)] ring-1 ring-mist-200">
+              <ul className="absolute inset-x-0 top-full z-20 mt-2 max-h-80 overflow-y-auto rounded-2xl bg-white shadow-[var(--shadow-lift)] ring-1 ring-mist-200">
                 {cityMatches.length === 0 ? (
                   <li className="px-4 py-3 text-sm text-navy-500">{dict.cityNoMatch}</li>
                 ) : (
@@ -393,7 +335,7 @@ export default function CitySeasons({
           </div>
 
           {!city ? (
-            <p className="mt-6 rounded-xl bg-mist-50 px-4 py-10 text-center text-sm text-navy-500">{dict.pickCity}</p>
+            <p className="mx-auto mt-4 max-w-xl text-center text-sm text-navy-500">{dict.pickCity}</p>
           ) : (
             <section className="mt-6 rounded-2xl bg-white p-4 shadow-[var(--shadow-card)] ring-1 ring-navy-950/5 sm:p-6">
               <div className="flex flex-wrap items-end justify-between gap-3">
@@ -406,7 +348,7 @@ export default function CitySeasons({
                 </Link>
               </div>
 
-              {/* Best months, and who else names them. */}
+              {/* The best months. */}
               {(() => {
                 const best = MONTHS.filter((m) => {
                   const c = city.months[m - 1].classification;
@@ -431,30 +373,6 @@ export default function CitySeasons({
                     ) : (
                       <p className="mt-1 text-sm text-navy-700">{dict.noBestMonths}</p>
                     )}
-                    <p className="mt-3 text-sm text-navy-700">
-                      <span className="font-bold">{t.tourismLabel}:</span>{" "}
-                      {city.tourism ? (
-                        <>
-                          <a
-                            href={city.tourism.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            title={dict.openSource}
-                            className="font-bold text-sea-700 underline decoration-sea-300 underline-offset-2 hover:decoration-sea-600"
-                          >
-                            {city.tourism.name} <span aria-hidden="true">↗</span>
-                          </a>
-                          {city.tourism.official && (
-                            <span className="ms-2 rounded-full bg-navy-900 px-2 py-0.5 align-middle text-[11px] font-bold text-white">
-                              {dict.officialBadge}
-                            </span>
-                          )}
-                        </>
-                      ) : (
-                        t.tourismNone
-                      )}
-                    </p>
-                    {city.tourism?.broad && <p className="mt-1 text-xs text-navy-500">{dict.sourceBroad}</p>}
                   </div>
                 );
               })()}
@@ -524,7 +442,7 @@ export default function CitySeasons({
                 })}
               </div>
 
-              {sourceAndMethod(city)}
+              <p className="mt-4 text-xs text-navy-500">{t.climateNote}</p>
             </section>
           )}
         </div>

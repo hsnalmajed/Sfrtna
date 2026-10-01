@@ -8,7 +8,7 @@ import { sectionHero } from "@/lib/sectionHero";
 import { monthName } from "@/lib/seasons";
 import { COUNTRY_CITIES } from "@/lib/cities";
 import { findCountry } from "@/lib/countries";
-import { SEASONS_META, seasonRecords } from "@/lib/travelSeason/site";
+import { seasonRecords } from "@/lib/travelSeason/site";
 import { fetchCityPhotos } from "@/lib/countryPhotos";
 
 // Photos come from Pexels, same as the rest of the site.
@@ -51,7 +51,6 @@ export default async function SeasonsPage({ params }: PageProps<"/[locale]/seaso
     const country = findCountry(c.code);
     const recs = seasonRecords(c.slug);
     if (!country || !recs) return [];
-    const first = recs[0];
     return [
       {
         code: c.code,
@@ -74,34 +73,14 @@ export default async function SeasonsPage({ params }: PageProps<"/[locale]/seaso
           rainDays: r.precipitationDays,
           summary: isAr ? r.weatherSummaryAr : r.weatherSummaryEn,
           reason: isAr ? r.reasonAr : r.reasonEn,
-          tourismListed: r.tourismSignal === "listed",
         })),
-        tourism:
-          first.tourismSignal === "unavailable"
-            ? null
-            : {
-                name: (isAr ? first.tourismSourceNameAr : first.tourismSourceName) ?? "",
-                url: first.tourismSourceUrl ?? "",
-                official: Boolean(first.tourismOfficial),
-                broad: Boolean(first.tourismBroad),
-              },
-        climate: {
-          station: first.climateStation ? first.climateStation.replace(/_/g, " ") : null,
-          wmo: first.climateStationWmoId,
-          distanceKm: Math.round(first.climateDistanceKm),
-          period: first.climatePeriod,
-          grid: Object.values(first.parameterSources).includes("nasa-power") ? "nasa-power" : "era5-land",
-        },
+        // Sources stay internal: the page shows ratings and weather, not
+        // which data set or tourism board they came from.
       },
     ];
   });
 
   const month = new Date().getMonth() + 1;
-  const updated = new Date(SEASONS_META.generatedAt).toLocaleDateString(isAr ? "ar-SA-u-ca-gregory-nu-latn" : "en-GB", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
 
   return (
     <div>
@@ -112,7 +91,6 @@ export default async function SeasonsPage({ params }: PageProps<"/[locale]/seaso
           locale={loc}
           cities={cities}
           currentMonth={month}
-          updated={updated}
           dict={{
             ...dict.citySeasons,
             monthNames: [...dict.citySeasons.monthNames],

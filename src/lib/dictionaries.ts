@@ -163,7 +163,7 @@ export const dictionaries = {
 
     seasons: {
       title: "مواسم السفر",
-      subtitle: "تقييم كل شهر لكل وجهة من المعدلات المناخية 1991–2020 لإحداثيات المدينة ومصادر السياحة الرسمية، مع الفصل ومتوسط الحرارة المعتاد",
+      subtitle: "متى تكون كل وجهة في أفضل أوقاتها؟ تقييم كل شهر مع الفصل ومتوسط الحرارة المعتاد",
       intro:
         "الدولة الواحدة قد تظهر في أكثر من شهر إذا كان لها أكثر من موسم. المواسم مأخوذة من دليل كل دولة في هذا الموقع.",
       monthHeading: "السفر في {month}",
@@ -456,7 +456,7 @@ export const dictionaries = {
 
       seasonEyebrow: "الموسم الآن",
       seasonTitle: "أفضل الوجهات في {month}",
-      seasonSubtitle: "وجهات تصنّفها «سفرتنا» هذا الشهر «أفضل وقت للزيارة» أو «وقت ممتاز للزيارة»، من المعدلات المناخية 1991–2020 لكل مدينة ومصادر السياحة الرسمية.",
+      seasonSubtitle: "وجهات يكون هذا الشهر فيها «أفضل وقت للزيارة» أو «وقت ممتاز للزيارة».",
       seasonCta: "تقويم المواسم كامل",
       seasonAllCities: "تصفّح كل وجهات {month} ({count})",
       seasonFewerCities: "عرض أقل",
@@ -469,7 +469,7 @@ export const dictionaries = {
       seasonRainTwo: "🌧 تمطر يومين في الشهر",
       seasonRainFew: "🌧 تمطر {count} أيام في الشهر",
       seasonRainMany: "🌧 تمطر {count} يوماً في الشهر",
-      seasonMethod: "المناخ: Copernicus ERA5-Land، معدلات 1991–2020 لإحداثيات كل مدينة. التصنيف من منهجية «سفرتنا»، ويعتمد على المعدلات المناخية التاريخية، وقد يختلف الطقس الفعلي.",
+      seasonMethod: "يعتمد التقييم على المعدلات المناخية التاريخية 1991–2020، وقد يختلف الطقس الفعلي.",
       seasonTapHint: "اضغط على أي مدينة لترى ملخصها: الطقس والتأشيرة والعملة وأشهر المعالم.",
       seasonFare: "✈️ يبدأ من {price} ر.س",
       seasonFareNote: "✈️ السعر على كل مدينة: أقل سعر تذكرة ذهاب للشخص الواحد من الرياض رُصد لرحلات {month}، والسعر النهائي يظهر عند الحجز. نعرض هنا المدن التي رصدنا لها سعراً، وبقية مدن الموسم في «تقويم المواسم كامل».",
@@ -1344,7 +1344,7 @@ export const dictionaries = {
 
     seasons: {
       title: "Travel Seasons",
-      subtitle: "Every month rated for every destination from 1991–2020 climate normals for the city's own coordinates and official tourism sources, with the season and typical temperatures",
+      subtitle: "When is each destination at its best? Every month rated, with the season and typical temperatures",
       intro:
         "A country appears under every month its season covers, so some show up more than once. Seasons come from each country's own guide on this site.",
       monthHeading: "Travelling in {month}",
@@ -1632,7 +1632,7 @@ export const dictionaries = {
 
       seasonEyebrow: "In season now",
       seasonTitle: "Best places to be in {month}",
-      seasonSubtitle: "Destinations Sfrtna rates \"Best time to visit\" or \"Excellent time to visit\" this month, from each city's 1991–2020 climate normals and official tourism sources.",
+      seasonSubtitle: "Destinations where this month is the best or an excellent time to visit.",
       seasonCta: "Full season calendar",
       seasonAllCities: "Browse all {month} destinations ({count})",
       seasonFewerCities: "Show fewer",
@@ -1645,7 +1645,7 @@ export const dictionaries = {
       seasonRainTwo: "🌧 rain on 2 days a month",
       seasonRainFew: "🌧 rain on {count} days a month",
       seasonRainMany: "🌧 rain on {count} days a month",
-      seasonMethod: "Climate: Copernicus ERA5-Land, 1991–2020 normals for each city's coordinates. Ratings follow Sfrtna's methodology and are based on historical climate normals; actual weather may vary.",
+      seasonMethod: "Based on historical climate normals (1991–2020). Actual weather may vary.",
       seasonTapHint: "Tap any city for a summary: weather, visa, currency and top sights.",
       seasonFare: "✈️ From SAR {price}",
       seasonFareNote: "✈️ The price on each city is the lowest one-way fare per person from Riyadh seen for {month} departures; the final price shows when you book. Only cities with a fare seen are listed here — the rest of the month's cities are in the full seasons calendar.",

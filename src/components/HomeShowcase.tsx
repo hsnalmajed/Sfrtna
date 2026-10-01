@@ -39,7 +39,6 @@ export interface ShowcaseCity {
   /** The city's in-season months, already named and joined. */
   bestMonths: string;
   /** Who names those months (a tourism board or a guide). */
-  bestMonthsSource?: string;
   /** Confirmed entry status for a Saudi passport; absent when unconfirmed. */
   visa?: { category: VisaCategory; label: string };
   currency?: { code: string; name: string; rateLine?: string };
@@ -385,17 +384,9 @@ export default function HomeShowcase({
             {openCity.bestMonths && (
               <p className="mt-2 text-sm text-white/75">
                 {dict.summaryBestMonths.replace("{months}", openCity.bestMonths)}
-                {openCity.bestMonthsSource && (
-                  <span className="text-white/55"> · {dict.summarySource.replace("{source}", openCity.bestMonthsSource)}</span>
-                )}
               </p>
             )}
-            <p className="mt-3 text-xs text-white/55">
-              {dict.climateNote}{" "}
-              <Link href={`/${locale}/methodology/travel-seasons`} className="text-sea-300 hover:underline">
-                {dict.methodologyLink}
-              </Link>
-            </p>
+            <p className="mt-3 text-xs text-white/55">{dict.climateNote}</p>
           </section>
 
           {openCity.fare && (
