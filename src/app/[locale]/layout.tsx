@@ -5,6 +5,7 @@ import type { Locale } from "@/lib/types";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import NavTracker from "@/components/NavTracker";
+import Script from "next/script";
 
 export async function generateStaticParams() {
   return [{ locale: "ar" }, { locale: "en" }];
@@ -62,6 +63,19 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
         <main className="flex-1">{children}</main>
         <Footer locale={loc} />
         <NavTracker />
+        {/*
+          Stay22 LinkSwap: turns the plain Booking/Agoda/Expedia/Trip.com links
+          on hotel pages into affiliate links. The lmaID is a public account
+          id, not a secret. Loaded after hydration so it never delays a page.
+        */}
+        <Script id="stay22-params" strategy="afterInteractive">
+          {`window.Stay22=window.Stay22||{};window.Stay22.params={lmaID:'6abee21c6e93226dc14e814b'};`}
+        </Script>
+        <Script
+          id="stay22-lma"
+          src="https://scripts.stay22.com/letmeallez.js"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );
