@@ -40,7 +40,7 @@ export interface ThermalProfile {
 }
 
 export const SCORING = {
-  version: "1.0",
+  version: "1.1",
 
   profiles: {
     city: {
