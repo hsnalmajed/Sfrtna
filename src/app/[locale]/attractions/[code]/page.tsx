@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getDictionary } from "@/lib/dictionaries";
 import type { Locale } from "@/lib/types";
@@ -15,6 +14,7 @@ import PageHero from "@/components/ui/PageHero";
 import { pageMetadata, absoluteUrl, touristDestinationJsonLd } from "@/lib/seo";
 import CountryQuickFacts, { type QuickFact } from "@/components/CountryQuickFacts";
 import { currencyForCountry } from "@/lib/currencies";
+import BackLink from "@/components/BackLink";
 
 /**
  * A title that says which country.
@@ -120,9 +120,13 @@ export default async function CountryAttractionsPage({
         eyebrow={dict.attractions.title}
         title={loc === "ar" ? country.nameAr : country.nameEn}
       >
-        <Link href={`/${loc}/attractions`} className="inline-flex w-fit items-center gap-1.5 rounded-full bg-white/10 px-3.5 py-2 text-sm font-semibold text-white/90 ring-1 ring-white/20 backdrop-blur-md transition hover:bg-white/20">
-          {loc === "ar" ? "→" : "←"} {dict.attractions.backToCountries}
-        </Link>
+        <BackLink
+          href={`/${loc}/attractions`}
+          label={dict.attractions.backToCountries}
+          backLabel={dict.back}
+          arrow={loc === "ar" ? "→" : "←"}
+          className="inline-flex w-fit items-center gap-1.5 rounded-full bg-white/10 px-3.5 py-2 text-sm font-semibold text-white/90 ring-1 ring-white/20 backdrop-blur-md transition hover:bg-white/20"
+        />
       </PageHero>
 
       <div className="mx-auto max-w-5xl px-4 sm:px-6 py-10">

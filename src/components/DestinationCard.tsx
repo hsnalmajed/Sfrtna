@@ -1,4 +1,5 @@
 import Link from "next/link";
+import VisaDetailsButton from "@/components/VisaDetailsButton";
 import { CLASS_DOT } from "@/lib/travelSeason/labels";
 import type { DestinationSuggestion, Locale, TravelerCounts } from "@/lib/types";
 import { getDictionary } from "@/lib/dictionaries";
@@ -161,12 +162,13 @@ export default function DestinationCard({
             <VisaBadge category={place.visa} label={visaLabels[place.visa]} className="!px-2.5 !py-1" />
           ) : place ? (
             // Not confirmed at the official source yet: say so, and where to check.
-            <Link
-              href={`/${locale}/visa/${place.countryCode}`}
+            <VisaDetailsButton
+              countryCode={place.countryCode}
+              locale={locale}
               className="rounded-full bg-mist-100 px-2.5 py-1 text-xs font-bold text-navy-700 ring-1 ring-mist-200 hover:ring-navy-300"
             >
               🛂 {d.visaCheck}
-            </Link>
+            </VisaDetailsButton>
           ) : null}
         </div>
 

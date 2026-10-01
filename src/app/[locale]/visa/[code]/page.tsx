@@ -1,6 +1,5 @@
 import VisaBadge from "@/components/VisaBadge";
 import { VISA_CHECKED_AT, visaStatusFor } from "@/data/visaStatus";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getDictionary } from "@/lib/dictionaries";
 import type { Locale } from "@/lib/types";
@@ -10,6 +9,7 @@ import { fetchCountryPhotos } from "@/lib/countryPhotos";
 import VisaWarning from "@/components/VisaWarning";
 import VisaOfficialLinks from "@/components/VisaOfficialLinks";
 import PageHero from "@/components/ui/PageHero";
+import BackLink from "@/components/BackLink";
 
 export const dynamic = "force-dynamic";
 
@@ -41,9 +41,13 @@ export default async function VisaCountryPage({ params }: PageProps<"/[locale]/v
         title={dict.visa.headingForCountry.replace("{country}", countryName)}
       >
         <div className="flex flex-wrap items-center gap-3">
-          <Link href={`/${loc}/visa`} className="inline-flex w-fit items-center gap-1.5 rounded-full bg-white/10 px-3.5 py-2 text-sm font-semibold text-white/90 ring-1 ring-white/20 backdrop-blur-md transition hover:bg-white/20">
-            {loc === "ar" ? "→" : "←"} {dict.visa.backToVisa}
-          </Link>
+          <BackLink
+            href={`/${loc}/visa`}
+            label={dict.visa.backToVisa}
+            backLabel={dict.back}
+            arrow={loc === "ar" ? "→" : "←"}
+            className="inline-flex w-fit items-center gap-1.5 rounded-full bg-white/10 px-3.5 py-2 text-sm font-semibold text-white/90 ring-1 ring-white/20 backdrop-blur-md transition hover:bg-white/20"
+          />
           <span className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white shadow-md ring-2 ring-white/70">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={flagImageUrl(country.code)} alt="" className="h-full w-full object-cover" />

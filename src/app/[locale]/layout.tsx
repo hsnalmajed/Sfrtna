@@ -4,6 +4,7 @@ import { getDictionary } from "@/lib/dictionaries";
 import type { Locale } from "@/lib/types";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import NavTracker from "@/components/NavTracker";
 
 export async function generateStaticParams() {
   return [{ locale: "ar" }, { locale: "en" }];
@@ -60,6 +61,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
         <Header locale={loc} />
         <main className="flex-1">{children}</main>
         <Footer locale={loc} />
+        <NavTracker />
       </body>
     </html>
   );

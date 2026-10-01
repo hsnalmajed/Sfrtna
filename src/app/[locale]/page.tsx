@@ -313,6 +313,7 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
             summaryHotels: dict.home.summaryHotels,
             summaryAirport: dict.home.summaryAirport,
             summaryClose: dict.home.summaryClose,
+            summaryBackTo: dict.home.summaryBackTo,
             toolsSubtitle: dict.home.toolsSubtitle,
             toolCta: dict.home.toolCta,
             stepsTitle: dict.home.stepsTitle,

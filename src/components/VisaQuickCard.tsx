@@ -1,4 +1,4 @@
-import Link from "next/link";
+import VisaDetailsButton from "@/components/VisaDetailsButton";
 import type { Locale } from "@/lib/types";
 import { getDictionary } from "@/lib/dictionaries";
 import { visaStatusFor } from "@/data/visaStatus";
@@ -67,9 +67,9 @@ export default function VisaQuickCard({ countryCode, locale }: { countryCode: st
         >
           ✈️ {dict.attractions.factVisaIata} ↗
         </a>
-        <Link href={`/${locale}/visa/${countryCode}`} className={`${btn} text-brand-700 hover:underline`}>
+        <VisaDetailsButton countryCode={countryCode} locale={locale} className={`${btn} text-brand-700 hover:underline`}>
           {dict.visa.openDetails} {locale === "ar" ? "←" : "→"}
-        </Link>
+        </VisaDetailsButton>
       </div>
     </div>
   );

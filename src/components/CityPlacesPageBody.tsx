@@ -18,6 +18,7 @@ import CityPlacesView, { type CityView } from "@/components/CityPlacesView";
 import TourCard from "@/components/TourCard";
 import PageHero from "@/components/ui/PageHero";
 import SectionHeading from "@/components/ui/SectionHeading";
+import BackLink from "@/components/BackLink";
 
 /**
  * Only a relative path on this site is allowed back.
@@ -190,13 +191,13 @@ export default async function CityPlacesPageBody({
               {dict.itinerary.backToResults}
             </Link>
           )}
-          <Link
+          <BackLink
             href={`/${loc}/attractions/${country.code}`}
+            label={dict.attractions.backToCities}
+            backLabel={dict.back}
+            arrow={loc === "ar" ? "→" : "←"}
             className="inline-flex w-fit items-center gap-1.5 rounded-full bg-white/10 px-3.5 py-2 text-sm font-semibold text-white/90 ring-1 ring-white/20 backdrop-blur-md transition hover:bg-white/20"
-          >
-            <span aria-hidden="true">{loc === "ar" ? "→" : "←"}</span>
-            {dict.attractions.backToCities}
-          </Link>
+          />
         </div>
       </PageHero>
 

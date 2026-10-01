@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getDictionary } from "@/lib/dictionaries";
 import type { Locale } from "@/lib/types";
@@ -9,6 +8,7 @@ import { fetchCountryPhotos } from "@/lib/countryPhotos";
 import { cityCountLabel } from "@/lib/format";
 import CityGallery, { type CityCard } from "@/components/CityGallery";
 import PageHero from "@/components/ui/PageHero";
+import BackLink from "@/components/BackLink";
 
 export const dynamic = "force-dynamic";
 
@@ -69,10 +69,13 @@ export default async function CountryMapPage({ params }: PageProps<"/[locale]/ma
         subtitle={dict.maps.citiesSubtitle}
         facts={[{ value: String(cities.length), label: cityCountLabel(cities.length, dict.maps) }]}
       >
-        <Link href={`/${loc}/maps`} className="inline-flex w-fit items-center gap-1.5 rounded-full bg-white/10 px-3.5 py-2 text-sm font-semibold text-white/90 ring-1 ring-white/20 backdrop-blur-md transition hover:bg-white/20">
-          <span aria-hidden="true">{loc === "ar" ? "→" : "←"}</span>
-          {dict.maps.backToMaps}
-        </Link>
+        <BackLink
+          href={`/${loc}/maps`}
+          label={dict.maps.backToMaps}
+          backLabel={dict.back}
+          arrow={loc === "ar" ? "→" : "←"}
+          className="inline-flex w-fit items-center gap-1.5 rounded-full bg-white/10 px-3.5 py-2 text-sm font-semibold text-white/90 ring-1 ring-white/20 backdrop-blur-md transition hover:bg-white/20"
+        />
       </PageHero>
 
       <div className="mx-auto max-w-6xl px-4 sm:px-6 py-10">

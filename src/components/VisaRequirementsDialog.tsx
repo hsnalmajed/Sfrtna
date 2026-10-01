@@ -33,18 +33,31 @@ export default function VisaRequirementsDialog({
   countryCode,
   locale,
   onClose,
+  onBack,
+  backLabel,
 }: {
   countryCode: string;
   locale: Locale;
   onClose: () => void;
+  /** Opened from another window (a city's summary): a back button returns to it. */
+  onBack?: () => void;
+  /** What that back button says ("Back to Istanbul"). */
+  backLabel?: string;
 }) {
   const dict = getDictionary(locale);
   const v = dict.visa;
   const r = dict.results;
   const isAr = locale === "ar";
 
+  // Escape, or a tap outside, steps back one window when there is one under this.
+  const dismiss = onBack ?? onClose;
+
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      e.stopImmediatePropagation();
+      dismiss();
+    };
     window.addEventListener("keydown", onKey);
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
@@ -52,7 +65,7 @@ export default function VisaRequirementsDialog({
       window.removeEventListener("keydown", onKey);
       document.body.style.overflow = prev;
     };
-  }, [onClose]);
+  }, [dismiss]);
 
   const country = findCountry(countryCode);
   const name = country ? (isAr ? country.nameAr : country.nameEn) : countryCode;
@@ -77,8 +90,8 @@ export default function VisaRequirementsDialog({
 
   const dialog = (
     <div
-      className="fixed inset-0 z-[60] flex items-end justify-center bg-navy-990/70 backdrop-blur-sm sm:items-center sm:p-6"
-      onClick={onClose}
+      className="fixed inset-0 z-[70] flex items-end justify-center bg-navy-990/70 backdrop-blur-sm sm:items-center sm:p-6"
+      onClick={dismiss}
     >
       <div
         role="dialog"
@@ -97,6 +110,15 @@ export default function VisaRequirementsDialog({
           >
             ✕
           </button>
+          {onBack && (
+            <button
+              type="button"
+              onClick={onBack}
+              className="mb-4 inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3.5 py-2 text-sm font-semibold text-white/90 ring-1 ring-white/20 transition hover:bg-white/20"
+            >
+              <span aria-hidden="true">{isAr ? "→" : "←"}</span> {backLabel ?? dict.back}
+            </button>
+          )}
           <div className="flex items-center gap-3 pe-10">
             {/* eslint-disable-next-line @next/next/no-img-element -- flag CDN, image optimizer off on Workers */}
             <img src={flagImageUrl(countryCode, 80)} alt="" className="h-9 w-12 rounded-md object-cover ring-1 ring-white/30" />

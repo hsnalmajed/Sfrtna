@@ -11,6 +11,7 @@ import { PLAN_EVENT, type PlanProduct } from "@/lib/planEvents";
 import TripPlanner from "@/components/TripPlanner";
 import HotelPlanner from "@/components/HotelPlanner";
 import VisaBadge from "@/components/VisaBadge";
+import VisaRequirementsDialog from "@/components/VisaRequirementsDialog";
 import type { VisaCategory } from "@/data/visaStatus";
 
 /** A city in season this month, with the two numbers that put it there. */
@@ -106,6 +107,7 @@ interface ShowcaseDict {
   summaryHotels: string;
   summaryAirport: string;
   summaryClose: string;
+  summaryBackTo: string;
   toolsSubtitle: string;
   toolCta: string;
   stepsTitle: string;
@@ -168,13 +170,15 @@ export default function HomeShowcase({
   const [planKey, setPlanKey] = useState(0);
   // The season city whose summary is open.
   const [openCity, setOpenCity] = useState<ShowcaseCity | null>(null);
+  // Its visa details, opened over the summary; closing them returns to it.
+  const [visaOpen, setVisaOpen] = useState(false);
 
   useEffect(() => {
-    if (!openCity) return;
+    if (!openCity || visaOpen) return;
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpenCity(null);
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [openCity]);
+  }, [openCity, visaOpen]);
 
   /** From a city summary into the booking tab, with that city filled in. */
   function bookCity(c: ShowcaseCity, product: PlanProduct) {
@@ -280,7 +284,10 @@ export default function HomeShowcase({
     <button
       key={`${c.code}-${c.slug}`}
       type="button"
-      onClick={() => setOpenCity(c)}
+      onClick={() => {
+        setVisaOpen(false);
+        setOpenCity(c);
+      }}
       aria-haspopup="dialog"
       className="group relative isolate block aspect-[3/4] w-full overflow-hidden rounded-2xl text-start ring-1 ring-white/10 transition duration-300 hover:-translate-y-1 hover:ring-sun-400/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400"
     >
@@ -401,12 +408,14 @@ export default function HomeShowcase({
                   <p className="text-sm text-white/75">{dict.summaryVisaUnknown}</p>
                 )}
               </div>
-              <Link
-                href={`/${locale}/visa/${openCity.code}`}
-                className="mt-2 inline-block text-xs font-bold text-sea-300 underline-offset-2 hover:underline"
+              <button
+                type="button"
+                onClick={() => setVisaOpen(true)}
+                aria-haspopup="dialog"
+                className="mt-2 inline-block text-start text-xs font-bold text-sea-300 underline-offset-2 hover:underline"
               >
                 {arrow} {dict.summaryVisaMore}
-              </Link>
+              </button>
             </section>
 
             <section className="rounded-2xl bg-white/[0.05] p-4 ring-1 ring-white/10">
@@ -703,6 +712,18 @@ export default function HomeShowcase({
       {/* Portalled to <body>: the showcase sits in a stacking context under
           the fixed header, and the summary has to cover both. */}
       {summary && createPortal(summary, document.body)}
+      {openCity && visaOpen && (
+        <VisaRequirementsDialog
+          countryCode={openCity.code}
+          locale={locale}
+          onBack={() => setVisaOpen(false)}
+          backLabel={dict.summaryBackTo.replace("{city}", openCity.name)}
+          onClose={() => {
+            setVisaOpen(false);
+            setOpenCity(null);
+          }}
+        />
+      )}
     </div>
   );
 }

@@ -7,6 +7,7 @@ export const dictionaries = {
     siteNameAr: "سفرتنا",
     siteNameEn: "Sfrtna",
     slogan: "لكل سفرة حكاية",
+    back: "رجوع",
     tagline: "خطّط رحلتك بالكامل حسب ميزانيتك — طيران، فنادق، وبرنامج سياحي في مكان واحد",
     nav: {
       home: "الرئيسية",
@@ -460,6 +461,7 @@ export const dictionaries = {
       summaryHotels: "ابحث عن فندق في {city}",
       summaryAirport: "أقرب مطار: {airport} (يبعد {km} كم)",
       summaryClose: "إغلاق",
+      summaryBackTo: "رجوع إلى {city}",
 
       toolsEyebrow: "أدوات المسافر",
       toolsTitle: "كل ما تحتاجه قبل أن تحجز",
@@ -1165,6 +1167,7 @@ export const dictionaries = {
     siteNameAr: "سفرتنا",
     siteNameEn: "Sfrtna",
     slogan: "Every trip has a story",
+    back: "Back",
     tagline: "Plan your whole trip around your budget — flights, hotels, and an itinerary in one place",
     nav: {
       home: "Home",
@@ -1610,6 +1613,7 @@ export const dictionaries = {
       summaryHotels: "Find a hotel in {city}",
       summaryAirport: "Nearest airport: {airport} ({km} km away)",
       summaryClose: "Close",
+      summaryBackTo: "Back to {city}",
 
       toolsEyebrow: "Traveller tools",
       toolsTitle: "Everything you need before you book",
