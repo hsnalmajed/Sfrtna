@@ -15,8 +15,10 @@ import { IATA_TRAVEL_CENTRE_URL, directVisaUrl, officialVisaUrl } from "@/lib/vi
 export default function VisaQuickCard({ countryCode, locale }: { countryCode: string; locale: Locale }) {
   const dict = getDictionary(locale);
   const status = visaStatusFor(countryCode);
-  const official = officialVisaUrl(countryCode);
-  const direct = directVisaUrl(countryCode, locale);
+  // Nothing to apply for when no visa is needed.
+  const needsApplying = status?.category !== "free";
+  const official = needsApplying ? officialVisaUrl(countryCode) : undefined;
+  const direct = needsApplying ? directVisaUrl(countryCode, locale) : undefined;
   const labels = {
     free: dict.visa.statusFree,
     arrival: dict.visa.statusArrival,
