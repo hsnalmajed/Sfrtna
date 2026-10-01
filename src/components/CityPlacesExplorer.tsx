@@ -196,8 +196,15 @@ export default function CityPlacesExplorer({
               <article
                 key={p.key}
                 id={`place-${p.key}`}
-                className="scroll-mt-28 flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-black/5 transition hover:-translate-y-0.5 hover:shadow-md"
+                className={`relative scroll-mt-28 flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md ${
+                  selectedKeys?.has(p.key) ? "ring-2 ring-emerald-500" : "ring-1 ring-black/5"
+                }`}
               >
+                {selectedKeys?.has(p.key) && (
+                  <span className="absolute start-3 top-3 z-10 rounded-full bg-emerald-600 px-2.5 py-1 text-xs font-extrabold text-white shadow-md">
+                    ✓ {addedLabel}
+                  </span>
+                )}
                 <Photo
                   src={p.photo}
                   className="h-40 w-full object-cover"

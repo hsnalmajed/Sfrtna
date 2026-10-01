@@ -551,8 +551,29 @@ html[lang="ar"] .eyebrow {
   animation: tabFade 0.32s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
+/* "Added": the plan button swells once and its count pops, so adding a
+   place is seen, not assumed. */
+@keyframes planBump {
+  0% { transform: scale(1); }
+  30% { transform: scale(1.12); }
+  60% { transform: scale(0.97); }
+  100% { transform: scale(1); }
+}
+.plan-bump {
+  animation: planBump 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes toastIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.toast-in {
+  animation: toastIn 0.25s ease-out both;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .tab-fade {
+  .tab-fade,
+  .plan-bump,
+  .toast-in {
     animation: none;
   }
 }

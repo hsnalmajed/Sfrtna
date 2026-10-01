@@ -189,15 +189,29 @@ export default function CityPlacesPlanner({
   const [to, setTo] = useState("");
   const [interests, setInterests] = useState<Interest[]>(["sights"]);
   const [plan, setPlan] = useState<Plan | null>(null);
+  // The last add or remove, said out loud for a moment — a button changing
+  // colour at the bottom of a card is easy to miss.
+  const [toast, setToast] = useState<{ text: string; added: boolean; id: number } | null>(null);
+  useEffect(() => {
+    if (!toast) return;
+    const timer = window.setTimeout(() => setToast(null), 2600);
+    return () => window.clearTimeout(timer);
+  }, [toast]);
 
   const days = tripDays(from, to);
   const datesError = !from || !to ? t.datesNeeded : days === null || days < 1 ? t.datesInvalid : days > MAX_DAYS ? t.tooLong : null;
 
   const selectedKeys = useMemo(() => new Set(picked.map((p) => p.key)), [picked]);
   function toggle(place: PlaceListItem) {
+    const removing = picked.some((p) => p.key === place.key);
     setPicked((current) =>
       current.some((p) => p.key === place.key) ? current.filter((p) => p.key !== place.key) : [...current, place]
     );
+    setToast({
+      text: (removing ? t.removedToast : t.addedToast).replace("{name}", place.name),
+      added: !removing,
+      id: (toast?.id ?? 0) + 1,
+    });
   }
 
   const daysText = (n: number) =>
@@ -264,8 +278,14 @@ export default function CityPlacesPlanner({
 
       {/* ---- Picking: the plan so far, kept in view at the top ---- */}
       {mode === "pick" && (
-        <div className="print:hidden sticky top-[4.75rem] z-30 mb-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-white/95 px-4 py-3 shadow-[var(--shadow-lift)] ring-1 ring-mist-200 backdrop-blur">
-          <p className="text-sm font-bold text-navy-700">👆 {t.pickingHint}</p>
+        <div
+          className={`print:hidden sticky top-[4.75rem] z-30 mb-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl px-4 py-3 shadow-[var(--shadow-lift)] ring-1 backdrop-blur transition-colors ${
+            picked.length ? "bg-emerald-50/95 ring-emerald-200" : "bg-white/95 ring-mist-200"
+          }`}
+        >
+          <p className={`text-sm font-bold ${picked.length ? "text-emerald-900" : "text-navy-700"}`}>
+            {picked.length ? `✅ ${t.pickedBar.replace("{count}", placesText(picked.length))}` : `👆 ${t.pickingHint}`}
+          </p>
           <div className="flex items-center gap-2">
             <button
               type="button"
@@ -278,17 +298,41 @@ export default function CityPlacesPlanner({
               {t.cancel}
             </button>
             <button
+              key={picked.length}
               type="button"
               onClick={() => setBasketOpen(true)}
               aria-haspopup="dialog"
-              className="relative inline-flex items-center gap-2 rounded-full bg-navy-900 px-4 py-2.5 text-sm font-extrabold text-white transition hover:bg-navy-800"
+              className={`relative inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-extrabold transition ${
+                picked.length
+                  ? "plan-bump bg-sun-400 text-navy-950 shadow-[var(--shadow-sun)] hover:bg-sun-300"
+                  : "bg-navy-900 text-white hover:bg-navy-800"
+              }`}
             >
-              🧳 {t.myPlan}
-              <span className="inline-flex h-6 min-w-6 items-center justify-center rounded-full bg-sun-400 px-1.5 text-xs font-black text-navy-950">
+              🧳 {picked.length ? t.viewPlan : t.myPlan}
+              <span
+                className={`inline-flex h-6 min-w-6 items-center justify-center rounded-full px-1.5 text-xs font-black ${
+                  picked.length ? "bg-navy-900 text-white" : "bg-white/20 text-white"
+                }`}
+              >
                 {picked.length}
               </span>
             </button>
           </div>
+        </div>
+      )}
+
+      {/* What just happened, for a moment, where the eye already is. */}
+      {toast && (
+        <div className="print:hidden pointer-events-none fixed inset-x-0 bottom-6 z-50 flex justify-center px-4" aria-live="polite">
+          <p
+            key={toast.id}
+            className={`toast-in max-w-md rounded-full px-5 py-3 text-sm font-extrabold shadow-2xl ${
+              toast.added ? "bg-emerald-600 text-white" : "bg-navy-900 text-white"
+            }`}
+          >
+            {toast.added ? "✓ " : "− "}
+            {toast.text}
+          </p>
         </div>
       )}
 
