@@ -318,11 +318,18 @@ export default function HomeShowcase({
           <span aria-hidden="true">{c.visa ? VISA_STYLES[c.visa.category].icon : "🛂"}</span>
           <span className="truncate">{c.visa ? c.visa.short : dict.cardVisaUnknown}</span>
         </span>
-        {c.seasonKind && <p className="mt-1.5 truncate text-xs font-bold text-sun-200">{c.seasonKind}</p>}
-        <div className="mt-1 flex flex-wrap gap-1">
+        {/* The season and its temperatures, side by side on one line. */}
+        <div className="mt-1.5 flex flex-wrap items-center gap-1">
+          {c.seasonKind && (
+            <span className="inline-flex rounded-full bg-navy-990/65 px-2 py-0.5 text-xs font-bold text-sun-200 backdrop-blur-sm">
+              {c.seasonKind}
+            </span>
+          )}
           <span className="inline-flex rounded-full bg-navy-990/65 px-2 py-0.5 text-xs font-bold text-sun-300 backdrop-blur-sm" dir="ltr">
             🌡 {c.low !== null && c.low !== undefined ? dict.highLow.replace("{low}", String(Math.round(c.low))).replace("{high}", String(Math.round(c.high))) : `${Math.round(c.high)}°`}
           </span>
+        </div>
+        <div className="mt-1 flex flex-wrap gap-1">
           {/* The fare matters more than the rain; the rain only shows where
               no fare was seen, so the card is never left with one number. */}
           {c.fare ? (
