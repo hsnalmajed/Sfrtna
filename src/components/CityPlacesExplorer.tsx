@@ -13,6 +13,8 @@ export interface PlaceListItem {
   category: PinCategory;
   /** What OpenStreetMap calls it ("mall", "museum"), when it came from there. */
   kind?: string;
+  /** How widely known it is (languages it is named in, a Wikipedia article) — see mapPins.ts. */
+  fame?: number;
   /**
    * Where the place is.
    *
@@ -57,13 +59,16 @@ const PAGE = 24;
 const TAB_ORDER: PinCategory[] = ["historic", "activity", "food", "place"];
 
 /** How well known a place probably is, from how well documented it is. */
-function score(p: PlaceListItem): number {
+export function score(p: PlaceListItem): number {
   let n = 0;
   if (p.key.startsWith("guide-")) n += 10; // hand-picked by us
   if (p.bookingLabel) n += 4; // we know how you get in
   if (p.photo) n += 3;
   if (p.description) n += 2;
   if (!p.englishOnly) n += 1; // named in the reader's language
+  // How widely known it is, from the map's own data: a place named in dozens
+  // of languages, with a Wikipedia article, is one travellers come for.
+  n += Math.min(p.fame ?? 0, 60) / 3;
   return n;
 }
 

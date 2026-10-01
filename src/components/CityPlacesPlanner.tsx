@@ -8,7 +8,7 @@ import { countLabel } from "@/lib/format";
 import { PIN_STYLES } from "@/lib/pinStyles";
 import { downloadText, safeFileName, toKML } from "@/lib/mapExport";
 import { GOOGLE_MY_MAPS_URL } from "@/lib/tripPlaces";
-import CityPlacesExplorer, { type PlaceListItem } from "@/components/CityPlacesExplorer";
+import CityPlacesExplorer, { score, type PlaceListItem } from "@/components/CityPlacesExplorer";
 import PrintHeader from "@/components/PrintHeader";
 
 /**
@@ -121,17 +121,6 @@ function interestOf(p: PlaceListItem): Interest | null {
   return null;
 }
 
-/** How well known a place probably is, from how well documented it is (as the list ranks them). */
-function rank(p: PlaceListItem): number {
-  let n = 0;
-  if (p.key.startsWith("guide-")) n += 10;
-  if (p.bookingLabel) n += 4;
-  if (p.photo) n += 3;
-  if (p.description) n += 2;
-  if (!p.englishOnly) n += 1;
-  return n;
-}
-
 /** Days between two yyyy-mm-dd dates, both counted. */
 function tripDays(from: string, to: string): number | null {
   if (!from || !to) return null;
@@ -229,7 +218,7 @@ export default function CityPlacesPlanner({
     if (!days || datesError || interests.length === 0) return;
     const target = days * COMFORTABLE_ITEMS_PER_DAY;
     const lists = interests.map((i) =>
-      places.filter((p) => hasCoords(p) && interestOf(p) === i).sort((a, b) => rank(b) - rank(a))
+      places.filter((p) => hasCoords(p) && interestOf(p) === i).sort((a, b) => score(b) - score(a))
     );
     // Taken in turn from each interest, best-documented first, so a plan for
     // "sights and shopping" is both rather than all of one.

@@ -33,6 +33,12 @@ export interface Place {
   category: PinCategory;
   /** The OpenStreetMap value it was found by ("museum", "mall") — for telling shopping from other activities. */
   kind?: string;
+  /**
+   * How widely known it is, from OpenStreetMap itself: the number of
+   * languages it is named in, plus a Wikipedia article. Hagia Sophia is named
+   * in over a hundred languages; a corner shrine in one or two.
+   */
+  fame?: number;
   photo?: string;
   /** The reader wanted Arabic and OpenStreetMap has no Arabic name for it. */
   englishOnly: boolean;
@@ -205,6 +211,10 @@ function toPlace(el: OverpassElement, locale: Locale): Place | null {
     nameAr,
     description: kindLabel(kind, locale),
     kind,
+    fame:
+      Object.keys(tags).filter((k) => k.startsWith("name:")).length +
+      (tags.wikipedia ? 10 : 0) +
+      (tags.wikidata ? 5 : 0),
     lat,
     lon,
     category,
