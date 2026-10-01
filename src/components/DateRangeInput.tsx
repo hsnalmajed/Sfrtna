@@ -88,7 +88,7 @@ function monthTitle(year: number, month: number, locale: Locale): string {
 
 /** Sunday-first weekday initials, taken from the locale rather than hardcoded. */
 function weekdayNames(locale: Locale): string[] {
-  const fmt = new Intl.DateTimeFormat(localeTag(locale), { weekday: "short", timeZone: "UTC" });
+  const fmt = new Intl.DateTimeFormat(localeTag(locale), { weekday: locale === "ar" ? "narrow" : "short", timeZone: "UTC" });
   // 2024-01-07 was a Sunday.
   return Array.from({ length: 7 }, (_, i) => fmt.format(new Date(Date.UTC(2024, 0, 7 + i))));
 }
@@ -118,6 +118,7 @@ export default function DateRangeInput({
   required = false,
   error,
   tone = "light",
+  fareRoute,
 }: {
   locale: Locale;
   departDate: string;
@@ -128,6 +129,12 @@ export default function DateRangeInput({
   error?: string;
   /** Only the trigger changes; the calendar popover stays light. */
   tone?: FormTone;
+  /**
+   * Write the cheapest fare seen under each day: out on the departure pass,
+   * back on the return pass (/api/day-fares). Omitted, or with either end
+   * empty, the calendar is plain.
+   */
+  fareRoute?: { origin: string; destination: string; currency?: string };
 }) {
   const dict = getDictionary(locale);
   const isAr = locale === "ar";
@@ -144,6 +151,12 @@ export default function DateRangeInput({
     const start = parseIso(departDate) ?? todayUtc();
     return { year: start.getUTCFullYear(), month: start.getUTCMonth() };
   });
+
+  // Fares seen per day, by "FROM>TO:YYYY-MM" → { "YYYY-MM-DD": price }.
+  const [fareTable, setFareTable] = useState<Record<string, Record<string, number>>>({});
+  const fareFrom = fareRoute ? (picking === "return" && withReturn ? fareRoute.destination : fareRoute.origin).trim() : "";
+  const fareTo = fareRoute ? (picking === "return" && withReturn ? fareRoute.origin : fareRoute.destination).trim() : "";
+  const fareCurrency = (fareRoute?.currency || "SAR").toUpperCase();
 
   // Close on an outside click or Escape. Subscribe-only: no state is written
   // in the effect body.
@@ -169,6 +182,37 @@ export default function DateRangeInput({
     const nextYear = cursor.month === 11 ? cursor.year + 1 : cursor.year;
     return [a, buildMonth(nextYear, nextMonth)];
   }, [cursor]);
+
+  const monthKeys = months.map((m) => `${m.year}-${String(m.month + 1).padStart(2, "0")}`);
+  const fareKey = (month: string) => `${fareFrom}>${fareTo}:${fareCurrency}:${month}`;
+  useEffect(() => {
+    if (!open || !fareFrom || !fareTo || fareFrom === fareTo) return;
+    let live = true;
+    for (const month of monthKeys) {
+      const key = fareKey(month);
+      if (key in fareTable) continue;
+      const qs = new URLSearchParams({ origin: fareFrom, destination: fareTo, month, currency: fareCurrency });
+      fetch(`/api/day-fares?${qs}`)
+        .then((r) => (r.ok ? r.json() : { fares: {} }))
+        .then((body: { fares?: Record<string, number> }) => {
+          if (live) setFareTable((t) => ({ ...t, [key]: body.fares ?? {} }));
+        })
+        .catch(() => {
+          if (live) setFareTable((t) => ({ ...t, [key]: {} }));
+        });
+    }
+    return () => {
+      live = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open, fareFrom, fareTo, fareCurrency, monthKeys.join(",")]);
+
+  const visibleFares: Record<string, number> = {};
+  for (const month of monthKeys) Object.assign(visibleFares, fareTable[fareKey(month)] ?? {});
+  const futureFares = Object.entries(visibleFares).filter(([day]) => day >= today);
+  const cheapest = futureFares.length ? Math.min(...futureFares.map(([, p]) => p)) : null;
+  const showFares = Boolean(fareFrom && fareTo && fareFrom !== fareTo);
+  const compact = (n: number) => (n >= 10000 ? `${(n / 1000).toFixed(n >= 100000 ? 0 : 1)}k` : n.toLocaleString("en-US"));
 
   const weekdays = useMemo(() => weekdayNames(locale), [locale]);
   const nights = withReturn && departDate && returnDate ? nightsBetween(departDate, returnDate) : 0;
@@ -294,12 +338,22 @@ export default function DateRangeInput({
             >
               {isAr ? "›" : "‹"}
             </button>
-            <p className="text-sm font-bold text-navy-900">
-              {withReturn
-                ? picking === "depart"
-                  ? dict.form.pickDepart
-                  : dict.form.pickReturn
-                : dict.form.departDate}
+            <p className="flex items-center gap-1.5 text-sm font-bold text-navy-900">
+              {withReturn ? (
+                <>
+                  {dict.form.pickLead}
+                  <span
+                    className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-sm font-black ${
+                      picking === "depart" ? "bg-sun-400 text-navy-950" : "bg-sea-600 text-white"
+                    }`}
+                  >
+                    <span aria-hidden="true">{picking === "depart" ? "🛫" : "🛬"}</span>
+                    {picking === "depart" ? dict.form.legDepart : dict.form.legReturn}
+                  </span>
+                </>
+              ) : (
+                dict.form.departDate
+              )}
             </p>
             <button
               type="button"
@@ -338,9 +392,24 @@ export default function DateRangeInput({
                         onClick={() => pick(day)}
                         aria-label={longDate(day, locale)}
                         aria-pressed={day === departDate || day === returnDate}
-                        className={`h-9 rounded-lg text-xs tabular-nums transition ${dayClass(day)}`}
+                        className={`flex flex-col items-center justify-center rounded-lg text-xs tabular-nums transition ${
+                          showFares ? "h-11" : "h-9"
+                        } ${dayClass(day)}`}
                       >
-                        {Number(day.slice(8))}
+                        <span>{Number(day.slice(8))}</span>
+                        {showFares && day >= today && visibleFares[day] !== undefined && (
+                          <span
+                            className={`text-[9px] leading-tight ${
+                              visibleFares[day] === cheapest
+                                ? "rounded bg-emerald-600 px-1 font-black text-white"
+                                : day === departDate || day === returnDate
+                                  ? "font-bold text-navy-900"
+                                  : "font-semibold text-navy-500"
+                            }`}
+                          >
+                            {compact(visibleFares[day])}
+                          </span>
+                        )}
                       </button>
                     )
                   )}
@@ -348,6 +417,16 @@ export default function DateRangeInput({
               </div>
             ))}
           </div>
+
+          {showFares && Object.keys(visibleFares).length > 0 && (
+            <p className="mt-3 flex items-start gap-1.5 rounded-xl bg-emerald-50 px-3 py-2 text-[11px] leading-relaxed text-emerald-900 ring-1 ring-emerald-100">
+              <span aria-hidden="true">💡</span>
+              <span>
+                {dict.form.fareLegend.replace("{currency}", fareCurrency === "SAR" && isAr ? "ر.س" : fareCurrency)}
+                {picking === "return" && withReturn ? ` · ${dict.form.fareLegendReturn}` : ""}
+              </span>
+            </p>
+          )}
 
           {summary && (
             <p className="mt-3 border-t border-mist-200 pt-3 text-center text-xs font-semibold text-navy-600">

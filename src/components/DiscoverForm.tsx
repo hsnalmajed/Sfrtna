@@ -19,6 +19,7 @@ import {
 import { parseChildrenAges, serializeChildrenAges } from "@/lib/searchParamsUtil";
 import { focusFirstError, hasErrors, type FieldErrors } from "@/lib/formErrors";
 import { formStyles, type FormTone } from "@/lib/formTone";
+import { useDefaultOrigin } from "@/lib/useOrigin";
 
 function nightsBetween(a: string, b: string) {
   const t1 = new Date(a).getTime();
@@ -56,6 +57,7 @@ export default function DiscoverForm({
     (sp.get("preferenceCategory") as DestinationCategory) || ""
   );
   const [origin, setOrigin] = useState(sp.get("origin") || "");
+  useDefaultOrigin(origin, setOrigin);
   const [budget, setBudget] = useState(sp.get("budget") || "");
   const [currency, setCurrency] = useState(sp.get("currency") || "SAR");
   // Empty by default (never a date pre-filled in as if the visitor had

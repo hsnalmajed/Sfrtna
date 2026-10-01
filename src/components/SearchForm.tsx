@@ -19,6 +19,7 @@ import {
 import { parseChildrenAges, serializeChildrenAges } from "@/lib/searchParamsUtil";
 import { focusFirstError, hasErrors, type FieldErrors } from "@/lib/formErrors";
 import { formStyles, type FormTone } from "@/lib/formTone";
+import { useDefaultOrigin } from "@/lib/useOrigin";
 
 interface LegDraft {
   destination: string;
@@ -49,6 +50,7 @@ export default function SearchForm({
     (sp.get("tripRoute") as FlightRoute) || "roundtrip"
   );
   const [origin, setOrigin] = useState(sp.get("origin") || "");
+  useDefaultOrigin(origin, setOrigin);
   const [destination, setDestination] = useState(sp.get("destination") || "");
   // Empty by default (never a date pre-filled in as if the visitor had
   // typed it themselves) — the field shows a plain DD/MM/YYYY placeholder
@@ -360,6 +362,7 @@ export default function SearchForm({
                 withReturn={showReturnDate}
                 required
                 tone={tone}
+                fareRoute={{ origin, destination, currency: effectiveCurrency }}
                 error={errors.departDate || errors.returnDate}
                 onChange={({ departDate: d, returnDate: r }) => {
                   setDepartDate(d);

@@ -14,6 +14,7 @@ import { parseChildrenAges, serializeChildrenAges } from "@/lib/searchParamsUtil
 import { focusFirstError, hasErrors, type FieldErrors } from "@/lib/formErrors";
 import { formStyles, type FormTone } from "@/lib/formTone";
 import { BudgetInput, EdgeTabs, FieldLabel, Toggle, nightsBetween, toDigits } from "@/components/PlannerFields";
+import { useDefaultOrigin } from "@/lib/useOrigin";
 
 /**
  * The flight planner, laid out the way a traveller thinks.
@@ -107,6 +108,7 @@ export default function TripPlanner({
     (sp.get("tripRoute") as FlightRoute) || "roundtrip"
   );
   const [origin, setOrigin] = useState(sp.get("origin") || "");
+  useDefaultOrigin(origin, setOrigin);
   const [destination, setDestination] = useState(sp.get("destination") || "");
   // Suggest + several countries: how many countries the route visits.
   const [stopCount, setStopCount] = useState<2 | 3>(sp.get("stops") === "3" ? 3 : 2);
@@ -460,6 +462,7 @@ export default function TripPlanner({
             withReturn={showReturnDate}
             required
             tone={tone}
+            fareRoute={showDestination ? { origin, destination, currency: effectiveCurrency } : undefined}
             error={errors.departDate || errors.returnDate}
             onChange={({ departDate: d, returnDate: r }) => {
               setDepartDate(d);

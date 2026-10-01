@@ -6,7 +6,10 @@ import { findCountry } from "@/lib/countries";
 import { findCity } from "@/lib/cities";
 import { fetchCityOverviews, fetchPlacesAroundCities } from "@/lib/mapPins";
 import { fetchCityHighlights } from "@/lib/guideHighlights";
-import { countLabel, flightHoursFromRiyadh, monthRanges, placeCountLabel } from "@/lib/format";
+import { countLabel, monthRanges, placeCountLabel } from "@/lib/format";
+import { flightHoursBetween } from "@/lib/originInfo";
+import { userOrigin } from "@/lib/origin";
+import { CITY_AIRPORTS } from "@/data/cityAirports";
 import { monthName } from "@/lib/seasons";
 import { bestMonths } from "@/lib/travelSeason/site";
 import { CITY_COORDS } from "@/data/cityCoords";
@@ -157,11 +160,13 @@ export default async function CityPlacesPageBody({
     });
   }
   const point = CITY_COORDS[cityEntry.slug];
-  const hours = point ? flightHoursFromRiyadh(point) : undefined;
+  // From the visitor's own airport (src/lib/origin.ts), not a fixed city.
+  const origin = await userOrigin();
+  const hours = point && origin.iata !== CITY_AIRPORTS[cityEntry.slug]?.iata ? flightHoursBetween(origin, point) : undefined;
   if (hours) {
     facts.push({
       icon: "✈️",
-      label: dict.attractions.factFlightTime,
+      label: dict.attractions.factFlightTime.replace("{origin}", loc === "ar" ? origin.cityAr : origin.cityEn),
       value: countLabel(hours, {
         one: dict.attractions.factFlightOne,
         two: dict.attractions.factFlightTwo,

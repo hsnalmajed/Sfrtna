@@ -9,7 +9,8 @@ import { visaStatusFor } from "@/data/visaStatus";
 import { currencyForCountry } from "@/lib/currencies";
 import { fetchRates, rateBetween, type Rates } from "@/lib/rates";
 import { cachedJson } from "@/lib/edgeCache";
-import { SEASON_FARE_ORIGIN, seasonFares } from "@/lib/seasonFares";
+import { seasonFares } from "@/lib/seasonFares";
+import { userOrigin } from "@/lib/origin";
 import { CITY_AIRPORTS } from "@/data/cityAirports";
 import { heroImage as heroImageOf, heroPhotoForToday } from "@/lib/heroPhotos";
 import { monthName } from "@/lib/seasons";
@@ -58,10 +59,14 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
   // Every season card carries a real one-way fare, so the strip shows the
   // cities the fare source has seen a price for; the rest of the month's
   // cities are on the seasons page (see seasonFares.ts for why some have none).
-  const fares = await seasonFares([monthKey, nextKey]);
+  // From the visitor's own airport: the one they chose, else the nearest to
+  // them (Al-Ahsa → Dammam), else Riyadh — see src/lib/origin.ts.
+  const origin = await userOrigin();
+  const originName = isAr ? origin.cityAr : origin.cityEn;
+  const fares = await seasonFares(origin.iata, [monthKey, nextKey]);
   const fareFor = (slug: string) => {
     const iata = CITY_AIRPORTS[slug]?.iata;
-    return iata && iata !== SEASON_FARE_ORIGIN ? fares[iata] : undefined;
+    return iata && iata !== origin.iata ? fares[iata] : undefined;
   };
   const priced = inSeasonCities.filter((c) => fareFor(c.slug) !== undefined);
   // If the fare source is down, the strip still shows the month's cities
@@ -274,6 +279,7 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
         <HomeShowcase
           locale={loc}
           seasonCities={seasonCities}
+          origin={{ iata: origin.iata, name: originName }}
           initialPlan={initialPlan}
           tools={tools}
           steps={steps}
@@ -303,8 +309,12 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
             seasonRainMany: dict.home.seasonRainMany,
             seasonTapHint: dict.home.seasonTapHint,
             seasonFare: dict.home.seasonFare,
-            seasonFareNote: dict.home.seasonFareNote.replace("{month}", fareMonths),
-            summaryFare: dict.home.summaryFare.replace("{month}", fareMonths),
+            seasonFareNote: dict.home.seasonFareNote.replace("{month}", fareMonths).replace("{origin}", originName),
+            summaryFare: dict.home.summaryFare.replace("{month}", fareMonths).replace("{origin}", originName),
+            originFrom: dict.home.originFrom,
+            originChange: dict.home.originChange,
+            originSearch: dict.home.originSearch,
+            originNoMatches: dict.home.originNoMatches,
 
             monthName: monthName(month, loc),
             summaryWeather: dict.home.summaryWeather,
