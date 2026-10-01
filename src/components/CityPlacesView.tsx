@@ -87,7 +87,9 @@ export default function CityPlacesView({
     (place: PlaceListItem) => {
       setFocusKey(place.key);
       switchTo("map");
-      top.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      // After the list is hidden and the map is in: the page is much shorter
+      // by then, and scrolling before that lands below the view switcher.
+      requestAnimationFrame(() => requestAnimationFrame(() => top.current?.scrollIntoView({ block: "start" })));
     },
     [switchTo]
   );
@@ -96,10 +98,12 @@ export default function CityPlacesView({
     switchTo("list");
     // Back to the card they left from, once the list is visible again.
     const key = focusKey;
-    requestAnimationFrame(() => {
-      const el = key ? document.getElementById(`place-${key}`) : null;
-      (el ?? top.current)?.scrollIntoView({ block: el ? "center" : "start" });
-    });
+    requestAnimationFrame(() =>
+      requestAnimationFrame(() => {
+        const el = key ? document.getElementById(`place-${key}`) : null;
+        (el ?? top.current)?.scrollIntoView({ block: el ? "center" : "start" });
+      })
+    );
   }, [focusKey, switchTo]);
 
   const tab = (v: CityView) =>
@@ -108,7 +112,7 @@ export default function CityPlacesView({
     }`;
 
   return (
-    <div ref={top} className="scroll-mt-24">
+    <div ref={top} className="scroll-mt-28">
       <div role="tablist" aria-label={`${labels.viewList} / ${labels.viewMap}`} className="mb-5 inline-flex rounded-full bg-white p-1 shadow-sm ring-1 ring-mist-200">
         <button type="button" role="tab" aria-selected={view === "list"} onClick={backToList} className={tab("list")}>
           <span aria-hidden="true">📋</span>
