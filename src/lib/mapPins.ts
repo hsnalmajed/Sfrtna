@@ -31,6 +31,8 @@ export interface Place {
   lat: number;
   lon: number;
   category: PinCategory;
+  /** The OpenStreetMap value it was found by ("museum", "mall") — for telling shopping from other activities. */
+  kind?: string;
   photo?: string;
   /** The reader wanted Arabic and OpenStreetMap has no Arabic name for it. */
   englishOnly: boolean;
@@ -202,6 +204,7 @@ function toPlace(el: OverpassElement, locale: Locale): Place | null {
     nameEn: nameEn ?? name,
     nameAr,
     description: kindLabel(kind, locale),
+    kind,
     lat,
     lon,
     category,

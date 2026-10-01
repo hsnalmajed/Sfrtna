@@ -649,6 +649,20 @@ select optgroup {
 }
 
 @media print {
+  /* A trip plan open over the page is the document: only it prints, laid
+     out as a normal page rather than a scrolling overlay. */
+  body.plan-open > *:not(.plan-root) {
+    display: none !important;
+  }
+  body.plan-open .plan-root {
+    position: static !important;
+    overflow: visible !important;
+    background: #fff !important;
+  }
+  body.plan-open {
+    overflow: visible !important;
+  }
+
   /* The site's own header and footer go; the document's letterhead stays. */
   body > header,
   body > footer,

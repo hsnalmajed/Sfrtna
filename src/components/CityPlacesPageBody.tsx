@@ -110,6 +110,7 @@ export default async function CityPlacesPageBody({
       description: p.description,
       photo: hit?.photo,
       category: p.category,
+      kind: p.kind,
       lat: p.lat,
       lon: p.lon,
       englishOnly: hit ? false : p.englishOnly,

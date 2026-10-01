@@ -11,6 +11,8 @@ export interface PlaceListItem {
   description?: string;
   photo?: string;
   category: PinCategory;
+  /** What OpenStreetMap calls it ("mall", "museum"), when it came from there. */
+  kind?: string;
   /**
    * Where the place is.
    *
