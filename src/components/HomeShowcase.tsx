@@ -157,9 +157,10 @@ export default function HomeShowcase({
   steps: ShowcaseStep[];
   dict: ShowcaseDict;
 }) {
-  // The search is what the page promises ("from budget to booking"), so it
-  // is what a visitor sees first; the other tabs are a tap away.
-  const [active, setActive] = useState<TabKey>("plan");
+  // The cities in season this month are what a visitor sees first — a page
+  // of places is the better welcome. Arriving to search (a search asked for
+  // in the address, or /#plan) opens the search instead.
+  const [active, setActive] = useState<TabKey>(initialPlan || seasonCities.length === 0 ? "plan" : "season");
   // The season tab runs every city in season past as a moving strip; the
   // button lays them all out as a still grid, in place rather than on
   // another page.
