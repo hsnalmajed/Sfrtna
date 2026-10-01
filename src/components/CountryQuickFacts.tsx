@@ -18,6 +18,20 @@ export interface QuickFact {
   href?: string;
 }
 
+// Static class names, so Tailwind sees them: how many columns the facts take
+// on a wider screen. On a phone every fact is its own row.
+const COLS: Record<number, string> = {
+  1: "sm:grid-cols-1",
+  2: "sm:grid-cols-2",
+  3: "sm:grid-cols-3",
+  4: "sm:grid-cols-2 lg:grid-cols-4",
+};
+
+/**
+ * One panel rather than a row of loose cards: the facts sit side by side,
+ * separated by hairlines, each one an icon beside its label and value — so
+ * the panel is as tall as its content and no card is left half empty.
+ */
 export default function CountryQuickFacts({
   locale,
   facts,
@@ -27,45 +41,57 @@ export default function CountryQuickFacts({
   locale: Locale;
   facts: QuickFact[];
   heading: string;
-  /** A wider first card (the visa card on a country page). */
+  /** A full-width first row (the visa on a country page). */
   lead?: React.ReactNode;
 }) {
   if (facts.length === 0 && !lead) return null;
+  const arrow = locale === "ar" ? "←" : "→";
 
   return (
     <section className="mb-8">
       <p className="eyebrow mb-3">{heading}</p>
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+      <div className="card overflow-hidden">
         {lead}
-        {facts.map((f) => {
-          const tone = "bg-white text-navy-900";
-          const body = (
-            <>
-              <span className="text-lg leading-none" aria-hidden="true">
-                {f.icon}
-              </span>
-              <span className="mt-2 block text-2xs font-bold uppercase tracking-wide text-navy-400">
-                {f.label}
-              </span>
-              <span className="mt-1 block text-sm font-extrabold leading-snug">{f.value}</span>
-            </>
-          );
+        {facts.length > 0 && (
+          <div
+            className={`grid grid-cols-1 gap-px bg-mist-200 ${COLS[Math.min(facts.length, 4)]} ${lead ? "border-t border-mist-200" : ""}`}
+          >
+            {facts.map((f) => {
+              const body = (
+                <>
+                  <span
+                    className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-sea-50 text-xl ring-1 ring-sea-100"
+                    aria-hidden="true"
+                  >
+                    {f.icon}
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block text-xs font-semibold text-navy-500">{f.label}</span>
+                    <span className="mt-0.5 block text-[15px] font-extrabold leading-snug text-navy-900">
+                      {f.value}
+                      {f.href && (
+                        <span className="ms-1.5 text-navy-300 transition group-hover:text-brand-600" aria-hidden="true">
+                          {arrow}
+                        </span>
+                      )}
+                    </span>
+                  </span>
+                </>
+              );
+              const cell = "flex items-center gap-3.5 bg-white px-5 py-4";
 
-          return f.href ? (
-            <Link
-              key={f.label}
-              href={f.href}
-              className={`card card-hover block px-4 py-3.5 ${tone}`}
-              lang={locale}
-            >
-              {body}
-            </Link>
-          ) : (
-            <div key={f.label} className={`card px-4 py-3.5 ${tone}`}>
-              {body}
-            </div>
-          );
-        })}
+              return f.href ? (
+                <Link key={f.label} href={f.href} className={`${cell} group transition hover:bg-mist-50`} lang={locale}>
+                  {body}
+                </Link>
+              ) : (
+                <div key={f.label} className={cell}>
+                  {body}
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
     </section>
   );

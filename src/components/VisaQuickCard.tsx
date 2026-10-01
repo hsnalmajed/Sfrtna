@@ -33,15 +33,22 @@ export default function VisaQuickCard({ countryCode, locale }: { countryCode: st
     "inline-flex items-center justify-center gap-1.5 rounded-xl px-3.5 py-2.5 text-xs font-extrabold transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400";
 
   return (
-    <div className="card col-span-2 bg-white px-4 py-3.5 text-navy-900 sm:col-span-3 lg:col-span-2">
-      <span className="text-lg leading-none" aria-hidden="true">
-        🛂
-      </span>
-      <span className="mt-2 block text-2xs font-bold uppercase tracking-wide text-navy-400">{dict.attractions.factVisa}</span>
-      <span className={`mt-1 block text-sm font-extrabold leading-snug ${tone}`}>
-        {status ? labels[status.category] : dict.attractions.factVisaCheck}
-      </span>
-      <div className="mt-3 flex flex-wrap gap-2">
+    <div className="flex flex-col gap-4 bg-white px-5 py-4 text-navy-900 md:flex-row md:items-center md:justify-between">
+      <div className="flex items-center gap-3.5 md:shrink-0">
+        <span
+          className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-sea-50 text-xl ring-1 ring-sea-100"
+          aria-hidden="true"
+        >
+          🛂
+        </span>
+        <span>
+          <span className="block text-xs font-semibold text-navy-500">{dict.attractions.factVisa}</span>
+          <span className={`mt-0.5 block text-base font-extrabold leading-snug ${tone}`}>
+            {status ? labels[status.category] : dict.attractions.factVisaCheck}
+          </span>
+        </span>
+      </div>
+      <div className="flex flex-wrap items-center gap-2 md:justify-end">
         {official && (
           <a href={official} target="_blank" rel="noopener noreferrer" className={`${btn} bg-navy-900 text-white hover:bg-navy-800`}>
             🏛 {dict.visa.applyOfficial} ↗
