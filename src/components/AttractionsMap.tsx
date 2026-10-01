@@ -53,6 +53,10 @@ export default function AttractionsMap(props: {
     placeFew: string;
     listHeading: string;
   };
+  /** Open on this place (its key in `pins`). */
+  focusKey?: string | null;
+  /** Shown instead of the link to the list page when the list is on the same page. */
+  onShowList?: () => void;
 }) {
   return <MapCanvas {...props} />;
 }

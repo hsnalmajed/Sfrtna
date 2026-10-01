@@ -1,127 +1,36 @@
-import Link from "next/link";
-import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 import { getDictionary } from "@/lib/dictionaries";
+import { pageMetadata } from "@/lib/seo";
 import type { Locale } from "@/lib/types";
-import {findCountry} from "@/lib/countries";
+import { findCountry } from "@/lib/countries";
 import { findCity } from "@/lib/cities";
-import { buildLegend, fetchPlacesAroundCities, placeToPin } from "@/lib/mapPins";
-import { PIN_STYLES } from "@/lib/pinStyles";
-import AttractionsMap from "@/components/AttractionsMap";
-import MapDownloads from "@/components/MapDownloads";
-import PageHero from "@/components/ui/PageHero";
+import CityPlacesPageBody from "@/components/CityPlacesPageBody";
 
 export const dynamic = "force-dynamic";
 
-export default async function CityMapPage({ params }: PageProps<"/[locale]/maps/[code]/[city]">) {
+// A city's tourist map is now the map view of the city's places page — the
+// same places, list and map together. This address keeps working (links,
+// bookmarks, the "Tourist maps" tool) and opens that page on the map. Its
+// canonical address is the places page, so search engines see one page.
+export async function generateMetadata({ params }: PageProps<"/[locale]/maps/[code]/[city]">): Promise<Metadata> {
   const { locale, code, city } = await params;
   const loc = (locale === "en" ? "en" : "ar") as Locale;
   const dict = getDictionary(loc);
-
   const country = findCountry(code);
-  if (!country) notFound();
-
-  const cityEntry = findCity(country.code, city);
-  if (!cityEntry) notFound();
-
-  // Every pin is a named place from OpenStreetMap around the city centre —
-  // see mapPins.ts for how it is collected and why it is stored.
-  const places = await fetchPlacesAroundCities([cityEntry], { locale: loc, perCity: 180 });
-  const pins = places.map(placeToPin);
-
-  // Only show a legend entry for a kind of place this city actually has.
-  const legend = buildLegend(pins, {
-    historic: dict.maps.legendHistoric,
-    food: dict.maps.legendFood,
-    activity: dict.maps.legendCityActivity,
-    place: dict.maps.legendPlace,
+  const entry = country ? findCity(country.code, city) : undefined;
+  if (!country || !entry) return {};
+  const name = loc === "ar" ? entry.nameAr : entry.nameEn;
+  return pageMetadata({
+    locale: loc,
+    path: `/attractions/${country.code}/${entry.slug}`,
+    title: dict.maps.cityMapTitle.replace("{city}", name),
+    description: dict.attractions.metaCityDescription.replace("{city}", name),
   });
+}
 
-  const cityName = loc === "ar" ? cityEntry.nameAr : cityEntry.nameEn;
-  const pageTitle = dict.maps.cityMapTitle.replace("{city}", cityName);
-
-  const mapDict = {
-    activitiesHeading: dict.maps.legendCityActivity,
-    nearbyHeading: dict.maps.nearbyHeading,
-    foodHeading: dict.maps.foodHeading,
-    historicHeading: dict.maps.historicHeading,
-    directions: dict.maps.directions,
-    englishOnly: dict.maps.englishOnly,
-    viewTours: dict.maps.viewTours,
-    mapAttribution: dict.maps.mapAttribution,
-    legendHistoric: dict.maps.legendHistoric,
-    legendFood: dict.maps.legendFood,
-    legendCityActivity: dict.maps.legendCityActivity,
-    legendPlace: dict.maps.legendPlace,
-    placeSearchPlaceholder: dict.maps.placeSearchPlaceholder,
-    nearMe: dict.maps.nearMe,
-    nearMeDenied: dict.maps.nearMeDenied,
-    showAll: dict.maps.showAll,
-    hideAll: dict.maps.hideAll,
-    noMatches: dict.maps.noMatches,
-    placesCount: dict.attractions.placesCount,
-    placeOne: dict.attractions.placeOne,
-    placeTwo: dict.attractions.placeTwo,
-    placeFew: dict.attractions.placeFew,
-    listHeading: dict.maps.listHeading,
-  };
-
-  return (
-    <div>
-      <PageHero
-        size="sm"
-        eyebrow={loc === "ar" ? country.nameAr : country.nameEn}
-        title={pageTitle}
-      >
-        <Link href={`/${loc}/maps/${country.code}`} className="inline-flex w-fit items-center gap-1.5 rounded-full bg-white/10 px-3.5 py-2 text-sm font-semibold text-white/90 ring-1 ring-white/20 backdrop-blur-md transition hover:bg-white/20">
-          <span aria-hidden="true">{loc === "ar" ? "→" : "←"}</span>
-          {dict.maps.backToCountryMap}
-        </Link>
-      </PageHero>
-
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 py-10">
-      {pins.length === 0 ? (
-        <p className="mt-4 rounded-xl bg-amber-50 border border-amber-200 px-4 py-5 text-sm text-amber-800 leading-relaxed">
-          {dict.maps.cityNoPlaces}
-        </p>
-      ) : (
-        <>
-          <p className="mb-3 text-sm text-gray-500">
-            📍 {dict.maps.pinsCount.replace("{count}", String(pins.length))}
-          </p>
-          <div className="mb-4 flex flex-wrap items-center gap-x-4 gap-y-2">
-            {legend.map((l) => (
-              <span key={l.category} className="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-600">
-                <span
-                  className="inline-flex h-5 w-5 items-center justify-center rounded-full text-[10px]"
-                  style={{ backgroundColor: PIN_STYLES[l.category].color }}
-                  aria-hidden="true"
-                >
-                  {PIN_STYLES[l.category].glyph}
-                </span>
-                {l.label}
-                <span className="font-normal text-gray-400">({l.count})</span>
-              </span>
-            ))}
-          </div>
-          <AttractionsMap
-            locale={loc}
-            countryCode={country.code}
-            citySlug={cityEntry.slug}
-            pins={pins}
-            dict={mapDict}
-          />
-          <MapDownloads
-            pins={pins}
-            title={pageTitle}
-            fileBase={`Sfrtna-${cityEntry.nameEn}-map`}
-            dict={dict.maps}
-          />
-          <p className="mt-4 rounded-xl bg-mist-100 px-3.5 py-3 text-xs leading-relaxed text-navy-500 ring-1 ring-mist-200">
-            {dict.maps.sourceNote}
-          </p>
-        </>
-      )}
-      </div>
-    </div>
-  );
+export default async function CityMapPage({ params, searchParams }: PageProps<"/[locale]/maps/[code]/[city]">) {
+  const { locale, code, city } = await params;
+  const loc = (locale === "en" ? "en" : "ar") as Locale;
+  const sp = await searchParams;
+  return <CityPlacesPageBody loc={loc} code={code} city={city} back={sp.back} initialView={sp.view === "list" ? "list" : "map"} />;
 }

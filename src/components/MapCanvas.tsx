@@ -111,11 +111,14 @@ const CATEGORY_ORDER: PinCategory[] = ["historic", "activity", "food", "place"];
 function ClusteredMarkers({
   pins,
   activeKey,
+  openKey,
   onSelect,
   renderPopup,
 }: {
   pins: MapPin[];
   activeKey: string | null;
+  /** A pin to bring into view and open — "show this place on the map" from the list. */
+  openKey?: string | null;
   onSelect: (key: string) => void;
   renderPopup: (pin: MapPin) => string;
 }) {
@@ -165,13 +168,17 @@ function ClusteredMarkers({
     map.addLayer(group);
     groupRef.current = group;
 
+    // Zooms in until the pin is out of its cluster, then opens it.
+    const target = openKey ? markers.get(openKey) : undefined;
+    if (target) group.zoomToShowLayer(target, () => target.openPopup());
+
     return () => {
       map.removeLayer(group);
       group.clearLayers();
       markers.clear();
       groupRef.current = null;
     };
-  }, [map, pins, activeKey, onSelect, renderPopup]);
+  }, [map, pins, activeKey, openKey, onSelect, renderPopup]);
 
   return null;
 }
@@ -192,12 +199,21 @@ export default function MapCanvas({
   citySlug,
   pins,
   dict,
+  focusKey,
+  onShowList,
 }: {
   locale: Locale;
   countryCode: string;
   citySlug?: string;
   pins: MapPin[];
   dict: MapDict;
+  /** Open on this place: its pin shown, selected and its card open. */
+  focusKey?: string | null;
+  /**
+   * When the map shares a page with the city's list, "back to the list"
+   * switches the view instead of linking to another page.
+   */
+  onShowList?: () => void;
 }) {
   const isAr = locale === "ar";
 
@@ -225,15 +241,19 @@ export default function MapCanvas({
    * mostly noise burying the landmarks they came for. It is one tap away,
    * with its count on the button, so nothing is hidden, only deferred.
    */
+  const focusPin = focusKey ? pins.find((p) => p.key === focusKey) : undefined;
   const [enabled, setEnabled] = useState<Record<PinCategory, boolean>>({
     historic: true,
     activity: true,
     food: true,
-    place: false,
+    // A place opened from the list is shown even when it is an "other place".
+    place: focusPin?.category === "place",
   });
 
   const [query, setQuery] = useState("");
-  const [activeKey, setActiveKey] = useState<string | null>(null);
+  const [activeKey, setActiveKey] = useState<string | null>(focusPin ? focusPin.key : null);
+  // Opened once, on arrival; any later choice of the traveller's takes over.
+  const [openKey, setOpenKey] = useState<string | null>(focusPin ? focusPin.key : null);
   const [flyTo, setFlyTo] = useState<MapPin | null>(null);
   const [geoError, setGeoError] = useState(false);
   const [me, setMe] = useState<{ lat: number; lon: number } | null>(null);
@@ -261,10 +281,10 @@ export default function MapCanvas({
         <p style="margin:0 0 4px;font-weight:800;font-size:13px">${esc(pin.name)}</p>
         <p style="margin:0 0 8px;font-size:11px;color:#6a7890">${esc(pin.extract ?? categoryLabels[pin.category])}</p>
         <a href="https://www.google.com/maps/search/?api=1&amp;query=${pin.lat},${pin.lon}" target="_blank" rel="noopener noreferrer" style="display:block;margin-bottom:6px;border-radius:8px;border:1px solid #c9d3e3;color:#0b2d5b;padding:5px 10px;text-align:center;font-size:11px;font-weight:700;text-decoration:none">${esc(dict.directions)} ↗</a>
-        <a href="${href}" style="display:block;border-radius:8px;background:#0b2d5b;color:#fff;padding:6px 10px;text-align:center;font-size:11px;font-weight:700;text-decoration:none">${esc(dict.viewTours)}</a>
+        ${onShowList ? "" : `<a href="${href}" style="display:block;border-radius:8px;background:#0b2d5b;color:#fff;padding:6px 10px;text-align:center;font-size:11px;font-weight:700;text-decoration:none">${esc(dict.viewTours)}</a>`}
       </div>`;
     },
-    [citySlug, locale, countryCode, categoryLabels, dict.viewTours, dict.directions, isAr]
+    [citySlug, locale, countryCode, categoryLabels, dict.viewTours, dict.directions, isAr, onShowList]
   );
 
   const locate = useCallback(() => {
@@ -289,7 +309,10 @@ export default function MapCanvas({
     );
   }, []);
 
-  const select = useCallback((key: string) => setActiveKey(key), []);
+  const select = useCallback((key: string) => {
+    setOpenKey(null);
+    setActiveKey(key);
+  }, []);
 
   if (!bounds) {
     return <div className="h-[70vh] w-full rounded-2xl bg-mist-100" aria-hidden="true" />;
@@ -370,6 +393,7 @@ export default function MapCanvas({
             <ClusteredMarkers
               pins={visible}
               activeKey={activeKey}
+              openKey={openKey}
               onSelect={select}
               renderPopup={renderPopup}
             />
@@ -408,6 +432,7 @@ export default function MapCanvas({
                   <button
                     type="button"
                     onClick={() => {
+                      setOpenKey(null);
                       setActiveKey(p.key);
                       setFlyTo(p);
                     }}
@@ -429,16 +454,26 @@ export default function MapCanvas({
             </ul>
           )}
 
-          <Link
-            href={
-              citySlug
-                ? `/${locale}/attractions/${countryCode}/${citySlug}`
-                : `/${locale}/attractions/${countryCode}`
-            }
-            className="border-t border-mist-200 px-4 py-3 text-center text-sm font-bold text-navy-800 transition hover:bg-mist-50"
-          >
-            {dict.viewTours}
-          </Link>
+          {onShowList ? (
+            <button
+              type="button"
+              onClick={onShowList}
+              className="border-t border-mist-200 px-4 py-3 text-center text-sm font-bold text-navy-800 transition hover:bg-mist-50"
+            >
+              {dict.viewTours}
+            </button>
+          ) : (
+            <Link
+              href={
+                citySlug
+                  ? `/${locale}/attractions/${countryCode}/${citySlug}`
+                  : `/${locale}/attractions/${countryCode}`
+              }
+              className="border-t border-mist-200 px-4 py-3 text-center text-sm font-bold text-navy-800 transition hover:bg-mist-50"
+            >
+              {dict.viewTours}
+            </Link>
+          )}
         </div>
       </div>
     </div>

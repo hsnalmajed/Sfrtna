@@ -76,6 +76,8 @@ export default function CityPlacesExplorer({
   onToggleSelect,
   addLabel,
   addedLabel,
+  onShowOnMap,
+  showOnMapLabel,
 }: {
   // Names and descriptions arrive already resolved to the reader's language,
   // so this component never needs to know which language that is.
@@ -91,6 +93,9 @@ export default function CityPlacesExplorer({
   onToggleSelect?: (place: PlaceListItem) => void;
   addLabel?: string;
   addedLabel?: string;
+  /** Opens this place on the city's map, on the same page. */
+  onShowOnMap?: (place: PlaceListItem) => void;
+  showOnMapLabel?: string;
 }) {
   const picking = Boolean(onToggleSelect && selectedKeys);
   const labels: Record<PinCategory, string> = {
@@ -183,7 +188,8 @@ export default function CityPlacesExplorer({
             {visible.slice(0, shown).map((p) => (
               <article
                 key={p.key}
-                className="flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-black/5 transition hover:-translate-y-0.5 hover:shadow-md"
+                id={`place-${p.key}`}
+                className="scroll-mt-28 flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-black/5 transition hover:-translate-y-0.5 hover:shadow-md"
               >
                 <Photo
                   src={p.photo}
@@ -230,14 +236,26 @@ export default function CityPlacesExplorer({
                   )}
 
                   {p.lat !== undefined && p.lon !== undefined && (
-                    <a
-                      href={`https://www.google.com/maps/search/?api=1&query=${p.lat},${p.lon}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="mt-3 inline-block text-xs font-semibold text-brand-700 hover:underline"
-                    >
-                      {dict.directions} ↗
-                    </a>
+                    <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1.5">
+                      {onShowOnMap && (
+                        <button
+                          type="button"
+                          onClick={() => onShowOnMap(p)}
+                          className="inline-flex items-center gap-1 text-xs font-bold text-brand-800 hover:underline"
+                        >
+                          <span aria-hidden="true">📍</span>
+                          {showOnMapLabel}
+                        </button>
+                      )}
+                      <a
+                        href={`https://www.google.com/maps/search/?api=1&query=${p.lat},${p.lon}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-block text-xs font-semibold text-brand-700 hover:underline"
+                      >
+                        {dict.directions} ↗
+                      </a>
+                    </div>
                   )}
 
                   {/* Pushed to the bottom edge so the button lines up across a

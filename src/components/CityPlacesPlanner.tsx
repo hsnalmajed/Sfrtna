@@ -134,6 +134,8 @@ export default function CityPlacesPlanner({
   countryCode,
   countryName,
   dict,
+  onShowOnMap,
+  showOnMapLabel,
 }: {
   locale: Locale;
   places: PlaceListItem[];
@@ -141,6 +143,8 @@ export default function CityPlacesPlanner({
   countryCode: string;
   countryName: string;
   dict: React.ComponentProps<typeof CityPlacesExplorer>["dict"];
+  onShowOnMap?: (place: PlaceListItem) => void;
+  showOnMapLabel?: string;
 }) {
   const d = getDictionary(locale);
   const sp = useSearchParams();
@@ -294,6 +298,8 @@ export default function CityPlacesPlanner({
         onToggleSelect={picking ? toggle : undefined}
         addLabel={d.picker.addInterest}
         addedLabel={d.picker.addedInterest}
+        onShowOnMap={onShowOnMap}
+        showOnMapLabel={showOnMapLabel}
       />
 
       {/* ---- The plan ---- */}
