@@ -75,6 +75,7 @@ function HotelResultsContent() {
             minStars: mode === "discover" ? minStars : undefined,
             breakfast: mode === "discover" ? breakfast : undefined,
             stay: mode === "discover" ? stay : undefined,
+            isHotel: mode === "known",
           })
         : [],
     [complete, query, checkIn, checkOut, adults, childrenAges, mode, minStars, breakfast, stay]
@@ -181,7 +182,7 @@ function HotelResultsContent() {
                   rel="noopener noreferrer sponsored"
                   className={`flex items-center justify-center gap-2.5 rounded-xl px-6 py-4 text-base font-extrabold transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400 focus-visible:ring-offset-2 ${
                     i === 0
-                      ? "bg-sun-400 text-navy-950 shadow-[var(--shadow-sun)] hover:bg-sun-300"
+                      ? "sm:col-span-2 bg-sun-400 text-navy-950 shadow-[var(--shadow-sun)] hover:bg-sun-300"
                       : "bg-white text-navy-900 ring-1 ring-mist-200 hover:ring-navy-300"
                   }`}
                 >

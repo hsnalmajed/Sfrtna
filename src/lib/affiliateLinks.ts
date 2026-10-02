@@ -33,6 +33,25 @@ import { hotellookSearchUrl } from "./providers/hotellook";
 const BOOKING_AID = process.env.NEXT_PUBLIC_BOOKING_AFFILIATE_ID || "";
 const ALMOSAFER_REF = process.env.NEXT_PUBLIC_ALMOSAFER_AFFILIATE_ID || "";
 
+/**
+ * Expedia Group affiliate (Travel Creator Program, paid through Partnerize).
+ * `camref` is our account's public tracking tag and `creativeref` the link
+ * type the Link builder issued with it — both ride in the visible URL, so
+ * they are not secrets. Expedia's own wrapper takes any expedia.com page as
+ * `landingPage`, which lets every search on the site build its own link.
+ */
+const EXPEDIA_CAMREF = "1011l6tt7K";
+const EXPEDIA_CREATIVEREF = "1100l68075";
+
+export function expediaAffiliateUrl(landingPage: string): string {
+  const u = new URL("https://expedia.com/affiliate");
+  u.searchParams.set("siteid", "1");
+  u.searchParams.set("landingPage", landingPage);
+  u.searchParams.set("camref", EXPEDIA_CAMREF);
+  u.searchParams.set("creativeref", EXPEDIA_CREATIVEREF);
+  return u.toString();
+}
+
 export interface BookingHandoff {
   /** The partner's own name, shown to the traveller before they leave. */
   partner: string;
@@ -201,6 +220,8 @@ export interface HotelSearchQuery {
   minStars?: number;
   breakfast?: boolean;
   stay?: "room" | "apartment";
+  /** True when `query` names one hotel rather than a city. */
+  isHotel?: boolean;
 }
 
 export function hotelPartnerLinks(q: HotelSearchQuery): BookingHandoff[] {
@@ -230,8 +251,24 @@ export function hotelPartnerLinks(q: HotelSearchQuery): BookingHandoff[] {
   almosafer.searchParams.set("adults", String(Math.max(1, q.adults)));
   if (ALMOSAFER_REF) almosafer.searchParams.set("ref", ALMOSAFER_REF);
 
+  // Expedia's hotel search: rooms=1 and children as "1_<age>" per child,
+  // the shape its own search form writes.
+  const expedia = new URL("https://www.expedia.com/Hotel-Search");
+  expedia.searchParams.set("destination", q.query);
+  expedia.searchParams.set("startDate", q.checkIn);
+  expedia.searchParams.set("endDate", q.checkOut);
+  expedia.searchParams.set("adults", String(Math.max(1, q.adults)));
+  expedia.searchParams.set("rooms", "1");
+  // A hotel's name alone lands on its city's full list; the name filter
+  // narrows that list to the hotel itself (checked on expedia.com).
+  if (q.isHotel) expedia.searchParams.set("hotelName", q.query);
+  if (q.childrenAges.length) {
+    expedia.searchParams.set("children", q.childrenAges.map((a) => `1_${a}`).join(","));
+  }
+
   return [
     { partner: "Booking.com", url: booking.toString() },
+    { partner: "Expedia", url: expediaAffiliateUrl(expedia.toString()) },
     { partner: "Almosafer", url: almosafer.toString() },
   ];
 }
