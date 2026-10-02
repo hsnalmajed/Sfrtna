@@ -76,9 +76,10 @@ function HotelResultsContent() {
             breakfast: mode === "discover" ? breakfast : undefined,
             stay: mode === "discover" ? stay : undefined,
             isHotel: mode === "known",
+            locale,
           })
         : [],
-    [complete, query, checkIn, checkOut, adults, childrenAges, mode, minStars, breakfast, stay]
+    [complete, query, checkIn, checkOut, adults, childrenAges, mode, minStars, breakfast, stay, locale]
   );
 
   // Back to the hotel planner, filled in. `product` opens the right planner
@@ -173,7 +174,9 @@ function HotelResultsContent() {
               {mode === "discover" && <p className="mt-2 max-w-3xl text-xs text-navy-600">{t.honestFilters}</p>}
             </div>
 
-            <div className="grid gap-3 sm:grid-cols-2">
+            {/* The first partner gets the full row; the rest share the row
+                under it, however many there are for this search. */}
+            <div className={`grid gap-3 ${links.length - 1 >= 3 ? "sm:grid-cols-3" : "sm:grid-cols-2"}`}>
               {links.map((l, i) => (
                 <a
                   key={l.partner}
@@ -182,7 +185,7 @@ function HotelResultsContent() {
                   rel="noopener noreferrer sponsored"
                   className={`flex items-center justify-center gap-2.5 rounded-xl px-6 py-4 text-base font-extrabold transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400 focus-visible:ring-offset-2 ${
                     i === 0
-                      ? "sm:col-span-2 bg-sun-400 text-navy-950 shadow-[var(--shadow-sun)] hover:bg-sun-300"
+                      ? "col-span-full bg-sun-400 text-navy-950 shadow-[var(--shadow-sun)] hover:bg-sun-300"
                       : "bg-white text-navy-900 ring-1 ring-mist-200 hover:ring-navy-300"
                   }`}
                 >

@@ -2,6 +2,7 @@ import type { FlightOffer, HotelOffer, SearchParams } from "./types";
 import { resolveIata } from "./flights";
 import { aviasalesSearchUrl, travelpayoutsMarker } from "./providers/travelpayouts";
 import { hotellookSearchUrl } from "./providers/hotellook";
+import { zenhotelsCityUrl } from "./zenhotels";
 
 /**
  * Where a traveller actually goes to pay.
@@ -222,6 +223,8 @@ export interface HotelSearchQuery {
   stay?: "room" | "apartment";
   /** True when `query` names one hotel rather than a city. */
   isHotel?: boolean;
+  /** The traveller's language, for partners whose page can follow it. */
+  locale?: "ar" | "en";
 }
 
 export function hotelPartnerLinks(q: HotelSearchQuery): BookingHandoff[] {
@@ -266,9 +269,23 @@ export function hotelPartnerLinks(q: HotelSearchQuery): BookingHandoff[] {
     expedia.searchParams.set("children", q.childrenAges.map((a) => `1_${a}`).join(","));
   }
 
+  // ZenHotels (RateHawk) only links cities it has a confirmed page for; a
+  // hotel's name alone cannot be turned into its URL.
+  const zen = q.isHotel
+    ? null
+    : zenhotelsCityUrl({
+        city: q.query,
+        checkIn: q.checkIn,
+        checkOut: q.checkOut,
+        adults: q.adults,
+        childrenAges: q.childrenAges,
+        locale: q.locale ?? "ar",
+      });
+
   return [
     { partner: "Booking.com", url: booking.toString() },
     { partner: "Expedia", url: expediaAffiliateUrl(expedia.toString()) },
+    ...(zen ? [{ partner: "ZenHotels", url: zen }] : []),
     { partner: "Almosafer", url: almosafer.toString() },
   ];
 }
