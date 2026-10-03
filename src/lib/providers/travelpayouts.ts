@@ -342,15 +342,15 @@ function dayDiff(a: string, b: string): number {
 
 /**
  * Fares from `origin` to every destination for the traveller's dates, in
- * one request per origin code — what the "suggest a destination" search
+ * ten requests whatever the number of cities — what the "suggest a destination" search
  * needs to consider every city we know without a request per city (a
  * Cloudflare Worker allows 50).
  *
- * prices_for_dates with only an origin and `unique=false` lists the fares
- * seen for each day of the month, up to 1,000 rows, cheapest first. A
- * return trip is priced as the cheaper of two one-way fares (out from home,
- * back to home) or a whole return fare; a fare counts when each of its
- * dates is within two days of the traveller's.
+ * prices_for_dates with only an origin and `unique=true` lists the fare
+ * seen to each place for one day; asked for each day within two of the
+ * traveller's dates, out from home and back to it. A return trip is the sum
+ * of the two one-way fares (return fares are cached for almost no routes
+ * from our airports — none for Dammam on 3 Oct 2026).
  */
 export async function tripFaresFrom(
   origin: string,
@@ -367,7 +367,10 @@ export async function tripFaresFrom(
   async function ask(params: Record<string, string>): Promise<Row[]> {
     const url = new URL(`${BASE}/aviasales/v3/prices_for_dates`);
     for (const [k, v] of Object.entries(params)) url.searchParams.set(k, v);
-    url.searchParams.set("unique", "false");
+    // One row per place (the cheapest), for the one day asked. Checked
+    // 3 Oct 2026: with unique=false the source answers one row per *day*
+    // across every place, so a day asks this way.
+    url.searchParams.set("unique", "true");
     url.searchParams.set("sorting", "price");
     url.searchParams.set("limit", "1000");
     url.searchParams.set("currency", currency.toLowerCase());
@@ -379,9 +382,9 @@ export async function tripFaresFrom(
       return [];
     }
   }
-  // Each date asked twice: exactly (so a busy month's thousand cheapest rows
-  // cannot crowd it out) and as its month (for a day or two either side).
-  const whens = (iso: string) => [iso.slice(0, 10), iso.slice(0, 7)];
+  // Each day within two of the traveller's, asked on its own.
+  const around = (iso: string) =>
+    [-2, -1, 0, 1, 2].map((n) => new Date(Date.parse(iso.slice(0, 10)) + n * 86_400_000).toISOString().slice(0, 10));
 
   /** Best one-way fare per place, keyed by the far end's city and airport. */
   function bestOneWay(rows: Row[], date: string, far: (r: Row) => (string | undefined)[]) {
@@ -409,7 +412,7 @@ export async function tripFaresFrom(
   }
 
   const outRows = (
-    await Promise.all(homes.flatMap((h) => whens(departDate).map((w) => ask({ origin: h, departure_at: w, one_way: "true" }))))
+    await Promise.all(homes.flatMap((h) => around(departDate).map((w) => ask({ origin: h, departure_at: w, one_way: "true" }))))
   ).flat();
   const outbound = bestOneWay(outRows, departDate, (r) => [r.destination, r.destination_airport]);
 
@@ -418,17 +421,11 @@ export async function tripFaresFrom(
     return result;
   }
 
-  // The way back, from every place to home in one ask: prices_for_dates with
-  // only a destination. And whole return trips, which some routes have
-  // where one-way fares are missing.
-  const [backRows, roundRows] = await Promise.all([
-    Promise.all(homes.flatMap((h) => whens(returnDate).map((w) => ask({ destination: h, departure_at: w, one_way: "true" })))).then((r) => r.flat()),
-    Promise.all(
-      homes.flatMap((h) =>
-        whens(departDate).map((w, i) => ask({ origin: h, departure_at: w, return_at: whens(returnDate)[i], one_way: "false" }))
-      )
-    ).then((r) => r.flat()),
-  ]);
+  // The way back, from every place to home: prices_for_dates with only a
+  // destination answers one row per place it is flown from.
+  const backRows = (
+    await Promise.all(homes.flatMap((h) => around(returnDate).map((w) => ask({ destination: h, departure_at: w, one_way: "true" }))))
+  ).flat();
   const inbound = bestOneWay(backRows, returnDate, (r) => [r.origin, r.origin_airport]);
 
   // Two one-ways, where both were seen.
@@ -441,27 +438,6 @@ export async function tripFaresFrom(
       transfers: o.transfers !== null && b.transfers !== null ? Math.max(o.transfers, b.transfers) : null,
       off: Math.max(o.off, b.off),
     });
-  }
-  // A whole return trip, where that is closer in dates or cheaper.
-  for (const row of roundRows) {
-    const price = Number(row.price);
-    if (!Number.isFinite(price) || price <= 0 || !row.departure_at || !row.return_at) continue;
-    const off = Math.max(dayDiff(row.departure_at, departDate), dayDiff(row.return_at, returnDate));
-    if (off > 2) continue;
-    const code = (row.airline || "").toUpperCase();
-    const t = [row.transfers, row.return_transfers];
-    const fare: TripFare = {
-      price: Math.round(price),
-      airline: AIRLINE_NAMES[code] || code || "—",
-      transfers: t.every((x) => typeof x === "number") ? Math.max(...(t as number[])) : null,
-      off,
-    };
-    for (const key of [row.destination, row.destination_airport]) {
-      const k = (key || "").toUpperCase();
-      if (!k) continue;
-      const prev = result.get(k);
-      if (!prev || fare.off < prev.off || (fare.off === prev.off && fare.price < prev.price)) result.set(k, fare);
-    }
   }
   return result;
 }

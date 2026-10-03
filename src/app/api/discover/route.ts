@@ -267,11 +267,8 @@ export async function GET(req: NextRequest) {
   const tok = process.env.TRAVELPAYOUTS_TOKEN || "";
   if (!tok || sp.get("probe") !== "1") return NextResponse.json({ ok: false }, { status: 404 });
   const variants: Record<string, string>[] = [
-    { origin: "DMM", departure_at: "2026-10-25", one_way: "true", unique: "false" },
-    { origin: "DMM", departure_at: "2026-10", one_way: "true", unique: "false" },
-    { origin: "DMM", departure_at: "2026-10", one_way: "true", unique: "true" },
-    { destination: "DMM", departure_at: "2026-10", one_way: "true", unique: "false" },
-    { origin: "DMM", departure_at: "2026-10-25", return_at: "2026-10-31", one_way: "false", unique: "false" },
+    { origin: "DMM", departure_at: "2026-10-25", one_way: "true", unique: "true" },
+    { destination: "DMM", departure_at: "2026-10-31", one_way: "true", unique: "true" },
   ];
   const out = [];
   for (const v of variants) {
