@@ -235,7 +235,7 @@ export async function POST(req: NextRequest) {
       }))
       .filter((s) => s.place?.inSeason)
       .sort((a, b) => (rank[a.place?.classification ?? ""] ?? 9) - (rank[b.place?.classification ?? ""] ?? 9))
-      .slice(0, 12);
+      .slice(0, 24);
 
     return NextResponse.json({ mode: "single", suggestions, unpriced });
   }
@@ -260,34 +260,3 @@ export async function POST(req: NextRequest) {
   return NextResponse.json({ mode: "routes", routes });
 }
 
-// TEMPORARY diagnostic (row counts only, no prices or keys): remove after use.
-export async function GET(req: NextRequest) {
-  const sp = req.nextUrl.searchParams;
-  const BASE = "https://api.travelpayouts.com/aviasales/v3/prices_for_dates";
-  const tok = process.env.TRAVELPAYOUTS_TOKEN || "";
-  if (!tok || sp.get("probe") !== "1") return NextResponse.json({ ok: false }, { status: 404 });
-  const variants: Record<string, string>[] = [
-    { origin: "DMM", departure_at: "2026-10-25", one_way: "true", unique: "true" },
-    { destination: "DMM", departure_at: "2026-10-31", one_way: "true", unique: "true" },
-  ];
-  const out = [];
-  for (const v of variants) {
-    const u = new URL(BASE);
-    for (const [k, val] of Object.entries(v)) u.searchParams.set(k, val);
-    u.searchParams.set("sorting", "price");
-    u.searchParams.set("limit", "1000");
-    u.searchParams.set("currency", "sar");
-    const res = await fetch(u.toString(), { headers: { "X-Access-Token": tok } });
-    const body = (await res.json().catch(() => ({}))) as { data?: { destination?: string; departure_at?: string }[]; error?: string };
-    const rows = body.data ?? [];
-    out.push({
-      v,
-      status: res.status,
-      error: body.error,
-      rows: rows.length,
-      dests: new Set(rows.map((r) => r.destination)).size,
-      days: [...new Set(rows.map((r) => (r.departure_at || "").slice(0, 10)))].sort().slice(0, 40),
-    });
-  }
-  return NextResponse.json(out);
-}
