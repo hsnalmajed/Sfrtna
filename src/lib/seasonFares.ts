@@ -15,13 +15,19 @@ import { cachedJson } from "@/lib/edgeCache";
 
 async function faresFor(origin: string, month: string, roundTrip: boolean): Promise<Record<string, number>> {
   const table = await cachedJson<Record<string, number>>(
-    `season-fares:${origin}:${month}:${roundTrip ? "rt" : "ow"}`,
+    `season-fares2:${origin}:${month}:${roundTrip ? "rt" : "ow"}`,
     6 * 3600,
     async () => {
       const fares = await oneWayFaresFrom(origin, month, "SAR", roundTrip);
       if (fares.size === 0) return null; // don't cache an empty answer
       const out: Record<string, number> = {};
-      for (const [code, f] of fares) out[code] = f.price;
+      // A fare for a day already gone cannot be bought: only departures from
+      // tomorrow on count.
+      const tomorrow = new Date(Date.now() + 86_400_000).toISOString().slice(0, 10);
+      for (const [code, f] of fares) {
+        if (f.departureAt && f.departureAt.slice(0, 10) < tomorrow) continue;
+        out[code] = f.price;
+      }
       return out;
     }
   );

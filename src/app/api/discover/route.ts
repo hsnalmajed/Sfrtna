@@ -3,8 +3,13 @@ import { resolveIata, searchFlights, searchHotels } from "@/lib/flights";
 import { suggestRoutes } from "@/lib/routeSuggest";
 import { DESTINATIONS } from "@/lib/destinations";
 import { placeForDestination } from "@/lib/destinationPlace";
-import { dayFares, type DayFare } from "@/lib/providers/travelpayouts";
+import { tripFaresFrom, type TripFare } from "@/lib/providers/travelpayouts";
+import { COUNTRY_CITIES } from "@/lib/cities";
+import { flagEmoji } from "@/lib/countries";
+import { CITY_AIRPORTS } from "@/data/cityAirports";
+import { DESTINATION_TYPES } from "@/data/destinationTypes";
 import type {
+  DestinationCategory,
   FlightOffer,
   DestinationSuggestion,
   DiscoverParams,
@@ -18,55 +23,65 @@ function addDays(dateStr: string, days: number) {
   return d.toISOString().slice(0, 10);
 }
 
-/** The fare on `date`, or the nearest seen within two days either side. */
-function nearest(map: Map<string, DayFare>, date: string): { fare: DayFare; off: number } | null {
-  for (let off = 0; off <= 2; off++) {
-    for (const sign of off === 0 ? [0] : [-1, 1]) {
-      const day = addDays(date, sign * off);
-      const fare = map.get(day);
-      if (fare) return { fare, off };
-    }
-  }
-  return null;
-}
+type Candidate = { code: string; nameAr: string; nameEn: string; emoji: string; categories: DestinationCategory[] };
 
 /**
- * The trip's flight, priced from its own days: the cheapest fare seen on the
- * day out, plus the cheapest seen on the day back. Checked against the live
- * search (see dayFares) this lands within a few riyals, where the month's
- * lowest fare — the old method — was off by hundreds either way.
+ * Every city we have a guide and an airport for, as a place to suggest.
+ *
+ * This list used to be fourteen hand-picked cities, which is why a search
+ * from Dammam could answer with two: whatever the budget, only those
+ * fourteen were ever asked about. The categories come from the same trip
+ * types the season ratings use (src/data/destinationTypes.ts), with the old
+ * hand-picked tags kept where a city had them.
  */
-async function datedFlight(
-  params: DiscoverParams,
-  destination: (typeof DESTINATIONS)[number],
-  returnDate: string | undefined
-): Promise<FlightOffer | null> {
+function candidates(): Candidate[] {
+  const curated = new Map(DESTINATIONS.map((d) => [d.code, d]));
+  const typeToCategory: Record<string, DestinationCategory[]> = {
+    beach: ["beach", "family"],
+    tropical: ["beach", "nature"],
+    nature: ["nature"],
+    mountain: ["nature", "adventure"],
+    desert: ["adventure"],
+    city: ["city", "culture"],
+  };
+  const out: Candidate[] = [];
+  const seen = new Set<string>();
+  for (const [countryCode, cities] of Object.entries(COUNTRY_CITIES)) {
+    for (const c of cities) {
+      const code = CITY_AIRPORTS[c.slug]?.iata;
+      if (!code || seen.has(code)) continue;
+      seen.add(code);
+      const cats = new Set<DestinationCategory>(curated.get(code)?.categories ?? []);
+      for (const t of DESTINATION_TYPES[c.slug] ?? []) for (const k of typeToCategory[t] ?? []) cats.add(k);
+      out.push({
+        code,
+        nameAr: c.nameAr,
+        nameEn: c.nameEn,
+        emoji: curated.get(code)?.emoji ?? flagEmoji(countryCode),
+        categories: [...cats],
+      });
+    }
+  }
+  return out;
+}
+
+/** A trip fare (see tripFaresFrom) as the flight on a suggestion card. */
+function flightFromFare(params: DiscoverParams, destination: Candidate, fare: TripFare): FlightOffer {
   const origin = resolveIata(params.origin);
-  const [outMap, backMap] = await Promise.all([
-    dayFares(origin, destination.code, params.departDate.slice(0, 7), params.currency),
-    returnDate ? dayFares(destination.code, origin, returnDate.slice(0, 7), params.currency) : Promise.resolve(null),
-  ]);
-  const out = nearest(outMap, params.departDate);
-  const back = returnDate && backMap ? nearest(backMap, returnDate) : null;
-  if (!out || (returnDate && !back)) return null;
-  if (params.directFlightsOnly && (out.fare.transfers !== 0 || (back && back.fare.transfers !== 0))) return null;
-  const perSeat = out.fare.price + (back?.fare.price ?? 0);
   const paying = Math.max(1, params.adults + (params.childrenAges?.length ?? 0));
-  const transfers = [out.fare.transfers, back?.fare.transfers].filter((t) => t !== undefined);
-  const known = transfers.every((t) => t !== null);
   return {
-    id: `day-${destination.code}-${params.departDate}-${returnDate ?? ""}`,
-    airline: back && back.fare.airline !== out.fare.airline ? `${out.fare.airline} / ${back.fare.airline}` : out.fare.airline,
+    id: `trip-${destination.code}-${params.departDate}`,
+    airline: fare.airline,
     airlineCode: "",
     origin,
     destination: destination.code,
     departTime: params.departDate,
     arriveTime: params.departDate,
     durationMinutes: 0,
-    stops: known ? Math.max(...(transfers as number[])) : 0,
-    stopsKnown: known,
-    price: perSeat * paying,
-    pricePerPerson: perSeat,
+    stops: fare.transfers ?? 0,
+    stopsKnown: fare.transfers !== null,
+    price: fare.price * paying,
+    pricePerPerson: fare.price,
     currency: params.currency.toUpperCase(),
     isMock: false,
     bookingHint: "Aviasales",
@@ -74,15 +89,16 @@ async function datedFlight(
     layoverDurationMinutes: null,
     baggageIncluded: false,
     priceOnly: true,
-    nearDays: Math.max(out.off, back?.off ?? 0),
+    nearDays: fare.off,
   };
 }
 
 async function suggestForDestination(
   params: DiscoverParams,
-  destination: (typeof DESTINATIONS)[number],
-  nights: number
-): Promise<DestinationSuggestion | null> {
+  destination: Candidate,
+  nights: number,
+  fares: Map<string, TripFare> | null
+): Promise<DestinationSuggestion | "no-fare" | null> {
   const searchParams: SearchParams = {
     tripType: params.tripType,
     origin: params.origin,
@@ -91,7 +107,7 @@ async function suggestForDestination(
     // A one-way discover search prices only the outbound flight — the
     // hotel stay length still comes from `nights` (entered directly by the
     // user when there's no return date to derive it from).
-    returnDate: params.oneWayOnly ? undefined : addDays(params.departDate, nights),
+    returnDate: params.oneWayOnly ? undefined : params.returnDate || addDays(params.departDate, nights),
     adults: params.adults,
     budgetTotal: params.budgetTotal,
     currency: params.currency,
@@ -109,13 +125,15 @@ async function suggestForDestination(
   const wantsFlight = params.tripType !== "hotel";
   const wantsHotel = params.tripType !== "flight";
 
-  // With a live fare source, flights are priced from the trip's own days;
+  // With a live fare source, flights are priced from the fares seen for the
+  // trip's own dates (one request for every city, see tripFaresFrom);
   // without one (local development) the sample search stands in.
-  const dated = Boolean(process.env.TRAVELPAYOUTS_TOKEN);
+  const fare = fares?.get(destination.code);
+  if (fares && params.directFlightsOnly && fare && fare.transfers !== 0) return "no-fare";
   const [flights, hotels] = await Promise.all([
     wantsFlight
-      ? dated
-        ? datedFlight(params, destination, searchParams.returnDate).then((f) => (f ? [f] : []))
+      ? fares
+        ? Promise.resolve(fare ? [flightFromFare(params, destination, fare)] : [])
         : searchFlights(searchParams)
       : Promise.resolve([]),
     wantsHotel ? searchHotels(searchParams, nights) : Promise.resolve([]),
@@ -123,7 +141,7 @@ async function suggestForDestination(
 
   const flight = flights[0];
   const hotel = hotels[0];
-  if (wantsFlight && !flight) return null;
+  if (wantsFlight && !flight) return "no-fare";
   if (wantsHotel && !hotel) return null;
 
   const totalPrice = (flight?.price ?? 0) + (hotel?.totalPrice ?? 0);
@@ -170,16 +188,20 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Missing required params" }, { status: 400 });
   }
 
-  const candidates = DESTINATIONS.filter(
+  const pool = candidates().filter(
     (d) =>
-      d.code !== params.origin.toUpperCase() &&
+      d.code !== resolveIata(params.origin) &&
       (!params.preferenceCategory || d.categories.includes(params.preferenceCategory))
   );
 
   if (!params.multiDestination) {
-    const results = (
-      await Promise.all(candidates.map((d) => suggestForDestination(params, d, params.nights)))
-    ).filter((r): r is DestinationSuggestion => r !== null);
+    const returnDate = params.oneWayOnly ? undefined : params.returnDate || addDays(params.departDate, params.nights);
+    const fares =
+      params.tripType !== "hotel" && process.env.TRAVELPAYOUTS_TOKEN
+        ? await tripFaresFrom(resolveIata(params.origin), params.departDate, returnDate, params.currency)
+        : null;
+    const answers = await Promise.all(pool.map((d) => suggestForDestination(params, d, params.nights, fares)));
+    const results = answers.filter((r): r is DestinationSuggestion => r !== null && r !== "no-fare");
 
     // What suits the traveller first: places that fit the budget *and* are
     // in season in the month they travel, then the rest that fit, cheapest
@@ -192,7 +214,30 @@ export async function POST(req: NextRequest) {
       ...results.filter((r) => !r.withinBudget).sort(byPrice),
     ];
 
-    return NextResponse.json({ mode: "single", suggestions });
+    // Cities at their best in the month of travel that no fare was seen for
+    // on these dates: no price, and no claim about the budget — a way to the
+    // live search instead. Best months first.
+    const month = Number(params.departDate.slice(5, 7));
+    const rank = { EXCELLENT: 0, VERY_GOOD: 1 } as Record<string, number>;
+    const unpriced: DestinationSuggestion[] = pool
+      .filter((d, i) => answers[i] === "no-fare")
+      .map((d) => ({
+        place: placeForDestination(d.code, d.nameEn, month),
+        destinationCode: d.code,
+        destinationNameAr: d.nameAr,
+        destinationNameEn: d.nameEn,
+        emoji: d.emoji,
+        nights: params.nights,
+        totalPrice: 0,
+        currency: params.currency,
+        withinBudget: false,
+        remainingBudget: params.budgetTotal,
+      }))
+      .filter((s) => s.place?.inSeason)
+      .sort((a, b) => (rank[a.place?.classification ?? ""] ?? 9) - (rank[b.place?.classification ?? ""] ?? 9))
+      .slice(0, 12);
+
+    return NextResponse.json({ mode: "single", suggestions, unpriced });
   }
 
   // Several countries on one budget: whole routes from home and back, every

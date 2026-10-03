@@ -50,6 +50,8 @@ function DiscoverResultsContent() {
   const stops = sp.get("stops") === "3" ? 3 : 2;
   const [mode, setMode] = useState<"single" | "routes">(multiDestination ? "routes" : "single");
   const [singleSuggestions, setSingleSuggestions] = useState<DestinationSuggestion[]>([]);
+  // In-season cities no fare was seen for on these dates — shown without a price.
+  const [unpriced, setUnpriced] = useState<DestinationSuggestion[]>([]);
   const [routes, setRoutes] = useState<RouteSuggestion[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -100,6 +102,7 @@ function DiscoverResultsContent() {
           setRoutes(data.routes || []);
         } else {
           setSingleSuggestions(data.suggestions || []);
+          setUnpriced(data.unpriced || []);
         }
       })
       .catch(() => setError("error"))
@@ -135,7 +138,7 @@ function DiscoverResultsContent() {
   const showGenerated = process.env.NODE_ENV === "development";
   const pricesUnavailable = isGeneratedData && !showGenerated;
 
-  const hasResults = mode === "routes" ? routes.length > 0 : singleSuggestions.length > 0;
+  const hasResults = mode === "routes" ? routes.length > 0 : singleSuggestions.length + unpriced.length > 0;
   // "RUH مطار الملك خالد الدولي - الرياض" → "الرياض": the city, as the
   // route line names it.
   const originAirport = findAirport(origin.slice(0, 3));
@@ -154,6 +157,7 @@ function DiscoverResultsContent() {
   const placeOk = (p: Place) =>
     (!seasonOnly || p?.inSeason === true) && (visaFilter === "all" || p?.visa === visaFilter);
   const singles = singleSuggestions.filter((s) => placeOk(s.place));
+  const unpricedShown = unpriced.filter((s) => placeOk(s.place));
   const routeList = routes.filter((r) => r.stops.every((st) => placeOk(st.place)));
   const items = mode === "routes" ? routeList : singles;
   const within = items.filter((x) => x.withinBudget);
@@ -289,7 +293,7 @@ function DiscoverResultsContent() {
 
         {/* The fares that chose these are seen ones, not live: they pick,
             they are not shown. The live price is one tap away on each. */}
-        {!loading && hasResults && !pricesUnavailable && (
+        {!loading && hasResults && !pricesUnavailable && (mode === "routes" || singleSuggestions.length > 0) && (
           <div className="mb-5 rounded-xl bg-sea-50 px-4 py-3 text-sm leading-relaxed text-navy-800 ring-1 ring-sea-100">
             ℹ️ {d.pickedNotice.replace("{budget}", money(Number(budget)))}
             {mode === "routes" && <> {d.routesNotice}</>}
@@ -324,7 +328,7 @@ function DiscoverResultsContent() {
             {d.noneWithinFiltered}
           </div>
         )}
-        {!loading && !pricesUnavailable && hasResults && items.length === 0 && (
+        {!loading && !pricesUnavailable && hasResults && items.length === 0 && unpricedShown.length === 0 && (
           <div className="rounded-2xl bg-white p-6 text-center shadow-sm ring-1 ring-black/5">
             <p className="text-navy-600">{d.noMatch}</p>
             {filtered && (
@@ -340,6 +344,15 @@ function DiscoverResultsContent() {
               </button>
             )}
           </div>
+        )}
+
+        {/* In season, but no fare seen for these dates: no price, no budget claim. */}
+        {!loading && !pricesUnavailable && mode !== "routes" && unpricedShown.length > 0 && (
+          <section className="mt-10">
+            <h2 className="font-display text-lg font-extrabold text-navy-900">{d.unpricedTitle}</h2>
+            <p className="mb-4 mt-1 max-w-3xl text-sm leading-relaxed text-navy-600">{d.unpricedBody}</p>
+            {renderSingle(unpricedShown)}
+          </section>
         )}
 
         {/* Over budget: there, on request. */}

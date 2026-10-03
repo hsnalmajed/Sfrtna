@@ -320,7 +320,97 @@ interface TpV3Row {
   price?: number;
   airline?: string;
   departure_at?: string;
+  return_at?: string;
   transfers?: number;
+  return_transfers?: number;
+}
+
+/** A trip's fare as seen for (nearly) the traveller's own dates. */
+export interface TripFare {
+  /** Per seat, both ways when there is a return. */
+  price: number;
+  airline: string;
+  transfers: number | null;
+  /** Days between the dates asked for and the fare's own dates, at most 2. */
+  off: number;
+}
+
+function dayDiff(a: string, b: string): number {
+  return Math.round(Math.abs(Date.parse(a.slice(0, 10)) - Date.parse(b.slice(0, 10))) / 86_400_000);
+}
+
+/**
+ * Fares from `origin` to every destination for the traveller's dates, in
+ * one request per origin code — what the "suggest a destination" search
+ * needs to consider every city we know without a request per city (a
+ * Cloudflare Worker allows 50).
+ *
+ * prices_for_dates with only an origin and `unique=false` lists the fares
+ * seen for each day of the month, up to 1,000 rows, cheapest first. A
+ * return trip asks for return fares (the row then carries both dates); a
+ * fare counts when each of its dates is within two days of the traveller's.
+ */
+export async function tripFaresFrom(
+  origin: string,
+  departDate: string,
+  returnDate: string | undefined,
+  currency: string
+): Promise<Map<string, TripFare>> {
+  const out = new Map<string, TripFare>();
+  if (!token() || !origin || !departDate) return out;
+  const froms = [...new Set([origin, CITY_OF_AIRPORT[origin] ?? origin])];
+  // Twice per origin: the exact dates (so a busy month's thousand cheapest
+  // rows cannot crowd them out), and the whole month (for fares a day or two
+  // either side).
+  const asks = froms.flatMap((from) => [
+    { from, out: departDate.slice(0, 10), back: returnDate?.slice(0, 10) },
+    { from, out: departDate.slice(0, 7), back: returnDate?.slice(0, 7) },
+  ]);
+  await Promise.all(
+    asks.map(async ({ from, out: outWhen, back: backWhen }) => {
+      const url = new URL(`${BASE}/aviasales/v3/prices_for_dates`);
+      url.searchParams.set("origin", from);
+      url.searchParams.set("departure_at", outWhen);
+      if (backWhen) url.searchParams.set("return_at", backWhen);
+      url.searchParams.set("one_way", returnDate ? "false" : "true");
+      url.searchParams.set("unique", "false");
+      url.searchParams.set("sorting", "price");
+      url.searchParams.set("limit", "1000");
+      url.searchParams.set("currency", currency.toLowerCase());
+      try {
+        const res = await fetch(url.toString(), {
+          headers: { "X-Access-Token": token(), Accept: "application/json" },
+        });
+        if (!res.ok) return;
+        const body = (await res.json()) as { data?: TpV3Row[] };
+        for (const row of body.data ?? []) {
+          const price = Number(row.price);
+          if (!Number.isFinite(price) || price <= 0 || !row.departure_at) continue;
+          const offOut = dayDiff(row.departure_at, departDate);
+          const offBack = returnDate ? (row.return_at ? dayDiff(row.return_at, returnDate) : 99) : 0;
+          if (offOut > 2 || offBack > 2) continue;
+          const code = (row.airline || "").toUpperCase();
+          const transfers = [row.transfers, returnDate ? row.return_transfers : 0];
+          const fare: TripFare = {
+            price: Math.round(price),
+            airline: AIRLINE_NAMES[code] || code || "—",
+            transfers: transfers.every((t) => typeof t === "number") ? Math.max(...(transfers as number[])) : null,
+            off: Math.max(offOut, offBack),
+          };
+          for (const key of [row.destination, row.destination_airport]) {
+            const k = (key || "").toUpperCase();
+            if (!k) continue;
+            const prev = out.get(k);
+            // Closest dates first, then the lower price.
+            if (!prev || fare.off < prev.off || (fare.off === prev.off && fare.price < prev.price)) out.set(k, fare);
+          }
+        }
+      } catch {
+        // Nothing seen: the caller reports no fare rather than guess.
+      }
+    })
+  );
+  return out;
 }
 
 /**
