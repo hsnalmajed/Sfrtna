@@ -315,6 +315,7 @@ export interface OneWayFare {
 
 interface TpV3Row {
   origin?: string;
+  origin_airport?: string;
   destination?: string;
   destination_airport?: string;
   price?: number;
@@ -347,8 +348,9 @@ function dayDiff(a: string, b: string): number {
  *
  * prices_for_dates with only an origin and `unique=false` lists the fares
  * seen for each day of the month, up to 1,000 rows, cheapest first. A
- * return trip asks for return fares (the row then carries both dates); a
- * fare counts when each of its dates is within two days of the traveller's.
+ * return trip is priced as the cheaper of two one-way fares (out from home,
+ * back to home) or a whole return fare; a fare counts when each of its
+ * dates is within two days of the traveller's.
  */
 export async function tripFaresFrom(
   origin: string,
@@ -356,61 +358,112 @@ export async function tripFaresFrom(
   returnDate: string | undefined,
   currency: string
 ): Promise<Map<string, TripFare>> {
-  const out = new Map<string, TripFare>();
-  if (!token() || !origin || !departDate) return out;
-  const froms = [...new Set([origin, CITY_OF_AIRPORT[origin] ?? origin])];
-  // Twice per origin: the exact dates (so a busy month's thousand cheapest
-  // rows cannot crowd them out), and the whole month (for fares a day or two
-  // either side).
-  const asks = froms.flatMap((from) => [
-    { from, out: departDate.slice(0, 10), back: returnDate?.slice(0, 10) },
-    { from, out: departDate.slice(0, 7), back: returnDate?.slice(0, 7) },
-  ]);
-  await Promise.all(
-    asks.map(async ({ from, out: outWhen, back: backWhen }) => {
-      const url = new URL(`${BASE}/aviasales/v3/prices_for_dates`);
-      url.searchParams.set("origin", from);
-      url.searchParams.set("departure_at", outWhen);
-      if (backWhen) url.searchParams.set("return_at", backWhen);
-      url.searchParams.set("one_way", returnDate ? "false" : "true");
-      url.searchParams.set("unique", "false");
-      url.searchParams.set("sorting", "price");
-      url.searchParams.set("limit", "1000");
-      url.searchParams.set("currency", currency.toLowerCase());
-      try {
-        const res = await fetch(url.toString(), {
-          headers: { "X-Access-Token": token(), Accept: "application/json" },
-        });
-        if (!res.ok) return;
-        const body = (await res.json()) as { data?: TpV3Row[] };
-        for (const row of body.data ?? []) {
-          const price = Number(row.price);
-          if (!Number.isFinite(price) || price <= 0 || !row.departure_at) continue;
-          const offOut = dayDiff(row.departure_at, departDate);
-          const offBack = returnDate ? (row.return_at ? dayDiff(row.return_at, returnDate) : 99) : 0;
-          if (offOut > 2 || offBack > 2) continue;
-          const code = (row.airline || "").toUpperCase();
-          const transfers = [row.transfers, returnDate ? row.return_transfers : 0];
-          const fare: TripFare = {
-            price: Math.round(price),
-            airline: AIRLINE_NAMES[code] || code || "—",
-            transfers: transfers.every((t) => typeof t === "number") ? Math.max(...(transfers as number[])) : null,
-            off: Math.max(offOut, offBack),
-          };
-          for (const key of [row.destination, row.destination_airport]) {
-            const k = (key || "").toUpperCase();
-            if (!k) continue;
-            const prev = out.get(k);
-            // Closest dates first, then the lower price.
-            if (!prev || fare.off < prev.off || (fare.off === prev.off && fare.price < prev.price)) out.set(k, fare);
-          }
-        }
-      } catch {
-        // Nothing seen: the caller reports no fare rather than guess.
+  const result = new Map<string, TripFare>();
+  if (!token() || !origin || !departDate) return result;
+  const homes = [...new Set([origin, CITY_OF_AIRPORT[origin] ?? origin])];
+
+  type Row = TpV3Row;
+  /** Rows of one prices_for_dates ask; [] on any failure. */
+  async function ask(params: Record<string, string>): Promise<Row[]> {
+    const url = new URL(`${BASE}/aviasales/v3/prices_for_dates`);
+    for (const [k, v] of Object.entries(params)) url.searchParams.set(k, v);
+    url.searchParams.set("unique", "false");
+    url.searchParams.set("sorting", "price");
+    url.searchParams.set("limit", "1000");
+    url.searchParams.set("currency", currency.toLowerCase());
+    try {
+      const res = await fetch(url.toString(), { headers: { "X-Access-Token": token(), Accept: "application/json" } });
+      if (!res.ok) return [];
+      return ((await res.json()) as { data?: Row[] }).data ?? [];
+    } catch {
+      return [];
+    }
+  }
+  // Each date asked twice: exactly (so a busy month's thousand cheapest rows
+  // cannot crowd it out) and as its month (for a day or two either side).
+  const whens = (iso: string) => [iso.slice(0, 10), iso.slice(0, 7)];
+
+  /** Best one-way fare per place, keyed by the far end's city and airport. */
+  function bestOneWay(rows: Row[], date: string, far: (r: Row) => (string | undefined)[]) {
+    const best = new Map<string, { price: number; airline: string; transfers: number | null; off: number }>();
+    for (const row of rows) {
+      const price = Number(row.price);
+      if (!Number.isFinite(price) || price <= 0 || !row.departure_at) continue;
+      const off = dayDiff(row.departure_at, date);
+      if (off > 2) continue;
+      const code = (row.airline || "").toUpperCase();
+      const fare = {
+        price: Math.round(price),
+        airline: AIRLINE_NAMES[code] || code || "—",
+        transfers: typeof row.transfers === "number" ? row.transfers : null,
+        off,
+      };
+      for (const key of far(row)) {
+        const k = (key || "").toUpperCase();
+        if (!k) continue;
+        const prev = best.get(k);
+        if (!prev || fare.off < prev.off || (fare.off === prev.off && fare.price < prev.price)) best.set(k, fare);
       }
-    })
-  );
-  return out;
+    }
+    return best;
+  }
+
+  const outRows = (
+    await Promise.all(homes.flatMap((h) => whens(departDate).map((w) => ask({ origin: h, departure_at: w, one_way: "true" }))))
+  ).flat();
+  const outbound = bestOneWay(outRows, departDate, (r) => [r.destination, r.destination_airport]);
+
+  if (!returnDate) {
+    for (const [k, f] of outbound) result.set(k, f);
+    return result;
+  }
+
+  // The way back, from every place to home in one ask: prices_for_dates with
+  // only a destination. And whole return trips, which some routes have
+  // where one-way fares are missing.
+  const [backRows, roundRows] = await Promise.all([
+    Promise.all(homes.flatMap((h) => whens(returnDate).map((w) => ask({ destination: h, departure_at: w, one_way: "true" })))).then((r) => r.flat()),
+    Promise.all(
+      homes.flatMap((h) =>
+        whens(departDate).map((w, i) => ask({ origin: h, departure_at: w, return_at: whens(returnDate)[i], one_way: "false" }))
+      )
+    ).then((r) => r.flat()),
+  ]);
+  const inbound = bestOneWay(backRows, returnDate, (r) => [r.origin, r.origin_airport]);
+
+  // Two one-ways, where both were seen.
+  for (const [k, o] of outbound) {
+    const b = inbound.get(k);
+    if (!b) continue;
+    result.set(k, {
+      price: o.price + b.price,
+      airline: o.airline === b.airline ? o.airline : `${o.airline} / ${b.airline}`,
+      transfers: o.transfers !== null && b.transfers !== null ? Math.max(o.transfers, b.transfers) : null,
+      off: Math.max(o.off, b.off),
+    });
+  }
+  // A whole return trip, where that is closer in dates or cheaper.
+  for (const row of roundRows) {
+    const price = Number(row.price);
+    if (!Number.isFinite(price) || price <= 0 || !row.departure_at || !row.return_at) continue;
+    const off = Math.max(dayDiff(row.departure_at, departDate), dayDiff(row.return_at, returnDate));
+    if (off > 2) continue;
+    const code = (row.airline || "").toUpperCase();
+    const t = [row.transfers, row.return_transfers];
+    const fare: TripFare = {
+      price: Math.round(price),
+      airline: AIRLINE_NAMES[code] || code || "—",
+      transfers: t.every((x) => typeof x === "number") ? Math.max(...(t as number[])) : null,
+      off,
+    };
+    for (const key of [row.destination, row.destination_airport]) {
+      const k = (key || "").toUpperCase();
+      if (!k) continue;
+      const prev = result.get(k);
+      if (!prev || fare.off < prev.off || (fare.off === prev.off && fare.price < prev.price)) result.set(k, fare);
+    }
+  }
+  return result;
 }
 
 /**
