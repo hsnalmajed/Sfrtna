@@ -224,7 +224,6 @@ export default function DateRangeInput({
     return { background: `hsl(${hue} 80% 90%)`, color: `hsl(${hue} 75% 26%)` };
   };
   const showFares = Boolean(fareFrom && fareTo && fareFrom !== fareTo);
-  const compact = (n: number) => (n >= 10000 ? `${(n / 1000).toFixed(n >= 100000 ? 0 : 1)}k` : n.toLocaleString("en-US"));
 
   const weekdays = useMemo(() => weekdayNames(locale), [locale]);
   const nights = withReturn && departDate && returnDate ? nightsBetween(departDate, returnDate) : 0;
@@ -409,15 +408,18 @@ export default function DateRangeInput({
                         } ${dayClass(day)}`}
                       >
                         <span>{Number(day.slice(8))}</span>
+                        {/* A colour, not a number: the fares behind it are
+                            cached, not live, and were off by 20–40% on a
+                            quarter of routes checked (6 Oct 2026). Which days
+                            run cheaper holds up; the exact price does not. */}
                         {showFares && day >= today && visibleFares[day] !== undefined && (
                           <span
-                            className={`mt-0.5 rounded px-1 text-[9px] font-bold leading-tight ${
-                              visibleFares[day] === cheapest ? "!bg-emerald-600 font-black !text-white" : ""
+                            aria-hidden="true"
+                            className={`mt-1 block h-1.5 w-5 rounded-full ${
+                              visibleFares[day] === cheapest ? "!bg-emerald-600" : ""
                             }`}
-                            style={visibleFares[day] === cheapest ? undefined : fareColour(visibleFares[day])}
-                          >
-                            {compact(visibleFares[day])}
-                          </span>
+                            style={visibleFares[day] === cheapest ? undefined : { background: fareColour(visibleFares[day]).color }}
+                          />
                         )}
                       </button>
                     )

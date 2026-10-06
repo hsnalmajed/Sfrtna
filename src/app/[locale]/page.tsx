@@ -152,7 +152,12 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
       flightKm: airport?.km ?? undefined,
       ...citySummary(c.code, c.slug),
       hotelCity: c.nameEn,
-      fare: fareFor(c.slug),
+      // No fare on the card. The fares seen here are cached, not live, and
+      // checked against live searches on 6 Oct 2026 a quarter of them were
+      // off by 20–40% (Riyadh–Kuala Lumpur 649 seen, 1,054 live). They still
+      // choose which cities show — a city flown to from here — but no number
+      // from them is printed.
+      fare: undefined,
     };
   });
 

@@ -446,11 +446,11 @@ export default function FlightResultsGuide({
     : null;
   const shown = tab === "cheapest" ? cheapestFit : tab === "fastest" ? fastestFit : bestFit;
   const others = fits.filter((f) => f !== shown);
-  // Nothing fits — said as soon as the first fares are in, not after the
-  // whole search: the cheapest so far is a real fare, labelled "so far",
-  // and becomes "start from" once every agency has answered. Should a fare
-  // within budget turn up later, this gives way to it.
-  const noneWithin = hasBudget && state.filtering && !shown && over.length > 0 && !waitForPrefs;
+  // Nothing fits — said only once every agency has answered. Said earlier,
+  // from the first fares in, it flashed up and then vanished when a fare
+  // within budget arrived a few seconds later (reported 6 Oct 2026); until
+  // the search settles the page shows that it is still searching.
+  const noneWithin = hasBudget && state.filtering && state.settled && !shown && over.length > 0 && !waitForPrefs;
   const noneBody = (state.settled ? t.guideNoneBody : t.guideNoneSoFar)
     .replace("{city}", cityName)
     .replace("{amount}", money(over[0]?.price ?? 0))
