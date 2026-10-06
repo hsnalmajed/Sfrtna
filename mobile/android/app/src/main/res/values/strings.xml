@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">سفرتنا</string>
+    <string name="title_activity_main">سفرتنا</string>
+    <string name="package_name">com.sfrtna.app</string>
+    <string name="custom_url_scheme">com.sfrtna.app</string>
+    <string name="offline_title">لا يوجد اتصال بالإنترنت</string>
+    <string name="offline_body">تحقق من اتصالك، وسنعيد تحميل الصفحة تلقائياً عند عودته.</string>
+    <string name="offline_retry">إعادة المحاولة</string>
+</resources>

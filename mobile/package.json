@@ -1,0 +1,18 @@
+{
+  "name": "sfrtna-mobile",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sfrtna phone apps: sfrtna.com in a native shell (Capacitor). See README.md.",
+  "scripts": {
+    "sync": "cap sync android",
+    "android:debug": "cap sync android && cd android && ./gradlew assembleDebug",
+    "android:bundle": "cap sync android && cd android && ./gradlew bundleRelease"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.5.2",
+    "@capacitor/core": "^8.5.2"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^8.5.2"
+  }
+}

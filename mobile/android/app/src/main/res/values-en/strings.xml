@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Sfrtna</string>
+    <string name="title_activity_main">Sfrtna</string>
+    <string name="offline_title">No internet connection</string>
+    <string name="offline_body">Check your connection. The page will reload by itself when it is back.</string>
+    <string name="offline_retry">Try again</string>
+</resources>

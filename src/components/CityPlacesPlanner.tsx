@@ -7,6 +7,7 @@ import type { Locale } from "@/lib/types";
 import { countLabel } from "@/lib/format";
 import { PIN_STYLES } from "@/lib/pinStyles";
 import { downloadText, safeFileName, toKML } from "@/lib/mapExport";
+import { printPage } from "@/lib/nativeApp";
 import { GOOGLE_MY_MAPS_URL } from "@/lib/tripPlaces";
 import CityPlacesExplorer, { score, type PlaceListItem } from "@/components/CityPlacesExplorer";
 import PrintHeader from "@/components/PrintHeader";
@@ -653,7 +654,7 @@ function PlanView({
               ✏️ {t.edit}
             </button>
             {/* Compact copies of the two big actions below, for when the page is scrolled. */}
-            <button type="button" onClick={() => window.print()} title={t.pdf} aria-label={t.pdf} className={`${btn} !px-3 bg-sun-400 text-navy-950 hover:bg-sun-300`}>
+            <button type="button" onClick={() => printPage(title)} title={t.pdf} aria-label={t.pdf} className={`${btn} !px-3 bg-sun-400 text-navy-950 hover:bg-sun-300`}>
               📄 <span className="hidden sm:inline">PDF</span>
             </button>
             <button type="button" onClick={downloadKml} title={t.mapsKml} aria-label={t.mapsKml} className={`${btn} !px-3 bg-sea-600 text-white hover:bg-sea-700`}>
@@ -686,7 +687,7 @@ function PlanView({
         <div className="print:hidden mt-5 grid gap-3 sm:grid-cols-2">
           <button
             type="button"
-            onClick={() => window.print()}
+            onClick={() => printPage(title)}
             className="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-sun-300 via-sun-400 to-sun-500 p-5 text-start text-navy-950 shadow-[var(--shadow-sun)] ring-1 ring-sun-500/40 transition duration-300 hover:-translate-y-1 hover:shadow-[0_18px_40px_-12px_rgba(245,158,11,0.6)]"
           >
             <span className="pointer-events-none absolute -end-6 -top-8 text-[7rem] leading-none opacity-15 transition duration-500 group-hover:rotate-6 group-hover:scale-110" aria-hidden="true">

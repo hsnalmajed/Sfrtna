@@ -1,0 +1,100 @@
+# Builds the Android app (mobile/) on GitHub's machines — they carry the
+# Android SDK, which the cloud workspace cannot download.
+#
+# Every run:
+#   - a test APK, attached to the "android-test" pre-release, so it can be
+#     downloaded and installed straight on a phone;
+#   - when the upload key is set (repository secrets below), a signed
+#     release bundle (.aab) for Google Play, kept as a run artifact.
+#
+# Secrets (Settings → Secrets and variables → Actions), only for Play builds:
+#   SFRTNA_UPLOAD_KEYSTORE_BASE64  the upload keystore, base64
+#   SFRTNA_KEYSTORE_PASSWORD, SFRTNA_KEY_ALIAS, SFRTNA_KEY_PASSWORD
+#
+# Pushes outside mobile/ do not run this, and this never deploys the site.
+name: Android app
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "mobile/**"
+      - ".github/workflows/android.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: android-app
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      HAS_UPLOAD_KEY: ${{ secrets.SFRTNA_UPLOAD_KEYSTORE_BASE64 != '' }}
+      SFRTNA_VERSION_CODE: ${{ github.run_number }}
+    defaults:
+      run:
+        working-directory: mobile
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: mobile/package-lock.json
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Install and sync Capacitor
+        run: |
+          npm ci
+          npx cap sync android
+
+      - name: Build test APK
+        working-directory: mobile/android
+        run: ./gradlew --no-daemon assembleDebug
+
+      - name: Publish test APK
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cp android/app/build/outputs/apk/debug/app-debug.apk sfrtna-android-test.apk
+          gh release view android-test >/dev/null 2>&1 || gh release create android-test \
+            --prerelease --target "${GITHUB_SHA}" --title "Android — test build" \
+            --notes "Test build of the Sfrtna Android app, replaced on every change under mobile/. Not for Google Play."
+          gh release upload android-test sfrtna-android-test.apk --clobber
+          gh release edit android-test --notes "Test build #${{ github.run_number }} from ${GITHUB_SHA::7}. Replaced on every change under mobile/. Not for Google Play."
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sfrtna-android-test-apk
+          path: mobile/sfrtna-android-test.apk
+          retention-days: 14
+
+      - name: Build signed Play bundle
+        if: env.HAS_UPLOAD_KEY == 'true'
+        working-directory: mobile/android
+        env:
+          SFRTNA_KEYSTORE_PASSWORD: ${{ secrets.SFRTNA_KEYSTORE_PASSWORD }}
+          SFRTNA_KEY_ALIAS: ${{ secrets.SFRTNA_KEY_ALIAS }}
+          SFRTNA_KEY_PASSWORD: ${{ secrets.SFRTNA_KEY_PASSWORD }}
+        run: |
+          echo "${{ secrets.SFRTNA_UPLOAD_KEYSTORE_BASE64 }}" | base64 -d > "$RUNNER_TEMP/upload.jks"
+          SFRTNA_KEYSTORE_FILE="$RUNNER_TEMP/upload.jks" ./gradlew --no-daemon bundleRelease
+          rm -f "$RUNNER_TEMP/upload.jks"
+
+      - uses: actions/upload-artifact@v4
+        if: env.HAS_UPLOAD_KEY == 'true'
+        with:
+          name: sfrtna-android-play-bundle
+          path: mobile/android/app/build/outputs/bundle/release/app-release.aab
+          retention-days: 30

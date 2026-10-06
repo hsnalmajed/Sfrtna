@@ -1,0 +1,24 @@
+{
+  "appId": "com.sfrtna.app",
+  "appName": "سفرتنا",
+  "webDir": "www",
+  "server": {
+    "url": "https://sfrtna.com",
+    "androidScheme": "https"
+  },
+  "android": {
+    "appendUserAgent": "SfrtnaApp/Android",
+    "allowMixedContent": false,
+    "captureInput": false,
+    "webContentsDebuggingEnabled": false
+  },
+  "plugins": {
+    "SystemBars": {
+      "style": "DARK",
+      "insetsHandling": "css"
+    },
+    "CapacitorHttp": {
+      "enabled": false
+    }
+  }
+}

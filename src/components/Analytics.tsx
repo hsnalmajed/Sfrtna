@@ -141,6 +141,7 @@ export default function Analytics({ locale }: { locale: Locale }) {
 var c=null;try{c=localStorage.getItem('${CONSENT_KEY}');}catch(e){}
 gtag('consent','default',{analytics_storage:c==='granted'?'granted':'denied',ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied'});
 gtag('set','ads_data_redaction',true);
+gtag('set','user_properties',{app_platform:/SfrtnaApp\\/Android/.test(navigator.userAgent)?'android_app':/SfrtnaApp\\/iOS/.test(navigator.userAgent)?'ios_app':'web'});
 gtag('js',new Date());gtag('config','${GA_ID}');`}
       </Script>
       <Script id="ga4" src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} strategy="afterInteractive" />

@@ -10,6 +10,8 @@
 // Both are generated in the browser from data already on the page: no server
 // round-trip, and no third-party service sees the traveller's itinerary.
 
+import { inApp, shareFileInApp } from "@/lib/nativeApp";
+
 export interface ExportPlace {
   name: string;
   lat: number;
@@ -91,6 +93,18 @@ export function safeFileName(base: string, extension: string): string {
 }
 
 export function downloadText(content: string, fileName: string, mimeType: string): void {
+  // Inside the phone app a WebView cannot save a download: the file goes to
+  // the share sheet instead (open in a maps app, save to Files, send).
+  if (inApp()) {
+    void shareFileInApp(fileName, mimeType, content).then((shared) => {
+      if (!shared) browserDownload(content, fileName, mimeType);
+    });
+    return;
+  }
+  browserDownload(content, fileName, mimeType);
+}
+
+function browserDownload(content: string, fileName: string, mimeType: string): void {
   const blob = new Blob([content], { type: `${mimeType};charset=utf-8` });
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");

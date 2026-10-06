@@ -14,6 +14,9 @@ const eslintConfig = defineConfig([
     "next-env.d.ts",
     ".open-next/**",
     ".wrangler/**",
+    // The phone app (Capacitor) has its own build; its node_modules and
+    // generated Android files are not site code.
+    "mobile/**",
   ]),
 ]);
 

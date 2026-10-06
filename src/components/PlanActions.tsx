@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { getDictionary } from "@/lib/dictionaries";
 import type { Locale } from "@/lib/types";
 import { downloadText, safeFileName, toKML } from "@/lib/mapExport";
+import { printPage } from "@/lib/nativeApp";
 import {
   fetchCountryPlaces,
   matchPlacesInLines,
@@ -89,7 +90,7 @@ export default function PlanActions({
         {showPrint && (
         <button
           type="button"
-          onClick={() => window.print()}
+          onClick={() => printPage(title)}
           className="inline-flex items-center gap-2 rounded-xl bg-brand-900 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-brand-800"
         >
           <span aria-hidden="true">🖨️</span>
