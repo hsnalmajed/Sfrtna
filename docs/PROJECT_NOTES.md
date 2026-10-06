@@ -12,6 +12,11 @@ Read this first. It replaces re-explaining the project. Last updated 6 Oct 2026.
 - Secrets live in Cloudflare **Runtime** variables (not Build). Never repeat IDs,
   IBANs or keys seen in screenshots. Never use or store the CDS key.
 - Hide internal sources/methodology from visitors.
+- **No ads, ever** — on the site or in the mobile apps. No AdSense/AdMob/ad
+  SDKs, no Google Ads link, GA4 Google signals off, `ad_storage` always denied.
+  Income is partner commission only.
+- **Protect the site's data from copying/scraping** — treat as a requirement in
+  every feature (API routes, bulk data, AI crawlers). Planned as its own section.
 - Before saying "done": `npx tsc --noEmit`, then `npx eslint <files> --max-warnings=0`,
   then open the live page and check it yourself.
 - Commits: author `Claude <noreply@anthropic.com>` with trailers
