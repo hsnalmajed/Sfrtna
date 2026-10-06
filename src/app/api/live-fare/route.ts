@@ -12,7 +12,17 @@ import { liveFare } from "@/lib/providers/serpapi";
  * codes and dates from today to a year ahead are asked, so a malformed
  * request never spends a search.
  */
+// Switched off 6 Oct 2026: measured against Aviasales — where travellers
+// actually book — Google Flights' fare was 25% higher on the median route
+// and up to 92% (Dammam–Rome), because Aviasales also sells the cheaper
+// agency and self-transfer fares Google leaves out. A number that far from
+// the booking price is not shown, and an open endpoint would only spend the
+// month's searches. The code stays for the hotel prices, where Google's
+// figure is each booking site's own.
+const ENABLED = false;
+
 export async function GET(req: NextRequest) {
+  if (!ENABLED) return NextResponse.json({ error: "not available" }, { status: 404 });
   const sp = req.nextUrl.searchParams;
   const origin = strictIata(sp.get("origin") || "");
   const destination = strictIata(sp.get("destination") || "");
