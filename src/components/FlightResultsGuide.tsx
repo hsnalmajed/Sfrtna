@@ -251,6 +251,7 @@ export default function FlightResultsGuide({
     let sawProgress = false;
     let autoLoaded = false;
     let lastSettled = false;
+    let reads = 0;
     let flights: Flight[] = [];
     // Reading two hundred cards takes tens of milliseconds; once the search
     // has settled, read again only when the widget has changed something.
@@ -402,6 +403,9 @@ export default function FlightResultsGuide({
         ((!searching && calm >= (sawProgress ? 1000 : 4000)) || (priced.length > 0 && calm >= 20000));
       if (settled) settledOnce = true;
       else dirty = true; // keep reading until the search has settled
+      // For checking on the live page: searching | fares | ms since a fare changed | settled | full reads.
+      if (changed) reads += 1;
+      host.setAttribute("data-sfr-state", `${searching ? 1 : 0}|${priced.length}|${calm}|${settled ? 1 : 0}|${reads}`);
       if (!changed && settled === lastSettled) return;
       lastSettled = settled;
 
