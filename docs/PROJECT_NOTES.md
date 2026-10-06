@@ -117,7 +117,7 @@ Travelpayouts.
   one event per click (owner's test 7 Oct). The widget opens its link outside
   its shadow root, so `in_widget` is not set — don't rely on that flag.
 
-### Protection from copying/scraping — code done 7 Oct
+### Protection from copying/scraping — closed 7 Oct ✅
 - `edge-guard.js` (called from `edge-worker.js` before Next sees any /api
   request): allow-list of routes the site uses (unused `/api/flights`,
   `/api/hotels` → 404, code kept); method check (itinerary POST only);
@@ -134,16 +134,19 @@ Travelpayouts.
   AI search/answer bots (OAI-SearchBot, ChatGPT-User, PerplexityBot,
   Claude-SearchBot) allowed like search engines — owner's decision 7 Oct.
 - Terms: new section «منع النسخ والاستخدام الآلي» (ar + en), date 2026-10-07.
-- Pending owner action in Cloudflare dashboard: Security → Bots → Bot Fight
-  Mode on; Block AI bots on (keep AI search crawlers allowed if offered);
-  AI Labyrinth optional. Then a live check of the site.
+- Cloudflare (owner, 7 Oct), Security → Settings → Bot traffic: Bot Fight
+  Mode on, AI Labyrinth on, AI bot policies: Search allow, Agent allow,
+  Training block; Bot Preference Sync OFF (robots.txt stays ours).
+- Live check 7 Oct after all settings: pages, /api from pages, robots.txt,
+  sitemap OK; /api opened directly → 403. **Protection section closed.**
 
 ## Next, in order
 
-1. Protection: owner's Cloudflare settings above, then live check.
-2. Android app, then iPhone app (Stay22 has a Mobile SDK worth checking).
-3. Marketing plan before launch.
-4. When Agoda is approved: Arabic hotel list from Agoda's API.
-5. Owner asked for: a glossary of technical terms (offered as a doc) and a full
+1. Android app, then iPhone app (Stay22 has a Mobile SDK worth checking).
+   The apps must call /api through the guard: plan for it (e.g. an app
+   route with its own check) — native apps send no Sec-Fetch-Site.
+2. Marketing plan before launch.
+3. When Agoda is approved: Arabic hotel list from Agoda's API.
+4. Owner asked for: a glossary of technical terms (offered as a doc) and a full
    map of every system used (front end, data, analytics) explained for a data
    analyst.
