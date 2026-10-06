@@ -108,14 +108,18 @@ Travelpayouts.
   unless billing is added, location EU, no streaming, no ad identifiers),
   custom dimensions search_type, partner, page_type, destination, origin.
   `search_id` deliberately NOT registered (high cardinality) — use BigQuery.
-- Still open: star `partner_click` as Key event once it appears in Events →
-  Recent events (≤24 h); Search Console link if not done; owner's phone test in
-  Realtime (search + «احجز» incl. inside the flight widget).
+- Verified 7 Oct in GA4 Realtime from the owner's test: page_view, search,
+  partner_click, language_switch arrive. Search Console ↔ GA4 linked.
+- Still open (owner, minor): star `partner_click` as Key event in Events →
+  Recent events; turn off Enhanced measurement → Form interactions (form_start
+  duplicates our `search`); confirm whether a click *inside* the flight widget
+  produced partner_click.
 
 ## Next, in order
 
-1. Finish measurement: owner's GA4 admin steps above, then verify events in
-   GA4 Realtime/DebugView on the live site.
+1. Protection from copying/scraping (owner's rule): Cloudflare Bot Fight Mode +
+   Block AI bots (owner), rate limits and same-origin checks on /api/*,
+   AI-crawler rules in robots.ts, copyright clause in terms.
 2. Android app, then iPhone app (Stay22 has a Mobile SDK worth checking).
 3. Marketing plan before launch.
 4. When Agoda is approved: Arabic hotel list from Agoda's API.
