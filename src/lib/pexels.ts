@@ -1,6 +1,18 @@
 /**
  * Photographs from Pexels — the site's one source of pictures.
  *
+ * ── How photos reach a page (changed 7 Oct 2026) ──────────────────────
+ * Pages never call Pexels. Every photo choice lives in
+ * src/data/pexelsPhotos.json, written by scripts/pexels-photos.ts (run on
+ * GitHub Actions, .github/workflows/photos.yml). A page looks its photos up
+ * in that file: no network, no wait, no allowance spent per visitor.
+ *
+ * Why: searching at page-view time, cached per Cloudflare data centre, spent
+ * the whole monthly Pexels allowance (20,000 calls) in a few days. With the
+ * allowance gone every card fell back to its navy tile, and while it lasted
+ * a cold card waited on a search. Now the search happens once per place,
+ * ever, and the picture itself loads straight from Pexels' image CDN.
+ *
  * Why Pexels: every photo on it is licensed for commercial use without a fee,
  * the API key is free and issued on sign-up, and the pictures are by working
  * photographers rather than whatever happened to be uploaded to an
@@ -18,7 +30,7 @@
  * Docs: https://www.pexels.com/api/documentation/
  */
 
-import { cachedJson, readJson, writeJson } from "@/lib/edgeCache";
+import STORED from "@/data/pexelsPhotos.json";
 
 const API = "https://api.pexels.com/v1/search";
 
@@ -27,7 +39,7 @@ export interface PexelsPhoto {
   url: string;
   /** 3840 wide, for 4K screens. */
   url4k: string;
-  /** 800 wide — grid cards. */
+  /** 640 wide — grid cards. */
   small: string;
   photographer: string;
   photographerUrl: string;
@@ -48,10 +60,14 @@ function key(): string {
   return process.env.PEXELS_API_KEY || "";
 }
 
-/** Builds the sized URLs from Pexels' original, using their own resizer. */
+/**
+ * Builds the sized URLs from Pexels' original, using their own resizer.
+ * `small` is for cards: 640 wide covers a 320-pixel card on a sharp phone
+ * screen, at about half the bytes of 800.
+ */
 export function pexelsSizes(original: string): Pick<PexelsPhoto, "url" | "url4k" | "small"> {
   const at = (w: number) => `${original}?auto=compress&cs=tinysrgb&w=${w}`;
-  return { url: at(1920), url4k: at(3840), small: at(800) };
+  return { url: at(1920), url4k: at(3840), small: at(640) };
 }
 
 /** One search, and the words its result must be captioned with. */
@@ -70,16 +86,8 @@ function fold(s: string): string {
   return s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 }
 
-/**
- * The first landscape photo for a search whose caption names the place, or
- * null.
- *
- * Cached for a week at the edge: a city's photograph does not change from day
- * to day, and the free tier's monthly allowance is the constraint that
- * matters.
- */
 /** One search, uncached: `{ photo }` (null photo = nothing fitting), or null if the call failed. */
-async function rawSearch({ query, mention }: PexelsQuery): Promise<{ photo: PexelsPhoto | null } | null> {
+export async function rawSearch({ query, mention }: PexelsQuery): Promise<{ photo: PexelsPhoto | null } | null> {
   const url = new URL(API);
   url.searchParams.set("query", query);
   url.searchParams.set("per_page", "15");
@@ -106,94 +114,76 @@ async function rawSearch({ query, mention }: PexelsQuery): Promise<{ photo: Pexe
   }
 }
 
-export async function searchPexelsPhoto(q: PexelsQuery): Promise<PexelsPhoto | null> {
-  if (!key() || !q.query.trim()) return null;
-  // Cached at Cloudflare's edge (see edgeCache.ts). A search that found no
-  // fitting photo is remembered too; one that failed is not.
-  const found = await cachedJson(`pexels:${q.query}|${q.mention.join(",")}`, 604800, () => rawSearch(q));
-  return found?.photo ?? null;
+// ── The stored choices ─────────────────────────────────────────────────
+
+/** One stored choice: the photo, or null when every search was tried and none fit. */
+export type StoredPhoto = {
+  /** Pexels' original image URL. */
+  o: string;
+  /** Photographer's name and page, and the photo's own page. */
+  n: string;
+  nu: string;
+  u: string;
+} | null;
+
+const STORED_PHOTOS = STORED as Record<string, StoredPhoto>;
+
+/**
+ * The stable name of one subject's searches, as stored in the JSON file.
+ * The same list of searches always names the same subject, wherever on the
+ * site it is asked for.
+ */
+export function subjectKey(queries: PexelsQuery[]): string {
+  return queries.map((q) => `${q.query}|${q.mention.join(",")}`).join(" ;; ");
+}
+
+function fromStored(rec: StoredPhoto | undefined): PexelsPhoto | null {
+  if (!rec) return null;
+  return { ...pexelsSizes(rec.o), photographer: rec.n, photographerUrl: rec.nu, pageUrl: rec.u };
 }
 
 /**
- * Several searches at once, keyed however the caller likes. Each key tries
- * its queries in order and keeps the first that returns a photo — a
- * landmark first, then the city, then the country.
- *
- * Why the whole set is one cache entry, filled in over several visits:
- * Cloudflare's Free plan allows 50 subrequests per page view, and cache
- * reads and writes count towards the same 50. The attractions page wants 41
- * countries at up to three searches each; asked all at once, the searches
- * past the cap failed and those cards came up blank — a different set on
- * every load. So each page's set lives under one key (one read, one write),
- * and a visit spends at most SEARCH_BUDGET searches on keys not yet settled
- * (18: two sets on one page, plus their reads and writes, stay under 50).
- * The first visits after a deploy fill it in; after that it is one read.
+ * While set, every lookup also records the subject — this is how
+ * scripts/pexels-photos.ts learns the full list of places the site asks
+ * pictures for, from the same code the pages run.
  */
-const SEARCH_BUDGET = 18;
-const SET_TTL = 604800;
+let collector: Map<string, PexelsQuery[]> | null = null;
 
-interface PhotoSet {
-  /** Settled keys: a photo, or null when every query was tried and none fit. */
-  photos: Record<string, PexelsPhoto | null>;
+export function startCollectingSubjects(): Map<string, PexelsQuery[]> {
+  collector = new Map();
+  return collector;
 }
 
-/** A short stable hash, so the cache key does not grow with the list. */
-function hashOf(text: string): string {
-  let h = 5381;
-  for (let i = 0; i < text.length; i++) h = ((h << 5) + h + text.charCodeAt(i)) | 0;
-  return (h >>> 0).toString(36);
+export function stopCollectingSubjects(): void {
+  collector = null;
 }
 
+function lookup(queries: PexelsQuery[]): PexelsPhoto | null {
+  const k = subjectKey(queries);
+  if (collector && queries.length > 0) collector.set(k, queries);
+  return fromStored(STORED_PHOTOS[k]);
+}
+
+/** The stored photo for one search, or null. */
+export async function searchPexelsPhoto(q: PexelsQuery): Promise<PexelsPhoto | null> {
+  if (!q.query.trim()) return null;
+  return lookup([q]);
+}
+
+/**
+ * The stored photo for each subject, keyed however the caller likes. Each
+ * subject is its list of searches in order — a landmark first, then the
+ * city, then the country (the script tries them in that order). A subject
+ * with no stored photo is simply missing from the result: its card keeps
+ * its navy tile until the next run of the script fills it in.
+ */
 export async function searchPexelsPhotos(
   wanted: Map<string, PexelsQuery[]>
 ): Promise<Map<string, PexelsPhoto>> {
   const out = new Map<string, PexelsPhoto>();
-  if (!key() || wanted.size === 0) return out;
-  const entries = [...wanted.entries()];
-  const setKey = `pexels-set:${hashOf(JSON.stringify(entries))}`;
-
-  const cached = await readJson<PhotoSet>(setKey);
-  const photos: PhotoSet["photos"] = { ...(cached?.photos ?? {}) };
-  const pending = entries.filter(([k]) => !(k in photos));
-
-  if (pending.length > 0) {
-    let budget = SEARCH_BUDGET;
-    let next = 0;
-    let changed = false;
-    const CONCURRENCY = 6;
-    async function worker() {
-      while (next < pending.length && budget > 0) {
-        const [k, queries] = pending[next++];
-        let settled = true;
-        let photo: PexelsPhoto | null = null;
-        for (const q of queries) {
-          if (budget <= 0) {
-            settled = false;
-            break;
-          }
-          budget--;
-          const r = await rawSearch(q);
-          if (r === null) {
-            // A failed call proves nothing about this place; try it again
-            // on a later visit rather than recording "no photo".
-            settled = false;
-            break;
-          }
-          if (r.photo) {
-            photo = r.photo;
-            break;
-          }
-        }
-        if (photo || settled) {
-          photos[k] = photo;
-          changed = true;
-        }
-      }
-    }
-    await Promise.all(Array.from({ length: Math.min(CONCURRENCY, pending.length) }, worker));
-    if (changed) await writeJson(setKey, { photos }, SET_TTL);
+  for (const [k, queries] of wanted) {
+    const p = lookup(queries);
+    if (p) out.set(k, p);
   }
-
-  for (const [k, p] of Object.entries(photos)) if (p && wanted.has(k)) out.set(k, p);
   return out;
 }

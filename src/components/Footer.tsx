@@ -44,8 +44,8 @@ export default function Footer({ locale }: { locale: Locale }) {
     <footer className="mt-20 bg-navy-990">
       <div className="h-px bg-gradient-to-r from-transparent via-sun-400/60 to-transparent" />
       <div className="mx-auto max-w-6xl px-4 py-14 text-sm sm:px-6">
-        <div className="grid grid-cols-2 gap-x-8 gap-y-10 border-b border-white/10 pb-10 sm:grid-cols-[1.4fr_0.8fr_0.8fr_0.8fr]">
-          <div className="col-span-2 max-w-sm space-y-4 sm:col-span-1">
+        <div className="grid grid-cols-3 gap-x-4 gap-y-10 border-b border-white/10 pb-10 sm:grid-cols-[1.4fr_0.8fr_0.8fr_0.8fr] sm:gap-x-8">
+          <div className="col-span-3 max-w-sm space-y-4 sm:col-span-1">
             <span className="inline-flex rounded-xl bg-white px-3 py-2 shadow-sm">
               <Logo variant="full" alt={`${dict.siteNameAr} ${dict.siteNameEn}`} className="h-16 w-auto" />
             </span>

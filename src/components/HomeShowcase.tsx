@@ -300,17 +300,23 @@ export default function HomeShowcase({
         setOpenCity(c);
       }}
       aria-haspopup="dialog"
-      className="group relative isolate block aspect-[3/4] w-full overflow-hidden rounded-2xl text-start ring-1 ring-white/10 transition duration-300 hover:-translate-y-1 hover:ring-sun-400/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400"
+      className="group relative isolate flex aspect-[3/4] h-full w-full flex-col justify-between rounded-2xl text-start ring-1 ring-white/10 transition duration-300 hover:-translate-y-1 hover:ring-sun-400/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400"
     >
-      <Photo
-        src={c.photo}
-        className="absolute inset-0 -z-10 h-full w-full object-cover transition duration-500 group-hover:scale-[1.06]"
-        fallback={<div className="absolute inset-0 -z-10 bg-gradient-to-br from-navy-700 to-navy-990" />}
-      />
-      <div className="scrim-soft absolute inset-0 -z-10" />
+      {/* The picture sits behind the text in its own clipped layer, and the
+          text is laid out top and bottom in normal flow: on a narrow phone
+          card a long visa label or a wrapped chip makes the card taller
+          instead of piling the badges onto the city name. */}
+      <div className="absolute inset-0 -z-10 overflow-hidden rounded-2xl">
+        <Photo
+          src={c.photo}
+          className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-[1.06]"
+          fallback={<div className="absolute inset-0 bg-gradient-to-br from-navy-700 to-navy-990" />}
+        />
+        <div className="scrim-soft absolute inset-0" />
+      </div>
       {/* Top: the month's rating there, in the site-wide wording, and under
           it the entry status for a Saudi passport. */}
-      <div className="absolute start-2 top-2 flex max-w-[calc(100%-1rem)] flex-col items-start gap-1">
+      <div className="flex min-w-0 flex-col items-start gap-1 p-2">
         {c.classLabel && (
           <span className="max-w-full truncate rounded-full bg-white/90 px-2.5 py-0.5 text-xs font-extrabold text-navy-900 shadow-sm backdrop-blur-sm">
             {c.classLabel}
@@ -327,7 +333,7 @@ export default function HomeShowcase({
           <span className="truncate">{c.visa ? c.visa.short : dict.cardVisaUnknown}</span>
         </span>
       </div>
-      <div className="absolute inset-x-0 bottom-0 p-3">
+      <div className="min-w-0 p-3 pt-2">
         <p className="truncate font-display text-sm font-extrabold text-white drop-shadow-sm sm:text-base">{c.name}</p>
         <p className="truncate text-xs font-semibold text-white/70">{c.countryName}</p>
         {/* The season and its temperatures, side by side on one line. */}
@@ -615,7 +621,7 @@ export default function HomeShowcase({
                           inert={copy === 1}
                         >
                           {seasonCities.map((c) => (
-                            <div key={`${c.code}-${c.slug}`} className="w-40 shrink-0 sm:w-48">
+                            <div key={`${c.code}-${c.slug}`} className="w-44 shrink-0 sm:w-48">
                               {cityCard(c)}
                             </div>
                           ))}

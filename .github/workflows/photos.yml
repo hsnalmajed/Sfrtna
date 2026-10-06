@@ -1,0 +1,60 @@
+# Fills src/data/pexelsPhotos.json — the stored photo for every place on the
+# site (see scripts/pexels-photos.ts and the top of src/lib/pexels.ts).
+#
+# Runs every hour, at most 180 Pexels searches a run (the hourly allowance
+# is 200). When nothing is missing it searches nothing and commits nothing,
+# so once the file is complete the hourly run costs no allowance. A new city
+# in the data is picked up by the next run.
+#
+# Needs the repository secret PEXELS_API_KEY (Settings → Secrets and
+# variables → Actions) — the same key as the Cloudflare one. Without it the
+# job does nothing.
+name: Photos
+
+on:
+  schedule:
+    - cron: "23 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: photos
+  cancel-in-progress: false
+
+jobs:
+  fill:
+    runs-on: ubuntu-latest
+    env:
+      PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+        if: env.PEXELS_API_KEY != ''
+
+      - uses: actions/setup-node@v4
+        if: env.PEXELS_API_KEY != ''
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Search the missing photos
+        if: env.PEXELS_API_KEY != ''
+        run: |
+          npm ci --no-audit --no-fund
+          npx --yes tsx@4 scripts/pexels-photos.ts --max 180
+
+      - name: Commit what was found
+        if: env.PEXELS_API_KEY != ''
+        run: |
+          if git diff --quiet -- src/data/pexelsPhotos.json; then
+            echo "Nothing new."
+            exit 0
+          fi
+          git config user.name "Claude"
+          git config user.email "noreply@anthropic.com"
+          git add src/data/pexelsPhotos.json
+          git commit -m "Photos: stored Pexels choices (automatic run)" \
+            -m "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
+          git pull --rebase origin main
+          git push origin HEAD:main
