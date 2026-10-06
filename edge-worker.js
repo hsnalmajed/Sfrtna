@@ -52,6 +52,11 @@ async function keyFor(request, url) {
 const worker = {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
+    // Stored data files (public/data, e.g. each city's places) are for the
+    // server only — it reads them through env.ASSETS. Never served outside.
+    if (url.pathname === "/data" || url.pathname.startsWith("/data/")) {
+      return new Response("Not found", { status: 404, headers: { "x-robots-tag": "noindex, nofollow" } });
+    }
     if (url.pathname === "/api" || url.pathname.startsWith("/api/")) {
       const refused = await guardApi(request, url, env);
       if (refused) return refused;

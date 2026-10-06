@@ -16,6 +16,8 @@ export interface QuickFact {
   value: string;
   /** Turns the value into a link — the currency converter, say. */
   href?: string;
+  /** A line under the value — the riyal rate and its converter, say. */
+  extra?: React.ReactNode;
 }
 
 // Static class names, so Tailwind sees them: how many columns the facts take
@@ -75,6 +77,7 @@ export default function CountryQuickFacts({
                         </span>
                       )}
                     </span>
+                    {f.extra && <span className="mt-1.5 block">{f.extra}</span>}
                   </span>
                 </>
               );

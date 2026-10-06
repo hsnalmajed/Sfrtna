@@ -1,0 +1,64 @@
+# Refreshes the stored places of every city from OpenStreetMap
+# (scripts/places/fetch-places.ts → public/data/places/*.json and
+# src/data/placeCounts.json). Pages read those files instead of waiting on
+# Overpass while a visitor waits.
+#
+#   - monthly: every city, so new and renamed places come in;
+#   - whenever the city list changes (src/data/cityCoords.ts): new cities only;
+#   - by hand from the Actions tab (all cities, or only missing ones).
+name: Places
+
+on:
+  schedule:
+    - cron: "41 2 3 * *"
+  push:
+    branches: [main]
+    paths:
+      - "src/data/cityCoords.ts"
+      - ".github/workflows/places.yml"
+  workflow_dispatch:
+    inputs:
+      missing_only:
+        description: "Only cities with no stored file yet"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: places
+  cancel-in-progress: false
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Fetch places
+        run: |
+          npm ci --no-audit --no-fund
+          FLAGS=""
+          if [ "${{ github.event_name }}" = "push" ] || [ "${{ inputs.missing_only }}" = "true" ]; then FLAGS="--missing"; fi
+          npx --yes tsx@4 scripts/places/fetch-places.ts $FLAGS
+
+      - name: Commit
+        run: |
+          git add public/data/places src/data/placeCounts.json
+          if git diff --cached --quiet; then
+            echo "Nothing new."
+            exit 0
+          fi
+          git config user.name "Claude"
+          git config user.email "noreply@anthropic.com"
+          git commit -m "Places: stored OpenStreetMap places (automatic run)" \
+            -m "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
+          git pull --rebase origin main
+          git push origin HEAD:main

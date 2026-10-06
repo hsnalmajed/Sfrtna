@@ -5,7 +5,12 @@
   "compatibility_date": "2026-08-01",
   "compatibility_flags": ["nodejs_compat"],
   "assets": {
-    "directory": ".open-next/assets"
+    "directory": ".open-next/assets",
+    "binding": "ASSETS",
+    // The stored city places (public/data/places) are read by the server
+    // through ASSETS. From outside, /data/* reaches the Worker first and is
+    // refused (edge-worker.js), so the collection cannot be downloaded.
+    "run_worker_first": ["/data/*"]
   },
   // Per-IP request limits for /api (see edge-guard.js). Counted per
   // Cloudflare location; period must be 10 or 60 seconds.

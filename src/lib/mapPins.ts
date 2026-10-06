@@ -15,6 +15,7 @@
 import { CITY_COORDS } from "@/data/cityCoords";
 import { cachedJson, readJson, writeJson } from "@/lib/edgeCache";
 import { findCountry } from "@/lib/countries";
+import PLACE_COUNTS from "@/data/placeCounts.json";
 import { searchPexelsPhotos, type PexelsQuery } from "@/lib/pexels";
 import type { PinCategory } from "@/lib/pinStyles";
 import type { Locale } from "@/lib/types";
@@ -91,7 +92,7 @@ export function kindLabel(kind: string, locale: Locale): string | undefined {
  * that shows no pins because somebody else was running a big query is worse
  * than one that waited an extra second on a mirror.
  */
-const OVERPASS = [
+export const OVERPASS = [
   "https://overpass-api.de/api/interpreter",
   "https://overpass.kumi.systems/api/interpreter",
   "https://maps.mail.ru/osm/tools/overpass/api/interpreter",
@@ -126,7 +127,7 @@ const WANTED: { tag: string; values: string[]; category: PinCategory }[] = [
   { tag: "amenity", values: ["marketplace"], category: "activity" },
 ];
 
-interface OverpassElement {
+export interface OverpassElement {
   type: string;
   id: number;
   lat?: number;
@@ -135,7 +136,7 @@ interface OverpassElement {
   tags?: Record<string, string>;
 }
 
-function query(lat: number, lon: number, radius: number): string {
+export function overpassQuery(lat: number, lon: number, radius: number): string {
   const clauses = WANTED.map(
     (w) => `nwr(around:${radius},${lat},${lon})["${w.tag}"~"^(${w.values.join("|")})$"]["name"];`
   ).join("\n");
@@ -168,7 +169,7 @@ async function fetchAround(lat: number, lon: number, radius: number): Promise<Ov
   // per page view is slow for the visitor and unkind to a volunteer-run
   // service. A failure on every mirror is not cached.
   const found = await cachedJson<OverpassElement[]>(`overpass:all:${lat},${lon},${radius}`, 604800, async () => {
-    const body = `data=${encodeURIComponent(query(lat, lon, radius))}`;
+    const body = `data=${encodeURIComponent(overpassQuery(lat, lon, radius))}`;
     for (const url of OVERPASS) {
       try {
         const res = await fetch(url, {
@@ -222,6 +223,114 @@ function toPlace(el: OverpassElement, locale: Locale): Place | null {
   };
 }
 
+
+// ---------------------------------------------------------------------------
+// Stored places (7 Oct 2026)
+// ---------------------------------------------------------------------------
+//
+// Pages no longer wait on Overpass. scripts/places/fetch-places.ts asks
+// OpenStreetMap once per city (on GitHub Actions, .github/workflows/places.yml)
+// and stores the result as public/data/places/<slug>.json, ranked by fame and
+// capped at STORED_PER_CITY. A page reads its city's file through the Worker's
+// asset binding: no outside call, no waiting, no "could not load" when a
+// volunteer-run server is busy — which is what London and Istanbul kept
+// hitting (Istanbul's page took 22 s; London's often failed outright).
+//
+// The files are not public: edge-worker.js answers 404 to /data/* from the
+// outside, so the collection cannot be downloaded in bulk. Only the server
+// reads them (env.ASSETS).
+//
+// A city with no file yet (added since the last run) falls back to the old
+// live query, so it still works the day it is added.
+
+export const STORED_PER_CITY = 500;
+export const STORED_RADIUS = 15000;
+
+/** One place as stored: short keys, because a city file holds hundreds. */
+export interface StoredPlace {
+  /** OpenStreetMap id, "way/123". */
+  i: string;
+  /** Local name, English name, Arabic name. */
+  n: string;
+  e?: string;
+  a?: string;
+  /** Kind ("museum") and category. */
+  k: string;
+  c: PinCategory;
+  y: number;
+  x: number;
+  /** Fame (see Place.fame). */
+  f: number;
+}
+
+/** The stored form of one Overpass element, or null when it has no name or position. */
+export function toStoredPlace(el: OverpassElement): StoredPlace | null {
+  const tags = el.tags ?? {};
+  const lat = el.lat ?? el.center?.lat;
+  const lon = el.lon ?? el.center?.lon;
+  if (lat === undefined || lon === undefined || !tags.name) return null;
+  const { category, kind } = categoryOf(tags);
+  const rec: StoredPlace = {
+    i: `${el.type}/${el.id}`,
+    n: tags.name,
+    k: kind,
+    c: category,
+    y: Math.round(lat * 1e5) / 1e5,
+    x: Math.round(lon * 1e5) / 1e5,
+    f:
+      Object.keys(tags).filter((k) => k.startsWith("name:")).length +
+      (tags.wikipedia ? 10 : 0) +
+      (tags.wikidata ? 5 : 0),
+  };
+  if (tags["name:en"]) rec.e = tags["name:en"];
+  if (tags["name:ar"]) rec.a = tags["name:ar"];
+  return rec;
+}
+
+function fromStored(r: StoredPlace, locale: Locale): Place {
+  const wantAr = locale === "ar";
+  const hasArabic = Boolean(r.a) || /[\u0600-\u06FF]/.test(r.n);
+  return {
+    id: r.i,
+    name: wantAr ? (r.a ?? r.n) : (r.e ?? r.n),
+    nameEn: r.e ?? r.n,
+    nameAr: r.a,
+    description: kindLabel(r.k, locale),
+    kind: r.k,
+    fame: r.f,
+    lat: r.y,
+    lon: r.x,
+    category: r.c,
+    englishOnly: wantAr && !hasArabic,
+  };
+}
+
+type AssetsBinding = { fetch: (input: Request | string) => Promise<Response> };
+
+/** A city's stored places, or null when it has no file (or this is not a Worker). */
+async function readStoredPlaces(slug: string): Promise<StoredPlace[] | null> {
+  if (!/^[a-z0-9-]+$/.test(slug)) return null;
+  try {
+    const { getCloudflareContext } = await import("@opennextjs/cloudflare");
+    const assets = (getCloudflareContext().env as unknown as { ASSETS?: AssetsBinding }).ASSETS;
+    if (!assets) return null;
+    const res = await assets.fetch(new Request(`https://assets.local/data/places/${slug}.json`));
+    if (!res.ok) return null;
+    return (await res.json()) as StoredPlace[];
+  } catch {
+    return null;
+  }
+}
+
+function distanceMetres(aLat: number, aLon: number, bLat: number, bLon: number): number {
+  const R = 6371000;
+  const toRad = (d: number) => (d * Math.PI) / 180;
+  const dLat = toRad(bLat - aLat);
+  const dLon = toRad(bLon - aLon);
+  const h = Math.sin(dLat / 2) ** 2 + Math.cos(toRad(aLat)) * Math.cos(toRad(bLat)) * Math.sin(dLon / 2) ** 2;
+  return 2 * R * Math.asin(Math.sqrt(h));
+}
+
 /**
  * Every mapped place around the given cities, de-duplicated. `withPhotos`
  * is accepted for older callers and ignored: OpenStreetMap carries no
@@ -243,6 +352,10 @@ export async function cityPlaceCount(
   city: PinCentre,
   { locale, budgetMs = 4000, radius = 15000 }: { locale: Locale; budgetMs?: number; radius?: number }
 ): Promise<number> {
+  // The stored count (src/data/placeCounts.json, written with the city files)
+  // costs nothing; only a city not yet stored waits on the live path.
+  const known = (PLACE_COUNTS as Record<string, number>)[city.slug];
+  if (typeof known === "number") return known;
   const stored = await readJson<number>(countKey(city.slug, radius));
   if (typeof stored === "number") return stored;
   return Promise.race([
@@ -267,6 +380,16 @@ export async function fetchPlacesAroundCities(
     wanted.map(async (c) => {
       const point = CITY_COORDS[c.slug];
       if (!point) return [] as Place[];
+
+      const stored = radius <= STORED_RADIUS ? await readStoredPlaces(c.slug) : null;
+      if (stored) {
+        // Already ranked by fame. A smaller radius (the country map asks for
+        // 12 km) keeps only what lies inside it.
+        const inside =
+          radius < STORED_RADIUS ? stored.filter((r) => distanceMetres(point.lat, point.lon, r.y, r.x) <= radius) : stored;
+        return inside.slice(0, perCity === Infinity ? undefined : perCity).map((r) => fromStored(r, locale));
+      }
+
       const elements = await fetchAround(point.lat, point.lon, radius);
       const places: Place[] = [];
       for (const el of elements) {

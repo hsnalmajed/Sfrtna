@@ -13,7 +13,8 @@ import VisaQuickCard from "@/components/VisaQuickCard";
 import PageHero from "@/components/ui/PageHero";
 import { pageMetadata, absoluteUrl, touristDestinationJsonLd } from "@/lib/seo";
 import CountryQuickFacts, { type QuickFact } from "@/components/CountryQuickFacts";
-import { currencyForCountry } from "@/lib/currencies";
+import { currencyForCountry, findCurrency } from "@/lib/currencies";
+import TripCurrencyInline from "@/components/TripCurrencyInline";
 import BackLink from "@/components/BackLink";
 
 /**
@@ -85,6 +86,7 @@ export default async function CountryAttractionsPage({
    * facts on it is more useful than one with five where two are guesses.
    */
   const currency = currencyForCountry(country.code);
+  const sar = findCurrency("SAR");
   const quickFacts: QuickFact[] = [];
 
   if (currency) {
@@ -92,7 +94,9 @@ export default async function CountryAttractionsPage({
       icon: "💱",
       label: dict.attractions.factCurrency,
       value: `${loc === "ar" ? currency.nameAr : currency.nameEn} (${currency.code})`,
-      href: `/${loc}/currency`,
+      // What one riyal buys there, and the converter over the page — not a
+      // trip to the currency page. Nothing shows until the live rate is back.
+      extra: sar && currency.code !== sar.code ? <TripCurrencyInline from={sar} to={currency} locale={loc} variant="light" /> : undefined,
     });
   }
   if (cities.length > 0) {

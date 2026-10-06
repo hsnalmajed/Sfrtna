@@ -32,10 +32,13 @@ export default function TripCurrencyInline({
   from,
   to,
   locale,
+  variant = "dark",
 }: {
   from: Currency;
   to: Currency;
   locale: Locale;
+  /** "dark" for the results band; "light" for a white card (a country page's facts). */
+  variant?: "dark" | "light";
 }) {
   const dict = getDictionary(locale);
   const [rate, setRate] = useState<number | null>(null);
@@ -66,18 +69,31 @@ export default function TripCurrencyInline({
 
   return (
     <>
-      <span className="inline-flex shrink-0 items-center overflow-hidden whitespace-nowrap rounded-full bg-white/10 text-[13px] font-bold text-white ring-1 ring-white/15">
-        <span className="inline-flex items-center gap-2 px-3 py-1.5">
+      <span
+        className={
+          variant === "light"
+            ? "inline-flex max-w-full flex-wrap items-center gap-2 text-[13px] font-bold text-navy-800"
+            : "inline-flex shrink-0 items-center overflow-hidden whitespace-nowrap rounded-full bg-white/10 text-[13px] font-bold text-white ring-1 ring-white/15"
+        }
+      >
+        <span className={variant === "light" ? "inline-flex items-center gap-2" : "inline-flex items-center gap-2 px-3 py-1.5"}>
           <Flag currency={to} />
-          <span>
-            1 {short(from)} = <span className="text-sun-400">{fmt(rate, to.decimals)} {short(to)}</span>
+          <span dir={locale === "ar" ? "rtl" : "ltr"}>
+            1 {short(from)} ={" "}
+            <span className={variant === "light" ? "text-brand-700" : "text-sun-400"}>
+              {fmt(rate, to.decimals)} {short(to)}
+            </span>
           </span>
         </span>
         <button
           type="button"
           aria-haspopup="dialog"
           onClick={() => setOpen(true)}
-          className="inline-flex items-center gap-1.5 self-stretch border-s border-white/15 bg-white px-3 py-1.5 font-extrabold text-navy-950 transition hover:bg-sun-100"
+          className={
+            variant === "light"
+              ? "inline-flex items-center gap-1.5 rounded-full bg-sun-400 px-3 py-1 text-xs font-extrabold text-navy-950 transition hover:bg-sun-300"
+              : "inline-flex items-center gap-1.5 self-stretch border-s border-white/15 bg-white px-3 py-1.5 font-extrabold text-navy-950 transition hover:bg-sun-100"
+          }
         >
           {dict.results.currencyConvert}
         </button>
