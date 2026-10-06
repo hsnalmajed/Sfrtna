@@ -170,13 +170,13 @@ export default function SuggestInput({
                     {icon && (
                       <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-mist-100 text-navy-600">{icon}</span>
                     )}
-                    <span className="min-w-0">
-                      <span className="block truncate text-sm font-bold text-navy-900" dir="auto">
-                        {s.title}
+                    <span className="min-w-0 flex-1">
+                      <span className="block truncate text-sm font-bold text-navy-900">
+                        <bdi>{s.title}</bdi>
                       </span>
                       {s.subtitle && (
-                        <span className="block truncate text-xs text-navy-500" dir="auto">
-                          {s.subtitle}
+                        <span className="block truncate text-xs text-navy-500">
+                          <bdi>{s.subtitle}</bdi>
                         </span>
                       )}
                     </span>

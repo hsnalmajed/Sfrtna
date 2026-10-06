@@ -319,10 +319,27 @@ function HotelDetail({ hotel, c, checkedAt, query }: { hotel: HotelResult; c: Co
   const { t, locale } = c;
   const amenities = amenityLabels(hotel.amenities, locale, 8);
   return (
-    <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_380px] lg:items-start">
-      <div className="min-w-0 space-y-5">
+    // Phone order: photos, then the prices, then the details — the price is
+    // what was asked for. Wide screens: photos and details on one side, the
+    // prices beside them, following the scroll.
+    <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_380px] lg:items-start lg:gap-6">
+      <div className="min-w-0 lg:col-start-1 lg:row-start-1">
         <Gallery hotel={hotel} />
+      </div>
 
+      <aside className="lg:sticky lg:top-24 lg:col-start-2 lg:row-span-2 lg:row-start-1">
+        <div className="rounded-2xl bg-white p-5 shadow-[0_10px_40px_-15px_rgb(10_30_60/0.35)] ring-1 ring-black/5 sm:p-6">
+          <p className="font-display text-lg font-extrabold text-navy-950">{t.comparePrices}</p>
+          <p className="mb-4 mt-0.5 text-xs text-navy-500">{t.compareSub}</p>
+          <PriceRows hotel={hotel} c={c} checkedAt={checkedAt} />
+        </div>
+        <div className="mt-4 px-1">
+          <p className="text-xs font-bold text-navy-600">{t.otherPartners}</p>
+          <PartnerSearchLinks query={query} c={c} isHotel />
+        </div>
+      </aside>
+
+      <div className="min-w-0 lg:col-start-1 lg:row-start-2">
         <section className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-black/5 sm:p-6">
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div className="min-w-0">
@@ -369,18 +386,6 @@ function HotelDetail({ hotel, c, checkedAt, query }: { hotel: HotelResult; c: Co
           )}
         </section>
       </div>
-
-      <aside className="lg:sticky lg:top-24">
-        <div className="rounded-2xl bg-white p-5 shadow-[0_10px_40px_-15px_rgb(10_30_60/0.35)] ring-1 ring-black/5 sm:p-6">
-          <p className="font-display text-lg font-extrabold text-navy-950">{t.comparePrices}</p>
-          <p className="mb-4 mt-0.5 text-xs text-navy-500">{t.compareSub}</p>
-          <PriceRows hotel={hotel} c={c} checkedAt={checkedAt} />
-        </div>
-        <div className="mt-4 px-1">
-          <p className="text-xs font-bold text-navy-600">{t.otherPartners}</p>
-          <PartnerSearchLinks query={query} c={c} isHotel />
-        </div>
-      </aside>
     </div>
   );
 }
