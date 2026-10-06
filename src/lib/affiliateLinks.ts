@@ -284,7 +284,9 @@ export function hotelPartnerLinks(q: HotelSearchQuery): BookingHandoff[] {
 
   return [
     { partner: "Booking.com", url: booking.toString() },
-    { partner: "Expedia", url: expediaAffiliateUrl(expedia.toString()) },
+    // Through our own redirect, which adds the affiliate tag: a direct
+    // Expedia link would be rewritten by Stay22 (see /api/go/expedia).
+    { partner: "Expedia", url: `/api/go/expedia?landing=${encodeURIComponent(expedia.toString())}` },
     ...(zen ? [{ partner: "ZenHotels", url: zen }] : []),
     { partner: "Almosafer", url: almosafer.toString() },
   ];
