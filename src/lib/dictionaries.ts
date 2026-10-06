@@ -1191,6 +1191,9 @@ export const dictionaries = {
       termsContentTitle: "المحتوى والحقوق",
       termsContentBody:
         "الصور من Pexels بموجب رخصتها، ونذكر اسم المصوّر في الصور الكبيرة. بيانات الخرائط والمعالم © مساهمو OpenStreetMap بموجب رخصة ODbL. اسم سفرتنا وشعاره ملك لأصحابه.",
+      termsCopyTitle: "منع النسخ والاستخدام الآلي",
+      termsCopyBody:
+        "نصوص سفرتنا وأدلّتها وتقييمات المواسم وقوائم التأشيرات وطريقة تجميعها وترتيبها عمل خاص بنا. يمكنك تصفّح الموقع لاستخدامك الشخصي، ومشاركة روابط صفحاته، والاقتباس منه باختصار مع ذكر سفرتنا ورابط الصفحة. ولا يجوز دون إذن مكتوب منّا: نسخ المحتوى أو جمعه آلياً بالبرامج والزواحف وأدوات الكشط، أو تنزيله بالجملة، أو إعادة نشره في موقع أو تطبيق آخر، أو استخدامه في تدريب نماذج الذكاء الاصطناعي، أو استدعاء واجهات الموقع الداخلية من خارج صفحاته، أو تجاوز وسائل الحماية. ويبقى ما ليس لنا على رخصة أصحابه: الأسعار للشركاء، والصور لـ Pexels، وبيانات الخرائط لـ OpenStreetMap. ونحتفظ بحقّ حجب أي استخدام مخالف وبحقوقنا النظامية كاملة.",
       termsChangesTitle: "تعديل الشروط",
       termsChangesBody: "قد نحدّث هذه الصفحة، وتاريخ آخر تحديث مذكور أسفلها.",
 
@@ -2498,6 +2501,9 @@ export const dictionaries = {
       termsContentTitle: "Content and rights",
       termsContentBody:
         "Photographs come from Pexels under its licence, and the large ones name their photographer. Map and attraction data © OpenStreetMap contributors under the ODbL. The Sfrtna name and logo belong to their owners.",
+      termsCopyTitle: "No copying or automated use",
+      termsCopyBody:
+        "Sfrtna's text, guides, season ratings, visa lists, and the way they are compiled and arranged are our own work. You may browse the site for your own use, share links to its pages, and quote short passages with credit to Sfrtna and a link to the page. Without our written permission you may not: copy or collect the content automatically with programs, crawlers or scraping tools; download it in bulk; republish it on another site or app; use it to train AI models; call the site's internal interfaces from outside its pages; or work around its protections. What isn't ours stays under its owners' licences: prices belong to our partners, photographs to Pexels, and map data to OpenStreetMap. We reserve the right to block any such use, and all our legal rights.",
       termsChangesTitle: "Changes to these terms",
       termsChangesBody: "We may update this page; the date it last changed is shown at the bottom.",
 

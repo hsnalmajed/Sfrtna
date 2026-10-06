@@ -6,7 +6,13 @@
   "compatibility_flags": ["nodejs_compat"],
   "assets": {
     "directory": ".open-next/assets"
-  }
+  },
+  // Per-IP request limits for /api (see edge-guard.js). Counted per
+  // Cloudflare location; period must be 10 or 60 seconds.
+  "ratelimits": [
+    { "name": "API_LIMIT", "namespace_id": "2601", "simple": { "limit": 120, "period": 60 } },
+    { "name": "API_LIMIT_HEAVY", "namespace_id": "2602", "simple": { "limit": 20, "period": 60 } }
+  ]
   // After deploying, set real secrets with:
   //   npx wrangler secret put AMADEUS_API_KEY
   //   npx wrangler secret put AMADEUS_API_SECRET

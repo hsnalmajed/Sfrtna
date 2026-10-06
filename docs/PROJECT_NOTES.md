@@ -1,6 +1,6 @@
 # Sfrtna — project notes for a new session
 
-Read this first. It replaces re-explaining the project. Last updated 6 Oct 2026.
+Read this first. It replaces re-explaining the project. Last updated 7 Oct 2026.
 
 ## Owner's standing rules (must follow)
 
@@ -117,11 +117,30 @@ Travelpayouts.
   one event per click (owner's test 7 Oct). The widget opens its link outside
   its shadow root, so `in_widget` is not set — don't rely on that flag.
 
+### Protection from copying/scraping — code done 7 Oct
+- `edge-guard.js` (called from `edge-worker.js` before Next sees any /api
+  request): allow-list of routes the site uses (unused `/api/flights`,
+  `/api/hotels` → 404, code kept); method check (itinerary POST only);
+  same-origin check (Sec-Fetch-Site → Origin → Referer; none → 403);
+  `/api/go/expedia` open to any click; `/api/health` and `/api/serp-status`
+  also open when typed in the browser bar. Per-IP rate limits via Workers
+  Rate Limiting bindings in `wrangler.jsonc`: `API_LIMIT` 120/min on all
+  /api, `API_LIMIT_HEAVY` 20/min on discover, multicity, country-places,
+  hotel-prices, itinerary, health. Counted per Cloudflare location. 429 has
+  Retry-After 60. All /api responses carry `X-Robots-Tag: noindex`.
+  **Any new /api route must be added to `ROUTES` in edge-guard.js or it 404s.**
+- `robots.ts`: AI-training crawlers (GPTBot, ClaudeBot, CCBot,
+  Google-Extended, Bytespider, meta-externalagent…) disallowed site-wide.
+  AI search/answer bots (OAI-SearchBot, ChatGPT-User, PerplexityBot,
+  Claude-SearchBot) allowed like search engines — owner's decision 7 Oct.
+- Terms: new section «منع النسخ والاستخدام الآلي» (ar + en), date 2026-10-07.
+- Pending owner action in Cloudflare dashboard: Security → Bots → Bot Fight
+  Mode on; Block AI bots on (keep AI search crawlers allowed if offered);
+  AI Labyrinth optional. Then a live check of the site.
+
 ## Next, in order
 
-1. Protection from copying/scraping (owner's rule): Cloudflare Bot Fight Mode +
-   Block AI bots (owner), rate limits and same-origin checks on /api/*,
-   AI-crawler rules in robots.ts, copyright clause in terms.
+1. Protection: owner's Cloudflare settings above, then live check.
 2. Android app, then iPhone app (Stay22 has a Mobile SDK worth checking).
 3. Marketing plan before launch.
 4. When Agoda is approved: Arabic hotel list from Agoda's API.

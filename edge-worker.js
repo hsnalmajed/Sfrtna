@@ -13,10 +13,13 @@
 // assets already), and anything else. The RSC headers that change the
 // answer are part of the key, so one navigation is never served another's.
 //
+// /api never reaches the cache: edge-guard.js checks who is asking first.
+//
 // Ten minutes bounds how stale anything can be — the month's season list at
 // midnight on the 1st, a visa status just edited.
 
 import handler from "./.open-next/worker.js";
+import { guardApi, markApiResponse } from "./edge-guard.js";
 
 const TTL_SECONDS = 600;
 
@@ -46,9 +49,14 @@ async function keyFor(request, url) {
   return new Request(key.toString(), { method: "GET" });
 }
 
-export default {
+const worker = {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
+    if (url.pathname === "/api" || url.pathname.startsWith("/api/")) {
+      const refused = await guardApi(request, url, env);
+      if (refused) return refused;
+      return markApiResponse(await handler.fetch(request, env, ctx));
+    }
     const cache = globalThis.caches?.default;
     if (!cache || !cacheable(request, url)) return handler.fetch(request, env, ctx);
 
@@ -83,3 +91,5 @@ export default {
     return response;
   },
 };
+
+export default worker;
