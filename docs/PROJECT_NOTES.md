@@ -103,10 +103,14 @@ Travelpayouts.
 - Not visible to GA4: clicks inside the Stay22 iframe widget — use partner
   dashboards. Flight-widget clicks: verify on live site whether its book
   buttons are anchors (caught) or scripted (not caught).
-- Owner to do in GA4 Admin: mark `partner_click` as Key event; register custom
-  dimensions (search_type, partner, page_type, destination, origin, placement,
-  search_id) and metrics (budget, nights, results_count); link BigQuery; link
-  Search Console.
+- GA4 Admin done 7 Oct: data retention 14 months, Google signals off,
+  BigQuery daily export (project Sfrtna, sandbox → tables expire after 60 days
+  unless billing is added, location EU, no streaming, no ad identifiers),
+  custom dimensions search_type, partner, page_type, destination, origin.
+  `search_id` deliberately NOT registered (high cardinality) — use BigQuery.
+- Still open: star `partner_click` as Key event once it appears in Events →
+  Recent events (≤24 h); Search Console link if not done; owner's phone test in
+  Realtime (search + «احجز» incl. inside the flight widget).
 
 ## Next, in order
 
