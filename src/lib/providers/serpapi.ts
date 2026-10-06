@@ -75,6 +75,11 @@ async function maySearch(): Promise<boolean> {
   return a.left > Math.floor(daysAfterToday * perDay);
 }
 
+/** Whether a key is set at all — for the status check. */
+export function serpConfigured(): boolean {
+  return Boolean(key());
+}
+
 /** Usage, for the site's own status check: never the key. */
 export async function serpUsage(): Promise<(Account & { mayUse: boolean }) | null> {
   const a = await account();
