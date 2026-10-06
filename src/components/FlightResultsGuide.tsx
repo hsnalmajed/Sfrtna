@@ -403,6 +403,8 @@ export default function FlightResultsGuide({
       }
       const calm = Date.now() - lastChange;
       const settled = !searching && (priced.length > 0 || sawProgress) && calm >= (sawProgress ? 1000 : 4000);
+      // Read back on the page for checking: searching, fares, calm ms, settled.
+      host.setAttribute("data-sfr-state", `${searching ? 1 : 0}|${sawProgress ? 1 : 0}|${priced.length}|${calm}|${settled ? 1 : 0}`);
       if (settled) settledOnce = true;
       else dirty = true; // keep reading until the search has settled
       setState((prev) => {
