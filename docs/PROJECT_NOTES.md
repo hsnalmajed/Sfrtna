@@ -110,9 +110,8 @@ Travelpayouts.
   `search_id` deliberately NOT registered (high cardinality) — use BigQuery.
 - Verified 7 Oct in GA4 Realtime from the owner's test: page_view, search,
   partner_click, language_switch arrive. Search Console ↔ GA4 linked.
-- Still open (owner, minor): star `partner_click` as Key event in Events →
-  Recent events; turn off Enhanced measurement → Form interactions (form_start
-  duplicates our `search`).
+- Owner finished 7 Oct: partner_click starred as Key event; Enhanced
+  measurement → Form interactions turned off. **Measurement section closed.**
 - Flight bookings ARE measured: «احجز الرحلة» (FlightResultsGuide → widget's
   card button) arrives as partner_click partner=aviasales page_type=results,
   one event per click (owner's test 7 Oct). The widget opens its link outside
