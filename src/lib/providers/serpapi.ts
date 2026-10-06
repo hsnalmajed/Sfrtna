@@ -199,6 +199,16 @@ export interface HotelResult {
   perNight: number | null;
   total: number | null;
   offers: HotelOffer[];
+  /** Up to eight photos: a small one for cards and the full one for galleries. */
+  images: { thumb: string; full: string }[];
+  address: string;
+  /** Google's amenity names ("Free Wi-Fi", "Pool"…), at most ten. */
+  amenities: string[];
+  description: string;
+  /** Google's rating of the location alone, out of 5. */
+  locationRating: number | null;
+  checkInTime: string;
+  checkOutTime: string;
 }
 
 export interface HotelSearch {
@@ -226,6 +236,13 @@ interface GhProperty {
   total_rate?: Rate;
   prices?: GhPrice[];
   featured_prices?: GhPrice[];
+  images?: { thumbnail?: string; original_image?: string }[];
+  address?: string;
+  amenities?: string[];
+  description?: string;
+  location_rating?: number;
+  check_in_time?: string;
+  check_out_time?: string;
 }
 
 const num = (n: unknown) => (typeof n === "number" && Number.isFinite(n) && n > 0 ? Math.round(n) : null);
@@ -258,7 +275,23 @@ function hotelOf(p: GhProperty): HotelResult {
     perNight: num(p.rate_per_night?.extracted_lowest),
     total: num(p.total_rate?.extracted_lowest),
     offers: offersOf(p),
+    images: (p.images ?? [])
+      .map((i) => ({ thumb: httpsOnly(i.thumbnail), full: httpsOnly(i.original_image) || httpsOnly(i.thumbnail) }))
+      .filter((i) => i.thumb || i.full)
+      .map((i) => ({ thumb: i.thumb || i.full, full: i.full || i.thumb }))
+      .slice(0, 8),
+    address: (p.address || "").trim(),
+    amenities: (p.amenities ?? []).filter((a) => typeof a === "string" && a.trim()).slice(0, 10),
+    description: (p.description || "").trim().slice(0, 600),
+    locationRating: typeof p.location_rating === "number" ? p.location_rating : null,
+    checkInTime: (p.check_in_time || "").trim(),
+    checkOutTime: (p.check_out_time || "").trim(),
   };
+}
+
+/** Only https image URLs reach the page: no mixed content, nothing else. */
+function httpsOnly(u: string | undefined): string {
+  return u && /^https:\/\//.test(u) ? u : "";
 }
 
 /**
@@ -283,7 +316,7 @@ export async function hotelPrices(q: {
   const ages = (q.childrenAges ?? []).map((a) => Math.min(17, Math.max(1, Math.round(a))));
   const stars = q.minStars && q.minStars >= 2 && q.minStars <= 5 ? q.minStars : 0;
   const maxPrice = q.maxPerNight && q.maxPerNight > 0 ? Math.round(q.maxPerNight) : 0;
-  const cacheKey = `serp-hotels2:${q.q.toLowerCase()}:${q.token ?? ""}:${q.checkIn}:${q.checkOut}:${q.adults}:${ages.join(",")}:${currency}:${stars}:${maxPrice}`;
+  const cacheKey = `serp-hotels3:${q.q.toLowerCase()}:${q.token ?? ""}:${q.checkIn}:${q.checkOut}:${q.adults}:${ages.join(",")}:${currency}:${stars}:${maxPrice}`;
   return cachedJson<HotelSearch>(cacheKey, 6 * 3600, async () => {
     const body = await search({
       engine: "google_hotels",

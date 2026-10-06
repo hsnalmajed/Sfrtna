@@ -1,18 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
-import { hotelSuggestions, placesConfigured } from "@/lib/providers/googlePlaces";
+import { hotelSuggestions } from "@/lib/providers/googlePlaces";
 
 export const dynamic = "force-dynamic";
 
 /**
  * Hotel names for the planner's search-as-you-type: /api/hotel-suggest?q=sama
- * → { items: [{ name, area }] }. Three to sixty characters; anything else, or
- * no key, answers an empty list so the field simply stays free text.
+ * → { items: [{ name, area }] }. Three to sixty characters; anything else
+ * answers an empty list.
  */
 export async function GET(req: NextRequest) {
   const q = (req.nextUrl.searchParams.get("q") || "").trim();
-  if (!placesConfigured() || q.length < 3 || q.length > 60) {
+  if (q.length < 3 || q.length > 60) {
     return NextResponse.json({ items: [] }, { headers: { "Cache-Control": "no-store" } });
   }
-  const items = (await hotelSuggestions(q)) ?? [];
+  const items = await hotelSuggestions(q);
   return NextResponse.json({ items }, { headers: { "Cache-Control": "public, max-age=3600" } });
 }

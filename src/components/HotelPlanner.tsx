@@ -8,6 +8,7 @@ import TravelersPicker from "@/components/TravelersPicker";
 import DateRangeInput from "@/components/DateRangeInput";
 import Icon from "@/components/ui/Icon";
 import HotelNameInput from "@/components/HotelNameInput";
+import HotelCityInput, { findHotelCity } from "@/components/HotelCityInput";
 import { MAX_GUESTS_PER_ROOM, occupancy, roomFitsParty, type StayType } from "@/lib/stayType";
 import { parseChildrenAges, serializeChildrenAges } from "@/lib/searchParamsUtil";
 import { focusFirstError, hasErrors, type FieldErrors } from "@/lib/formErrors";
@@ -68,7 +69,16 @@ export default function HotelPlanner({
   const [hotel, setHotel] = useState(sp.get("hotel") || "");
   // Where the picked hotel is, from the suggestion list; cleared on typing.
   const [hotelArea, setHotelArea] = useState(sp.get("hotelArea") || "");
-  const [city, setCity] = useState(sp.get("city") || "");
+  // Only a hotel picked from the list is searched: a typed name, misspelt,
+  // finds the wrong hotel or none. A search coming back to be edited was
+  // picked the first time.
+  const [hotelPicked, setHotelPicked] = useState(Boolean(sp.get("hotel") && sp.get("hotelArea")));
+  // The city, likewise, must be one of ours; shown in the traveller's language.
+  const [cityEntry, setCityEntry] = useState(() => findHotelCity(sp.get("city") || ""));
+  const [city, setCity] = useState(() => {
+    const found = findHotelCity(sp.get("city") || "");
+    return found ? (locale === "ar" ? found.nameAr : found.nameEn) : sp.get("city") || "";
+  });
   const [checkIn, setCheckIn] = useState(sp.get("checkIn") || "");
   const [checkOut, setCheckOut] = useState(sp.get("checkOut") || "");
   const [travelers, setTravelers] = useState<TravelerCounts>({
@@ -92,8 +102,14 @@ export default function HotelPlanner({
 
   function validate(): FieldErrors {
     const next: FieldErrors = {};
-    if (mode === "known" && !hotel.trim()) next.hotel = dict.hotelForm.errorHotelName;
-    if (mode === "discover" && !city.trim()) next.city = dict.hotelForm.errorCity;
+    if (mode === "known") {
+      if (!hotel.trim()) next.hotel = dict.hotelForm.errorHotelName;
+      else if (!hotelPicked) next.hotel = dict.hotelForm.errorPickHotel;
+    }
+    if (mode === "discover") {
+      if (!city.trim()) next.city = dict.hotelForm.errorCity;
+      else if (!cityEntry) next.city = dict.hotelForm.errorPickCity;
+    }
     if (!checkIn) next.departDate = dict.hotelForm.errorCheckIn;
     if (!checkOut) next.returnDate = dict.hotelForm.errorCheckOut;
     if (mode === "discover") {
@@ -126,7 +142,10 @@ export default function HotelPlanner({
       params.set("hotel", hotel.trim());
       if (hotelArea) params.set("hotelArea", hotelArea);
     } else {
-      params.set("city", city.trim());
+      if (cityEntry) {
+        params.set("city", cityEntry.nameEn);
+        params.set("label", locale === "ar" ? cityEntry.nameAr : cityEntry.nameEn);
+      }
       params.set("budget", String(Number(budget)));
       params.set("currency", currency);
       if (minStars) params.set("minStars", String(minStars));
@@ -171,14 +190,32 @@ export default function HotelPlanner({
               value={hotel}
               placeholder={dict.hotelForm.hotelNamePlaceholder}
               invalid={Boolean(errors.hotel)}
-              onChange={(name) => {
-                setHotel(name);
+              loadingText={dict.hotelForm.searchingHotels}
+              emptyText={
+                <span>
+                  {dict.hotelForm.noHotelMatch}{" "}
+                  <button
+                    type="button"
+                    className="font-bold text-sea-700 underline underline-offset-2"
+                    onClick={() => {
+                      setMode("discover");
+                      setErrors({});
+                    }}
+                  >
+                    {dict.hotelForm.searchByCity}
+                  </button>
+                </span>
+              }
+              onType={(text) => {
+                setHotel(text);
                 setHotelArea("");
+                setHotelPicked(false);
                 setErrors((prev) => ({ ...prev, hotel: "" }));
               }}
-              onPick={(s) => {
-                setHotel(s.name);
-                setHotelArea(s.area);
+              onPick={(h) => {
+                setHotel(h.name);
+                setHotelArea(h.area);
+                setHotelPicked(true);
                 setErrors((prev) => ({ ...prev, hotel: "" }));
               }}
             />
@@ -193,16 +230,22 @@ export default function HotelPlanner({
             <FieldLabel dark={dark} icon="pin" htmlFor="hotel-city">
               {dict.hotelForm.city}
             </FieldLabel>
-            <input
+            <HotelCityInput
               id="hotel-city"
-              type="text"
-              autoComplete="off"
+              locale={locale}
               className={inputClass}
               value={city}
               placeholder={dict.hotelForm.cityPlaceholder}
-              aria-invalid={Boolean(errors.city)}
-              onChange={(e) => {
-                setCity(e.target.value);
+              invalid={Boolean(errors.city)}
+              emptyText={dict.hotelForm.noCityMatch}
+              onType={(text) => {
+                setCity(text);
+                setCityEntry(undefined);
+                setErrors((prev) => ({ ...prev, city: "" }));
+              }}
+              onPick={(c) => {
+                setCity(locale === "ar" ? c.nameAr : c.nameEn);
+                setCityEntry(c);
                 setErrors((prev) => ({ ...prev, city: "" }));
               }}
             />
