@@ -250,6 +250,8 @@ export default function FlightResultsGuide({
     let lastChange = Date.now();
     let sawProgress = false;
     let autoLoaded = false;
+    let lastSettled = false;
+    let flights: Flight[] = [];
     // Reading two hundred cards takes tens of milliseconds; once the search
     // has settled, read again only when the widget has changed something.
     let dirty = true;
@@ -365,12 +367,6 @@ export default function FlightResultsGuide({
       if (budget > 0 && (priced.length === 0 || comparable)) host.setAttribute("data-sfr-own", "");
       else host.removeAttribute("data-sfr-own");
 
-      const flights = filtering
-        ? priced.filter((p) => p.price !== null).map((p) => read(p.card, p.price as number, p.best))
-        : [];
-      const fits = flights.filter((f) => f.price <= budget).sort((a, b) => a.price - b.price);
-      const over = flights.filter((f) => f.price > budget).sort((a, b) => a.price - b.price);
-
       const searching = Boolean(root.querySelector('[class*="SearchProgressbar"]'));
       if (searching) sawProgress = true;
       const moreButton = root.querySelector('[class*="TicketsWidget-module__moreTickets"]');
@@ -382,34 +378,44 @@ export default function FlightResultsGuide({
         ((moreButton.querySelector("button") ?? moreButton) as HTMLElement).click();
       }
       const hasMore = Boolean(moreButton);
-      const base = { searching, filtering, comparable: budget <= 0 || comparable, total: priced.length, fits, over, hasMore };
-      // What decides "still changing": how many fares, and the cheapest each
-      // side of the budget. Not the whole cards, whose read-back can differ
-      // pass to pass (seen 6 Oct 2026: 200 fares in, search long done, and
-      // the page still "searching" because the key never held still).
-      const key = JSON.stringify([
-        searching,
-        filtering,
-        priced.length,
-        fits.length,
-        over.length,
-        fits[0]?.price ?? null,
-        over[0]?.price ?? null,
-        hasMore,
-      ]);
-      if (key !== lastKey) {
+
+      // What decides "still changing": the fares themselves (each card's
+      // price, in order) and the search's own state. Cheap to take from the
+      // prices alone; the full read of every card below runs only when this
+      // changes. Reading two hundred cards every 400 ms, and re-rendering
+      // with them, froze the page once a search had finished (6 Oct 2026).
+      const prices = priced.map((p) => p.price ?? 0);
+      const key = `${searching ? 1 : 0}|${filtering ? 1 : 0}|${hasMore ? 1 : 0}|${prices.join(",")}`;
+      const changed = key !== lastKey;
+      if (changed) {
         lastKey = key;
         lastChange = Date.now();
+        flights = filtering
+          ? priced.filter((p) => p.price !== null).map((p) => read(p.card, p.price as number, p.best))
+          : [];
       }
       const calm = Date.now() - lastChange;
-      const settled = !searching && (priced.length > 0 || sawProgress) && calm >= (sawProgress ? 1000 : 4000);
-      // Read back on the page for checking: searching, fares, calm ms, settled.
-      host.setAttribute("data-sfr-state", `${searching ? 1 : 0}|${sawProgress ? 1 : 0}|${priced.length}|${calm}|${settled ? 1 : 0}`);
+      // Settled: no progress bar and nothing new for a moment — or, should
+      // the bar never clear, no new fare for twenty seconds.
+      const settled =
+        (priced.length > 0 || sawProgress) &&
+        ((!searching && calm >= (sawProgress ? 1000 : 4000)) || (priced.length > 0 && calm >= 20000));
       if (settled) settledOnce = true;
       else dirty = true; // keep reading until the search has settled
-      setState((prev) => {
-        const next = { ...base, settled };
-        return JSON.stringify(prev) === JSON.stringify(next) ? prev : next;
+      if (!changed && settled === lastSettled) return;
+      lastSettled = settled;
+
+      const fits = flights.filter((f) => f.price <= budget).sort((a, b) => a.price - b.price);
+      const over = flights.filter((f) => f.price > budget).sort((a, b) => a.price - b.price);
+      setState({
+        searching: searching && !settled,
+        filtering,
+        comparable: budget <= 0 || comparable,
+        total: priced.length,
+        fits,
+        over,
+        hasMore,
+        settled,
       });
     }
 
