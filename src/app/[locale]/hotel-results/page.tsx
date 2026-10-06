@@ -9,22 +9,20 @@ import { parseChildrenAges } from "@/lib/searchParamsUtil";
 import { hotelPartnerLinks } from "@/lib/affiliateLinks";
 import { nightsBetween } from "@/components/PlannerFields";
 import Icon from "@/components/ui/Icon";
+import HotelPrices from "@/components/HotelPrices";
 
 /**
- * Hotel results — for now, the honest version.
+ * Hotel results: the search read back, then live prices from our partners.
  *
- * The hotel planner asks for everything a real comparison needs: the hotel
- * or the city, the nights, the party, and on the "suggest" tab the budget,
- * stars, room or apartment and breakfast. What this page can do with that
- * today is limited by one fact: there is no hotel price source. Hotellook,
- * the one this site was built on, closed in October 2025, and a price we do
- * not have is a price we do not print.
+ * Prices come from Google Hotels (through SerpApi, see HotelPrices) and only
+ * for the booking sites we earn from, each next to its own booking button.
+ * Checked on 6 Oct 2026 against Booking.com's own pages, Google's figure for
+ * Booking was within 0.3% on three hotels of four; on the fourth Booking ran
+ * a 10% deal, so the price we showed was the higher one, never the lower.
  *
- * So the page does the part that is true: it shows the search back, so the
- * traveller can check it, says plainly that the prices are at the partner,
- * and opens that partner's search with every filter it understands already
- * applied. When a real source arrives (a comparison widget or an API), it
- * slots in above the partner buttons and nothing else here has to change.
+ * When no price can be checked — the month's searches paced out, Google
+ * down, no partner selling the hotel on those dates — the page falls back to
+ * what it showed before: every partner's search, filled in, and no number.
  */
 
 export default function HotelResultsPage() {
@@ -165,35 +163,43 @@ function HotelResultsContent() {
               </ul>
             </div>
 
-            {/* Said before the buttons, not after: this is the answer to
-                "where are the prices?", and it should arrive before the
-                question does. */}
-            <div className="rounded-2xl border border-sea-400/30 bg-sea-400/10 p-5 sm:p-6">
-              <p className="font-display font-extrabold text-navy-900">{t.honestTitle}</p>
-              <p className="mt-1.5 max-w-3xl text-sm leading-relaxed text-navy-700">{t.honestBody}</p>
-              {mode === "discover" && <p className="mt-2 max-w-3xl text-xs text-navy-600">{t.honestFilters}</p>}
-            </div>
-
-            {/* The first partner gets the full row; the rest share the row
-                under it, however many there are for this search. */}
-            <div className={`grid gap-3 ${links.length - 1 >= 3 ? "sm:grid-cols-3" : "sm:grid-cols-2"}`}>
-              {links.map((l, i) => (
-                <a
-                  key={l.partner}
-                  href={l.url}
-                  target="_blank"
-                  rel="noopener noreferrer sponsored"
-                  className={`flex items-center justify-center gap-2.5 rounded-xl px-6 py-4 text-base font-extrabold transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400 focus-visible:ring-offset-2 ${
-                    i === 0
-                      ? "col-span-full bg-sun-400 text-navy-950 shadow-[var(--shadow-sun)] hover:bg-sun-300"
-                      : "bg-white text-navy-900 ring-1 ring-mist-200 hover:ring-navy-300"
-                  }`}
-                >
-                  <Icon name="search" className="h-5 w-5" strokeWidth={2.4} />
-                  {t.openAt.replace("{partner}", l.partner)}
-                </a>
-              ))}
-            </div>
+            <HotelPrices
+              query={query}
+              mode={mode}
+              minStars={mode === "discover" ? minStars : 0}
+              budget={mode === "discover" ? budget : 0}
+              checkIn={checkIn}
+              checkOut={checkOut}
+              adults={adults}
+              childrenAges={childrenAges}
+              nights={nights}
+              locale={locale}
+              t={t}
+              fallback={
+                <>
+                  {/* The first partner gets the full row; the rest share the row
+                      under it, however many there are for this search. */}
+                  <div className={`grid gap-3 ${links.length - 1 >= 3 ? "sm:grid-cols-3" : "sm:grid-cols-2"}`}>
+                    {links.map((l, i) => (
+                      <a
+                        key={l.partner}
+                        href={l.url}
+                        target="_blank"
+                        rel="noopener noreferrer sponsored"
+                        className={`flex items-center justify-center gap-2.5 rounded-xl px-6 py-4 text-base font-extrabold transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400 focus-visible:ring-offset-2 ${
+                          i === 0
+                            ? "col-span-full bg-sun-400 text-navy-950 shadow-[var(--shadow-sun)] hover:bg-sun-300"
+                            : "bg-white text-navy-900 ring-1 ring-mist-200 hover:ring-navy-300"
+                        }`}
+                      >
+                        <Icon name="search" className="h-5 w-5" strokeWidth={2.4} />
+                        {t.openAt.replace("{partner}", l.partner)}
+                      </a>
+                    ))}
+                  </div>
+                </>
+              }
+            />
             <p className="text-center text-xs text-navy-500">{t.partnerNote}</p>
           </div>
         )}

@@ -272,10 +272,18 @@ export async function hotelPrices(q: {
   adults: number;
   childrenAges?: number[];
   currency?: string;
+  /** Google's id for one hotel, from a list: asks that hotel's own prices. */
+  token?: string;
+  /** Lowest star class wanted (a city list only). */
+  minStars?: number;
+  /** Highest price a night, in `currency` (a city list only). */
+  maxPerNight?: number;
 }): Promise<HotelSearch | null> {
   const currency = (q.currency || "SAR").toUpperCase();
   const ages = (q.childrenAges ?? []).map((a) => Math.min(17, Math.max(1, Math.round(a))));
-  const cacheKey = `serp-hotels:${q.q.toLowerCase()}:${q.checkIn}:${q.checkOut}:${q.adults}:${ages.join(",")}:${currency}`;
+  const stars = q.minStars && q.minStars >= 2 && q.minStars <= 5 ? q.minStars : 0;
+  const maxPrice = q.maxPerNight && q.maxPerNight > 0 ? Math.round(q.maxPerNight) : 0;
+  const cacheKey = `serp-hotels2:${q.q.toLowerCase()}:${q.token ?? ""}:${q.checkIn}:${q.checkOut}:${q.adults}:${ages.join(",")}:${currency}:${stars}:${maxPrice}`;
   return cachedJson<HotelSearch>(cacheKey, 6 * 3600, async () => {
     const body = await search({
       engine: "google_hotels",
@@ -284,6 +292,9 @@ export async function hotelPrices(q: {
       check_out_date: q.checkOut,
       adults: String(Math.max(1, q.adults)),
       ...(ages.length ? { children: String(ages.length), children_ages: ages.join(",") } : {}),
+      ...(q.token ? { property_token: q.token } : {}),
+      ...(stars ? { hotel_class: [2, 3, 4, 5].filter((c) => c >= stars).join(",") } : {}),
+      ...(maxPrice ? { max_price: String(maxPrice) } : {}),
       currency,
       hl: "en",
       gl: "sa",
