@@ -163,6 +163,20 @@ Travelpayouts.
   key → 4 GitHub secrets, App Links (`assetlinks.json` after first upload),
   store listing + Data safety.
 
+### Photos — rebuilt 7 Oct (stored file, no page-time Pexels calls)
+- Cause of blank cards: page-time Pexels searches, cached per Cloudflare
+  data centre, used up the **monthly** allowance (20,000). /api/health on
+  7 Oct: 429, remaining 0, resets **25 Oct 2026 17:41 UTC**.
+- Now: `src/data/pexelsPhotos.json` (623 subjects: countries, cities,
+  map-city cards, landmarks) filled by `scripts/pexels-photos.ts` via the
+  hourly `.github/workflows/photos.yml` (≤180 searches/run, resumable,
+  commits only when something new). Pages only read the file. Card size 640w.
+- **Owner action:** add GitHub secret `PEXELS_API_KEY` (same key as
+  Cloudflare). Optional: ask Pexels for a higher limit to get photos before
+  25 Oct. Until then cards show their navy tiles.
+- Same day: footer 3 columns on phones; homepage season cards no longer
+  overlap badges on the city name (checked at 375 px).
+
 ## Next, in order
 
 1. Finish Android (phone test, then Play), then iPhone app with the same
