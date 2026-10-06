@@ -5,6 +5,7 @@ import type { HotelResult, HotelSearch } from "@/lib/providers/serpapi";
 import { hotelPartnerLinks } from "@/lib/affiliateLinks";
 import type { getDictionary } from "@/lib/dictionaries";
 import Icon from "@/components/ui/Icon";
+import PartnerLink from "@/components/PartnerLink";
 
 /**
  * Live hotel prices, from our partners only.
@@ -83,12 +84,12 @@ function partnerOffers(hotel: HotelResult, c: Common) {
     isHotel: true,
     locale: c.locale,
   });
-  const out: { label: string; total: number; url: string }[] = [];
+  const out: { label: string; partner: string; total: number; url: string }[] = [];
   for (const p of PARTNERS) {
     const offer = hotel.offers.find((o) => p.match.test(o.source));
     const link = links.find((l) => l.partner === p.partner);
     const total = offer?.total ?? (offer?.perNight ? offer.perNight * c.nights : null);
-    if (offer && link && total) out.push({ label: p.label, total, url: link.url });
+    if (offer && link && total) out.push({ label: p.label, partner: p.partner, total, url: link.url });
   }
   return out.sort((a, b) => a.total - b.total);
 }
@@ -167,16 +168,15 @@ function PriceRows({ hotel, c, checkedAt }: { hotel: HotelResult; c: Common; che
                 </p>
               )}
             </div>
-            <a
+            <PartnerLink
+              partner={o.partner}
               href={o.url}
-              target="_blank"
-              rel="noopener noreferrer sponsored"
               className={`inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-extrabold transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400 ${
                 best ? "bg-sun-400 text-navy-950 hover:bg-sun-300" : "bg-white text-navy-900 ring-1 ring-mist-200 hover:ring-navy-300"
               }`}
             >
               {t.bookAt.replace("{partner}", o.label)}
-            </a>
+            </PartnerLink>
           </div>
         );
       })}
@@ -250,15 +250,14 @@ export function PartnerSearchLinks({ query, c, isHotel }: { query: string; c: Co
   return (
     <div className="mt-3 flex flex-wrap gap-2">
       {links.map((l) => (
-        <a
+        <PartnerLink
           key={l.partner}
+          partner={l.partner}
           href={l.url}
-          target="_blank"
-          rel="noopener noreferrer sponsored"
           className="rounded-full bg-white px-3.5 py-2 text-xs font-bold text-navy-900 ring-1 ring-mist-200 transition hover:ring-navy-300"
         >
           {c.t.openAt.replace("{partner}", l.partner)}
-        </a>
+        </PartnerLink>
       ))}
     </div>
   );

@@ -10,6 +10,7 @@ import { hotelPartnerLinks } from "@/lib/affiliateLinks";
 import { nightsBetween } from "@/components/PlannerFields";
 import Icon from "@/components/ui/Icon";
 import HotelPrices from "@/components/HotelPrices";
+import PartnerLink from "@/components/PartnerLink";
 
 /**
  * Hotel results: the search read back, then live prices from our partners.
@@ -183,11 +184,10 @@ function HotelResultsContent() {
                       under it, however many there are for this search. */}
                   <div className={`grid gap-3 ${links.length - 1 >= 3 ? "sm:grid-cols-3" : "sm:grid-cols-2"}`}>
                     {links.map((l, i) => (
-                      <a
+                      <PartnerLink
                         key={l.partner}
+                        partner={l.partner}
                         href={l.url}
-                        target="_blank"
-                        rel="noopener noreferrer sponsored"
                         className={`flex items-center justify-center gap-2.5 rounded-xl px-6 py-4 text-base font-extrabold transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400 focus-visible:ring-offset-2 ${
                           i === 0
                             ? "col-span-full bg-sun-400 text-navy-950 shadow-[var(--shadow-sun)] hover:bg-sun-300"
@@ -196,7 +196,7 @@ function HotelResultsContent() {
                       >
                         <Icon name="search" className="h-5 w-5" strokeWidth={2.4} />
                         {t.openAt.replace("{partner}", l.partner)}
-                      </a>
+                      </PartnerLink>
                     ))}
                   </div>
                 </>
