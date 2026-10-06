@@ -12,8 +12,9 @@ import PartnerLink from "@/components/PartnerLink";
  * One hotel in full: photos, what it offers, and its price at each partner.
  *
  * Prices come from Google Hotels (through SerpApi, cached six hours) and
- * only for the booking sites we earn from, each beside its own booking
- * button. A hotel with no partner price shows no number, only the partner
+ * only for the booking sites we earn from — Booking.com, Agoda, Hotels.com
+ * and Trip.com through Stay22's link swap, Expedia through our own account —
+ * each beside its own booking button. A hotel with no partner price shows no number, only the partner
  * searches. (A city's hotels are Stay22's widget — see Stay22HotelMap.)
  */
 
@@ -23,6 +24,9 @@ type T = ReturnType<typeof getDictionary>["hotelResults"];
 const PARTNERS: { match: RegExp; partner: string; label: string }[] = [
   { match: /^booking\.com$/i, partner: "Booking.com", label: "Booking.com" },
   { match: /^expedia/i, partner: "Expedia", label: "Expedia" },
+  { match: /^agoda$/i, partner: "Agoda", label: "Agoda" },
+  { match: /^hotels\.com$/i, partner: "Hotels.com", label: "Hotels.com" },
+  { match: /^trip\.com$/i, partner: "Trip.com", label: "Trip.com" },
 ];
 
 interface Common {
@@ -167,6 +171,10 @@ function PriceRows({
 }) {
   const { t, locale } = c;
   const offers = partnerOffers(hotel, c);
+  // The cheapest first and alone; the others a tap away, for travellers who
+  // book with one site out of habit or for its points.
+  const [all, setAll] = useState(false);
+  const shown = all ? offers : offers.slice(0, 1);
   const time = new Date(checkedAt).toLocaleTimeString(nf(locale), { hour: "2-digit", minute: "2-digit" });
   if (!offers.length) {
     return (
@@ -178,7 +186,7 @@ function PriceRows({
   }
   return (
     <div className="space-y-2.5">
-      {offers.map((o, i) => {
+      {shown.map((o, i) => {
         const best = i === 0 && (offers.length === 1 || o.total < offers[1].total);
         const over = c.budget > 0 ? o.total - c.budget : 0;
         return (
@@ -220,6 +228,17 @@ function PriceRows({
           </div>
         );
       })}
+      {offers.length > 1 && (
+        <button
+          type="button"
+          onClick={() => setAll((v) => !v)}
+          aria-expanded={all}
+          className="flex w-full items-center justify-center gap-1.5 rounded-xl bg-white px-4 py-2.5 text-xs font-extrabold text-navy-800 ring-1 ring-mist-200 transition hover:ring-navy-300"
+        >
+          {all ? t.fewerPartners : t.morePartners.replace("{count}", String(offers.length - 1))}
+          <span aria-hidden="true">{all ? "▴" : "▾"}</span>
+        </button>
+      )}
       <p className="text-[11px] leading-relaxed text-navy-500">{t.checkedAt.replace("{time}", time)}</p>
     </div>
   );

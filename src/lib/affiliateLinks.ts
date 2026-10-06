@@ -282,11 +282,44 @@ export function hotelPartnerLinks(q: HotelSearchQuery): BookingHandoff[] {
         locale: q.locale ?? "ar",
       });
 
+  // Agoda, Hotels.com and Trip.com: plain searches that Stay22's LinkSwap
+  // turns into paid links on the page (checked on sfrtna.com, 6 Oct 2026).
+  const agoda = new URL("https://www.agoda.com/search");
+  agoda.searchParams.set("textToSearch", q.query);
+  agoda.searchParams.set("checkIn", q.checkIn);
+  agoda.searchParams.set("checkOut", q.checkOut);
+  agoda.searchParams.set("rooms", "1");
+  agoda.searchParams.set("adults", String(Math.max(1, q.adults)));
+  if (q.childrenAges.length) {
+    agoda.searchParams.set("children", String(q.childrenAges.length));
+    agoda.searchParams.set("childAges", q.childrenAges.join(","));
+  }
+  const hotelsCom = new URL("https://www.hotels.com/Hotel-Search");
+  hotelsCom.searchParams.set("destination", q.query);
+  hotelsCom.searchParams.set("startDate", q.checkIn);
+  hotelsCom.searchParams.set("endDate", q.checkOut);
+  hotelsCom.searchParams.set("adults", String(Math.max(1, q.adults)));
+  if (q.childrenAges.length) {
+    hotelsCom.searchParams.set("children", q.childrenAges.map((a) => `1_${a}`).join(","));
+  }
+  const trip = new URL("https://www.trip.com/hotels/list");
+  trip.searchParams.set("keyword", q.query);
+  trip.searchParams.set("checkin", q.checkIn);
+  trip.searchParams.set("checkout", q.checkOut);
+  trip.searchParams.set("adult", String(Math.max(1, q.adults)));
+  if (q.childrenAges.length) {
+    trip.searchParams.set("children", String(q.childrenAges.length));
+    trip.searchParams.set("ages", q.childrenAges.join(","));
+  }
+
   return [
     { partner: "Booking.com", url: booking.toString() },
     // Through our own redirect, which adds the affiliate tag: a direct
     // Expedia link would be rewritten by Stay22 (see /api/go/expedia).
     { partner: "Expedia", url: `/api/go/expedia?landing=${encodeURIComponent(expedia.toString())}` },
+    { partner: "Agoda", url: agoda.toString() },
+    { partner: "Hotels.com", url: hotelsCom.toString() },
+    { partner: "Trip.com", url: trip.toString() },
     ...(zen ? [{ partner: "ZenHotels", url: zen }] : []),
     { partner: "Almosafer", url: almosafer.toString() },
   ];
