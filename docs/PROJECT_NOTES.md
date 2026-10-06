@@ -112,8 +112,11 @@ Travelpayouts.
   partner_click, language_switch arrive. Search Console ↔ GA4 linked.
 - Still open (owner, minor): star `partner_click` as Key event in Events →
   Recent events; turn off Enhanced measurement → Form interactions (form_start
-  duplicates our `search`); confirm whether a click *inside* the flight widget
-  produced partner_click.
+  duplicates our `search`).
+- Flight bookings ARE measured: «احجز الرحلة» (FlightResultsGuide → widget's
+  card button) arrives as partner_click partner=aviasales page_type=results,
+  one event per click (owner's test 7 Oct). The widget opens its link outside
+  its shadow root, so `in_widget` is not set — don't rely on that flag.
 
 ## Next, in order
 
