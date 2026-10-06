@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
 import { serpConfigured, serpUsage } from "@/lib/providers/serpapi";
 
+// Read at request time: without this the build renders it once, with no key.
+export const dynamic = "force-dynamic";
+
 /** How much of the month's SerpApi allowance is used — counts only, never the key. */
 export async function GET() {
   const usage = await serpUsage();
