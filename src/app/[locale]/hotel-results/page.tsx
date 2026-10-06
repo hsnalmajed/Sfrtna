@@ -246,6 +246,7 @@ function HotelResultsContent() {
                   currency={currency}
                   nights={nights}
                   minStars={minStars}
+                  labels={{ list: t.viewList, map: t.viewMap, choose: t.viewChoose }}
                 />
                 <div className="mt-6 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-black/5">
                   <p className="text-sm font-bold text-navy-900">{t.otherPartners}</p>

@@ -315,7 +315,7 @@ export default function HotelPlanner({
           </p>
 
           <div className="mt-3 flex flex-col gap-4">
-            <div className="grid grid-cols-1 items-end gap-x-4 gap-y-4 sm:grid-cols-2 lg:grid-cols-[minmax(0,11rem)_minmax(0,11rem)_1fr]">
+            <div className="grid grid-cols-1 items-end gap-x-4 gap-y-4 sm:grid-cols-[minmax(0,13rem)_minmax(0,13rem)]">
               <div>
                 <FieldLabel dark={dark} icon="star" htmlFor="hotel-stars">
                   {dict.form.minStars}
@@ -353,11 +353,14 @@ export default function HotelPlanner({
                 </select>
               </div>
 
-              <div className="flex flex-wrap items-center gap-x-6 gap-y-3 sm:col-span-2 lg:col-span-1 lg:justify-end lg:pb-2.5">
-                <Toggle dark={dark} id="hotel-breakfast" checked={breakfast} onChange={setBreakfast} icon="coffee">
-                  {dict.form.breakfastShort}
-                </Toggle>
-              </div>
+            </div>
+
+            {/* Where the flight form keeps its switches: a row of their own
+                under the choices, starting from the same edge. */}
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+              <Toggle dark={dark} id="hotel-breakfast" checked={breakfast} onChange={setBreakfast} icon="coffee">
+                {dict.form.breakfastShort}
+              </Toggle>
             </div>
 
             {!roomPossible && (

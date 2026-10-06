@@ -35,6 +35,8 @@ export function stay22MapUrl(q: {
   adults: number;
   /** Children travelling (named `kids`: `children` is React's own prop). */
   kids: number;
+  /** A grid of cards (photo, price, rating) or the map with prices on it. */
+  view: "list" | "map";
   /** Nightly cap in US dollars, from the budget for the stay; 0 for none. */
   maxNightlyUsd: number;
   currency: string;
@@ -57,8 +59,7 @@ export function stay22MapUrl(q: {
   }
   if (q.minStars > 0) p.set("minstarrating", String(q.minStars));
   p.set("limit", "99");
-  p.set("listviewexpand", "true");
-  p.set("viewmode", "all");
+  p.set("viewmode", q.view === "list" ? "listview" : "map");
   p.set("zoom", "12");
   p.set("ljs", "en");
   p.set("maincolor", "ffa630");
@@ -77,9 +78,11 @@ export default function Stay22HotelMap({
   budget,
   currency,
   nights,
+  labels,
   ...q
-}: Omit<Parameters<typeof stay22MapUrl>[0], "maxNightlyUsd" | "currency"> & {
+}: Omit<Parameters<typeof stay22MapUrl>[0], "maxNightlyUsd" | "currency" | "view"> & {
   title: string;
+  labels: { list: string; map: string; choose: string };
   /** The traveller's budget for the whole stay, in `currency`; 0 for none. */
   budget: number;
   currency: string;
@@ -88,6 +91,9 @@ export default function Stay22HotelMap({
   const cur = currency.toUpperCase();
   const known = USD_PER[cur];
   const [usdRate, setUsdRate] = useState<number | null | undefined>(known);
+  // The list first: it is how most people compare hotels; the map is one
+  // tap away for those who choose by where.
+  const [view, setView] = useState<"list" | "map">("list");
   useEffect(() => {
     if (known !== undefined || !(budget > 0)) return;
     let live = true;
@@ -104,17 +110,41 @@ export default function Stay22HotelMap({
   // No rate for an unusual currency: show the list without the cap rather
   // than with a wrong one.
   const maxNightlyUsd = budget > 0 && nights > 0 && usdRate ? (budget / nights) * usdRate : 0;
-  const src = stay22MapUrl({ ...q, currency: usdRate === null ? "USD" : cur, maxNightlyUsd });
+  const src = stay22MapUrl({ ...q, view, currency: usdRate === null ? "USD" : cur, maxNightlyUsd });
+  const tabs: { v: "list" | "map"; label: string; icon: string }[] = [
+    { v: "list", label: labels.list, icon: "☰" },
+    { v: "map", label: labels.map, icon: "⌖" },
+  ];
 
   return (
-    <div className="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-black/5">
-      <iframe
-        src={src}
-        title={title}
-        loading="lazy"
-        className="block h-[640px] w-full border-0 sm:h-[720px]"
-        allow="geolocation"
-      />
+    <div>
+      <div className="mb-3 inline-flex rounded-full bg-white p-1 shadow-sm ring-1 ring-black/5" role="tablist" aria-label={labels.choose}>
+        {tabs.map((t) => (
+          <button
+            key={t.v}
+            type="button"
+            role="tab"
+            aria-selected={view === t.v}
+            onClick={() => setView(t.v)}
+            className={`inline-flex items-center gap-2 rounded-full px-5 py-2 text-sm font-extrabold transition ${
+              view === t.v ? "bg-navy-900 text-white shadow-sm" : "text-navy-700 hover:bg-mist-100"
+            }`}
+          >
+            <span aria-hidden="true">{t.icon}</span>
+            {t.label}
+          </button>
+        ))}
+      </div>
+      <div className="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-black/5">
+        <iframe
+          key={view}
+          src={src}
+          title={title}
+          loading="lazy"
+          className="block h-[680px] w-full border-0 sm:h-[760px]"
+          allow="geolocation"
+        />
+      </div>
     </div>
   );
 }
