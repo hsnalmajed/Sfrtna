@@ -383,7 +383,20 @@ export default function FlightResultsGuide({
       }
       const hasMore = Boolean(moreButton);
       const base = { searching, filtering, comparable: budget <= 0 || comparable, total: priced.length, fits, over, hasMore };
-      const key = JSON.stringify(base);
+      // What decides "still changing": how many fares, and the cheapest each
+      // side of the budget. Not the whole cards, whose read-back can differ
+      // pass to pass (seen 6 Oct 2026: 200 fares in, search long done, and
+      // the page still "searching" because the key never held still).
+      const key = JSON.stringify([
+        searching,
+        filtering,
+        priced.length,
+        fits.length,
+        over.length,
+        fits[0]?.price ?? null,
+        over[0]?.price ?? null,
+        hasMore,
+      ]);
       if (key !== lastKey) {
         lastKey = key;
         lastChange = Date.now();
