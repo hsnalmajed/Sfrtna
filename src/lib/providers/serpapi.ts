@@ -172,3 +172,127 @@ export async function liveFare(q: {
     };
   });
 }
+
+/* ───────────────────────────── Google Hotels ───────────────────────────── */
+
+/** One booking site's price for a hotel, as Google Hotels lists it. */
+export interface HotelOffer {
+  /** The booking site: "Booking.com", "Expedia.com", the hotel's own site… */
+  source: string;
+  /** Per night, taxes and fees included, in the search currency. */
+  perNight: number | null;
+  /** The whole stay, taxes and fees included, when Google gives it. */
+  total: number | null;
+  /** Per night before taxes and fees, when Google gives it. */
+  perNightBeforeTax: number | null;
+  official: boolean;
+}
+
+export interface HotelResult {
+  name: string;
+  /** Google's id for the hotel: asks its own prices without a name search. */
+  token: string | null;
+  stars: number | null;
+  rating: number | null;
+  reviews: number | null;
+  /** Cheapest per night across the sites, taxes included. */
+  perNight: number | null;
+  total: number | null;
+  offers: HotelOffer[];
+}
+
+export interface HotelSearch {
+  /** "hotel" when the query matched one hotel; "list" for a city's hotels. */
+  kind: "hotel" | "list";
+  currency: string;
+  hotels: HotelResult[];
+  checkedAt: string;
+}
+
+type Rate = { extracted_lowest?: number; extracted_before_taxes_fees?: number } | undefined;
+interface GhPrice {
+  source?: string;
+  official?: boolean;
+  rate_per_night?: Rate;
+  total_rate?: Rate;
+}
+interface GhProperty {
+  name?: string;
+  property_token?: string;
+  extracted_hotel_class?: number;
+  overall_rating?: number;
+  reviews?: number;
+  rate_per_night?: Rate;
+  total_rate?: Rate;
+  prices?: GhPrice[];
+  featured_prices?: GhPrice[];
+}
+
+const num = (n: unknown) => (typeof n === "number" && Number.isFinite(n) && n > 0 ? Math.round(n) : null);
+
+function offersOf(p: GhProperty): HotelOffer[] {
+  const seen = new Set<string>();
+  const out: HotelOffer[] = [];
+  for (const o of [...(p.featured_prices ?? []), ...(p.prices ?? [])]) {
+    const source = (o.source || "").trim();
+    if (!source || seen.has(source)) continue;
+    seen.add(source);
+    out.push({
+      source,
+      perNight: num(o.rate_per_night?.extracted_lowest),
+      total: num(o.total_rate?.extracted_lowest),
+      perNightBeforeTax: num(o.rate_per_night?.extracted_before_taxes_fees),
+      official: Boolean(o.official),
+    });
+  }
+  return out;
+}
+
+function hotelOf(p: GhProperty): HotelResult {
+  return {
+    name: p.name || "",
+    token: p.property_token || null,
+    stars: num(p.extracted_hotel_class),
+    rating: typeof p.overall_rating === "number" ? p.overall_rating : null,
+    reviews: num(p.reviews),
+    perNight: num(p.rate_per_night?.extracted_lowest),
+    total: num(p.total_rate?.extracted_lowest),
+    offers: offersOf(p),
+  };
+}
+
+/**
+ * Hotels and each booking site's price from Google Hotels, cached six hours.
+ * `q` is a hotel's name with its city, or a city ("hotels in Istanbul").
+ */
+export async function hotelPrices(q: {
+  q: string;
+  checkIn: string;
+  checkOut: string;
+  adults: number;
+  childrenAges?: number[];
+  currency?: string;
+}): Promise<HotelSearch | null> {
+  const currency = (q.currency || "SAR").toUpperCase();
+  const ages = (q.childrenAges ?? []).map((a) => Math.min(17, Math.max(1, Math.round(a))));
+  const cacheKey = `serp-hotels:${q.q.toLowerCase()}:${q.checkIn}:${q.checkOut}:${q.adults}:${ages.join(",")}:${currency}`;
+  return cachedJson<HotelSearch>(cacheKey, 6 * 3600, async () => {
+    const body = await search({
+      engine: "google_hotels",
+      q: q.q,
+      check_in_date: q.checkIn,
+      check_out_date: q.checkOut,
+      adults: String(Math.max(1, q.adults)),
+      ...(ages.length ? { children: String(ages.length), children_ages: ages.join(",") } : {}),
+      currency,
+      hl: "en",
+      gl: "sa",
+    });
+    if (!body) return null;
+    const props = body.properties as GhProperty[] | undefined;
+    const kind: HotelSearch["kind"] = Array.isArray(props) ? "list" : "hotel";
+    const hotels = kind === "list" ? (props ?? []).map(hotelOf) : [hotelOf(body as GhProperty)];
+    if (!hotels.length || !hotels[0].name) return null;
+    return { kind, currency, hotels, checkedAt: new Date().toISOString() };
+  });
+}
