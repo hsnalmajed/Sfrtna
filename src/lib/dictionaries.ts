@@ -419,6 +419,10 @@ export const dictionaries = {
       hotelsIn: "{count} فندقاً في {city}",
       noListTitle: "لم نجد فنادق تطابق بحثك",
       unavailableTitle: "تعذّر جلب الفنادق الآن",
+      discoverTitle: "فنادق في {city}",
+      discoverTitleBudget: "فنادق في {city} ضمن ميزانيتك",
+      discoverNote: "السعر المعروض لكل فندق هو سعر الإقامة كاملة ({nights}) من Booking وExpedia وHotels.com وغيرها. اضغط على الفندق لترى عروض الشركاء واحجز من الموقع الذي تفضّله.",
+      discoverEnglish: "تُعرض قائمة الفنادق والخريطة باللغة الإنجليزية.",
     },
     home: {
       stepsEyebrow: "كيف يعمل سفرتنا",
@@ -1714,6 +1718,10 @@ export const dictionaries = {
       hotelsIn: "{count} hotels in {city}",
       noListTitle: "No hotels matched your search",
       unavailableTitle: "We couldn't load hotels right now",
+      discoverTitle: "Hotels in {city}",
+      discoverTitleBudget: "Hotels in {city} within your budget",
+      discoverNote: "Each price is for the whole stay ({nights}) from Booking.com, Expedia, Hotels.com and others. Tap a hotel to see each partner's offer and book where you prefer.",
+      discoverEnglish: "",
     },
     home: {
       stepsEyebrow: "How Sfrtna works",

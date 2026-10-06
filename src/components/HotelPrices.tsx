@@ -9,17 +9,12 @@ import Icon from "@/components/ui/Icon";
 import PartnerLink from "@/components/PartnerLink";
 
 /**
- * The hotel results: one hotel in full, or a city's hotels as cards.
+ * One hotel in full: photos, what it offers, and its price at each partner.
  *
- * Prices come from Google Hotels (through SerpApi) and only for the booking
- * sites we earn from — Booking.com (paid through Stay22's link swap) and
- * Expedia — each beside its own booking button. A hotel with no partner
- * price shows no number, only the partner searches.
- *
- * A hotel's name asks its prices at once. A city asks Google's list first,
- * which carries photos and ratings but no per-site prices; a hotel's partner
- * prices are asked when the traveller taps «اعرض الأسعار» — one search, only
- * for a hotel someone wanted. Both are cached six hours on the server.
+ * Prices come from Google Hotels (through SerpApi, cached six hours) and
+ * only for the booking sites we earn from, each beside its own booking
+ * button. A hotel with no partner price shows no number, only the partner
+ * searches. (A city's hotels are Stay22's widget — see Stay22HotelMap.)
  */
 
 type T = ReturnType<typeof getDictionary>["hotelResults"];
@@ -398,189 +393,25 @@ function DetailSkeleton({ t }: { t: T }) {
   );
 }
 
-/* ───────────────────────────── a city's hotels ───────────────────────────── */
-
-function HotelCard({ hotel, c, city }: { hotel: HotelResult; c: Common; city: string }) {
-  const { t, locale } = c;
-  const [state, setState] = useState<"idle" | "loading" | "done" | "failed">("idle");
-  const [detail, setDetail] = useState<HotelSearch | null>(null);
-  const amenities = amenityLabels(hotel.amenities, locale, 3);
-
-  const load = async () => {
-    if (!hotel.token) return;
-    setState("loading");
-    const r = await fetchSearch(apiUrl(c, { q: `${hotel.name} ${city}`.slice(0, 120), token: hotel.token }));
-    setDetail(r);
-    setState(r ? "done" : "failed");
-  };
-
-  return (
-    <li className="flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-black/5 transition hover:shadow-md">
-      <div className="relative">
-        {hotel.images[0] ? (
-          <Photo src={hotel.images[0].thumb} alt={hotel.name} className="aspect-[4/3] w-full" />
-        ) : (
-          <NoPhoto className="aspect-[4/3] w-full" />
-        )}
-        {hotel.stars ? (
-          <span className="absolute start-3 top-3 rounded-full bg-white/95 px-2.5 py-1 text-xs shadow-sm">
-            <Stars count={hotel.stars} />
-          </span>
-        ) : null}
-      </div>
-      <div className="flex flex-1 flex-col p-4">
-        <h3 className="line-clamp-2 font-display text-base font-extrabold leading-snug text-navy-950" dir="auto">
-          {hotel.name}
-        </h3>
-        <div className="mt-2">
-          <Rating hotel={hotel} c={c} />
-        </div>
-        {amenities.length > 0 && (
-          <ul className="mt-3 flex flex-wrap gap-1.5">
-            {amenities.map((a) => (
-              <li key={a} className="rounded-full bg-mist-100 px-2.5 py-1 text-[11px] font-bold text-navy-700">
-                {a}
-              </li>
-            ))}
-          </ul>
-        )}
-
-        <div className="mt-auto pt-4">
-          {state === "idle" && (
-            <button
-              type="button"
-              onClick={load}
-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-navy-900 px-4 py-3 text-sm font-extrabold text-white transition hover:bg-navy-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400"
-            >
-              <Icon name="search" className="h-4 w-4" strokeWidth={2.4} />
-              {t.showPrices}
-            </button>
-          )}
-          {state === "loading" && (
-            <div className="space-y-2">
-              <p className="flex items-center gap-2 text-xs font-semibold text-navy-600">
-                <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-navy-200 border-t-sun-500" aria-hidden="true" />
-                {t.checking}
-              </p>
-              <Shimmer className="h-16 w-full" />
-            </div>
-          )}
-          {state === "failed" && (
-            <div>
-              <p className="text-xs font-semibold text-navy-700">{t.unavailable}</p>
-              <PartnerSearchLinks query={hotel.name} c={c} isHotel />
-            </div>
-          )}
-          {state === "done" && detail && <PriceRows hotel={detail.hotels[0]} c={c} checkedAt={detail.checkedAt} compact />}
-        </div>
-      </div>
-    </li>
-  );
-}
-
-type Sort = "rating" | "reviews" | "value";
-
-function HotelGrid({ hotels, c, city, cityLabel }: { hotels: HotelResult[]; c: Common; city: string; cityLabel: string }) {
-  const { t } = c;
-  const [sort, setSort] = useState<Sort>("rating");
-  const sorted = useMemo(() => {
-    const list = [...hotels];
-    if (sort === "rating") list.sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0) || (b.reviews ?? 0) - (a.reviews ?? 0));
-    if (sort === "reviews") list.sort((a, b) => (b.reviews ?? 0) - (a.reviews ?? 0));
-    // Google's lowest price across all sites orders the list; it is never
-    // shown, because it may come from a site we do not link to.
-    if (sort === "value") list.sort((a, b) => (a.perNight ?? Infinity) - (b.perNight ?? Infinity));
-    return list;
-  }, [hotels, sort]);
-
-  const sorts: { v: Sort; label: string }[] = [
-    { v: "rating", label: t.sortRating },
-    { v: "reviews", label: t.sortReviews },
-    { v: "value", label: t.sortValue },
-  ];
-
-  return (
-    <div>
-      <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <p className="font-display text-xl font-extrabold text-navy-950">
-            {t.hotelsIn.replace("{count}", String(hotels.length)).replace("{city}", cityLabel)}
-          </p>
-          <p className="mt-1 text-sm text-navy-600">{t.listNote}</p>
-        </div>
-        <div className="flex rounded-full bg-white p-1 shadow-sm ring-1 ring-black/5" role="radiogroup" aria-label={t.sortLabel}>
-          {sorts.map((s) => (
-            <button
-              key={s.v}
-              type="button"
-              role="radio"
-              aria-checked={sort === s.v}
-              onClick={() => setSort(s.v)}
-              className={`rounded-full px-3.5 py-1.5 text-xs font-extrabold transition ${
-                sort === s.v ? "bg-navy-900 text-white" : "text-navy-700 hover:bg-mist-100"
-              }`}
-            >
-              {s.label}
-            </button>
-          ))}
-        </div>
-      </div>
-      <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {sorted.map((h, i) => (
-          <HotelCard key={`${h.token ?? h.name}-${i}`} hotel={h} c={c} city={city} />
-        ))}
-      </ul>
-      <div className="mt-8 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-black/5">
-        <p className="text-sm font-bold text-navy-900">{t.otherPartners}</p>
-        <PartnerSearchLinks query={city} c={c} isHotel={false} />
-      </div>
-    </div>
-  );
-}
-
-function GridSkeleton() {
-  return (
-    <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      {Array.from({ length: 6 }).map((_, i) => (
-        <li key={i} className="overflow-hidden rounded-2xl bg-white ring-1 ring-black/5">
-          <Shimmer className="aspect-[4/3] w-full rounded-none" />
-          <div className="space-y-2 p-4">
-            <Shimmer className="h-5 w-3/4" />
-            <Shimmer className="h-4 w-1/2" />
-            <Shimmer className="mt-4 h-11 w-full" />
-          </div>
-        </li>
-      ))}
-    </ul>
-  );
-}
-
 /* ───────────────────────────── the view ───────────────────────────── */
 
 export default function HotelPrices(
   props: Common & {
-    /** The hotel's name (known) or the city's English name (discover). */
+    /** The hotel's name. */
     query: string;
     /** What the price search asks: the name plus where the hotel is, when known. */
     priceQuery?: string;
-    /** The city as the traveller reads it, for headings. */
-    cityLabel?: string;
-    mode: "known" | "discover";
-    minStars: number;
     /** Shown when nothing could be checked at all: the partner buttons. */
     fallback: React.ReactNode;
   }
 ) {
-  const { query, priceQuery, cityLabel, mode, minStars, fallback, ...c } = props;
-  const url = useMemo(() => {
-    if (mode === "known") return apiUrl(c, { q: (priceQuery || query).slice(0, 120) });
-    const extra: Record<string, string> = { q: `hotels in ${query}` };
-    if (minStars) extra.minStars = String(minStars);
-    if (c.budget > 0 && c.nights > 0) extra.maxPerNight = String(Math.round(c.budget / c.nights));
-    return apiUrl(c, extra);
+  const { query, priceQuery, fallback, ...c } = props;
+  const url = useMemo(
+    () => apiUrl(c, { q: (priceQuery || query).slice(0, 120) }),
     // c is rebuilt each render; its fields are what matter.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mode, query, priceQuery, minStars, c.checkIn, c.checkOut, c.adults, c.childrenAges, c.budget, c.nights]);
+    [query, priceQuery, c.checkIn, c.checkOut, c.adults, c.childrenAges]
+  );
 
   const [state, setState] = useState<{ url: string; result: HotelSearch | null } | null>(null);
   useEffect(() => {
@@ -593,25 +424,23 @@ export default function HotelPrices(
     };
   }, [url]);
 
-  if (!state || state.url !== url) return mode === "known" ? <DetailSkeleton t={c.t} /> : <GridSkeleton />;
+  if (!state || state.url !== url) return <DetailSkeleton t={c.t} />;
 
   const result = state.result;
-  const hotels = result?.hotels.filter((h) => h.name) ?? [];
-  if (!result || !hotels.length) {
+  const hotel = result?.hotels.find((h) => h.name);
+  if (!result || !hotel) {
     return (
       <div className="rounded-2xl bg-white p-6 text-center shadow-sm ring-1 ring-black/5 sm:p-8">
         <span className="mx-auto mb-3 grid h-12 w-12 place-items-center rounded-2xl bg-mist-100 text-navy-600">
           <Icon name="hotel" className="h-6 w-6" />
         </span>
-        <p className="font-display text-lg font-extrabold text-navy-950">{result ? c.t.noListTitle : c.t.unavailableTitle}</p>
-        <p className="mx-auto mb-5 mt-1.5 max-w-lg text-sm text-navy-600">{result ? c.t.noList : c.t.unavailable}</p>
+        <p className="font-display text-lg font-extrabold text-navy-950">{c.t.unavailableTitle}</p>
+        <p className="mx-auto mb-5 mt-1.5 max-w-lg text-sm text-navy-600">{c.t.unavailable}</p>
         {fallback}
       </div>
     );
   }
-
-  if (result.kind === "hotel") {
-    return <HotelDetail hotel={hotels[0]} c={c} checkedAt={result.checkedAt} query={query} />;
-  }
-  return <HotelGrid hotels={hotels.slice(0, 18)} c={c} city={query} cityLabel={cityLabel || query} />;
+  // A name Google read as several hotels: the first is the best match for
+  // a name picked from its own suggestions.
+  return <HotelDetail hotel={hotel} c={c} checkedAt={result.checkedAt} query={query} />;
 }

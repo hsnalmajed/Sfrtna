@@ -10,6 +10,8 @@ import { hotelPartnerLinks } from "@/lib/affiliateLinks";
 import { nightsBetween } from "@/components/PlannerFields";
 import Icon from "@/components/ui/Icon";
 import HotelPrices from "@/components/HotelPrices";
+import Stay22HotelMap from "@/components/Stay22HotelMap";
+import { hotelCityPlace } from "@/components/HotelCityInput";
 import PartnerLink from "@/components/PartnerLink";
 
 /**
@@ -116,6 +118,26 @@ function HotelResultsContent() {
     if (breakfast) chips.push(t.breakfast);
   }
 
+  const partnerButtons = (
+      <div className={`grid gap-3 text-start ${links.length - 1 >= 3 ? "sm:grid-cols-3" : "sm:grid-cols-2"}`}>
+        {links.map((l, i) => (
+          <PartnerLink
+            key={l.partner}
+            partner={l.partner}
+            href={l.url}
+            className={`flex items-center justify-center gap-2.5 rounded-xl px-6 py-4 text-base font-extrabold transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400 focus-visible:ring-offset-2 ${
+              i === 0
+                ? "col-span-full bg-sun-400 text-navy-950 shadow-[var(--shadow-sun)] hover:bg-sun-300"
+                : "bg-white text-navy-900 ring-1 ring-mist-200 hover:ring-navy-300"
+            }`}
+          >
+            <Icon name="search" className="h-5 w-5" strokeWidth={2.4} />
+            {t.openAt.replace("{partner}", l.partner)}
+          </PartnerLink>
+        ))}
+      </div>
+  );
+
   return (
     <div className="bg-mist-50">
       {/* The same band as the flight results: navy, the place as the
@@ -189,40 +211,61 @@ function HotelResultsContent() {
           </div>
         ) : (
           <>
-            <HotelPrices
-              query={query}
-              priceQuery={hotelArea ? `${query} ${hotelArea}` : query}
-              cityLabel={label || query}
-              mode={mode}
-              minStars={mode === "discover" ? minStars : 0}
-              budget={mode === "discover" ? budget : 0}
-              checkIn={checkIn}
-              checkOut={checkOut}
-              adults={adults}
-              childrenAges={childrenAges}
-              nights={nights}
-              locale={locale}
-              t={t}
-              fallback={
-                <div className={`grid gap-3 text-start ${links.length - 1 >= 3 ? "sm:grid-cols-3" : "sm:grid-cols-2"}`}>
-                  {links.map((l, i) => (
-                    <PartnerLink
-                      key={l.partner}
-                      partner={l.partner}
-                      href={l.url}
-                      className={`flex items-center justify-center gap-2.5 rounded-xl px-6 py-4 text-base font-extrabold transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400 focus-visible:ring-offset-2 ${
-                        i === 0
-                          ? "col-span-full bg-sun-400 text-navy-950 shadow-[var(--shadow-sun)] hover:bg-sun-300"
-                          : "bg-white text-navy-900 ring-1 ring-mist-200 hover:ring-navy-300"
-                      }`}
-                    >
-                      <Icon name="search" className="h-5 w-5" strokeWidth={2.4} />
-                      {t.openAt.replace("{partner}", l.partner)}
-                    </PartnerLink>
-                  ))}
+            {mode === "known" ? (
+              <HotelPrices
+                query={query}
+                priceQuery={hotelArea ? `${query} ${hotelArea}` : query}
+                budget={0}
+                checkIn={checkIn}
+                checkOut={checkOut}
+                adults={adults}
+                childrenAges={childrenAges}
+                nights={nights}
+                locale={locale}
+                t={t}
+                fallback={partnerButtons}
+              />
+            ) : (
+              <div>
+                <div className="mb-4">
+                  <h2 className="font-display text-xl font-extrabold text-navy-950">
+                    {(budget > 0 ? t.discoverTitleBudget : t.discoverTitle).replace("{city}", label || query)}
+                  </h2>
+                  <p className="mt-1 max-w-3xl text-sm leading-relaxed text-navy-600">
+                    {t.discoverNote.replace("{nights}", nights === 1 ? t.oneNight : t.nights.replace("{count}", String(nights)))}
+                  </p>
+                  {locale === "ar" && <p className="mt-1 text-xs text-navy-500">{t.discoverEnglish}</p>}
                 </div>
-              }
-            />
+                <Stay22HotelMap
+                  title={(budget > 0 ? t.discoverTitleBudget : t.discoverTitle).replace("{city}", label || query)}
+                  address={hotelCityPlace(query) ?? query}
+                  checkIn={checkIn}
+                  checkOut={checkOut}
+                  adults={adults}
+                  kids={childrenAges.length}
+                  budget={budget}
+                  currency={currency}
+                  nights={nights}
+                  minStars={minStars}
+                />
+                <div className="mt-6 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-black/5">
+                  <p className="text-sm font-bold text-navy-900">{t.otherPartners}</p>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {links.map((l) => (
+                      <PartnerLink
+                        key={l.partner}
+                        partner={l.partner}
+                        href={l.url}
+                        className="inline-flex items-center gap-1.5 rounded-full bg-white px-3.5 py-2 text-xs font-bold text-navy-900 ring-1 ring-mist-200 transition hover:ring-navy-300"
+                      >
+                        <Icon name="search" className="h-3.5 w-3.5 text-navy-500" />
+                        {t.openAt.replace("{partner}", l.partner)}
+                      </PartnerLink>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
             <p className="mt-8 text-center text-xs text-navy-500">{t.partnerNote}</p>
           </>
         )}

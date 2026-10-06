@@ -18,6 +18,15 @@ const ALL: { city: CityEntry; country: string }[] = Object.entries(COUNTRY_CITIE
   cities.map((city) => ({ city, country }))
 );
 
+/** "Istanbul, Turkey": the covered city a name stands for, with its country. */
+export function hotelCityPlace(name: string): string | undefined {
+  const n = name.trim();
+  const hit = ALL.find(({ city }) => searchEquals(city.nameEn, n) || searchEquals(city.nameAr, n));
+  if (!hit) return undefined;
+  const country = COUNTRIES.find((c) => c.code === hit.country);
+  return country ? `${hit.city.nameEn}, ${country.nameEn}` : hit.city.nameEn;
+}
+
 /** The covered city a name (Arabic or English) stands for, if any. */
 export function findHotelCity(name: string): CityEntry | undefined {
   const n = name.trim();
@@ -46,10 +55,17 @@ export default function HotelCityInput({
   invalid?: boolean;
   emptyText?: React.ReactNode;
 }) {
+  // A country's name lists its cities: "تركيا" is not a place to search
+  // hotels in, Istanbul or Antalya is.
   const load = useCallback(
-    (q: string): Suggestion[] =>
-      ALL.filter(({ city }) => searchMatches([city.nameAr, city.nameEn], q))
-        .slice(0, 8)
+    (q: string): Suggestion[] => {
+      const countries = new Set(
+        COUNTRIES.filter((c) => searchMatches([c.nameAr, c.nameEn], q)).map((c) => c.code)
+      );
+      const byCity = ALL.filter(({ city }) => searchMatches([city.nameAr, city.nameEn], q));
+      const byCountry = ALL.filter(({ country, city }) => countries.has(country) && !byCity.some((b) => b.city === city));
+      return [...byCity, ...byCountry]
+        .slice(0, 12)
         .map(({ city, country }) => {
           const c = COUNTRIES.find((x) => x.code === country);
           return {
@@ -57,7 +73,8 @@ export default function HotelCityInput({
             title: locale === "ar" ? city.nameAr : city.nameEn,
             subtitle: c ? (locale === "ar" ? c.nameAr : c.nameEn) : undefined,
           };
-        }),
+        });
+    },
     [locale]
   );
 
