@@ -151,14 +151,12 @@ function HotelResultsContent() {
           <p className="eyebrow eyebrow-light mb-2.5">{mode === "known" ? t.eyebrowKnown : t.eyebrowDiscover}</p>
           <h1 className="flex items-center gap-3 font-display text-h1 font-extrabold text-white">
             <Icon name="hotel" className="h-8 w-8 shrink-0 text-sun-400" />
-            <span className="min-w-0 break-words" dir="auto">
-              {label || query || "—"}
-            </span>
+            <bdi className="min-w-0 break-words">{label || query || "—"}</bdi>
           </h1>
           {hotelArea && (
-            <p className="mt-2 flex items-center gap-1.5 text-sm font-semibold text-white/70" dir="auto">
+            <p className="mt-2 flex items-center gap-1.5 text-sm font-semibold text-white/70">
               <Icon name="pin" className="h-4 w-4 shrink-0 text-white/50" />
-              {hotelArea}
+              <bdi>{hotelArea}</bdi>
             </p>
           )}
 

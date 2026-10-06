@@ -187,7 +187,10 @@ function PriceRows({
   return (
     <div className="space-y-2.5">
       {shown.map((o, i) => {
-        const best = i === 0 && (offers.length === 1 || o.total < offers[1].total);
+        // The first row is the one to book: highlighted even on a tie, but
+        // called "cheapest" only when it is.
+        const best = i === 0;
+        const strictlyCheapest = offers.length > 1 && o.total < offers[1].total;
         const over = c.budget > 0 ? o.total - c.budget : 0;
         return (
           <div
@@ -200,7 +203,7 @@ function PriceRows({
               <div className="min-w-0">
                 <p className="flex flex-wrap items-center gap-2 text-sm font-bold text-navy-800">
                   {o.label}
-                  {best && offers.length > 1 && (
+                  {best && strictlyCheapest && (
                     <span className="rounded-full bg-sun-400 px-2 py-0.5 text-[11px] font-extrabold text-navy-950">{t.cheapest}</span>
                   )}
                 </p>
@@ -324,13 +327,13 @@ function HotelDetail({ hotel, c, checkedAt, query }: { hotel: HotelResult; c: Co
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div className="min-w-0">
               <Stars count={hotel.stars} className="text-sm" />
-              <h2 className="font-display text-h3 font-extrabold text-navy-950" dir="auto">
-                {hotel.name}
+              <h2 className="font-display text-h3 font-extrabold text-navy-950">
+                <bdi>{hotel.name}</bdi>
               </h2>
               {hotel.address && (
-                <p className="mt-1.5 flex items-start gap-1.5 text-sm text-navy-600" dir="auto">
+                <p className="mt-1.5 flex items-start gap-1.5 text-sm text-navy-600">
                   <Icon name="pin" className="mt-0.5 h-4 w-4 shrink-0 text-navy-400" />
-                  {hotel.address}
+                  <bdi>{hotel.address}</bdi>
                 </p>
               )}
             </div>
@@ -386,8 +389,8 @@ function Fact({ label, value }: { label: string; value: string }) {
   return (
     <div className="rounded-xl bg-mist-50 px-3.5 py-2.5 ring-1 ring-mist-200">
       <dt className="text-[11px] font-bold text-navy-500">{label}</dt>
-      <dd className="mt-0.5 text-sm font-extrabold text-navy-900" dir="auto">
-        {value}
+      <dd className="mt-0.5 text-sm font-extrabold text-navy-900">
+        <bdi>{value}</bdi>
       </dd>
     </div>
   );
