@@ -80,10 +80,11 @@ function HotelResultsContent() {
             breakfast: mode === "discover" ? breakfast : undefined,
             stay: mode === "discover" ? stay : undefined,
             isHotel: mode === "known",
+            area: hotelArea || undefined,
             locale,
           })
         : [],
-    [complete, query, checkIn, checkOut, adults, childrenAges, mode, minStars, breakfast, stay, locale]
+    [complete, query, checkIn, checkOut, adults, childrenAges, mode, minStars, breakfast, stay, locale, hotelArea]
   );
 
   // Back to the hotel planner, filled in. `product` opens the right planner

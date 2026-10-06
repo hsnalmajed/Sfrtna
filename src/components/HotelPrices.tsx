@@ -12,8 +12,8 @@ import PartnerLink from "@/components/PartnerLink";
  * One hotel in full: photos, what it offers, and its price at each partner.
  *
  * Prices come from Google Hotels (through SerpApi, cached six hours) and
- * only for the booking sites we earn from — Booking.com, Agoda, Hotels.com
- * and Trip.com through Stay22's link swap, Expedia through our own account —
+ * only for the booking sites we earn from — Booking.com, Expedia, Agoda and
+ * Hotels.com, each through a Stay22 Allez link that lands on this hotel —
  * each beside its own booking button. A hotel with no partner price shows no number, only the partner
  * searches. (A city's hotels are Stay22's widget — see Stay22HotelMap.)
  */
@@ -26,7 +26,6 @@ const PARTNERS: { match: RegExp; partner: string; label: string }[] = [
   { match: /^expedia/i, partner: "Expedia", label: "Expedia" },
   { match: /^agoda$/i, partner: "Agoda", label: "Agoda" },
   { match: /^hotels\.com$/i, partner: "Hotels.com", label: "Hotels.com" },
-  { match: /^trip\.com$/i, partner: "Trip.com", label: "Trip.com" },
 ];
 
 interface Common {
@@ -77,6 +76,9 @@ function partnerOffers(hotel: HotelResult, c: Common) {
     adults: c.adults,
     childrenAges: c.childrenAges,
     isHotel: true,
+    area: hotel.address,
+    lat: hotel.lat,
+    lng: hotel.lng,
     locale: c.locale,
   });
   const out: { label: string; partner: string; total: number; url: string }[] = [];
@@ -180,7 +182,7 @@ function PriceRows({
     return (
       <div>
         <p className="text-sm font-semibold text-navy-700">{t.noPartnerPrice}</p>
-        <PartnerSearchLinks query={hotel.name} c={c} isHotel />
+        <PartnerSearchLinks hotel={hotel} c={c} />
       </div>
     );
   }
@@ -248,14 +250,17 @@ function PriceRows({
 }
 
 /** Plain partner searches, for when there is no price to show. */
-function PartnerSearchLinks({ query, c, isHotel }: { query: string; c: Common; isHotel: boolean }) {
+function PartnerSearchLinks({ hotel, c }: { hotel: HotelResult; c: Common }) {
   const links = hotelPartnerLinks({
-    query,
+    query: hotel.name,
     checkIn: c.checkIn,
     checkOut: c.checkOut,
     adults: c.adults,
     childrenAges: c.childrenAges,
-    isHotel,
+    isHotel: true,
+    area: hotel.address,
+    lat: hotel.lat,
+    lng: hotel.lng,
     locale: c.locale,
   });
   return (
@@ -315,7 +320,7 @@ function Gallery({ hotel }: { hotel: HotelResult }) {
   );
 }
 
-function HotelDetail({ hotel, c, checkedAt, query }: { hotel: HotelResult; c: Common; checkedAt: string; query: string }) {
+function HotelDetail({ hotel, c, checkedAt }: { hotel: HotelResult; c: Common; checkedAt: string }) {
   const { t, locale } = c;
   const amenities = amenityLabels(hotel.amenities, locale, 8);
   return (
@@ -335,7 +340,7 @@ function HotelDetail({ hotel, c, checkedAt, query }: { hotel: HotelResult; c: Co
         </div>
         <div className="mt-4 px-1">
           <p className="text-xs font-bold text-navy-600">{t.otherPartners}</p>
-          <PartnerSearchLinks query={query} c={c} isHotel />
+          <PartnerSearchLinks hotel={hotel} c={c} />
         </div>
       </aside>
 
@@ -469,5 +474,5 @@ export default function HotelPrices(
   }
   // A name Google read as several hotels: the first is the best match for
   // a name picked from its own suggestions.
-  return <HotelDetail hotel={hotel} c={c} checkedAt={result.checkedAt} query={query} />;
+  return <HotelDetail hotel={hotel} c={c} checkedAt={result.checkedAt} />;
 }

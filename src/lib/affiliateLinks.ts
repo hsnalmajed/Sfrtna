@@ -211,6 +211,57 @@ export function hotelBookingAlternative(
  * Deliberately separate from hotelBookingHandoff, which still serves the
  * older flight-and-hotel pages and sends to Hotellook first.
  */
+/**
+ * One named hotel at a booking site, through Stay22's Allez links.
+ *
+ * A plain search link by the hotel's name is no good here: Stay22's
+ * LinkSwap rewrites it into a search around the hotel's address, so Booking
+ * opened 665 hotels near it (reported 6 Oct 2026), and Expedia's own name
+ * filter found no match for "Swissôtel". Allez, given the name and the
+ * map position, resolves the hotel itself (checked the same day): Booking
+ * opens its search on that hotel (dest_type=hotel, listed first), Agoda
+ * and Expedia open with it selected. It pays through our Stay22 account.
+ */
+export type AllezProvider = "booking" | "expedia" | "agoda" | "hotelscom";
+const STAY22_AID = "sfrtna";
+
+export function hotelAllezUrl(
+  provider: AllezProvider,
+  h: {
+    name: string;
+    /** Where it is, as text — used when the coordinates are not known. */
+    area?: string;
+    lat?: number | null;
+    lng?: number | null;
+    checkIn: string;
+    checkOut: string;
+    adults: number;
+    childrenAges: number[];
+    locale?: "ar" | "en";
+  }
+): string {
+  const u = new URL(`https://www.stay22.com/allez/${provider}`);
+  const p = u.searchParams;
+  p.set("aid", STAY22_AID);
+  p.set("hotelname", h.name);
+  if (typeof h.lat === "number" && typeof h.lng === "number") {
+    p.set("lat", h.lat.toFixed(5));
+    p.set("lng", h.lng.toFixed(5));
+  }
+  if (h.area) p.set("address", h.area);
+  p.set("checkin", h.checkIn);
+  p.set("checkout", h.checkOut);
+  p.set("adults", String(Math.max(1, h.adults)));
+  if (h.childrenAges.length) {
+    p.set("children", String(h.childrenAges.length));
+    p.set("childrenAges", h.childrenAges.map((a) => Math.min(17, Math.max(0, Math.round(a)))).join(","));
+  }
+  p.set("currency", "SAR");
+  p.set("lang", h.locale ?? "ar");
+  p.set("campaign", "hotel_page");
+  return u.toString();
+}
+
 export interface HotelSearchQuery {
   /** A hotel's name, or a city — Booking's free-text search takes either. */
   query: string;
@@ -223,6 +274,10 @@ export interface HotelSearchQuery {
   stay?: "room" | "apartment";
   /** True when `query` names one hotel rather than a city. */
   isHotel?: boolean;
+  /** For a named hotel: where it is, so partner links land on it. */
+  area?: string;
+  lat?: number | null;
+  lng?: number | null;
   /** The traveller's language, for partners whose page can follow it. */
   locale?: "ar" | "en";
 }
@@ -310,6 +365,30 @@ export function hotelPartnerLinks(q: HotelSearchQuery): BookingHandoff[] {
   if (q.childrenAges.length) {
     trip.searchParams.set("children", String(q.childrenAges.length));
     trip.searchParams.set("ages", q.childrenAges.join(","));
+  }
+
+  // A named hotel: every site through Allez, which lands on the hotel
+  // itself (see hotelAllezUrl). Trip.com has no Allez link and its search
+  // would be rewritten into an area search, so it is left out here.
+  if (q.isHotel) {
+    const h = {
+      name: q.query,
+      area: q.area,
+      lat: q.lat,
+      lng: q.lng,
+      checkIn: q.checkIn,
+      checkOut: q.checkOut,
+      adults: q.adults,
+      childrenAges: q.childrenAges,
+      locale: q.locale,
+    };
+    return [
+      { partner: "Booking.com", url: hotelAllezUrl("booking", h) },
+      { partner: "Expedia", url: hotelAllezUrl("expedia", h) },
+      { partner: "Agoda", url: hotelAllezUrl("agoda", h) },
+      { partner: "Hotels.com", url: hotelAllezUrl("hotelscom", h) },
+      { partner: "Almosafer", url: almosafer.toString() },
+    ];
   }
 
   return [

@@ -209,6 +209,9 @@ export interface HotelResult {
   locationRating: number | null;
   checkInTime: string;
   checkOutTime: string;
+  /** Where it is: lets a partner link land on this hotel, not its area. */
+  lat: number | null;
+  lng: number | null;
 }
 
 export interface HotelSearch {
@@ -243,6 +246,7 @@ interface GhProperty {
   location_rating?: number;
   check_in_time?: string;
   check_out_time?: string;
+  gps_coordinates?: { latitude?: number; longitude?: number };
 }
 
 const num = (n: unknown) => (typeof n === "number" && Number.isFinite(n) && n > 0 ? Math.round(n) : null);
@@ -286,6 +290,8 @@ function hotelOf(p: GhProperty): HotelResult {
     locationRating: typeof p.location_rating === "number" ? p.location_rating : null,
     checkInTime: (p.check_in_time || "").trim(),
     checkOutTime: (p.check_out_time || "").trim(),
+    lat: typeof p.gps_coordinates?.latitude === "number" ? p.gps_coordinates.latitude : null,
+    lng: typeof p.gps_coordinates?.longitude === "number" ? p.gps_coordinates.longitude : null,
   };
 }
 
@@ -316,7 +322,7 @@ export async function hotelPrices(q: {
   const ages = (q.childrenAges ?? []).map((a) => Math.min(17, Math.max(1, Math.round(a))));
   const stars = q.minStars && q.minStars >= 2 && q.minStars <= 5 ? q.minStars : 0;
   const maxPrice = q.maxPerNight && q.maxPerNight > 0 ? Math.round(q.maxPerNight) : 0;
-  const cacheKey = `serp-hotels3:${q.q.toLowerCase()}:${q.token ?? ""}:${q.checkIn}:${q.checkOut}:${q.adults}:${ages.join(",")}:${currency}:${stars}:${maxPrice}`;
+  const cacheKey = `serp-hotels4:${q.q.toLowerCase()}:${q.token ?? ""}:${q.checkIn}:${q.checkOut}:${q.adults}:${ages.join(",")}:${currency}:${stars}:${maxPrice}`;
   return cachedJson<HotelSearch>(cacheKey, 6 * 3600, async () => {
     const body = await search({
       engine: "google_hotels",
