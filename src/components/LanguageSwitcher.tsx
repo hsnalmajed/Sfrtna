@@ -2,6 +2,7 @@
 
 import { usePathname, useRouter } from "next/navigation";
 import type { Locale } from "@/lib/types";
+import { track } from "@/lib/analytics";
 
 export default function LanguageSwitcher({ locale }: { locale: Locale }) {
   const pathname = usePathname();
@@ -9,6 +10,7 @@ export default function LanguageSwitcher({ locale }: { locale: Locale }) {
 
   function switchTo(next: Locale) {
     if (!pathname) return;
+    if (next !== locale) track("language_switch", { from: locale, to: next });
     const segments = pathname.split("/");
     segments[1] = next;
     router.push(segments.join("/") || `/${next}`);

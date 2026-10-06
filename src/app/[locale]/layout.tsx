@@ -5,6 +5,7 @@ import type { Locale } from "@/lib/types";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import NavTracker from "@/components/NavTracker";
+import Analytics from "@/components/Analytics";
 import Script from "next/script";
 
 export async function generateStaticParams() {
@@ -63,6 +64,8 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
         <main className="flex-1">{children}</main>
         <Footer locale={loc} />
         <NavTracker />
+        {/* GA4 + consent banner + partner-click tracking (sfrtna.com only). */}
+        <Analytics locale={loc} />
         {/*
           Stay22 LinkSwap: turns the plain Booking/Agoda/Expedia/Trip.com links
           on hotel pages into affiliate links. The lmaID is a public account

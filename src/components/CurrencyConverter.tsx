@@ -5,6 +5,7 @@ import type { Locale } from "@/lib/types";
 import { CURRENCIES, findCurrency } from "@/lib/currencies";
 import SearchableSelect, { type SearchableOption } from "@/components/SearchableSelect";
 import { googleRateUrl, rateBetween, type Rates } from "@/lib/rates";
+import { track } from "@/lib/analytics";
 
 interface ConverterDict {
   amount: string;
@@ -113,7 +114,10 @@ export default function CurrencyConverter({
           <SearchableSelect
             value={from}
             options={options}
-            onChange={setFrom}
+            onChange={(code: string) => {
+              setFrom(code);
+              track("currency_convert", { from: code, to });
+            }}
             label={dict.from}
             labelClassName="sr-only"
             buttonClassName="h-14"
@@ -172,7 +176,10 @@ export default function CurrencyConverter({
           <SearchableSelect
             value={to}
             options={options}
-            onChange={setTo}
+            onChange={(code: string) => {
+              setTo(code);
+              track("currency_convert", { from, to: code });
+            }}
             label={dict.to}
             labelClassName="sr-only"
             buttonClassName="h-14"

@@ -4,7 +4,7 @@ import type { Locale } from "@/lib/types";
 import LegalPage from "@/components/LegalPage";
 import { pageMetadata } from "@/lib/seo";
 
-const LAST_UPDATED = "2026-09-16";
+const LAST_UPDATED = "2026-10-06";
 
 export async function generateMetadata({
   params,
@@ -35,6 +35,7 @@ export default async function PrivacyPage({ params }: PageProps<"/[locale]/priva
       sections={[
         { heading: t.privacyCollectTitle, body: t.privacyCollectBody },
         { heading: t.privacyStorageTitle, body: t.privacyStorageBody },
+        { heading: t.privacyAnalyticsTitle, body: t.privacyAnalyticsBody },
         { heading: t.privacyThirdTitle, body: t.privacyThirdBody },
         { heading: t.privacyRightsTitle, body: t.privacyRightsBody },
       ]}

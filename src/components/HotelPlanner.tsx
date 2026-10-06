@@ -14,6 +14,7 @@ import { parseChildrenAges, serializeChildrenAges } from "@/lib/searchParamsUtil
 import { focusFirstError, hasErrors, type FieldErrors } from "@/lib/formErrors";
 import { formStyles, type FormTone } from "@/lib/formTone";
 import { BudgetInput, EdgeTabs, FieldLabel, Toggle } from "@/components/PlannerFields";
+import { trackSearchUrl } from "@/lib/analytics";
 
 /**
  * The hotel planner.
@@ -152,6 +153,7 @@ export default function HotelPlanner({
       if (effectiveStayType) params.set("stay", effectiveStayType);
       if (breakfast) params.set("breakfast", "true");
     }
+    trackSearchUrl(`/${locale}/hotel-results?${params.toString()}`);
     router.push(`/${locale}/hotel-results?${params.toString()}`);
   }
 

@@ -77,11 +77,36 @@ Travelpayouts.
   address searches — that's why named-hotel links use Allez, and why city-search
   Expedia goes through our own `/api/go/expedia` redirect.
 
+### Measurement — GA4 + Search Console (6 Oct)
+- Search Console: Domain property `sfrtna.com` verified by the owner; submit
+  `sitemap.xml` there. Bing Webmaster still to do (import from Google).
+- GA4 property "Sfrtna - sfrtna.com", stream "Sfrtna Web", ID `G-1438PGGH2W`
+  (public, in `src/lib/analytics.ts`). Loaded on sfrtna.com only.
+- Owner's decisions: consent banner + Consent Mode v2 (analytics denied until
+  «موافق»; ads always denied); BigQuery daily export yes; KPI per search AND per
+  session.
+- Code: `src/lib/analytics.ts` (track, trackSearchUrl, consent),
+  `src/components/Analytics.tsx` (tag, consent banner, global click listener,
+  footer «إعدادات الكوكيز»). Privacy page has a measurement section.
+- Events: `search` (every form, via `trackSearchUrl` before router.push;
+  carries `search_id`), `budget_change` (same search, new budget),
+  `flight_results` (FlightBudgetBar, once when settled), **`partner_click`** (any
+  `data-partner` link, `/api/go/*`, or known partner host; results-page clicks
+  carry the last `search_id`; reaches into the flight widget's shadow root via
+  composedPath), `visa_check`, `language_switch`, `currency_convert`,
+  `map_download`. Page views: GA4 enhanced measurement (history changes).
+- Not visible to GA4: clicks inside the Stay22 iframe widget — use partner
+  dashboards. Flight-widget clicks: verify on live site whether its book
+  buttons are anchors (caught) or scripted (not caught).
+- Owner to do in GA4 Admin: mark `partner_click` as Key event; register custom
+  dimensions (search_type, partner, page_type, destination, origin, placement,
+  search_id) and metrics (budget, nights, results_count); link BigQuery; link
+  Search Console.
+
 ## Next, in order
 
-1. Google Search Console + Google Analytics — first design a **tracking plan**
-   with the owner (he is a data analyst): events (search, booking click, budget
-   change…) and KPIs (search → booking-click rate).
+1. Finish measurement: owner's GA4 admin steps above, then verify events in
+   GA4 Realtime/DebugView on the live site.
 2. Android app, then iPhone app (Stay22 has a Mobile SDK worth checking).
 3. Marketing plan before launch.
 4. When Agoda is approved: Arabic hotel list from Agoda's API.

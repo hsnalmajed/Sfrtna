@@ -20,6 +20,7 @@ import { parseChildrenAges, serializeChildrenAges } from "@/lib/searchParamsUtil
 import { focusFirstError, hasErrors, type FieldErrors } from "@/lib/formErrors";
 import { formStyles, type FormTone } from "@/lib/formTone";
 import { useDefaultOrigin } from "@/lib/useOrigin";
+import { trackSearchUrl } from "@/lib/analytics";
 
 function nightsBetween(a: string, b: string) {
   const t1 = new Date(a).getTime();
@@ -173,6 +174,7 @@ export default function DiscoverForm({
       breakfastIncluded: String(breakfastIncluded),
       preferenceCategory,
     });
+    trackSearchUrl(`/${locale}/discover-results?${params.toString()}`);
     router.push(`/${locale}/discover-results?${params.toString()}`);
   }
 

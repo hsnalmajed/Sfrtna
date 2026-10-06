@@ -20,6 +20,7 @@ import { parseChildrenAges, serializeChildrenAges } from "@/lib/searchParamsUtil
 import { focusFirstError, hasErrors, type FieldErrors } from "@/lib/formErrors";
 import { formStyles, type FormTone } from "@/lib/formTone";
 import { useDefaultOrigin } from "@/lib/useOrigin";
+import { trackSearchUrl } from "@/lib/analytics";
 
 interface LegDraft {
   destination: string;
@@ -197,6 +198,7 @@ export default function SearchForm({
         breakfastIncluded: String(breakfastIncluded),
         legs: JSON.stringify(validLegs),
       });
+      trackSearchUrl(`/${locale}/multicity-results?${params.toString()}`);
       router.push(`/${locale}/multicity-results?${params.toString()}`);
       return;
     }
@@ -219,6 +221,7 @@ export default function SearchForm({
       baggageIncluded: String(baggageIncluded),
       breakfastIncluded: String(breakfastIncluded),
     });
+    trackSearchUrl(`/${locale}/results?${params.toString()}`);
     router.push(`/${locale}/results?${params.toString()}`);
   }
 

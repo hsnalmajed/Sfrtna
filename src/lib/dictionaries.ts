@@ -1166,7 +1166,10 @@ export const dictionaries = {
         "لا نطلب تسجيل دخول ولا اسماً ولا بريداً للبحث في الموقع. ما تدخله في نموذج البحث — مدينة المغادرة والتواريخ والميزانية وعدد المسافرين — يُرسل إلى مزوّدي بيانات السفر لجلب الأسعار، ولا نحتفظ به بعد ذلك.",
       privacyStorageTitle: "التخزين على جهازك",
       privacyStorageBody:
-        "نستخدم تخزين المتصفح لتفضيلات بسيطة مثل اللغة، ولا يغادر جهازك.",
+        "نستخدم تخزين المتصفح لتفضيلات بسيطة مثل اللغة واختيارك في شريط الكوكيز، ولا يغادر جهازك.",
+      privacyAnalyticsTitle: "القياس (Google Analytics)",
+      privacyAnalyticsBody:
+        "نستخدم Google Analytics لنعرف عدد الزوار ومن أين جاؤوا، وما يبحثون عنه (المدن والتواريخ وعدد المسافرين والميزانية)، والروابط التي ينقرون عليها إلى شركاء الحجز. لا نرسل اسماً ولا بريداً ولا رقماً. كوكيز القياس لا تُوضع على جهازك إلا إذا ضغطت «موافق»؛ وإن رفضت تصل إلى Google إشارات مجهولة بلا كوكيز. تستطيع تغيير اختيارك متى شئت من «إعدادات الكوكيز» أسفل كل صفحة.",
       privacyThirdTitle: "أطراف أخرى",
       privacyThirdBody:
         "عند الانتقال إلى موقع شريك للحجز، تنطبق سياسة خصوصية ذلك الموقع على ما تفعله هناك. الخرائط من OpenStreetMap والصور من Pexels، ولكل منهما سياسته.",
@@ -1311,6 +1314,14 @@ export const dictionaries = {
       exploreHeading: "اكتشف",
       toolsHeading: "أدوات المسافر",
       legalHeading: "الموقع",
+      cookieSettings: "إعدادات الكوكيز",
+    },
+    consent: {
+      title: "نقيس استخدام الموقع لنحسّنه",
+      body: "نستخدم Google Analytics لنعرف عدد الزوار وما يبحثون عنه، دون اسم أو بريد. لن نضع كوكيز القياس على جهازك إلا بموافقتك.",
+      more: "سياسة الخصوصية",
+      accept: "موافق",
+      reject: "رفض",
     },
   },
   en: {
@@ -2462,7 +2473,10 @@ export const dictionaries = {
         "Searching the site needs no sign-in, no name and no email. What you type into the search form — departure city, dates, budget, party size — is sent to travel data providers to fetch prices, and is not kept afterwards.",
       privacyStorageTitle: "Storage on your device",
       privacyStorageBody:
-        "We use browser storage for simple preferences such as language. It never leaves your device.",
+        "We use browser storage for simple preferences such as language and your cookie choice. It never leaves your device.",
+      privacyAnalyticsTitle: "Measurement (Google Analytics)",
+      privacyAnalyticsBody:
+        "We use Google Analytics to count visitors and where they come from, what they search for (cities, dates, party size and budget), and which booking-partner links they click. We never send a name, email or phone number. Measurement cookies are only set if you press “Accept”; if you decline, Google receives anonymous, cookieless signals. You can change your choice any time from “Cookie settings” at the bottom of every page.",
       privacyThirdTitle: "Third parties",
       privacyThirdBody:
         "When you continue to a partner's site to book, that site's privacy policy governs what you do there. Maps come from OpenStreetMap and photographs from Pexels, each with its own policy.",
@@ -2602,6 +2616,14 @@ export const dictionaries = {
       exploreHeading: "Explore",
       toolsHeading: "Traveller tools",
       legalHeading: "The site",
+      cookieSettings: "Cookie settings",
+    },
+    consent: {
+      title: "We measure how the site is used, to improve it",
+      body: "We use Google Analytics to count visits and see what people search for — never your name or email. Measurement cookies are only set if you agree.",
+      more: "Privacy policy",
+      accept: "Accept",
+      reject: "Decline",
     },
   },
 } as const;

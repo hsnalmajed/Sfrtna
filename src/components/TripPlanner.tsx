@@ -16,6 +16,7 @@ import { focusFirstError, hasErrors, type FieldErrors } from "@/lib/formErrors";
 import { formStyles, type FormTone } from "@/lib/formTone";
 import { BudgetInput, EdgeTabs, FieldLabel, Toggle, nightsBetween, toDigits } from "@/components/PlannerFields";
 import { useDefaultOrigin } from "@/lib/useOrigin";
+import { trackSearchUrl } from "@/lib/analytics";
 
 /**
  * The flight planner, laid out the way a traveller thinks.
@@ -282,6 +283,7 @@ export default function TripPlanner({
         date: i === 0 ? departDate : l.date,
       }));
       const params = new URLSearchParams({ ...shared, legs: JSON.stringify(flights) });
+      trackSearchUrl(`/${locale}/multicity-results?${params.toString()}`);
       router.push(`/${locale}/multicity-results?${params.toString()}`);
       return;
     }
@@ -296,6 +298,7 @@ export default function TripPlanner({
         oneWayOnly: String(isOneWay),
         preferenceCategory,
       });
+      trackSearchUrl(`/${locale}/discover-results?${params.toString()}`);
       router.push(`/${locale}/discover-results?${params.toString()}`);
       return;
     }
@@ -306,6 +309,7 @@ export default function TripPlanner({
       destination,
       returnDate: showReturnDate ? returnDate : "",
     });
+    trackSearchUrl(`/${locale}/results?${params.toString()}`);
     router.push(`/${locale}/results?${params.toString()}`);
   }
 

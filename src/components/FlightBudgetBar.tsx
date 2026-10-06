@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Locale } from "@/lib/types";
 import { getDictionary } from "@/lib/dictionaries";
 import Icon from "@/components/ui/Icon";
+import { lastSearchContext, track } from "@/lib/analytics";
 
 /**
  * The traveller's budget, held up against the live fares.
@@ -146,6 +147,25 @@ export default function FlightBudgetBar({
   const cheapest = comparable ? Math.min(...fares.prices) : 0;
   const within = comparable ? fares.prices.filter((p) => p <= budget).length : 0;
   const allOver = comparable && within === 0;
+
+  // One flight_results per search, sent when the widget has finished and the
+  // verdict on screen is final. A later filter or sort re-renders the
+  // widget but is not a new search, so it is not counted again.
+  const reported = useRef(false);
+  useEffect(() => {
+    if (!settled || reported.current) return;
+    reported.current = true;
+    track("flight_results", {
+      results_count: fares.prices.length,
+      fare_currency: fares.currency ?? undefined,
+      cheapest_fare: fares.prices.length ? Math.min(...fares.prices) : undefined,
+      budget: budget || undefined,
+      currency,
+      within_budget_count: comparable ? within : undefined,
+      all_over_budget: comparable ? allOver : undefined,
+      ...lastSearchContext(),
+    });
+  }, [settled, fares, budget, currency, comparable, within, allOver]);
 
   return (
     <div

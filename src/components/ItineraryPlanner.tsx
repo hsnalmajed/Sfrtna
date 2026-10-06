@@ -12,6 +12,7 @@ import PageHero from "@/components/ui/PageHero";
 import PrintHeader from "@/components/PrintHeader";
 import type { SectionHero } from "@/lib/heroPhotos";
 import { countLabel } from "@/lib/format";
+import { track } from "@/lib/analytics";
 
 /**
  * The planner, lifted out of the route so the route can be a server component.
@@ -132,6 +133,13 @@ function ItineraryContent({ hero }: { hero?: SectionHero }) {
 
   async function generate(e: React.FormEvent) {
     e.preventDefault();
+    track("search", {
+      search_type: "itinerary",
+      destination: city,
+      nights: days,
+      budget: Number(budget) || undefined,
+      currency,
+    });
     setLoading(true);
     try {
       const res = await fetch("/api/itinerary", {

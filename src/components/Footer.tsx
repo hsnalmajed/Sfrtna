@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getDictionary } from "@/lib/dictionaries";
 import type { Locale } from "@/lib/types";
 import Logo from "@/components/ui/Logo";
+import { ConsentSettingsButton } from "@/components/Analytics";
 
 /**
  * The footer closes the page the way the hero opened it — navy, an orange
@@ -93,6 +94,9 @@ export default function Footer({ locale }: { locale: Locale }) {
                   </Link>
                 </li>
               ))}
+              <li>
+                <ConsentSettingsButton label={dict.footer.cookieSettings} />
+              </li>
             </ul>
           </div>
         </div>

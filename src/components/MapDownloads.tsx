@@ -2,6 +2,7 @@
 
 import type { MapPin } from "@/lib/mapPins";
 import { downloadText, safeFileName, toGPX, toKML, type ExportPlace } from "@/lib/mapExport";
+import { track } from "@/lib/analytics";
 
 interface DownloadsDict {
   downloadHeading: string;
@@ -54,10 +55,12 @@ export default function MapDownloads({
   }));
 
   function handleGpx() {
+    track("map_download", { format: "gpx", places: places.length });
     downloadText(toGPX(places, title), safeFileName(fileBase, "gpx"), "application/gpx+xml");
   }
 
   function handleKml() {
+    track("map_download", { format: "kml", places: places.length });
     downloadText(toKML(places, title), safeFileName(fileBase, "kml"), "application/vnd.google-earth.kml+xml");
   }
 

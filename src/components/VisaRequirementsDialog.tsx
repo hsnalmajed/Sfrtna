@@ -16,6 +16,7 @@ import {
   officialVisaUrl,
 } from "@/lib/visaProviders";
 import VisaBadge from "@/components/VisaBadge";
+import { track } from "@/lib/analytics";
 
 /**
  * "Can I get in?" — answered in a window over the page, like a season city's
@@ -48,6 +49,10 @@ export default function VisaRequirementsDialog({
   const v = dict.visa;
   const r = dict.results;
   const isAr = locale === "ar";
+
+  useEffect(() => {
+    track("visa_check", { destination_country: countryCode.toUpperCase() });
+  }, [countryCode]);
 
   // Escape, or a tap outside, steps back one window when there is one under this.
   const dismiss = onBack ?? onClose;
