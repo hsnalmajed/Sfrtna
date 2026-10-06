@@ -190,6 +190,18 @@ function ResultsContent() {
   const showCurrencyStrip =
     Boolean(homeCurrency && tripCurrency) && homeCurrency!.code !== tripCurrency!.code;
 
+  // Today in the traveller's own clock, as YYYY-MM-DD.
+  const todayIso = useMemo(() => {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  }, []);
+  const searchProblem: "past" | "place" | null =
+    search.tripType !== "hotel" && search.departDate && search.departDate < todayIso
+      ? "past"
+      : search.tripType !== "hotel" && search.origin && search.destination && !flightSearchCode(search)
+        ? "place"
+        : null;
+
   const editSearchParams = useMemo(() => {
     const p = new URLSearchParams({
       mode: "known",
@@ -382,6 +394,27 @@ function ResultsContent() {
       </section>
 
       <div className="mx-auto max-w-6xl px-4 pb-10 pt-8 sm:px-6">
+      {/* A trip that cannot be searched as asked — a departure day already
+          gone (an old link), or a place we cannot turn into an airport —
+          is said so, with the way back to the form. Searched anyway, the
+          partner read a past day as next year's and showed those flights. */}
+      {searchProblem ? (
+        <div className="rounded-2xl bg-white p-6 text-center shadow-sm ring-1 ring-black/5">
+          <p className="font-display text-lg font-extrabold text-navy-950">
+            {searchProblem === "past" ? dict.results.datePassedTitle : dict.results.placeUnknownTitle}
+          </p>
+          <p className="mx-auto mt-2 max-w-xl text-sm leading-relaxed text-navy-600">
+            {searchProblem === "past" ? dict.results.datePassedBody : dict.results.placeUnknownBody}
+          </p>
+          <a
+            href={`/${locale}?${editSearchParams}#plan`}
+            className="mt-4 inline-flex items-center gap-2 rounded-full bg-sun-400 px-5 py-2.5 text-sm font-extrabold text-navy-950 hover:bg-sun-300"
+          >
+            ✎ {dict.results.editTheSearch}
+          </a>
+        </div>
+      ) : (
+      <>
       {/* 2. The answer: the flight picked within the budget, and the way
           to the others — see FlightResultsGuide. */}
       <FlightResultsGuide
@@ -401,6 +434,8 @@ function ResultsContent() {
       <div className="mt-5">
         <FlightMetasearch locale={locale} prefill={flightSearchCode(search)} hideSearchForm />
       </div>
+      </>
+      )}
 
       {visaOpen && destinationCountry && (
         <VisaRequirementsDialog countryCode={destinationCountry.code} locale={locale} onClose={() => setVisaOpen(false)} />

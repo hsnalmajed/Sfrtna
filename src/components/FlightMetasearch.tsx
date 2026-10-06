@@ -104,6 +104,24 @@ export default function FlightMetasearch({
     document.head.appendChild(script);
   }, [prefill]);
 
+  // The widget is set up in Arabic and marks the whole page lang="ar"
+  // dir="rtl" when it loads — on the English pages too, which turned them
+  // right to left ("Dubai ← Riyadh", seen 6 Oct 2026). Whatever it sets,
+  // the page's own language and direction are put back.
+  useEffect(() => {
+    const root = document.documentElement;
+    const lang = locale === "ar" ? "ar" : "en";
+    const dir = locale === "ar" ? "rtl" : "ltr";
+    const restore = () => {
+      if (root.getAttribute("lang") !== lang) root.setAttribute("lang", lang);
+      if (root.getAttribute("dir") !== dir) root.setAttribute("dir", dir);
+    };
+    restore();
+    const watch = new MutationObserver(restore);
+    watch.observe(root, { attributes: true, attributeFilter: ["lang", "dir"] });
+    return () => watch.disconnect();
+  }, [locale]);
+
   const dark = tone === "dark";
   return (
     <section className={dark || !heading ? "" : "mt-8"} dir={locale === "ar" ? "rtl" : "ltr"}>

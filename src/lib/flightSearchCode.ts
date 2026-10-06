@@ -61,9 +61,17 @@ export function flightSearchCode(search: SearchParams): string | null {
   if (!from || !to || !out || from === to) return null;
 
   const back = dayMonth(search.returnDate);
-  const seats = Math.min(9, Math.max(1, (search.adults || 1) + (search.childrenAges?.length ?? 0)));
+  // Who flies, as the widget reads it: adults, then children (2–11), then
+  // infants on a lap — one digit each, "211" for two adults, a child and an
+  // infant (checked on aviasales.com, 6 Oct 2026). Sending children as adults
+  // priced a family as three grown-ups and left the baby out. The partner
+  // allows nine travellers in all and no more infants than adults.
+  const adults = Math.min(9, Math.max(1, search.adults || 1));
+  const children = Math.min(9 - adults, search.childrenAges?.length ?? 0);
+  const infants = Math.min(adults, 9 - adults - children, Math.max(0, search.infants ?? 0));
+  const people = children || infants ? `${adults}${children}${infants}` : `${adults}`;
 
-  return `${from}${out}${to}${back ?? ""}${seats}`;
+  return `${from}${out}${to}${back ?? ""}${people}`;
 }
 
 /**
@@ -77,9 +85,9 @@ export function flightSearchCode(search: SearchParams): string | null {
  * round, which is how the widget reads it too.
  */
 export function parseFlightSearchCode(code: string | null | undefined): URLSearchParams | null {
-  const m = /^([A-Z]{3})(\d{2})(\d{2})([A-Z]{3})(?:(\d{2})(\d{2}))?(\d)$/.exec((code || "").trim());
+  const m = /^([A-Z]{3})(\d{2})(\d{2})([A-Z]{3})(?:(\d{2})(\d{2}))?(\d)(\d)?(\d)?$/.exec((code || "").trim());
   if (!m) return null;
-  const [, from, d1, m1, to, d2, m2, seats] = m;
+  const [, from, d1, m1, to, d2, m2, seats, kids, babies] = m;
 
   const today = new Date();
   const todayIso = `${today.getFullYear()}-${pad(today.getMonth() + 1)}-${pad(today.getDate())}`;
@@ -98,5 +106,7 @@ export function parseFlightSearchCode(code: string | null | undefined): URLSearc
     departDate,
     returnDate,
     adults: seats,
+    ...(kids && kids !== "0" ? { childrenAges: Array(Number(kids)).fill("8").join(",") } : {}),
+    ...(babies && babies !== "0" ? { infants: babies } : {}),
   });
 }

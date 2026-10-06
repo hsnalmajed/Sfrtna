@@ -557,7 +557,7 @@ export default function FlightResultsGuide({
           <div className="flex flex-wrap items-center justify-between gap-2 px-5 py-4">
             <p className="flex items-center gap-2 text-sm font-semibold text-navy-700">
               <span className="h-2.5 w-2.5 animate-pulse rounded-full bg-sun-400" aria-hidden="true" />
-              {t.guideSearching}
+              {hasBudget ? t.guideSearching : t.guideSearchingAny}
             </p>
           </div>
           <div className="h-1 w-full overflow-hidden bg-sun-100" aria-hidden="true">

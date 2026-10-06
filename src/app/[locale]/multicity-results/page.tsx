@@ -1,5 +1,6 @@
 "use client";
 
+import { findAirport } from "@/lib/airports";
 import { Suspense, useEffect, useMemo, useState } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import Link from "next/link";
@@ -93,6 +94,13 @@ function MultiCityResultsContent() {
       .finally(() => setLoading(false));
   }, [legs, adults, childrenAges, infants, budget, currency, directOnly, baggageIncluded]);
 
+  // The city under each code: from our airport list, else what was typed.
+  const cityName = (code: string, typed: string) => {
+    const a = findAirport(code);
+    if (a) return locale === "ar" ? a.cityAr : a.cityEn;
+    const rest = shortPlace(typed).replace(code, "").trim();
+    return rest || "";
+  };
   const money = (n: number) => `${Math.abs(n).toLocaleString("en-US")} ${currency}`;
   const dateLabel = (iso: string) =>
     iso
@@ -177,8 +185,8 @@ function MultiCityResultsContent() {
                   <div className="mt-3 flex items-center gap-3 text-navy-950">
                     <div className="min-w-0 flex-1">
                       <p className="font-display text-2xl font-black">{leg.originIata}</p>
-                      {shortPlace(leg.origin) !== leg.originIata && (
-                        <p className="truncate text-xs text-navy-500">{shortPlace(leg.origin).replace(leg.originIata, "").trim()}</p>
+                      {cityName(leg.originIata, leg.origin) && (
+                        <p className="truncate text-xs text-navy-500">{cityName(leg.originIata, leg.origin)}</p>
                       )}
                     </div>
                     <span className="text-xl text-sun-500" aria-hidden="true">
@@ -186,8 +194,8 @@ function MultiCityResultsContent() {
                     </span>
                     <div className="min-w-0 flex-1 text-end">
                       <p className="font-display text-2xl font-black">{leg.destinationIata}</p>
-                      {shortPlace(leg.destination) !== leg.destinationIata && (
-                        <p className="truncate text-xs text-navy-500">{shortPlace(leg.destination).replace(leg.destinationIata, "").trim()}</p>
+                      {cityName(leg.destinationIata, leg.destination) && (
+                        <p className="truncate text-xs text-navy-500">{cityName(leg.destinationIata, leg.destination)}</p>
                       )}
                     </div>
                   </div>

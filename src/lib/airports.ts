@@ -273,13 +273,31 @@ export function airportLabel(code: string, locale: "ar" | "en"): string {
 export function searchAirports(query: string, limit = 8): Airport[] {
   const q = query.trim();
   if (!q) return [];
-  return AIRPORTS.filter(
+  const matches = AIRPORTS.filter(
     (a) =>
       searchMatches(
         [a.iata, a.nameAr, a.nameEn, a.cityAr, a.cityEn, a.countryAr, a.countryEn],
         q
       )
-  ).slice(0, limit);
+  );
+  // A city with several airports also comes as itself — "London · all
+  // airports" (LON) — first: a search on the city code covers Stansted and
+  // Luton too, where the low-cost fares often are, which a search on
+  // Heathrow alone never shows.
+  const out: Airport[] = [];
+  const seen = new Set<string>();
+  for (const a of matches) {
+    const code = Object.keys(CITY_CODES).find((c) => {
+      const main = AIRPORTS.find((m) => m.iata === CITY_CODES[c]);
+      return main && main.cityEn === a.cityEn && main.countryEn === a.countryEn;
+    });
+    if (code && !seen.has(code)) {
+      seen.add(code);
+      out.push({ ...a, iata: code, nameAr: "كل المطارات", nameEn: "All airports" });
+    }
+    out.push(a);
+  }
+  return out.slice(0, limit);
 }
 
 /**

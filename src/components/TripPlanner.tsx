@@ -11,6 +11,7 @@ import { currencyForOrigin } from "@/components/CurrencySelect";
 import DateRangeInput from "@/components/DateRangeInput";
 import Icon, { type IconName } from "@/components/ui/Icon";
 import { parseChildrenAges, serializeChildrenAges } from "@/lib/searchParamsUtil";
+import { strictIata } from "@/lib/flights";
 import { focusFirstError, hasErrors, type FieldErrors } from "@/lib/formErrors";
 import { formStyles, type FormTone } from "@/lib/formTone";
 import { BudgetInput, EdgeTabs, FieldLabel, Toggle, nightsBetween, toDigits } from "@/components/PlannerFields";
@@ -218,13 +219,16 @@ export default function TripPlanner({
   function validate(): FieldErrors {
     const next: FieldErrors = {};
     if (!origin.trim()) next.origin = dict.form.errorOrigin;
+    else if (!strictIata(origin)) next.origin = dict.form.errorPlaceUnknown;
     if (showDestination && !destination.trim()) next.destination = dict.form.errorDestination;
+    else if (showDestination && !strictIata(destination)) next.destination = dict.form.errorPlaceUnknown;
+    else if (showDestination && strictIata(destination) === strictIata(origin)) next.destination = dict.form.errorSamePlace;
     if (listsLegs) {
       // The first flight's from/date are the form's origin and departDate.
       const flights = legs.map((l, i) =>
         i === 0 ? { ...l, origin, date: departDate } : l
       );
-      if (flights.some((l) => !l.origin.trim() || !l.destination.trim() || !l.date)) {
+      if (flights.some((l) => !strictIata(l.origin) || !strictIata(l.destination) || !l.date)) {
         next.legs = dict.multicity.errorLegIncomplete;
       } else if (flights.some((l, i) => i > 0 && l.date < flights[i - 1].date)) {
         next.legs = dict.multicity.errorLegOrder;
