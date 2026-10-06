@@ -7,6 +7,7 @@ import { getDictionary } from "@/lib/dictionaries";
 import TravelersPicker from "@/components/TravelersPicker";
 import DateRangeInput from "@/components/DateRangeInput";
 import Icon from "@/components/ui/Icon";
+import HotelNameInput from "@/components/HotelNameInput";
 import { MAX_GUESTS_PER_ROOM, occupancy, roomFitsParty, type StayType } from "@/lib/stayType";
 import { parseChildrenAges, serializeChildrenAges } from "@/lib/searchParamsUtil";
 import { focusFirstError, hasErrors, type FieldErrors } from "@/lib/formErrors";
@@ -30,8 +31,9 @@ import { BudgetInput, EdgeTabs, FieldLabel, Toggle } from "@/components/PlannerF
  * the stars and the breakfast are the questions a real comparison will need,
  * so they are asked now rather than bolted on later.
  *
- * The hotel's name is free text for now. A search-as-you-type list of hotels
- * needs a hotel database, and until we have one a list would be invented.
+ * The hotel's name offers Google's hotel names as the traveller types (see
+ * HotelNameInput); a picked name carries where the hotel is, so the price
+ * search finds the right one of several Holiday Inns. Free text still works.
  */
 
 type HotelMode = "known" | "discover";
@@ -64,6 +66,8 @@ export default function HotelPlanner({
     sp.get("hmode") === "discover" || (!sp.get("hmode") && sp.get("city") && !sp.get("hotel")) ? "discover" : "known"
   );
   const [hotel, setHotel] = useState(sp.get("hotel") || "");
+  // Where the picked hotel is, from the suggestion list; cleared on typing.
+  const [hotelArea, setHotelArea] = useState(sp.get("hotelArea") || "");
   const [city, setCity] = useState(sp.get("city") || "");
   const [checkIn, setCheckIn] = useState(sp.get("checkIn") || "");
   const [checkOut, setCheckOut] = useState(sp.get("checkOut") || "");
@@ -120,6 +124,7 @@ export default function HotelPlanner({
     });
     if (mode === "known") {
       params.set("hotel", hotel.trim());
+      if (hotelArea) params.set("hotelArea", hotelArea);
     } else {
       params.set("city", city.trim());
       params.set("budget", String(Number(budget)));
@@ -160,16 +165,20 @@ export default function HotelPlanner({
             <FieldLabel dark={dark} icon="hotel" htmlFor="hotel-name">
               {dict.hotelForm.hotelName}
             </FieldLabel>
-            <input
+            <HotelNameInput
               id="hotel-name"
-              type="text"
-              autoComplete="off"
               className={inputClass}
               value={hotel}
               placeholder={dict.hotelForm.hotelNamePlaceholder}
-              aria-invalid={Boolean(errors.hotel)}
-              onChange={(e) => {
-                setHotel(e.target.value);
+              invalid={Boolean(errors.hotel)}
+              onChange={(name) => {
+                setHotel(name);
+                setHotelArea("");
+                setErrors((prev) => ({ ...prev, hotel: "" }));
+              }}
+              onPick={(s) => {
+                setHotel(s.name);
+                setHotelArea(s.area);
                 setErrors((prev) => ({ ...prev, hotel: "" }));
               }}
             />

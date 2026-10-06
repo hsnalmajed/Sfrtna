@@ -267,22 +267,24 @@ export default function HotelPrices(
   props: Common & {
     /** The hotel's name (known) or the city (discover). */
     query: string;
+    /** What the price search asks: the name plus where the hotel is, when known. */
+    priceQuery?: string;
     mode: "known" | "discover";
     minStars: number;
     /** Shown when no price could be checked at all: the partner buttons. */
     fallback: React.ReactNode;
   }
 ) {
-  const { query, mode, minStars, fallback, ...c } = props;
+  const { query, priceQuery, mode, minStars, fallback, ...c } = props;
   const url = useMemo(() => {
-    if (mode === "known") return apiUrl(c, { q: query });
+    if (mode === "known") return apiUrl(c, { q: (priceQuery || query).slice(0, 120) });
     const extra: Record<string, string> = { q: `hotels in ${query}` };
     if (minStars) extra.minStars = String(minStars);
     if (c.budget > 0 && c.nights > 0) extra.maxPerNight = String(Math.round(c.budget / c.nights));
     return apiUrl(c, extra);
     // c is rebuilt each render; its fields are what matter.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mode, query, minStars, c.checkIn, c.checkOut, c.adults, c.childrenAges, c.budget, c.nights]);
+  }, [mode, query, priceQuery, minStars, c.checkIn, c.checkOut, c.adults, c.childrenAges, c.budget, c.nights]);
 
   const [state, setState] = useState<{ url: string; result: HotelSearch | null } | null>(null);
   useEffect(() => {

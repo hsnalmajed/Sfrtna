@@ -47,6 +47,9 @@ function HotelResultsContent() {
   // flight page sends the city's English name to search with and the
   // traveller's own-language name to show.
   const label = sp.get("label")?.trim() || "";
+  // Where a hotel picked from the suggestions is: shown under its name and
+  // added to the price search, so the right one of several namesakes is found.
+  const hotelArea = mode === "known" ? sp.get("hotelArea")?.trim().slice(0, 120) || "" : "";
   const checkIn = sp.get("checkIn") || "";
   const checkOut = sp.get("checkOut") || "";
   const adults = Math.max(1, Number(sp.get("adults")) || 1);
@@ -123,6 +126,11 @@ function HotelResultsContent() {
               <Icon name="hotel" className="h-8 w-8 shrink-0 text-sun-400" />
               <span className="min-w-0 break-words">{label || query || "—"}</span>
             </h1>
+            {hotelArea && (
+              <p className="mt-2 text-sm font-semibold text-white/70" dir="auto">
+                {hotelArea}
+              </p>
+            )}
             {complete && (
               <p className="mt-3.5 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-sm font-semibold text-white/70">
                 <span dir="ltr">{checkIn}</span>
@@ -168,6 +176,7 @@ function HotelResultsContent() {
 
             <HotelPrices
               query={query}
+              priceQuery={hotelArea ? `${query} ${hotelArea}` : query}
               mode={mode}
               minStars={mode === "discover" ? minStars : 0}
               budget={mode === "discover" ? budget : 0}
