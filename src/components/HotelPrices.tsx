@@ -41,8 +41,13 @@ interface Common {
   budget: number;
 }
 
+/**
+ * "1,074 SAR", isolated (FSI…PDI) so that inside an Arabic sentence the
+ * amount and its code stay together, in order, instead of the code jumping
+ * to the other side of the number.
+ */
 function money(n: number, locale: "ar" | "en") {
-  return `${Math.round(n).toLocaleString(locale === "ar" ? "ar-SA-u-nu-latn" : "en-US")} SAR`;
+  return `\u2068${Math.round(n).toLocaleString(locale === "ar" ? "ar-SA-u-nu-latn" : "en-US")} SAR\u2069`;
 }
 
 function apiUrl(c: Common, extra: Record<string, string>) {
@@ -134,17 +139,18 @@ function PriceRows({ hotel, c, checkedAt }: { hotel: HotelResult; c: Common; che
     <div className="mt-4 space-y-2.5">
       {offers.map((o, i) => {
         const over = c.budget > 0 ? o.total - c.budget : 0;
+        const best = i === 0 && (offers.length === 1 || o.total < offers[1].total);
         return (
           <div
             key={o.label}
             className={`flex flex-wrap items-center justify-between gap-3 rounded-xl p-3.5 ring-1 sm:p-4 ${
-              i === 0 ? "bg-sun-50 ring-sun-300" : "bg-mist-50 ring-mist-200"
+              best ? "bg-sun-50 ring-sun-300" : "bg-mist-50 ring-mist-200"
             }`}
           >
             <div className="min-w-0">
               <p className="flex items-center gap-2 text-sm font-bold text-navy-800">
                 {o.label}
-                {i === 0 && offers.length > 1 && (
+                {i === 0 && offers.length > 1 && o.total < offers[1].total && (
                   <span className="rounded-full bg-sun-400 px-2 py-0.5 text-[11px] font-extrabold text-navy-950">{t.cheapest}</span>
                 )}
               </p>
@@ -166,7 +172,7 @@ function PriceRows({ hotel, c, checkedAt }: { hotel: HotelResult; c: Common; che
               target="_blank"
               rel="noopener noreferrer sponsored"
               className={`inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-extrabold transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400 ${
-                i === 0 ? "bg-sun-400 text-navy-950 hover:bg-sun-300" : "bg-white text-navy-900 ring-1 ring-mist-200 hover:ring-navy-300"
+                best ? "bg-sun-400 text-navy-950 hover:bg-sun-300" : "bg-white text-navy-900 ring-1 ring-mist-200 hover:ring-navy-300"
               }`}
             >
               {t.bookAt.replace("{partner}", o.label)}
@@ -327,7 +333,12 @@ export default function HotelPrices(
     );
   }
 
-  const hotels = result.hotels.filter((h) => h.name).slice(0, 12);
+  // Best rated first, more reviews breaking ties: Google's own order mixes
+  // in promoted listings.
+  const hotels = result.hotels
+    .filter((h) => h.name)
+    .sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0) || (b.reviews ?? 0) - (a.reviews ?? 0))
+    .slice(0, 12);
   if (!hotels.length) {
     return (
       <div className="space-y-4">

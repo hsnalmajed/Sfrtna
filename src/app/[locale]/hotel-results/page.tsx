@@ -88,8 +88,10 @@ function HotelResultsContent() {
     return `/${locale}?${p.toString()}#plan`;
   }, [sp, locale]);
 
+  // Isolated (FSI…PDI) so the amount and its code keep their order inside
+  // an Arabic sentence.
   const money = (n: number) =>
-    `${Math.round(n).toLocaleString(locale === "ar" ? "ar-SA-u-nu-latn" : "en-US")} ${currency}`;
+    `\u2068${Math.round(n).toLocaleString(locale === "ar" ? "ar-SA-u-nu-latn" : "en-US")} ${currency}\u2069`;
 
   const chips: string[] = [];
   if (nights) chips.push(nights === 1 ? t.oneNight : t.nights.replace("{count}", String(nights)));
