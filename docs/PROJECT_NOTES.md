@@ -140,11 +140,33 @@ Travelpayouts.
 - Live check 7 Oct after all settings: pages, /api from pages, robots.txt,
   sitemap OK; /api opened directly → 403. **Protection section closed.**
 
+### Android app — test build ready 7 Oct, awaiting owner's phone test
+- Owner's decision: Capacitor shell that loads the live sfrtna.com (not a
+  rebuilt native app); package `com.sfrtna.app` (permanent). Details in
+  `mobile/README.md`.
+- /api guard unchanged: the page runs on sfrtna.com inside the WebView, so
+  its fetches are same-origin with Sec-Fetch-Site. No app-only route.
+- Partner/other sites open in Custom Tabs; widget pop-ups caught; back
+  button; native offline screen (auto-retry); print and KML/GPX share via
+  `SfrtnaAppPlugin` ← `src/lib/nativeApp.ts`. UA suffix `SfrtnaApp/Android`;
+  GA4 user property `app_platform` (live check 7 Oct: `web` on the site).
+  To see it in reports, register `app_platform` as a user-scoped custom
+  dimension in GA4.
+- Built on GitHub Actions (cloud workspace can't download the Android SDK):
+  `.github/workflows/android.yml` → APK on the public `android-test`
+  pre-release. First build passed: versionCode 1, min SDK 24, target 36,
+  permissions INTERNET, NETWORK_STATE, COARSE/FINE location; no AD_ID.
+- Not yet tested on a real phone. Owner to install and check: launch,
+  flight search + «احجز الرحلة» (Custom Tab), hotel map widget, back
+  button, airplane mode → offline screen, KML/GPX share, plan PDF.
+- Before Play: owner's developer account (unknown if it exists), upload
+  key → 4 GitHub secrets, App Links (`assetlinks.json` after first upload),
+  store listing + Data safety.
+
 ## Next, in order
 
-1. Android app, then iPhone app (Stay22 has a Mobile SDK worth checking).
-   The apps must call /api through the guard: plan for it (e.g. an app
-   route with its own check) — native apps send no Sec-Fetch-Site.
+1. Finish Android (phone test, then Play), then iPhone app with the same
+   shell (`npx cap add ios`; Stay22 Mobile SDK worth checking).
 2. Marketing plan before launch.
 3. When Agoda is approved: Arabic hotel list from Agoda's API.
 4. Owner asked for: a glossary of technical terms (offered as a doc) and a full
