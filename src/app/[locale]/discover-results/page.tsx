@@ -95,7 +95,9 @@ function DiscoverResultsContent() {
         preferenceCategory,
       }),
     })
-      .then((r) => r.json())
+      // A refused or failed search is an error to say so — never an empty
+      // list that reads as "no destinations fit your budget".
+      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))))
       .then((data) => {
         setMode(data.mode);
         if (data.mode === "routes") {

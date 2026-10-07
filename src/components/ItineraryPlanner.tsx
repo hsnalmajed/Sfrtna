@@ -97,6 +97,7 @@ function ItineraryContent({ hero }: { hero?: SectionHero }) {
   const [interests, setInterests] = useState("");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<ItineraryResult | null>(null);
+  const [failed, setFailed] = useState(false);
 
   const countryName = resolved.country
     ? locale === "ar"
@@ -154,8 +155,19 @@ function ItineraryContent({ hero }: { hero?: SectionHero }) {
           locale,
         }),
       });
-      const data = await res.json();
+      const data = (await res.json().catch(() => null)) as ItineraryResult | null;
+      // A refused or failed request must say so, not leave the page blank
+      // (or break on a plan that is not there).
+      if (!res.ok || !data || !Array.isArray(data.plan)) {
+        setResult(null);
+        setFailed(true);
+        return;
+      }
+      setFailed(false);
       setResult(data);
+    } catch {
+      setResult(null);
+      setFailed(true);
     } finally {
       setLoading(false);
     }
@@ -299,6 +311,12 @@ function ItineraryContent({ hero }: { hero?: SectionHero }) {
           </div>
         </div>
       </form>
+
+      {failed && !loading && (
+        <p role="alert" className="mt-6 rounded-xl bg-rose-50 px-4 py-3 text-sm font-semibold text-rose-800 ring-1 ring-rose-200">
+          {dict.itinerary.failed}
+        </p>
+      )}
 
       {result && (
         <div className="mt-8 space-y-4">
