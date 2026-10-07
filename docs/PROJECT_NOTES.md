@@ -181,6 +181,15 @@ Travelpayouts.
   for Pexels' reply before choosing (a) 3 photos per place rotating weekly
   and (b) homepage hero daily vs weekly. Old photos cannot be recovered
   (they lived only in per-data-centre edge cache).
+- **Pexels replied 7 Oct:** limit increases paused, no date. Default
+  200/hour, 20,000/month stays — ~20× what the stored file needs. Photos
+  fill in automatically after the 25 Oct reset.
+- Owner's decision (7 Oct, "do what's right"): **3 photos per place,
+  rotating weekly** (`PHOTOS_PER_PLACE`, `fromStored` picks by week + a
+  per-place offset; no extra API calls). Homepage hero stays daily
+  (hand-picked, no API). Speed: `preconnect` to images.pexels.com in the
+  layout, `decoding="async"`, `<Photo placeholder>` draws the card's navy
+  tile under the photo while it loads (no JS wait, no blank box).
 - Same day: footer 3 columns on phones; homepage season cards no longer
   overlap badges on the city name (checked at 375 px).
 
