@@ -67,16 +67,23 @@ export async function hotelSuggestions(input: string): Promise<HotelSuggestion[]
 
 /**
  * The spellings worth asking an outside service for: as typed; with أ إ آ
- * written as ا; and with a word-final ة / ه swapped. At most three, so a
- * keystroke costs at most three cached lookups. Latin text is asked as is.
+ * written as ا; with a word-final ة / ه swapped; and with a word-initial ا
+ * given its hamza (أ / إ). At most five, each cached a week. Latin text is
+ * asked as is.
  */
 export function arabicSpellings(q: string): string[] {
   if (!/[\u0600-\u06FF]/.test(q)) return [q];
   const plainAlef = q.replace(/[أإآ]/g, "ا");
   const swapped = plainAlef.replace(/[ةه](?=\s|$)/g, (c) => (c === "ة" ? "ه" : "ة"));
+  // And the other way round: a traveller who types «ابها» means «أبها», and
+  // OpenStreetMap only knows the hamza spelling. A word-initial ا (not the
+  // article ال) is tried with أ and with إ.
+  const initial = /(^|\s)ا(?!ل)/g;
+  const withHamza = plainAlef.replace(initial, "$1أ");
+  const withHamzaBelow = plainAlef.replace(initial, "$1إ");
   // Sorted, so «مكة فندق» and «مكه فندق» ask the same spellings in the same
   // order and get the same merged list back.
-  return [...new Set([q, plainAlef, swapped])].sort();
+  return [...new Set([q, plainAlef, swapped, withHamza, withHamzaBelow])].sort();
 }
 
 /** Names that contain what was typed (in any spelling) first; the rest after, in their order. */
