@@ -214,6 +214,33 @@ Travelpayouts.
 - Hotel names: OpenStreetMap misses many hotels and most Arabic names
   («إسطنبول هيلتون» → nothing). The fix is the owner's Google Places key.
 
+### Search outage found by the owner — fixed 7 Oct (afternoon)
+- **Cause:** `edge-guard.js` listed `/api/discover` and `/api/multicity` as
+  GET; their pages POST → 405 for every «اقترح لي وجهة» and multi-city
+  search since the protection section. The discover page then showed «no
+  results» instead of an error. My crawl only checked GET pages, so it
+  missed it.
+- Fixes: guard methods; `scripts/check-guard.mjs` (runs as `prebuild`)
+  fails the build if guard and route files disagree; discover and itinerary
+  pages show an error on a failed request; discover «طيران + فندق» and
+  «فندق فقط» no longer return nothing when no hotel list price exists
+  (flight-chosen / in-season list, hotel priced live per city); Arabic
+  plurals «6 مسافرين», «13 ليلة».
+- Live re-test 7 Oct (owner's search RUH 2→15 Jan 2027, 6 travellers,
+  80,000 SAR): round trip 7 priced + 24 in season; one way 26 + 24;
+  flight+hotel 7 + 24; hotel only 24 in season; routes 24; multi-city 3
+  legs; itinerary, day-fares, rates, hotel names, all main pages OK.
+- **Site check:** `scripts/smoke.mjs` + `.github/workflows/smoke.yml`
+  (after every push + every 6 h; GitHub emails the owner on failure). Runs
+  against `sfrtna.almajedhsn.workers.dev` because sfrtna.com's Bot Fight
+  Mode blocks GitHub machines. `edge-worker.js` now 301-redirects
+  workers.dev to sfrtna.com unless header `x-sfrtna-smoke` = `SMOKE_TOKEN`
+  (closes a bot-protection side door). **Owner action:** set the same
+  random `SMOKE_TOKEN` in Cloudflare (Worker secret) and GitHub (repository
+  secret); until then the check is skipped.
+- Rule for every future change: test POST flows (discover, multicity,
+  itinerary) with real data, not just page GETs.
+
 ## Next, in order
 
 0. Owner decision pending: which countries to add next (site has 73 with
