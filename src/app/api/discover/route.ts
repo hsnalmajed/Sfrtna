@@ -142,7 +142,13 @@ async function suggestForDestination(
   const flight = flights[0];
   const hotel = hotels[0];
   if (wantsFlight && !flight) return "no-fare";
-  if (wantsHotel && !hotel) return null;
+  // No live hotel price source answers for the whole list of cities (hotels
+  // are priced live, per city, on the hotel search). So a missing hotel
+  // must not drop the city: "flight + hotel" is chosen on the flight and
+  // the hotel is checked on the city's own search, and "hotel only" lists
+  // the cities in season without a price — never "no results" for every
+  // destination because one side has no list price.
+  if (wantsHotel && !hotel && !wantsFlight) return "no-fare";
 
   const totalPrice = (flight?.price ?? 0) + (hotel?.totalPrice ?? 0);
   return {

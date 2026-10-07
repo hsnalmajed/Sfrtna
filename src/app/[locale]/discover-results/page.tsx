@@ -299,6 +299,7 @@ function DiscoverResultsContent() {
           <div className="mb-5 rounded-xl bg-sea-50 px-4 py-3 text-sm leading-relaxed text-navy-800 ring-1 ring-sea-100">
             ℹ️ {d.pickedNotice.replace("{budget}", money(Number(budget)))}
             {mode === "routes" && <> {d.routesNotice}</>}
+            {mode !== "routes" && tripType === "both" && <> {d.pickedNoticeHotel}</>}
           </div>
         )}
 
@@ -352,7 +353,7 @@ function DiscoverResultsContent() {
         {!loading && !pricesUnavailable && mode !== "routes" && unpricedShown.length > 0 && (
           <section className="mt-10">
             <h2 className="font-display text-lg font-extrabold text-navy-900">{d.unpricedTitle}</h2>
-            <p className="mb-4 mt-1 max-w-3xl text-sm leading-relaxed text-navy-600">{d.unpricedBody}</p>
+            <p className="mb-4 mt-1 max-w-3xl text-sm leading-relaxed text-navy-600">{tripType === "hotel" ? d.unpricedBodyHotel : d.unpricedBody}</p>
             {renderSingle(unpricedShown)}
           </section>
         )}
