@@ -31,7 +31,7 @@ import {
 
 const DIR = join(process.cwd(), "public/data/places");
 const COUNTS = join(process.cwd(), "src/data/placeCounts.json");
-const PAUSE_MS = 4000;
+const PAUSE_MS = 2500;
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
