@@ -244,9 +244,10 @@ Travelpayouts.
   against `sfrtna.almajedhsn.workers.dev` because sfrtna.com's Bot Fight
   Mode blocks GitHub machines. `edge-worker.js` now 301-redirects
   workers.dev to sfrtna.com unless header `x-sfrtna-smoke` = `SMOKE_TOKEN`
-  (closes a bot-protection side door). **Owner action:** set the same
-  random `SMOKE_TOKEN` in Cloudflare (Worker secret) and GitHub (repository
-  secret); until then the check is skipped.
+  (closes a bot-protection side door). `SMOKE_TOKEN` set by the owner 7 Oct
+  in Cloudflare + GitHub (kept in his Bitwarden). First manual run: **all
+  18 checks passed** (pages, discover ×4, multi-city, fares, rates, hotel
+  names, places, and the three protection checks).
 - Rule for every future change: test POST flows (discover, multicity,
   itinerary) with real data, not just page GETs.
 
