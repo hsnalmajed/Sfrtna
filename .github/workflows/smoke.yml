@@ -1,0 +1,32 @@
+# Live check of sfrtna.com (scripts/smoke.mjs): the real searches — suggest
+# a destination, multi-city, round trip and one way, hotel names, rates,
+# places — plus the protection rules. GitHub emails the owner when it fails.
+#
+# Runs every six hours, and after each push to main once the deploy has had
+# time to go out (Cloudflare takes about five minutes).
+name: Site check
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "17 */6 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: smoke
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Wait for the deploy
+        if: github.event_name == 'push'
+        run: sleep 480
+      - name: Check the live site
+        run: node scripts/smoke.mjs https://sfrtna.com
