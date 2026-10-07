@@ -174,6 +174,12 @@ Travelpayouts.
 - **Owner action:** add GitHub secret `PEXELS_API_KEY` (same key as
   Cloudflare). Optional: ask Pexels for a higher limit to get photos before
   25 Oct. Until then cards show their navy tiles.
+- GitHub secret `PEXELS_API_KEY` added by owner 7 Oct; manual run OK (key
+  read, Pexels answered 429 — allowance still empty). Owner emailed
+  api@pexels.com 7 Oct asking for a higher limit. **Owner's decision:** wait
+  for Pexels' reply before choosing (a) 3 photos per place rotating weekly
+  and (b) homepage hero daily vs weekly. Old photos cannot be recovered
+  (they lived only in per-data-centre edge cache).
 - Same day: footer 3 columns on phones; homepage season cards no longer
   overlap badges on the city name (checked at 375 px).
 
