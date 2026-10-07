@@ -1,4 +1,5 @@
 import { cachedJson } from "@/lib/edgeCache";
+import { normalizeSearch } from "@/lib/search";
 
 /**
  * Hotel names as the traveller types, from Google Places Autocomplete (New).
@@ -48,8 +49,39 @@ interface Prediction {
 export async function hotelSuggestions(input: string): Promise<HotelSuggestion[]> {
   const q = input.trim().replace(/\s+/g, " ").slice(0, 60);
   const google = key() ? await googleHotels(q) : null;
-  if (google && google.length) return google;
-  return (await osmHotels(q)) ?? [];
+  if (google && google.length) return ranked(google, q);
+
+  // OpenStreetMap matches the letters exactly, so «فندق سماء» and «فندق سما»
+  // or «اسطنبول» and «إسطنبول» find different hotels. Every spelling a
+  // traveller might mean is asked (each answer cached a week), and the lists
+  // are merged — the site-wide rule: أ إ آ = ا, ة = ه, ى = ي.
+  const lists = await Promise.all(arabicSpellings(q).map((v) => osmHotels(v)));
+  const merged: HotelSuggestion[] = [];
+  for (const list of lists) {
+    for (const h of list ?? []) {
+      if (!merged.some((o) => o.name === h.name && o.area === h.area)) merged.push(h);
+    }
+  }
+  return ranked(merged, q).slice(0, 8);
+}
+
+/**
+ * The spellings worth asking an outside service for: as typed; with أ إ آ
+ * written as ا; and with a word-final ة / ه swapped. At most three, so a
+ * keystroke costs at most three cached lookups. Latin text is asked as is.
+ */
+export function arabicSpellings(q: string): string[] {
+  if (!/[\u0600-\u06FF]/.test(q)) return [q];
+  const plainAlef = q.replace(/[أإآ]/g, "ا");
+  const swapped = plainAlef.replace(/[ةه](?=\s|$)/g, (c) => (c === "ة" ? "ه" : "ة"));
+  return [...new Set([q, plainAlef, swapped])];
+}
+
+/** Names that contain what was typed (in any spelling) first; the rest after, in their order. */
+function ranked(items: HotelSuggestion[], q: string): HotelSuggestion[] {
+  const nq = normalizeSearch(q);
+  const hit = (h: HotelSuggestion) => normalizeSearch(h.name).includes(nq);
+  return [...items.filter(hit), ...items.filter((h) => !hit(h))];
 }
 
 interface PhotonFeature {
