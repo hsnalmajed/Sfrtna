@@ -34,8 +34,15 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
   const dict = getDictionary(loc);
   const isAr = loc === "ar";
 
-  const guideCodes = Object.keys(COUNTRY_GUIDES);
-  const cityCount = guideCodes.reduce((n, code) => n + (COUNTRY_CITIES[code]?.length ?? 0), 0);
+  // The same set the destinations page lists (destinationList.ts): every
+  // country with a guide or city pages. Counting guides only said 41
+  // countries here while the destinations page showed 73.
+  const listedCountries = [...new Set([...Object.keys(COUNTRY_GUIDES), ...Object.keys(COUNTRY_CITIES)])]
+    .filter((code) => (COUNTRY_CITIES[code]?.length ?? 0) > 0 || COUNTRY_GUIDES[code])
+    .map((code) => findCountry(code))
+    .filter((c) => c !== undefined);
+  const cityCount = listedCountries.reduce((n, c) => n + (COUNTRY_CITIES[c.code]?.length ?? 0), 0);
+  const continentCount = new Set(listedCountries.map((c) => c.continent)).size;
 
   // This month's best destinations — read from the single travel-season
   // dataset the "When to travel?" page uses (src/lib/travelSeason/site.ts):
@@ -162,8 +169,8 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
   });
 
   const stats = [
-    { value: "6", label: dict.home.statContinents },
-    { value: String(guideCodes.length), label: dict.home.statCountries },
+    { value: String(continentCount), label: dict.home.statContinents },
+    { value: String(listedCountries.length), label: dict.home.statCountries },
     { value: String(cityCount), label: dict.home.statCities },
   ];
 
@@ -206,7 +213,7 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
           a box whose height is set by that same content means a tall form
           pushes the headline up underneath the fixed header. It starts below
           the header and grows downwards, where there is room. */}
-      <section className="relative isolate overflow-hidden bg-navy-990 pb-28 sm:pb-32">
+      <section className="home-hero relative isolate overflow-hidden bg-navy-990 pb-28 sm:pb-32">
         <div className="absolute inset-x-0 top-0 -z-10 h-[46rem] overflow-hidden">
           <Photo
             src={heroPhoto}
@@ -246,8 +253,8 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
             so the first thing the eye met was a column of empty photograph.
             A hero whose whole reason for existing is one panel puts that
             panel in the middle of the window. */}
-        <div className="mx-auto flex w-full max-w-7xl flex-col items-center px-4 pt-28 text-center sm:px-6">
-          <p className="mb-4 inline-flex items-center gap-2 rounded-full bg-navy-990/60 px-3.5 py-1.5 text-2xs font-bold tracking-wide text-sun-300 ring-1 ring-white/25 backdrop-blur-md">
+        <div className="hero-pad mx-auto flex w-full max-w-7xl flex-col items-center px-4 pt-28 text-center sm:px-6">
+          <p className="web-only mb-4 inline-flex items-center gap-2 rounded-full bg-navy-990/60 px-3.5 py-1.5 text-2xs font-bold tracking-wide text-sun-300 ring-1 ring-white/25 backdrop-blur-md">
             ✈️ {dict.hero.badge}
           </p>
 

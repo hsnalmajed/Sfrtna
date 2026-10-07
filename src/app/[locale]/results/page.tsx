@@ -305,7 +305,7 @@ function ResultsContent() {
           a hero here would mean either a slow one or a wrong one; the navy
           gradient carries the brand on its own, and the route deserves to be
           read rather than looked through. */}
-      <section className="relative isolate overflow-hidden bg-gradient-to-b from-navy-900 to-navy-990 pb-9 pt-24 sm:pt-28">
+      <section className="relative isolate overflow-hidden bg-gradient-to-b from-navy-900 to-navy-990 hero-pad pb-9 pt-24 sm:pt-28">
         <div
           className="absolute inset-0 -z-10 bg-[radial-gradient(90%_60%_at_85%_0%,rgb(255_166_48/0.14),transparent_70%)]"
           aria-hidden="true"

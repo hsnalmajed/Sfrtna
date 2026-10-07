@@ -324,7 +324,7 @@ export default function CityPlacesPlanner({
 
       {/* What just happened, for a moment, where the eye already is. */}
       {toast && (
-        <div className="print:hidden pointer-events-none fixed inset-x-0 bottom-6 z-50 flex justify-center px-4" aria-live="polite">
+        <div className="lift-over-tabbar print:hidden pointer-events-none fixed inset-x-0 bottom-6 z-50 flex justify-center px-4" aria-live="polite">
           <p
             key={toast.id}
             className={`toast-in max-w-md rounded-full px-5 py-3 text-sm font-extrabold shadow-2xl ${

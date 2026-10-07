@@ -7,6 +7,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import NavTracker from "@/components/NavTracker";
 import Analytics from "@/components/Analytics";
+import AppTabBar from "@/components/AppTabBar";
 import Script from "next/script";
 
 export async function generateStaticParams() {
@@ -51,7 +52,24 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
   preconnect("https://images.pexels.com", { crossOrigin: "anonymous" });
 
   return (
-    <html lang={loc} dir={dict.dir} className="h-full antialiased">
+    // suppressHydrationWarning: the script below may add "in-app" to this
+    // element's class before React hydrates it — on purpose.
+    <html lang={loc} dir={dict.dir} className="h-full antialiased" suppressHydrationWarning>
+      <head>
+        {/*
+          Inside the phone app (mobile/, user agent "SfrtnaApp/…") the page
+          wears app chrome — bottom tab bar, compact header, no footer — set
+          by CSS under html.in-app (globals.css). Decided here, before the
+          first paint, because the edge HTML cache is keyed by URL only: the
+          server cannot send the app a different page, and deciding after
+          hydration would make every page jump.
+        */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{if(navigator.userAgent.indexOf("SfrtnaApp/")>-1)document.documentElement.classList.add("in-app")}catch(e){}`,
+          }}
+        />
+      </head>
       {/*
         No Travelpayouts Drive script. It was loaded site-wide and opened
         Klook pages over ours on click (seen 29 Sep 2026); a traveller who
@@ -68,6 +86,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
         <Header locale={loc} />
         <main className="flex-1">{children}</main>
         <Footer locale={loc} />
+        <AppTabBar locale={loc} />
         <NavTracker />
         {/* GA4 + consent banner + partner-click tracking (sfrtna.com only). */}
         <Analytics locale={loc} />

@@ -27,6 +27,12 @@ export const dictionaries = {
       whenToTravel: "متى أسافر؟",
       tools: "أدوات المسافر",
       toolsAria: "افتح قائمة أدوات المسافر",
+      // The phone app's bottom tab bar (AppTabBar.tsx): one or two words each.
+      bookTab: "احجز",
+      seasonsTab: "المواسم",
+      more: "المزيد",
+      language: "اللغة",
+      close: "إغلاق",
     },
     visa: {
       title: "متطلبات السفر للسعوديين",
@@ -1356,6 +1362,11 @@ export const dictionaries = {
       whenToTravel: "When to go",
       tools: "Traveller tools",
       toolsAria: "Open traveller tools menu",
+      bookTab: "Book",
+      seasonsTab: "Seasons",
+      more: "More",
+      language: "Language",
+      close: "Close",
     },
     visa: {
       title: "Entry Requirements for Saudi Passports",

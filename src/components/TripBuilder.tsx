@@ -901,7 +901,7 @@ export default function TripBuilder({
           hidden while a picker is open so it cannot sit on top of the list
           the traveller is choosing from. */}
       {primaryHandoff && !picker && (
-        <div className="fixed inset-x-0 bottom-0 z-40 border-t border-navy-950/10 bg-white/95 px-4 py-3 shadow-[0_-8px_24px_-12px_rgba(6,38,83,0.35)] backdrop-blur-md sm:hidden">
+        <div className="sit-on-tabbar fixed inset-x-0 bottom-0 z-40 border-t border-navy-950/10 bg-white/95 px-4 py-3 shadow-[0_-8px_24px_-12px_rgba(6,38,83,0.35)] backdrop-blur-md sm:hidden">
           <div className="flex items-center gap-3">
             <div className="min-w-0">
               <p dir="ltr" className="text-base font-extrabold leading-none text-navy-900">

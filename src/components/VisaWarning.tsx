@@ -38,9 +38,12 @@ export default function VisaWarning({
     "inline-flex items-center gap-1.5 rounded-lg bg-white px-3 py-2 text-xs font-bold text-amber-900 ring-1 ring-amber-300 transition hover:-translate-y-0.5 hover:shadow-sm";
 
   return (
-    <div className="flex flex-col gap-4 rounded-2xl bg-amber-50 p-4 ring-1 ring-amber-300 sm:flex-row sm:items-center sm:gap-6 sm:p-5">
+    // On a phone the icon sits beside the title instead of on a row of its
+    // own, and the body drops a size: the notice stays whole (and not
+    // collapsible) but stops filling the first screen.
+    <div className="grid grid-cols-[auto_1fr] items-start gap-x-3 gap-y-3 rounded-2xl bg-amber-50 p-4 ring-1 ring-amber-300 sm:flex sm:flex-row sm:items-center sm:gap-6 sm:p-5">
       <span
-        className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-200/70 text-lg ring-1 ring-amber-300"
+        className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-amber-200/70 text-base ring-1 ring-amber-300 sm:h-10 sm:w-10 sm:rounded-xl sm:text-lg"
         aria-hidden="true"
       >
         ⚠️
@@ -48,7 +51,7 @@ export default function VisaWarning({
 
       <div className="min-w-0 flex-1">
         <p className="font-bold text-amber-900">{dict.warningTitle}</p>
-        <p className="mt-1 text-sm text-amber-800">
+        <p className="mt-1 text-xs leading-relaxed text-amber-800 sm:text-sm">
           {dict.warningBody}
           {scope && <span className="text-amber-700"> {scope}</span>}
         </p>
@@ -58,7 +61,7 @@ export default function VisaWarning({
           screen that turns a four-line block into a two-line one, and the
           links stay where the eye already is. */}
       {showLinks && (
-        <div className="flex flex-wrap gap-2 sm:shrink-0 sm:justify-end">
+        <div className="col-span-2 flex flex-wrap gap-2 sm:shrink-0 sm:justify-end">
           <a href={IATA_TRAVEL_CENTRE_URL} target="_blank" rel="noopener noreferrer" className={linkClass}>
             {dict.checkIata} ↗
           </a>

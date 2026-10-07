@@ -58,7 +58,7 @@ export default function PageHero({
   } as const;
 
   return (
-    <section className={`relative isolate flex ${heights[size]} items-end overflow-hidden bg-navy-990`}>
+    <section className={`page-hero relative isolate flex ${heights[size]} items-end overflow-hidden bg-navy-990`}>
       <Photo
         placeholder
         src={photo}
@@ -78,7 +78,7 @@ export default function PageHero({
       <div className={`${photoSrcSet ? "scrim-soft" : "scrim"} absolute inset-0 -z-10`} />
 
       <div
-        className={`mx-auto w-full max-w-6xl px-4 pb-8 pt-24 sm:px-6 sm:pb-11 ${
+        className={`hero-pad mx-auto w-full max-w-6xl px-4 pb-8 pt-24 sm:px-6 sm:pb-11 ${
           align === "center" ? "text-center" : ""
         }`}
       >

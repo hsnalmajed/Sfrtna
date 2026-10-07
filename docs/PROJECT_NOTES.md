@@ -160,6 +160,17 @@ Travelpayouts.
 - Not yet tested on a real phone. Owner to install and check: launch,
   flight search + «احجز الرحلة» (Custom Tab), hotel map widget, back
   button, airplane mode → offline screen, KML/GPX share, plan PDF.
+- **App look (7 Oct, owner: "looks like a website stored on the phone"):**
+  `html.in-app` set by an inline script in `[locale]/layout.tsx` from the UA
+  (before first paint; the edge cache is keyed by URL, so the server can't
+  send the app different HTML). CSS in `globals.css` (end): bottom tab bar
+  `AppTabBar.tsx` (Home · Destinations · **Book** · Seasons · More — More
+  sheet holds itinerary/visa/currency, language, legal pages, cookies,
+  disclaimer; back button closes it), slim solid header with centred logo,
+  no footer, heroes start under the bar (`hero-pad`, `page-hero`), root
+  font 15–16px by phone width. `web-only` / `app-only` classes; bottom-fixed
+  bars use `lift-over-tabbar` / `sit-on-tabbar`. Website unchanged.
+  Home stats now count the same 73 countries / 214 cities as Destinations.
 - Before Play: owner's developer account (unknown if it exists), upload
   key → 4 GitHub secrets, App Links (`assetlinks.json` after first upload),
   store listing + Data safety.

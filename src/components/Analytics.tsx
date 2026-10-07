@@ -151,7 +151,7 @@ gtag('js',new Date());gtag('config','${GA_ID}');`}
           role="dialog"
           aria-live="polite"
           aria-label={t.title}
-          className="fixed inset-x-3 bottom-3 z-[60] mx-auto max-w-xl rounded-2xl bg-navy-990 p-4 text-sm text-white shadow-2xl ring-1 ring-white/10 sm:p-5"
+          className="lift-over-tabbar fixed inset-x-3 bottom-3 z-[60] mx-auto max-w-xl rounded-2xl bg-navy-990 p-4 text-sm text-white shadow-2xl ring-1 ring-white/10 sm:p-5"
         >
           <p className="font-bold">{t.title}</p>
           <p className="mt-1.5 leading-relaxed text-white/70">

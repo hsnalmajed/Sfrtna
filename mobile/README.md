@@ -31,6 +31,11 @@ store release.
 | `SfrtnaAppPlugin` | `shareFile` (KML/GPX → share sheet) and `print` (Android print / save as PDF), called by the site through `src/lib/nativeApp.ts` |
 | `OfflineView` | The "no connection" screen (Arabic default, English on English phones) |
 
+Inside the app the site wears app chrome — bottom tab bar, slim header, no
+footer — chosen by CSS under `html.in-app` (see the end of
+`src/app/globals.css` and `src/components/AppTabBar.tsx`). Changing it is a
+site change: no new app release.
+
 The site knows it is inside the app from the user agent suffix
 `SfrtnaApp/Android`. GA4 receives it as the user property `app_platform`
 (`android_app` / `web`).

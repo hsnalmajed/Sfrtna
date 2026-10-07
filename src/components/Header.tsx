@@ -84,20 +84,20 @@ export default function Header({ locale }: { locale: Locale }) {
     <header className="fixed inset-x-0 top-0 z-50">
       {/* Scrim: only visible while the bar itself is transparent. */}
       <div
-        className={`pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-navy-990/85 via-navy-990/45 to-transparent transition-opacity duration-300 ${
+        className={`site-header-scrim pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-navy-990/85 via-navy-990/45 to-transparent transition-opacity duration-300 ${
           solid ? "opacity-0" : "opacity-100"
         }`}
       />
 
       <div
-        className={`relative transition-all duration-300 ${
+        className={`site-header-bar relative transition-all duration-300 ${
           solid
             ? "bg-navy-990/94 shadow-[0_1px_0_0_rgba(255,255,255,0.07),0_10px_30px_-18px_rgba(4,24,47,0.9)] backdrop-blur-xl"
             : "bg-transparent"
         }`}
       >
         <div
-          className={`mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 transition-all duration-300 sm:px-6 ${
+          className={`site-header-row mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 transition-all duration-300 sm:px-6 ${
             solid ? "py-2" : "py-3.5"
           }`}
         >
@@ -107,7 +107,7 @@ export default function Header({ locale }: { locale: Locale }) {
             href={`/${locale}`}
             className="flex shrink-0 items-center rounded-xl bg-white px-2.5 py-1 shadow-[0_2px_10px_-4px_rgba(4,24,47,0.5)] ring-1 ring-white/70 transition hover:shadow-[0_4px_16px_-4px_rgba(4,24,47,0.6)]"
           >
-            <Logo variant="full" alt={`${dict.siteNameAr} ${dict.siteNameEn}`} priority className="h-10 w-auto sm:h-12" />
+            <Logo variant="full" alt={`${dict.siteNameAr} ${dict.siteNameEn}`} priority className="site-header-logo h-10 w-auto sm:h-12" />
           </Link>
 
           <nav className="hidden items-center gap-0.5 text-sm font-semibold lg:flex">
@@ -170,7 +170,9 @@ export default function Header({ locale }: { locale: Locale }) {
             </div>
           </nav>
 
-          <div className="flex shrink-0 items-center gap-2">
+          {/* In the phone app the bottom tab bar (AppTabBar) carries all of
+              this — menu, booking and language — so it is hidden there. */}
+          <div className="web-only flex shrink-0 items-center gap-2">
             <Link
               href={`/${locale}#plan`}
               onClick={onBook}
@@ -203,7 +205,7 @@ export default function Header({ locale }: { locale: Locale }) {
           // to dismiss the drawer, and that never changes the path.
           <nav
             onClick={() => setMenuOpen(false)}
-            className="border-t border-white/10 bg-navy-990/97 px-4 pb-4 pt-2 backdrop-blur-xl lg:hidden"
+            className="web-only border-t border-white/10 bg-navy-990/97 px-4 pb-4 pt-2 backdrop-blur-xl lg:hidden"
           >
             {navLinks.map((link) => (
               <Link

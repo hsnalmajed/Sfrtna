@@ -41,7 +41,7 @@ export default function Footer({ locale }: { locale: Locale }) {
   ];
 
   return (
-    <footer className="mt-20 bg-navy-990">
+    <footer className="web-only mt-20 bg-navy-990">
       <div className="h-px bg-gradient-to-r from-transparent via-sun-400/60 to-transparent" />
       <div className="mx-auto max-w-6xl px-4 py-14 text-sm sm:px-6">
         <div className="grid grid-cols-3 gap-x-4 gap-y-10 border-b border-white/10 pb-10 sm:grid-cols-[1.4fr_0.8fr_0.8fr_0.8fr] sm:gap-x-8">

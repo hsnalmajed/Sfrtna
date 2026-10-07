@@ -816,3 +816,127 @@ select optgroup {
     opacity: 0.6;
   }
 }
+
+/* ─────────────────────────────────────────────────────────────────────────
+   The phone app (mobile/ — sfrtna.com in a Capacitor shell).
+
+   html.in-app is set before the first paint by the inline script in
+   [locale]/layout.tsx when the user agent carries "SfrtnaApp/". The same
+   HTML serves the site and the app (the edge cache is keyed by URL), so the
+   app's look is decided here, in CSS, and nowhere else:
+
+   - a bottom tab bar (AppTabBar.tsx) replaces the header menu and footer;
+   - the header becomes a slim, solid app bar with the logo centred;
+   - heroes start under that bar instead of under a tall website header and
+     stop claiming a third of the screen;
+   - type and spacing follow the phone's width (rem scales with it), so a
+     360px phone and a 430px phone each get a layout sized for them, and
+     the phone's own font-size setting still applies on top (WebView text
+     zoom).
+   ───────────────────────────────────────────────────────────────────────── */
+:root {
+  --app-bar: 3.25rem;
+  --app-tabbar: calc(3.9rem + var(--safe-area-inset-bottom, 0px));
+}
+
+.app-only {
+  display: none !important;
+}
+html.in-app .app-only {
+  display: revert !important;
+}
+html.in-app .web-only {
+  display: none !important;
+}
+
+html.in-app {
+  /* 15px on a 360px phone, 16px from 400px up. */
+  font-size: clamp(15px, 4vw, 16px);
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
+}
+html.in-app body {
+  padding-bottom: var(--app-tabbar);
+  overscroll-behavior-y: none;
+}
+
+/* The bar at the top: solid from the start, slim, logo centred. */
+html.in-app .site-header-scrim {
+  display: none;
+}
+html.in-app .site-header-bar {
+  background: var(--navy-990);
+  box-shadow: 0 1px 0 0 rgb(255 255 255 / 0.07);
+  padding-top: var(--safe-area-inset-top, 0px);
+}
+html.in-app .site-header-row {
+  justify-content: center;
+  height: var(--app-bar);
+  padding-block: 0;
+}
+html.in-app .site-header-logo {
+  height: 2.15rem;
+}
+
+/* Heroes begin just under the bar. */
+html.in-app .hero-pad {
+  padding-top: calc(var(--app-bar) + var(--safe-area-inset-top, 0px) + 1.1rem);
+}
+html.in-app .page-hero {
+  min-height: 0;
+}
+html.in-app .page-hero .hero-pad {
+  padding-bottom: 1.4rem;
+}
+html.in-app .page-hero h1 {
+  font-size: clamp(1.5rem, 1.1rem + 2vw, 1.9rem);
+}
+html.in-app .page-hero h1 + p {
+  margin-top: 0.5rem;
+  font-size: var(--text-sm);
+  line-height: 1.55;
+}
+html.in-app .home-hero h1 {
+  font-size: clamp(1.55rem, 1.05rem + 2.4vw, 2rem);
+}
+html.in-app .home-hero {
+  padding-bottom: 6.5rem;
+}
+
+/* The tab bar itself. */
+html.in-app .app-tabbar {
+  display: flex !important;
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 50;
+  height: var(--app-tabbar);
+  padding-bottom: var(--safe-area-inset-bottom, 0px);
+  align-items: stretch;
+  background: rgb(4 24 47 / 0.97);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 -1px 0 0 rgb(255 255 255 / 0.08), 0 -10px 30px -18px rgb(4 24 47 / 0.9);
+  user-select: none;
+  -webkit-user-select: none;
+}
+html.in-app .app-tab {
+  min-height: 44px;
+}
+html.in-app .app-sheet {
+  padding-bottom: calc(var(--app-tabbar) + 0.5rem);
+}
+
+/* Things that sit at the bottom of the screen move up above the tab bar. */
+html.in-app .lift-over-tabbar {
+  bottom: calc(var(--app-tabbar) + 0.75rem);
+}
+html.in-app .sit-on-tabbar {
+  bottom: var(--app-tabbar);
+}
+
+@media print {
+  html.in-app body {
+    padding-bottom: 0;
+  }
+}
