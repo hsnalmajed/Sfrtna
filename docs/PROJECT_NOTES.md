@@ -48,7 +48,8 @@ The container shell cannot reach sfrtna.com — test through the browser.
 | RateHawk / ZenHotels | City hotel links (`src/lib/zenhotels.ts`) | linked ✅, W-8BEN under review |
 | Agoda | Pending manual site review | when approved: Site ID/API key (`AGODA_API_KEY`) + bank, then build our own Arabic hotel list |
 | SerpApi (`SERPAPI_KEY`) | Google Hotels prices for one named hotel | free 250/month, pace guard in `serpapi.ts`; `/api/serp-status` shows usage |
-| Google Places (`GOOGLE_PLACES_KEY`) | Hotel-name suggestions | **owner still creating the key** (project "Sfrtna", Places API (New), daily cap 300). Until then OpenStreetMap/Photon answers |
+| Google Places (`GOOGLE_PLACES_KEY`) | Hotel-name suggestions | **blocked**: Google Cloud in KSA is sold only via CNTXT, which needs a commercial registration; owner has none (7 Oct). Code kept, off without the key |
+| HERE (`HERE_API_KEY`) | Hotel-name suggestions (Discover, accommodation categories 500-*) | chosen 7 Oct instead of Google; free 5,000/month; **owner creating account**. Order: Google → HERE → OpenStreetMap. `/api/health` shows `here.status` and lodging hits |
 
 ## Section status
 

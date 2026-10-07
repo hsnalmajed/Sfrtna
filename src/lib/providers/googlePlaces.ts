@@ -29,6 +29,68 @@ function key(): string {
   return process.env.GOOGLE_PLACES_KEY || "";
 }
 
+function hereKey(): string {
+  return process.env.HERE_API_KEY || "";
+}
+
+interface HereItem {
+  title?: string;
+  resultType?: string;
+  address?: { city?: string; countryName?: string };
+  categories?: { id?: string }[];
+}
+
+/**
+ * Where to search from: the visitor's own location (Cloudflare knows it
+ * roughly), else Riyadh. HERE needs a point to rank by; a hotel named with
+ * its city («هيلتون إسطنبول») is still found far away.
+ */
+async function searchPoint(): Promise<string> {
+  try {
+    const { getCloudflareContext } = await import("@opennextjs/cloudflare");
+    const cf = getCloudflareContext().cf as { latitude?: string; longitude?: string } | undefined;
+    const lat = Number(cf?.latitude);
+    const lon = Number(cf?.longitude);
+    if (Number.isFinite(lat) && Number.isFinite(lon) && cf?.latitude && cf?.longitude) {
+      // Rounded to a whole degree: enough to rank by, and it keeps the cache shared.
+      return `${Math.round(lat)},${Math.round(lon)}`;
+    }
+  } catch {
+    // Not on Cloudflare.
+  }
+  return "25,47";
+}
+
+async function hereHotels(q: string): Promise<HotelSuggestion[] | null> {
+  const at = await searchPoint();
+  return cachedJson<HotelSuggestion[]>(`here-hotels:${at}:${q.toLowerCase()}`, 7 * 86_400, async () => {
+    try {
+      const u = new URL("https://discover.search.hereapi.com/v1/discover");
+      u.searchParams.set("q", q);
+      u.searchParams.set("at", at);
+      u.searchParams.set("limit", "20");
+      // English names: booking sites and Google Hotels search by the Latin name.
+      u.searchParams.set("lang", "en");
+      u.searchParams.set("apiKey", hereKey());
+      const res = await fetch(u.toString());
+      if (!res.ok) return null;
+      const body = (await res.json()) as { items?: HereItem[] };
+      const out: HotelSuggestion[] = [];
+      for (const it of body.items ?? []) {
+        // 500-… is HERE's accommodation family (hotels, motels, guest houses).
+        const lodging = (it.categories ?? []).some((c) => (c.id ?? "").startsWith("500-"));
+        if (it.resultType !== "place" || !lodging) continue;
+        const name = (it.title || "").trim();
+        const area = [it.address?.city, it.address?.countryName].filter(Boolean).join(", ");
+        if (name && !out.some((o) => o.name === name && o.area === area)) out.push({ name, area });
+      }
+      return out;
+    } catch {
+      return null;
+    }
+  });
+}
+
 export function placesConfigured(): boolean {
   return Boolean(key());
 }
@@ -50,6 +112,12 @@ export async function hotelSuggestions(input: string): Promise<HotelSuggestion[]
   const q = input.trim().replace(/\s+/g, " ").slice(0, 60);
   const google = key() ? await googleHotels(q) : null;
   if (google && google.length) return ranked(google, q);
+
+  // HERE: Google Cloud is sold in Saudi Arabia only through CNTXT, which
+  // takes companies with a commercial registration — so for now the hotel
+  // names come from HERE (free 5,000 a month), when its key is set.
+  const here = hereKey() ? await hereHotels(q) : null;
+  if (here && here.length) return ranked(here, q).slice(0, 8);
 
   // OpenStreetMap matches the letters exactly, so «فندق سماء» and «فندق سما»
   // or «اسطنبول» and «إسطنبول» find different hotels. Every spelling a

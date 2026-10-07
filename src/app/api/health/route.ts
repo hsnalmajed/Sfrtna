@@ -282,17 +282,41 @@ export async function GET(req: Request) {
     }
   }
 
+  // HERE (hotel names while Google is unavailable in KSA): one search.
+  let here: { status: number | string; lodging: number | null } = { status: "no key", lodging: null };
+  if (process.env.HERE_API_KEY) {
+    try {
+      const u = new URL("https://discover.search.hereapi.com/v1/discover");
+      u.searchParams.set("q", "Hilton Istanbul");
+      u.searchParams.set("at", "41,29");
+      u.searchParams.set("limit", "10");
+      u.searchParams.set("apiKey", process.env.HERE_API_KEY);
+      const res = await fetch(u.toString(), { cache: "no-store" });
+      const body = res.ok
+        ? ((await res.json()) as { items?: { categories?: { id?: string }[] }[] })
+        : null;
+      here = {
+        status: res.status,
+        lodging: body ? (body.items ?? []).filter((i) => (i.categories ?? []).some((c) => (c.id ?? "").startsWith("500-"))).length : null,
+      };
+    } catch (err) {
+      here = { status: `error: ${String(err).slice(0, 120)}`, lodging: null };
+    }
+  }
+
   return NextResponse.json(
     {
       edgeCache,
       pexels,
       googlePlaces,
+      here,
       configuredProviders: configured,
       hotelProbe: hotels,
       keys: {
         travelpayoutsToken: Boolean(process.env.TRAVELPAYOUTS_TOKEN),
         pexels: Boolean(process.env.PEXELS_API_KEY),
         googlePlaces: Boolean(process.env.GOOGLE_PLACES_KEY),
+        here: Boolean(process.env.HERE_API_KEY),
         serpapi: Boolean(process.env.SERPAPI_KEY),
       },
       flightProbe: probe,
