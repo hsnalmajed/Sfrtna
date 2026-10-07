@@ -25,7 +25,7 @@ export interface QuickFact {
 const COLS: Record<number, string> = {
   1: "sm:grid-cols-1",
   2: "sm:grid-cols-2",
-  3: "sm:grid-cols-3",
+  3: "md:grid-cols-3",
   4: "sm:grid-cols-2 lg:grid-cols-4",
 };
 
@@ -43,7 +43,7 @@ export default function CountryQuickFacts({
   locale: Locale;
   facts: QuickFact[];
   heading: string;
-  /** A full-width first row (the visa on a country page). */
+  /** The first cell of the row (the visa on a country page). */
   lead?: React.ReactNode;
 }) {
   if (facts.length === 0 && !lead) return null;
@@ -53,11 +53,17 @@ export default function CountryQuickFacts({
     <section className="mb-8">
       <p className="eyebrow mb-3">{heading}</p>
       <div className="card overflow-hidden">
-        {lead}
-        {facts.length > 0 && (
-          <div
-            className={`grid grid-cols-1 gap-px bg-mist-200 ${COLS[Math.min(facts.length, 4)]} ${lead ? "border-t border-mist-200" : ""}`}
-          >
+        {/* The lead (the visa) is the first cell of the same row, not a row
+            of its own: on a wide screen visa, currency and cities sit side
+            by side (owner, 7 Oct). On a phone every cell is its own row. */}
+        <div
+          className={`grid grid-cols-1 gap-px bg-mist-200 ${
+            // Visa + currency + cities: the two cells with a button get the
+            // room, the short "6 cities" cell gives it up.
+            lead && facts.length === 2 ? "md:grid-cols-[1.3fr_1.3fr_0.7fr]" : COLS[Math.min(facts.length + (lead ? 1 : 0), 4)]
+          }`}
+        >
+          {lead && <div className="flex bg-white [&>*]:flex-1">{lead}</div>}
             {facts.map((f) => {
               const body = (
                 <>
@@ -93,8 +99,7 @@ export default function CountryQuickFacts({
                 </div>
               );
             })}
-          </div>
-        )}
+        </div>
       </div>
     </section>
   );
