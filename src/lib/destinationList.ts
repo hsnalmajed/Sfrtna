@@ -29,8 +29,12 @@ export async function fetchDestinationList(
   locale: Locale,
   { onlyWithCities = false }: { onlyWithCities?: boolean } = {}
 ): Promise<DestinationList> {
-  const codes = Object.keys(COUNTRY_GUIDES).filter(
-    (code) => !onlyWithCities || (COUNTRY_CITIES[code]?.length ?? 0) > 0
+  // Every country the site has a guide OR city pages for. Listing only the
+  // guided ones hid 32 countries whose cities, maps and places were already
+  // live (Russia, Ireland, the Nordics, Central Asia…): the list said 41
+  // while the site covered 73.
+  const codes = [...new Set([...Object.keys(COUNTRY_GUIDES), ...Object.keys(COUNTRY_CITIES)])].filter(
+    (code) => (COUNTRY_CITIES[code]?.length ?? 0) > 0 || (!onlyWithCities && COUNTRY_GUIDES[code])
   );
 
   const photos = await fetchCountryPhotos(codes);
