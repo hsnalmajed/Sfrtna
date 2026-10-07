@@ -255,15 +255,45 @@ export async function GET(req: Request) {
     }
   }
 
+  // Google Places (hotel names): one autocomplete call, and Google's own
+  // reason when it refuses — billing off, API not enabled, key restricted.
+  // Never the key.
+  let googlePlaces: { status: number | string; reason: string | null } = { status: "no key", reason: null };
+  if (process.env.GOOGLE_PLACES_KEY) {
+    try {
+      const res = await fetch("https://places.googleapis.com/v1/places:autocomplete", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Goog-Api-Key": process.env.GOOGLE_PLACES_KEY,
+          "X-Goog-FieldMask": "suggestions.placePrediction.text",
+        },
+        body: JSON.stringify({ input: "Hilton Istanbul", includedPrimaryTypes: ["lodging"] }),
+        cache: "no-store",
+      });
+      let reason: string | null = null;
+      if (!res.ok) {
+        const body = (await res.json().catch(() => null)) as { error?: { status?: string; message?: string } } | null;
+        reason = `${body?.error?.status ?? ""} ${body?.error?.message ?? ""}`.trim().slice(0, 220) || null;
+      }
+      googlePlaces = { status: res.status, reason };
+    } catch (err) {
+      googlePlaces = { status: `error: ${String(err).slice(0, 120)}`, reason: null };
+    }
+  }
+
   return NextResponse.json(
     {
       edgeCache,
       pexels,
+      googlePlaces,
       configuredProviders: configured,
       hotelProbe: hotels,
       keys: {
         travelpayoutsToken: Boolean(process.env.TRAVELPAYOUTS_TOKEN),
         pexels: Boolean(process.env.PEXELS_API_KEY),
+        googlePlaces: Boolean(process.env.GOOGLE_PLACES_KEY),
+        serpapi: Boolean(process.env.SERPAPI_KEY),
       },
       flightProbe: probe,
     },
