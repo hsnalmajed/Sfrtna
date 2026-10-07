@@ -112,6 +112,7 @@ export default function DestinationCard({
       {/* The place: its photograph, its name, and whether it is a good time. */}
       <div className="relative h-40">
         <Photo
+          placeholder
           src={photo}
           className="absolute inset-0 h-full w-full object-cover"
           fallback={

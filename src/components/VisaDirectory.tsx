@@ -151,6 +151,7 @@ export default function VisaDirectory({
                       >
                         <div className="relative h-24 sm:h-28">
                           <Photo
+                            placeholder
                             src={c.photo}
                             className="absolute inset-0 h-full w-full object-cover transition duration-300 group-hover:scale-105"
                             fallback={<div className="absolute inset-0 bg-gradient-to-br from-navy-700 to-navy-990" />}

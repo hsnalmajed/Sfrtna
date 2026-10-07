@@ -276,6 +276,7 @@ export default function CitySeasons({
                   >
                     <div className="relative w-24 shrink-0 sm:w-28">
                       <Photo
+                        placeholder
                         src={c.photo}
                         className="absolute inset-0 h-full w-full object-cover"
                         fallback={<div className="absolute inset-0 bg-gradient-to-br from-navy-700 to-navy-990" />}
@@ -343,6 +344,7 @@ export default function CitySeasons({
               {/* The city: its photograph, name and country, and when it is at its best. */}
               <div className="relative isolate h-44 sm:h-56">
                 <Photo
+                  placeholder
                   src={city.photo}
                   className="absolute inset-0 -z-10 h-full w-full object-cover"
                   fallback={<div className="absolute inset-0 -z-10 bg-gradient-to-br from-navy-700 to-navy-990" />}
@@ -536,6 +538,7 @@ function MonthDialog({
       >
         <div className="relative isolate h-40">
           <Photo
+            placeholder
             src={city.photo}
             className="absolute inset-0 -z-10 h-full w-full object-cover"
             fallback={<div className="absolute inset-0 -z-10 bg-gradient-to-br from-navy-700 to-navy-990" />}

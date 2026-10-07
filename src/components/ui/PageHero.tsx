@@ -60,6 +60,7 @@ export default function PageHero({
   return (
     <section className={`relative isolate flex ${heights[size]} items-end overflow-hidden bg-navy-990`}>
       <Photo
+        placeholder
         src={photo}
         // The hero is on screen before anything else is; lazy-loading it makes
         // the browser wait for layout before it will even ask for the file.

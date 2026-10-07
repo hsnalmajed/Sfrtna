@@ -17,7 +17,10 @@
 // A search that fails (no network, allowance used up) stops the run and
 // records nothing for that subject, so it is tried again next time. A
 // subject where every search worked but no caption named the place is
-// stored as null: its card keeps the navy tile, and it is not searched again.
+// stored as an empty list: its card keeps the navy tile, and it is not
+// searched again. Up to three photos are kept per place (one search returns
+// fifteen, so this costs nothing extra); the page shows a different one
+// each week.
 
 import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
@@ -32,7 +35,9 @@ import {
   rawSearch,
   startCollectingSubjects,
   stopCollectingSubjects,
+  PHOTOS_PER_PLACE,
   type StoredPhoto,
+  type StoredPhotoRec,
 } from "@/lib/pexels";
 
 const FILE = join(process.cwd(), "src/data/pexelsPhotos.json");
@@ -69,7 +74,7 @@ async function main() {
   const stored: Record<string, StoredPhoto> = JSON.parse(readFileSync(FILE, "utf8"));
   const missing = [...wanted.entries()].filter(([k]) => !(k in stored));
 
-  const withPhoto = Object.values(stored).filter(Boolean).length;
+  const withPhoto = Object.values(stored).filter((v) => (Array.isArray(v) ? v.length > 0 : Boolean(v))).length;
   console.log(`subjects ${wanted.size} · stored ${Object.keys(stored).length} (${withPhoto} with a photo) · missing ${missing.length}`);
   if (process.argv.includes("--list") || missing.length === 0) return;
 
@@ -83,11 +88,17 @@ async function main() {
   let stoppedBy: string | null = null;
 
   outer: for (const [k, queries] of missing) {
-    let photo: StoredPhoto = null;
+    // The searches in order (landmark, city, country) until three photos
+    // whose captions name the place are found, or the searches run out.
+    const found: StoredPhotoRec[] = [];
     for (const q of queries) {
+      if (found.length >= PHOTOS_PER_PLACE) break;
       if (budget <= 0) {
         stoppedBy = "budget";
-        break outer;
+        // Keep what was found for this place only if it is complete enough
+        // to stand; otherwise it is searched again next run.
+        if (found.length === 0) break outer;
+        break;
       }
       budget--;
       const r = await rawSearch(q);
@@ -95,15 +106,16 @@ async function main() {
         stoppedBy = "a failed search (allowance used up, or Pexels unreachable)";
         break outer;
       }
-      if (r.photo) {
-        // Store the original's address once; the sizes are rebuilt from it.
-        const original = r.photo.url.split("?")[0];
-        photo = { o: original, n: r.photo.photographer, nu: r.photo.photographerUrl, u: r.photo.pageUrl };
-        break;
+      for (const p of r.photos) {
+        const original = p.url.split("?")[0];
+        if (found.some((f) => f.o === original)) continue;
+        found.push({ o: original, n: p.photographer, nu: p.photographerUrl, u: p.pageUrl });
+        if (found.length >= PHOTOS_PER_PLACE) break;
       }
     }
-    stored[k] = photo;
+    stored[k] = found;
     added++;
+    if (stoppedBy === "budget") break;
   }
 
   // Sorted, one subject per line: small, readable diffs in git.

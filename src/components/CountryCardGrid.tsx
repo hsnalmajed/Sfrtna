@@ -112,6 +112,7 @@ export default function CountryCardGrid({
                   }`}
                 >
                   <Photo
+                    placeholder
                     src={c.photo}
                     className="absolute inset-0 -z-10 h-full w-full object-cover transition duration-500 group-hover:scale-[1.06]"
                     fallback={

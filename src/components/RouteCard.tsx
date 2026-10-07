@@ -101,6 +101,7 @@ export default function RouteCard({
             <div key={s.code} className="overflow-hidden rounded-xl ring-1 ring-mist-200">
               <div className="relative h-28">
                 <Photo
+                  placeholder
                   src={photo}
                   className="absolute inset-0 h-full w-full object-cover"
                   fallback={

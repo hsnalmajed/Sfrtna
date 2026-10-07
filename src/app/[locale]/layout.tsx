@@ -1,3 +1,4 @@
+import { preconnect } from "react-dom";
 import type { Metadata } from "next";
 import "../globals.css";
 import { getDictionary } from "@/lib/dictionaries";
@@ -44,6 +45,10 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
   const { locale } = await params;
   const loc = (locale === "en" ? "en" : "ar") as Locale;
   const dict = getDictionary(loc);
+  // Every card photo comes from Pexels' image servers: opening the
+  // connection while the page is still arriving saves a round trip (DNS,
+  // TLS) before the first picture can start.
+  preconnect("https://images.pexels.com", { crossOrigin: "anonymous" });
 
   return (
     <html lang={loc} dir={dict.dir} className="h-full antialiased">

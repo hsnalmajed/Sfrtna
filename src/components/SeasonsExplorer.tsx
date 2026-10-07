@@ -383,6 +383,7 @@ export default function SeasonsExplorer({
                         className="group relative isolate block aspect-[4/3] overflow-hidden rounded-xl ring-1 ring-navy-950/5 transition hover:-translate-y-0.5 hover:shadow-[var(--shadow-lift)]"
                       >
                         <Photo
+                          placeholder
                           src={c.photo}
                           className="absolute inset-0 -z-10 h-full w-full object-cover transition duration-300 group-hover:scale-105"
                           fallback={

@@ -87,7 +87,15 @@ function fold(s: string): string {
 }
 
 /** One search, uncached: `{ photo }` (null photo = nothing fitting), or null if the call failed. */
-export async function rawSearch({ query, mention }: PexelsQuery): Promise<{ photo: PexelsPhoto | null } | null> {
+/** How many photos are kept per place; the page shows one of them, changing weekly. */
+export const PHOTOS_PER_PLACE = 3;
+
+/**
+ * One search, uncached: up to PHOTOS_PER_PLACE photos whose caption names
+ * the place (an empty list = nothing fitting), or null if the call failed.
+ * One call returns 15 results, so keeping three costs nothing extra.
+ */
+export async function rawSearch({ query, mention }: PexelsQuery): Promise<{ photos: PexelsPhoto[] } | null> {
   const url = new URL(API);
   url.searchParams.set("query", query);
   url.searchParams.set("per_page", "15");
@@ -97,18 +105,16 @@ export async function rawSearch({ query, mention }: PexelsQuery): Promise<{ phot
     if (!res.ok) return null;
     const body = (await res.json()) as { photos?: PexelsApiPhoto[] };
     const words = mention.map(fold).filter(Boolean);
-    const p = (body.photos ?? []).find(
-      (ph) => ph.src?.original && words.some((w) => fold(ph.alt ?? "").includes(w))
-    );
-    if (!p) return { photo: null };
-    return {
-      photo: {
+    const photos = (body.photos ?? [])
+      .filter((ph) => ph.src?.original && words.some((w) => fold(ph.alt ?? "").includes(w)))
+      .slice(0, PHOTOS_PER_PLACE)
+      .map((p) => ({
         ...pexelsSizes(p.src.original),
         photographer: p.photographer,
         photographerUrl: p.photographer_url,
         pageUrl: p.url,
-      },
-    };
+      }));
+    return { photos };
   } catch {
     return null;
   }
@@ -116,15 +122,22 @@ export async function rawSearch({ query, mention }: PexelsQuery): Promise<{ phot
 
 // ── The stored choices ─────────────────────────────────────────────────
 
-/** One stored choice: the photo, or null when every search was tried and none fit. */
-export type StoredPhoto = {
+/** One stored photo. */
+export interface StoredPhotoRec {
   /** Pexels' original image URL. */
   o: string;
   /** Photographer's name and page, and the photo's own page. */
   n: string;
   nu: string;
   u: string;
-} | null;
+}
+
+/**
+ * A place's stored photos (up to PHOTOS_PER_PLACE). An empty list means
+ * every search was tried and none fit; `null` is the older single-photo
+ * form of the same thing.
+ */
+export type StoredPhoto = StoredPhotoRec[] | StoredPhotoRec | null;
 
 const STORED_PHOTOS = STORED as Record<string, StoredPhoto>;
 
@@ -137,9 +150,28 @@ export function subjectKey(queries: PexelsQuery[]): string {
   return queries.map((q) => `${q.query}|${q.mention.join(",")}`).join(" ;; ");
 }
 
-function fromStored(rec: StoredPhoto | undefined): PexelsPhoto | null {
-  if (!rec) return null;
+function toPhoto(rec: StoredPhotoRec): PexelsPhoto {
   return { ...pexelsSizes(rec.o), photographer: rec.n, photographerUrl: rec.nu, pageUrl: rec.u };
+}
+
+/** A short stable number for a key, so places do not all change on the same photo slot. */
+function spread(key: string): number {
+  let h = 0;
+  for (let i = 0; i < key.length; i++) h = (h * 31 + key.charCodeAt(i)) | 0;
+  return Math.abs(h);
+}
+
+/**
+ * This week's photo of a place: with three stored, a returning visitor sees
+ * a different one each week (weeks counted from 1970, so every server agrees
+ * which week it is).
+ */
+function fromStored(key: string, rec: StoredPhoto | undefined): PexelsPhoto | null {
+  if (!rec) return null;
+  const list = Array.isArray(rec) ? rec : [rec];
+  if (list.length === 0) return null;
+  const week = Math.floor(Date.now() / (7 * 86_400_000));
+  return toPhoto(list[(week + spread(key)) % list.length]);
 }
 
 /**
@@ -161,7 +193,7 @@ export function stopCollectingSubjects(): void {
 function lookup(queries: PexelsQuery[]): PexelsPhoto | null {
   const k = subjectKey(queries);
   if (collector && queries.length > 0) collector.set(k, queries);
-  return fromStored(STORED_PHOTOS[k]);
+  return fromStored(k, STORED_PHOTOS[k]);
 }
 
 /** The stored photo for one search, or null. */

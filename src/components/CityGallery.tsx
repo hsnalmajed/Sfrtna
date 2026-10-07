@@ -33,6 +33,7 @@ export default function CityGallery({
           className="group relative block aspect-[4/3] overflow-hidden rounded-2xl shadow-sm ring-1 ring-black/5 transition hover:-translate-y-0.5 hover:shadow-lg"
         >
           <Photo
+            placeholder
             src={c.photo}
             className="absolute inset-0 h-full w-full object-cover transition duration-300 group-hover:scale-105"
             fallback={

@@ -308,6 +308,7 @@ export default function HomeShowcase({
           instead of piling the badges onto the city name. */}
       <div className="absolute inset-0 -z-10 overflow-hidden rounded-2xl">
         <Photo
+          placeholder
           src={c.photo}
           className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-[1.06]"
           fallback={<div className="absolute inset-0 bg-gradient-to-br from-navy-700 to-navy-990" />}
@@ -382,6 +383,7 @@ export default function HomeShowcase({
         {/* The place first: its photograph, its name, its country. */}
         <div className="relative h-44 sm:h-56">
           <Photo
+            placeholder
             src={openCity.photo}
             className="absolute inset-0 h-full w-full object-cover"
             fallback={<div className="absolute inset-0 bg-gradient-to-br from-navy-700 to-navy-990" />}
