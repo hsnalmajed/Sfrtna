@@ -30,15 +30,20 @@
 /** @typedef {{ methods: string[], caller: Caller, heavy?: boolean }} Rule */
 
 /** @type {Record<string, Rule>} */
-const ROUTES = {
+export const ROUTES = {
   "/api/day-fares": { methods: ["GET"], caller: "page" },
   "/api/destination-photos": { methods: ["GET"], caller: "page" },
   "/api/hotel-suggest": { methods: ["GET"], caller: "page" },
   "/api/rates": { methods: ["GET"], caller: "page" },
   "/api/origin": { methods: ["GET"], caller: "page" },
   "/api/live-fare": { methods: ["GET"], caller: "page" },
-  "/api/discover": { methods: ["GET"], caller: "page", heavy: true },
-  "/api/multicity": { methods: ["GET"], caller: "page", heavy: true },
+  // Both are sent as POST by their results pages (the search is in the
+  // body). Listing them as GET answered every search with 405 — "no
+  // destinations" and "no routes" for every visitor — from 7 Oct until
+  // this was caught; scripts/check-guard.mjs now compares this table with
+  // the route files on every build.
+  "/api/discover": { methods: ["POST"], caller: "page", heavy: true },
+  "/api/multicity": { methods: ["POST"], caller: "page", heavy: true },
   "/api/country-places": { methods: ["GET"], caller: "page", heavy: true },
   "/api/hotel-prices": { methods: ["GET"], caller: "page", heavy: true },
   "/api/itinerary": { methods: ["POST"], caller: "page", heavy: true },
