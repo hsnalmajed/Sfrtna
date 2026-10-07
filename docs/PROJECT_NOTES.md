@@ -177,8 +177,31 @@ Travelpayouts.
 - Same day: footer 3 columns on phones; homepage season cards no longer
   overlap badges on the city name (checked at 375 px).
 
+### Places, speed, country page — 7 Oct (night)
+- City places are stored, not fetched live: `public/data/places/<slug>.json`
+  (214 cities, 68k places, top 500 per city by fame) +
+  `src/data/placeCounts.json`, written by `scripts/places/fetch-places.ts`
+  via `.github/workflows/places.yml` (monthly on the 3rd, on cityCoords
+  changes, or by hand; full run ≈ 3.5 h). Read through `env.ASSETS`
+  (`wrangler.jsonc`: binding ASSETS, `run_worker_first: ["/data/*"]`);
+  `edge-worker.js` answers 404 to /data/* from outside. Live check: Istanbul
+  page 22 s → 0.6 s, country pages 4.8 s → 0.7 s, London no error.
+- `src/app/[locale]/loading.tsx`: instant skeleton + gold line on every
+  navigation (taps used to look dead while the server worked).
+- Country page «قبل أن تقرر»: visa kind + «متطلبات السفر» (dialog with
+  requirements, apply options at the bottom); currency shows 1 SAR = X with
+  «احسب مبلغاً آخر» converter (`TripCurrencyInline variant="light"`).
+- Destinations list now shows every country with cities (73), not only the
+  41 with guides (`destinationList.ts`).
+- Site crawl 7 Oct: 314 sitemap pages + 92 linked pages, no 404/500.
+- Known, minor: hydration attribute mismatch in CityPlacesPlanner (dev
+  console only).
+
 ## Next, in order
 
+0. Owner decision pending: which countries to add next (site has 73 with
+   cities; each new one needs cities + coords, airports, a confirmed visa
+   status, currency, season data) — its own section.
 1. Finish Android (phone test, then Play), then iPhone app with the same
    shell (`npx cap add ios`; Stay22 Mobile SDK worth checking).
 2. Marketing plan before launch.
