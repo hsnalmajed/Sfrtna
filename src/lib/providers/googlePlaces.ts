@@ -72,7 +72,7 @@ async function hereHotels(q: string): Promise<HotelSuggestion[] | null> {
       // English names: booking sites and Google Hotels search by the Latin name.
       u.searchParams.set("lang", "en");
       u.searchParams.set("apiKey", hereKey());
-      const res = await fetch(u.toString());
+      const res = await fetch(u.toString(), { signal: AbortSignal.timeout(4000) });
       if (!res.ok) return null;
       const body = (await res.json()) as { items?: HereItem[] };
       const out: HotelSuggestion[] = [];
@@ -173,7 +173,12 @@ async function osmHotels(q: string): Promise<HotelSuggestion[] | null> {
       u.searchParams.set("limit", "8");
       u.searchParams.set("lang", "en");
       u.searchParams.set("osm_tag", "tourism:hotel");
-      const res = await fetch(u.toString(), { headers: { "User-Agent": "sfrtna.com hotel search" } });
+      // A traveller is typing: a slow spelling is dropped after 3 s (and not
+      // cached), the ones that answered are shown.
+      const res = await fetch(u.toString(), {
+        headers: { "User-Agent": "sfrtna.com hotel search" },
+        signal: AbortSignal.timeout(3000),
+      });
       if (!res.ok) return null;
       const body = (await res.json()) as { features?: PhotonFeature[] };
       const out: HotelSuggestion[] = [];
