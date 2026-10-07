@@ -74,7 +74,9 @@ export function arabicSpellings(q: string): string[] {
   if (!/[\u0600-\u06FF]/.test(q)) return [q];
   const plainAlef = q.replace(/[أإآ]/g, "ا");
   const swapped = plainAlef.replace(/[ةه](?=\s|$)/g, (c) => (c === "ة" ? "ه" : "ة"));
-  return [...new Set([q, plainAlef, swapped])];
+  // Sorted, so «مكة فندق» and «مكه فندق» ask the same spellings in the same
+  // order and get the same merged list back.
+  return [...new Set([q, plainAlef, swapped])].sort();
 }
 
 /** Names that contain what was typed (in any spelling) first; the rest after, in their order. */
