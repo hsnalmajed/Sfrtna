@@ -2,6 +2,11 @@
 # a destination, multi-city, round trip and one way, hotel names, rates,
 # places — plus the protection rules. GitHub emails the owner when it fails.
 #
+# It talks to the Worker at sfrtna.almajedhsn.workers.dev with the
+# SMOKE_TOKEN secret — the same random value set in GitHub (repository
+# secret) and in Cloudflare (Worker secret). sfrtna.com itself refuses
+# GitHub's machines (bot protection), which is why.
+#
 # Runs every six hours, and after each push to main once the deploy has had
 # time to go out (Cloudflare takes about five minutes).
 name: Site check
@@ -29,4 +34,11 @@ jobs:
         if: github.event_name == 'push'
         run: sleep 480
       - name: Check the live site
-        run: node scripts/smoke.mjs https://sfrtna.com
+        env:
+          SMOKE_TOKEN: ${{ secrets.SMOKE_TOKEN }}
+        run: |
+          if [ -z "$SMOKE_TOKEN" ]; then
+            echo "SMOKE_TOKEN is not set (repository secret + Cloudflare secret) — check skipped."
+            exit 0
+          fi
+          node scripts/smoke.mjs

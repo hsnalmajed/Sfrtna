@@ -52,6 +52,17 @@ async function keyFor(request, url) {
 const worker = {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
+    // The Worker's own address (*.workers.dev) is not behind the zone's bot
+    // protection, so left open it is a side door around everything the
+    // site's Cloudflare settings refuse — and a second copy of every page for
+    // search engines. Everyone is sent to sfrtna.com, except the site check
+    // (scripts/smoke.mjs) carrying the SMOKE_TOKEN secret.
+    if (url.hostname.endsWith(".workers.dev")) {
+      const token = env?.SMOKE_TOKEN;
+      if (!token || request.headers.get("x-sfrtna-smoke") !== token) {
+        return Response.redirect(`https://sfrtna.com${url.pathname}${url.search}`, 301);
+      }
+    }
     // Stored data files (public/data, e.g. each city's places) are for the
     // server only — it reads them through env.ASSETS. Never served outside.
     if (url.pathname === "/data" || url.pathname.startsWith("/data/")) {

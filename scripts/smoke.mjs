@@ -8,7 +8,12 @@
 // "no results" for every visitor because the API guard refused their
 // requests — a whole feature down, and nothing told anyone.
 
-const BASE = (process.argv[2] || "https://sfrtna.com").replace(/\/$/, "");
+// sfrtna.com itself sits behind Cloudflare's bot protection, which turns
+// away a data-centre machine like GitHub's. The check therefore talks to the
+// same Worker at its workers.dev address, proving who it is with the
+// SMOKE_TOKEN secret (edge-worker.js sends anyone without it to sfrtna.com).
+const BASE = (process.argv[2] || "https://sfrtna.almajedhsn.workers.dev").replace(/\/$/, "");
+const TOKEN = process.env.SMOKE_TOKEN || "";
 const UA =
   "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0 Safari/537.36 SfrtnaSmoke/1";
 
@@ -19,6 +24,7 @@ const back = day(52);
 /** Headers a page of ours sends with its own fetch(). */
 const fromPage = (path) => ({
   "User-Agent": UA,
+  "x-sfrtna-smoke": TOKEN,
   Origin: BASE,
   Referer: `${BASE}${path}`,
   "Sec-Fetch-Site": "same-origin",
@@ -58,7 +64,11 @@ async function api(path, { method = "GET", body, page = "/ar" } = {}) {
 }
 
 async function page(path, mustNotContain = []) {
-  const res = await fetch(`${BASE}${path}`, { headers: { "User-Agent": UA, Accept: "text/html" }, signal: AbortSignal.timeout(60_000) });
+  const res = await fetch(`${BASE}${path}`, {
+    headers: { "User-Agent": UA, Accept: "text/html", "x-sfrtna-smoke": TOKEN },
+    redirect: "manual",
+    signal: AbortSignal.timeout(60_000),
+  });
   const html = await res.text();
   if (res.status !== 200) throw new Error(`${path} → ${res.status}`);
   for (const bad of mustNotContain) if (html.includes(bad)) throw new Error(`${path} shows «${bad}»`);
@@ -150,12 +160,18 @@ await check("country places", async () => {
 });
 
 // The protection must still hold.
+await check("protection: workers.dev without the key goes to sfrtna.com", async () => {
+  const res = await fetch(`${BASE}/ar`, { headers: { "User-Agent": UA }, redirect: "manual" });
+  if (res.status !== 301 || !(res.headers.get("location") || "").startsWith("https://sfrtna.com/")) {
+    throw new Error(`expected 301 to sfrtna.com, got ${res.status}`);
+  }
+});
 await check("protection: API refuses a script", async () => {
-  const res = await fetch(`${BASE}/api/rates?from=SAR&to=USD`, { headers: { "User-Agent": UA } });
+  const res = await fetch(`${BASE}/api/rates?from=SAR&to=USD`, { headers: { "User-Agent": UA, "x-sfrtna-smoke": TOKEN } });
   if (res.status !== 403) throw new Error(`expected 403, got ${res.status}`);
 });
 await check("protection: stored places are not downloadable", async () => {
-  const res = await fetch(`${BASE}/data/places/london.json`, { headers: { "User-Agent": UA } });
+  const res = await fetch(`${BASE}/data/places/london.json`, { headers: { "User-Agent": UA, "x-sfrtna-smoke": TOKEN } });
   if (res.status !== 404) throw new Error(`expected 404, got ${res.status}`);
 });
 
