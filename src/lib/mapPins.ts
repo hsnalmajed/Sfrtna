@@ -312,8 +312,19 @@ async function readStoredPlaces(slug: string): Promise<StoredPlace[] | null> {
   if (!/^[a-z0-9-]+$/.test(slug)) return null;
   try {
     const { getCloudflareContext } = await import("@opennextjs/cloudflare");
-    const assets = (getCloudflareContext().env as unknown as { ASSETS?: AssetsBinding }).ASSETS;
-    if (!assets) return null;
+    let assets: AssetsBinding | undefined;
+    try {
+      assets = (getCloudflareContext().env as unknown as { ASSETS?: AssetsBinding }).ASSETS;
+    } catch {
+      assets = undefined;
+    }
+    if (!assets) {
+      // `next dev` / `next start` on a laptop: read the file from disk.
+      if (process.env.NODE_ENV === "production" && !process.env.SFRTNA_LOCAL_PLACES) return null;
+      const { readFile } = await import("node:fs/promises");
+      const text = await readFile(`${process.cwd()}/public/data/places/${slug}.json`, "utf8").catch(() => null);
+      return text ? (JSON.parse(text) as StoredPlace[]) : null;
+    }
     const res = await assets.fetch(new Request(`https://assets.local/data/places/${slug}.json`));
     if (!res.ok) return null;
     return (await res.json()) as StoredPlace[];
