@@ -203,6 +203,16 @@ Travelpayouts.
 - Known, minor: hydration attribute mismatch in CityPlacesPlanner (dev
   console only).
 
+### Arabic spelling rule (site-wide, owner 7 Oct)
+- أ إ آ = ا, ة = ه, ى = ي, tashkeel ignored, Arabic digits = 0-9:
+  `normalizeSearch` in `src/lib/search.ts`; every local search box uses it.
+  Outside services (hotel names via Photon/Google) get every spelling via
+  `arabicSpellings()` in `providers/googlePlaces.ts` (also word-initial ا →
+  أ/إ, word-final ة↔ه), merged and ranked. Live check: «ابها فندق» =
+  «أبها فندق», «اسطنبول» = «إسطنبول». **Any new search must use these.**
+- Hotel names: OpenStreetMap misses many hotels and most Arabic names
+  («إسطنبول هيلتون» → nothing). The fix is the owner's Google Places key.
+
 ## Next, in order
 
 0. Owner decision pending: which countries to add next (site has 73 with
