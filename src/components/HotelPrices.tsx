@@ -1,5 +1,7 @@
 "use client";
 
+import { nightsLabel } from "@/lib/format";
+
 import { useEffect, useMemo, useState } from "react";
 import type { HotelResult, HotelSearch } from "@/lib/providers/serpapi";
 import { hotelPartnerLinks } from "@/lib/affiliateLinks";
@@ -211,7 +213,7 @@ function PriceRows({
                 </p>
                 <p className={`font-display font-extrabold text-navy-950 ${compact ? "text-lg" : "text-2xl"}`}>{money(o.total, locale)}</p>
                 <p className="text-xs text-navy-600">
-                  {c.nights === 1 ? t.stayTotalOne : t.stayTotal.replace("{count}", String(c.nights))}
+                  {c.nights === 1 ? t.stayTotalOne : t.stayTotal.replace("{nights}", nightsLabel(c.nights, t))}
                   {c.nights > 1 && !compact && ` · ${t.perNight.replace("{amount}", money(o.total / c.nights, locale))}`}
                 </p>
                 {c.budget > 0 && (

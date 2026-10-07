@@ -901,7 +901,7 @@ function FlightCard({
               <bdi dir="ltr">{money(pay)}</bdi>
             </p>
             <p className="mt-0.5 text-xs text-navy-500">
-              {t.travellersCount.replace("{count}", String(travelers))}
+              {countLabel(travelers, { one: t.travelersOne, two: t.travelersTwo, few: t.travelersFew, many: t.travelersMany })}
               {flight.bagOn && ` · ${t.bagAdded}`}
             </p>
           </div>

@@ -1,5 +1,7 @@
 "use client";
 
+import { countLabel, nightsLabel } from "@/lib/format";
+
 import { Suspense, useEffect, useMemo, useState } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import Link from "next/link";
@@ -357,7 +359,7 @@ function ResultsContent() {
                 )}
                 <span className="h-4 w-px bg-mist-300" aria-hidden="true" />
                 <Icon name="users" className="h-4 w-4 text-navy-500" />
-                <span>{dict.results.travellersCount.replace("{count}", String(travelers))}</span>
+                <span>{countLabel(travelers, { one: dict.results.travelersOne, two: dict.results.travelersTwo, few: dict.results.travelersFew, many: dict.results.travelersMany })}</span>
                 <span className="inline-flex items-center gap-1 rounded-full bg-sun-400 px-3 py-1 text-xs font-extrabold text-navy-950 transition group-hover:bg-sun-300">
                   <span aria-hidden="true">✎</span>
                   {dict.results.editSearch}
@@ -462,7 +464,7 @@ function ResultsContent() {
                 {dict.results.hotelNextBody
                   .replace("{checkIn}", prettyDate(search.departDate))
                   .replace("{checkOut}", prettyDate(search.returnDate || ""))
-                  .replace("{nights}", nights === 1 ? dict.hotelResults.oneNight : dict.hotelResults.nights.replace("{count}", String(nights)))}
+                  .replace("{nights}", nightsLabel(nights, dict.hotelResults))}
               </p>
             </div>
           </div>

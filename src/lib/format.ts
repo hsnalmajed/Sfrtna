@@ -120,3 +120,15 @@ export function flightHoursFromRiyadh(to: { lat: number; lon: number }): number 
   if (km <= 200) return undefined;
   return Math.max(1, Math.round(km / 800 + 0.5));
 }
+
+/**
+ * "13 ليلة", not "13 ليالٍ": nights counted like every other Arabic noun
+ * (ليلة واحدة · ليلتان · 3–10 ليالٍ · 11+ ليلة). Shapes from the
+ * hotelResults dictionary.
+ */
+export function nightsLabel(
+  count: number,
+  t: { oneNight: string; twoNights: string; nights: string; nightsMany: string }
+): string {
+  return countLabel(count, { one: t.oneNight, two: t.twoNights, few: t.nights, many: t.nightsMany });
+}

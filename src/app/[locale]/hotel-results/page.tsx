@@ -66,6 +66,13 @@ function HotelResultsContent() {
 
   const complete = Boolean(query && checkIn && checkOut);
   const nights = complete ? nightsBetween(checkIn, checkOut) : 0;
+  // Arabic counts nights like any noun: ليلة واحدة · ليلتان · 3–10 ليالٍ · 11+ ليلة.
+  const nightsText =
+    nights === 1
+      ? t.oneNight
+      : nights === 2
+        ? t.twoNights
+        : (nights <= 10 ? t.nights : t.nightsMany).replace("{count}", String(nights));
 
   const links = useMemo(
     () =>
@@ -174,7 +181,7 @@ function HotelResultsContent() {
                     {locale === "ar" ? "←" : "→"}
                   </span>
                   <span>{shortDate(checkOut)}</span>
-                  <span className="text-navy-500">({nights === 1 ? t.oneNight : t.nights.replace("{count}", String(nights))})</span>
+                  <span className="text-navy-500">({nightsText})</span>
                   <span className="h-4 w-px bg-mist-300" aria-hidden="true" />
                 </>
               )}
@@ -231,7 +238,7 @@ function HotelResultsContent() {
                     {(budget > 0 ? t.discoverTitleBudget : t.discoverTitle).replace("{city}", label || query)}
                   </h2>
                   <p className="mt-1 max-w-3xl text-sm leading-relaxed text-navy-600">
-                    {t.discoverNote.replace("{nights}", nights === 1 ? t.oneNight : t.nights.replace("{count}", String(nights)))}
+                    {t.discoverNote.replace("{nights}", nightsText)}
                   </p>
                   {locale === "ar" && <p className="mt-1 text-xs text-navy-500">{t.discoverEnglish}</p>}
                 </div>

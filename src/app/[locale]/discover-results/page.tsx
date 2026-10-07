@@ -1,5 +1,7 @@
 "use client";
 
+import { countLabel } from "@/lib/format";
+
 import { Suspense, useEffect, useMemo, useState } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import { getDictionary } from "@/lib/dictionaries";
@@ -241,7 +243,7 @@ function DiscoverResultsContent() {
         facts={[
           dict.discoverResults.searchLine.split(" · ")[0].replace("{origin}", originLabel),
           returnDate ? `${pretty(departDate)} ${locale === "ar" ? "←" : "→"} ${pretty(returnDate)}` : pretty(departDate),
-          dict.results.travellersCount.replace("{count}", String(travellers)),
+          countLabel(travellers, { one: dict.results.travelersOne, two: dict.results.travelersTwo, few: dict.results.travelersFew, many: dict.results.travelersMany }),
           d.budgetFact.replace("{budget}", money(Number(budget))),
         ]}
         backHref={`/${locale}?${editSearchParams}#plan`}
