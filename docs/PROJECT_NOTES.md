@@ -300,6 +300,14 @@ Travelpayouts.
   continent/type, ranked by the home fare table (flown to from home →
   in season → cheapest), top N get a fare table, `MAX_REQUESTS` = 29
   (28 cities for one month, 14 when the trip spans two).
+  Stops exclude the home country and never repeat a country; 3-stop routes
+  use at most 14 cities (`MAX_CITIES`) — 28 cities × 3 stops hit the
+  Worker limit live (503). Live 8 Oct, RUH Jan 2027, 6 pax, 80k: all ×2 24,
+  Europe ×2 4, Europe ×3 6, Asia ×2 24, Africa ×3 24, Asia+Europe ×3 24,
+  North America 0 (no one-way fares between pairs) — all 200.
+- Contact: owner setting up Cloudflare Email Routing info@sfrtna.com → his
+  inbox (steps sent 8 Oct). After his test mail arrives: set
+  `CONTACT_EMAIL` in `src/lib/contact.ts`.
 
 ## Next, in order
 
