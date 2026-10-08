@@ -49,7 +49,8 @@ export default function HotelCityInput({
   locale: Locale;
   value: string;
   onType: (text: string) => void;
-  onPick: (city: CityEntry) => void;
+  /** The city picked, and its country's code. */
+  onPick: (city: CityEntry, countryCode: string) => void;
   className: string;
   placeholder?: string;
   invalid?: boolean;
@@ -85,7 +86,7 @@ export default function HotelCityInput({
       onType={onType}
       onPick={(s) => {
         const hit = ALL.find(({ city, country }) => `${country}-${city.slug}` === s.key);
-        if (hit) onPick(hit.city);
+        if (hit) onPick(hit.city, hit.country);
       }}
       load={load}
       minChars={2}

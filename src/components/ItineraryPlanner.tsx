@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useParams, useSearchParams } from "next/navigation";
 import { getDictionary } from "@/lib/dictionaries";
@@ -13,6 +13,9 @@ import PrintHeader from "@/components/PrintHeader";
 import type { SectionHero } from "@/lib/heroPhotos";
 import { countLabel } from "@/lib/format";
 import { track } from "@/lib/analytics";
+import HotelCityInput from "@/components/HotelCityInput";
+import { COUNTRY_CITIES } from "@/lib/cities";
+import { searchEquals } from "@/lib/search";
 
 /**
  * The planner, lifted out of the route so the route can be a server component.
@@ -89,6 +92,27 @@ function ItineraryContent({ hero }: { hero?: SectionHero }) {
   }, [incoming, sp, locale]);
 
   const [city, setCity] = useState(resolved.city);
+  // The city must be one of ours, picked from the list (a city's name, or a
+  // country's name listing its cities): a plan is only as good as knowing
+  // exactly which place it is for (owner, 8 Oct). An arriving city that
+  // matches one of ours counts as picked.
+  const [pickedCountry, setPickedCountry] = useState<string | null>(() => {
+    const n = resolved.city.trim();
+    if (!n) return null;
+    for (const [code, list] of Object.entries(COUNTRY_CITIES)) {
+      if (list.some((c) => searchEquals(c.nameAr, n) || searchEquals(c.nameEn, n))) return code;
+    }
+    return null;
+  });
+  const [cityError, setCityError] = useState(false);
+  // The browser's own form check runs before ours and stops at the first
+  // field it finds wrong; telling it the city box is wrong until a city is
+  // picked keeps the city first, where it is on screen.
+  useEffect(() => {
+    const el = document.getElementById("plan-city") as HTMLInputElement | null;
+    el?.setCustomValidity(pickedCountry ? "" : dict.hotelForm.errorPickCity);
+  }, [pickedCountry, dict.hotelForm.errorPickCity]);
+  const country = (pickedCountry ? findCountry(pickedCountry) : undefined) ?? resolved.country;
   const [days, setDays] = useState(Number(sp.get("nights") || 3));
   // Deliberately a string, and deliberately empty: a number field seeded with
   // 0 reads as "already answered" and gets submitted untouched.
@@ -99,11 +123,7 @@ function ItineraryContent({ hero }: { hero?: SectionHero }) {
   const [result, setResult] = useState<ItineraryResult | null>(null);
   const [failed, setFailed] = useState(false);
 
-  const countryName = resolved.country
-    ? locale === "ar"
-      ? resolved.country.nameAr
-      : resolved.country.nameEn
-    : undefined;
+  const countryName = country ? (locale === "ar" ? country.nameAr : country.nameEn) : undefined;
 
   // The trip this plan is for, printed above the form so the page reads as a
   // step in their own booking rather than a generic tool they wandered into.
@@ -134,6 +154,11 @@ function ItineraryContent({ hero }: { hero?: SectionHero }) {
 
   async function generate(e: React.FormEvent) {
     e.preventDefault();
+    if (!pickedCountry) {
+      setCityError(true);
+      document.getElementById("plan-city")?.focus();
+      return;
+    }
     track("search", {
       search_type: "itinerary",
       destination: city,
@@ -147,7 +172,9 @@ function ItineraryContent({ hero }: { hero?: SectionHero }) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          destination: city,
+          // The city with its country: "Antalya" alone is ambiguous to
+          // whoever writes the plan; "أنطاليا، تركيا" is not.
+          destination: countryName ? `${city}${locale === "ar" ? "، " : ", "}${countryName}` : city,
           days,
           budget: Number(budget),
           currency,
@@ -232,14 +259,30 @@ function ItineraryContent({ hero }: { hero?: SectionHero }) {
             <label className={labelClass} htmlFor="plan-city">
               {dict.itinerary.cityLabel}
             </label>
-            <input
+            <HotelCityInput
               id="plan-city"
+              locale={locale}
               className={inputClass}
               value={city}
-              onChange={(e) => setCity(e.target.value)}
+              onType={(text) => {
+                setCity(text);
+                setPickedCountry(null);
+                setCityError(false);
+              }}
+              onPick={(picked, code) => {
+                setCity(locale === "ar" ? picked.nameAr : picked.nameEn);
+                setPickedCountry(code);
+                setCityError(false);
+              }}
               placeholder={dict.itinerary.cityPlaceholder}
-              required
+              invalid={cityError}
+              emptyText={dict.hotelForm.noCityMatch}
             />
+            {cityError && (
+              <p role="alert" className="mt-1.5 text-xs font-semibold text-red-600">
+                {dict.hotelForm.errorPickCity}
+              </p>
+            )}
           </div>
 
           <div>
@@ -334,10 +377,10 @@ function ItineraryContent({ hero }: { hero?: SectionHero }) {
 
           <PlanActions
             locale={locale}
-            countryCode={resolved.country?.code}
+            countryCode={country?.code}
             countryName={countryName}
             planLines={planLines}
-            fileBase={`sfrtna-plan-${resolved.country?.code ?? "trip"}`}
+            fileBase={`sfrtna-plan-${country?.code ?? "trip"}`}
             title={dict.itinerary.planTitleForCity.replace("{city}", city)}
           />
 

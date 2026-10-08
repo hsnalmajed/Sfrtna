@@ -57,7 +57,9 @@ class IntroView extends FrameLayout {
         mark = new ImageView(context);
         mark.setImageResource(R.drawable.intro_mark);
         mark.setAdjustViewBounds(true);
-        column.addView(mark, new LinearLayout.LayoutParams(dp(176), dp(170)));
+        // The image carries extra white on the leading side so the pin — not the
+        // pin plus its plane — sits on the centre line (owner, 8 Oct).
+        column.addView(mark, new LinearLayout.LayoutParams(dp(212), dp(170)));
 
         String line = context.getString(english ? R.string.intro_tagline_en : R.string.intro_tagline_ar);
         tagline = new TaglineFlightView(context, line, !english);

@@ -229,6 +229,10 @@ Travelpayouts.
   both planners fold into `PreferencesPanel` (PlannerFields; gold card,
   shows chosen items, opens by itself if any set). Hotel order:
   breakfast → stars (chips) → stay type (chips). `ChoiceChips` shared.
+- 9 Oct: opening mark centred on the pin (`intro_mark.png` padded 88 px on
+  the leading side; view 212×170 dp). Itinerary city = picked from the list
+  (`HotelCityInput`, city or country → its cities); not picked → browser
+  check message on the city box; POST destination "city، country".
 - Before Play: owner's developer account (unknown if it exists), upload
   key → 4 GitHub secrets, App Links (`assetlinks.json` after first upload),
   store listing + Data safety.
