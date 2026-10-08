@@ -47,7 +47,7 @@ class TaglineFlightView extends View {
         }
         textPaint.setTypeface(face != null ? face : Typeface.DEFAULT_BOLD);
         textPaint.setColor(NAVY);
-        textPaint.setTextSize(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 30, getResources().getDisplayMetrics()));
+        textPaint.setTextSize(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 34, getResources().getDisplayMetrics()));
         textPaint.setTextAlign(Paint.Align.CENTER);
 
         trailPaint.setStyle(Paint.Style.STROKE);

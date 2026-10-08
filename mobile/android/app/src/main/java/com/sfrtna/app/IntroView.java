@@ -55,8 +55,9 @@ class IntroView extends FrameLayout {
         addView(column, cp);
 
         mark = new ImageView(context);
-        mark.setImageResource(R.drawable.splash_icon);
-        column.addView(mark, new LinearLayout.LayoutParams(dp(188), dp(188)));
+        mark.setImageResource(R.drawable.intro_mark);
+        mark.setAdjustViewBounds(true);
+        column.addView(mark, new LinearLayout.LayoutParams(dp(176), dp(170)));
 
         String line = context.getString(english ? R.string.intro_tagline_en : R.string.intro_tagline_ar);
         tagline = new TaglineFlightView(context, line, !english);
