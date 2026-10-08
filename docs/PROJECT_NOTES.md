@@ -1,6 +1,6 @@
 # Sfrtna — project notes for a new session
 
-Read this first. It replaces re-explaining the project. Last updated 7 Oct 2026.
+Read this first. It replaces re-explaining the project. Last updated 9 Oct 2026.
 
 ## Owner's standing rules (must follow)
 
@@ -361,6 +361,33 @@ Travelpayouts.
   page, footer, More sheet and sitemap show it. No reply-time promise.
 
 ## Next, in order
+
+**▶ Start here (new conversation, 9 Oct): finish the HERE hotel-name section.**
+State: the code is done and waiting for the key. `src/lib/providers/googlePlaces.ts`
+→ `hereHotels()` (HERE Discover, `at` = visitor's rough location else Riyadh,
+`limit` 20, keeps categories `500-*` = accommodation, edge-cached 7 days per
+query), used by `hotelSuggestions()` in the order Google → HERE → OpenStreetMap;
+Arabic spellings via `arabicSpellings()`. `/api/health` reports `here.status`
+and `here.lodging` (hits for "Hilton Istanbul") and `keys.here`.
+The owner was creating his HERE account (billing page; PayPal advised) — no key
+yet. Steps for the section:
+1. Owner: finish the HERE account, create a REST API key (HERE platform →
+   project → Access manager / API keys). Never paste it in chat.
+2. Owner: add it in Cloudflare → Workers → sfrtna → Settings → Variables and
+   Secrets as a **Secret** named `HERE_API_KEY` (Runtime, not Build), then
+   redeploy (or push any commit).
+3. Claude: open `/api/health` in the browser → expect `keys.here: true`,
+   `here.status: 200`, `here.lodging > 0`.
+4. Claude: **add the promised daily cap** before relying on it — free tier is
+   5,000 transactions/month; cap ≈ 160/day (a counter like SerpApi's pace
+   guard in `src/lib/providers/serpapi.ts`), and show usage in `/api/health`.
+   Past the cap fall through to OpenStreetMap, never an error.
+5. Claude: live test the hotel name box (hotel form → «لدي فندق محدد») with
+   Arabic and English: «هيلتون إسطنبول», «سماء», «ابها فندق», «Hilton
+   Istanbul», a Riyadh/Jeddah hotel; Arabic spelling variants must match
+   (أ/ا, ة/ه). Then pick one → named-hotel page loads prices (SerpApi).
+6. Update the Partners table row for HERE and this note; commit; report.
+
 
 0. Owner decision pending: which countries to add next (site has 73 with
    cities; each new one needs cities + coords, airports, a confirmed visa
