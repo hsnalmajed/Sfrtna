@@ -10,19 +10,24 @@
 // Pricing all orderings of all candidate cities pair by pair would cost
 // hundreds of requests. Instead one request per city answers "cheapest from
 // here to everywhere" (see oneWayFaresFrom), so a whole search costs one call
-// per candidate city and month — comfortably inside a Worker's budget.
+// per candidate city and month.
+//
+// The candidates are every city the site suggests (discoverPool.ts, ~200),
+// narrowed by the traveller's continent and kind of place, then ranked
+// with the one table already needed — fares from home — so the cities
+// actually flown to from home, in season, come first. Only the top ones get
+// a table of their own: MAX_REQUESTS keeps the search inside the Worker's
+// subrequest limit (50 on the free plan) with room to spare.
 
-import { DESTINATIONS, type Destination } from "@/lib/destinations";
+import { DESTINATIONS } from "@/lib/destinations";
+import { discoverCandidates, type Candidate } from "@/lib/discoverPool";
 import { placeForDestination } from "@/lib/destinationPlace";
 import { oneWayFaresFrom, type OneWayFare } from "@/lib/providers/travelpayouts";
 import type { DestinationCategory, RouteLeg, RouteStop, RouteSuggestion } from "@/lib/types";
-import { findCountry, type Continent } from "@/lib/countries";
+import type { Continent } from "@/lib/countries";
 
-/** The continent a destination is on, through its city's country. */
-function continentOf(code: string, nameEn: string): Continent | undefined {
-  const place = placeForDestination(code, nameEn, 1);
-  return place ? findCountry(place.countryCode)?.continent : undefined;
-}
+/** Fare tables one search may load: home's, plus one per city and month. */
+const MAX_REQUESTS = 29;
 
 export interface RouteQuery {
   origin: string; // IATA
@@ -66,9 +71,9 @@ function permutations<T>(items: T[], k: number): T[][] {
 }
 
 /** Sample fares for local development only, where there is no API token. */
-function devFares(origin: string, month: string): Map<string, OneWayFare> {
+function devFares(origin: string, month: string, codes: string[]): Map<string, OneWayFare> {
   const out = new Map<string, OneWayFare>();
-  for (const code of [...DESTINATIONS.map((d) => d.code), "RUH", "JED", "DMM"]) {
+  for (const code of [...new Set([...DESTINATIONS.map((d) => d.code), ...codes, "RUH", "JED", "DMM"])]) {
     let h = 0;
     for (const ch of origin + code + month) h = (h * 31 + ch.charCodeAt(0)) % 997;
     out.set(code, {
@@ -90,13 +95,13 @@ export async function suggestRoutes(q: RouteQuery): Promise<RouteSuggestion[]> {
   const legDates = [q.startDate];
   for (const n of nights) legDates.push(addDays(legDates[legDates.length - 1], n));
 
-  const candidates = DESTINATIONS.filter(
+  const pool = discoverCandidates().filter(
     (d) =>
       d.code !== q.origin &&
       (!q.category || d.categories.includes(q.category)) &&
-      (!q.continents?.length || q.continents.includes(continentOf(d.code, d.nameEn) as Continent))
+      (!q.continents?.length || (d.continent !== undefined && q.continents.includes(d.continent)))
   );
-  if (candidates.length < q.stops) return [];
+  if (pool.length < q.stops) return [];
 
   // Fares needed: from home in the first flight's month, and from every
   // candidate in the months of the later flights.
@@ -105,13 +110,29 @@ export async function suggestRoutes(q: RouteQuery): Promise<RouteSuggestion[]> {
   const useDev = process.env.NODE_ENV === "development";
   const load = async (from: string, m: string) => {
     const fares = await oneWayFaresFrom(from, m, q.currency);
-    return fares.size === 0 && useDev ? devFares(from, m) : fares;
+    return fares.size === 0 && useDev ? devFares(from, m, pool.map((c) => c.code)) : fares;
   };
-  const requests: { key: string; from: string; m: string }[] = [
-    { key: `${q.origin}|${month(legDates[0])}`, from: q.origin, m: month(legDates[0]) },
-  ];
-  for (const c of candidates) for (const m of laterMonths) requests.push({ key: `${c.code}|${m}`, from: c.code, m });
+
   const table = new Map<string, Map<string, OneWayFare>>();
+  const homeKey = `${q.origin}|${month(legDates[0])}`;
+  const home = await load(q.origin, month(legDates[0]));
+  table.set(homeKey, home);
+
+  // Which cities get a table: flown to from home first, in season in the
+  // month of the trip next, cheapest next.
+  const startMonth = Number(legDates[0].slice(5, 7));
+  const seasonal = (c: Candidate) => (placeForDestination(c.code, c.nameEn, startMonth)?.inSeason ? 1 : 0);
+  const ranked = [...pool].sort((a, b) => {
+    const fa = home.get(a.code)?.price;
+    const fb = home.get(b.code)?.price;
+    if ((fa !== undefined) !== (fb !== undefined)) return fa !== undefined ? -1 : 1;
+    return seasonal(b) - seasonal(a) || (fa ?? 0) - (fb ?? 0);
+  });
+  const perCity = Math.max(1, laterMonths.length);
+  const candidates = ranked.slice(0, Math.max(q.stops, Math.floor((MAX_REQUESTS - 1) / perCity)));
+
+  const requests: { key: string; from: string; m: string }[] = [];
+  for (const c of candidates) for (const m of laterMonths) requests.push({ key: `${c.code}|${m}`, from: c.code, m });
   const loaded = await Promise.all(requests.map((r) => load(r.from, r.m)));
   requests.forEach((r, i) => table.set(r.key, loaded[i]));
 
@@ -119,7 +140,7 @@ export async function suggestRoutes(q: RouteQuery): Promise<RouteSuggestion[]> {
     table.get(`${from}|${month(date)}`)?.get(to);
 
   const routes: RouteSuggestion[] = [];
-  for (const perm of permutations<Destination>(candidates, q.stops)) {
+  for (const perm of permutations<Candidate>(candidates, q.stops)) {
     const path = [q.origin, ...perm.map((d) => d.code), q.origin];
     const legs: RouteLeg[] = [];
     let ok = true;

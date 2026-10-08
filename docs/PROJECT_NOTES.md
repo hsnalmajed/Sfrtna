@@ -295,6 +295,11 @@ Travelpayouts.
   `routeSuggest.ts`), then destination type.
 - Results filters: every season rating (5) and every visa kind (4), each a
   toggle with its count; one swipeable row each on phones.
+- Multi-country routes now draw from the full pool (`src/lib/discoverPool.ts`,
+  shared with /api/discover) instead of 14 hand-picked cities: filtered by
+  continent/type, ranked by the home fare table (flown to from home →
+  in season → cheapest), top N get a fare table, `MAX_REQUESTS` = 29
+  (28 cities for one month, 14 when the trip spans two).
 
 ## Next, in order
 
