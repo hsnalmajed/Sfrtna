@@ -182,6 +182,25 @@ Travelpayouts.
   (`HOME_SEASON_EVENT`), Book lights up on the planner (`HOME_TAB_EVENT`).
   "Flying from" row removed from home (web too); the flight form still
   pre-fills the nearest airport (`useDefaultOrigin`).
+- **App design section (8 Oct evening, owner: "uncomfortable, not tidy"):**
+  light app chrome (white top bar + tab bar, white system bars, SystemBars
+  style LIGHT); `.app-light` turns every hero into a light large-title
+  header; `@custom-variant app` in globals.css for app-only utilities
+  (`app:…`); `useInApp()` for props (search form tone light in the app).
+  App home = `AppHome.tsx` (greeting + flights/hotels tiles → planner,
+  then 6 season cities two per row, then tools grid); no marquee in app.
+  Cards picture-on-top/text-below in app (CountryCardGrid, CityGallery,
+  HomeShowcase cities) with flag tiles when no photo. On phones
+  everywhere: seasons grouped by continent then country, two per row;
+  discover cards and city places two per row. Language remembered:
+  `sfrtna_lang` cookie (NavTracker) read by `src/app/page.tsx`; app
+  flushes cookies onStop. Opening (`IntroView` + `TaglineFlightView`):
+  large mark (`intro_mark.png` from favicon-512), a plane flies across
+  writing the tagline in Tajawal ExtraBold (res/font, OFL in
+  mobile/licenses) with a dashed gold trail; tagline in the last language
+  used (reads the cookie). Live 8 Oct: root → last language OK, app home
+  served, APK built. Chrome test browser froze on live home — owner's
+  phone screenshots are the check.
 - Before Play: owner's developer account (unknown if it exists), upload
   key → 4 GitHub secrets, App Links (`assetlinks.json` after first upload),
   store listing + Data safety.

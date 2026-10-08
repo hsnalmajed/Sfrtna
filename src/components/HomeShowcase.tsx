@@ -79,7 +79,6 @@ interface ShowcaseDict {
   hotelsHint: string;
   seasonTitle: string;
   seasonSubtitle: string;
-  seasonCta: string;
   seasonAllCities: string;
   /** The app's short "see all (n)". */
   seeAll: string;

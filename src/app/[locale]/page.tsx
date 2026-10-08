@@ -294,7 +294,6 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
             hotelsHint: dict.productSelect.hotelsHint,
             seasonTitle: dict.home.seasonTitle.replace("{month}", monthName(month, loc)),
             seasonSubtitle: dict.home.seasonSubtitle,
-            seasonCta: dict.home.seasonCta,
             seasonAllCities: dict.home.seasonAllCities.replace("{month}", monthName(month, loc)),
             seasonFewerCities: dict.home.seasonFewerCities,
             seeAll: dict.appHome.seeAll,
