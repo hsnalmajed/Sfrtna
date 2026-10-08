@@ -20,7 +20,13 @@
   "ratelimits": [
     { "name": "API_LIMIT", "namespace_id": "2601", "simple": { "limit": 120, "period": 60 } },
     { "name": "API_LIMIT_HEAVY", "namespace_id": "2602", "simple": { "limit": 20, "period": 60 } }
-  ]
+  ],
+  // One site-wide counter for the HERE daily cap (here-quota.js). SQLite-backed
+  // Durable Objects are on the Workers free plan.
+  "durable_objects": {
+    "bindings": [{ "name": "HERE_QUOTA", "class_name": "HereQuota" }]
+  },
+  "migrations": [{ "tag": "here-quota-v1", "new_sqlite_classes": ["HereQuota"] }]
   // After deploying, set real secrets with:
   //   npx wrangler secret put AMADEUS_API_KEY
   //   npx wrangler secret put AMADEUS_API_SECRET

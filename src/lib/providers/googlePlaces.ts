@@ -1,5 +1,6 @@
 import { cachedJson } from "@/lib/edgeCache";
 import { normalizeSearch } from "@/lib/search";
+import { takeHere } from "@/lib/providers/hereQuota";
 
 /**
  * Hotel names as the traveller types, from Google Places Autocomplete (New).
@@ -64,6 +65,9 @@ async function searchPoint(): Promise<string> {
 async function hereHotels(q: string): Promise<HotelSuggestion[] | null> {
   const at = await searchPoint();
   return cachedJson<HotelSuggestion[]>(`here-hotels:${at}:${q.toLowerCase()}`, 7 * 86_400, async () => {
+    // Only a search the edge has not cached costs a transaction; past the
+    // day's cap it is not made (null, not cached) and OpenStreetMap answers.
+    if (!(await takeHere())) return null;
     try {
       const u = new URL("https://discover.search.hereapi.com/v1/discover");
       u.searchParams.set("q", q);

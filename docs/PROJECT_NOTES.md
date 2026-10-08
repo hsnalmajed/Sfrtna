@@ -49,7 +49,7 @@ The container shell cannot reach sfrtna.com — test through the browser.
 | Agoda | Pending manual site review | when approved: Site ID/API key (`AGODA_API_KEY`) + bank, then build our own Arabic hotel list |
 | SerpApi (`SERPAPI_KEY`) | Google Hotels prices for one named hotel | free 250/month, pace guard in `serpapi.ts`; `/api/serp-status` shows usage |
 | Google Places (`GOOGLE_PLACES_KEY`) | Hotel-name suggestions | **blocked**: Google Cloud in KSA is sold only via CNTXT, which needs a commercial registration; owner has none (7 Oct). Code kept, off without the key |
-| HERE (`HERE_API_KEY`) | Hotel-name suggestions (Discover, accommodation categories 500-*) | chosen 7 Oct instead of Google; free 5,000/month; **owner creating account**. Order: Google → HERE → OpenStreetMap. `/api/health` shows `here.status` and lodging hits |
+| HERE (`HERE_API_KEY`) | Hotel-name suggestions (Discover, accommodation categories 500-*) | chosen 7 Oct instead of Google; free 5,000/month; **owner creating account**. Order: Google → HERE → OpenStreetMap. Daily cap 160 / month 4,800 (Durable Object `HereQuota`, 9 Oct). `/api/health` shows `here.status`, lodging hits and `here.usage` |
 
 ## Section status
 
@@ -378,10 +378,15 @@ yet. Steps for the section:
    redeploy (or push any commit).
 3. Claude: open `/api/health` in the browser → expect `keys.here: true`,
    `here.status: 200`, `here.lodging > 0`.
-4. Claude: **add the promised daily cap** before relying on it — free tier is
-   5,000 transactions/month; cap ≈ 160/day (a counter like SerpApi's pace
-   guard in `src/lib/providers/serpapi.ts`), and show usage in `/api/health`.
-   Past the cap fall through to OpenStreetMap, never an error.
+4. ✅ 9 Oct: daily cap done. HERE has no free usage endpoint and the edge
+   cache is per data centre, so the count lives in one SQLite Durable Object
+   (`here-quota.js`, exported from `edge-worker.js`; binding `HERE_QUOTA` +
+   migration `here-quota-v1` in `wrangler.jsonc`; free plan). `takeHere()` in
+   `src/lib/providers/hereQuota.ts` runs only on an edge-cache miss: 160/day,
+   4,800/month (UTC). Past the cap, or if the counter fails on Cloudflare →
+   no HERE call, OpenStreetMap answers. The `/api/health` probe also takes
+   from the cap; `here.usage` = {today, month, dailyCap, monthlyCap}.
+   Tested with `wrangler dev`: health + suggestions counted in one counter.
 5. Claude: live test the hotel name box (hotel form → «لدي فندق محدد») with
    Arabic and English: «هيلتون إسطنبول», «سماء», «ابها فندق», «Hilton
    Istanbul», a Riyadh/Jeddah hotel; Arabic spelling variants must match

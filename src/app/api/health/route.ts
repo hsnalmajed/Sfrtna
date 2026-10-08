@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { configuredProviders } from "@/lib/providers";
 import { travelpayouts } from "@/lib/providers/travelpayouts";
+import { hereUsage, takeHere } from "@/lib/providers/hereQuota";
 
 /**
  * Is the site actually wired up?
@@ -282,9 +283,16 @@ export async function GET(req: Request) {
     }
   }
 
-  // HERE (hotel names while Google is unavailable in KSA): one search.
-  let here: { status: number | string; lodging: number | null } = { status: "no key", lodging: null };
-  if (process.env.HERE_API_KEY) {
+  // HERE (hotel names while Google is unavailable in KSA): one search, taken
+  // from the same daily cap as the visitors' searches.
+  let here: {
+    status: number | string;
+    lodging: number | null;
+    usage?: Awaited<ReturnType<typeof hereUsage>>;
+  } = { status: "no key", lodging: null };
+  if (process.env.HERE_API_KEY && !(await takeHere())) {
+    here = { status: "daily cap reached — OpenStreetMap answers until tomorrow (UTC)", lodging: null };
+  } else if (process.env.HERE_API_KEY) {
     try {
       const u = new URL("https://discover.search.hereapi.com/v1/discover");
       u.searchParams.set("q", "Hilton Istanbul");
@@ -303,6 +311,7 @@ export async function GET(req: Request) {
       here = { status: `error: ${String(err).slice(0, 120)}`, lodging: null };
     }
   }
+  here.usage = await hereUsage();
 
   return NextResponse.json(
     {
