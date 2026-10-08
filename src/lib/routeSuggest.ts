@@ -24,10 +24,17 @@ import { discoverCandidates, type Candidate } from "@/lib/discoverPool";
 import { placeForDestination } from "@/lib/destinationPlace";
 import { oneWayFaresFrom, type OneWayFare } from "@/lib/providers/travelpayouts";
 import type { DestinationCategory, RouteLeg, RouteStop, RouteSuggestion } from "@/lib/types";
-import type { Continent } from "@/lib/countries";
+import { findCountryByEnglishName, type Continent } from "@/lib/countries";
+import { findAirport } from "@/lib/airports";
 
 /** Fare tables one search may load: home's, plus one per city and month. */
 const MAX_REQUESTS = 29;
+/**
+ * Cities whose orderings are tried. Three stops from 28 cities is ~20,000
+ * orderings — more work than a Worker may do for one request (seen live:
+ * 503) — so three-stop routes are built from fewer.
+ */
+const MAX_CITIES: Record<2 | 3, number> = { 2: 28, 3: 14 };
 
 export interface RouteQuery {
   origin: string; // IATA
@@ -95,9 +102,13 @@ export async function suggestRoutes(q: RouteQuery): Promise<RouteSuggestion[]> {
   const legDates = [q.startDate];
   for (const n of nights) legDates.push(addDays(legDates[legDates.length - 1], n));
 
+  // "Several countries": never a city in the traveller's own country, and
+  // never two stops in the same country (checked per route below).
+  const homeCountry = findCountryByEnglishName(findAirport(q.origin)?.countryEn ?? "")?.code;
   const pool = discoverCandidates().filter(
     (d) =>
       d.code !== q.origin &&
+      d.countryCode !== homeCountry &&
       (!q.category || d.categories.includes(q.category)) &&
       (!q.continents?.length || (d.continent !== undefined && q.continents.includes(d.continent)))
   );
@@ -129,7 +140,18 @@ export async function suggestRoutes(q: RouteQuery): Promise<RouteSuggestion[]> {
     return seasonal(b) - seasonal(a) || (fa ?? 0) - (fb ?? 0);
   });
   const perCity = Math.max(1, laterMonths.length);
-  const candidates = ranked.slice(0, Math.max(q.stops, Math.floor((MAX_REQUESTS - 1) / perCity)));
+  const candidates = ranked.slice(
+    0,
+    Math.max(q.stops, Math.min(MAX_CITIES[q.stops], Math.floor((MAX_REQUESTS - 1) / perCity)))
+  );
+
+  // Each stop's season facts, worked out once rather than once per ordering.
+  const places = new Map<string, ReturnType<typeof placeForDestination>>();
+  const placeOf = (c: Candidate, date: string) => {
+    const key = `${c.code}|${date.slice(5, 7)}`;
+    if (!places.has(key)) places.set(key, placeForDestination(c.code, c.nameEn, Number(date.slice(5, 7))));
+    return places.get(key);
+  };
 
   const requests: { key: string; from: string; m: string }[] = [];
   for (const c of candidates) for (const m of laterMonths) requests.push({ key: `${c.code}|${m}`, from: c.code, m });
@@ -141,6 +163,7 @@ export async function suggestRoutes(q: RouteQuery): Promise<RouteSuggestion[]> {
 
   const routes: RouteSuggestion[] = [];
   for (const perm of permutations<Candidate>(candidates, q.stops)) {
+    if (new Set(perm.map((d) => d.countryCode)).size < perm.length) continue;
     const path = [q.origin, ...perm.map((d) => d.code), q.origin];
     const legs: RouteLeg[] = [];
     let ok = true;
@@ -170,7 +193,7 @@ export async function suggestRoutes(q: RouteQuery): Promise<RouteSuggestion[]> {
       emoji: d.emoji,
       nights: nights[i],
       arrive: legDates[i],
-      place: placeForDestination(d.code, d.nameEn, Number(legDates[i].slice(5, 7))),
+      place: placeOf(d, legDates[i]),
     }));
     routes.push({
       stops,

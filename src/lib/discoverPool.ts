@@ -14,6 +14,7 @@ export type Candidate = {
   nameEn: string;
   emoji: string;
   categories: DestinationCategory[];
+  countryCode: string;
   continent?: Continent;
 };
 
@@ -51,6 +52,7 @@ export function discoverCandidates(): Candidate[] {
         nameEn: c.nameEn,
         emoji: curated.get(code)?.emoji ?? flagEmoji(countryCode),
         categories: [...cats],
+        countryCode,
         continent: findCountry(countryCode)?.continent,
       });
     }
