@@ -13,7 +13,7 @@ import { MAX_GUESTS_PER_ROOM, occupancy, roomFitsParty, type StayType } from "@/
 import { parseChildrenAges, serializeChildrenAges } from "@/lib/searchParamsUtil";
 import { focusFirstError, hasErrors, type FieldErrors } from "@/lib/formErrors";
 import { formStyles, type FormTone } from "@/lib/formTone";
-import { BudgetInput, EdgeTabs, FieldLabel, Toggle } from "@/components/PlannerFields";
+import { BudgetInput, ChoiceChips, EdgeTabs, FieldLabel, PreferencesPanel, Toggle } from "@/components/PlannerFields";
 import { trackSearchUrl } from "@/lib/analytics";
 
 /**
@@ -160,9 +160,7 @@ export default function HotelPlanner({
   const st = formStyles(tone);
   const inputClass = st.input;
   const errorClass = `mt-1.5 text-xs font-semibold ${dark ? "text-rose-300" : "text-red-600"}`;
-  const sectionTitle = `text-sm font-bold ${dark ? "text-white/90" : "text-navy-900"}`;
   const muted = `text-xs ${dark ? "text-white/55" : "text-navy-500"}`;
-  const divider = dark ? "border-white/10" : "border-mist-200";
 
   return (
     <form noValidate onSubmit={handleSubmit} className={st.surface}>
@@ -304,69 +302,52 @@ export default function HotelPlanner({
         )}
       </div>
 
-      {/* The hotel's own preferences — only when we are the ones choosing. */}
+      {/* The hotel's own preferences — only when we are the ones choosing —
+          folded into one card (PreferencesPanel), in the order a traveller
+          decides them: breakfast, then the stars, then the kind of stay. */}
       {mode === "discover" && (
-        <div className={`mt-5 border-t pt-4 ${divider}`}>
-          <p className="flex items-center gap-2">
-            <span className={sectionTitle}>
-              {dict.form.extrasTitle}{" "}
-              <span className={`font-normal ${dark ? "text-white/50" : "text-navy-500"}`}>
-                {dict.form.extrasOptional}
-              </span>
-            </span>
-          </p>
+        <PreferencesPanel
+          dark={dark}
+          title={dict.form.extrasTitle}
+          hint={dict.form.extrasHint}
+          chosen={[
+            ...(breakfast ? [dict.form.breakfastShort] : []),
+            ...(minStars ? ["★".repeat(minStars)] : []),
+            ...(effectiveStayType ? [dict.stayType[effectiveStayType]] : []),
+          ]}
+        >
+          <Toggle dark={dark} id="hotel-breakfast" checked={breakfast} onChange={setBreakfast} icon="coffee">
+            {dict.form.breakfastShort}
+          </Toggle>
 
-          <div className="mt-3 flex flex-col gap-4">
-            <div className="grid grid-cols-1 items-end gap-x-4 gap-y-4 sm:grid-cols-[minmax(0,13rem)_minmax(0,13rem)]">
-              <div>
-                <FieldLabel dark={dark} icon="star" htmlFor="hotel-stars">
-                  {dict.form.minStars}
-                </FieldLabel>
-                <select
-                  id="hotel-stars"
-                  className={inputClass}
-                  value={minStars}
-                  onChange={(e) => setMinStars(Number(e.target.value))}
-                >
-                  <option value={0}>{dict.form.anyStars}</option>
-                  {[2, 3, 4, 5].map((s) => (
-                    <option key={s} value={s}>
-                      {"★".repeat(s)}
-                    </option>
-                  ))}
-                </select>
-              </div>
+          <div>
+            <FieldLabel dark={dark} icon="star">
+              {dict.form.minStars}
+            </FieldLabel>
+            <ChoiceChips<number>
+              dark={dark}
+              options={[{ value: 0, label: dict.form.anyStars }, ...[2, 3, 4, 5].map((n) => ({ value: n, label: "★".repeat(n) }))]}
+              isOn={(v) => v === minStars}
+              onPick={setMinStars}
+            />
+          </div>
 
-              <div>
-                <FieldLabel dark={dark} icon="bed" htmlFor="hotel-stay">
-                  {dict.stayType.label}
-                </FieldLabel>
-                <select
-                  id="hotel-stay"
-                  className={inputClass}
-                  value={effectiveStayType}
-                  onChange={(e) => setStayType(e.target.value as StayType | "")}
-                >
-                  <option value="">{dict.stayType.any}</option>
-                  <option value="room" disabled={!roomPossible}>
-                    {dict.stayType.room}
-                  </option>
-                  <option value="apartment">{dict.stayType.apartment}</option>
-                </select>
-              </div>
-
-            </div>
-
-            {/* Where the flight form keeps its switches: a row of their own
-                under the choices, starting from the same edge. */}
-            <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
-              <Toggle dark={dark} id="hotel-breakfast" checked={breakfast} onChange={setBreakfast} icon="coffee">
-                {dict.form.breakfastShort}
-              </Toggle>
-            </div>
-
+          <div>
+            <FieldLabel dark={dark} icon="bed">
+              {dict.stayType.label}
+            </FieldLabel>
+            <ChoiceChips<StayType | "">
+              dark={dark}
+              options={[
+                { value: "", label: dict.stayType.any },
+                { value: "room", label: dict.stayType.room, disabled: !roomPossible },
+                { value: "apartment", label: dict.stayType.apartment },
+              ]}
+              isOn={(v) => v === effectiveStayType}
+              onPick={setStayType}
+            />
             {!roomPossible && (
-              <p className={muted}>
+              <p className={`mt-2 ${muted}`}>
                 {dict.stayType.apartmentOnlyHint.replace("{count}", String(guests))}{" "}
                 <span className="opacity-70">
                   ({dict.stayType.roomFitsHint.replace("{max}", String(MAX_GUESTS_PER_ROOM))})
@@ -374,7 +355,7 @@ export default function HotelPlanner({
               </p>
             )}
           </div>
-        </div>
+        </PreferencesPanel>
       )}
 
       <button

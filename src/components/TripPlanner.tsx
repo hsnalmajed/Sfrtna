@@ -15,7 +15,7 @@ import { strictIata } from "@/lib/flights";
 import { CONTINENTS, type Continent } from "@/lib/countries";
 import { focusFirstError, hasErrors, type FieldErrors } from "@/lib/formErrors";
 import { formStyles, type FormTone } from "@/lib/formTone";
-import { BudgetInput, EdgeTabs, FieldLabel, Toggle, nightsBetween, toDigits } from "@/components/PlannerFields";
+import { BudgetInput, EdgeTabs, FieldLabel, PreferencesPanel, Toggle, nightsBetween, toDigits } from "@/components/PlannerFields";
 import { useDefaultOrigin } from "@/lib/useOrigin";
 import { trackSearchUrl } from "@/lib/analytics";
 
@@ -651,21 +651,22 @@ export default function TripPlanner({
         </div>
       )}
 
-      {/* ── 4. Optional, and saying so ─────────────────────────────────
-          Always open: folded away, travellers did not see them, and a
-          preference no one sees is one no one sets. */}
-      <div className={`mt-5 border-t pt-4 ${divider}`}>
-        <p className="flex items-center gap-2">
-          <span className={sectionTitle}>
-            {dict.form.extrasTitle}{" "}
-            <span className={`font-normal ${dark ? "text-white/50" : "text-navy-500"}`}>
-              {dict.form.extrasOptional}
-            </span>
-          </span>
-        </p>
-
-        <div className="mt-3 flex flex-col gap-4">
-          <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+      {/* ── 4. Optional, folded ────────────────────────────────────────
+          One card the traveller opens (PreferencesPanel). Folded, it says
+          what is chosen; it opens by itself when something already is. */}
+      <PreferencesPanel
+        dark={dark}
+        title={dict.form.extrasTitle}
+        hint={dict.form.extrasHint}
+        chosen={[
+          ...(directOnly ? [dict.form.directShort] : []),
+          ...(baggageIncluded ? [dict.form.baggageShort] : []),
+          ...(mode === "discover" ? continents.map((c) => dict.attractions.continents[c]) : []),
+          ...(mode === "discover" && preferenceCategory ? [dict.categories[preferenceCategory]] : []),
+        ]}
+      >
+          {/* The two switches side by side. */}
+          <div className="grid grid-cols-1 gap-3 min-[430px]:grid-cols-2">
             <Toggle dark={dark} id="plan-direct" checked={directOnly} onChange={setDirectOnly} icon="takeoff">
               {dict.form.directShort}
             </Toggle>
@@ -741,9 +742,7 @@ export default function TripPlanner({
               </div>
             </div>
           )}
-
-        </div>
-      </div>
+      </PreferencesPanel>
 
       {/* ── 5. Go ────────────────────────────────────────────────────── */}
       <button

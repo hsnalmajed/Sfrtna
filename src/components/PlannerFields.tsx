@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import type { Locale } from "@/lib/types";
 import Icon, { type IconName } from "@/components/ui/Icon";
 import CurrencySelect from "@/components/CurrencySelect";
@@ -252,6 +253,129 @@ export function EdgeTabs<T extends string>({
                 {t.hint}
               </span>
             </span>
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+
+/**
+ * The optional preferences, folded into one card the traveller opens.
+ *
+ * Laid out in full they made the form a screen taller than it needs to be,
+ * and most searches change none of them. Folded, the card still says what
+ * it holds and — once something is chosen — what is chosen ("طيران مباشر ·
+ * آسيا"), so nothing set is ever out of sight. It opens by itself when a
+ * search arrives with preferences already set. The gold edge is there so
+ * it reads as something to open, not as a footnote.
+ */
+export function PreferencesPanel({
+  dark,
+  title,
+  hint,
+  chosen,
+  children,
+}: {
+  dark: boolean;
+  title: string;
+  /** Shown when nothing is chosen: "اختيارية · اضغط لتخصيص بحثك". */
+  hint: string;
+  /** Labels of what is chosen, in order. */
+  chosen: string[];
+  children: React.ReactNode;
+}) {
+  const [open, setOpen] = useState(chosen.length > 0);
+  return (
+    <div
+      className={`mt-5 overflow-hidden rounded-2xl ring-1 transition ${
+        dark
+          ? open
+            ? "bg-white/[0.06] ring-sun-400/50"
+            : "bg-white/[0.04] ring-sun-400/30"
+          : open
+            ? "bg-sun-50/70 ring-sun-300"
+            : "bg-sun-50/50 ring-sun-200"
+      }`}
+    >
+      <button
+        type="button"
+        aria-expanded={open}
+        onClick={() => setOpen((v) => !v)}
+        className="flex w-full items-center gap-3 px-3.5 py-3 text-start focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-sun-400"
+      >
+        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-sun-400 text-navy-950" aria-hidden="true">
+          <svg viewBox="0 0 24 24" className="h-[1.1rem] w-[1.1rem]" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
+            <path d="M4 7h10M18 7h2M4 17h4M12 17h8" />
+            <circle cx="16" cy="7" r="2" />
+            <circle cx="10" cy="17" r="2" />
+          </svg>
+        </span>
+        <span className="min-w-0 flex-1">
+          <span className={`block text-sm font-extrabold ${dark ? "text-white" : "text-navy-900"}`}>{title}</span>
+          <span className={`block truncate text-xs font-semibold ${chosen.length ? (dark ? "text-sun-300" : "text-sun-800") : dark ? "text-white/55" : "text-navy-500"}`}>
+            {chosen.length ? chosen.join(" · ") : hint}
+          </span>
+        </span>
+        {chosen.length > 0 && (
+          <span className="flex h-6 min-w-6 items-center justify-center rounded-full bg-sun-400 px-1.5 text-xs font-extrabold text-navy-950">
+            {chosen.length}
+          </span>
+        )}
+        <svg
+          viewBox="0 0 24 24"
+          className={`h-5 w-5 shrink-0 transition-transform duration-300 ${open ? "rotate-180" : ""} ${dark ? "text-white/70" : "text-navy-500"}`}
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.2"
+          aria-hidden="true"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" d="M6 9l6 6 6-6" />
+        </svg>
+      </button>
+      {/* grid-rows 0fr → 1fr: the card grows to its content, smoothly. */}
+      <div className={`grid transition-[grid-template-rows] duration-300 ease-out ${open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
+        <div className="overflow-hidden" inert={!open}>
+          <div className={`flex flex-col gap-4 border-t px-3.5 pb-4 pt-3.5 ${dark ? "border-white/10" : "border-sun-200"}`}>{children}</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/** A row of choice chips — the same look for stars, room type, continents. */
+export function ChoiceChips<T extends string | number>({
+  dark,
+  options,
+  isOn,
+  onPick,
+}: {
+  dark: boolean;
+  options: { value: T; label: string; disabled?: boolean }[];
+  isOn: (v: T) => boolean;
+  onPick: (v: T) => void;
+}) {
+  return (
+    <div className="flex flex-wrap gap-2">
+      {options.map((o) => {
+        const on = isOn(o.value);
+        return (
+          <button
+            key={String(o.value)}
+            type="button"
+            aria-pressed={on}
+            disabled={o.disabled}
+            onClick={() => onPick(o.value)}
+            className={`rounded-full px-3.5 py-1.5 text-xs font-bold ring-1 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400 disabled:cursor-not-allowed disabled:opacity-40 ${
+              on
+                ? "bg-sun-400 text-navy-950 ring-sun-400"
+                : dark
+                  ? "bg-white/[0.05] text-white/80 ring-white/15 hover:bg-white/10"
+                  : "bg-white text-navy-700 ring-mist-200 hover:ring-navy-200"
+            }`}
+          >
+            {o.label}
           </button>
         );
       })}

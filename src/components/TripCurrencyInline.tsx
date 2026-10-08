@@ -71,10 +71,10 @@ export default function TripCurrencyInline({
         className={
           variant === "light"
             ? "inline-flex max-w-full flex-wrap items-center gap-2 text-[13px] font-bold text-navy-800"
-            : "inline-flex shrink-0 items-center overflow-hidden whitespace-nowrap rounded-full bg-white/10 text-[13px] font-bold text-white ring-1 ring-white/15"
+            : "flex w-full items-center justify-between overflow-hidden whitespace-nowrap rounded-xl bg-white/10 text-[13px] font-bold text-white ring-1 ring-white/15"
         }
       >
-        <span className={variant === "light" ? "inline-flex items-center gap-2" : "inline-flex items-center gap-2 px-3 py-1.5"}>
+        <span className={variant === "light" ? "inline-flex items-center gap-2" : "inline-flex min-w-0 items-center gap-2 truncate px-3 py-2"}>
           <Flag currency={to} />
           <span dir={locale === "ar" ? "rtl" : "ltr"}>
             1 {short(from)} ={" "}
@@ -90,7 +90,7 @@ export default function TripCurrencyInline({
           className={
             variant === "light"
               ? "inline-flex items-center gap-1.5 rounded-full bg-sun-400 px-3 py-1 text-xs font-extrabold text-navy-950 transition hover:bg-sun-300"
-              : "inline-flex items-center gap-1.5 self-stretch border-s border-white/15 bg-white px-3 py-1.5 font-extrabold text-navy-950 transition hover:bg-sun-100"
+              : "inline-flex items-center gap-1.5 self-stretch border-s border-white/15 bg-white px-3.5 py-2 font-extrabold text-navy-950 transition hover:bg-sun-100"
           }
         >
           {dict.results.currencyConvert}

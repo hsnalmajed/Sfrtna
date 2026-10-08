@@ -8,8 +8,10 @@ import { flagImageUrl } from "@/lib/visaProviders";
 import { CONTINENT_ORDER } from "@/components/DestinationFilters";
 import { searchMatches, searchEquals } from "@/lib/search";
 import Photo from "@/components/Photo";
-import VisaBadge, { VISA_STYLES } from "@/components/VisaBadge";
+import VisaBadge from "@/components/VisaBadge";
 import { VISA_ORDER, type VisaCategory } from "@/data/visaStatus";
+import FilterPill from "@/components/ui/FilterPill";
+import { getDictionary } from "@/lib/dictionaries";
 
 export interface VisaCountry {
   code: string;
@@ -62,6 +64,8 @@ export default function VisaDirectory({
 }) {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<VisaCategory | "all">("all");
+  const [continent, setContinent] = useState<Continent | "all">("all");
+  const ft = getDictionary(locale).filters;
 
   const counts = useMemo(() => {
     const c = { free: 0, arrival: 0, eta: 0, required: 0 } as Record<VisaCategory, number>;
@@ -74,9 +78,10 @@ export default function VisaDirectory({
     return countries.filter(
       (c) =>
         (category === "all" || c.category === category) &&
+        (continent === "all" || c.continent === continent) &&
         (!q || searchMatches([c.nameAr, c.nameEn], q) || searchEquals(c.code, q))
     );
-  }, [countries, query, category]);
+  }, [countries, query, category, continent]);
 
   const grouped = useMemo(() => {
     const map = new Map<Continent, VisaCountry[]>();
@@ -89,39 +94,47 @@ export default function VisaDirectory({
     return map;
   }, [filtered]);
 
-  const chip = (active: boolean) =>
-    `inline-flex items-center gap-1.5 rounded-full px-3.5 py-2 text-xs font-bold transition sm:text-sm ${
-      active ? "bg-navy-900 text-white shadow-sm" : "bg-white text-navy-700 ring-1 ring-mist-200 hover:ring-navy-200"
-    }`;
-
   return (
     <div>
-      <div className="rounded-2xl bg-mist-50 p-4 ring-1 ring-mist-200">
-        <input
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder={dict.searchPlaceholder}
-          className="w-full rounded-xl border border-mist-200 bg-white px-4 py-3 text-sm text-navy-900 outline-none transition placeholder:text-navy-400 focus:border-sea-400 focus:ring-4 focus:ring-sea-100"
-        />
-
-        <p className="mb-2 mt-4 text-xs font-bold text-navy-700">{dict.statusFilterLabel}</p>
-        <div className="flex flex-wrap gap-2">
-          <button type="button" aria-pressed={category === "all"} onClick={() => setCategory("all")} className={chip(category === "all")}>
-            {dict.allStatuses}
-            <span className={category === "all" ? "text-white/60" : "text-navy-400"}>({countries.length})</span>
-          </button>
-          {VISA_ORDER.filter((c) => counts[c] > 0).map((c) => (
-            <button key={c} type="button" aria-pressed={category === c} onClick={() => setCategory(c)} className={chip(category === c)}>
-              <span className={`inline-block h-2.5 w-2.5 rounded-full ${VISA_STYLES[c].dot}`} aria-hidden="true" />
-              {dict.labels[c]}
-              <span className={category === c ? "text-white/60" : "text-navy-400"}>({counts[c]})</span>
-            </button>
-          ))}
+      {/* The same filter block as the destinations page: a search, then
+          the pills (ui/FilterPill), then how many match. */}
+      <div className="rounded-3xl bg-white p-3.5 shadow-[var(--shadow-card)] ring-1 ring-navy-950/5 sm:p-5">
+        <div className="relative">
+          <span aria-hidden="true" className="pointer-events-none absolute inset-y-0 start-4 flex items-center text-lg">
+            🔎
+          </span>
+          <input
+            type="search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder={dict.searchPlaceholder}
+            aria-label={dict.searchPlaceholder}
+            className="w-full rounded-full border-2 border-mist-200 bg-mist-50 py-3 pe-5 ps-12 text-base font-semibold text-navy-900 outline-none transition placeholder:font-normal placeholder:text-navy-400 focus:border-sun-400 focus:bg-white focus:ring-4 focus:ring-sun-400/20"
+          />
         </div>
-
-        <p className="mt-3 text-xs font-semibold text-navy-500">
-          {dict.countriesCount.replace("{count}", String(filtered.length))}
-        </p>
+        <div className="mt-3 flex flex-wrap items-center gap-2">
+          <FilterPill<VisaCategory>
+            locale={locale}
+            icon="🛂"
+            label={ft.entry}
+            allLabel={ft.allVisas}
+            value={category}
+            onChange={setCategory}
+            options={VISA_ORDER.filter((c) => counts[c] > 0).map((c) => ({ value: c, label: dict.labels[c], count: counts[c] }))}
+          />
+          <FilterPill<Continent>
+            locale={locale}
+            icon="🌍"
+            label={ft.continent}
+            allLabel={ft.allContinents}
+            value={continent}
+            onChange={setContinent}
+            options={CONTINENT_ORDER.map((c) => ({ value: c, label: dict.continents[c] }))}
+          />
+          <p className="ms-auto rounded-full bg-sun-50 px-3 py-1.5 text-xs font-extrabold text-sun-800 ring-1 ring-sun-200">
+            {dict.countriesCount.replace("{count}", String(filtered.length))}
+          </p>
+        </div>
       </div>
 
       {filtered.length === 0 ? (

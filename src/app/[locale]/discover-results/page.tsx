@@ -10,7 +10,7 @@ import DestinationCard from "@/components/DestinationCard";
 import PricesUnavailable from "@/components/PricesUnavailable";
 import RouteCard from "@/components/RouteCard";
 import ResultsBand from "@/components/ResultsBand";
-import { VISA_STYLES } from "@/components/VisaBadge";
+import FilterPill from "@/components/ui/FilterPill";
 import { VISA_ORDER, type VisaCategory } from "@/data/visaStatus";
 import { CLASS_DOT, CLASS_RANKING as CLASS_ORDER } from "@/lib/travelSeason/labels";
 import type { Classification } from "@/lib/travelSeason/config";
@@ -168,7 +168,6 @@ function DiscoverResultsContent() {
   const placeOk = (p: Place) =>
     (seasonPick.length === 0 || (p?.classification !== undefined && seasonPick.includes(p.classification))) &&
     (visaPick.length === 0 || (p?.visa !== undefined && visaPick.includes(p.visa)));
-  const toggle = <T,>(list: T[], v: T) => (list.includes(v) ? list.filter((x) => x !== v) : [...list, v]);
   const singles = singleSuggestions.filter((s) => placeOk(s.place));
   const unpricedShown = unpriced.filter((s) => placeOk(s.place));
   const routeList = routes.filter((r) => r.stops.every((st) => placeOk(st.place)));
@@ -178,6 +177,7 @@ function DiscoverResultsContent() {
   const filtered = seasonPick.length > 0 || visaPick.length > 0;
   const money = (n: number) => `${Math.abs(n).toLocaleString("en-US")} ${currency}`;
   const d = dict.discoverResults;
+  const ft = dict.filters;
 
   // How many results each choice would keep, so a chip with nothing behind
   // it says so before it is tapped.
@@ -203,10 +203,6 @@ function DiscoverResultsContent() {
       : "";
   const travellers = Number(adults) + childrenAges.length + Number(infants);
 
-  const chip = (on: boolean) =>
-    `inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-3.5 py-2 text-sm font-bold ring-1 transition ${
-      on ? "bg-navy-900 text-white ring-navy-900" : "bg-white text-navy-800 ring-mist-300 hover:ring-navy-300"
-    }`;
 
   const renderSingle = (list: DestinationSuggestion[]) => (
     <div className="grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-3">
@@ -279,37 +275,41 @@ function DiscoverResultsContent() {
 
         {/* The filters, first: in season, and the visa a Saudi passport needs. */}
         {!loading && !error && !pricesUnavailable && hasResults && (
-          <div className="mb-5 space-y-3 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-black/5">
-            {/* One swipeable line on a phone (a wrapped list of chips was
-                a screen tall); wrapped on wider screens. */}
-            <div className="-mx-4 flex items-center gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none] sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0 sm:pb-0">
-              <span className="me-1 shrink-0 text-xs font-bold text-navy-500">{d.filterSeason}</span>
-              <button type="button" aria-pressed={seasonPick.length === 0} onClick={() => setSeasonPick([])} className={chip(seasonPick.length === 0)}>
-                {d.seasonAll}
+          // The site's filter pills: each opens every option with how
+          // many results it keeps; several can be chosen.
+          <div className="mb-5 flex flex-wrap items-center gap-2 rounded-2xl bg-white p-3 shadow-sm ring-1 ring-black/5">
+            <FilterPill<Classification>
+              locale={locale}
+              multi
+              icon="🌤"
+              label={ft.season}
+              allLabel={ft.allSeasons}
+              value={seasonPick}
+              onChange={setSeasonPick}
+              options={CLASS_ORDER.map((c) => ({ value: c, label: `${CLASS_DOT[c]} ${dict.travelSeasons.classes[c]}`, count: seasonCount(c) }))}
+            />
+            <FilterPill<VisaCategory>
+              locale={locale}
+              multi
+              icon="🛂"
+              label={ft.visa}
+              allLabel={ft.allVisas}
+              value={visaPick}
+              onChange={setVisaPick}
+              options={VISA_ORDER.map((v) => ({ value: v, label: visaLabels[v], count: visaCount(v) }))}
+            />
+            {filtered && (
+              <button
+                type="button"
+                onClick={() => {
+                  setSeasonPick([]);
+                  setVisaPick([]);
+                }}
+                className="ms-auto text-xs font-bold text-sea-700 hover:underline"
+              >
+                ✕ {dict.filters.clear}
               </button>
-              {CLASS_ORDER.map((c) => (
-                <button key={c} type="button" aria-pressed={seasonPick.includes(c)} onClick={() => setSeasonPick((l) => toggle(l, c))} className={chip(seasonPick.includes(c))}>
-                  <span aria-hidden="true">{CLASS_DOT[c]}</span>
-                  {dict.travelSeasons.classes[c]}
-                  <span className="text-xs font-semibold opacity-60">{seasonCount(c)}</span>
-                </button>
-              ))}
-            </div>
-            {/* One swipeable line on a phone (a wrapped list of chips was
-                a screen tall); wrapped on wider screens. */}
-            <div className="-mx-4 flex items-center gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none] sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0 sm:pb-0">
-              <span className="me-1 shrink-0 text-xs font-bold text-navy-500">{d.filterVisa}</span>
-              <button type="button" aria-pressed={visaPick.length === 0} onClick={() => setVisaPick([])} className={chip(visaPick.length === 0)}>
-                {d.visaAll}
-              </button>
-              {VISA_ORDER.map((v) => (
-                <button key={v} type="button" aria-pressed={visaPick.includes(v)} onClick={() => setVisaPick((l) => toggle(l, v))} className={chip(visaPick.includes(v))}>
-                  <span className={`inline-block h-2.5 w-2.5 rounded-full ${VISA_STYLES[v].dot}`} aria-hidden="true" />
-                  {visaLabels[v]}
-                  <span className="text-xs font-semibold opacity-60">{visaCount(v)}</span>
-                </button>
-              ))}
-            </div>
+            )}
           </div>
         )}
 

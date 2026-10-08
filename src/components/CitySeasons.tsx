@@ -9,6 +9,8 @@ import { CONTINENT_ORDER } from "@/components/DestinationFilters";
 import { searchMatches } from "@/lib/search";
 import { CLASS_DOT } from "@/lib/travelSeason/labels";
 import Photo from "@/components/Photo";
+import FilterPill, { FilterToggle } from "@/components/ui/FilterPill";
+import { getDictionary } from "@/lib/dictionaries";
 import { VISA_STYLES } from "@/components/VisaBadge";
 import type { VisaCategory } from "@/data/visaStatus";
 
@@ -146,6 +148,7 @@ export default function CitySeasons({
   const top = useRef<HTMLDivElement>(null);
   const isAr = locale === "ar";
   const t = dict.ts;
+  const ft = getDictionary(locale).filters;
 
   const temps = (m: SeasonMonth) =>
     m.high === null
@@ -206,10 +209,6 @@ export default function CitySeasons({
     top.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
-  const pill = (active: boolean) =>
-    `rounded-full px-3 py-2 text-sm font-bold transition ${
-      active ? "bg-navy-900 text-white shadow-sm" : "bg-white text-navy-700 ring-1 ring-mist-200 hover:ring-navy-200"
-    }`;
 
   const modes = [
     { m: "month" as const, icon: "🗓", title: dict.modeMonthTitle, q: dict.modeMonthQ, hint: dict.modeMonthHint },
@@ -254,32 +253,28 @@ export default function CitySeasons({
 
       {mode === "month" && (
         <div className="mt-6">
-          <div className="grid grid-cols-4 gap-2 sm:grid-cols-6 lg:grid-cols-12">
-            {MONTHS.map((m) => (
-              <button key={m} type="button" aria-pressed={m === month} onClick={() => setMonth(m)} className={`relative px-1 text-center ${pill(m === month)}`}>
-                {dict.monthNames[m - 1]}
-                {m === currentMonth && (
-                  <span
-                    className={`absolute -top-2 start-1/2 -translate-x-1/2 rounded-full px-1.5 text-[10px] font-extrabold leading-4 rtl:translate-x-1/2 ${
-                      m === month ? "bg-sun-400 text-navy-990" : "bg-sun-100 text-sun-900 ring-1 ring-sun-300"
-                    }`}
-                  >
-                    {dict.nowLabel}
-                  </span>
-                )}
-              </button>
-            ))}
-          </div>
-          <div className="mt-3 flex flex-wrap items-center gap-2">
-            {(["all", ...CONTINENT_ORDER] as (Continent | "all")[]).map((c) => (
-              <button key={c} type="button" aria-pressed={continent === c} onClick={() => setContinent(c)} className={`text-xs ${pill(continent === c)}`}>
-                {c === "all" ? dict.allContinents : dict.continents[c]}
-              </button>
-            ))}
-            <label className="ms-auto inline-flex cursor-pointer items-center gap-2 text-xs font-bold text-navy-700">
-              <input type="checkbox" checked={withGood} onChange={(e) => setWithGood(e.target.checked)} className="h-4 w-4 accent-navy-900" />
-              {dict.showGood}
-            </label>
+          {/* The site's filter pills: the month, the continent, and whether
+              "good" months count too — one short row instead of twelve month
+              buttons and a row of continents filling the screen. */}
+          <div className="flex flex-wrap items-center gap-2">
+            <FilterPill<number>
+              locale={locale}
+              icon="🗓"
+              label={ft.month}
+              value={month}
+              onChange={(m) => m !== "all" && setMonth(m)}
+              options={MONTHS.map((m) => ({ value: m, label: dict.monthNames[m - 1], note: m === currentMonth ? dict.nowLabel : undefined }))}
+            />
+            <FilterPill<Continent>
+              locale={locale}
+              icon="🌍"
+              label={ft.continent}
+              allLabel={dict.allContinents}
+              value={continent}
+              onChange={setContinent}
+              options={CONTINENT_ORDER.map((c) => ({ value: c, label: dict.continents[c] }))}
+            />
+            <FilterToggle label={ft.withGood} on={withGood} onChange={setWithGood} />
           </div>
 
           <h2 className="mb-1 mt-6 font-display text-xl font-extrabold text-navy-900">

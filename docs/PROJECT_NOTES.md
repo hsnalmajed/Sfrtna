@@ -218,6 +218,17 @@ Travelpayouts.
   .replace) instead of in-place re-render (owner saw it hang); opening
   min 1.3 s, leaves at first paint (onPageCommitVisible), max 4 s;
   WebView offscreen pre-raster. System bars navy again.
+- **9 Oct (owner): filters, results header, preferences.** One filter
+  control site-wide: `ui/FilterPill.tsx` (pill shows the choice, opens a
+  bottom sheet with every option + counts; single or multi; `FilterToggle`
+  for on/off). Used on destinations/maps (DestinationFilters), seasons
+  month view (month, continent, «مع وقت جيد»), visa directory (entry +
+  continent), discover results (season + visa, multi). Flight results
+  header = a summary card (dates, travellers, «تعديل») + visa and
+  requirements side by side + full-width currency line. Preferences in
+  both planners fold into `PreferencesPanel` (PlannerFields; gold card,
+  shows chosen items, opens by itself if any set). Hotel order:
+  breakfast → stars (chips) → stay type (chips). `ChoiceChips` shared.
 - Before Play: owner's developer account (unknown if it exists), upload
   key → 4 GitHub secrets, App Links (`assetlinks.json` after first upload),
   store listing + Data safety.

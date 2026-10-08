@@ -339,51 +339,67 @@ function ResultsContent() {
                 in the order it is checked: the days, how many are flying,
                 the visa and its requirements, what a riyal is worth there,
                 and a converter for any other amount. */}
-            <div className="mt-4 flex flex-wrap items-center gap-2 text-sm font-semibold text-white/80 lg:flex-nowrap">
-              {/* The search itself, as the box it was typed into: tap it to
-                  change it. A summary that looks like a field is where a
-                  traveller looks to edit — a separate button is easy to miss. */}
+            <div className="mt-4 max-w-2xl space-y-2.5">
+              {/* The search, as a card: when and who on the start side, the
+                  way to change it on the other — one tidy block on a phone
+                  instead of a pill that ran off the screen. */}
               <Link
                 href={`/${locale}?${editSearchParams}#plan`}
-                className="group inline-flex shrink-0 items-center gap-2 rounded-full bg-white py-1.5 pe-1.5 ps-3.5 text-[13px] font-bold text-navy-950 shadow-sm transition hover:ring-2 hover:ring-sun-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400"
+                className="group flex items-center justify-between gap-3 rounded-2xl bg-white px-4 py-3 text-navy-950 shadow-sm transition hover:ring-2 hover:ring-sun-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400"
               >
-                <Icon name="calendar" className="h-4 w-4 text-navy-500" />
-                <span>{shortDate(search.departDate)}</span>
-                {search.returnDate && (
-                  <>
-                    <span className="text-navy-400" aria-hidden="true">
-                      {locale === "ar" ? "←" : "→"}
+                <span className="min-w-0 space-y-1 text-[13px] font-bold">
+                  <span className="flex items-center gap-2">
+                    <Icon name="calendar" className="h-4 w-4 shrink-0 text-navy-500" />
+                    <span className="truncate">
+                      {shortDate(search.departDate)}
+                      {search.returnDate && (
+                        <>
+                          <span className="mx-1.5 text-navy-400" aria-hidden="true">
+                            {locale === "ar" ? "←" : "→"}
+                          </span>
+                          {shortDate(search.returnDate)}
+                        </>
+                      )}
                     </span>
-                    <span>{shortDate(search.returnDate)}</span>
-                  </>
-                )}
-                <span className="h-4 w-px bg-mist-300" aria-hidden="true" />
-                <Icon name="users" className="h-4 w-4 text-navy-500" />
-                <span>{countLabel(travelers, { one: dict.results.travelersOne, two: dict.results.travelersTwo, few: dict.results.travelersFew, many: dict.results.travelersMany })}</span>
-                <span className="inline-flex items-center gap-1 rounded-full bg-sun-400 px-3 py-1 text-xs font-extrabold text-navy-950 transition group-hover:bg-sun-300">
+                  </span>
+                  <span className="flex items-center gap-2">
+                    <Icon name="users" className="h-4 w-4 shrink-0 text-navy-500" />
+                    <span className="truncate">
+                      {countLabel(travelers, { one: dict.results.travelersOne, two: dict.results.travelersTwo, few: dict.results.travelersFew, many: dict.results.travelersMany })}
+                    </span>
+                  </span>
+                </span>
+                <span className="inline-flex shrink-0 items-center gap-1.5 rounded-xl bg-sun-400 px-3.5 py-2 text-xs font-extrabold text-navy-950 transition group-hover:bg-sun-300">
                   <span aria-hidden="true">✎</span>
                   {dict.results.editSearch}
                 </span>
               </Link>
 
+              {/* What decides whether the trip can happen: the visa and its
+                  requirements side by side, then what a riyal is worth. */}
               {destinationCountry && destinationCountry.code !== "SA" && (
                 <>
-                  {visa ? (
-                    <VisaBadge category={visa.category} label={visaLabels[visa.category]} className="shrink-0 !px-3 !py-1.5 !text-[13px]" />
-                  ) : (
-                    <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3.5 py-1.5 text-sm font-bold text-white ring-1 ring-white/15">
-                      🛂 {dict.results.visaCheckTitle}
-                    </span>
-                  )}
-                  <button
-                    type="button"
-                    onClick={() => setVisaOpen(true)}
-                    aria-haspopup="dialog"
-                    className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-sun-400 px-3 py-1.5 text-[13px] font-extrabold text-navy-950 shadow-[var(--shadow-sun)] transition hover:bg-sun-300"
-                  >
-                    {dict.results.visaReqShort}
-                    <span aria-hidden="true">{locale === "ar" ? "←" : "→"}</span>
-                  </button>
+                  <div className="grid grid-cols-2 gap-2">
+                    {visa ? (
+                      <VisaBadge
+                        category={visa.category}
+                        label={visaLabels[visa.category]}
+                        className="w-full justify-center !rounded-xl !px-3 !py-2 !text-[13px]"
+                      />
+                    ) : (
+                      <span className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-white/10 px-3 py-2 text-[13px] font-bold text-white ring-1 ring-white/15">
+                        🛂 {dict.results.visaCheckTitle}
+                      </span>
+                    )}
+                    <button
+                      type="button"
+                      onClick={() => setVisaOpen(true)}
+                      aria-haspopup="dialog"
+                      className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-white/10 px-3 py-2 text-[13px] font-extrabold text-white ring-1 ring-white/20 transition hover:bg-white/20"
+                    >
+                      📋 {dict.results.visaReqShort}
+                    </button>
+                  </div>
                   {showCurrencyStrip && homeCurrency && tripCurrency && (
                     <TripCurrencyInline from={homeCurrency} to={tripCurrency} locale={locale} />
                   )}
