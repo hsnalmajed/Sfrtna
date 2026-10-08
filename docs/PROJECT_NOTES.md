@@ -305,9 +305,9 @@ Travelpayouts.
   Worker limit live (503). Live 8 Oct, RUH Jan 2027, 6 pax, 80k: all ×2 24,
   Europe ×2 4, Europe ×3 6, Asia ×2 24, Africa ×3 24, Asia+Europe ×3 24,
   North America 0 (no one-way fares between pairs) — all 200.
-- Contact: owner setting up Cloudflare Email Routing info@sfrtna.com → his
-  inbox (steps sent 8 Oct). After his test mail arrives: set
-  `CONTACT_EMAIL` in `src/lib/contact.ts`.
+- Contact: **live 8 Oct** — Cloudflare Email Routing info@sfrtna.com →
+  owner's inbox (rule Active, test mail "Forwarded"). `CONTACT_EMAIL` set;
+  page, footer, More sheet and sitemap show it. No reply-time promise.
 
 ## Next, in order
 

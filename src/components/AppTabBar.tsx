@@ -7,6 +7,7 @@ import { getDictionary } from "@/lib/dictionaries";
 import { openPlanner, HOME_TAB_EVENT, HOME_SEASON_EVENT } from "@/lib/planEvents";
 import { track } from "@/lib/analytics";
 import type { Locale } from "@/lib/types";
+import { CONTACT_EMAIL } from "@/lib/contact";
 
 /**
  * The phone app's own navigation: a tab bar at the bottom of the screen.
@@ -87,6 +88,7 @@ export default function AppTabBar({ locale }: { locale: Locale }) {
   ];
   const sitePages = [
     { href: `/${locale}/about`, label: dict.legal.aboutTitle },
+    ...(CONTACT_EMAIL ? [{ href: `/${locale}/contact`, label: dict.legal.contactTitle }] : []),
     { href: `/${locale}/privacy`, label: dict.legal.privacyTitle },
     { href: `/${locale}/terms`, label: dict.legal.termsTitle },
   ];

@@ -41,7 +41,6 @@ export default async function ContactPage({ params }: PageProps<"/[locale]/conta
           >
             {CONTACT_EMAIL}
           </a>
-          <p className="mt-3 text-sm text-navy-500">{t.contactResponse}</p>
         </div>
       ) : null}
     </LegalPage>

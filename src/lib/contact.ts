@@ -6,4 +6,4 @@
  * answers 404 and no link, sitemap entry or sentence points to it.
  * Setting it here brings all of them back.
  */
-export const CONTACT_EMAIL = "";
+export const CONTACT_EMAIL = "info@sfrtna.com";
