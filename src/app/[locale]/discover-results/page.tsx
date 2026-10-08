@@ -12,6 +12,8 @@ import RouteCard from "@/components/RouteCard";
 import ResultsBand from "@/components/ResultsBand";
 import { VISA_STYLES } from "@/components/VisaBadge";
 import { VISA_ORDER, type VisaCategory } from "@/data/visaStatus";
+import { CLASS_DOT, CLASS_RANKING as CLASS_ORDER } from "@/lib/travelSeason/labels";
+import type { Classification } from "@/lib/travelSeason/config";
 import { findAirport } from "@/lib/airports";
 import { parseChildrenAges } from "@/lib/searchParamsUtil";
 
@@ -47,6 +49,7 @@ function DiscoverResultsContent() {
   const baggageIncluded = sp.get("baggageIncluded") === "true";
   const breakfastIncluded = sp.get("breakfastIncluded") === "true";
   const preferenceCategory = (sp.get("preferenceCategory") || undefined) as DestinationCategory | undefined;
+  const continentsParam = sp.get("continents") || "";
   const editSearchParams = sp.toString();
 
   const stops = sp.get("stops") === "3" ? 3 : 2;
@@ -95,6 +98,7 @@ function DiscoverResultsContent() {
         baggageIncluded,
         breakfastIncluded,
         preferenceCategory,
+        continents: continentsParam ? continentsParam.split(",") : [],
       }),
     })
       // A refused or failed search is an error to say so — never an empty
@@ -130,6 +134,7 @@ function DiscoverResultsContent() {
     baggageIncluded,
     breakfastIncluded,
     preferenceCategory,
+    continentsParam,
   ]);
 
   // Generated prices never reach a visitor — see the note in results/page.tsx.
@@ -154,28 +159,34 @@ function DiscoverResultsContent() {
         : originAirport.cityEn
       : origin.slice(0, 3).toUpperCase();
   // ── Filters: season and visa, on what the search found ─────────────
-  const [seasonOnly, setSeasonOnly] = useState(false);
-  const [visaFilter, setVisaFilter] = useState<VisaCategory | "all">("all");
+  // Every season rating and every visa kind is offered, each a toggle;
+  // nothing chosen in a row means that row does not filter.
+  const [seasonPick, setSeasonPick] = useState<Classification[]>([]);
+  const [visaPick, setVisaPick] = useState<VisaCategory[]>([]);
   const [showOver, setShowOver] = useState(false);
   type Place = DestinationSuggestion["place"];
   const placeOk = (p: Place) =>
-    (!seasonOnly || p?.inSeason === true) && (visaFilter === "all" || p?.visa === visaFilter);
+    (seasonPick.length === 0 || (p?.classification !== undefined && seasonPick.includes(p.classification))) &&
+    (visaPick.length === 0 || (p?.visa !== undefined && visaPick.includes(p.visa)));
+  const toggle = <T,>(list: T[], v: T) => (list.includes(v) ? list.filter((x) => x !== v) : [...list, v]);
   const singles = singleSuggestions.filter((s) => placeOk(s.place));
   const unpricedShown = unpriced.filter((s) => placeOk(s.place));
   const routeList = routes.filter((r) => r.stops.every((st) => placeOk(st.place)));
   const items = mode === "routes" ? routeList : singles;
   const within = items.filter((x) => x.withinBudget);
   const over = items.filter((x) => !x.withinBudget).sort((a, b) => a.totalPrice - b.totalPrice);
-  const filtered = seasonOnly || visaFilter !== "all";
+  const filtered = seasonPick.length > 0 || visaPick.length > 0;
   const money = (n: number) => `${Math.abs(n).toLocaleString("en-US")} ${currency}`;
   const d = dict.discoverResults;
 
-  // The visa statuses that actually occur in these results, easiest first.
-  const visasPresent = VISA_ORDER.filter((v) =>
+  // How many results each choice would keep, so a chip with nothing behind
+  // it says so before it is tapped.
+  const allPlaces: Place[] =
     mode === "routes"
-      ? routes.some((r) => r.stops.some((st) => st.place?.visa === v))
-      : singleSuggestions.some((s) => s.place?.visa === v)
-  );
+      ? routes.flatMap((r) => r.stops.map((st) => st.place))
+      : [...singleSuggestions, ...unpriced].map((x) => x.place);
+  const seasonCount = (c: Classification) => allPlaces.filter((p) => p?.classification === c).length;
+  const visaCount = (v: VisaCategory) => allPlaces.filter((p) => p?.visa === v).length;
   const visaLabels: Record<VisaCategory, string> = {
     free: dict.visa.statusFree,
     arrival: dict.visa.statusArrival,
@@ -193,7 +204,7 @@ function DiscoverResultsContent() {
   const travellers = Number(adults) + childrenAges.length + Number(infants);
 
   const chip = (on: boolean) =>
-    `inline-flex items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-bold ring-1 transition ${
+    `inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-3.5 py-2 text-sm font-bold ring-1 transition ${
       on ? "bg-navy-900 text-white ring-navy-900" : "bg-white text-navy-800 ring-mist-300 hover:ring-navy-300"
     }`;
 
@@ -269,29 +280,36 @@ function DiscoverResultsContent() {
         {/* The filters, first: in season, and the visa a Saudi passport needs. */}
         {!loading && !error && !pricesUnavailable && hasResults && (
           <div className="mb-5 space-y-3 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-black/5">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="me-1 text-xs font-bold text-navy-500">{d.filterSeason}</span>
-              <button type="button" aria-pressed={!seasonOnly} onClick={() => setSeasonOnly(false)} className={chip(!seasonOnly)}>
+            {/* One swipeable line on a phone (a wrapped list of chips was
+                a screen tall); wrapped on wider screens. */}
+            <div className="-mx-4 flex items-center gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none] sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0 sm:pb-0">
+              <span className="me-1 shrink-0 text-xs font-bold text-navy-500">{d.filterSeason}</span>
+              <button type="button" aria-pressed={seasonPick.length === 0} onClick={() => setSeasonPick([])} className={chip(seasonPick.length === 0)}>
                 {d.seasonAll}
               </button>
-              <button type="button" aria-pressed={seasonOnly} onClick={() => setSeasonOnly(true)} className={chip(seasonOnly)}>
-                {d.seasonOnly}
-              </button>
-            </div>
-            {visasPresent.length > 0 && (
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="me-1 text-xs font-bold text-navy-500">{d.filterVisa}</span>
-                <button type="button" aria-pressed={visaFilter === "all"} onClick={() => setVisaFilter("all")} className={chip(visaFilter === "all")}>
-                  {d.visaAll}
+              {CLASS_ORDER.map((c) => (
+                <button key={c} type="button" aria-pressed={seasonPick.includes(c)} onClick={() => setSeasonPick((l) => toggle(l, c))} className={chip(seasonPick.includes(c))}>
+                  <span aria-hidden="true">{CLASS_DOT[c]}</span>
+                  {dict.travelSeasons.classes[c]}
+                  <span className="text-xs font-semibold opacity-60">{seasonCount(c)}</span>
                 </button>
-                {visasPresent.map((v) => (
-                  <button key={v} type="button" aria-pressed={visaFilter === v} onClick={() => setVisaFilter(v)} className={chip(visaFilter === v)}>
-                    <span className={`inline-block h-2.5 w-2.5 rounded-full ${VISA_STYLES[v].dot}`} aria-hidden="true" />
-                    {visaLabels[v]}
-                  </button>
-                ))}
-              </div>
-            )}
+              ))}
+            </div>
+            {/* One swipeable line on a phone (a wrapped list of chips was
+                a screen tall); wrapped on wider screens. */}
+            <div className="-mx-4 flex items-center gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none] sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0 sm:pb-0">
+              <span className="me-1 shrink-0 text-xs font-bold text-navy-500">{d.filterVisa}</span>
+              <button type="button" aria-pressed={visaPick.length === 0} onClick={() => setVisaPick([])} className={chip(visaPick.length === 0)}>
+                {d.visaAll}
+              </button>
+              {VISA_ORDER.map((v) => (
+                <button key={v} type="button" aria-pressed={visaPick.includes(v)} onClick={() => setVisaPick((l) => toggle(l, v))} className={chip(visaPick.includes(v))}>
+                  <span className={`inline-block h-2.5 w-2.5 rounded-full ${VISA_STYLES[v].dot}`} aria-hidden="true" />
+                  {visaLabels[v]}
+                  <span className="text-xs font-semibold opacity-60">{visaCount(v)}</span>
+                </button>
+              ))}
+            </div>
           </div>
         )}
 
@@ -340,8 +358,8 @@ function DiscoverResultsContent() {
               <button
                 type="button"
                 onClick={() => {
-                  setSeasonOnly(false);
-                  setVisaFilter("all");
+                  setSeasonPick([]);
+                  setVisaPick([]);
                 }}
                 className="mt-3 rounded-full bg-navy-900 px-4 py-2 text-sm font-bold text-white"
               >

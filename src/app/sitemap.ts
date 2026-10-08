@@ -1,3 +1,4 @@
+import { CONTACT_EMAIL } from "@/lib/contact";
 import type { MetadataRoute } from "next";
 import { COUNTRY_CITIES } from "@/lib/cities";
 import { COUNTRIES } from "@/lib/countries";
@@ -28,7 +29,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/currency", priority: 0.7 },
     { path: "/itinerary", priority: 0.7 },
     { path: "/about", priority: 0.5 },
-    { path: "/contact", priority: 0.5 },
+    ...(CONTACT_EMAIL ? [{ path: "/contact", priority: 0.5 }] : []),
     { path: "/privacy", priority: 0.3 },
     { path: "/terms", priority: 0.3 },
   ];

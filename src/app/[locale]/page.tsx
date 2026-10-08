@@ -234,17 +234,6 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
           {/* The picture ends; the page keeps going. Without this the slab
               would cut off in a hard line across the middle of the form. */}
           <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-navy-990" />
-          {/* Pexels asks that the photographer be named where it fits — on
-              the picture itself, which is where it stays put now that the
-              section is taller than the photograph. Plain text, not a link:
-              this sits in the photograph's own layer, behind the form, so a
-              link here would look clickable without being reachable. The
-              footer carries the link to Pexels. */}
-          <p className="absolute bottom-2 end-3 text-2xs text-white/45">
-            {dict.hero.photoCredit
-              .replace("{place}", isAr ? heroPick.placeAr : heroPick.placeEn)
-              .replace("{artist}", heroPick.photographer)}
-          </p>
         </div>
 
         {/* Centred, because the panel is the point.
@@ -287,7 +276,6 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
         <HomeShowcase
           locale={loc}
           seasonCities={seasonCities}
-          origin={{ iata: origin.iata, name: originName }}
           initialPlan={initialPlan}
           tools={tools}
           steps={steps}
@@ -319,10 +307,6 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
             seasonFare: dict.home.seasonFare,
             seasonFareNote: dict.home.seasonFareNote.replace("{month}", monthName(month, loc)).replace("{origin}", originName),
             summaryFare: dict.home.summaryFare.replace("{month}", monthName(month, loc)).replace("{origin}", originName),
-            originFrom: dict.home.originFrom,
-            originChange: dict.home.originChange,
-            originSearch: dict.home.originSearch,
-            originNoMatches: dict.home.originNoMatches,
 
             monthName: monthName(month, loc),
             summaryWeather: dict.home.summaryWeather,

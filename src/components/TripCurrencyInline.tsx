@@ -42,17 +42,15 @@ export default function TripCurrencyInline({
 }) {
   const dict = getDictionary(locale);
   const [rate, setRate] = useState<number | null>(null);
-  const [source, setSource] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
     fetch(`/api/rates?from=${from.code}&to=${to.code}`)
       .then((r) => (r.ok ? r.json() : Promise.reject(new Error("failed"))))
-      .then((d: { rate: number | null; source: string | null }) => {
+      .then((d: { rate: number | null }) => {
         if (cancelled || d.rate == null) return;
         setRate(d.rate);
-        setSource(d.source);
       })
       .catch(() => {});
     return () => {
@@ -103,7 +101,6 @@ export default function TripCurrencyInline({
           from={from}
           to={to}
           rate={rate}
-          source={source}
           locale={locale}
           name={name}
           fmt={fmt}
@@ -118,7 +115,6 @@ function ConverterDialog({
   from,
   to,
   rate,
-  source,
   locale,
   name,
   fmt,
@@ -127,7 +123,6 @@ function ConverterDialog({
   from: Currency;
   to: Currency;
   rate: number;
-  source: string | null;
   locale: Locale;
   name: (c: Currency) => string;
   fmt: (value: number, decimals: number) => string;
@@ -253,7 +248,6 @@ function ConverterDialog({
           <div className="mt-4 flex flex-wrap items-center justify-between gap-2">
             <p className="text-xs leading-relaxed text-navy-500">
               {dict.results.currencyNote}
-              {source ? ` · ${source}` : ""}
             </p>
             <a
               href={googleRateUrl(hasAmount ? typed : 1, source_.code, target.code)}

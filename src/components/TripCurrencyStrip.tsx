@@ -54,7 +54,6 @@ export default function TripCurrencyStrip({
 }) {
   const dict = getDictionary(locale);
   const [rate, setRate] = useState<number | null>(null);
-  const [source, setSource] = useState<string | null>(null);
   const [failed, setFailed] = useState(false);
   // The converter opens in place. Sending someone to the currency page to
   // work out one number meant losing the results they were reading, and the
@@ -69,12 +68,11 @@ export default function TripCurrencyStrip({
     let cancelled = false;
     fetch(`/api/rates?from=${from.code}&to=${to.code}`)
       .then((r) => (r.ok ? r.json() : Promise.reject(new Error("failed"))))
-      .then((d: { rate: number | null; source: string | null }) => {
+      .then((d: { rate: number | null }) => {
         if (cancelled) return;
         if (d.rate == null) setFailed(true);
         else {
           setRate(d.rate);
-          setSource(d.source);
         }
       })
       .catch(() => {
@@ -204,7 +202,6 @@ export default function TripCurrencyStrip({
 
       <p className="mt-3 text-xs leading-relaxed text-white/45">
         {dict.results.currencyNote}
-        {source ? ` · ${source}` : ""}
       </p>
     </section>
   );

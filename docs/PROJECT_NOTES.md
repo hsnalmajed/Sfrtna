@@ -171,6 +171,17 @@ Travelpayouts.
   font 15–16px by phone width. `web-only` / `app-only` classes; bottom-fixed
   bars use `lift-over-tabbar` / `sit-on-tabbar`. Website unchanged.
   Home stats now count the same 73 countries / 214 cities as Destinations.
+- **8 Oct (owner's app notes):** native opening `IntroView.java` — mark,
+  then «لكل سفره حكاية» word by word with a gold line (min 1.7 s, leaves
+  when the page has drawn, max 6 s; Settings → remove animations respected).
+  Needs the new APK. Tab bar: class re-applied by `AppTabBar` (layout
+  effect + MutationObserver) in case React re-renders `<html>`; could not
+  reproduce the owner's "bar disappears" locally — ask him to re-test.
+  App home: no showcase tab strip; panel titled «أفضل الوجهات في <شهر>» /
+  «احجز رحلتك»; Home tab on the homepage returns to the season cities
+  (`HOME_SEASON_EVENT`), Book lights up on the planner (`HOME_TAB_EVENT`).
+  "Flying from" row removed from home (web too); the flight form still
+  pre-fills the nearest airport (`useDefaultOrigin`).
 - Before Play: owner's developer account (unknown if it exists), upload
   key → 4 GitHub secrets, App Links (`assetlinks.json` after first upload),
   store listing + Data safety.
@@ -261,6 +272,29 @@ Travelpayouts.
   names, places, and the three protection checks).
 - Rule for every future change: test POST flows (discover, multicity,
   itinerary) with real data, not just page GETs.
+
+### Trust pages and sources — 8 Oct (owner)
+- About = short brand text only; Privacy and Terms rewritten in standard
+  form, **no tool or source names** (no Google Analytics, Pexels,
+  OpenStreetMap, IATA/Timatic, etc.). Privacy covers location permission
+  (app) and has the only «تغيير اختيارك للكوكيز» button; the footer/More
+  cookie link is gone; consent banner text names no tool.
+- Contact page: 404 and unlinked (footer, More, sitemap) until an address
+  is set in `src/lib/contact.ts` (`CONTACT_EMAIL`). Suggested: Cloudflare
+  Email Routing info@sfrtna.com → owner's inbox (owner decision).
+- Source lines removed site-wide: photo credits (PageHero, home hero),
+  seasons/places/tours source notes, currency rate source. **Kept on
+  purpose:** the small © OpenStreetMap line inside the maps themselves —
+  the map data licence (ODbL) requires it; official visa links (IATA,
+  MOFA) as actions for the traveller.
+- Rule: never name a data source or tool in visitor-facing text.
+
+### Discover — 8 Oct (owner)
+- Preferences order: direct | bags, then **continent** (multi-select chips,
+  «بدون تفضيل» = all; param `continents`, filtered in `/api/discover` and
+  `routeSuggest.ts`), then destination type.
+- Results filters: every season rating (5) and every visa kind (4), each a
+  toggle with its count; one swipeable row each on phones.
 
 ## Next, in order
 

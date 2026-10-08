@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { getDictionary } from "@/lib/dictionaries";
-import { openPlanner } from "@/lib/planEvents";
-import { track, CONSENT_OPEN_EVENT } from "@/lib/analytics";
+import { openPlanner, HOME_TAB_EVENT, HOME_SEASON_EVENT } from "@/lib/planEvents";
+import { track } from "@/lib/analytics";
 import type { Locale } from "@/lib/types";
 
 /**
@@ -24,13 +24,39 @@ import type { Locale } from "@/lib/types";
  * the page jump. CSS decides, so neither happens.
  *
  * "More" holds what the footer held: the remaining tools, the language, the
- * pages that say who runs the site, cookie settings and the partner note.
+ * pages that say who runs the site and the partner note.
  */
 export default function AppTabBar({ locale }: { locale: Locale }) {
   const dict = getDictionary(locale);
   const pathname = usePathname() ?? `/${locale}`;
   const router = useRouter();
   const [moreOpen, setMoreOpen] = useState(false);
+  // Which part of the homepage is showing (HomeShowcase announces it): the
+  // in-season cities belong to "Home", the search to "Book".
+  const [homeTab, setHomeTab] = useState<string | null>(null);
+
+  // The class is set before the first paint by the layout's inline script.
+  // If React ever re-renders <html> from scratch (it does after a hydration
+  // mismatch it cannot patch), the class would be lost with it and the app
+  // would fall back to the website look mid-session. Re-apply it on every
+  // render of the bar, and whenever something rewrites the attribute.
+  useLayoutEffect(() => {
+    if (navigator.userAgent.indexOf("SfrtnaApp/") === -1) return;
+    const root = document.documentElement;
+    const ensure = () => {
+      if (!root.classList.contains("in-app")) root.classList.add("in-app");
+    };
+    ensure();
+    const watch = new MutationObserver(ensure);
+    watch.observe(root, { attributes: true, attributeFilter: ["class"] });
+    return () => watch.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const onTab = (e: Event) => setHomeTab((e as CustomEvent<string | null>).detail);
+    window.addEventListener(HOME_TAB_EVENT, onTab);
+    return () => window.removeEventListener(HOME_TAB_EVENT, onTab);
+  }, []);
 
   // The sheet is a layer over the page; the phone's back button closes it
   // through history, like any other app sheet. Opening it adds one history
@@ -61,7 +87,6 @@ export default function AppTabBar({ locale }: { locale: Locale }) {
   ];
   const sitePages = [
     { href: `/${locale}/about`, label: dict.legal.aboutTitle },
-    { href: `/${locale}/contact`, label: dict.legal.contactTitle },
     { href: `/${locale}/privacy`, label: dict.legal.privacyTitle },
     { href: `/${locale}/terms`, label: dict.legal.termsTitle },
   ];
@@ -74,6 +99,15 @@ export default function AppTabBar({ locale }: { locale: Locale }) {
     e.preventDefault();
     openPlanner();
   };
+  // "Home" on the homepage brings back the in-season cities, at the top.
+  const onHome = (e: React.MouseEvent) => {
+    if (pathname !== home) return;
+    e.preventDefault();
+    window.dispatchEvent(new Event(HOME_SEASON_EVENT));
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+  const onHomePage = pathname === home;
+  const bookActive = onHomePage && homeTab === "plan" && !moreOpen;
 
   const switchLanguage = (next: Locale) => {
     if (next === locale) return;
@@ -98,7 +132,7 @@ export default function AppTabBar({ locale }: { locale: Locale }) {
   return (
     <>
       <nav aria-label={dict.nav.menu} className="app-only app-tabbar print:hidden">
-        <Link href={home} className={tabClass(isActive(home) && !moreOpen)} aria-current={isActive(home) ? "page" : undefined}>
+        <Link href={home} onClick={onHome} className={tabClass(onHomePage && !bookActive && !moreOpen)} aria-current={onHomePage ? "page" : undefined}>
           <TabIcon d="M3 10.5 12 3l9 7.5M5.5 9v11h4.5v-6h4v6h4.5V9" />
           <span className="truncate">{dict.nav.home}</span>
         </Link>
@@ -111,8 +145,8 @@ export default function AppTabBar({ locale }: { locale: Locale }) {
         </Link>
 
         {/* The one action the site exists for, raised in the middle. */}
-        <Link href={`${home}#plan`} onClick={onBook} className="app-tab flex min-w-0 flex-1 flex-col items-center justify-end pb-1 text-[0.68rem] font-bold leading-tight text-sun-400">
-          <span className="-mt-5 mb-0.5 flex h-12 w-12 items-center justify-center rounded-full bg-sun-400 text-navy-990 shadow-[0_6px_18px_-6px_rgba(255,166,48,0.8)] ring-4 ring-navy-990">
+        <Link href={`${home}#plan`} onClick={onBook} className={`app-tab flex min-w-0 flex-1 flex-col items-center justify-end pb-1 text-[0.68rem] font-bold leading-tight ${bookActive ? "text-sun-400" : "text-white/80"}`}>
+          <span className={`-mt-5 mb-0.5 flex h-12 w-12 items-center justify-center rounded-full bg-sun-400 text-navy-990 shadow-[0_6px_18px_-6px_rgba(255,166,48,0.8)] ring-4 transition ${bookActive ? "ring-sea-400/80" : "ring-navy-990"}`}>
             <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z" />
             </svg>
@@ -186,17 +220,6 @@ export default function AppTabBar({ locale }: { locale: Locale }) {
                   <span aria-hidden="true" className="text-navy-900/30 rtl:rotate-180">›</span>
                 </Link>
               ))}
-              <button
-                type="button"
-                onClick={() => {
-                  closeMore();
-                  window.dispatchEvent(new Event(CONSENT_OPEN_EVENT));
-                }}
-                className="flex w-full items-center justify-between px-4 py-3.5 text-start text-sm font-semibold text-navy-900 active:bg-white"
-              >
-                {dict.footer.cookieSettings}
-                <span aria-hidden="true" className="text-navy-900/30 rtl:rotate-180">›</span>
-              </button>
             </div>
 
             <p className="mt-4 px-1 text-2xs leading-relaxed text-navy-900/45">{dict.footer.disclaimer}</p>

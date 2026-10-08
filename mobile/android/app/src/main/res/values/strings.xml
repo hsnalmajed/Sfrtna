@@ -7,4 +7,5 @@
     <string name="offline_title">لا يوجد اتصال بالإنترنت</string>
     <string name="offline_body">تحقق من اتصالك، وسنعيد تحميل الصفحة تلقائياً عند عودته.</string>
     <string name="offline_retry">إعادة المحاولة</string>
+    <string name="intro_tagline">لكل سفره حكاية</string>
 </resources>

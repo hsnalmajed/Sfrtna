@@ -7,12 +7,11 @@ import type { Locale } from "@/lib/types";
 import Photo from "@/components/Photo";
 import { countLabel } from "@/lib/format";
 import Icon, { type IconName } from "@/components/ui/Icon";
-import { PLAN_EVENT, type PlanProduct } from "@/lib/planEvents";
+import { PLAN_EVENT, HOME_TAB_EVENT, HOME_SEASON_EVENT, type PlanProduct } from "@/lib/planEvents";
 import TripPlanner from "@/components/TripPlanner";
 import HotelPlanner from "@/components/HotelPlanner";
 import VisaBadge, { VISA_STYLES } from "@/components/VisaBadge";
 import VisaRequirementsDialog from "@/components/VisaRequirementsDialog";
-import OriginPicker from "@/components/OriginPicker";
 import type { VisaCategory } from "@/data/visaStatus";
 
 /** A city in season this month, with the two numbers that put it there. */
@@ -94,10 +93,6 @@ interface ShowcaseDict {
   seasonFare: string;
   seasonFareNote: string;
   summaryFare: string;
-  originFrom: string;
-  originChange: string;
-  originSearch: string;
-  originNoMatches: string;
   monthName: string;
   summaryWeather: string;
   summaryBestMonths: string;
@@ -153,12 +148,9 @@ export default function HomeShowcase({
   tools,
   steps,
   dict,
-  origin,
 }: {
   locale: Locale;
   seasonCities: ShowcaseCity[];
-  /** The airport the fares are from — the visitor's own (src/lib/origin.ts). */
-  origin?: { iata: string; name: string };
   /** Open on the booking tab, on this search (from the URL). */
   initialPlan?: PlanProduct | null;
   tools: ShowcaseTool[];
@@ -234,6 +226,19 @@ export default function HomeShowcase({
       window.removeEventListener("hashchange", onHash);
     };
   }, [initialPlan]);
+  // The app's bottom bar: "Home" tapped on the homepage returns to the
+  // in-season cities, and the bar is told which tab is showing so "Home" or
+  // "Book" lights up (AppTabBar).
+  useEffect(() => {
+    const toSeason = () => setActive(seasonCities.length ? "season" : "plan");
+    window.addEventListener(HOME_SEASON_EVENT, toSeason);
+    return () => window.removeEventListener(HOME_SEASON_EVENT, toSeason);
+  }, [seasonCities.length]);
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent(HOME_TAB_EVENT, { detail: active }));
+  }, [active]);
+  useEffect(() => () => void window.dispatchEvent(new CustomEvent(HOME_TAB_EVENT, { detail: null })), []);
+
   const isAr = locale === "ar";
   const arrow = isAr ? "←" : "→";
 
@@ -532,7 +537,9 @@ export default function HomeShowcase({
     <div id="plan" className="mx-auto max-w-7xl scroll-mt-24 px-3 sm:px-6">
       <div className="rounded-[2rem] bg-gradient-to-b from-navy-900 to-navy-990 shadow-[0_30px_80px_-20px_rgba(4,24,47,0.6)] ring-1 ring-white/10">
         {/* ── The strip ─────────────────────────────────────────────── */}
-        <div className="rail rail-fade flex items-center gap-2 overflow-x-auto rounded-t-[2rem] border-b border-white/10 bg-white/[0.04] px-3 py-3 sm:px-5">
+        {/* Not in the phone app: there the bottom bar's "Home" and "Book"
+            are these two tabs, and a second set here only repeats them. */}
+        <div className="web-only rail rail-fade flex items-center gap-2 overflow-x-auto rounded-t-[2rem] border-b border-white/10 bg-white/[0.04] px-3 py-3 sm:px-5">
           {tabs
             .filter((t) => !t.hidden)
             .map((t) => (
@@ -565,17 +572,11 @@ export default function HomeShowcase({
         <div className="p-4 sm:p-7">
           <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
             <div className="max-w-2xl">
-              <p className="text-sm leading-relaxed text-white/65">{blurb[active]}</p>
-              {active === "season" && origin && (
-                <div className="mt-2">
-                  <OriginPicker
-                    locale={locale}
-                    iata={origin.iata}
-                    cityName={origin.name}
-                    labels={{ from: dict.originFrom, change: dict.originChange, search: dict.originSearch, noMatches: dict.originNoMatches }}
-                  />
-                </div>
-              )}
+              {/* In the app the tab strip is gone, so the panel names itself. */}
+              <h2 className="app-only font-display text-h3 font-extrabold text-white">
+                {active === "plan" ? dict.tabPlan : dict.seasonTitle}
+              </h2>
+              <p className="web-only text-sm leading-relaxed text-white/65">{blurb[active]}</p>
             </div>
             {active === "season" && seasonCities.length > 6 && (
               <button

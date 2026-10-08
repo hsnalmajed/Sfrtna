@@ -30,13 +30,9 @@ export default async function AboutPage({ params }: PageProps<"/[locale]/about">
       title={t.aboutTitle}
       lead={t.aboutLead}
       sections={[
-        { heading: t.aboutWhatTitle, body: t.aboutWhatBody },
-        // How the money works goes high, not in the small print. On a
-        // comparison site the honest answer to "what's in it for you" is the
-        // reason to believe the ordering of the results.
-        { heading: t.aboutMoneyTitle, body: t.aboutMoneyBody },
-        { heading: t.aboutSourcesTitle, body: t.aboutSourcesBody },
-        { heading: t.aboutLimitsTitle, body: t.aboutLimitsBody },
+        { heading: t.aboutStoryTitle, body: t.aboutStoryBody },
+        { heading: t.aboutOfferTitle, body: t.aboutOfferBody },
+        { heading: t.aboutVisionTitle, body: t.aboutVisionBody },
       ]}
     />
   );

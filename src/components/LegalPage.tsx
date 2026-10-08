@@ -4,6 +4,8 @@ import PageHero from "@/components/ui/PageHero";
 export interface LegalSection {
   heading: string;
   body: string;
+  /** Something to do about it, under the text — the privacy page's cookie choice. */
+  action?: React.ReactNode;
 }
 
 /**
@@ -46,6 +48,7 @@ export default function LegalPage({
             <section key={s.heading}>
               <h2 className="font-display text-h3 font-extrabold text-navy-900">{s.heading}</h2>
               <p className="mt-2.5 text-base leading-relaxed text-navy-700">{s.body}</p>
+              {s.action && <div className="mt-3">{s.action}</div>}
             </section>
           ))}
         </div>

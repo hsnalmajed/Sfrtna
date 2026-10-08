@@ -5,7 +5,7 @@ import { DESTINATIONS } from "@/lib/destinations";
 import { placeForDestination } from "@/lib/destinationPlace";
 import { tripFaresFrom, type TripFare } from "@/lib/providers/travelpayouts";
 import { COUNTRY_CITIES } from "@/lib/cities";
-import { flagEmoji } from "@/lib/countries";
+import { flagEmoji, findCountry, CONTINENTS, type Continent } from "@/lib/countries";
 import { CITY_AIRPORTS } from "@/data/cityAirports";
 import { DESTINATION_TYPES } from "@/data/destinationTypes";
 import type {
@@ -23,7 +23,14 @@ function addDays(dateStr: string, days: number) {
   return d.toISOString().slice(0, 10);
 }
 
-type Candidate = { code: string; nameAr: string; nameEn: string; emoji: string; categories: DestinationCategory[] };
+type Candidate = {
+  code: string;
+  nameAr: string;
+  nameEn: string;
+  emoji: string;
+  categories: DestinationCategory[];
+  continent?: Continent;
+};
 
 /**
  * Every city we have a guide and an airport for, as a place to suggest.
@@ -59,6 +66,7 @@ function candidates(): Candidate[] {
         nameEn: c.nameEn,
         emoji: curated.get(code)?.emoji ?? flagEmoji(countryCode),
         categories: [...cats],
+        continent: findCountry(countryCode)?.continent,
       });
     }
   }
@@ -188,6 +196,9 @@ export async function POST(req: NextRequest) {
     infants: Number(body.infants || 0),
     roomType: body.roomType || undefined,
     preferenceCategory: body.preferenceCategory || undefined,
+    continents: Array.isArray(body.continents)
+      ? body.continents.filter((c: unknown): c is Continent => CONTINENTS.includes(c as Continent))
+      : [],
   };
 
   if (!params.origin || !params.departDate || !params.budgetTotal) {
@@ -197,7 +208,8 @@ export async function POST(req: NextRequest) {
   const pool = candidates().filter(
     (d) =>
       d.code !== resolveIata(params.origin) &&
-      (!params.preferenceCategory || d.categories.includes(params.preferenceCategory))
+      (!params.preferenceCategory || d.categories.includes(params.preferenceCategory)) &&
+      (!params.continents?.length || (d.continent !== undefined && params.continents.includes(d.continent)))
   );
 
   if (!params.multiDestination) {
@@ -262,6 +274,7 @@ export async function POST(req: NextRequest) {
     paying: params.adults + (params.childrenAges?.length ?? 0),
     directOnly: params.directFlightsOnly,
     category: params.preferenceCategory,
+    continents: params.continents,
   });
   return NextResponse.json({ mode: "routes", routes });
 }

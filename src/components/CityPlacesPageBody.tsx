@@ -218,9 +218,6 @@ export default async function CityPlacesPageBody({
                 <TourCard key={tour.code} tour={tour} locale={loc} dict={dict.attractions} />
               ))}
             </div>
-            <p className="mt-4 rounded-lg bg-gray-50 px-3 py-2.5 text-xs leading-relaxed text-gray-500">
-              {dict.attractions.contentSourceNote}
-            </p>
           </section>
         )}
 
@@ -296,10 +293,6 @@ export default async function CityPlacesPageBody({
                 downloadAll: dict.attractions.downloadAll,
               }}
             />
-
-            <p className="mt-6 rounded-lg bg-gray-50 px-3 py-2.5 text-xs leading-relaxed text-gray-500">
-              {dict.attractions.source}
-            </p>
           </>
         )}
       </div>

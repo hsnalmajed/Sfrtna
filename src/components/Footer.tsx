@@ -2,7 +2,7 @@ import Link from "next/link";
 import { getDictionary } from "@/lib/dictionaries";
 import type { Locale } from "@/lib/types";
 import Logo from "@/components/ui/Logo";
-import { ConsentSettingsButton } from "@/components/Analytics";
+import { CONTACT_EMAIL } from "@/lib/contact";
 
 /**
  * The footer closes the page the way the hero opened it — navy, an orange
@@ -35,7 +35,7 @@ export default function Footer({ locale }: { locale: Locale }) {
    */
   const legal = [
     { href: `/${locale}/about`, label: dict.legal.aboutTitle },
-    { href: `/${locale}/contact`, label: dict.legal.contactTitle },
+    ...(CONTACT_EMAIL ? [{ href: `/${locale}/contact`, label: dict.legal.contactTitle }] : []),
     { href: `/${locale}/privacy`, label: dict.legal.privacyTitle },
     { href: `/${locale}/terms`, label: dict.legal.termsTitle },
   ];
@@ -94,9 +94,6 @@ export default function Footer({ locale }: { locale: Locale }) {
                   </Link>
                 </li>
               ))}
-              <li>
-                <ConsentSettingsButton label={dict.footer.cookieSettings} />
-              </li>
             </ul>
           </div>
         </div>

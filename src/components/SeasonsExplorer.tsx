@@ -197,10 +197,6 @@ export default function SeasonsExplorer({
             </span>
           </button>
         </div>
-
-        <p className="mt-6 rounded-xl bg-mist-100 px-3.5 py-3 text-xs leading-relaxed text-navy-500 ring-1 ring-mist-200">
-          {dict.sourceNote}
-        </p>
       </div>
     );
   }
@@ -319,10 +315,6 @@ export default function SeasonsExplorer({
             )}
           </>
         )}
-
-        <p className="mt-6 rounded-xl bg-mist-100 px-3.5 py-3 text-xs leading-relaxed text-navy-500 ring-1 ring-mist-200">
-          {dict.sourceNote}
-        </p>
       </div>
     );
   }
@@ -405,10 +397,6 @@ export default function SeasonsExplorer({
           })}
         </div>
       )}
-
-      <p className="mt-6 rounded-xl bg-mist-100 px-3.5 py-3 text-xs leading-relaxed text-navy-500 ring-1 ring-mist-200">
-        {dict.sourceNote}
-      </p>
     </div>
   );
 }

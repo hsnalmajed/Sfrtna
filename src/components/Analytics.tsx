@@ -183,12 +183,12 @@ gtag('js',new Date());gtag('config','${GA_ID}');`}
 }
 
 /** Footer link that reopens the banner so a visitor can change their mind. */
-export function ConsentSettingsButton({ label }: { label: string }) {
+export function ConsentSettingsButton({ label, className }: { label: string; className?: string }) {
   return (
     <button
       type="button"
       onClick={() => window.dispatchEvent(new Event(CONSENT_OPEN_EVENT))}
-      className="text-white/60 transition hover:text-sun-300"
+      className={className ?? "text-white/60 transition hover:text-sun-300"}
     >
       {label}
     </button>

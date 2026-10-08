@@ -12,6 +12,11 @@ export type PlanProduct = "flights" | "hotels";
 
 export const PLAN_EVENT = "sfrtna:open-planner";
 
+/** The homepage showcase says which tab is showing (detail: the tab key, or null when it leaves). */
+export const HOME_TAB_EVENT = "sfrtna:home-tab";
+/** The app's "Home" tab, tapped on the homepage: back to the in-season cities. */
+export const HOME_SEASON_EVENT = "sfrtna:home-season";
+
 export function openPlanner(product?: PlanProduct) {
   window.dispatchEvent(new CustomEvent<PlanProduct | undefined>(PLAN_EVENT, { detail: product }));
 }

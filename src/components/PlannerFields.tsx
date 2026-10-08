@@ -247,7 +247,7 @@ export function EdgeTabs<T extends string>({
                 {t.title}
               </span>
               <span
-                className={`block text-2xs leading-snug sm:truncate sm:text-xs ${active ? "text-navy-950/70" : "opacity-60"}`}
+                className={`hidden text-2xs leading-snug sm:block sm:truncate sm:text-xs ${active ? "text-navy-950/70" : "opacity-60"}`}
               >
                 {t.hint}
               </span>

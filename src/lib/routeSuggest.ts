@@ -16,6 +16,13 @@ import { DESTINATIONS, type Destination } from "@/lib/destinations";
 import { placeForDestination } from "@/lib/destinationPlace";
 import { oneWayFaresFrom, type OneWayFare } from "@/lib/providers/travelpayouts";
 import type { DestinationCategory, RouteLeg, RouteStop, RouteSuggestion } from "@/lib/types";
+import { findCountry, type Continent } from "@/lib/countries";
+
+/** The continent a destination is on, through its city's country. */
+function continentOf(code: string, nameEn: string): Continent | undefined {
+  const place = placeForDestination(code, nameEn, 1);
+  return place ? findCountry(place.countryCode)?.continent : undefined;
+}
 
 export interface RouteQuery {
   origin: string; // IATA
@@ -28,6 +35,8 @@ export interface RouteQuery {
   paying: number;
   directOnly: boolean;
   category?: DestinationCategory;
+  /** Only stops on these continents; empty = anywhere. */
+  continents?: Continent[];
 }
 
 function addDays(iso: string, days: number): string {
@@ -82,7 +91,10 @@ export async function suggestRoutes(q: RouteQuery): Promise<RouteSuggestion[]> {
   for (const n of nights) legDates.push(addDays(legDates[legDates.length - 1], n));
 
   const candidates = DESTINATIONS.filter(
-    (d) => d.code !== q.origin && (!q.category || d.categories.includes(q.category))
+    (d) =>
+      d.code !== q.origin &&
+      (!q.category || d.categories.includes(q.category)) &&
+      (!q.continents?.length || q.continents.includes(continentOf(d.code, d.nameEn) as Continent))
   );
   if (candidates.length < q.stops) return [];
 

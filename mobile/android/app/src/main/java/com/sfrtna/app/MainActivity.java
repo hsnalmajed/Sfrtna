@@ -4,7 +4,6 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.view.View;
 import android.webkit.WebView;
 import androidx.activity.OnBackPressedCallback;
@@ -24,26 +23,26 @@ import com.getcapacitor.BridgeActivity;
  *    {@link AppChromeClient};
  *  - the back button walks back through pages, then leaves the app;
  *  - a native "no connection" screen that retries by itself;
- *  - the launch screen stays until the first page has drawn;
+ *  - an opening — the mark and «لكل سفره حكاية» animated in — that stays
+ *    until the first page has drawn ({@link IntroView});
  *  - print and file sharing for the site's PDF / KML / GPX buttons
  *    ({@link SfrtnaAppPlugin}).
  */
 public class MainActivity extends BridgeActivity {
 
-    /** Never hold the launch screen longer than this, even on a slow network. */
+    /** Never hold the opening longer than this, even on a slow network. */
     private static final long MAX_SPLASH_MS = 6000;
 
-    private long createdAt;
-    private volatile boolean firstPageShown = false;
     private OfflineView offlineView;
+    private IntroView introView;
     private String failedUrl;
     private ConnectivityManager.NetworkCallback networkCallback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        createdAt = SystemClock.uptimeMillis();
-        SplashScreen splash = SplashScreen.installSplashScreen(this);
-        splash.setKeepOnScreenCondition(() -> !firstPageShown && SystemClock.uptimeMillis() - createdAt < MAX_SPLASH_MS);
+        // The system launch screen only bridges to the opening (IntroView),
+        // which starts from the same white: it is released at once.
+        SplashScreen.installSplashScreen(this);
 
         registerPlugin(SfrtnaAppPlugin.class);
         super.onCreate(savedInstanceState);
@@ -60,6 +59,17 @@ public class MainActivity extends BridgeActivity {
             android.view.ViewGroup.LayoutParams.MATCH_PARENT
         ));
         offlineView.setVisibility(View.GONE);
+
+        // A process restored with the page already up skips the opening.
+        if (savedInstanceState == null) {
+            introView = new IntroView(this);
+            addContentView(introView, new android.widget.FrameLayout.LayoutParams(
+                android.view.ViewGroup.LayoutParams.MATCH_PARENT,
+                android.view.ViewGroup.LayoutParams.MATCH_PARENT
+            ));
+            // The ceiling: a slow network never keeps the opening up.
+            introView.postDelayed(this::endIntro, MAX_SPLASH_MS);
+        }
 
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
@@ -117,15 +127,27 @@ public class MainActivity extends BridgeActivity {
 
     /** A page of ours finished drawing. */
     void onMainPageFinished(String url) {
-        firstPageShown = true;
+        endIntroWhenRead();
         if (offlineView != null && failedUrl == null) offlineView.setVisibility(View.GONE);
     }
 
     /** The page itself could not be fetched (no network, DNS, timeout). */
     void showOffline(String url) {
-        firstPageShown = true;
+        endIntroWhenRead();
         failedUrl = url;
         if (offlineView != null) offlineView.setVisibility(View.VISIBLE);
+    }
+
+    /** Leave the opening once its line has had time to be read. */
+    private void endIntroWhenRead() {
+        if (introView == null) return;
+        introView.postDelayed(this::endIntro, introView.remainingMs());
+    }
+
+    private void endIntro() {
+        if (introView == null) return;
+        introView.finish();
+        introView = null;
     }
 
     private void retry() {

@@ -4,6 +4,9 @@
 // than hand-typed, so there's no risk of a mismatched flag.
 export type Continent = "africa" | "asia" | "europe" | "northAmerica" | "southAmerica" | "oceania";
 
+/** Every continent, in the order the site lists them. */
+export const CONTINENTS: Continent[] = ["asia", "europe", "africa", "northAmerica", "southAmerica", "oceania"];
+
 export interface Country {
   code: string; // ISO 3166-1 alpha-2
   nameAr: string;

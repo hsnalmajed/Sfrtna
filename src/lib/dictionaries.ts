@@ -46,14 +46,14 @@ export const dictionaries = {
       directorySubtitle: "ابحث عن الدولة واضغط عليها، وتلقى روابط التحقق الرسمية وطريقة التقديم",
       warningTitle: "تأكّد قبل الحجز",
       warningBody:
-        "حالة كل دولة هنا مأخوذة من مصدرها الرسمي — الحكومة أو الجهة الرسمية — مع رابطه وتاريخ التحقق. لكن أنظمة التأشيرات تتغيّر دون إشعار، وشركة الطيران وسفارة الدولة هما من يقرّران دخولك، فتحقّق من مركز IATA للسفر (قاعدة Timatic التي تعتمدها شركات الطيران عند إصدار بطاقة الصعود) قبل شراء أي تذكرة.",
+        "أنظمة التأشيرات تتغيّر دون إشعار، وشركة الطيران وسفارة الدولة هما من يقرّران دخولك، فتحقّق من الجهات الرسمية قبل شراء أي تذكرة.",
       checkIata: "تحقّق عبر مركز IATA للسفر",
       checkMofa: "وزارة الخارجية السعودية",
       onlySaudi: "هذه الصفحة مخصّصة لحاملي الجواز السعودي فقط. حاملو جوازات أخرى تختلف متطلباتهم تماماً.",
       officialLinksHeading: "تحقّق وقدّم من المصادر الرسمية",
       iataButton: "تحقّق من متطلبات دخول {country} عبر مركز IATA",
       iataNote:
-        "نفس قاعدة Timatic التي تراجعها شركات الطيران قبل إصدار بطاقة الصعود. اختر الجنسية «السعودية» والوجهة «{country}».",
+        "اختر الجنسية «السعودية» والوجهة «{country}».",
       mofaNote: "المرجع الرسمي للمواطن السعودي في شؤون السفر والسفارات.",
       canApply: "رابط تقديم متاح ←",
       statusFree: "بدون تأشيرة",
@@ -197,7 +197,7 @@ export const dictionaries = {
       googleHint: "يفتح بحث قوقل لنفس التحويل حتى تقارن الرقم بنفسك.",
       unavailable:
         "تعذّر جلب أسعار الصرف الآن. لا نعرض رقماً قديماً بدلاً منها — استخدم زر قوقل أدناه للحصول على السعر الحالي.",
-      pairUnavailable: "لا يتوفر سعر صرف لهذا الزوج من العملات في المصدر حالياً.",
+      pairUnavailable: "لا يتوفر سعر صرف لهذا الزوج من العملات حالياً.",
       disclaimer:
         "هذا سعر السوق المرجعي (mid-market). البنوك ومكاتب الصرافة تضيف هامشاً، فالمبلغ الذي تستلمه فعلياً سيكون أقل. سفرتنا لا يبيع عملات ولا يقدّم استشارات مالية.",
       sourceNote: "المصدر: {source}",
@@ -462,7 +462,7 @@ export const dictionaries = {
       faqQ3: "هل الخدمة مجانية؟",
       faqA3: "نعم، مجانية بالكامل. إذا أتممت حجزاً عند شريك قد نحصل على عمولة منه — يدفعها الشريك ولا تُضاف إلى سعرك، ولا تؤثر على ترتيب النتائج.",
       faqQ4: "هل معلومات التأشيرة رسمية؟",
-      faqA4: "إرشادية فقط، ومصدرها جدول محدَّث مع روابط للجهات الرسمية. شركة الطيران وسفارة الدولة هما من يقرّران دخولك، فتحقّق من المصدر الرسمي قبل شراء أي تذكرة.",
+      faqA4: "إرشادية فقط، مع روابط للجهات الرسمية. شركة الطيران وسفارة الدولة هما من يقرّران دخولك، فتحقّق من الجهة الرسمية قبل شراء أي تذكرة.",
       faqMore: "اقرأ المزيد عنّا",
       planEyebrow: "بحث متقدّم",
       planTitle: "تريد تحكّماً أكبر في بحثك؟",
@@ -552,6 +552,7 @@ export const dictionaries = {
       toolCurrencyBody: "أسعار الصرف بين أي عملتين، مع رابط قوقل لآخر سعر لحظي.",
     },
     discoverForm: {
+      continentLabel: "القارة",
       title: "اكتشف وجهتك القادمة",
       subtitle: "أدخل ميزانيتك وتفضيلاتك، وسنقترح عليك أفضل الوجهات ضمنها",
       origin: "مدينة المغادرة",
@@ -829,7 +830,7 @@ export const dictionaries = {
       remainingBudget: "المتبقي من الميزانية",
       overBudget: "يتجاوز الميزانية",
       withinBudget: "ضمن الميزانية",
-      priceOnlyNote: "سعر مرصود — المصدر لا يذكر وقت الوصول أو التوقفات",
+      priceOnlyNote: "لا تتوفر تفاصيل وقت الوصول أو التوقفات",
       approxDatesNote: "سعر مرصود لرحلة في نفس الشهر، وليس لتاريخك بالضبط",
       priceForYourDates: "سعر رُصد مؤخراً لتواريخك نفسها — السعر الحي يظهر عند الحجز",
       priceNearDates: "سعر رُصد لتاريخ قريب من تاريخك (فرق {n} يوم) — السعر الحي يظهر عند الحجز",
@@ -1150,19 +1151,15 @@ export const dictionaries = {
     },
     legal: {
       aboutTitle: "من نحن",
-      aboutLead: "سفرتنا أداة مقارنة ومساعدة في التخطيط — لا نحجز، ولا نستلم مدفوعات، ولا نطلب بيانات بطاقتك.",
-      aboutWhatTitle: "ماذا نفعل بالضبط؟",
-      aboutWhatBody:
-        "نجمع أسعار الطيران والفنادق من مصادر موثوقة ونعرضها مرتّبة حسب ميزانيتك، مع متطلبات التأشيرة للجواز السعودي، وخرائط للمعالم في كل مدينة، ومحوّل عملات، وخطة يومية تبنيها بنفسك من الأماكن التي تختارها.",
-      aboutMoneyTitle: "كيف نكسب؟",
-      aboutMoneyBody:
-        "عندما تضغط «احجز» ننقلك إلى موقع الشريك، وقد نحصل على عمولة منه إذا أتممت الحجز. هذه العمولة يدفعها الشريك ولا تُضاف إلى سعرك، ولا تؤثر على ترتيب النتائج — الترتيب يعتمد على السعر والمدة والتقييم فقط.",
-      aboutSourcesTitle: "من أين تأتي المعلومات؟",
-      aboutSourcesBody:
-        "أسعار الطيران والفنادق من شركائنا في الحجز، ومتطلبات التأشيرة نحيلك فيها إلى مركز IATA للسفر ووزارة الخارجية السعودية، والمعالم ومواقعها من OpenStreetMap، والصور من Pexels، وأسعار الصرف محدَّثة يومياً. كل صفحة تذكر مصدرها.",
-      aboutLimitsTitle: "ما الذي لا نضمنه؟",
-      aboutLimitsBody:
-        "الأسعار تقديرية وتتغيّر لحظياً، والسعر النهائي يحدده الشريك عند الحجز. متطلبات التأشيرة إرشادية — شركة الطيران وسفارة الدولة هما من يقرّران دخولك، وننصح بالتحقق من المصدر الرسمي قبل شراء أي تذكرة.",
+      aboutLead: "سفرتنا منصة سفر عربية تجمع لك رحلتك في مكان واحد: من الميزانية إلى الحجز.",
+      aboutStoryTitle: "قصتنا",
+      aboutStoryBody:
+        "بدأت سفرتنا من فكرة بسيطة: أن يجد المسافر العربي كل ما يحتاجه لرحلته بلغته وفي مكان واحد — إلى أين يذهب، ومتى يكون الوقت الأنسب، وكم ستكلّفه الرحلة، وما الذي يحتاجه قبل السفر. نساعدك على المقارنة والتخطيط، ثم تُكمل حجزك مباشرة لدى شركاء حجز موثوقين.",
+      aboutOfferTitle: "ماذا نقدّم؟",
+      aboutOfferBody:
+        "بحث عن الطيران والفنادق ضمن ميزانيتك، واقتراح وجهات تناسبك، ودليل للدول والمدن بمعالمها وأفضل أوقات زيارتها، ومتطلبات السفر للجواز السعودي، ومحوّل عملات، وخطة رحلة يومية تبنيها بنفسك — مجاناً ودون تسجيل.",
+      aboutVisionTitle: "رؤيتنا",
+      aboutVisionBody: "أن تكون سفرتنا رفيق كل مسافر عربي، من أول فكرة للرحلة حتى العودة. لأن لكل سفرة حكاية.",
 
       contactTitle: "تواصل معنا",
       contactLead: "سؤال، ملاحظة، أو خطأ وجدته في الموقع؟ يسعدنا أن نسمع منك.",
@@ -1171,42 +1168,58 @@ export const dictionaries = {
       contactSoon: "قناة التواصل قيد التجهيز وستتاح قريباً.",
 
       privacyTitle: "سياسة الخصوصية",
-      privacyLead: "باختصار: لا نطلب حساباً، ولا نجمع بياناتك الشخصية، ولا نبيع شيئاً لأحد.",
-      privacyCollectTitle: "ما الذي نجمعه؟",
+      privacyLead: "نحترم خصوصيتك. توضّح هذه السياسة المعلومات التي نتعامل معها عند استخدامك سفرتنا — الموقع والتطبيق — وكيف نستخدمها ونحميها.",
+      privacyCollectTitle: "المعلومات التي نجمعها",
       privacyCollectBody:
-        "لا نطلب تسجيل دخول ولا اسماً ولا بريداً للبحث في الموقع. ما تدخله في نموذج البحث — مدينة المغادرة والتواريخ والميزانية وعدد المسافرين — يُرسل إلى مزوّدي بيانات السفر لجلب الأسعار، ولا نحتفظ به بعد ذلك.",
-      privacyStorageTitle: "التخزين على جهازك",
-      privacyStorageBody:
-        "نستخدم تخزين المتصفح لتفضيلات بسيطة مثل اللغة واختيارك في شريط الكوكيز، ولا يغادر جهازك.",
-      privacyAnalyticsTitle: "القياس (Google Analytics)",
-      privacyAnalyticsBody:
-        "نستخدم Google Analytics لنعرف عدد الزوار ومن أين جاؤوا، وما يبحثون عنه (المدن والتواريخ وعدد المسافرين والميزانية)، والروابط التي ينقرون عليها إلى شركاء الحجز. لا نرسل اسماً ولا بريداً ولا رقماً. كوكيز القياس لا تُوضع على جهازك إلا إذا ضغطت «موافق»؛ وإن رفضت تصل إلى Google إشارات مجهولة بلا كوكيز. تستطيع تغيير اختيارك متى شئت من «إعدادات الكوكيز» أسفل كل صفحة.",
-      privacyThirdTitle: "أطراف أخرى",
-      privacyThirdBody:
-        "عند الانتقال إلى موقع شريك للحجز، تنطبق سياسة خصوصية ذلك الموقع على ما تفعله هناك. الخرائط من OpenStreetMap والصور من Pexels، ولكل منهما سياسته.",
+        "لا يتطلّب استخدام سفرتنا إنشاء حساب أو تقديم اسمك أو بريدك الإلكتروني. نتعامل فقط مع ما تُدخله في البحث — مثل مدينة المغادرة والوجهة والتواريخ وعدد المسافرين والميزانية — إضافةً إلى معلومات تقنية عامة يرسلها أي متصفح أو جهاز، مثل نوع الجهاز واللغة.",
+      privacyUseTitle: "كيف نستخدم المعلومات",
+      privacyUseBody:
+        "نستخدمها لعرض نتائج البحث والأسعار المتاحة، ولتشغيل الخدمة وتحسينها وفهم استخدامها بشكل إجمالي، ولحمايتها من إساءة الاستخدام. نرسل إلى شركاء الحجز تفاصيل البحث اللازمة فقط لجلب الأسعار. لا نبيع معلوماتك ولا نؤجّرها لأي جهة، ولا نعرض إعلانات.",
+      privacyCookiesTitle: "ملفات تعريف الارتباط (الكوكيز)",
+      privacyCookiesBody:
+        "نستخدم ملفات ضرورية لعمل الخدمة وحفظ تفضيلاتك مثل اللغة. أما ملفات قياس الاستخدام فلا نستخدمها إلا بموافقتك، ويمكنك تغيير اختيارك في أي وقت.",
+      privacyCookiesChange: "تغيير اختيارك للكوكيز",
+      privacyLocationTitle: "الموقع الجغرافي",
+      privacyLocationBody:
+        "قد نطلب إذنك للوصول إلى موقعك لاقتراح أقرب مطار أو عرض الأماكن القريبة منك. لا نستخدمه إلا بعد موافقتك وللغرض الذي طلبته فقط، ولا نحتفظ به.",
+      privacyPartnersTitle: "شركاء الحجز",
+      privacyPartnersBody:
+        "عند انتقالك إلى موقع أحد شركاء الحجز لإتمام حجزك، فأنت تنتقل إلى خدمة مستقلة تخضع لشروطها وسياسة خصوصيتها، وننصحك بمراجعتها قبل إدخال بياناتك.",
+      privacyProtectTitle: "حماية المعلومات",
+      privacyProtectBody:
+        "نستخدم اتصالاً مشفّراً، ولا نربط عمليات البحث باسمك أو بأي معلومة تعرّف بك، ونحتفظ ببيانات الاستخدام الإجمالية للمدة اللازمة لتحسين الخدمة فقط.",
+      privacyChildrenTitle: "الأطفال",
+      privacyChildrenBody: "سفرتنا موجّهة للبالغين، ولا نجمع عن قصد أي معلومات عن الأطفال.",
       privacyRightsTitle: "حقوقك",
       privacyRightsBody:
-        "لأننا لا نحتفظ ببيانات شخصية، لا يوجد حساب لحذفه. إن كان لديك أي سؤال عن الخصوصية راسلنا وسنجيب.",
+        "يحق لك رفض ملفات القياس أو سحب موافقتك في أي وقت، ورفض إذن الموقع الجغرافي أو إلغاؤه من إعدادات جهازك.",
+      privacyChangesTitle: "تحديث السياسة",
+      privacyChangesBody: "قد نحدّث هذه السياسة من وقت لآخر، ويظهر تاريخ آخر تحديث أسفل هذه الصفحة.",
 
       termsTitle: "الشروط والأحكام",
-      termsLead: "باستخدامك سفرتنا فأنت توافق على ما يلي.",
+      termsLead: "مرحباً بك في سفرتنا. باستخدامك الموقع أو التطبيق فأنت توافق على هذه الشروط، لذا نرجو قراءتها بعناية.",
       termsServiceTitle: "طبيعة الخدمة",
       termsServiceBody:
-        "سفرتنا محرك مقارنة وأداة تخطيط. لا نبيع تذاكر ولا نحجز غرفاً ولا نكون طرفاً في أي عقد بينك وبين شركة طيران أو فندق أو موقع حجز. العقد بينك وبين الشريك الذي تُتم الحجز لديه.",
-      termsAccuracyTitle: "دقة المعلومات",
-      termsAccuracyBody:
-        "نبذل جهدنا لعرض معلومات صحيحة ومحدَّثة، ولكن الأسعار والتوافر ومتطلبات التأشيرة تتغيّر دون إشعار. تحقّق دائماً من المصدر الرسمي أو من الشريك قبل اتخاذ أي قرار أو دفع أي مبلغ.",
+        "سفرتنا خدمة مقارنة وتخطيط للسفر. لا نبيع تذاكر ولا نحجز غرفاً ولا نستلم أي مدفوعات، ولسنا طرفاً في أي عقد بينك وبين شركة طيران أو فندق أو موقع حجز. يتم الحجز والدفع مباشرة لدى الشريك، والعقد بينك وبينه.",
+      termsPricesTitle: "الأسعار والحجز",
+      termsPricesBody:
+        "تُعرض الأسعار والتوافر كما يقدّمها شركاء الحجز وقت البحث، وقد تتغيّر قبل إتمام الحجز. السعر النهائي وشروط الحجز والتعديل والإلغاء والاسترداد يحدّدها الشريك الذي تحجز لديه.",
+      termsInfoTitle: "معلومات السفر",
+      termsInfoBody:
+        "متطلبات السفر والتأشيرات وأوقات الزيارة المقترحة وأسعار الصرف معلومات إرشادية. تحقّق دائماً من الجهات الرسمية ومن شركة الطيران قبل السفر أو الدفع.",
+      termsUseTitle: "استخدام الخدمة",
+      termsUseBody:
+        "تتعهّد باستخدام سفرتنا لأغراض شخصية ومشروعة، وعدم إساءة استخدامها أو محاولة تعطيلها أو الوصول إلى أجزائها غير المتاحة للعموم.",
+      termsCopyTitle: "الملكية الفكرية ومنع النسخ",
+      termsCopyBody:
+        "تصميم سفرتنا ونصوصها وأدلّتها وتقييماتها وطريقة تجميع محتواها وترتيبه ملك لنا. يمكنك تصفّح الخدمة لاستخدامك الشخصي ومشاركة روابط صفحاتها والاقتباس منها باختصار مع ذكر سفرتنا. ولا يجوز دون إذن مكتوب منّا: نسخ المحتوى أو جمعه آلياً بالبرامج والزواحف، أو تنزيله بالجملة، أو إعادة نشره في موقع أو تطبيق آخر، أو استخدامه في تدريب نماذج الذكاء الاصطناعي، أو تجاوز وسائل الحماية. ويبقى المحتوى المملوك لأطراف أخرى خاضعاً لحقوق أصحابه، ونحتفظ بحقّ حجب أي استخدام مخالف.",
+      termsLinksTitle: "الروابط الخارجية",
+      termsLinksBody: "تحتوي سفرتنا على روابط لمواقع أخرى، منها مواقع شركاء الحجز والجهات الرسمية. هذه المواقع مستقلة عنّا، ولا نتحمّل مسؤولية محتواها أو خدماتها.",
       termsLiabilityTitle: "حدود المسؤولية",
       termsLiabilityBody:
-        "لا نتحمّل مسؤولية أي خسارة ناتجة عن الاعتماد على معلومة معروضة هنا، ولا عن خدمة يقدّمها طرف آخر. قرار السفر والحجز قرارك.",
-      termsContentTitle: "المحتوى والحقوق",
-      termsContentBody:
-        "الصور من Pexels بموجب رخصتها، ونذكر اسم المصوّر في الصور الكبيرة. بيانات الخرائط والمعالم © مساهمو OpenStreetMap بموجب رخصة ODbL. اسم سفرتنا وشعاره ملك لأصحابه.",
-      termsCopyTitle: "منع النسخ والاستخدام الآلي",
-      termsCopyBody:
-        "نصوص سفرتنا وأدلّتها وتقييمات المواسم وقوائم التأشيرات وطريقة تجميعها وترتيبها عمل خاص بنا. يمكنك تصفّح الموقع لاستخدامك الشخصي، ومشاركة روابط صفحاته، والاقتباس منه باختصار مع ذكر سفرتنا ورابط الصفحة. ولا يجوز دون إذن مكتوب منّا: نسخ المحتوى أو جمعه آلياً بالبرامج والزواحف وأدوات الكشط، أو تنزيله بالجملة، أو إعادة نشره في موقع أو تطبيق آخر، أو استخدامه في تدريب نماذج الذكاء الاصطناعي، أو استدعاء واجهات الموقع الداخلية من خارج صفحاته، أو تجاوز وسائل الحماية. ويبقى ما ليس لنا على رخصة أصحابه: الأسعار للشركاء، والصور لـ Pexels، وبيانات الخرائط لـ OpenStreetMap. ونحتفظ بحقّ حجب أي استخدام مخالف وبحقوقنا النظامية كاملة.",
+        "نقدّم الخدمة كما هي، ونبذل جهدنا لتكون معلوماتها صحيحة ومحدّثة، لكننا لا نتحمّل مسؤولية أي خسارة ناتجة عن الاعتماد عليها أو عن خدمة يقدّمها طرف آخر. قرار السفر والحجز قرارك.",
       termsChangesTitle: "تعديل الشروط",
-      termsChangesBody: "قد نحدّث هذه الصفحة، وتاريخ آخر تحديث مذكور أسفلها.",
+      termsChangesBody: "قد نحدّث هذه الشروط من وقت لآخر، ويظهر تاريخ آخر تحديث أسفل هذه الصفحة. استمرارك في استخدام الخدمة بعد التحديث يعني موافقتك عليه.",
 
       lastUpdated: "آخر تحديث: {date}",
     },
@@ -1294,7 +1307,7 @@ export const dictionaries = {
       placeFew: "{count} أماكن",
       backToCategories: "رجوع",
       restaurantsNotice:
-        "لا نعرض أسماء مطاعم بعينها لأننا لا نملك مصدراً حياً يؤكد أنها ما زالت تعمل أو مناسبة — بدلاً من ذلك نعرض أشهر الأطباق والتجارب الغذائية في الوجهة.",
+        "بدلاً من أسماء مطاعم بعينها نعرض أشهر الأطباق والتجارب الغذائية في الوجهة.",
       viewCategory: "عرض القائمة",
       tagAttraction: "معلم سياحي",
       tagActivity: "نشاط سياحي",
@@ -1333,7 +1346,7 @@ export const dictionaries = {
     },
     consent: {
       title: "نقيس استخدام الموقع لنحسّنه",
-      body: "نستخدم Google Analytics لنعرف عدد الزوار وما يبحثون عنه، دون اسم أو بريد. لن نضع كوكيز القياس على جهازك إلا بموافقتك.",
+      body: "نستخدم ملفات تعريف الارتباط لقياس الاستخدام وتحسين تجربتك، دون اسمك أو بريدك. لن نستخدمها إلا بموافقتك.",
       more: "سياسة الخصوصية",
       accept: "موافق",
       reject: "رفض",
@@ -1380,14 +1393,14 @@ export const dictionaries = {
       directorySubtitle: "Search for a country and tap it for the official links to check requirements and apply",
       warningTitle: "Confirm before you book",
       warningBody:
-        "Each country's status here comes from its official source — the government or official body — with the link and the date it was checked. But visa rules change without notice, and your airline and the destination's embassy decide your entry, so check the IATA Travel Centre (the Timatic database airlines check at boarding) before buying any ticket.",
+        "Visa rules change without notice, and your airline and the destination's embassy decide your entry, so check with the official authorities before buying any ticket.",
       checkIata: "Check on the IATA Travel Centre",
       checkMofa: "Saudi Ministry of Foreign Affairs",
       onlySaudi: "This page covers Saudi passport holders only. Other passports have entirely different requirements.",
       officialLinksHeading: "Check and apply at the official sources",
       iataButton: "Check {country} entry requirements on the IATA Travel Centre",
       iataNote:
-        "The same Timatic database airlines check before issuing a boarding pass. Choose Saudi Arabia as your nationality and {country} as your destination.",
+        "Choose Saudi Arabia as your nationality and {country} as your destination.",
       mofaNote: "The official reference for Saudi citizens on travel and embassies.",
       canApply: "Application link →",
       statusFree: "No visa",
@@ -1794,7 +1807,7 @@ export const dictionaries = {
       faqQ3: "Is it free?",
       faqA3: "Completely. If you book with a partner we may earn a commission — the partner pays it, it is never added to your price, and it never affects the order of results.",
       faqQ4: "Is the visa information official?",
-      faqA4: "It is guidance, from a maintained table with links to the official sources. The airline and the destination's embassy decide whether you get in, so check the official source before buying a ticket.",
+      faqA4: "It is guidance, with links to the official authorities. The airline and the destination's embassy decide whether you get in, so check with them before buying a ticket.",
       faqMore: "Read more about us",
       planEyebrow: "Advanced search",
       planTitle: "Want more control over your search?",
@@ -1881,6 +1894,7 @@ export const dictionaries = {
       toolCurrencyBody: "Rates between any two currencies, with a Google link for the live figure.",
     },
     discoverForm: {
+      continentLabel: "Which continent?",
       title: "Discover your next destination",
       subtitle: "Enter your budget and preferences, and we'll suggest the best-fitting destinations",
       origin: "From",
@@ -2156,7 +2170,7 @@ export const dictionaries = {
       remainingBudget: "Remaining budget",
       overBudget: "Over budget",
       withinBudget: "Within budget",
-      priceOnlyNote: "Observed fare — the source gives no arrival time or stop count",
+      priceOnlyNote: "Arrival time and stops not available",
       approxDatesNote: "Observed for a trip in the same month, not for your exact dates",
       priceForYourDates: "Fare seen recently for your exact dates — the live price shows when you book",
       priceNearDates: "Fare seen for a date close to yours ({n} day off) — the live price shows when you book",
@@ -2469,65 +2483,75 @@ export const dictionaries = {
     },
     legal: {
       aboutTitle: "About us",
-      aboutLead:
-        "Sfrtna is a comparison and planning tool — we don't take bookings, we don't handle payments, and we never ask for your card details.",
-      aboutWhatTitle: "What we actually do",
-      aboutWhatBody:
-        "We gather flight and hotel prices from trusted sources and sort them against your budget, alongside visa requirements for a Saudi passport, maps of what's worth seeing in each city, a currency converter, and a day-by-day plan you build yourself from the places you pick.",
-      aboutMoneyTitle: "How we make money",
-      aboutMoneyBody:
-        "When you tap 'book', we hand you over to a partner's site, and we may earn a commission if you complete a booking there. The partner pays that, not you — it is never added to your price, and it never affects the order of results, which is decided by price, duration and rating alone.",
-      aboutSourcesTitle: "Where the information comes from",
-      aboutSourcesBody:
-        "Flight and hotel prices come from our booking partners; for visa requirements we send you to the IATA Travel Centre and the Saudi Ministry of Foreign Affairs; attractions and their positions from OpenStreetMap; photographs from Pexels; and exchange rates updated daily. Every page names its source.",
-      aboutLimitsTitle: "What we don't guarantee",
-      aboutLimitsBody:
-        "Prices are indicative and change by the minute; the final price is set by the partner at booking. Visa information is guidance — the airline and the destination's embassy decide whether you get in, and you should check the official source before buying a ticket.",
+      aboutLead: "Sfrtna is an Arabic travel platform that brings your whole trip into one place: from budget to booking.",
+      aboutStoryTitle: "Our story",
+      aboutStoryBody:
+        "Sfrtna began with a simple idea: that Arab travellers should find everything their trip needs, in their own language and in one place — where to go, when is best, what it will cost, and what they need before they fly. We help you compare and plan, then you book directly with trusted booking partners.",
+      aboutOfferTitle: "What we offer",
+      aboutOfferBody:
+        "Flight and hotel search within your budget, destination suggestions that suit you, a guide to countries and cities with their sights and best times to visit, travel requirements for Saudi passports, a currency converter, and a day-by-day trip plan you build yourself — free, with no sign-up.",
+      aboutVisionTitle: "Our vision",
+      aboutVisionBody: "To be every Arab traveller's companion, from the first idea of a trip to the journey home. Because every trip has a story.",
 
       contactTitle: "Contact us",
-      contactLead: "A question, a suggestion, or something broken on the site? We'd like to hear it.",
+      contactLead: "A question, a suggestion, or a mistake you spotted? We'd love to hear from you.",
       contactEmailLabel: "Email",
       contactResponse: "We usually reply within two working days.",
-      contactSoon: "A contact channel is being set up and will be available shortly.",
+      contactSoon: "Our contact channel is being set up and will open soon.",
 
-      privacyTitle: "Privacy policy",
-      privacyLead:
-        "Briefly: no account required, no personal data collected, nothing sold to anyone.",
-      privacyCollectTitle: "What we collect",
+      privacyTitle: "Privacy Policy",
+      privacyLead: "We respect your privacy. This policy explains what information we handle when you use Sfrtna — the website and the app — and how we use and protect it.",
+      privacyCollectTitle: "Information we collect",
       privacyCollectBody:
-        "Searching the site needs no sign-in, no name and no email. What you type into the search form — departure city, dates, budget, party size — is sent to travel data providers to fetch prices, and is not kept afterwards.",
-      privacyStorageTitle: "Storage on your device",
-      privacyStorageBody:
-        "We use browser storage for simple preferences such as language and your cookie choice. It never leaves your device.",
-      privacyAnalyticsTitle: "Measurement (Google Analytics)",
-      privacyAnalyticsBody:
-        "We use Google Analytics to count visitors and where they come from, what they search for (cities, dates, party size and budget), and which booking-partner links they click. We never send a name, email or phone number. Measurement cookies are only set if you press “Accept”; if you decline, Google receives anonymous, cookieless signals. You can change your choice any time from “Cookie settings” at the bottom of every page.",
-      privacyThirdTitle: "Third parties",
-      privacyThirdBody:
-        "When you continue to a partner's site to book, that site's privacy policy governs what you do there. Maps come from OpenStreetMap and photographs from Pexels, each with its own policy.",
+        "Using Sfrtna needs no account, name or email address. We only handle what you enter in a search — such as departure city, destination, dates, number of travellers and budget — plus the general technical information any browser or device sends, such as device type and language.",
+      privacyUseTitle: "How we use information",
+      privacyUseBody:
+        "To show search results and available prices, to run and improve the service and understand its use in aggregate, and to protect it from abuse. We send booking partners only the search details needed to fetch prices. We never sell or rent your information, and we show no ads.",
+      privacyCookiesTitle: "Cookies",
+      privacyCookiesBody:
+        "We use cookies the service needs to work and to remember preferences such as language. Measurement cookies are used only with your consent, and you can change your choice at any time.",
+      privacyCookiesChange: "Change your cookie choice",
+      privacyLocationTitle: "Location",
+      privacyLocationBody:
+        "We may ask permission to use your location to suggest your nearest airport or show places near you. We use it only after you agree, only for what you asked, and we don't keep it.",
+      privacyPartnersTitle: "Booking partners",
+      privacyPartnersBody:
+        "When you continue to a booking partner's site to complete a booking, you move to an independent service with its own terms and privacy policy, which we encourage you to read before entering your details.",
+      privacyProtectTitle: "Protecting information",
+      privacyProtectBody:
+        "We use encrypted connections, we never link searches to your name or anything that identifies you, and we keep aggregate usage data only as long as needed to improve the service.",
+      privacyChildrenTitle: "Children",
+      privacyChildrenBody: "Sfrtna is intended for adults, and we do not knowingly collect information about children.",
       privacyRightsTitle: "Your rights",
       privacyRightsBody:
-        "Because we hold no personal data, there is no account to delete. If you have a privacy question, write to us and we'll answer it.",
+        "You may refuse measurement cookies or withdraw your consent at any time, and refuse or revoke location permission in your device settings.",
+      privacyChangesTitle: "Changes to this policy",
+      privacyChangesBody: "We may update this policy from time to time; the date of the latest update appears at the bottom of this page.",
 
-      termsTitle: "Terms and conditions",
-      termsLead: "By using Sfrtna you agree to the following.",
-      termsServiceTitle: "What the service is",
+      termsTitle: "Terms & Conditions",
+      termsLead: "Welcome to Sfrtna. By using the website or the app you agree to these terms, so please read them carefully.",
+      termsServiceTitle: "The service",
       termsServiceBody:
-        "Sfrtna is a comparison engine and a planning tool. We do not sell tickets, book rooms, or become a party to any contract between you and an airline, hotel or booking site. That contract is between you and whichever partner you book with.",
-      termsAccuracyTitle: "Accuracy",
-      termsAccuracyBody:
-        "We work to show correct, current information, but prices, availability and visa rules change without notice. Always check the official source, or the partner, before making a decision or paying anything.",
-      termsLiabilityTitle: "Limits of liability",
-      termsLiabilityBody:
-        "We are not liable for losses arising from reliance on information shown here, nor for services provided by a third party. The decision to travel and to book is yours.",
-      termsContentTitle: "Content and rights",
-      termsContentBody:
-        "Photographs come from Pexels under its licence, and the large ones name their photographer. Map and attraction data © OpenStreetMap contributors under the ODbL. The Sfrtna name and logo belong to their owners.",
-      termsCopyTitle: "No copying or automated use",
+        "Sfrtna is a travel comparison and planning service. We don't sell tickets, book rooms or take payments, and we are not a party to any contract between you and an airline, hotel or booking site. Booking and payment happen directly with the partner, and the contract is between you and them.",
+      termsPricesTitle: "Prices and booking",
+      termsPricesBody:
+        "Prices and availability are shown as booking partners provide them at the time of search and may change before you book. The final price and the booking, change, cancellation and refund terms are set by the partner you book with.",
+      termsInfoTitle: "Travel information",
+      termsInfoBody:
+        "Travel and visa requirements, suggested times to visit and exchange rates are guidance. Always check with the official authorities and your airline before travelling or paying.",
+      termsUseTitle: "Using the service",
+      termsUseBody:
+        "You agree to use Sfrtna for personal, lawful purposes, and not to misuse it, disrupt it or access parts of it that are not public.",
+      termsCopyTitle: "Intellectual property and copying",
       termsCopyBody:
-        "Sfrtna's text, guides, season ratings, visa lists, and the way they are compiled and arranged are our own work. You may browse the site for your own use, share links to its pages, and quote short passages with credit to Sfrtna and a link to the page. Without our written permission you may not: copy or collect the content automatically with programs, crawlers or scraping tools; download it in bulk; republish it on another site or app; use it to train AI models; call the site's internal interfaces from outside its pages; or work around its protections. What isn't ours stays under its owners' licences: prices belong to our partners, photographs to Pexels, and map data to OpenStreetMap. We reserve the right to block any such use, and all our legal rights.",
+        "Sfrtna's design, text, guides, ratings, and the way its content is compiled and arranged belong to us. You may browse the service for your own use, share links to its pages and quote short passages naming Sfrtna. Without our written permission you may not copy the content or collect it automatically with programs or crawlers, download it in bulk, republish it on another site or app, use it to train AI models, or bypass its protections. Content owned by others remains subject to its owners' rights, and we may block any use that breaks these terms.",
+      termsLinksTitle: "External links",
+      termsLinksBody: "Sfrtna links to other sites, including booking partners and official authorities. They are independent of us, and we are not responsible for their content or services.",
+      termsLiabilityTitle: "Limitation of liability",
+      termsLiabilityBody:
+        "We provide the service as is and work to keep its information accurate and current, but we are not liable for any loss arising from relying on it or from a service provided by someone else. The decision to travel and book is yours.",
       termsChangesTitle: "Changes to these terms",
-      termsChangesBody: "We may update this page; the date it last changed is shown at the bottom.",
+      termsChangesBody: "We may update these terms from time to time; the date of the latest update appears at the bottom of this page. Continuing to use the service after an update means you accept it.",
 
       lastUpdated: "Last updated: {date}",
     },
@@ -2610,7 +2634,7 @@ export const dictionaries = {
       placeFew: "{count} places",
       backToCategories: "Back",
       restaurantsNotice:
-        "We don't list specific restaurant names since we have no live source to confirm they're still open or a good fit — instead, here are the destination's best-known dishes and food experiences.",
+        "Instead of naming specific restaurants, here are the destination's best-known dishes and food experiences.",
       viewCategory: "View list",
       tagAttraction: "Point of interest",
       tagActivity: "Activity",
@@ -2649,7 +2673,7 @@ export const dictionaries = {
     },
     consent: {
       title: "We measure how the site is used, to improve it",
-      body: "We use Google Analytics to count visits and see what people search for — never your name or email. Measurement cookies are only set if you agree.",
+      body: "We use cookies to measure use and improve your experience — never your name or email. We only use them if you agree.",
       more: "Privacy policy",
       accept: "Accept",
       reject: "Decline",

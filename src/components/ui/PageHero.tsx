@@ -24,7 +24,6 @@ import Photo from "@/components/Photo";
 export default function PageHero({
   photo,
   photoSrcSet,
-  photoCredit,
   eyebrow,
   title,
   subtitle,
@@ -36,7 +35,7 @@ export default function PageHero({
   photo?: string;
   /** Larger renderings by width, for displays that can show them. */
   photoSrcSet?: string;
-  /** Attribution, printed small in the corner and linked to the file page. */
+  /** Accepted but not shown: the site names no photo source (owner, 8 Oct 2026). */
   photoCredit?: { text: string; href: string };
   eyebrow?: string;
   title: string;
@@ -122,18 +121,6 @@ export default function PageHero({
         {children && <div className="mt-6">{children}</div>}
       </div>
 
-      {/* Named because the licence says so, and small because the page is not
-          about the photographer. */}
-      {photoCredit && (
-        <a
-          href={photoCredit.href}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="absolute bottom-1.5 end-3 z-10 text-2xs text-white/45 transition hover:text-white/75"
-        >
-          {photoCredit.text}
-        </a>
-      )}
     </section>
   );
 }

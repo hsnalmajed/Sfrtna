@@ -1,3 +1,4 @@
+import type { Continent } from "@/lib/countries";
 export type Locale = "ar" | "en";
 
 export type TripType = "flight" | "hotel" | "both";
@@ -185,6 +186,8 @@ export interface DiscoverParams {
   infants?: number;
   roomType?: RoomType;
   preferenceCategory?: DestinationCategory;
+  /** Only destinations on these continents; empty or absent = anywhere. */
+  continents?: Continent[];
 }
 
 /**

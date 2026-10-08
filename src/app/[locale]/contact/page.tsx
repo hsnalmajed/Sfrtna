@@ -1,19 +1,11 @@
 import type { Metadata } from "next";
 import { getDictionary } from "@/lib/dictionaries";
 import type { Locale } from "@/lib/types";
+import { notFound } from "next/navigation";
+import { CONTACT_EMAIL } from "@/lib/contact";
 import LegalPage from "@/components/LegalPage";
 import { pageMetadata } from "@/lib/seo";
 
-/**
- * The address people write to.
- *
- * Deliberately an environment variable with no default. Publishing a
- * personal inbox on a public page is the owner's decision to make, not
- * this file's — so until NEXT_PUBLIC_CONTACT_EMAIL is set the page says
- * plainly that contact isn't open yet rather than printing an address
- * nobody chose to publish.
- */
-const CONTACT_EMAIL = process.env.NEXT_PUBLIC_CONTACT_EMAIL || "";
 
 export async function generateMetadata({
   params,
@@ -34,6 +26,8 @@ export default async function ContactPage({ params }: PageProps<"/[locale]/conta
   const loc = (locale === "en" ? "en" : "ar") as Locale;
   const dict = getDictionary(loc);
   const t = dict.legal;
+  // No page with nothing on it: until an address is chosen there is no page.
+  if (!CONTACT_EMAIL) notFound();
 
   return (
     <LegalPage locale={loc} title={t.contactTitle} lead={t.contactLead} sections={[]}>
@@ -49,11 +43,7 @@ export default async function ContactPage({ params }: PageProps<"/[locale]/conta
           </a>
           <p className="mt-3 text-sm text-navy-500">{t.contactResponse}</p>
         </div>
-      ) : (
-        <div className="card mb-8 px-5 py-6">
-          <p className="text-sm text-navy-600">{t.contactSoon}</p>
-        </div>
-      )}
+      ) : null}
     </LegalPage>
   );
 }

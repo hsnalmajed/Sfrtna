@@ -12,6 +12,7 @@ import DateRangeInput from "@/components/DateRangeInput";
 import Icon, { type IconName } from "@/components/ui/Icon";
 import { parseChildrenAges, serializeChildrenAges } from "@/lib/searchParamsUtil";
 import { strictIata } from "@/lib/flights";
+import { CONTINENTS, type Continent } from "@/lib/countries";
 import { focusFirstError, hasErrors, type FieldErrors } from "@/lib/formErrors";
 import { formStyles, type FormTone } from "@/lib/formTone";
 import { BudgetInput, EdgeTabs, FieldLabel, Toggle, nightsBetween, toDigits } from "@/components/PlannerFields";
@@ -114,6 +115,10 @@ export default function TripPlanner({
   const [destination, setDestination] = useState(sp.get("destination") || "");
   // Suggest + several countries: how many countries the route visits.
   const [stopCount, setStopCount] = useState<2 | 3>(sp.get("stops") === "3" ? 3 : 2);
+  // Continents to suggest from; none chosen = no preference.
+  const [continents, setContinents] = useState<Continent[]>(() =>
+    (sp.get("continents") ?? "").split(",").filter((c): c is Continent => CONTINENTS.includes(c as Continent))
+  );
   const [preferenceCategory, setPreferenceCategory] = useState<DestinationCategory | "">(
     (sp.get("preferenceCategory") as DestinationCategory) || ""
   );
@@ -297,6 +302,7 @@ export default function TripPlanner({
         stops: String(stopCount),
         oneWayOnly: String(isOneWay),
         preferenceCategory,
+        continents: continents.join(","),
       });
       trackSearchUrl(`/${locale}/discover-results?${params.toString()}`);
       router.push(`/${locale}/discover-results?${params.toString()}`);
@@ -393,7 +399,7 @@ export default function TripPlanner({
       {/* ── 3. The row that is the search ─────────────────────────────
           Auto-fit, so the known tab's five fields and the suggest tab's
           four both fill the width with no empty column. */}
-      <div className="mt-5 grid grid-cols-1 gap-x-3 gap-y-4 sm:grid-cols-2 lg:grid-cols-[repeat(auto-fit,minmax(9.5rem,1fr))]">
+      <div className="mt-4 grid grid-cols-1 gap-x-3 gap-y-3.5 sm:mt-5 sm:grid-cols-2 sm:gap-y-4 lg:grid-cols-[repeat(auto-fit,minmax(9.5rem,1fr))]">
           {!listsLegs && (
           <div data-field="origin" className="relative">
             <FieldLabel dark={dark} icon="pin">{dict.form.origin}</FieldLabel>
@@ -416,14 +422,15 @@ export default function TripPlanner({
             )}
 
             {/* Swap: the most common edit on a return search is the
-                direction. Sits on the seam between the two fields. */}
+                direction. Sits on the seam between the two fields — below
+                "from" on a phone, where they are stacked, beside it wider. */}
             {showDestination && (
               <button
                 type="button"
                 onClick={swapPlaces}
                 aria-label={dict.form.swapPlaces}
                 title={dict.form.swapPlaces}
-                className={`absolute -end-[1.15rem] top-[2.15rem] z-10 hidden h-8 w-8 items-center justify-center rounded-full ring-1 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400 lg:flex ${
+                className={`absolute -bottom-[1.4rem] end-4 z-10 flex h-8 w-8 rotate-90 items-center justify-center rounded-full ring-1 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400 sm:bottom-auto sm:-end-[1.15rem] sm:top-[2.15rem] sm:rotate-0 ${
                   dark
                     ? "bg-navy-990 text-white/85 ring-white/25 hover:text-sun-400 hover:ring-sun-400"
                     : "bg-white text-navy-700 ring-mist-300 hover:ring-navy-400"
@@ -658,7 +665,52 @@ export default function TripPlanner({
         </p>
 
         <div className="mt-3 flex flex-col gap-4">
-          {/* The one question only the suggest tab asks. */}
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+            <Toggle dark={dark} id="plan-direct" checked={directOnly} onChange={setDirectOnly} icon="takeoff">
+              {dict.form.directShort}
+            </Toggle>
+            <Toggle dark={dark} id="plan-bags" checked={baggageIncluded} onChange={setBaggageIncluded} icon="luggage">
+              {dict.form.baggageShort}
+            </Toggle>
+          </div>
+
+          {/* Where in the world: any number of continents, or none. */}
+          {mode === "discover" && (
+            <div>
+              <p className={labelRow}>
+                <Icon name="globe" className={labelIcon} />
+                {dict.discoverForm.continentLabel}
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {(["", ...CONTINENTS] as (Continent | "")[]).map((c) => {
+                  const active = c ? continents.includes(c) : continents.length === 0;
+                  return (
+                    <button
+                      key={c || "any"}
+                      type="button"
+                      aria-pressed={active}
+                      onClick={() =>
+                        setContinents((prev) =>
+                          !c ? [] : prev.includes(c) ? prev.filter((x) => x !== c) : [...prev, c]
+                        )
+                      }
+                      className={`rounded-full px-3.5 py-1.5 text-xs font-bold ring-1 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400 ${
+                        active
+                          ? "bg-sun-400 text-navy-950 ring-sun-400"
+                          : dark
+                            ? "bg-white/[0.05] text-white/80 ring-white/15 hover:bg-white/10"
+                            : "bg-white text-navy-700 ring-mist-200 hover:ring-navy-200"
+                      }`}
+                    >
+                      {c ? dict.attractions.continents[c] : dict.categories.any}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* What kind of place — also only the suggest tab asks. */}
           {mode === "discover" && (
             <div>
               <p className={labelRow}>
@@ -690,14 +742,6 @@ export default function TripPlanner({
             </div>
           )}
 
-          <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
-            <Toggle dark={dark} id="plan-direct" checked={directOnly} onChange={setDirectOnly} icon="takeoff">
-              {dict.form.directShort}
-            </Toggle>
-            <Toggle dark={dark} id="plan-bags" checked={baggageIncluded} onChange={setBaggageIncluded} icon="luggage">
-              {dict.form.baggageShort}
-            </Toggle>
-          </div>
         </div>
       </div>
 
