@@ -154,9 +154,9 @@ export default function VisaDirectory({
                             placeholder
                             src={c.photo}
                             className="absolute inset-0 h-full w-full object-cover transition duration-300 group-hover:scale-105"
-                            fallback={<div className="absolute inset-0 bg-gradient-to-br from-navy-700 to-navy-990" />}
+                            fallback={<div className="absolute inset-0 bg-gradient-to-br from-sea-50 to-mist-100" />}
                           />
-                          <div className="absolute inset-0 bg-gradient-to-t from-navy-990/40 to-transparent" />
+                          <div className="absolute inset-0 bg-gradient-to-t from-navy-990/40 to-transparent app:hidden" />
                           {/* The answer, on the picture — the first thing read. */}
                           <VisaBadge
                             category={c.category}

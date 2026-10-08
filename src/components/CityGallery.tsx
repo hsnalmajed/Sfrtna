@@ -30,22 +30,25 @@ export default function CityGallery({
         <Link
           key={c.slug}
           href={`${hrefBase}/${c.slug}`}
-          className="group relative block aspect-[4/3] overflow-hidden rounded-2xl shadow-sm ring-1 ring-black/5 transition hover:-translate-y-0.5 hover:shadow-lg"
+          className="group relative block aspect-[4/3] overflow-hidden rounded-2xl shadow-sm ring-1 ring-black/5 transition hover:-translate-y-0.5 hover:shadow-lg app:flex app:aspect-auto app:flex-col app:bg-white app:ring-navy-900/5 app:hover:translate-y-0 app:active:scale-[0.98]"
         >
-          <Photo
-            placeholder
-            src={c.photo}
-            className="absolute inset-0 h-full w-full object-cover transition duration-300 group-hover:scale-105"
-            fallback={
-              <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-brand-800 to-brand-950 text-4xl">
-                🏙️
-              </div>
-            }
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/15 to-transparent" />
-          <div className="absolute bottom-2.5 start-3 end-3">
-            <p className="truncate text-sm sm:text-base font-bold text-white drop-shadow-sm">{c.name}</p>
-            {c.subtitle && <p className="text-[11px] text-white/75">{c.subtitle}</p>}
+          {/* In the app: picture on top of a white card, the name under it. */}
+          <div className="absolute inset-0 app:relative app:h-24">
+            <Photo
+              placeholder
+              src={c.photo}
+              className="absolute inset-0 h-full w-full object-cover transition duration-300 group-hover:scale-105"
+              fallback={
+                <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-brand-800 to-brand-950 text-4xl app:from-sea-50 app:to-mist-100">
+                  🏙️
+                </div>
+              }
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/15 to-transparent app:hidden" />
+          </div>
+          <div className="absolute bottom-2.5 start-3 end-3 app:static app:p-3">
+            <p className="truncate text-sm sm:text-base font-bold text-white drop-shadow-sm app:font-display app:text-base app:font-extrabold app:text-navy-900 app:drop-shadow-none">{c.name}</p>
+            {c.subtitle && <p className="text-[11px] text-white/75 app:mt-0.5 app:text-xs app:text-[#5d6b80]">{c.subtitle}</p>}
           </div>
         </Link>
       ))}

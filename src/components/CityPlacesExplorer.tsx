@@ -191,7 +191,7 @@ export default function CityPlacesExplorer({
         </p>
       ) : (
         <>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
             {visible.slice(0, shown).map((p) => (
               <article
                 key={p.key}
@@ -201,16 +201,16 @@ export default function CityPlacesExplorer({
                 }`}
               >
                 {selectedKeys?.has(p.key) && (
-                  <span className="absolute start-3 top-3 z-10 rounded-full bg-emerald-600 px-2.5 py-1 text-xs font-extrabold text-white shadow-md">
+                  <span className="absolute start-2 top-2 z-10 rounded-full bg-emerald-600 px-2 py-0.5 text-[11px] font-extrabold sm:start-3 sm:top-3 sm:px-2.5 sm:py-1 sm:text-xs text-white shadow-md">
                     ✓ {addedLabel}
                   </span>
                 )}
                 <Photo
                   src={p.photo}
-                  className="h-40 w-full object-cover"
+                  className="h-24 w-full object-cover sm:h-40"
                   fallback={
                     <div
-                      className="flex h-40 w-full items-center justify-center text-4xl"
+                      className="flex h-24 w-full items-center justify-center text-3xl sm:h-40 sm:text-4xl"
                       style={{ backgroundColor: `${PIN_STYLES[p.category].color}14` }}
                       aria-hidden="true"
                     >
@@ -219,10 +219,10 @@ export default function CityPlacesExplorer({
                   }
                 />
 
-                <div className="flex flex-1 flex-col p-4">
+                <div className="flex flex-1 flex-col p-3 sm:p-4">
                   <div className="flex items-start justify-between gap-2">
                     <h3
-                      className="font-bold leading-snug text-gray-900"
+                      className="text-sm font-bold leading-snug text-gray-900 sm:text-base"
                       // An English name inside an Arabic page needs its own
                       // direction, or trailing punctuation jumps to the wrong end.
                       dir={p.englishOnly ? "ltr" : undefined}
@@ -236,7 +236,7 @@ export default function CityPlacesExplorer({
                         onClick={() => onShowOnMap(p)}
                         title={showOnMapLabel}
                         aria-label={`${showOnMapLabel}: ${p.name}`}
-                        className="-mt-0.5 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-sun-50 text-base ring-1 ring-sun-200 transition hover:bg-sun-100 hover:ring-sun-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400"
+                        className="-mt-0.5 inline-flex h-7 w-7 shrink-0 text-sm sm:h-8 sm:w-8 sm:text-base items-center justify-center rounded-full bg-sun-50 text-base ring-1 ring-sun-200 transition hover:bg-sun-100 hover:ring-sun-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400"
                       >
                         <span aria-hidden="true">📍</span>
                       </button>
@@ -245,7 +245,7 @@ export default function CityPlacesExplorer({
 
                   {p.description && (
                     <p
-                      className="mt-1.5 text-sm leading-relaxed text-gray-600"
+                      className="mt-1 line-clamp-2 text-xs leading-relaxed text-gray-600 sm:mt-1.5 sm:line-clamp-none sm:text-sm"
                       dir={p.englishOnly ? "ltr" : undefined}
                     >
                       {p.description}
@@ -253,7 +253,7 @@ export default function CityPlacesExplorer({
                   )}
 
                   {p.bookingLabel && (
-                    <p className="mt-2.5 inline-flex w-fit items-center gap-1.5 rounded-full bg-sun-50 px-2.5 py-1 text-[11px] font-bold text-sun-800 ring-1 ring-sun-200">
+                    <p className="mt-2 inline-flex w-fit max-w-full items-center gap-1 truncate rounded-full bg-sun-50 px-2 py-0.5 text-[11px] sm:mt-2.5 sm:gap-1.5 sm:px-2.5 sm:py-1 font-bold text-sun-800 ring-1 ring-sun-200">
                       <span aria-hidden="true">🎟️</span>
                       {p.bookingLabel}
                     </p>
@@ -264,7 +264,7 @@ export default function CityPlacesExplorer({
                   )}
 
                   {p.lat !== undefined && p.lon !== undefined && (
-                    <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1.5">
+                    <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1.5 sm:mt-3">
                       <a
                         href={`https://www.google.com/maps/search/?api=1&query=${p.lat},${p.lon}`}
                         target="_blank"

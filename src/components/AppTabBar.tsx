@@ -127,8 +127,10 @@ export default function AppTabBar({ locale }: { locale: Locale }) {
   };
 
   const tabClass = (active: boolean) =>
-    `app-tab flex min-w-0 flex-1 flex-col items-center justify-center gap-0.5 pt-1.5 pb-1 text-[0.68rem] font-bold leading-tight transition-colors ${
-      active ? "text-sun-400" : "text-white/65 active:text-white"
+    `app-tab relative flex min-w-0 flex-1 flex-col items-center justify-center gap-0.5 pt-1.5 pb-1 text-[0.68rem] leading-tight transition-colors ${
+      active
+        ? "font-extrabold text-navy-900 before:absolute before:top-0 before:h-[3px] before:w-7 before:rounded-b-full before:bg-sun-400"
+        : "font-semibold text-[#7d8aa0] active:text-navy-900"
     }`;
 
   return (
@@ -147,8 +149,8 @@ export default function AppTabBar({ locale }: { locale: Locale }) {
         </Link>
 
         {/* The one action the site exists for, raised in the middle. */}
-        <Link href={`${home}#plan`} onClick={onBook} className={`app-tab flex min-w-0 flex-1 flex-col items-center justify-end pb-1 text-[0.68rem] font-bold leading-tight ${bookActive ? "text-sun-400" : "text-white/80"}`}>
-          <span className={`-mt-5 mb-0.5 flex h-12 w-12 items-center justify-center rounded-full bg-sun-400 text-navy-990 shadow-[0_6px_18px_-6px_rgba(255,166,48,0.8)] ring-4 transition ${bookActive ? "ring-sea-400/80" : "ring-navy-990"}`}>
+        <Link href={`${home}#plan`} onClick={onBook} className={`app-tab flex min-w-0 flex-1 flex-col items-center justify-end pb-1 text-[0.68rem] leading-tight ${bookActive ? "font-extrabold text-navy-900" : "font-semibold text-navy-900/80"}`}>
+          <span className={`-mt-5 mb-0.5 flex h-12 w-12 items-center justify-center rounded-full bg-sun-400 text-navy-990 shadow-[0_8px_18px_-8px_rgba(255,140,0,0.9)] ring-4 ring-white transition ${bookActive ? "scale-105" : ""}`}>
             <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z" />
             </svg>

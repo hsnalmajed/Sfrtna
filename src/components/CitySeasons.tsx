@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import type { Locale } from "@/lib/types";
-import type { Continent } from "@/lib/countries";
+import { flagEmoji, type Continent } from "@/lib/countries";
 import { CONTINENT_ORDER } from "@/components/DestinationFilters";
 import { searchMatches } from "@/lib/search";
 import { CLASS_DOT } from "@/lib/travelSeason/labels";
@@ -162,6 +162,28 @@ export default function CitySeasons({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cities, month, continent, withGood]);
 
+  // Shown by continent, and within a continent country by country — the
+  // best country first, its cities together, best city first — so a list
+  // of seventy reads as a map rather than a ranking that jumps from Turkey
+  // to Japan and back.
+  const grouped = useMemo(() => {
+    const score = (c: SeasonCity) => c.months[month - 1].finalScore ?? 0;
+    const groups: { continent: Continent; cities: SeasonCity[] }[] = [];
+    for (const cont of CONTINENT_ORDER) {
+      const here = inMonth.filter((c) => c.continent === cont);
+      if (!here.length) continue;
+      const byCountry = new Map<string, SeasonCity[]>();
+      for (const c of here) byCountry.set(c.code, [...(byCountry.get(c.code) ?? []), c]);
+      const ordered = [...byCountry.values()]
+        .map((list) => list.sort((a, b) => score(b) - score(a)))
+        .sort((a, b) => score(b[0]) - score(a[0]))
+        .flat();
+      groups.push({ continent: cont, cities: ordered });
+    }
+    return groups;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inMonth]);
+
   const cityMatches = useMemo(() => {
     const q = query.trim();
     if (!q) return [];
@@ -263,43 +285,61 @@ export default function CitySeasons({
           {inMonth.length === 0 ? (
             <p className="rounded-xl bg-mist-50 px-4 py-10 text-center text-sm text-navy-500">{dict.noneInMonth}</p>
           ) : (
-            <div className="grid grid-cols-1 gap-3 min-[420px]:grid-cols-2 lg:grid-cols-3">
-              {inMonth.map((c) => {
-                const r = c.months[month - 1];
-                return (
-                  <button
-                    key={c.slug}
-                    type="button"
-                    onClick={() => setDialog({ slug: c.slug, month })}
-                    aria-haspopup="dialog"
-                    className="group flex overflow-hidden rounded-2xl bg-white text-start shadow-[var(--shadow-card)] ring-1 ring-navy-950/5 transition hover:-translate-y-0.5 hover:shadow-[var(--shadow-lift)]"
-                  >
-                    <div className="relative w-24 shrink-0 sm:w-28">
-                      <Photo
-                        placeholder
-                        src={c.photo}
-                        className="absolute inset-0 h-full w-full object-cover"
-                        fallback={<div className="absolute inset-0 bg-gradient-to-br from-navy-700 to-navy-990" />}
-                      />
-                    </div>
-                    <div className="min-w-0 flex-1 p-3">
-                      <p className="truncate font-display font-extrabold text-navy-900">
-                        {c.name} <span className="text-xs font-semibold text-navy-500">· {c.countryName}</span>
-                      </p>
-                      {r.classification && (
-                        <span className={`mt-1.5 inline-block rounded-full px-2 py-0.5 text-xs font-extrabold ${CLASS_STYLE[r.classification]}`}>
-                          {badge(r.classification)}
-                        </span>
-                      )}
-                      <p className="mt-1.5 text-xs font-semibold text-navy-700">{seasonText(r)}</p>
-                      <p className="mt-0.5 text-xs text-navy-700">
-                        {temps(r) && <span dir="ltr">🌡️ {temps(r)}</span>}
-                        {r.summary && <span> · {r.summary}</span>}
-                      </p>
-                    </div>
-                  </button>
-                );
-              })}
+            <div className="space-y-6">
+              {grouped.map((g) => (
+                <section key={g.continent}>
+                  <h3 className="mb-3 flex items-center gap-2 font-display text-base font-extrabold text-navy-900">
+                    {dict.continents[g.continent]}
+                    <span className="rounded-full bg-mist-100 px-2 py-0.5 text-2xs font-bold text-navy-500">{g.cities.length}</span>
+                  </h3>
+                  {/* Two to a row on a phone: picture on top, the facts under it. */}
+                  <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+                    {g.cities.map((c) => {
+                      const r = c.months[month - 1];
+                      return (
+                        <button
+                          key={c.slug}
+                          type="button"
+                          onClick={() => setDialog({ slug: c.slug, month })}
+                          aria-haspopup="dialog"
+                          className="group flex flex-col overflow-hidden rounded-2xl bg-white text-start shadow-[var(--shadow-card)] ring-1 ring-navy-950/5 transition hover:-translate-y-0.5 hover:shadow-[var(--shadow-lift)] active:scale-[0.98]"
+                        >
+                          <div className="relative h-24 w-full shrink-0 sm:h-28">
+                            <Photo
+                              placeholder
+                              src={c.photo}
+                              className="absolute inset-0 h-full w-full object-cover"
+                              fallback={
+                                <div className="absolute inset-0 flex items-end justify-end bg-gradient-to-br from-sea-50 to-mist-100 p-2.5">
+                                  <span className="text-4xl leading-none" aria-hidden="true">{flagEmoji(c.code)}</span>
+                                </div>
+                              }
+                            />
+                            {r.classification && (
+                              <span className={`absolute start-2 top-2 max-w-[calc(100%-1rem)] truncate rounded-full px-2 py-0.5 text-[11px] font-extrabold shadow-sm ${CLASS_STYLE[r.classification]}`}>
+                                {badge(r.classification)}
+                              </span>
+                            )}
+                          </div>
+                          <div className="min-w-0 p-3">
+                            <p className="truncate font-display text-base font-extrabold text-navy-900">{c.name}</p>
+                            <p className="truncate text-xs font-semibold text-navy-500">{c.countryName}</p>
+                            <p className="mt-1.5 truncate text-xs font-semibold text-navy-700">
+                              {seasonText(r)}
+                              {temps(r) && (
+                                <>
+                                  {" · "}
+                                  <span dir="ltr">{temps(r)}</span>
+                                </>
+                              )}
+                            </p>
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </section>
+              ))}
             </div>
           )}
         </div>

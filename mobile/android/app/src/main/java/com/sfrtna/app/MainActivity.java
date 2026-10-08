@@ -62,7 +62,7 @@ public class MainActivity extends BridgeActivity {
 
         // A process restored with the page already up skips the opening.
         if (savedInstanceState == null) {
-            introView = new IntroView(this);
+            introView = new IntroView(this, lastLanguageIsEnglish());
             addContentView(introView, new android.widget.FrameLayout.LayoutParams(
                 android.view.ViewGroup.LayoutParams.MATCH_PARENT,
                 android.view.ViewGroup.LayoutParams.MATCH_PARENT
@@ -113,6 +113,13 @@ public class MainActivity extends BridgeActivity {
 
     @Override
     public void onStop() {
+        // Write the cookies (the language choice among them) to disk now, so
+        // a swipe-away or a reboot does not lose them.
+        try {
+            android.webkit.CookieManager.getInstance().flush();
+        } catch (RuntimeException ignored) {
+            // Nothing to flush.
+        }
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         if (cm != null && networkCallback != null) {
             try {
@@ -136,6 +143,28 @@ public class MainActivity extends BridgeActivity {
         endIntroWhenRead();
         failedUrl = url;
         if (offlineView != null) offlineView.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * The language the visitor last read the site in: the site keeps it in a
+     * cookie (sfrtna_lang, see src/components/NavTracker.tsx) and opens in it
+     * next time; the opening says its line in the same one. Before any visit,
+     * the phone's own language.
+     */
+    private boolean lastLanguageIsEnglish() {
+        try {
+            String cookies = android.webkit.CookieManager.getInstance().getCookie("https://sfrtna.com");
+            if (cookies != null) {
+                for (String part : cookies.split(";")) {
+                    String c = part.trim();
+                    if (c.equals("sfrtna_lang=en")) return true;
+                    if (c.equals("sfrtna_lang=ar")) return false;
+                }
+            }
+        } catch (RuntimeException ignored) {
+            // No cookie store yet: fall through to the phone's language.
+        }
+        return !"ar".equals(java.util.Locale.getDefault().getLanguage());
     }
 
     /** Leave the opening once its line has had time to be read. */

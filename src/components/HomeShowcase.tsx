@@ -7,6 +7,8 @@ import type { Locale } from "@/lib/types";
 import Photo from "@/components/Photo";
 import { countLabel } from "@/lib/format";
 import Icon, { type IconName } from "@/components/ui/Icon";
+import { useInApp } from "@/lib/useInApp";
+import { flagEmoji } from "@/lib/countries";
 import { PLAN_EVENT, HOME_TAB_EVENT, HOME_SEASON_EVENT, type PlanProduct } from "@/lib/planEvents";
 import TripPlanner from "@/components/TripPlanner";
 import HotelPlanner from "@/components/HotelPlanner";
@@ -79,6 +81,8 @@ interface ShowcaseDict {
   seasonSubtitle: string;
   seasonCta: string;
   seasonAllCities: string;
+  /** The app's short "see all (n)". */
+  seeAll: string;
   seasonFewerCities: string;
   seasonCityWeather: string;
   seasonFlight: string;
@@ -239,6 +243,10 @@ export default function HomeShowcase({
   }, [active]);
   useEffect(() => () => void window.dispatchEvent(new CustomEvent(HOME_TAB_EVENT, { detail: null })), []);
 
+  // The app is light throughout, so its search form is too.
+  const inApp = useInApp();
+  const formTone = inApp ? "light" : "dark";
+
   const isAr = locale === "ar";
   const arrow = isAr ? "←" : "→";
 
@@ -305,24 +313,30 @@ export default function HomeShowcase({
         setOpenCity(c);
       }}
       aria-haspopup="dialog"
-      className="group relative isolate flex aspect-[3/4] h-full w-full flex-col justify-between rounded-2xl text-start ring-1 ring-white/10 transition duration-300 hover:-translate-y-1 hover:ring-sun-400/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400"
+      className="group relative isolate flex aspect-[3/4] h-full w-full flex-col justify-between rounded-2xl text-start ring-1 ring-white/10 transition duration-300 hover:-translate-y-1 hover:ring-sun-400/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400 app:aspect-auto app:justify-start app:overflow-hidden app:bg-white app:shadow-[0_1px_2px_rgb(11_45_91/0.06),0_8px_20px_-14px_rgb(11_45_91/0.35)] app:ring-navy-900/5 app:hover:translate-y-0 app:active:scale-[0.98]"
     >
       {/* The picture sits behind the text in its own clipped layer, and the
           text is laid out top and bottom in normal flow: on a narrow phone
           card a long visa label or a wrapped chip makes the card taller
           instead of piling the badges onto the city name. */}
-      <div className="absolute inset-0 -z-10 overflow-hidden rounded-2xl">
+      {/* In the app the picture is the top of a white card and the words
+          sit under it — readable with or without a photograph. */}
+      <div className="absolute inset-0 -z-10 overflow-hidden rounded-2xl app:relative app:inset-auto app:z-0 app:h-28 app:shrink-0 app:rounded-none">
         <Photo
           placeholder
           src={c.photo}
           className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-[1.06]"
-          fallback={<div className="absolute inset-0 bg-gradient-to-br from-navy-700 to-navy-990" />}
+          fallback={
+            <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-navy-700 to-navy-990 app:items-end app:justify-end app:from-sea-50 app:to-mist-100 app:p-2.5">
+              <span className="hidden text-4xl leading-none app:block" aria-hidden="true">{flagEmoji(c.code)}</span>
+            </div>
+          }
         />
-        <div className="scrim-soft absolute inset-0" />
+        <div className="scrim-soft absolute inset-0 app:hidden" />
       </div>
       {/* Top: the month's rating there, in the site-wide wording, and under
           it the entry status for a Saudi passport. */}
-      <div className="flex min-w-0 flex-col items-start gap-1 p-2">
+      <div className="flex min-w-0 flex-col items-start gap-1 p-2 app:absolute app:inset-x-0 app:top-0">
         {c.classLabel && (
           <span className="max-w-full truncate rounded-full bg-white/90 px-2.5 py-0.5 text-xs font-extrabold text-navy-900 shadow-sm backdrop-blur-sm">
             {c.classLabel}
@@ -339,11 +353,16 @@ export default function HomeShowcase({
           <span className="truncate">{c.visa ? c.visa.short : dict.cardVisaUnknown}</span>
         </span>
       </div>
-      <div className="min-w-0 p-3 pt-2">
-        <p className="truncate font-display text-sm font-extrabold text-white drop-shadow-sm sm:text-base">{c.name}</p>
-        <p className="truncate text-xs font-semibold text-white/70">{c.countryName}</p>
+      <div className="min-w-0 p-3 pt-2 app:pt-2.5">
+        <p className="truncate font-display text-sm font-extrabold text-white drop-shadow-sm sm:text-base app:text-base app:text-navy-900 app:drop-shadow-none">{c.name}</p>
+        <p className="truncate text-xs font-semibold text-white/70 app:text-[#5d6b80]">{c.countryName}</p>
+        {/* The app says the season and temperatures as one quiet line. */}
+        <p className="hidden truncate text-xs font-semibold text-navy-800 app:mt-1.5 app:block">
+          {c.seasonKind ? `${c.seasonKind} · ` : ""}
+          <span dir="ltr">{c.low !== null && c.low !== undefined ? dict.highLow.replace("{low}", String(Math.round(c.low))).replace("{high}", String(Math.round(c.high))) : `${Math.round(c.high)}°`}</span>
+        </p>
         {/* The season and its temperatures, side by side on one line. */}
-        <div className="mt-1.5 flex flex-wrap items-center gap-1">
+        <div className="mt-1.5 flex flex-wrap items-center gap-1 app:hidden">
           {c.seasonKind && (
             <span className="inline-flex rounded-full bg-navy-990/65 px-2 py-0.5 text-xs font-bold text-sun-200 backdrop-blur-sm">
               {c.seasonKind}
@@ -353,7 +372,7 @@ export default function HomeShowcase({
             🌡 {c.low !== null && c.low !== undefined ? dict.highLow.replace("{low}", String(Math.round(c.low))).replace("{high}", String(Math.round(c.high))) : `${Math.round(c.high)}°`}
           </span>
         </div>
-        <div className="mt-1 flex flex-wrap gap-1">
+        <div className="mt-1 flex flex-wrap gap-1 app:hidden">
           {/* The fare matters more than the rain; the rain only shows where
               no fare was seen, so the card is never left with one number. */}
           {c.fare ? (
@@ -535,7 +554,7 @@ export default function HomeShowcase({
 
   return (
     <div id="plan" className="mx-auto max-w-7xl scroll-mt-24 px-3 sm:px-6">
-      <div className="rounded-[2rem] bg-gradient-to-b from-navy-900 to-navy-990 shadow-[0_30px_80px_-20px_rgba(4,24,47,0.6)] ring-1 ring-white/10">
+      <div className="rounded-[2rem] bg-gradient-to-b from-navy-900 to-navy-990 shadow-[0_30px_80px_-20px_rgba(4,24,47,0.6)] ring-1 ring-white/10 app:rounded-none app:bg-none app:shadow-none app:ring-0">
         {/* ── The strip ─────────────────────────────────────────────── */}
         {/* Not in the phone app: there the bottom bar's "Home" and "Book"
             are these two tabs, and a second set here only repeats them. */}
@@ -569,11 +588,11 @@ export default function HomeShowcase({
         </div>
 
         {/* ── The panel ─────────────────────────────────────────────── */}
-        <div className="p-4 sm:p-7">
-          <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+        <div className="p-4 sm:p-7 app:px-1 app:pb-1 app:pt-3">
+          <div className="mb-5 flex flex-wrap items-center justify-between gap-3 app:mb-3 app:flex-nowrap">
             <div className="max-w-2xl">
               {/* In the app the tab strip is gone, so the panel names itself. */}
-              <h2 className="app-only font-display text-h3 font-extrabold text-white">
+              <h2 className="app-only font-display text-lg font-extrabold text-navy-900">
                 {active === "plan" ? dict.tabPlan : dict.seasonTitle}
               </h2>
               <p className="web-only text-sm leading-relaxed text-white/65">{blurb[active]}</p>
@@ -583,11 +602,16 @@ export default function HomeShowcase({
                 type="button"
                 onClick={() => setAllCities((v) => !v)}
                 aria-expanded={allCities}
-                className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-white/10 px-4 py-2.5 text-sm font-bold text-white ring-1 ring-white/20 transition hover:bg-white/20"
+                className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-white/10 px-4 py-2.5 text-sm font-bold text-white ring-1 ring-white/20 transition hover:bg-white/20 app:bg-white app:px-3.5 app:py-2 app:text-xs app:text-navy-900 app:ring-navy-900/10"
               >
-                {allCities
-                  ? dict.seasonFewerCities
-                  : dict.seasonAllCities.replace("{count}", String(seasonCities.length))}
+                <span className="app:hidden">
+                  {allCities
+                    ? dict.seasonFewerCities
+                    : dict.seasonAllCities.replace("{count}", String(seasonCities.length))}
+                </span>
+                <span className="hidden app:inline">
+                  {allCities ? dict.seasonFewerCities : dict.seeAll.replace("{count}", String(seasonCities.length))}
+                </span>
                 <span aria-hidden="true" className={`transition ${allCities ? "-rotate-90" : ""}`}>
                   {arrow}
                 </span>
@@ -602,6 +626,14 @@ export default function HomeShowcase({
           <div key={active} className="tab-fade min-h-[16rem] sm:min-h-[15rem]">
             {active === "season" && (
               <>
+                {/* In the app: two to a row, the first six (all of them on
+                    "browse all"), standing still — no drifting strip. */}
+                <div className="app-only">
+                  <div className="grid grid-cols-2 gap-3">
+                    {(allCities ? seasonCities : seasonCities.slice(0, 6)).map((c) => cityCard(c))}
+                  </div>
+                </div>
+                <div className="web-only">
                 {allCities || seasonCities.length <= 6 ? (
                   <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-6">
                     {seasonCities.map((c) => cityCard(c))}
@@ -633,17 +665,13 @@ export default function HomeShowcase({
                     </div>
                   </div>
                 )}
-                <p className="mt-3 text-sm font-semibold text-white/75">👆 {dict.seasonTapHint}</p>
+                </div>
+                <p className="web-only mt-3 text-sm font-semibold text-white/75">👆 {dict.seasonTapHint}</p>
                 {seasonCities.some((c) => c.fare) && (
                   <p className="mt-2 rounded-xl bg-sun-400/10 px-3 py-2 text-xs font-semibold leading-relaxed text-sun-200 ring-1 ring-sun-400/25">
                     {dict.seasonFareNote}
                   </p>
                 )}
-                <p className="mt-2 text-xs text-white/45">
-                  <Link href={`/${locale}/seasons`} className="font-bold text-white/70 underline-offset-2 hover:underline">
-                    {dict.seasonCta}
-                  </Link>
-                </p>
               </>
             )}
 
@@ -687,7 +715,7 @@ export default function HomeShowcase({
                 <div
                   role="radiogroup"
                   aria-label={dict.tabPlan}
-                  className="mx-auto grid max-w-3xl grid-cols-2 gap-3 sm:gap-4"
+                  className={`mx-auto grid max-w-3xl grid-cols-2 gap-3 sm:gap-4 ${planProduct !== null ? "app:hidden" : ""}`}
                 >
                   {planChoices.map((c) => {
                     const on = planProduct === c.value;
@@ -706,8 +734,8 @@ export default function HomeShowcase({
                           compact ? "justify-center px-4 py-3" : "p-5 hover:-translate-y-1 sm:p-8"
                         } ${
                           on
-                            ? "bg-white text-navy-950 ring-white"
-                            : "bg-white/[0.06] text-white ring-white/10 hover:bg-white/[0.12] hover:ring-sun-400/50"
+                            ? "bg-white text-navy-950 ring-white app:ring-2 app:ring-sun-400"
+                            : "bg-white/[0.06] text-white ring-white/10 hover:bg-white/[0.12] hover:ring-sun-400/50 app:bg-white app:text-navy-900 app:ring-navy-900/10"
                         }`}
                       >
                         <span
@@ -731,12 +759,12 @@ export default function HomeShowcase({
                   // Top margin: each planner's own two tabs sit half outside
                   // its panel's top edge. No overflow-hidden anywhere above —
                   // the calendar and travellers counter hang below the panel.
-                  <div className="mt-12 rounded-2xl bg-navy-990/60 px-4 pb-5 ring-1 ring-white/15 sm:px-6 sm:pb-6">
+                  <div className="mt-12 rounded-2xl bg-navy-990/60 px-4 pb-5 ring-1 ring-white/15 sm:px-6 sm:pb-6 app:bg-transparent app:px-0 app:pb-0 app:ring-0">
                     <Suspense fallback={null}>
                       {planProduct === "flights" ? (
-                        <TripPlanner key={`f${planKey}`} locale={locale} tone="dark" preset={planPreset} />
+                        <TripPlanner key={`f${planKey}`} locale={locale} tone={formTone} preset={planPreset} />
                       ) : (
-                        <HotelPlanner key={`h${planKey}`} locale={locale} tone="dark" preset={planPreset} />
+                        <HotelPlanner key={`h${planKey}`} locale={locale} tone={formTone} preset={planPreset} />
                       )}
                     </Suspense>
                   </div>
