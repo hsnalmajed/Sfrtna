@@ -12,6 +12,9 @@
     // refused (edge-worker.js), so the collection cannot be downloaded.
     "run_worker_first": ["/data/*"]
   },
+  // The deployment's version id (env.CF_VERSION_METADATA.id): part of the
+  // edge page-cache key, so a deploy never serves the previous build's pages.
+  "version_metadata": { "binding": "CF_VERSION_METADATA" },
   // Per-IP request limits for /api (see edge-guard.js). Counted per
   // Cloudflare location; period must be 10 or 60 seconds.
   "ratelimits": [

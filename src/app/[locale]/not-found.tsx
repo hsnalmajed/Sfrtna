@@ -65,7 +65,7 @@ export default function LocaleNotFound() {
 
   return (
     <div className="bg-mist-50">
-      <section className="app-light relative isolate overflow-hidden bg-gradient-to-b from-navy-900 to-navy-990 hero-pad pb-12 pt-28 sm:pt-32">
+      <section className="relative isolate overflow-hidden bg-gradient-to-b from-navy-900 to-navy-990 hero-pad pb-12 pt-28 sm:pt-32">
         <div
           className="absolute inset-0 -z-10 bg-[radial-gradient(90%_70%_at_75%_0%,rgb(255_166_48/0.16),transparent_70%)]"
           aria-hidden="true"

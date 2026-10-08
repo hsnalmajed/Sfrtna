@@ -11,6 +11,7 @@ import { findCountry } from "@/lib/countries";
 import { seasonRecords } from "@/lib/travelSeason/site";
 import { fetchCityPhotos } from "@/lib/countryPhotos";
 import { CITY_AIRPORTS } from "@/data/cityAirports";
+import { visaStatusFor } from "@/data/visaStatus";
 
 // Photos come from Pexels, same as the rest of the site.
 export const dynamic = "force-dynamic";
@@ -49,6 +50,15 @@ export default async function SeasonsPage({ params, searchParams }: PageProps<"/
     fetchCityPhotos(list.map((c) => ({ code: c.code, slug: c.slug, nameEn: c.nameEn }))),
   ]);
 
+  // Every city card carries the entry status for a Saudi passport, in the
+  // homepage cards' short wording.
+  const visaShort = {
+    free: dict.home.cardVisaFree,
+    arrival: dict.home.cardVisaArrival,
+    eta: dict.home.cardVisaEta,
+    required: dict.home.cardVisaRequired,
+  };
+
   const cities: SeasonCity[] = list.flatMap((c) => {
     const country = findCountry(c.code);
     const recs = seasonRecords(c.slug);
@@ -64,6 +74,10 @@ export default async function SeasonsPage({ params, searchParams }: PageProps<"/
         photo: photos.get(`${c.code}/${c.slug}`),
         airport: CITY_AIRPORTS[c.slug]?.iata || undefined,
         nameEn: c.nameEn,
+        visa: (() => {
+          const v = visaStatusFor(c.code);
+          return v ? { category: v.category, short: visaShort[v.category] } : undefined;
+        })(),
         months: recs.map((r) => ({
           classification: r.classification,
           finalScore: r.finalScore,
@@ -108,6 +122,7 @@ export default async function SeasonsPage({ params, searchParams }: PageProps<"/
             },
             allContinents: dict.filters.allContinents,
             continents: dict.attractions.continents,
+            visaUnknown: dict.home.cardVisaUnknown,
           }}
         />
       </div>

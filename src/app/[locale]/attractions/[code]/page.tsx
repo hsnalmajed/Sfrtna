@@ -9,6 +9,7 @@ import { cityPlaceCount, fetchCityOverviews } from "@/lib/mapPins";
 import { fetchCountryPhotos } from "@/lib/countryPhotos";
 import { cityCountLabel, placeCountLabel } from "@/lib/format";
 import CityGallery, { type CityCard } from "@/components/CityGallery";
+import { cityCardFacts } from "@/lib/cityCardFacts";
 import VisaQuickCard from "@/components/VisaQuickCard";
 import PageHero from "@/components/ui/PageHero";
 import { pageMetadata, absoluteUrl, touristDestinationJsonLd } from "@/lib/seo";
@@ -71,6 +72,7 @@ export default async function CountryAttractionsPage({
       slug: c.slug,
       name: loc === "ar" ? c.nameAr : c.nameEn,
       photo: overview?.photo,
+      facts: cityCardFacts(country.code, c.slug, loc),
     };
   });
 

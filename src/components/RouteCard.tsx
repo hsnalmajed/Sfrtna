@@ -133,13 +133,20 @@ export default function RouteCard({
                   </span>
                 )}
                 {s.place?.high !== undefined && (
-                  <span className="rounded-full bg-mist-50 px-2.5 py-1 text-xs font-bold text-navy-800 ring-1 ring-mist-200">
-                    {dict.home.seasonHigh.replace("{high}", String(Math.round(s.place.high)))}
+                  <span className="rounded-full bg-mist-50 px-2.5 py-1 text-xs font-bold text-navy-800 ring-1 ring-mist-200" dir="ltr">
+                    🌡{" "}
+                    {s.place.low !== undefined
+                      ? dict.travelSeasons.highLow.replace("{low}", String(Math.round(s.place.low))).replace("{high}", String(Math.round(s.place.high)))
+                      : `${Math.round(s.place.high)}°`}
                   </span>
                 )}
-                {s.place?.visa && (
+                {s.place?.visa ? (
                   <VisaBadge category={s.place.visa} label={visaLabels[s.place.visa]} className="!px-2.5 !py-1" />
-                )}
+                ) : s.place ? (
+                  <span className="rounded-full bg-mist-100 px-2.5 py-1 text-xs font-bold text-navy-700 ring-1 ring-mist-200">
+                    🛂 {dict.home.cardVisaUnknown}
+                  </span>
+                ) : null}
                 <a href={`/${locale}?${hotelParams.toString()}#plan`} className="ms-auto text-xs font-bold text-sea-700 hover:underline">
                   🏨 {d.hotelShort.replace("{city}", name)}
                 </a>

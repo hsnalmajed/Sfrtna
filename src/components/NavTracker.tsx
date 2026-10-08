@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { recordVisit } from "@/lib/navHistory";
-import { LANG_COOKIE } from "@/lib/langCookie";
+import { saveLanguage } from "@/lib/langCookie";
 
 /** Keeps the in-site history that back buttons use (see navHistory.ts). Renders nothing. */
 export default function NavTracker() {
@@ -16,7 +16,7 @@ export default function NavTracker() {
   useEffect(() => {
     const lang = pathname?.split("/")[1];
     if (lang !== "ar" && lang !== "en") return;
-    document.cookie = `${LANG_COOKIE}=${lang}; path=/; max-age=31536000; samesite=lax; secure`;
+    saveLanguage(lang);
   }, [pathname]);
 
   useEffect(() => {

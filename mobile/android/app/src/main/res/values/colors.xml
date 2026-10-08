@@ -3,7 +3,6 @@
     <color name="colorPrimary">#0B2D5B</color>
     <color name="colorPrimaryDark">#04182F</color>
     <color name="colorAccent">#F7A823</color>
-    <!-- Behind the status and navigation bars: white, like the app's own
-         top bar and tab bar (dark icons: SystemBars style LIGHT). -->
-    <color name="systemBars">#FFFFFF</color>
+    <!-- Behind the status and navigation bars: the app bar's deep navy. -->
+    <color name="systemBars">#04182F</color>
 </resources>

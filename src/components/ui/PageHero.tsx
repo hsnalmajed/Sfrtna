@@ -57,7 +57,7 @@ export default function PageHero({
   } as const;
 
   return (
-    <section className={`page-hero app-light relative isolate flex ${heights[size]} items-end overflow-hidden bg-navy-990`}>
+    <section className={`page-hero relative isolate flex ${heights[size]} items-end overflow-hidden bg-navy-990`}>
       <Photo
         placeholder
         src={photo}

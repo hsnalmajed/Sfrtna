@@ -33,8 +33,8 @@ import android.widget.LinearLayout;
  */
 class IntroView extends FrameLayout {
 
-    /** Long enough to watch the line written and read it once. */
-    static final long MIN_SHOW_MS = 2300;
+    /** Just long enough to see the line written; the app is never held for it. */
+    static final long MIN_SHOW_MS = 1300;
 
     private final long shownAt = SystemClock.uptimeMillis();
     private boolean leaving = false;
@@ -76,12 +76,12 @@ class IntroView extends FrameLayout {
         mark.setScaleX(0.7f);
         mark.setScaleY(0.7f);
         mark.animate().alpha(1f).scaleX(1f).scaleY(1f)
-            .setDuration(560).setInterpolator(new OvershootInterpolator(1.4f)).start();
+            .setDuration(420).setInterpolator(new OvershootInterpolator(1.4f)).start();
 
         // …then the plane writes the line.
         ValueAnimator write = ValueAnimator.ofFloat(0f, 1f);
-        write.setStartDelay(480);
-        write.setDuration(1250);
+        write.setStartDelay(220);
+        write.setDuration(900);
         write.setInterpolator(new AccelerateDecelerateInterpolator());
         write.addUpdateListener(a -> tagline.setProgress((float) a.getAnimatedValue()));
         write.start();
@@ -100,8 +100,8 @@ class IntroView extends FrameLayout {
             removeSelf();
             return;
         }
-        mark.animate().translationY(-dp(12)).setDuration(320).start();
-        animate().alpha(0f).setDuration(340).setListener(new AnimatorListenerAdapter() {
+        mark.animate().translationY(-dp(12)).setDuration(240).start();
+        animate().alpha(0f).setDuration(240).setListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 removeSelf();

@@ -20,10 +20,6 @@
 
 @import "tailwindcss";
 
-/* `app:` — styles for the phone app only (html.in-app, set in the layout
-   before the first paint). Lets one component carry both looks. */
-@custom-variant app (&:where(html.in-app, html.in-app *));
-
 /* ─────────────────────────────────────────────────────────────────────────
    Typography — a real pairing, not one family doing every job.
 
@@ -854,38 +850,24 @@ html.in-app .web-only {
 }
 
 html.in-app {
-  /* The app's own palette: paper background, white surfaces, navy ink,
-     one action colour (sun). The website's navy slabs stay on the web. */
-  --app-paper: #f4f6fa;
-  --app-ink: var(--navy-900);
-  --app-muted: #5d6b80;
-  --app-line: rgb(11 45 91 / 0.08);
   /* 15px on a 360px phone, 16px from 400px up. */
   font-size: clamp(15px, 4vw, 16px);
   -webkit-tap-highlight-color: transparent;
   -webkit-text-size-adjust: 100%;
 }
 html.in-app body {
-  background: var(--app-paper);
   padding-bottom: var(--app-tabbar);
   overscroll-behavior-y: none;
 }
 
-/* The bar at the top: white, slim, the logo as drawn (it was made for
-   white — on navy it had to sit on a card). */
+/* The bar at the top: solid from the start, slim, logo centred. */
 html.in-app .site-header-scrim {
   display: none;
 }
 html.in-app .site-header-bar {
-  background: #fff;
-  box-shadow: 0 1px 0 0 var(--app-line);
-  backdrop-filter: none;
+  background: var(--navy-990);
+  box-shadow: 0 1px 0 0 rgb(255 255 255 / 0.07);
   padding-top: var(--safe-area-inset-top, 0px);
-}
-html.in-app .site-header-bar a:has(> .site-header-logo) {
-  background: transparent;
-  box-shadow: none;
-  padding: 0;
 }
 html.in-app .site-header-row {
   justify-content: center;
@@ -893,7 +875,7 @@ html.in-app .site-header-row {
   padding-block: 0;
 }
 html.in-app .site-header-logo {
-  height: 2.35rem;
+  height: 2.15rem;
 }
 
 /* Heroes begin just under the bar. */
@@ -914,62 +896,11 @@ html.in-app .page-hero h1 + p {
   font-size: var(--text-sm);
   line-height: 1.55;
 }
+html.in-app .home-hero h1 {
+  font-size: clamp(1.55rem, 1.05rem + 2.4vw, 2rem);
+}
 html.in-app .home-hero {
-  padding-bottom: 1rem;
-}
-html.in-app .home-hero .hero-pad {
-  align-items: stretch;
-  padding-bottom: 0;
-}
-
-/* Page headers in the app: light, like a native large title, instead of
-   a dark band. Every hero carries .app-light; the rules below turn its
-   white-on-photo type into navy-on-paper without touching the website. */
-html.in-app .app-light {
-  background: transparent !important;
-  min-height: 0 !important;
-}
-html.in-app .app-light > :is(img, .absolute, .scrim, .scrim-soft) {
-  display: none !important;
-}
-html.in-app .app-light :is(h1, .text-white) {
-  color: var(--app-ink);
-}
-html.in-app .app-light [class*="text-white/"] {
-  color: var(--app-muted);
-}
-html.in-app .app-light .eyebrow-light {
-  color: var(--sun-700);
-}
-html.in-app .app-light [class*="drop-shadow"] {
-  filter: none;
-}
-html.in-app .app-light :is([class*="bg-white/"], [class*="bg-navy-990/"]) {
-  background: #fff;
-  backdrop-filter: none;
-  --tw-ring-color: var(--app-line);
-  color: var(--app-ink);
-}
-html.in-app .app-light [class*="ring-white"] {
-  --tw-ring-color: var(--app-line);
-}
-html.in-app .app-light .text-sun-400 {
-  color: var(--app-ink);
-}
-html.in-app .app-light .bg-white\/15 {
-  background: var(--app-line);
-}
-html.in-app .app-light .hero-pad,
-html.in-app .app-light.hero-pad {
-  padding-top: calc(var(--app-bar) + var(--safe-area-inset-top, 0px) + 1.25rem);
-  padding-bottom: 0.5rem;
-}
-html.in-app .app-light h1 {
-  font-size: clamp(1.45rem, 1.1rem + 1.8vw, 1.8rem);
-  line-height: 1.25;
-}
-html.in-app .app-light [class*="animate-pulse"][class*="bg-white/"] {
-  background: var(--mist-200);
+  padding-bottom: 6.5rem;
 }
 
 /* The tab bar itself. */
@@ -982,10 +913,10 @@ html.in-app .app-tabbar {
   height: var(--app-tabbar);
   padding-bottom: var(--safe-area-inset-bottom, 0px);
   align-items: stretch;
-  background: rgb(255 255 255 / 0.97);
+  background: rgb(4 24 47 / 0.97);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  box-shadow: 0 -1px 0 0 var(--app-line), 0 -8px 24px -16px rgb(11 45 91 / 0.25);
+  box-shadow: 0 -1px 0 0 rgb(255 255 255 / 0.08), 0 -10px 30px -18px rgb(4 24 47 / 0.9);
   user-select: none;
   -webkit-user-select: none;
 }

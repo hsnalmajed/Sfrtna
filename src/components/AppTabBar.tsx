@@ -6,6 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { getDictionary } from "@/lib/dictionaries";
 import { openPlanner, HOME_TAB_EVENT, HOME_SEASON_EVENT } from "@/lib/planEvents";
 import { track } from "@/lib/analytics";
+import { saveLanguage } from "@/lib/langCookie";
 import type { Locale } from "@/lib/types";
 import { CONTACT_EMAIL } from "@/lib/contact";
 
@@ -116,8 +117,14 @@ export default function AppTabBar({ locale }: { locale: Locale }) {
     track("language_switch", { from: locale, to: next });
     const segments = pathname.split("/");
     segments[1] = next;
-    setMoreOpen(false);
-    router.replace(segments.join("/") || `/${next}`);
+    // A fresh load of the page in the other language, not an in-app
+    // navigation: switching swaps the page's direction (rtl ↔ ltr) and its
+    // whole text, and on a phone re-rendering all of that in place left the
+    // app hanging (owner, 8 Oct). A new page from the edge cache is quicker
+    // and always clean. The cookie is set first so the next launch opens in
+    // this language even if the app is closed straight away.
+    saveLanguage(next);
+    window.location.replace((segments.join("/") || `/${next}`) + window.location.search);
   };
 
   const go = (e: React.MouseEvent, href: string) => {
@@ -127,20 +134,22 @@ export default function AppTabBar({ locale }: { locale: Locale }) {
   };
 
   const tabClass = (active: boolean) =>
-    `app-tab relative flex min-w-0 flex-1 flex-col items-center justify-center gap-0.5 pt-1.5 pb-1 text-[0.68rem] leading-tight transition-colors ${
-      active
-        ? "font-extrabold text-navy-900 before:absolute before:top-0 before:h-[3px] before:w-7 before:rounded-b-full before:bg-sun-400"
-        : "font-semibold text-[#7d8aa0] active:text-navy-900"
+    `app-tab flex min-w-0 flex-1 flex-col items-center justify-center gap-0.5 pt-1.5 pb-1 text-[0.68rem] font-bold leading-tight transition-colors ${
+      active ? "text-sun-400" : "text-white/65 active:text-white"
     }`;
 
+  // The tabs' pages are fetched in full ahead of the tap (prefetch): from
+  // the edge cache that costs little, and the tap then shows the page at
+  // once instead of a loading screen.
   return (
     <>
       <nav aria-label={dict.nav.menu} className="app-only app-tabbar print:hidden">
-        <Link href={home} onClick={onHome} className={tabClass(onHomePage && !bookActive && !moreOpen)} aria-current={onHomePage ? "page" : undefined}>
+        <Link href={home} prefetch onClick={onHome} className={tabClass(onHomePage && !bookActive && !moreOpen)} aria-current={onHomePage ? "page" : undefined}>
           <TabIcon d="M3 10.5 12 3l9 7.5M5.5 9v11h4.5v-6h4v6h4.5V9" />
           <span className="truncate">{dict.nav.home}</span>
         </Link>
         <Link
+          prefetch
           href={`/${locale}/attractions`}
           className={tabClass(isActive(`/${locale}/attractions`) || isActive(`/${locale}/maps`))}
         >
@@ -149,8 +158,8 @@ export default function AppTabBar({ locale }: { locale: Locale }) {
         </Link>
 
         {/* The one action the site exists for, raised in the middle. */}
-        <Link href={`${home}#plan`} onClick={onBook} className={`app-tab flex min-w-0 flex-1 flex-col items-center justify-end pb-1 text-[0.68rem] leading-tight ${bookActive ? "font-extrabold text-navy-900" : "font-semibold text-navy-900/80"}`}>
-          <span className={`-mt-5 mb-0.5 flex h-12 w-12 items-center justify-center rounded-full bg-sun-400 text-navy-990 shadow-[0_8px_18px_-8px_rgba(255,140,0,0.9)] ring-4 ring-white transition ${bookActive ? "scale-105" : ""}`}>
+        <Link href={`${home}#plan`} onClick={onBook} className={`app-tab flex min-w-0 flex-1 flex-col items-center justify-end pb-1 text-[0.68rem] font-bold leading-tight ${bookActive ? "text-sun-400" : "text-white/80"}`}>
+          <span className={`-mt-5 mb-0.5 flex h-12 w-12 items-center justify-center rounded-full bg-sun-400 text-navy-990 shadow-[0_6px_18px_-6px_rgba(255,166,48,0.8)] ring-4 transition ${bookActive ? "ring-sea-400/80" : "ring-navy-990"}`}>
             <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z" />
             </svg>
@@ -158,7 +167,7 @@ export default function AppTabBar({ locale }: { locale: Locale }) {
           <span className="truncate">{dict.nav.bookTab}</span>
         </Link>
 
-        <Link href={`/${locale}/seasons`} className={tabClass(isActive(`/${locale}/seasons`))}>
+        <Link href={`/${locale}/seasons`} prefetch className={tabClass(isActive(`/${locale}/seasons`))}>
           <TabIcon d="M7 3v3m10-3v3M4 9h16M5 5h14a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm3.5 8.5h.01m3.49 0h.01m3.49 0h.01M8.5 17h.01M12 17h.01" />
           <span className="truncate">{dict.nav.seasonsTab}</span>
         </Link>

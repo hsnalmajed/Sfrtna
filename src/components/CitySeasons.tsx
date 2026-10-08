@@ -4,11 +4,13 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import type { Locale } from "@/lib/types";
-import { flagEmoji, type Continent } from "@/lib/countries";
+import type { Continent } from "@/lib/countries";
 import { CONTINENT_ORDER } from "@/components/DestinationFilters";
 import { searchMatches } from "@/lib/search";
 import { CLASS_DOT } from "@/lib/travelSeason/labels";
 import Photo from "@/components/Photo";
+import { VISA_STYLES } from "@/components/VisaBadge";
+import type { VisaCategory } from "@/data/visaStatus";
 
 /**
  * "When to travel?", city by city — a view onto the travel-season records
@@ -52,6 +54,8 @@ export interface SeasonCity {
   /** For the booking forms: the city's airport and its English name (hotel search). */
   airport?: string;
   nameEn?: string;
+  /** Entry for a Saudi passport, when confirmed. */
+  visa?: { category: VisaCategory; short: string };
   /** January first. */
   months: SeasonMonth[];
 }
@@ -84,6 +88,7 @@ interface Dict {
   kinds: Record<string, string>;
   allContinents: string;
   continents: Record<Continent, string>;
+  visaUnknown: string;
   ts: {
     classes: Record<Cls, string>;
     phases: Record<"start" | "peak" | "end", string>;
@@ -302,37 +307,48 @@ export default function CitySeasons({
                           type="button"
                           onClick={() => setDialog({ slug: c.slug, month })}
                           aria-haspopup="dialog"
-                          className="group flex flex-col overflow-hidden rounded-2xl bg-white text-start shadow-[var(--shadow-card)] ring-1 ring-navy-950/5 transition hover:-translate-y-0.5 hover:shadow-[var(--shadow-lift)] active:scale-[0.98]"
+                          className="group relative isolate flex aspect-[3/4] w-full flex-col justify-between overflow-hidden rounded-2xl text-start ring-1 ring-navy-950/10 transition hover:-translate-y-0.5 hover:shadow-[var(--shadow-lift)] active:scale-[0.98]"
                         >
-                          <div className="relative h-24 w-full shrink-0 sm:h-28">
+                          {/* The homepage's season card: the picture behind,
+                              the month's rating and the visa at the top, the
+                              city, its season and temperatures at the bottom. */}
+                          <div className="absolute inset-0 -z-10">
                             <Photo
                               placeholder
                               src={c.photo}
-                              className="absolute inset-0 h-full w-full object-cover"
-                              fallback={
-                                <div className="absolute inset-0 flex items-end justify-end bg-gradient-to-br from-sea-50 to-mist-100 p-2.5">
-                                  <span className="text-4xl leading-none" aria-hidden="true">{flagEmoji(c.code)}</span>
-                                </div>
-                              }
+                              className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-[1.05]"
+                              fallback={<div className="absolute inset-0 bg-gradient-to-br from-navy-700 to-navy-990" />}
                             />
+                            <div className="scrim-soft absolute inset-0" />
+                          </div>
+                          <div className="flex min-w-0 flex-col items-start gap-1 p-2">
                             {r.classification && (
-                              <span className={`absolute start-2 top-2 max-w-[calc(100%-1rem)] truncate rounded-full px-2 py-0.5 text-[11px] font-extrabold shadow-sm ${CLASS_STYLE[r.classification]}`}>
+                              <span className="max-w-full truncate rounded-full bg-white/90 px-2.5 py-0.5 text-xs font-extrabold text-navy-900 shadow-sm">
                                 {badge(r.classification)}
                               </span>
                             )}
+                            <span
+                              className={`inline-flex max-w-full items-center gap-1 truncate rounded-full px-2.5 py-0.5 text-xs font-bold shadow-sm ring-1 ${
+                                c.visa ? VISA_STYLES[c.visa.category].chip : "bg-white/85 text-navy-800 ring-white/40"
+                              }`}
+                            >
+                              <span aria-hidden="true">{c.visa ? VISA_STYLES[c.visa.category].icon : "🛂"}</span>
+                              <span className="truncate">{c.visa ? c.visa.short : dict.visaUnknown}</span>
+                            </span>
                           </div>
-                          <div className="min-w-0 p-3">
-                            <p className="truncate font-display text-base font-extrabold text-navy-900">{c.name}</p>
-                            <p className="truncate text-xs font-semibold text-navy-500">{c.countryName}</p>
-                            <p className="mt-1.5 truncate text-xs font-semibold text-navy-700">
-                              {seasonText(r)}
+                          <div className="min-w-0 p-3 pt-2">
+                            <p className="truncate font-display text-base font-extrabold text-white drop-shadow-sm">{c.name}</p>
+                            <p className="truncate text-xs font-semibold text-white/75">{c.countryName}</p>
+                            <div className="mt-1.5 flex flex-wrap items-center gap-1">
+                              <span className="inline-flex max-w-full truncate rounded-full bg-navy-990/65 px-2 py-0.5 text-xs font-bold text-sun-200 backdrop-blur-sm">
+                                {seasonText(r)}
+                              </span>
                               {temps(r) && (
-                                <>
-                                  {" · "}
-                                  <span dir="ltr">{temps(r)}</span>
-                                </>
+                                <span className="inline-flex rounded-full bg-navy-990/65 px-2 py-0.5 text-xs font-bold text-sun-300 backdrop-blur-sm" dir="ltr">
+                                  🌡 {temps(r)}
+                                </span>
                               )}
-                            </p>
+                            </div>
                           </div>
                         </button>
                       );

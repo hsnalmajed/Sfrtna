@@ -107,37 +107,33 @@ export default function CountryCardGrid({
                   // 3:2 fit in little over half that, and a country photo is
                   // a landscape photograph anyway — the portrait crop was
                   // throwing away the horizon to gain height nobody wanted.
-                  className={`card-hover group relative isolate block aspect-[3/2] overflow-hidden rounded-2xl ring-1 ring-navy-950/5 app:flex app:aspect-auto app:flex-col app:bg-white app:shadow-[0_1px_2px_rgb(11_45_91/0.06),0_8px_20px_-14px_rgb(11_45_91/0.35)] app:active:scale-[0.98] ${
+                  className={`card-hover group relative isolate block aspect-[3/2] overflow-hidden rounded-2xl ring-1 ring-navy-950/5 ${
                     compact ? "lg:w-[13.25rem]" : ""
                   }`}
                 >
-                  {/* In the app: the picture on top of a white card, the name
-                      under it. */}
-                  <div className="absolute inset-0 -z-10 overflow-hidden app:relative app:inset-auto app:z-0 app:h-24">
-                    <Photo
-                      placeholder
-                      src={c.photo}
-                      className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-[1.06]"
-                      fallback={
-                        <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-navy-700 to-navy-990 text-4xl app:from-sea-50 app:to-mist-100 app:text-5xl">
-                          {flagEmoji(c.code)}
-                        </div>
-                      }
-                    />
-                    <div className="scrim-soft absolute inset-0 app:hidden" />
-                  </div>
+                  <Photo
+                    placeholder
+                    src={c.photo}
+                    className="absolute inset-0 -z-10 h-full w-full object-cover transition duration-500 group-hover:scale-[1.06]"
+                    fallback={
+                      <div className="absolute inset-0 -z-10 flex items-center justify-center bg-gradient-to-br from-navy-700 to-navy-990 text-4xl">
+                        {flagEmoji(c.code)}
+                      </div>
+                    }
+                  />
+                  <div className="scrim-soft absolute inset-0 -z-10" />
                   {/* A sunset hairline that draws itself on hover — the same
                       mark as the section rules, at card scale. */}
                   <span
                     className="absolute inset-x-0 bottom-0 h-[3px] origin-left scale-x-0 bg-gradient-to-r from-sun-300 to-sun-600 transition-transform duration-300 group-hover:scale-x-100 rtl:origin-right"
                     aria-hidden="true"
                   />
-                  <div className="absolute inset-x-0 bottom-0 p-3 app:static">
-                    <p className="truncate font-display text-sm font-extrabold text-white drop-shadow-sm sm:text-base app:text-base app:text-navy-900 app:drop-shadow-none">
+                  <div className="absolute inset-x-0 bottom-0 p-3">
+                    <p className="truncate font-display text-sm font-extrabold text-white drop-shadow-sm sm:text-base">
                       {locale === "ar" ? c.nameAr : c.nameEn}
                     </p>
                     {c.subtitle && (
-                      <p className="mt-0.5 truncate text-2xs font-semibold text-sun-300 app:text-xs app:text-[#5d6b80]">
+                      <p className="mt-0.5 truncate text-2xs font-semibold text-sun-300">
                         {c.subtitle}
                       </p>
                     )}

@@ -108,6 +108,17 @@ class AppWebViewClient extends BridgeWebViewClient {
         activity.onMainPageFinished(url);
     }
 
+    /**
+     * The page has painted its first frame — earlier than onPageFinished,
+     * which also waits for every image and script. The opening leaves here,
+     * so the app shows the page as soon as there is one to show.
+     */
+    @Override
+    public void onPageCommitVisible(WebView view, String url) {
+        super.onPageCommitVisible(view, url);
+        activity.onMainPageFinished(url);
+    }
+
     @Override
     public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
         super.onReceivedError(view, request, error);

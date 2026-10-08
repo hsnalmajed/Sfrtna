@@ -16,7 +16,7 @@ export default function Loading() {
         <div className="sfr-progress h-full w-1/3 bg-sun-400" />
       </div>
 
-      <div className="app-light bg-gradient-to-b from-navy-990 to-navy-900 hero-pad pb-12 pt-28 sm:pt-32">
+      <div className="bg-gradient-to-b from-navy-990 to-navy-900 hero-pad pb-12 pt-28 sm:pt-32">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <div className="h-3 w-24 animate-pulse rounded-full bg-white/15" />
           <div className="mt-4 h-8 w-56 animate-pulse rounded-xl bg-white/20 sm:w-80" />

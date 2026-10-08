@@ -201,6 +201,23 @@ Travelpayouts.
   used (reads the cookie). Live 8 Oct: root → last language OK, app home
   served, APK built. Chrome test browser froze on live home — owner's
   phone screenshots are the check.
+- **Reverted 8 Oct night (owner: slower, white worse, old home nicer):**
+  the light app chrome, light heroes, AppHome and white app cards are
+  gone — the app is back to the navy look and the previous home (strip
+  of season cities). Kept: two cards per row, seasons grouped by continent
+  then country, language memory, no calendar link / "Flying from".
+  **Every city card shows rating + visa + season + temperatures**:
+  `cityCardFacts()` (src/lib/cityCardFacts.ts) for CityGallery (country
+  and maps pages); CitySeasons cards in the home-card style with visa;
+  discover/route cards add season name and low–high.
+  **Speed:** edge-worker serves cached pages at once and re-renders in the
+  background after 1 h (stale-while-revalidate, kept 7 days), cache key
+  includes the deploy version (`version_metadata` binding
+  CF_VERSION_METADATA), clients get `no-cache`; tab bar links prefetch
+  in full; app language switch = clean page load (saveLanguage + location
+  .replace) instead of in-place re-render (owner saw it hang); opening
+  min 1.3 s, leaves at first paint (onPageCommitVisible), max 4 s;
+  WebView offscreen pre-raster. System bars navy again.
 - Before Play: owner's developer account (unknown if it exists), upload
   key → 4 GitHub secrets, App Links (`assetlinks.json` after first upload),
   store listing + Data safety.

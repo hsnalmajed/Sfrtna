@@ -1,5 +1,7 @@
 import Link from "next/link";
 import Photo from "@/components/Photo";
+import { VISA_STYLES } from "@/components/VisaBadge";
+import type { CityCardFacts } from "@/lib/cityCardFacts";
 
 export interface CityCard {
   slug: string;
@@ -8,6 +10,8 @@ export interface CityCard {
   photo?: string;
   /** Optional line under the name — a place count, say. */
   subtitle?: string;
+  /** This month's rating, season, temperatures and visa (cityCardFacts). */
+  facts?: CityCardFacts;
 }
 
 // The same card the country list uses, one level down. Cities are picked
@@ -30,25 +34,52 @@ export default function CityGallery({
         <Link
           key={c.slug}
           href={`${hrefBase}/${c.slug}`}
-          className="group relative block aspect-[4/3] overflow-hidden rounded-2xl shadow-sm ring-1 ring-black/5 transition hover:-translate-y-0.5 hover:shadow-lg app:flex app:aspect-auto app:flex-col app:bg-white app:ring-navy-900/5 app:hover:translate-y-0 app:active:scale-[0.98]"
+          className="group relative isolate flex aspect-[3/4] flex-col justify-between overflow-hidden rounded-2xl shadow-sm ring-1 ring-black/5 transition hover:-translate-y-0.5 hover:shadow-lg active:scale-[0.98]"
         >
-          {/* In the app: picture on top of a white card, the name under it. */}
-          <div className="absolute inset-0 app:relative app:h-24">
+          <div className="absolute inset-0 -z-10">
             <Photo
               placeholder
               src={c.photo}
               className="absolute inset-0 h-full w-full object-cover transition duration-300 group-hover:scale-105"
-              fallback={
-                <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-brand-800 to-brand-950 text-4xl app:from-sea-50 app:to-mist-100">
-                  🏙️
-                </div>
-              }
+              fallback={<div className="absolute inset-0 bg-gradient-to-br from-brand-800 to-brand-950" />}
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/15 to-transparent app:hidden" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/15 to-black/25" />
           </div>
-          <div className="absolute bottom-2.5 start-3 end-3 app:static app:p-3">
-            <p className="truncate text-sm sm:text-base font-bold text-white drop-shadow-sm app:font-display app:text-base app:font-extrabold app:text-navy-900 app:drop-shadow-none">{c.name}</p>
-            {c.subtitle && <p className="text-[11px] text-white/75 app:mt-0.5 app:text-xs app:text-[#5d6b80]">{c.subtitle}</p>}
+          {/* Top: this month's rating and the visa — what decides a trip. */}
+          <div className="flex min-w-0 flex-col items-start gap-1 p-2">
+            {c.facts?.classLabel && (
+              <span className="max-w-full truncate rounded-full bg-white/90 px-2.5 py-0.5 text-xs font-extrabold text-navy-900 shadow-sm">
+                {c.facts.classLabel}
+              </span>
+            )}
+            {c.facts && (
+              <span
+                className={`inline-flex max-w-full items-center gap-1 truncate rounded-full px-2.5 py-0.5 text-xs font-bold shadow-sm ring-1 ${
+                  c.facts.visa ? VISA_STYLES[c.facts.visa.category].chip : "bg-white/85 text-navy-800 ring-white/40"
+                }`}
+              >
+                <span aria-hidden="true">{c.facts.visa ? VISA_STYLES[c.facts.visa.category].icon : "🛂"}</span>
+                <span className="truncate">{c.facts.visa ? c.facts.visa.short : c.facts.visaUnknown}</span>
+              </span>
+            )}
+          </div>
+          <div className="min-w-0 p-3 pt-2">
+            <p className="truncate font-display text-base font-extrabold text-white drop-shadow-sm">{c.name}</p>
+            {c.subtitle && <p className="truncate text-xs text-white/75">{c.subtitle}</p>}
+            {(c.facts?.season || c.facts?.temps) && (
+              <div className="mt-1.5 flex flex-wrap items-center gap-1">
+                {c.facts.season && (
+                  <span className="inline-flex max-w-full truncate rounded-full bg-navy-990/65 px-2 py-0.5 text-xs font-bold text-sun-200 backdrop-blur-sm">
+                    {c.facts.season}
+                  </span>
+                )}
+                {c.facts.temps && (
+                  <span className="inline-flex rounded-full bg-navy-990/65 px-2 py-0.5 text-xs font-bold text-sun-300 backdrop-blur-sm" dir="ltr">
+                    🌡 {c.facts.temps}
+                  </span>
+                )}
+              </div>
+            )}
           </div>
         </Link>
       ))}

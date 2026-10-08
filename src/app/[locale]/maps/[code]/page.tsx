@@ -7,6 +7,7 @@ import { fetchCityOverviews } from "@/lib/mapPins";
 import { fetchCountryPhotos } from "@/lib/countryPhotos";
 import { cityCountLabel } from "@/lib/format";
 import CityGallery, { type CityCard } from "@/components/CityGallery";
+import { cityCardFacts } from "@/lib/cityCardFacts";
 import PageHero from "@/components/ui/PageHero";
 import BackLink from "@/components/BackLink";
 
@@ -49,6 +50,7 @@ export default async function CountryMapPage({ params }: PageProps<"/[locale]/ma
       subtitle: overview?.count
         ? dict.maps.pinsCount.replace("{count}", String(overview.count))
         : undefined,
+      facts: cityCardFacts(country.code, c.slug, loc),
     };
   });
 

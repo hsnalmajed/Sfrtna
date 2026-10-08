@@ -15,7 +15,6 @@ import { CITY_AIRPORTS } from "@/data/cityAirports";
 import { heroImage as heroImageOf, heroPhotoForToday } from "@/lib/heroPhotos";
 import { monthName } from "@/lib/seasons";
 import HomeShowcase, { type ShowcaseCity } from "@/components/HomeShowcase";
-import { AppHomeIntro, AppHomeTools } from "@/components/AppHome";
 import { planFromParams } from "@/lib/planEvents";
 import Photo from "@/components/Photo";
 import { brandJsonLd } from "@/lib/seo";
@@ -192,7 +191,7 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
     // Dark to the footer. The light band that used to sit under the showcase
     // was the FAQ's background; with the FAQ gone it was only empty white
     // between two navy blocks. -mb-20 covers the footer's own top margin.
-    <div className="-mb-20 bg-navy-990 pb-20 app:mb-0 app:bg-transparent app:pb-0">
+    <div className="-mb-20 bg-navy-990 pb-20">
       {/* The site's name and every spelling of it, for search engines. Only
           on the homepage, which is where Google reads it from — see seo.ts. */}
       <script
@@ -214,7 +213,7 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
           a box whose height is set by that same content means a tall form
           pushes the headline up underneath the fixed header. It starts below
           the header and grows downwards, where there is room. */}
-      <section className="home-hero app-light relative isolate overflow-hidden bg-navy-990 pb-28 sm:pb-32">
+      <section className="home-hero relative isolate overflow-hidden bg-navy-990 pb-28 sm:pb-32">
         <div className="absolute inset-x-0 top-0 -z-10 h-[46rem] overflow-hidden">
           <Photo
             src={heroPhoto}
@@ -248,19 +247,17 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
             ✈️ {dict.hero.badge}
           </p>
 
-          <AppHomeIntro locale={loc} />
-
-          <h1 className="web-only max-w-3xl font-display text-h1 font-black text-white drop-shadow-[0_2px_14px_rgba(4,24,47,0.85)]">
+          <h1 className="max-w-3xl font-display text-h1 font-black text-white drop-shadow-[0_2px_14px_rgba(4,24,47,0.85)]">
             {dict.hero.titleLine1}
             <br />
             <span className="text-sun-400">{dict.hero.titleLine2}</span>
           </h1>
 
-          <p className="web-only mt-3 max-w-xl text-sm font-medium text-white drop-shadow-[0_1px_8px_rgba(4,24,47,0.95)] sm:text-base">
+          <p className="mt-3 max-w-xl text-sm font-medium text-white drop-shadow-[0_1px_8px_rgba(4,24,47,0.95)] sm:text-base">
             {dict.hero.subtitle}
           </p>
 
-          <div className="web-only mt-5 flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+          <div className="mt-5 flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
             {stats.map((s) => (
               <p key={s.label} className="text-sm font-semibold text-white/90 drop-shadow-[0_1px_8px_rgba(4,24,47,0.9)]">
                 <span className="font-display text-xl font-black text-sun-400">{s.value}</span>{" "}
@@ -275,7 +272,7 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
       {/* ── What the site is ────────────────────────────────────────────
           Four sections of the old page, now four tabs in one panel that
           straddles the seam below the photograph. See HomeShowcase. */}
-      <section className="relative z-10 -mt-20 bg-[radial-gradient(60rem_24rem_at_50%_0%,rgb(255_255_255/0.04),transparent)] pb-6 sm:-mt-24 sm:pb-8 app:mt-0 app:bg-none app:pb-4">
+      <section className="relative z-10 -mt-20 bg-[radial-gradient(60rem_24rem_at_50%_0%,rgb(255_255_255/0.04),transparent)] pb-6 sm:-mt-24 sm:pb-8">
         <HomeShowcase
           locale={loc}
           seasonCities={seasonCities}
@@ -296,7 +293,6 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
             seasonSubtitle: dict.home.seasonSubtitle,
             seasonAllCities: dict.home.seasonAllCities.replace("{month}", monthName(month, loc)),
             seasonFewerCities: dict.home.seasonFewerCities,
-            seeAll: dict.appHome.seeAll,
             seasonCityWeather: dict.home.seasonCityWeather,
             seasonFlight: dict.home.seasonFlight,
             seasonFlightTitle: dict.home.seasonFlightTitle,
@@ -334,7 +330,6 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
           }}
         />
       </section>
-      <AppHomeTools locale={loc} />
     </div>
   );
 }

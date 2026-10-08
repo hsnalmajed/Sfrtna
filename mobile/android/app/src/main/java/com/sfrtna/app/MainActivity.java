@@ -31,7 +31,7 @@ import com.getcapacitor.BridgeActivity;
 public class MainActivity extends BridgeActivity {
 
     /** Never hold the opening longer than this, even on a slow network. */
-    private static final long MAX_SPLASH_MS = 6000;
+    private static final long MAX_SPLASH_MS = 4000;
 
     private OfflineView offlineView;
     private IntroView introView;
@@ -50,6 +50,9 @@ public class MainActivity extends BridgeActivity {
 
         WebView webView = bridge.getWebView();
         webView.getSettings().setSupportMultipleWindows(true);
+        // Draw the page ahead of the scroll, so scrolling a long list stays
+        // smooth on mid-range phones.
+        webView.getSettings().setOffscreenPreRaster(true);
         bridge.setWebViewClient(new AppWebViewClient(bridge, this));
         webView.setWebChromeClient(new AppChromeClient(bridge, this));
 

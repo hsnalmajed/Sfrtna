@@ -140,9 +140,17 @@ export default function DestinationCard({
         {countryName && <p className="truncate text-xs font-semibold text-navy-500 sm:text-sm">{countryName}</p>}
         {/* Weather that month and the visa, side by side. */}
         <div className="mt-2 flex flex-wrap items-center gap-1 sm:mt-3 sm:gap-1.5">
+          {place?.seasonName && (
+            <span className="max-w-full truncate rounded-full bg-sun-50 px-2 py-0.5 text-[11px] font-bold text-sun-900 ring-1 ring-sun-200 sm:px-2.5 sm:py-1 sm:text-xs">
+              {place.seasonName.icon} {isAr ? place.seasonName.ar : place.seasonName.en}
+            </span>
+          )}
           {place?.high !== undefined && (
-            <span className="rounded-full bg-mist-50 px-2 py-0.5 text-[11px] font-bold text-navy-800 ring-1 ring-mist-200 sm:px-2.5 sm:py-1 sm:text-xs">
-              {dict.home.seasonHigh.replace("{high}", String(Math.round(place.high)))}
+            <span className="rounded-full bg-mist-50 px-2 py-0.5 text-[11px] font-bold text-navy-800 ring-1 ring-mist-200 sm:px-2.5 sm:py-1 sm:text-xs" dir="ltr">
+              🌡{" "}
+              {place.low !== undefined
+                ? dict.travelSeasons.highLow.replace("{low}", String(Math.round(place.low))).replace("{high}", String(Math.round(place.high)))
+                : `${Math.round(place.high)}°`}
             </span>
           )}
           {place?.rainyDays !== undefined && (
