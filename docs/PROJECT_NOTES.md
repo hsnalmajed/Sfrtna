@@ -405,6 +405,16 @@ yet. Steps for the section:
    <المدينة>». `/api/health` → `storedHotels`. Sample-data test: «هيلتون
    إسطنبول», «هيلتون اسطن», «ماريوت جده», «سما جدة», «ابها فندق», «دبل تري
    اسطنبول», «سويس اوتيل» all found. Add dictionary words as visitors need.
+   First run 9 Oct: 183/214 cities, 85,103 hotels (Makkah 814, Madinah 350,
+   Dubai 870, Istanbul 1,774; Riyadh 153, Jeddah 141, Abha 13 — OSM is thin
+   in KSA, so HERE matters there), 4,278 word files (24 MB, largest 220 KB).
+   31 big cities timed out (London, Bangkok, Cairo, Abu Dhabi…) → collector
+   now retries at 10 km; a push re-runs missing cities. Ranking: words
+   matched exactly → visitor's country (cf.country) → name opens with the
+   word ("Hilton …" before "… by Hilton") → stars. «مكة» / «المدينة» = city
+   (epithet المكرمة/المنورة optional). Real-data test: «هيلتون مكة»,
+   «موفنبيك المدينة», «شيراتون جدة», «هوليداي ان الرياض», «اتلانتس دبي» OK;
+   «فندق ماريوت جدة», «صحارى» not in OSM → HERE's job.
 5. Claude: live test the hotel name box (hotel form → «لدي فندق محدد») with
    Arabic and English: «هيلتون إسطنبول», «سماء», «ابها فندق», «Hilton
    Istanbul», a Riyadh/Jeddah hotel; Arabic spelling variants must match

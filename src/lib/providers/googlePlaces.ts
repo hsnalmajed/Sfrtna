@@ -65,6 +65,18 @@ async function searchPoint(): Promise<string> {
   return "25,47";
 }
 
+/** The visitor's country code (Cloudflare's), else Saudi Arabia. */
+async function visitorCountry(): Promise<string> {
+  try {
+    const { getCloudflareContext } = await import("@opennextjs/cloudflare");
+    const cf = getCloudflareContext().cf as { country?: string } | undefined;
+    if (cf?.country && /^[A-Z]{2}$/.test(cf.country)) return cf.country;
+  } catch {
+    // Not on Cloudflare.
+  }
+  return "SA";
+}
+
 async function hereHotels(q: string): Promise<HotelSuggestion[] | null> {
   const at = await searchPoint();
   return cachedJson<HotelSuggestion[]>(`here-hotels:${at}:${q.toLowerCase()}`, 7 * 86_400, async () => {
@@ -128,7 +140,7 @@ export async function hotelSuggestions(
   input: string
 ): Promise<{ items: HotelSuggestion[]; city: GuessedCity | null }> {
   const q = input.trim().replace(/\s+/g, " ").slice(0, 60);
-  const local = await localHotels(q);
+  const local = await localHotels(q, await visitorCountry());
   const items: HotelSuggestion[] = local.items.map((h) => ({ name: h.name, area: h.area, nameAr: h.nameAr }));
   const city = local.city;
   if (items.length >= 5) return { items, city };

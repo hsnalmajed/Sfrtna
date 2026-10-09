@@ -20,6 +20,8 @@ import { OVERPASS, type OverpassElement } from "@/lib/mapPins";
 
 const DIR = join(process.cwd(), "scripts/hotels/cities");
 const RADIUS = 25_000;
+// A big city (London, Bangkok, Cairo) can time out at 25 km: asked again closer in.
+const SMALL_RADIUS = 10_000;
 const PAUSE_MS = 2500;
 const KINDS = ["hotel", "motel", "guest_house", "hostel", "apartment"];
 
@@ -30,14 +32,14 @@ function arg(name: string): string | undefined {
   return i >= 0 ? process.argv[i + 1] : undefined;
 }
 
-function query(lat: number, lon: number): string {
+function query(lat: number, lon: number, radius: number): string {
   return `[out:json][timeout:180];
-nwr(around:${RADIUS},${lat},${lon})["tourism"~"^(${KINDS.join("|")})$"]["name"];
+nwr(around:${radius},${lat},${lon})["tourism"~"^(${KINDS.join("|")})$"]["name"];
 out tags center;`;
 }
 
-async function ask(lat: number, lon: number): Promise<OverpassElement[] | null> {
-  const body = `data=${encodeURIComponent(query(lat, lon))}`;
+async function ask(lat: number, lon: number, radius: number): Promise<OverpassElement[] | null> {
+  const body = `data=${encodeURIComponent(query(lat, lon, radius))}`;
   for (let attempt = 0; attempt < 2; attempt++) {
     for (const url of OVERPASS) {
       try {
@@ -87,7 +89,7 @@ async function main() {
   for (const [n, slug] of slugs.entries()) {
     const point = CITY_COORDS[slug];
     if (!point) continue;
-    const elements = await ask(point.lat, point.lon);
+    const elements = (await ask(point.lat, point.lon, RADIUS)) ?? (await ask(point.lat, point.lon, SMALL_RADIUS));
     if (elements === null) {
       failed.push(slug);
       console.log(`${n + 1}/${slugs.length} ${slug}: FAILED`);

@@ -52,6 +52,11 @@ function cities(): Map<string, CityInfo> {
         const w = words(n);
         variants.add(w.join(" "));
         variants.add(w.map(stem).join(" "));
+        // «مكة المكرمة», «المدينة المنورة»: the epithet is usually left out.
+        if (w.length === 2 && /^ال[\u0600-\u06FF]{3,}$/.test(w[1])) {
+          variants.add(w[0]);
+          variants.add(stem(w[0]));
+        }
       }
       map.set(c.slug, {
         slug: c.slug,
@@ -134,7 +139,14 @@ function matches(forms: string[], hotelWords: string[], hotelText: string): bool
   );
 }
 
-export async function localHotels(q: string): Promise<{ items: LocalHotel[]; city: GuessedCity | null }> {
+/**
+ * `near` is the visitor's country (Cloudflare knows it): with no city typed,
+ * «هيلتون» lists that country's Hiltons before Baku's.
+ */
+export async function localHotels(
+  q: string,
+  near = "SA"
+): Promise<{ items: LocalHotel[]; city: GuessedCity | null }> {
   const { city, rest } = splitCity(words(q));
   const guessed: GuessedCity | null = city
     ? { slug: city.slug, code: city.code, nameAr: city.nameAr, nameEn: city.nameEn }
@@ -160,11 +172,12 @@ export async function localHotels(q: string): Promise<{ items: LocalHotel[]; cit
   const lists = await Promise.all(keys.map((k) => readData<StoredHotel[]>(`hotel-words/${k}.json`)));
 
   const seen = new Set<string>();
-  const found: { h: StoredHotel; exact: number }[] = [];
+  const found: { h: StoredHotel; exact: number; opens: number; home: number }[] = [];
   for (const list of lists) {
     for (const h of list ?? []) {
       if (city && h[0] !== city.slug) continue;
-      const id = `${h[0]}|${h[1]}`;
+      // Neighbouring cities' circles overlap (Doha and Al Wakrah): one row per name.
+      const id = h[1];
       if (seen.has(id)) continue;
       const c = cities().get(h[0]);
       const text = normalizeSearch([h[1], h[2], h[4], c?.nameEn, c?.nameAr].filter(Boolean).join(" "));
@@ -172,9 +185,19 @@ export async function localHotels(q: string): Promise<{ items: LocalHotel[]; cit
       if (!terms.every((t) => matches(t.forms, hw, text))) continue;
       seen.add(id);
       const exact = terms.filter((t) => t.forms.some((f) => hw.includes(f))).length;
-      found.push({ h, exact });
+      // The chain's own hotels before "… by Hilton": a typed word that opens the name.
+      const first = words(h[1]).map(stem)[0] ?? "";
+      const opens = terms.some((t) => t.forms.some((f) => first.startsWith(f.split(" ")[0]))) ? 1 : 0;
+      found.push({ h, exact, opens, home: c?.code === near ? 1 : 0 });
     }
   }
-  found.sort((a, b) => b.exact - a.exact || b.h[3] - a.h[3]);
+  found.sort(
+    (a, b) =>
+      b.exact - a.exact ||
+      b.home - a.home ||
+      b.opens - a.opens ||
+      b.h[3] - a.h[3] ||
+      a.h[1].length - b.h[1].length
+  );
   return { items: found.slice(0, 8).map((f) => toLocal(f.h)), city: guessed };
 }
