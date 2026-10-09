@@ -1,0 +1,72 @@
+# Collects every hotel around our cities from OpenStreetMap
+# (scripts/hotels/fetch-hotels.ts → scripts/hotels/cities/*.json) and builds
+# the files the hotel-name search reads (scripts/hotels/build-index.ts →
+# public/data/hotels, public/data/hotel-words). The search then answers from
+# our own files: no outside service, no allowance to run out.
+#
+#   - monthly: every city, so new and renamed hotels come in;
+#   - when the city list, the collector or the word cutting changes: new
+#     cities only, then the files are rebuilt;
+#   - by hand from the Actions tab.
+name: Hotels
+
+on:
+  schedule:
+    - cron: "17 3 5 * *"
+  push:
+    branches: [main]
+    paths:
+      - "src/data/cityCoords.ts"
+      - "src/lib/hotelIndex.ts"
+      - "scripts/hotels/fetch-hotels.ts"
+      - "scripts/hotels/build-index.ts"
+      - ".github/workflows/hotels.yml"
+  workflow_dispatch:
+    inputs:
+      missing_only:
+        description: "Only cities with no collected file yet"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: hotels
+  cancel-in-progress: false
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Collect hotels
+        run: |
+          npm ci --no-audit --no-fund
+          FLAGS=""
+          if [ "${{ github.event_name }}" = "push" ] || [ "${{ inputs.missing_only }}" = "true" ]; then FLAGS="--missing"; fi
+          npx --yes tsx@4 scripts/hotels/fetch-hotels.ts $FLAGS
+
+      - name: Build search files
+        run: npx --yes tsx@4 scripts/hotels/build-index.ts
+
+      - name: Commit
+        run: |
+          git add scripts/hotels/cities public/data/hotels public/data/hotel-words
+          if git diff --cached --quiet; then
+            echo "Nothing new."
+            exit 0
+          fi
+          git config user.name "Claude"
+          git config user.email "noreply@anthropic.com"
+          git commit -m "Hotels: stored hotel names (automatic run)" \
+            -m "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
+          git pull --rebase origin main
+          git push origin HEAD:main

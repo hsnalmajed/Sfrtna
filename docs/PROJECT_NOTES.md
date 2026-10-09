@@ -387,6 +387,24 @@ yet. Steps for the section:
    no HERE call, OpenStreetMap answers. The `/api/health` probe also takes
    from the cap; `here.usage` = {today, month, dailyCap, monthlyCap}.
    Tested with `wrangler dev`: health + suggestions counted in one counter.
+4b. ✅ 9 Oct (owner: "most visitors type the hotel name in Arabic; nothing
+   may run out on a visitor"): **our own stored hotel names**, the main
+   layer. `.github/workflows/hotels.yml` (monthly on the 5th, on pushes to
+   the collector/word cutting, or by hand) → `scripts/hotels/fetch-hotels.ts`
+   (OpenStreetMap tourism=hotel|motel|guest_house|hostel|apartment, 25 km
+   around each city, name/name:en/name:ar/stars → `scripts/hotels/cities/`)
+   → `scripts/hotels/build-index.ts` → `public/data/hotels/<slug>.json`
+   (best 60) + `public/data/hotel-words/<2 letters as hex>.json` (every
+   hotel under each word). Read via ASSETS (not public: /data/* = 404).
+   `src/lib/hotelIndex.ts`: word cutting + **Arabic dictionary** of chains and
+   words (هيلتون→hilton, ماريوت, موفنبيك, روتانا, دبل تري…; فندق/منتجع/أجنحة
+   are generic); `localHotels.ts`: finds the city in the query (Arabic or
+   English, half-typed last word OK), the rest matched by prefix. Order in
+   `hotelSuggestions()`: stored (≥5 → done) → HERE/Google (capped) → OSM
+   live. API also returns the guessed `city`; no match → «اعرض فنادق
+   <المدينة>». `/api/health` → `storedHotels`. Sample-data test: «هيلتون
+   إسطنبول», «هيلتون اسطن», «ماريوت جده», «سما جدة», «ابها فندق», «دبل تري
+   اسطنبول», «سويس اوتيل» all found. Add dictionary words as visitors need.
 5. Claude: live test the hotel name box (hotel form → «لدي فندق محدد») with
    Arabic and English: «هيلتون إسطنبول», «سماء», «ابها فندق», «Hilton
    Istanbul», a Riyadh/Jeddah hotel; Arabic spelling variants must match

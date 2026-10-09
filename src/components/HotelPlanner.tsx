@@ -9,6 +9,7 @@ import DateRangeInput from "@/components/DateRangeInput";
 import Icon from "@/components/ui/Icon";
 import HotelNameInput from "@/components/HotelNameInput";
 import HotelCityInput, { findHotelCity } from "@/components/HotelCityInput";
+import type { GuessedCity } from "@/lib/providers/localHotels";
 import { MAX_GUESTS_PER_ROOM, occupancy, roomFitsParty, type StayType } from "@/lib/stayType";
 import { parseChildrenAges, serializeChildrenAges } from "@/lib/searchParamsUtil";
 import { focusFirstError, hasErrors, type FieldErrors } from "@/lib/formErrors";
@@ -75,6 +76,9 @@ export default function HotelPlanner({
   // picked the first time.
   const [hotelPicked, setHotelPicked] = useState(Boolean(sp.get("hotel") && sp.get("hotelArea")));
   // The city, likewise, must be one of ours; shown in the traveller's language.
+  // The city named in the hotel box («هيلتون جدة»): when no hotel matches,
+  // the traveller is offered that city's hotels rather than a dead end.
+  const [cityGuess, setCityGuess] = useState<GuessedCity | null>(null);
   const [cityEntry, setCityEntry] = useState(() => findHotelCity(sp.get("city") || ""));
   const [city, setCity] = useState(() => {
     const found = findHotelCity(sp.get("city") || "");
@@ -191,6 +195,8 @@ export default function HotelPlanner({
               placeholder={dict.hotelForm.hotelNamePlaceholder}
               invalid={Boolean(errors.hotel)}
               loadingText={dict.hotelForm.searchingHotels}
+              arabic={locale === "ar"}
+              onCityGuess={setCityGuess}
               emptyText={
                 <span>
                   {dict.hotelForm.noHotelMatch}{" "}
@@ -198,11 +204,21 @@ export default function HotelPlanner({
                     type="button"
                     className="font-bold text-sea-700 underline underline-offset-2"
                     onClick={() => {
+                      const entry = cityGuess ? findHotelCity(cityGuess.nameEn) : undefined;
+                      if (entry) {
+                        setCity(locale === "ar" ? entry.nameAr : entry.nameEn);
+                        setCityEntry(entry);
+                      }
                       setMode("discover");
                       setErrors({});
                     }}
                   >
-                    {dict.hotelForm.searchByCity}
+                    {cityGuess
+                      ? dict.hotelForm.searchCityHotels.replace(
+                          "{city}",
+                          locale === "ar" ? cityGuess.nameAr : cityGuess.nameEn
+                        )
+                      : dict.hotelForm.searchByCity}
                   </button>
                 </span>
               }

@@ -1,6 +1,7 @@
 import { cachedJson } from "@/lib/edgeCache";
 import { normalizeSearch } from "@/lib/search";
 import { takeHere } from "@/lib/providers/hereQuota";
+import { localHotels, type GuessedCity } from "@/lib/providers/localHotels";
 
 /**
  * Hotel names as the traveller types, from Google Places Autocomplete (New).
@@ -24,6 +25,8 @@ export interface HotelSuggestion {
   name: string;
   /** Where it is: "Beşiktaş/İstanbul, Türkiye". */
   area: string;
+  /** Its Arabic name, when known — shown to Arabic readers under the name. */
+  nameAr?: string;
 }
 
 function key(): string {
@@ -107,34 +110,48 @@ interface Prediction {
 }
 
 /**
- * Hotel names for what was typed: Google first, and OpenStreetMap (through
- * Photon, free and keyless) when Google has no key, has hit the day's quota,
- * or found nothing. OSM knows fewer hotels, but a shorter list beats an
- * empty one — the traveller must pick from it, so there must be one.
+ * Hotel names for what was typed, in three layers, so a traveller always
+ * finds a list and nothing can run out on them:
+ *
+ *  1. Our own stored hotels (localHotels.ts) — every hotel around our
+ *     cities, with an Arabic dictionary of chains and words. No outside call,
+ *     no allowance. Most searches end here.
+ *  2. When that finds few: HERE (free 5,000 a month, capped daily in
+ *     hereQuota.ts) — or Google, if its key is ever set — for hotels our
+ *     list does not know. Past the cap it is simply skipped.
+ *  3. When still nothing: OpenStreetMap's live search, every Arabic spelling.
+ *
+ * The city the traveller named (if any) comes back too, so an empty list can
+ * offer that city's hotels instead of a dead end.
  */
-export async function hotelSuggestions(input: string): Promise<HotelSuggestion[]> {
+export async function hotelSuggestions(
+  input: string
+): Promise<{ items: HotelSuggestion[]; city: GuessedCity | null }> {
   const q = input.trim().replace(/\s+/g, " ").slice(0, 60);
-  const google = key() ? await googleHotels(q) : null;
-  if (google && google.length) return ranked(google, q);
+  const local = await localHotels(q);
+  const items: HotelSuggestion[] = local.items.map((h) => ({ name: h.name, area: h.area, nameAr: h.nameAr }));
+  const city = local.city;
+  if (items.length >= 5) return { items, city };
 
-  // HERE: Google Cloud is sold in Saudi Arabia only through CNTXT, which
-  // takes companies with a commercial registration — so for now the hotel
-  // names come from HERE (free 5,000 a month), when its key is set.
-  const here = hereKey() ? await hereHotels(q) : null;
-  if (here && here.length) return ranked(here, q).slice(0, 8);
-
-  // OpenStreetMap matches the letters exactly, so «فندق سماء» and «فندق سما»
-  // or «اسطنبول» and «إسطنبول» find different hotels. Every spelling a
-  // traveller might mean is asked (each answer cached a week), and the lists
-  // are merged — the site-wide rule: أ إ آ = ا, ة = ه, ى = ي.
-  const lists = await Promise.all(arabicSpellings(q).map((v) => osmHotels(v)));
-  const merged: HotelSuggestion[] = [];
-  for (const list of lists) {
+  const add = (list: HotelSuggestion[] | null) => {
     for (const h of list ?? []) {
-      if (!merged.some((o) => o.name === h.name && o.area === h.area)) merged.push(h);
+      const n = normalizeSearch(h.name);
+      if (!items.some((o) => normalizeSearch(o.name) === n)) items.push(h);
     }
-  }
-  return ranked(merged, q).slice(0, 8);
+  };
+
+  // Google Cloud is sold in Saudi Arabia only through CNTXT (commercial
+  // registration needed), so this is HERE in practice.
+  const outside = key() ? await googleHotels(q) : hereKey() ? await hereHotels(q) : null;
+  if (outside?.length) add(ranked(outside, q));
+  if (items.length) return { items: items.slice(0, 8), city };
+
+  // OpenStreetMap matches the letters exactly, so every spelling a traveller
+  // might mean is asked (each answer cached a week) and the lists merged —
+  // the site-wide rule: أ إ آ = ا, ة = ه, ى = ي.
+  const lists = await Promise.all(arabicSpellings(q).map((v) => osmHotels(v)));
+  for (const list of lists) add(list);
+  return { items: ranked(items, q).slice(0, 8), city };
 }
 
 /**

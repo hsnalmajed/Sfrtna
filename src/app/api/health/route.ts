@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { configuredProviders } from "@/lib/providers";
 import { travelpayouts } from "@/lib/providers/travelpayouts";
 import { hereUsage, takeHere } from "@/lib/providers/hereQuota";
+import { localHotels } from "@/lib/providers/localHotels";
 
 /**
  * Is the site actually wired up?
@@ -313,12 +314,19 @@ export async function GET(req: Request) {
   }
   here.usage = await hereUsage();
 
+  // Our own stored hotel names (no outside call): hits for two test searches.
+  const storedHotels = {
+    hiltonIstanbul: (await localHotels("هيلتون إسطنبول")).items.length,
+    jeddah: (await localHotels("فندق جدة")).items.length,
+  };
+
   return NextResponse.json(
     {
       edgeCache,
       pexels,
       googlePlaces,
       here,
+      storedHotels,
       configuredProviders: configured,
       hotelProbe: hotels,
       keys: {
