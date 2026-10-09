@@ -9,7 +9,7 @@
 
 import data from "@/data/climate/travelSeasons.json";
 import { COUNTRY_CITIES } from "@/lib/cities";
-import { SCORING, type Classification } from "@/lib/travelSeason/config";
+import { SCORING } from "@/lib/travelSeason/config";
 import type { SeasonRecord } from "@/lib/travelSeason/types";
 
 interface SeasonsFile {
@@ -26,10 +26,6 @@ interface SeasonsFile {
 }
 
 const FILE = data as unknown as SeasonsFile;
-
-export const SEASONS_META = FILE.meta;
-
-export const CLASS_ORDER: Classification[] = ["EXCELLENT", "VERY_GOOD", "GOOD", "ACCEPTABLE", "NOT_RECOMMENDED"];
 
 export { CLASS_DOT } from "@/lib/travelSeason/labels";
 

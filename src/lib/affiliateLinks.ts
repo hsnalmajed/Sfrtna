@@ -1,7 +1,3 @@
-import type { FlightOffer, HotelOffer, SearchParams } from "./types";
-import { resolveIata } from "./flights";
-import { aviasalesSearchUrl, travelpayoutsMarker } from "./providers/travelpayouts";
-import { hotellookSearchUrl } from "./providers/hotellook";
 import { zenhotelsCityUrl } from "./zenhotels";
 
 /**
@@ -17,8 +13,7 @@ import { zenhotelsCityUrl } from "./zenhotels";
  * Two rules the links below follow:
  *
  *  - **Only real, public URL shapes.** Booking.com's `searchresults.html`
- *    and Skyscanner's `/transport/flights/<from>/<to>/<yymmdd>/` are
- *    documented, stable entry points. Nothing here invents a deep link to a
+ *    and Expedia's `Hotel-Search` are documented, stable entry points. Nothing here invents a deep link to a
  *    specific offer, because we cannot know the partner still has it — the
  *    link opens *their* search for the same trip, and the UI says so.
  *  - **The partner sets the price.** Every caller of this module has to
@@ -26,13 +21,10 @@ import { zenhotelsCityUrl } from "./zenhotels";
  *    source and may be minutes or days old.
  *
  * The partner ids are public tags that travel in the query string of a URL
- * the visitor's own browser opens — they are not secrets, so they are read
- * from NEXT_PUBLIC_* and work in the browser. Without them the links still
- * work; they just earn nothing.
+ * the visitor's own browser opens — they are not secrets. Only partners that
+ * pay us are linked (10 Oct 2026: Almosafer, Skyscanner, airline sites and
+ * Hotellook removed — no account with them, or closed).
  */
-
-const BOOKING_AID = process.env.NEXT_PUBLIC_BOOKING_AFFILIATE_ID || "";
-const ALMOSAFER_REF = process.env.NEXT_PUBLIC_ALMOSAFER_AFFILIATE_ID || "";
 
 /**
  * Expedia Group affiliate (Travel Creator Program, paid through Partnerize).
@@ -59,158 +51,6 @@ export interface BookingHandoff {
   url: string;
 }
 
-/** Skyscanner wants YYMMDD. */
-function compactDate(iso: string): string {
-  return iso.replace(/-/g, "").slice(2);
-}
-
-/**
- * Flights: the airline's own site when we know the carrier and it sells
- * direct, otherwise Skyscanner.
- *
- * Sending someone to Saudia for a Saudia fare is a better handover than
- * sending them to a metasearch that will show them Saudia — one fewer step,
- * and the price they land on is the airline's own.
- */
-const AIRLINE_SITES: Record<string, { name: string; url: string }> = {
-  SV: { name: "Saudia", url: "https://www.saudia.com/" },
-  XY: { name: "flynas", url: "https://www.flynas.com/" },
-  F3: { name: "flyadeal", url: "https://www.flyadeal.com/" },
-  TK: { name: "Turkish Airlines", url: "https://www.turkishairlines.com/" },
-  EK: { name: "Emirates", url: "https://www.emirates.com/" },
-  QR: { name: "Qatar Airways", url: "https://www.qatarairways.com/" },
-};
-
-export function flightBookingHandoff(
-  params: SearchParams,
-  flight?: FlightOffer
-): BookingHandoff | null {
-  if (params.tripType === "hotel") return null;
-  if (!params.origin || !params.destination || !params.departDate) return null;
-
-  /**
-   * Aviasales first, once the affiliate marker exists.
-   *
-   * This used to send the traveller to the carrier's own website when we knew
-   * the carrier, on the reasoning that one fewer step is a better handover.
-   * That reasoning held while the site had no revenue model; it does not now.
-   * A referral to saudia.com earns nothing, and a site with no income is one
-   * that stops being maintained — which serves the traveller worst of all.
-   *
-   * The trade is small and honest: Aviasales opens the same search across
-   * every carrier, including the one we just showed, and the price the
-   * traveller pays is unchanged. The commission comes out of the partner's
-   * margin, never out of the fare.
-   */
-  const marker = travelpayoutsMarker();
-  if (marker) {
-    return {
-      partner: "Aviasales",
-      url: aviasalesSearchUrl({
-        origin: params.origin,
-        destination: params.destination,
-        departDate: params.departDate,
-        returnDate: params.returnDate,
-        adults: params.adults || 1,
-        children: params.childrenAges?.length ?? 0,
-        infants: params.infants ?? 0,
-      }),
-    };
-  }
-
-  const direct = flight?.airlineCode ? AIRLINE_SITES[flight.airlineCode] : undefined;
-  if (direct) return { partner: direct.name, url: direct.url };
-
-  const from = resolveIata(params.origin).toLowerCase();
-  const to = resolveIata(params.destination).toLowerCase();
-  const out = compactDate(params.departDate);
-  const back = params.returnDate ? `/${compactDate(params.returnDate)}` : "";
-  return {
-    partner: "Skyscanner",
-    url: `https://www.skyscanner.net/transport/flights/${from}/${to}/${out}${back}/`,
-  };
-}
-
-/**
- * Hotels: Hotellook first when the marker is set, because that is the
- * handover that pays and it compares Booking, Agoda and the rest in one
- * screen. Booking.com's own search otherwise.
- *
- * `destinationName` is the city as a person would type it — free text search
- * does far better with "Istanbul" than with "IST".
- */
-export function hotelBookingHandoff(
-  params: SearchParams,
-  destinationName: string,
-  hotel?: HotelOffer
-): BookingHandoff | null {
-  if (params.tripType === "flight") return null;
-  if (!params.departDate) return null;
-
-  const marker = travelpayoutsMarker();
-  if (marker) {
-    return {
-      partner: "Hotellook",
-      url: hotellookSearchUrl({
-        destination: destinationName || params.destination,
-        checkIn: params.departDate,
-        checkOut: params.returnDate || params.departDate,
-        adults: params.adults || 1,
-        marker,
-      }),
-    };
-  }
-
-  const checkin = params.departDate;
-  const checkout = params.returnDate || params.departDate;
-  const url = new URL("https://www.booking.com/searchresults.html");
-  url.searchParams.set("ss", destinationName || params.destination);
-  url.searchParams.set("checkin", checkin);
-  url.searchParams.set("checkout", checkout);
-  url.searchParams.set("group_adults", String(params.adults || 1));
-  const children = params.childrenAges?.length ?? 0;
-  if (children > 0) url.searchParams.set("group_children", String(children));
-  if (params.minHotelStars) url.searchParams.set("nflt", `class=${params.minHotelStars}`);
-  if (BOOKING_AID) url.searchParams.set("aid", BOOKING_AID);
-  // The hotel we picked is a suggestion to search for, not a promise it is
-  // still bookable at that price.
-  if (hotel?.name) url.searchParams.set("ss", hotel.name);
-
-  return { partner: "Booking.com", url: url.toString() };
-}
-
-/** A second hotel option, for travellers who prefer a regional agency. */
-export function hotelBookingAlternative(
-  params: SearchParams,
-  destinationName: string
-): BookingHandoff | null {
-  if (params.tripType === "flight") return null;
-  const url = new URL("https://www.almosafer.com/en/hotels/search-results");
-  url.searchParams.set("city", destinationName || params.destination);
-  url.searchParams.set("checkIn", params.departDate);
-  url.searchParams.set("checkOut", params.returnDate || params.departDate);
-  url.searchParams.set("adults", String(params.adults || 1));
-  if (ALMOSAFER_REF) url.searchParams.set("ref", ALMOSAFER_REF);
-  return { partner: "Almosafer", url: url.toString() };
-}
-
-/**
- * The hotel planner's own search, carried to partners.
- *
- * The hotel page (/hotel-results) has no prices of its own: Hotellook, the
- * source it was meant to have, closed in October 2025, and nothing replaces
- * it yet. So its whole job is the handover, and the handover should carry
- * everything the traveller told us — not just the city and the dates.
- *
- * Booking.com's search takes the stars, breakfast and stay type as filters
- * in `nflt` (class, mealplan=1, ht_id 204 hotels / 201 apartments), and the
- * children with their ages. The budget is not sent: Booking reads a price
- * filter as a nightly band in its own currency list, and a wrong band would
- * silently hide hotels the traveller can afford.
- *
- * Deliberately separate from hotelBookingHandoff, which still serves the
- * older flight-and-hotel pages and sends to Hotellook first.
- */
 /**
  * One named hotel at a booking site, through Stay22's Allez links.
  *
@@ -282,6 +122,20 @@ export interface HotelSearchQuery {
   locale?: "ar" | "en";
 }
 
+/**
+ * The hotel planner's own search, carried to partners.
+ *
+ * The hotel page (/hotel-results) has no prices of its own: Hotellook, the
+ * source it was meant to have, closed in October 2025, and nothing replaces
+ * it yet. So its whole job is the handover, and the handover should carry
+ * everything the traveller told us — not just the city and the dates.
+ *
+ * Booking.com's search takes the stars, breakfast and stay type as filters
+ * in `nflt` (class, mealplan=1, ht_id 204 hotels / 201 apartments), and the
+ * children with their ages. The budget is not sent: Booking reads a price
+ * filter as a nightly band in its own currency list, and a wrong band would
+ * silently hide hotels the traveller can afford.
+ */
 export function hotelPartnerLinks(q: HotelSearchQuery): BookingHandoff[] {
   const booking = new URL("https://www.booking.com/searchresults.html");
   booking.searchParams.set("ss", q.query);
@@ -300,14 +154,6 @@ export function hotelPartnerLinks(q: HotelSearchQuery): BookingHandoff[] {
   if (q.stay === "room") filters.push("ht_id=204");
   if (q.stay === "apartment") filters.push("ht_id=201");
   if (filters.length) booking.searchParams.set("nflt", filters.join(";"));
-  if (BOOKING_AID) booking.searchParams.set("aid", BOOKING_AID);
-
-  const almosafer = new URL("https://www.almosafer.com/en/hotels/search-results");
-  almosafer.searchParams.set("city", q.query);
-  almosafer.searchParams.set("checkIn", q.checkIn);
-  almosafer.searchParams.set("checkOut", q.checkOut);
-  almosafer.searchParams.set("adults", String(Math.max(1, q.adults)));
-  if (ALMOSAFER_REF) almosafer.searchParams.set("ref", ALMOSAFER_REF);
 
   // Expedia's hotel search: rooms=1 and children as "1_<age>" per child,
   // the shape its own search form writes.
@@ -387,7 +233,6 @@ export function hotelPartnerLinks(q: HotelSearchQuery): BookingHandoff[] {
       { partner: "Expedia", url: hotelAllezUrl("expedia", h) },
       { partner: "Agoda", url: hotelAllezUrl("agoda", h) },
       { partner: "Hotels.com", url: hotelAllezUrl("hotelscom", h) },
-      { partner: "Almosafer", url: almosafer.toString() },
     ];
   }
 
@@ -400,6 +245,5 @@ export function hotelPartnerLinks(q: HotelSearchQuery): BookingHandoff[] {
     { partner: "Hotels.com", url: hotelsCom.toString() },
     { partner: "Trip.com", url: trip.toString() },
     ...(zen ? [{ partner: "ZenHotels", url: zen }] : []),
-    { partner: "Almosafer", url: almosafer.toString() },
   ];
 }

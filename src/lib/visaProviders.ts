@@ -130,11 +130,6 @@ export function officialVisaUrl(countryCode: string): string | undefined {
   return OFFICIAL_VISA_PORTALS[countryCode];
 }
 
-/** Country codes that have somewhere to apply, for the "apply" grid. */
-export function applicableCountryCodes(): string[] {
-  return [...new Set([...Object.keys(DIRECT_VISA_SLUGS), ...Object.keys(OFFICIAL_VISA_PORTALS)])];
-}
-
 /**
  * A flag image, from a CDN that serves nothing but flags.
  *

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { resolveIata, searchFlights, searchHotels } from "@/lib/flights";
+import { resolveIata, searchFlights } from "@/lib/flights";
 import { suggestRoutes } from "@/lib/routeSuggest";
 import { placeForDestination } from "@/lib/destinationPlace";
 import { tripFaresFrom, type TripFare } from "@/lib/providers/travelpayouts";
@@ -7,6 +7,7 @@ import { CONTINENTS, type Continent } from "@/lib/countries";
 import { discoverCandidates, type Candidate } from "@/lib/discoverPool";
 import type {
   FlightOffer,
+  HotelOffer,
   DestinationSuggestion,
   DiscoverParams,
   SearchParams,
@@ -90,7 +91,9 @@ async function suggestForDestination(
         ? Promise.resolve(fare ? [flightFromFare(params, destination, fare)] : [])
         : searchFlights(searchParams)
       : Promise.resolve([]),
-    wantsHotel ? searchHotels(searchParams, nights) : Promise.resolve([]),
+    // No source prices hotels for a whole list of cities (Hotellook, which
+    // did, closed in Oct 2025); hotels are priced per city on the hotel search.
+    Promise.resolve([] as HotelOffer[]),
   ]);
 
   const flight = flights[0];

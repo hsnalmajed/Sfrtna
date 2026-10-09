@@ -1,4 +1,4 @@
-import type { FlightOffer, HotelOffer, SearchParams } from "@/lib/types";
+import type { FlightOffer, SearchParams } from "@/lib/types";
 import type { PriceProvider } from "./types";
 import { travelpayouts } from "./travelpayouts";
 
@@ -23,11 +23,6 @@ export function configuredProviders(): PriceProvider[] {
   return providers().filter((p) => p.isConfigured());
 }
 
-/** True when at least one real source can answer — the pages key off this. */
-export function hasLivePrices(): boolean {
-  return configuredProviders().length > 0;
-}
-
 /**
  * Ask each configured provider in turn and return the first non-empty answer.
  *
@@ -45,22 +40,6 @@ export async function searchFlightsFromProviders(
       if (offers.length > 0) return { offers, source: provider.name };
     } catch (err) {
       console.error(`Price provider ${provider.name} failed for flights:`, err);
-    }
-  }
-  return { offers: [], source: null };
-}
-
-export async function searchHotelsFromProviders(
-  params: SearchParams,
-  nights: number
-): Promise<{ offers: HotelOffer[]; source: string | null }> {
-  for (const provider of configuredProviders()) {
-    if (!provider.searchHotels) continue;
-    try {
-      const offers = await provider.searchHotels(params, nights);
-      if (offers.length > 0) return { offers, source: provider.name };
-    } catch (err) {
-      console.error(`Price provider ${provider.name} failed for hotels:`, err);
     }
   }
   return { offers: [], source: null };

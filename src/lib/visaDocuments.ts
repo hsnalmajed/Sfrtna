@@ -152,6 +152,3 @@ export function checklistFor(
   return null;
 }
 
-export function isSchengen(countryCode: string): boolean {
-  return SCHENGEN_COUNTRIES.has(countryCode);
-}

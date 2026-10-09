@@ -8,8 +8,7 @@
 // Travelpayouts fan-out behind discover). So before Next sees an /api
 // request, the edge checks three things:
 //
-//   1. The route is one the site actually uses. Old routes no page calls
-//      (/api/flights, /api/hotels) answer 404 here; their code is untouched.
+//   1. The route is one the site actually uses; anything else answers 404.
 //   2. The request comes from one of our own pages. Browsers say so
 //      themselves (Sec-Fetch-Site, then Origin, then Referer); a script
 //      that sends none of them is turned away. The redirect out to Expedia
@@ -36,7 +35,6 @@ export const ROUTES = {
   "/api/hotel-suggest": { methods: ["GET"], caller: "page" },
   "/api/rates": { methods: ["GET"], caller: "page" },
   "/api/origin": { methods: ["GET"], caller: "page" },
-  "/api/live-fare": { methods: ["GET"], caller: "page" },
   // Both are sent as POST by their results pages (the search is in the
   // body). Listing them as GET answered every search with 405 — "no
   // destinations" and "no routes" for every visitor — from 7 Oct until

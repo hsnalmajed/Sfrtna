@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useRef } from "react";
-import type { HotelSuggestion } from "@/lib/providers/googlePlaces";
+import type { HotelSuggestion } from "@/lib/providers/hotelNames";
 import type { GuessedCity } from "@/lib/providers/localHotels";
 import SuggestInput, { type Suggestion } from "@/components/SuggestInput";
 import Icon from "@/components/ui/Icon";

@@ -1,7 +1,6 @@
 import type { FlightOffer, SearchParams } from "@/lib/types";
 import type { PriceProvider } from "./types";
 import { resolveIata } from "@/lib/flights";
-import { searchHotellook } from "./hotellook";
 
 /**
  * Travelpayouts — the first real price source.
@@ -121,49 +120,6 @@ const TRAVELPAYOUTS_MARKER = "778874";
 
 export function travelpayoutsMarker(): string {
   return process.env.NEXT_PUBLIC_TRAVELPAYOUTS_MARKER || TRAVELPAYOUTS_MARKER;
-}
-
-/**
- * Aviasales wants the whole search encoded in the path: origin, day+month,
- * destination, day+month, then cabin letter (empty for economy) and the
- * passenger counts. PAR1607NYC2007c321 is Paris→New York, 16 July to 20
- * July, business, three adults, two children, one infant.
- *
- * Documented at
- * https://support.travelpayouts.com/hc/en-us/articles/5711895629714-Aviasales-affiliate-links
- */
-export function aviasalesSearchUrl(params: {
-  origin: string;
-  destination: string;
-  departDate: string;
-  returnDate?: string;
-  adults: number;
-  children?: number;
-  infants?: number;
-}): string {
-  const ddmm = (iso: string) => {
-    const d = new Date(iso);
-    if (Number.isNaN(d.getTime())) return "";
-    return `${String(d.getDate()).padStart(2, "0")}${String(d.getMonth() + 1).padStart(2, "0")}`;
-  };
-
-  const out = ddmm(params.departDate);
-  if (!out) return "https://www.aviasales.com/";
-  const back = params.returnDate ? ddmm(params.returnDate) : "";
-
-  const adults = Math.min(9, Math.max(1, params.adults || 1));
-  const children = Math.min(9, params.children ?? 0);
-  const infants = Math.min(9, params.infants ?? 0);
-  // Position matters: an infant digit is only read if a child digit precedes
-  // it, so once there are infants the zero has to be written out.
-  const party =
-    infants > 0 ? `${adults}${children}${infants}` : children > 0 ? `${adults}${children}` : `${adults}`;
-
-  const path = `${resolveIata(params.origin)}${out}${resolveIata(params.destination)}${back}${party}`;
-  const url = new URL(`https://www.aviasales.com/search/${path}`);
-  const marker = travelpayoutsMarker();
-  if (marker) url.searchParams.set("marker", marker);
-  return url.toString();
 }
 
 async function get(path: string, query: Record<string, string>): Promise<TpResponse | null> {
@@ -295,10 +251,6 @@ export const travelpayouts: PriceProvider = {
       currency,
     });
     return near.map((o) => ({ ...o, datesApproximate: true }));
-  },
-
-  async searchHotels(params, nights) {
-    return searchHotellook(params, nights);
   },
 };
 

@@ -196,12 +196,6 @@ function lookup(queries: PexelsQuery[]): PexelsPhoto | null {
   return fromStored(k, STORED_PHOTOS[k]);
 }
 
-/** The stored photo for one search, or null. */
-export async function searchPexelsPhoto(q: PexelsQuery): Promise<PexelsPhoto | null> {
-  if (!q.query.trim()) return null;
-  return lookup([q]);
-}
-
 /**
  * The stored photo for each subject, keyed however the caller likes. Each
  * subject is its list of searches in order — a landmark first, then the

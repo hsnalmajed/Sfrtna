@@ -300,15 +300,3 @@ export function searchAirports(query: string, limit = 8): Airport[] {
   return out.slice(0, limit);
 }
 
-/**
- * The airport for a city, matched on the English city and country names —
- * so a season card for Istanbul can open the flight planner already pointed
- * at IST. Cities with no airport of their own (Petra, Cappadocia, Mecca)
- * return undefined and simply get no flight shortcut.
- */
-export function airportForCity(cityEn: string, countryEn: string): Airport | undefined {
-  const fold = (v: string) => v.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
-  const city = fold(cityEn);
-  const country = fold(countryEn);
-  return AIRPORTS.find((a) => fold(a.cityEn) === city && fold(a.countryEn) === country);
-}

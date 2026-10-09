@@ -14,7 +14,6 @@
     "check:guard": "node scripts/check-guard.mjs"
   },
   "dependencies": {
-    "@fontsource/cairo": "^5.3.0",
     "@fontsource/ibm-plex-sans-arabic": "^5.3.0",
     "@fontsource/tajawal": "^5.3.0",
     "@opennextjs/cloudflare": "^1.20.2",

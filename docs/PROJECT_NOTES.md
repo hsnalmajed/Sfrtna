@@ -48,7 +48,7 @@ The container shell cannot reach sfrtna.com — test through the browser.
 | RateHawk / ZenHotels | City hotel links (`src/lib/zenhotels.ts`) | linked ✅, W-8BEN under review |
 | Agoda | Pending manual site review | when approved: Site ID/API key (`AGODA_API_KEY`) + bank, then build our own Arabic hotel list |
 | SerpApi (`SERPAPI_KEY`) | Google Hotels prices for one named hotel | free 250/month, pace guard in `serpapi.ts`; `/api/serp-status` shows usage |
-| Google Places (`GOOGLE_PLACES_KEY`) | Hotel-name suggestions | **blocked**: Google Cloud in KSA is sold only via CNTXT, which needs a commercial registration; owner has none (7 Oct). Code kept, off without the key |
+| Google Places | — | **removed 10 Oct**: Google Cloud in KSA is sold only via CNTXT (commercial registration needed); code deleted |
 | HERE (`HERE_API_KEY`) | Hotel-name suggestions (Discover, accommodation categories 500-*) | chosen 7 Oct instead of Google; free 5,000/month; **key live 9 Oct** (Cloudflare Secret). Second layer after our stored hotels (see Next → 4b). Daily cap 160 / month 4,800 (Durable Object `HereQuota`, 9 Oct). `/api/health` shows `here.status`, lodging hits and `here.usage` |
 
 ## Section status
@@ -359,6 +359,25 @@ Travelpayouts.
 - Contact: **live 8 Oct** — Cloudflare Email Routing info@sfrtna.com →
   owner's inbox (rule Active, test mail "Forwarded"). `CONTACT_EMAIL` set;
   page, footer, More sheet and sitemap show it. No reply-time promise.
+
+### Clean-up — 10 Oct (owner: "delete everything not active")
+- Removed: 27 unused components/libs (TripBuilder, SearchForm, DiscoverForm,
+  HeroPlanner, FlightBudgetBar, …), routes `/api/flights`, `/api/hotels`,
+  `/api/live-fare` (+ guard entries), the sample-fare generators in
+  flights.ts (invented data), Hotellook (closed 20 Oct 2025 — discover
+  still asked it for every city), Google Places code (blocked in KSA;
+  `providers/googlePlaces.ts` → `providers/hotelNames.ts`), SerpApi flight
+  fares, the Almosafer / Skyscanner / airline-site links (no account → no
+  income; Almosafer was still shown in hotel partner links), price
+  estimates in countryGuides, 327 unused translation keys (dictionaries.ts
+  169 KB → 127 KB, shipped to the browser), `@fontsource/cairo`.
+- Kept on purpose: Viator code (owner signing up), climate scripts,
+  destinationTypes (used by climate scripts).
+- `flight_results` (GA4) was sent only by the unused FlightBudgetBar, so it
+  never fired after 27 Sep — now sent by FlightResultsGuide once settled.
+- Worker 2,070 → 2,025 KiB gzip. Partners that pay today: Travelpayouts
+  (Aviasales), Stay22 (Booking/Agoda/Hotels.com/Trip.com links), Expedia,
+  RateHawk/ZenHotels. Direct (visa) links earn nothing (no referral deal).
 
 ## Next, in order
 

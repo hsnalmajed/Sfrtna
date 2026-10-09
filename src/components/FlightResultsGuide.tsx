@@ -7,6 +7,7 @@ import { getDictionary } from "@/lib/dictionaries";
 import { findAirport } from "@/lib/airports";
 import { countLabel } from "@/lib/format";
 import Icon from "@/components/ui/Icon";
+import { lastSearchContext, track } from "@/lib/analytics";
 
 /**
  * The flight results, held to the traveller's budget — drawn as our own
@@ -447,6 +448,27 @@ export default function FlightResultsGuide({
   }, []);
 
   const hasBudget = budget > 0;
+
+  // One flight_results per search (GA4), sent once the widget has settled
+  // and the verdict on screen is final. A later sort or "more" is not a new
+  // search, so it is not counted again.
+  const reported = useRef(false);
+  useEffect(() => {
+    if (!state.settled || reported.current) return;
+    reported.current = true;
+    const prices = [...state.fits, ...state.over].map((f) => f.price);
+    const comparable = hasBudget && state.comparable;
+    track("flight_results", {
+      results_count: state.total,
+      cheapest_fare: prices.length ? Math.min(...prices) : undefined,
+      budget: budget || undefined,
+      currency,
+      within_budget_count: comparable ? state.fits.length : undefined,
+      all_over_budget: comparable ? state.fits.length === 0 && state.over.length > 0 : undefined,
+      ...lastSearchContext(),
+    });
+  }, [state, hasBudget, budget, currency]);
+
   // The traveller's preferences from the search form — direct only, a
   // checked bag in the fare — decide what can be picked. A bag counts only
   // when the fare includes it, so the price shown is the price with it.

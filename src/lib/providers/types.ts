@@ -1,4 +1,4 @@
-import type { FlightOffer, HotelOffer, SearchParams } from "@/lib/types";
+import type { FlightOffer, SearchParams } from "@/lib/types";
 
 /**
  * A source of prices.
@@ -33,23 +33,5 @@ export interface PriceProvider {
 
   /** Flights, cheapest first. Empty array means "I have nothing", never throw. */
   searchFlights?(params: SearchParams): Promise<FlightOffer[]>;
-
-  /** Hotels, cheapest first. Same contract. */
-  searchHotels?(params: SearchParams, nights: number): Promise<HotelOffer[]>;
 }
 
-/**
- * How fresh a price is.
- *
- * Travelpayouts' free tier serves prices observed over the last few days
- * rather than a live quote, and that difference has to reach the traveller —
- * a cached fare presented as live is a lie with a number attached. Offers
- * carry the observation time so the UI can say "seen on 14 September" rather
- * than implying it is bookable at that price right now.
- */
-export function isFresh(iso: string | undefined, maxAgeHours: number): boolean {
-  if (!iso) return false;
-  const t = new Date(iso).getTime();
-  if (Number.isNaN(t)) return false;
-  return Date.now() - t <= maxAgeHours * 3600_000;
-}

@@ -1,22 +1,3 @@
-import type { Locale } from "./types";
-
-// Compact "1h 30m" / "١س ٣٠د"-style duration formatting shared by every
-// place that shows flight duration or layover length.
-export function formatDuration(totalMinutes: number, locale: Locale): string {
-  const h = Math.floor(totalMinutes / 60);
-  const m = totalMinutes % 60;
-  if (locale === "ar") {
-    const parts: string[] = [];
-    if (h > 0) parts.push(`${h}س`);
-    if (m > 0 || h === 0) parts.push(`${m}د`);
-    return parts.join(" ");
-  }
-  const parts: string[] = [];
-  if (h > 0) parts.push(`${h}h`);
-  if (m > 0 || h === 0) parts.push(`${m}m`);
-  return parts.join(" ");
-}
-
 /**
  * "6 مدن" / "6 cities".
  *
@@ -100,25 +81,6 @@ export function monthRanges(months: number[], name: (m: number) => string, local
   return runs
     .map(([a, b]) => (a === b ? name(a) : `${name(a)} – ${name(b)}`))
     .join(locale === "ar" ? "، " : ", ");
-}
-
-/**
- * Roughly how long a flight from Riyadh takes, in whole hours: the
- * great-circle distance at a typical cruise speed, plus half an hour for
- * climb and descent. Precise enough to tell a weekend break from a long
- * haul; never presented as a schedule. Undefined under 200 km.
- */
-export function flightHoursFromRiyadh(to: { lat: number; lon: number }): number | undefined {
-  const from = { lat: 24.7136, lon: 46.6753 };
-  const R = 6371;
-  const dLat = ((to.lat - from.lat) * Math.PI) / 180;
-  const dLon = ((to.lon - from.lon) * Math.PI) / 180;
-  const h =
-    Math.sin(dLat / 2) ** 2 +
-    Math.cos((from.lat * Math.PI) / 180) * Math.cos((to.lat * Math.PI) / 180) * Math.sin(dLon / 2) ** 2;
-  const km = R * 2 * Math.atan2(Math.sqrt(h), Math.sqrt(1 - h));
-  if (km <= 200) return undefined;
-  return Math.max(1, Math.round(km / 800 + 0.5));
 }
 
 /**

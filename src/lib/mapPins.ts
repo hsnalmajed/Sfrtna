@@ -446,34 +446,6 @@ export interface MapPin {
   englishOnly?: boolean;
 }
 
-export function placeToPin(place: Place): MapPin {
-  return {
-    key: place.id,
-    name: place.name,
-    lat: place.lat,
-    lon: place.lon,
-    photo: place.photo,
-    extract: place.description,
-    category: place.category,
-    englishOnly: place.englishOnly,
-  };
-}
-
-/** The legend: only the categories this set of pins actually has, in a fixed order. */
-export function buildLegend(
-  pins: { category: PinCategory }[],
-  labels: { historic: string; food: string; activity: string; place: string }
-): { category: PinCategory; label: string; count: number }[] {
-  const order: PinCategory[] = ["historic", "food", "activity", "place"];
-  return order
-    .map((category) => ({
-      category,
-      label: labels[category],
-      count: pins.filter((p) => p.category === category).length,
-    }))
-    .filter((l) => l.count > 0);
-}
-
 /**
  * A photo and a place count per city, for the city cards on a country page,
  * keyed by slug. Photos are Pexels results whose caption names the city.

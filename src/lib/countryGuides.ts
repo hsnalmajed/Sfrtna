@@ -20,27 +20,7 @@
 
 export type BookingKind = "official" | "guide" | "phone" | "free";
 
-export const BOOKING_HINTS: Record<BookingKind, { ar: string; en: string }> = {
-  official: {
-    ar: "احجز مسبقاً عبر الموقع الرسمي لتفادي الطوابير.",
-    en: "Book in advance on the official website to skip the lines.",
-  },
-  guide: {
-    ar: "يُفضّل حجزها عبر منصات الجولات مثل GetYourGuide أو Viator.",
-    en: "Best booked online via tour platforms like GetYourGuide or Viator.",
-  },
-  phone: {
-    ar: "تُحجز عادة بالاتصال المباشر بالمشغّل المحلي أو عند الوصول.",
-    en: "Usually arranged by calling the local operator directly, or on arrival.",
-  },
-  free: {
-    ar: "الدخول مجاني ومفتوح للزوار، لا حاجة لحجز مسبق.",
-    en: "Free and open to visitors — no booking required.",
-  },
-};
-
-// Compact one-line versions of the hint above, for the terse badge shown on
-// each ranked list card (TripAdvisor's cards say "From $45" / "Free entry",
+// A one-line booking hint, for the terse badge shown on each ranked list card (TripAdvisor's cards say "From $45" / "Free entry",
 // not a full sentence — the full sentence still appears on the detail view).
 export const BOOKING_SHORT_LABELS: Record<BookingKind, { ar: string; en: string }> = {
   official: { ar: "الحجز عبر الموقع الرسمي", en: "Book on official site" },
@@ -53,44 +33,6 @@ export const BOOKING_SHORT_LABELS: Record<BookingKind, { ar: string; en: string 
 // figure — actual prices move with season, operator, and group size, and a
 // precise number we can't keep current would mislead more than it helps.
 export type CostTier = "free" | "$" | "$$" | "$$$";
-
-export const COST_TIER_LABELS: Record<CostTier, { ar: string; en: string }> = {
-  free: { ar: "مجاني", en: "Free" },
-  $: { ar: "اقتصادي", en: "Budget" },
-  $$: { ar: "متوسط", en: "Mid-range" },
-  $$$: { ar: "مرتفع", en: "Premium" },
-};
-
-// A rough, general per-person indicative range for each tier — deliberately
-// framed as "usually/typically" rather than a quoted price for this specific
-// activity, since we have no live pricing source. Still gives the "price
-// with an icon" a real tour-marketplace page shows, without pretending to
-// know today's actual rate for a given operator.
-export const COST_TIER_ESTIMATE: Record<CostTier, { ar: string; en: string }> = {
-  free: { ar: "دخول مجاني", en: "Free entry" },
-  $: { ar: "غالباً أقل من ١٠٠ ر.س (~25$) للشخص", en: "Usually under SAR 100 (~$25) per person" },
-  $$: { ar: "غالباً بين ١٠٠–٣٠٠ ر.س (~25–80$) للشخص", en: "Usually SAR 100–300 (~$25–80) per person" },
-  $$$: { ar: "غالباً أكثر من ٣٠٠ ر.س (~80$+) للشخص", en: "Usually SAR 300+ (~$80+) per person" },
-};
-
-// A short, badge-sized version of the same honest estimate — for the
-// compact list-card, which has no room for a full sentence. Same numbers,
-// just "from ~$25" instead of "usually under SAR 100 (~$25) per person".
-export const COST_TIER_ESTIMATE_SHORT: Record<CostTier, { ar: string; en: string }> = {
-  free: { ar: "مجاني", en: "Free" },
-  $: { ar: "~25$ تقريباً", en: "~$25" },
-  $$: { ar: "~25–80$ تقريباً", en: "~$25–80" },
-  $$$: { ar: "٨٠$+ تقريباً", en: "~$80+" },
-};
-
-// Real, working search results on an actual global tour marketplace — the
-// same one referenced in BOOKING_HINTS.guide — rather than a fabricated
-// "book now" link. This mirrors how the flights/hotels side of the site
-// already links out to real partner search results (Booking.com, Skyscanner)
-// instead of a specific listing we can't verify is still accurate.
-export function viatorSearchUrl(query: string): string {
-  return `https://www.viator.com/searchResults/all?text=${encodeURIComponent(query)}`;
-}
 
 export interface LandmarkEntry {
   wikiTitle: string;

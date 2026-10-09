@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { hotelSuggestions } from "@/lib/providers/googlePlaces";
+import { hotelSuggestions } from "@/lib/providers/hotelNames";
 
 export const dynamic = "force-dynamic";
 

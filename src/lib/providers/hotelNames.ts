@@ -5,20 +5,10 @@ import { localHotels, type GuessedCity } from "@/lib/providers/localHotels";
 import { CITY_COORDS } from "@/data/cityCoords";
 
 /**
- * Hotel names as the traveller types, from Google Places Autocomplete (New).
- *
- * Only the autocomplete call is used — no Place Details — so each keystroke
- * the traveller pauses on is one Autocomplete request, inside Google's free
- * monthly allowance (5,000 in 2026). The project's own daily quota in Google
- * Cloud caps it so a busy day cannot run into billing, and every answer is
- * cached at the edge for a week, so the same few letters cost once.
- *
- * Names come back in English whatever the traveller typed: «سما» finds
- * "Samaa Inn". Booking sites and Google Hotels search by the Latin name, so
- * that is the name worth carrying to the results page.
- *
- * The key is a Cloudflare runtime secret (GOOGLE_PLACES_KEY) and never
- * leaves the server. Without it, OpenStreetMap answers alone.
+ * Hotel names as the traveller types: our own stored hotels first
+ * (localHotels.ts), then HERE (capped daily), then OpenStreetMap's live
+ * search — see hotelSuggestions(). Keys are Cloudflare runtime secrets and
+ * never leave the server.
  */
 
 export interface HotelSuggestion {
@@ -28,10 +18,6 @@ export interface HotelSuggestion {
   area: string;
   /** Its Arabic name, when known — shown to Arabic readers under the name. */
   nameAr?: string;
-}
-
-function key(): string {
-  return process.env.GOOGLE_PLACES_KEY || "";
 }
 
 function hereKey(): string {
@@ -118,17 +104,6 @@ async function hereHotels(words: string, city: GuessedCity | null): Promise<Hote
   });
 }
 
-export function placesConfigured(): boolean {
-  return Boolean(key());
-}
-
-interface Prediction {
-  placePrediction?: {
-    structuredFormat?: { mainText?: { text?: string }; secondaryText?: { text?: string } };
-    text?: { text?: string };
-  };
-}
-
 /**
  * Hotel names for what was typed, in three layers, so a traveller always
  * finds a list and nothing can run out on them:
@@ -137,8 +112,8 @@ interface Prediction {
  *     cities, with an Arabic dictionary of chains and words. No outside call,
  *     no allowance. Most searches end here.
  *  2. When that finds few: HERE (free 5,000 a month, capped daily in
- *     hereQuota.ts) — or Google, if its key is ever set — for hotels our
- *     list does not know. Past the cap it is simply skipped.
+ *     hereQuota.ts) for hotels our list does not know. Past the cap it is
+ *     simply skipped.
  *  3. When still nothing: OpenStreetMap's live search, every Arabic spelling.
  *
  * The city the traveller named (if any) comes back too, so an empty list can
@@ -165,13 +140,7 @@ export async function hotelSuggestions(
     }
   };
 
-  // Google Cloud is sold in Saudi Arabia only through CNTXT (commercial
-  // registration needed), so this is HERE in practice.
-  const outside = key()
-    ? await googleHotels(q)
-    : hereKey() && (local.rest || !city)
-      ? await hereHotels(local.rest || q, city)
-      : null;
+  const outside = hereKey() && (local.rest || !city) ? await hereHotels(local.rest || q, city) : null;
   if (outside?.length) add(ranked(outside, q));
   if (items.length) return { items: items.slice(0, 8), city };
 
@@ -236,35 +205,6 @@ async function osmHotels(q: string): Promise<HotelSuggestion[] | null> {
         const p = f.properties ?? {};
         const name = (p.name || "").trim();
         const area = [p.city || p.county || p.state, p.country].filter(Boolean).join(", ");
-        if (name && !out.some((o) => o.name === name && o.area === area)) out.push({ name, area });
-      }
-      return out;
-    } catch {
-      return null;
-    }
-  });
-}
-
-async function googleHotels(q: string): Promise<HotelSuggestion[] | null> {
-  return cachedJson<HotelSuggestion[]>(`places-hotels:${q.toLowerCase()}`, 7 * 86_400, async () => {
-    try {
-      const res = await fetch("https://places.googleapis.com/v1/places:autocomplete", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-Goog-Api-Key": key(),
-          "X-Goog-FieldMask":
-            "suggestions.placePrediction.structuredFormat,suggestions.placePrediction.text",
-        },
-        body: JSON.stringify({ input: q, includedPrimaryTypes: ["lodging"], languageCode: "en" }),
-      });
-      if (!res.ok) return null;
-      const body = (await res.json()) as { suggestions?: Prediction[] };
-      const out: HotelSuggestion[] = [];
-      for (const s of body.suggestions ?? []) {
-        const p = s.placePrediction;
-        const name = (p?.structuredFormat?.mainText?.text || p?.text?.text || "").trim();
-        const area = (p?.structuredFormat?.secondaryText?.text || "").trim();
         if (name && !out.some((o) => o.name === name && o.area === area)) out.push({ name, area });
       }
       return out;

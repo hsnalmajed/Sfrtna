@@ -136,16 +136,3 @@ export function currencyForCountry(countryCode: string | undefined): Currency | 
   return CURRENCIES.find((c) => c.country.toUpperCase() === code);
 }
 
-/**
- * The flag emoji for a currency.
- *
- * The euro is the exception: it has no country of its own, so "EU" is mapped
- * to the European flag rather than being fed to the regional-indicator trick,
- * which would produce a meaningless pair of letters.
- */
-export function currencyFlag(currency: Currency): string {
-  if (currency.country === "EU") return "🇪🇺";
-  return [...currency.country.toUpperCase()]
-    .map((c) => String.fromCodePoint(0x1f1e6 + (c.charCodeAt(0) - 65)))
-    .join("");
-}

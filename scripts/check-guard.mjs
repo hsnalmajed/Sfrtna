@@ -14,8 +14,8 @@ import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join, relative } from "node:path";
 import { ROUTES } from "../edge-guard.js";
 
-/** Routes whose code is kept but which the guard closes on purpose (404). */
-const CLOSED = new Set(["/api/flights", "/api/hotels"]);
+/** Routes whose code is kept but which the guard closes on purpose (404). None today. */
+const CLOSED = new Set([]);
 
 const API = join(process.cwd(), "src/app/api");
 const problems = [];

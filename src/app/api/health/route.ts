@@ -200,23 +200,6 @@ export async function GET(req: Request) {
     probe = { ok: false, offers: 0, error: String(err).slice(0, 200) };
   }
 
-  // The hotel side, asked the same way the provider asks it, so a blank
-  // hotel list can be told apart from a refused request.
-  let hotels: { status: number | string; sample: string } = { status: "skipped", sample: "" };
-  try {
-    const u = new URL("https://engine.hotellook.com/api/v2/cache.json");
-    u.searchParams.set("location", "Istanbul");
-    u.searchParams.set("checkIn", new Date(Date.now() + 30 * 86_400_000).toISOString().slice(0, 10));
-    u.searchParams.set("checkOut", new Date(Date.now() + 35 * 86_400_000).toISOString().slice(0, 10));
-    u.searchParams.set("currency", "sar");
-    u.searchParams.set("limit", "3");
-    u.searchParams.set("token", process.env.TRAVELPAYOUTS_TOKEN || "");
-    const res = await fetch(u.toString(), { cache: "no-store" });
-    hotels = { status: res.status, sample: (await res.text()).slice(0, 160) };
-  } catch (err) {
-    hotels = { status: "error", sample: String(err).slice(0, 160) };
-  }
-
   // The edge cache the photos depend on (edgeCache.ts): is it there, and
   // does a write come back on the next read?
   const edgeCache: { present: boolean; roundTrip: string } = { present: false, roundTrip: "skipped" };
@@ -257,36 +240,9 @@ export async function GET(req: Request) {
     }
   }
 
-  // Google Places (hotel names): one autocomplete call, and Google's own
-  // reason when it refuses — billing off, API not enabled, key restricted.
-  // Never the key.
-  let googlePlaces: { status: number | string; reason: string | null } = { status: "no key", reason: null };
-  if (process.env.GOOGLE_PLACES_KEY) {
-    try {
-      const res = await fetch("https://places.googleapis.com/v1/places:autocomplete", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-Goog-Api-Key": process.env.GOOGLE_PLACES_KEY,
-          "X-Goog-FieldMask": "suggestions.placePrediction.text",
-        },
-        body: JSON.stringify({ input: "Hilton Istanbul", includedPrimaryTypes: ["lodging"] }),
-        cache: "no-store",
-      });
-      let reason: string | null = null;
-      if (!res.ok) {
-        const body = (await res.json().catch(() => null)) as { error?: { status?: string; message?: string } } | null;
-        reason = `${body?.error?.status ?? ""} ${body?.error?.message ?? ""}`.trim().slice(0, 220) || null;
-      }
-      googlePlaces = { status: res.status, reason };
-    } catch (err) {
-      googlePlaces = { status: `error: ${String(err).slice(0, 120)}`, reason: null };
-    }
-  }
-
-  // HERE (hotel names while Google is unavailable in KSA): one search ("Marriott
-  // hotel" around Jeddah, as the site asks it), taken
-  // from the same daily cap as the visitors' searches.
+  // HERE (hotel names our stored list does not know): one search ("Marriott
+  // hotel" around Jeddah, as the site asks it), taken from the same daily cap
+  // as the visitors' searches.
   let here: {
     status: number | string;
     lodging: number | null;
@@ -298,7 +254,7 @@ export async function GET(req: Request) {
   } else if (process.env.HERE_API_KEY) {
     try {
       const u = new URL("https://discover.search.hereapi.com/v1/discover");
-      // Asked the way the site asks (googlePlaces.ts → hereHotels).
+      // Asked the way the site asks (hotelNames.ts → hereHotels).
       u.searchParams.set("q", "Marriott hotel");
       u.searchParams.set("at", "21.550,39.174");
       u.searchParams.set("limit", "20");
@@ -335,15 +291,12 @@ export async function GET(req: Request) {
     {
       edgeCache,
       pexels,
-      googlePlaces,
       here,
       storedHotels,
       configuredProviders: configured,
-      hotelProbe: hotels,
       keys: {
         travelpayoutsToken: Boolean(process.env.TRAVELPAYOUTS_TOKEN),
         pexels: Boolean(process.env.PEXELS_API_KEY),
-        googlePlaces: Boolean(process.env.GOOGLE_PLACES_KEY),
         here: Boolean(process.env.HERE_API_KEY),
         serpapi: Boolean(process.env.SERPAPI_KEY),
       },
