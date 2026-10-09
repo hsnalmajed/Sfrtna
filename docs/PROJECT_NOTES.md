@@ -379,6 +379,28 @@ Travelpayouts.
   (Aviasales), Stay22 (Booking/Agoda/Hotels.com/Trip.com links), Expedia,
   RateHawk/ZenHotels. Direct (visa) links earn nothing (no referral deal).
 
+### Partner audit — 10 Oct (checked in the owner's dashboards)
+- Travelpayouts (project "Sfrtna"): **23 programs open now** (links can be
+  generated): Klook 2–5%, Tiqets 3.5–8%, WeGoTrip, Go City 3.4–6%, KKday
+  1–5%, Kiwitaxi 9–11%, Welcome Pickups 8–9%, intui.travel 10%,
+  GetTransfer 4–25%, Airalo 12%, Yesim 18%, GigSky 20%, EKTA insurance 25%,
+  AirHelp 15–16.6%, Localrent 7.5–10%, GetRentacar 10%, Economybookings
+  3–8%, QEEQ 5–10%, AutoEurope 4.4–8%, BikesBooking 4%, Radical Storage 8%,
+  Kiwi.com 3%, Aviasales 40%. **Locked until 3 months of stable traffic**
+  (19): GetYourGuide 8%, Viator 8%, Booking 3–5%, Agoda 1–6%, Trip.com,
+  Expedia, Tripadvisor Experiences, DiscoverCars, Omio, 12Go, Hostelworld,
+  Vrbo, Ticketmaster.
+- Viator direct: the owner HAS an account (named "iTravel"), status
+  "Retry account verification" → owner must re-submit (dashboard → Try
+  again; site sfrtna.com).
+- GetYourGuide direct: partner.getyourguide.com (Sign Up). Headout:
+  partner.headout.com/affiliate.
+- Owner's direction: everything a traveller needs in one place; activity
+  page in our site = description (ar/en, our own translation) + live price
+  + book button to the activity's own page; every place needs a
+  description and coordinates; itinerary days grouped by proximity
+  (landmarks + activities + restaurants).
+
 ## Next, in order
 
 **▶ Start here (new conversation, 9 Oct): finish the HERE hotel-name section.**
