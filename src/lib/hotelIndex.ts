@@ -202,6 +202,8 @@ const DICTIONARY_SOURCE: Record<string, string[]> = {
   "سماء": ["sama", "samaa"],
   "سفير": ["safir"],
   "قصر": ["palace", "qasr", "kasr"],
+  "بالاس": ["palace"],
+  "باليس": ["palace"],
   "القصر": ["palace"],
   "الشاطئ": ["beach"],
   "شاطئ": ["beach"],
