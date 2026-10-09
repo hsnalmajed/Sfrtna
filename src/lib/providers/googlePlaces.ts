@@ -2,6 +2,7 @@ import { cachedJson } from "@/lib/edgeCache";
 import { normalizeSearch } from "@/lib/search";
 import { takeHere } from "@/lib/providers/hereQuota";
 import { localHotels, type GuessedCity } from "@/lib/providers/localHotels";
+import { CITY_COORDS } from "@/data/cityCoords";
 
 /**
  * Hotel names as the traveller types, from Google Places Autocomplete (New).
@@ -77,9 +78,16 @@ async function visitorCountry(): Promise<string> {
   return "SA";
 }
 
-async function hereHotels(q: string): Promise<HotelSuggestion[] | null> {
-  const at = await searchPoint();
-  return cachedJson<HotelSuggestion[]>(`here-hotels:${at}:${q.toLowerCase()}`, 7 * 86_400, async () => {
+/**
+ * HERE reads "Hilton Istanbul" as an address (a street called Hilton), so it
+ * is asked for the hotel words with "hotel" added, around the city the
+ * traveller named (or the visitor's own area): "Marriott hotel" at Jeddah.
+ */
+async function hereHotels(words: string, city: GuessedCity | null): Promise<HotelSuggestion[] | null> {
+  const c = city ? CITY_COORDS[city.slug] : undefined;
+  const at = c ? `${c.lat.toFixed(3)},${c.lon.toFixed(3)}` : await searchPoint();
+  const q = `${words} hotel`;
+  return cachedJson<HotelSuggestion[]>(`here-hotels:v2:${at}:${q.toLowerCase()}`, 7 * 86_400, async () => {
     // Only a search the edge has not cached costs a transaction; past the
     // day's cap it is not made (null, not cached) and OpenStreetMap answers.
     if (!(await takeHere())) return null;
@@ -159,7 +167,11 @@ export async function hotelSuggestions(
 
   // Google Cloud is sold in Saudi Arabia only through CNTXT (commercial
   // registration needed), so this is HERE in practice.
-  const outside = key() ? await googleHotels(q) : hereKey() ? await hereHotels(q) : null;
+  const outside = key()
+    ? await googleHotels(q)
+    : hereKey() && (local.rest || !city)
+      ? await hereHotels(local.rest || q, city)
+      : null;
   if (outside?.length) add(ranked(outside, q));
   if (items.length) return { items: items.slice(0, 8), city };
 

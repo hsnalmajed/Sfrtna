@@ -146,8 +146,14 @@ function matches(forms: string[], hotelWords: string[], hotelText: string): bool
 export async function localHotels(
   q: string,
   near = "SA"
-): Promise<{ items: LocalHotel[]; city: GuessedCity | null }> {
+): Promise<{ items: LocalHotel[]; city: GuessedCity | null; rest: string }> {
   const { city, rest } = splitCity(words(q));
+  // For an outside search: the hotel words, chains in their Latin spelling
+  // («ماريوت» → marriott), generic words left out.
+  const restText = rest
+    .filter((w) => !isGeneric(w))
+    .map((w) => dictionaryForms(w)[0] ?? dictionaryForms(stem(w))[0] ?? w)
+    .join(" ");
   const guessed: GuessedCity | null = city
     ? { slug: city.slug, code: city.code, nameAr: city.nameAr, nameEn: city.nameEn }
     : null;
@@ -161,9 +167,9 @@ export async function localHotels(
 
   // Only a city («ابها فندق», "hotels in Jeddah"): its best hotels.
   if (!terms.length) {
-    if (!city) return { items: [], city: null };
+    if (!city) return { items: [], city: null, rest: restText };
     const list = (await readData<StoredHotel[]>(`hotels/${city.slug}.json`)) ?? [];
-    return { items: list.slice(0, 8).map(toLocal), city: guessed };
+    return { items: list.slice(0, 8).map(toLocal), city: guessed, rest: restText };
   }
 
   // The longest word picks the files: it is the one fewest hotels share.
@@ -199,5 +205,5 @@ export async function localHotels(
       b.h[3] - a.h[3] ||
       a.h[1].length - b.h[1].length
   );
-  return { items: found.slice(0, 8).map((f) => toLocal(f.h)), city: guessed };
+  return { items: found.slice(0, 8).map((f) => toLocal(f.h)), city: guessed, rest: restText };
 }

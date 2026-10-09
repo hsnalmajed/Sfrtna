@@ -297,8 +297,9 @@ export async function GET(req: Request) {
   } else if (process.env.HERE_API_KEY) {
     try {
       const u = new URL("https://discover.search.hereapi.com/v1/discover");
-      u.searchParams.set("q", "Hilton Istanbul");
-      u.searchParams.set("at", "41,29");
+      // Asked the way the site asks (googlePlaces.ts → hereHotels).
+      u.searchParams.set("q", "Hilton hotel");
+      u.searchParams.set("at", "41.009,28.965");
       u.searchParams.set("limit", "10");
       u.searchParams.set("apiKey", process.env.HERE_API_KEY);
       const res = await fetch(u.toString(), { cache: "no-store" });
