@@ -284,12 +284,13 @@ export async function GET(req: Request) {
     }
   }
 
-  // HERE (hotel names while Google is unavailable in KSA): one search, taken
+  // HERE (hotel names while Google is unavailable in KSA): one search ("Marriott
+  // hotel" around Jeddah, as the site asks it), taken
   // from the same daily cap as the visitors' searches.
   let here: {
     status: number | string;
     lodging: number | null;
-    sample?: { title?: string; type?: string; categories: (string | undefined)[] }[];
+    sample?: { title?: string; city?: string; type?: string; categories: (string | undefined)[] }[];
     usage?: Awaited<ReturnType<typeof hereUsage>>;
   } = { status: "no key", lodging: null };
   if (process.env.HERE_API_KEY && !(await takeHere())) {
@@ -298,19 +299,21 @@ export async function GET(req: Request) {
     try {
       const u = new URL("https://discover.search.hereapi.com/v1/discover");
       // Asked the way the site asks (googlePlaces.ts → hereHotels).
-      u.searchParams.set("q", "Hilton hotel");
-      u.searchParams.set("at", "41.009,28.965");
-      u.searchParams.set("limit", "10");
+      u.searchParams.set("q", "Marriott hotel");
+      u.searchParams.set("at", "21.550,39.174");
+      u.searchParams.set("limit", "20");
+      u.searchParams.set("lang", "en");
       u.searchParams.set("apiKey", process.env.HERE_API_KEY);
       const res = await fetch(u.toString(), { cache: "no-store" });
       const body = res.ok
-        ? ((await res.json()) as { items?: { title?: string; resultType?: string; categories?: { id?: string }[] }[] })
+        ? ((await res.json()) as { items?: { title?: string; resultType?: string; address?: { city?: string }; categories?: { id?: string }[] }[] })
         : null;
       here = {
         status: res.status,
         // What came back, to see why something is or is not counted as a hotel.
-        sample: (body?.items ?? []).slice(0, 4).map((i) => ({
+        sample: (body?.items ?? []).slice(0, 8).map((i) => ({
           title: i.title,
+          city: i.address?.city,
           type: i.resultType,
           categories: (i.categories ?? []).map((c) => c.id),
         })),
