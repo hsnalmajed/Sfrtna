@@ -415,6 +415,11 @@ yet. Steps for the section:
    (epithet المكرمة/المنورة optional). Real-data test: «هيلتون مكة»,
    «موفنبيك المدينة», «شيراتون جدة», «هوليداي ان الرياض», «اتلانتس دبي» OK;
    «فندق ماريوت جدة», «صحارى» not in OSM → HERE's job.
+   Second run: all 214 cities collected. Outside answers (HERE/OSM) must be
+   in the city the traveller named (no Kuwait Marriott for «ماريوت جدة»);
+   none → empty list → «اعرض فنادق جدة». Live API check 9 Oct evening OK
+   (Istanbul/Makkah/Madinah/Abha/Riyadh/Jeddah queries). UI dropdown check
+   pending: test browser froze on the live home → owner's phone screenshot.
 5. Claude: live test the hotel name box (hotel form → «لدي فندق محدد») with
    Arabic and English: «هيلتون إسطنبول», «سماء», «ابها فندق», «Hilton
    Istanbul», a Riyadh/Jeddah hotel; Arabic spelling variants must match
