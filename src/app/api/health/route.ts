@@ -289,6 +289,7 @@ export async function GET(req: Request) {
   let here: {
     status: number | string;
     lodging: number | null;
+    sample?: { title?: string; type?: string; categories: (string | undefined)[] }[];
     usage?: Awaited<ReturnType<typeof hereUsage>>;
   } = { status: "no key", lodging: null };
   if (process.env.HERE_API_KEY && !(await takeHere())) {
@@ -302,10 +303,16 @@ export async function GET(req: Request) {
       u.searchParams.set("apiKey", process.env.HERE_API_KEY);
       const res = await fetch(u.toString(), { cache: "no-store" });
       const body = res.ok
-        ? ((await res.json()) as { items?: { categories?: { id?: string }[] }[] })
+        ? ((await res.json()) as { items?: { title?: string; resultType?: string; categories?: { id?: string }[] }[] })
         : null;
       here = {
         status: res.status,
+        // What came back, to see why something is or is not counted as a hotel.
+        sample: (body?.items ?? []).slice(0, 4).map((i) => ({
+          title: i.title,
+          type: i.resultType,
+          categories: (i.categories ?? []).map((c) => c.id),
+        })),
         lodging: body ? (body.items ?? []).filter((i) => (i.categories ?? []).some((c) => (c.id ?? "").startsWith("500-"))).length : null,
       };
     } catch (err) {

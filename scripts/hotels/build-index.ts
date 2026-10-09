@@ -19,6 +19,13 @@ const WORD_OUT = join(process.cwd(), "public/data/hotel-words");
 
 type Raw = [string, string, string, number, number];
 
+// Mapped as a hotel but named as a restaurant or café («مطعم سلام بالاس»):
+// left out, unless the name also says it is a place to stay ("Patio Hotel &
+// Restaurant" stays).
+const EATERY = /restaurant|restoran|ristorante|\bcaf[eé]\b|coffee|مطعم|مقهى|كافيه|كوفي/i;
+const STAY = /hotel|otel|\binn\b|suite|rooms?\b|guest|pansiyon|pension|hostel|dorm|resort|lodge|villa|apart|motel|فندق|شقق|اجنح|أجنح|نزل|منتجع|سكن|استراح/i;
+const notAHotel = (names: string[]) => names.some((n) => EATERY.test(n)) && !names.some((n) => STAY.test(n));
+
 function main() {
   if (!existsSync(SRC)) {
     console.log("no collected hotels yet");
@@ -33,7 +40,7 @@ function main() {
   for (const file of readdirSync(SRC).filter((f) => f.endsWith(".json")).sort()) {
     const slug = file.replace(/\.json$/, "");
     const raw = JSON.parse(readFileSync(join(SRC, file), "utf8")) as Raw[];
-    const stored: StoredHotel[] = raw.map(([name, en, ar, stars]) => {
+    const stored: StoredHotel[] = raw.filter((r) => !notAHotel([r[0], r[1], r[2]])).map(([name, en, ar, stars]) => {
       const arabicName = /[؀-ۿ]/.test(name);
       // Booking sites and the price search know a hotel by its Latin name.
       const shown = en || name;
