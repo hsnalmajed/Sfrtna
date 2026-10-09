@@ -145,8 +145,13 @@ export async function hotelSuggestions(
   const city = local.city;
   if (items.length >= 5) return { items, city };
 
+  // A city was named («فندق ماريوت جدة»): an outside answer elsewhere (a
+  // Marriott in Kuwait) is wrong, not helpful — it is left out, and an empty
+  // list offers that city's hotels instead.
+  const cityWords = city ? [city.nameEn, city.nameAr, city.slug.replace(/-/g, " ")].map(normalizeSearch) : [];
+  const inCity = (h: HotelSuggestion) => !city || cityWords.some((w) => normalizeSearch(h.area).includes(w));
   const add = (list: HotelSuggestion[] | null) => {
-    for (const h of list ?? []) {
+    for (const h of (list ?? []).filter(inCity)) {
       const n = normalizeSearch(h.name);
       if (!items.some((o) => normalizeSearch(o.name) === n)) items.push(h);
     }
