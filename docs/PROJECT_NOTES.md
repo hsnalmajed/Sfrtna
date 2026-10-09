@@ -49,7 +49,7 @@ The container shell cannot reach sfrtna.com — test through the browser.
 | Agoda | Pending manual site review | when approved: Site ID/API key (`AGODA_API_KEY`) + bank, then build our own Arabic hotel list |
 | SerpApi (`SERPAPI_KEY`) | Google Hotels prices for one named hotel | free 250/month, pace guard in `serpapi.ts`; `/api/serp-status` shows usage |
 | Google Places (`GOOGLE_PLACES_KEY`) | Hotel-name suggestions | **blocked**: Google Cloud in KSA is sold only via CNTXT, which needs a commercial registration; owner has none (7 Oct). Code kept, off without the key |
-| HERE (`HERE_API_KEY`) | Hotel-name suggestions (Discover, accommodation categories 500-*) | chosen 7 Oct instead of Google; free 5,000/month; **owner creating account**. Order: Google → HERE → OpenStreetMap. Daily cap 160 / month 4,800 (Durable Object `HereQuota`, 9 Oct). `/api/health` shows `here.status`, lodging hits and `here.usage` |
+| HERE (`HERE_API_KEY`) | Hotel-name suggestions (Discover, accommodation categories 500-*) | chosen 7 Oct instead of Google; free 5,000/month; **key live 9 Oct** (Cloudflare Secret). Second layer after our stored hotels (see Next → 4b). Daily cap 160 / month 4,800 (Durable Object `HereQuota`, 9 Oct). `/api/health` shows `here.status`, lodging hits and `here.usage` |
 
 ## Section status
 
@@ -420,6 +420,16 @@ yet. Steps for the section:
    none → empty list → «اعرض فنادق جدة». Live API check 9 Oct evening OK
    (Istanbul/Makkah/Madinah/Abha/Riyadh/Jeddah queries). UI dropdown check
    pending: test browser froze on the live home → owner's phone screenshot.
+   **HERE key live 9 Oct 20:20** (`keys.here: true`, status 200). Discover
+   read "Hilton Istanbul" as a street → now asked `<hotel words> hotel`
+   around the named city's centre (Arabic chains → Latin via the
+   dictionary; `localHotels().rest`), cache key `here-hotels:v2`. Health
+   probe = "Marriott hotel" at Jeddah, shows `sample` (title, city,
+   categories). HERE's own KSA data is thin too (Jeddah: one "Marriott"),
+   so the full fix for Saudi hotels is Agoda's hotel list when approved.
+   Restaurants mapped as hotels («مطعم سلام بالاس») dropped in
+   build-index unless the name also says hotel/suites/…; 214/214 cities,
+   100,750 hotels. «بالاس» = palace added.
 5. Claude: live test the hotel name box (hotel form → «لدي فندق محدد») with
    Arabic and English: «هيلتون إسطنبول», «سماء», «ابها فندق», «Hilton
    Istanbul», a Riyadh/Jeddah hotel; Arabic spelling variants must match
