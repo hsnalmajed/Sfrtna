@@ -21,7 +21,7 @@ export type ServiceKind = "activity" | "esim" | "transfer" | "car" | "luggage";
 export type PlaceBrand =
   | "airalo"
   | "yesim"
-  | "gigsky"
+  | "saily"
   | "kiwitaxi"
   | "welcomepickups"
   | "intui"
@@ -49,7 +49,9 @@ interface BrandInfo {
 export const BRANDS: Record<PlaceBrand, BrandInfo> = {
   airalo: { name: "Airalo", kind: "esim", scope: "country" },
   yesim: { name: "Yesim", kind: "esim", home: "https://yesim.app/" },
-  gigsky: { name: "GigSky", kind: "esim", home: "https://www.gigsky.com/" },
+  // GigSky dropped 10 Oct: Travelpayouts would not make a link for its web
+  // store (app links only), so a visit would not be ours.
+  saily: { name: "Saily", kind: "esim", home: "https://saily.com/" },
   kiwitaxi: { name: "Kiwitaxi", kind: "transfer", scope: "city" },
   welcomepickups: { name: "Welcome Pickups", kind: "transfer", scope: "city" },
   intui: { name: "intui.travel", kind: "transfer", home: "https://intui.travel/" },
@@ -58,7 +60,8 @@ export const BRANDS: Record<PlaceBrand, BrandInfo> = {
   getrentacar: { name: "GetRentacar", kind: "car", home: "https://getrentacar.com/" },
   economybookings: { name: "Economybookings", kind: "car", home: "https://www.economybookings.com/" },
   qeeq: { name: "QEEQ", kind: "car", home: "https://www.qeeq.com/" },
-  autoeurope: { name: "Auto Europe", kind: "car", home: "https://www.autoeurope.com/" },
+  // The program is Auto Europe's EU/UK site; links to .com were not tracked.
+  autoeurope: { name: "Auto Europe", kind: "car", home: "https://www.autoeurope.eu/" },
   radicalstorage: { name: "Radical Storage", kind: "luggage", scope: "city" },
   gocity: { name: "Go City", kind: "activity", scope: "city" },
   kkday: { name: "KKday", kind: "activity", home: "https://www.kkday.com/en" },
@@ -97,7 +100,7 @@ export interface ServiceGroup {
 
 const ORDER: Record<ServiceKind, PlaceBrand[]> = {
   activity: ["gocity", "kkday", "wegotrip"],
-  esim: ["airalo", "yesim", "gigsky"],
+  esim: ["airalo", "yesim", "saily"],
   transfer: ["kiwitaxi", "welcomepickups", "intui", "gettransfer"],
   car: ["localrent", "getrentacar", "economybookings", "qeeq", "autoeurope"],
   luggage: ["radicalstorage"],
