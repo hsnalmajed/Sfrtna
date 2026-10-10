@@ -453,6 +453,24 @@ Travelpayouts.
   GetRentacar/QEEQ/Economybookings/AutoEurope, AirHelp, Radical Storage,
   GetTransfer, intui.travel, Go City, KKday, WeGoTrip — next.
 
+### Trip services panel — 10 Oct (owner: "add ALL partners, not one per need"; old cards too tall)
+- **Rule (owner): every partner for a need is offered, never one pick.**
+- `TripServices.tsx` replaces CityActivities + TripEssentials (deleted): one
+  compact panel «خدمات رحلتك إلى <المدينة>», a row per need, partners as
+  pills (one swipeable line per row on phones). City pages + flight results
+  (results add «تعويض تأخر الرحلة» → AirHelp).
+- `tripEssentials.ts` BRANDS: activity (GYG, Tiqets, Klook search + Go City
+  city page + KKday, WeGoTrip home), eSIM (Airalo country page, Yesim,
+  Saily), transfer (Kiwitaxi, Welcome Pickups city pages; intui.travel,
+  GetTransfer home), car (Localrent city page; GetRentacar, Economybookings,
+  QEEQ, Auto Europe **.eu** home), luggage (Radical Storage city page),
+  AirHelp. Checked pages first, then partners that are a search of their own.
+- Live-tested tracking for every brand (TP click ids in the landing URL).
+  Dropped: GigSky (TP makes app links only), Auto Europe .com (untracked →
+  .eu). EKTA insurance: **owner said no**.
+- Checker now also Radical Storage (126 cities) and Go City (`/en/<city>`,
+  rerun pending). Ticket chips also on place_of_worship with fame ≥ 40.
+
 ## Next, in order
 
 **▶ Start here (new conversation, 9 Oct): finish the HERE hotel-name section.**
