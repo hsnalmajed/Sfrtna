@@ -10,7 +10,7 @@
 // Each partner's address pattern was checked by hand on 10 Oct 2026 (Airalo
 // /turkey-esim, Kiwitaxi /en/turkey/istanbul, Welcome Pickups
 // /istanbul/airport-transfer/, Localrent /en/turkey/istanbul/, Radical Storage
-// /luggage-storage/istanbul, Go City /<city>/en-us). A page counts
+// /luggage-storage/istanbul, Go City /en/<city>). A page counts
 // as found when it answers 200, was not redirected away from the place, and
 // names the place in its <title>. Runs on GitHub Actions
 // (.github/workflows/partner-pages.yml); polite: one request at a time.
@@ -133,7 +133,7 @@ async function main() {
       if (rs) entry.radicalstorage = rs.url;
 
       const gc = await first(
-        sSlugs.map((s) => ({ url: `https://gocity.com/${s}/en-us`, keep: `/${s}` })),
+        sSlugs.map((s) => ({ url: `https://gocity.com/en/${s}`, keep: `/${s}` })),
         names
       );
       if (gc) entry.gocity = gc.url;
