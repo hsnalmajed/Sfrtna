@@ -1,5 +1,7 @@
 "use client";
 
+import PartnerLink from "@/components/PartnerLink";
+import { activityLinks } from "@/lib/activityLinks";
 import { useMemo, useState } from "react";
 import { PIN_STYLES, type PinCategory } from "@/lib/pinStyles";
 import Photo from "@/components/Photo";
@@ -36,6 +38,12 @@ export interface PlaceListItem {
    * places per city, absent on the rest, and never invented.
    */
   bookingLabel?: string;
+  /**
+   * What to search the activity partners for ("Hagia Sophia Istanbul") —
+   * only on places a ticket or a tour is usually sold for (see
+   * activityLinks.ts). Absent: no ticket buttons.
+   */
+  ticketQuery?: string;
 }
 
 interface ExplorerDict {
@@ -47,6 +55,8 @@ interface ExplorerDict {
   emptyCategory: string;
   englishOnly: string;
   directions: string;
+  /** "Tickets & tours" — the label before the partner buttons on a place. */
+  tickets?: string;
   loadMore: string;
   searchPlaceholder: string;
 }
@@ -261,6 +271,28 @@ export default function CityPlacesExplorer({
 
                   {p.englishOnly && (
                     <p className="mt-2 text-[11px] leading-snug text-amber-700">{dict.englishOnly}</p>
+                  )}
+
+                  {p.ticketQuery && dict.tickets && (
+                    <div className="mt-2 flex flex-wrap items-center gap-1.5 sm:mt-3">
+                      <span className="text-[11px] font-bold text-navy-700">
+                        <span aria-hidden="true">🎟️ </span>
+                        {dict.tickets}
+                      </span>
+                      {activityLinks(p.ticketQuery).map((l) => (
+                        <PartnerLink
+                          key={l.partner}
+                          partner={l.partner}
+                          href={l.href}
+                          data-product="activity"
+                          data-placement="place_card"
+                          dir="ltr"
+                          className="rounded-full bg-white px-2.5 py-1 text-[11px] font-bold text-navy-900 ring-1 ring-mist-200 transition hover:ring-sea-300"
+                        >
+                          {l.name}
+                        </PartnerLink>
+                      ))}
+                    </div>
                   )}
 
                   {p.lat !== undefined && p.lon !== undefined && (

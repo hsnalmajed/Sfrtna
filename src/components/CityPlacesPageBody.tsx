@@ -17,6 +17,8 @@ import CountryQuickFacts, { type QuickFact } from "@/components/CountryQuickFact
 import { BOOKING_SHORT_LABELS } from "@/lib/countryGuides";
 import { fetchCitiesForCountry, fetchToursForCity } from "@/lib/viator";
 import { type PlaceListItem } from "@/components/CityPlacesExplorer";
+import CityActivities from "@/components/CityActivities";
+import { TICKETED_KINDS } from "@/lib/activityLinks";
 import CityPlacesView, { type CityView } from "@/components/CityPlacesView";
 import TourCard from "@/components/TourCard";
 import PageHero from "@/components/ui/PageHero";
@@ -101,10 +103,20 @@ export default async function CityPlacesPageBody({
     ? (await fetchToursForCity(viatorCity.id, { count: 12, currency: "USD" })).tours
     : [];
 
+  // Ticket and tour buttons go on places such things are sold for: a hand-
+  // checked landmark booked online, or a well-known museum, palace, site…
+  // (an obscure one would only open an empty search at the partner).
+  const sellsTickets = (booking: string) => booking === "official" || booking === "guide";
+  // "Basilica Cistern (Exit)" is a map's note, not part of what to search for.
+  const ticketQueryFor = (nameEn: string) => `${nameEn.replace(/\s*\([^)]*\)/g, "").trim()} ${cityEntry.nameEn}`;
+
   const covered = new Set<string>();
   const items: PlaceListItem[] = places.map((p) => {
     const hit = highlightFor(p);
     if (hit) covered.add(hit.landmark.nameEn);
+    const ticketed = hit
+      ? sellsTickets(hit.landmark.booking)
+      : TICKETED_KINDS.has(p.kind ?? "") && (p.fame ?? 0) >= 8;
     return {
       key: p.id,
       // Our own hand-written name wins for a curated landmark: it is checked,
@@ -119,6 +131,7 @@ export default async function CityPlacesPageBody({
       lon: p.lon,
       englishOnly: hit ? false : p.englishOnly,
       bookingLabel: hit ? BOOKING_SHORT_LABELS[hit.landmark.booking][loc] : undefined,
+      ticketQuery: ticketed ? ticketQueryFor(hit ? hit.landmark.nameEn : p.nameEn) : undefined,
     };
   });
 
@@ -137,6 +150,7 @@ export default async function CityPlacesPageBody({
       // The names here are our own, written in both languages.
       englishOnly: false,
       bookingLabel: BOOKING_SHORT_LABELS[h.landmark.booking][loc],
+      ticketQuery: sellsTickets(h.landmark.booking) ? ticketQueryFor(h.landmark.nameEn) : undefined,
     });
   }
 
@@ -210,6 +224,7 @@ export default async function CityPlacesPageBody({
 
       <div className="mx-auto max-w-6xl px-4 sm:px-6 py-10">
         <CountryQuickFacts locale={loc} facts={facts} heading={dict.attractions.quickFactsHeading} />
+        <CityActivities locale={loc} cityName={cityName} cityNameEn={cityEntry.nameEn} t={dict.attractions} />
         {tours.length > 0 && (
           <section className="mb-10">
             <SectionHeading title={dict.attractions.toursHeading} />
@@ -246,6 +261,7 @@ export default async function CityPlacesPageBody({
                 emptyCategory: dict.attractions.emptyCategory,
                 englishOnly: dict.attractions.englishOnly,
                 directions: dict.maps.directions,
+                tickets: dict.attractions.ticketsAndTours,
                 loadMore: dict.attractions.loadMore,
                 searchPlaceholder: dict.attractions.placeSearchPlaceholder,
               }}

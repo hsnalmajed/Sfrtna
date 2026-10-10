@@ -46,6 +46,8 @@ export const ROUTES = {
   "/api/hotel-prices": { methods: ["GET"], caller: "page", heavy: true },
   "/api/itinerary": { methods: ["POST"], caller: "page", heavy: true },
   "/api/go/expedia": { methods: ["GET"], caller: "link" },
+  "/api/go/gyg": { methods: ["GET"], caller: "link" },
+  "/api/go/tp": { methods: ["GET"], caller: "link" },
   "/api/health": { methods: ["GET"], caller: "owner", heavy: true },
   "/api/serp-status": { methods: ["GET"], caller: "owner" },
 };
