@@ -10,6 +10,8 @@ import type { RoomType, Locale, SearchParams, TripType } from "@/lib/types";
 import TripCurrencyInline from "@/components/TripCurrencyInline";
 import FlightMetasearch, { warmFlightSearch } from "@/components/FlightMetasearch";
 import FlightResultsGuide from "@/components/FlightResultsGuide";
+import TripEssentials from "@/components/TripEssentials";
+import CityActivities from "@/components/CityActivities";
 import VisaBadge from "@/components/VisaBadge";
 import VisaRequirementsDialog from "@/components/VisaRequirementsDialog";
 import { visaStatusFor } from "@/data/visaStatus";
@@ -488,6 +490,23 @@ function ResultsContent() {
             {dict.results.hotelNextCta}
           </span>
         </Link>
+      )}
+
+      {/* Around the trip, at the destination: mobile data, a driver from
+          the airport, a car, then tours and tickets. Shown only where we
+          hold a checked partner page (TripEssentials hides itself). */}
+      {destinationCity && destinationCountry && (
+        <div className="mt-10">
+          <TripEssentials
+            locale={locale}
+            countryCode={destinationCountry.code}
+            citySlug={destinationCity.slug}
+            cityName={destinationCityName ?? destinationCity.nameEn}
+            countryName={locale === "ar" ? destinationCountry.nameAr : destinationCountry.nameEn}
+            t={dict.attractions}
+          />
+          <CityActivities locale={locale} cityName={destinationCityName ?? destinationCity.nameEn} cityNameEn={destinationCity.nameEn} t={dict.attractions} />
+        </div>
       )}
 
       <div className="mt-10 space-y-4">
