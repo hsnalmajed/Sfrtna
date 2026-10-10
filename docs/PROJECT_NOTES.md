@@ -433,6 +433,26 @@ Travelpayouts.
   itinerary by proximity (CityPlacesPlanner already groups picked places
   by distance).
 
+### Trip essentials — 10 Oct (live)
+- `scripts/partners/check-pages.ts` + `.github/workflows/partner-pages.yml`
+  (monthly on the 7th / on change): keeps only partner pages that answer 200,
+  keep the place in the path and name it in the <title> →
+  `src/data/partnerPages.json`. First run: Airalo 72/73 countries (no RU),
+  Kiwitaxi 40, Welcome Pickups 68, Localrent 95 of 214 cities.
+- `src/lib/tripEssentials.ts` + `TripEssentials.tsx` «جهّز رحلتك إلى
+  <المدينة>»: eSIM (Airalo), airport transfer (Kiwitaxi, Welcome Pickups),
+  car rental (Localrent) — only groups with a checked page. On city pages and
+  on flight results (with CityActivities, for the destination city).
+- `/api/go/tp` now also `b=airalo&c=<CC>` and `b=kiwitaxi|welcomepickups|
+  localrent&p=<city slug>` — looked up in partnerPages.json, else 400.
+- Live 10 Oct: all four land tracked (Airalo irclickid, Kiwitaxi tpo,
+  Welcome Pickups aff_track_id, Localrent r=…&utm_source=travelpayouts);
+  Istanbul shows all, Riyadh eSIM only, Moscow nothing; bad keys → 400.
+- Not added: **EKTA insurance** — underwriter licensed in the Comoros (its
+  own site), owner decision pending; Yesim (URL pattern not verified);
+  GetRentacar/QEEQ/Economybookings/AutoEurope, AirHelp, Radical Storage,
+  GetTransfer, intui.travel, Go City, KKday, WeGoTrip — next.
+
 ## Next, in order
 
 **▶ Start here (new conversation, 9 Oct): finish the HERE hotel-name section.**
