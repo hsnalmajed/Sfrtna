@@ -407,6 +407,32 @@ Travelpayouts.
   description and coordinates; itinerary days grouped by proximity
   (landmarks + activities + restaurants).
 
+### Activities, phase 1 — 10 Oct (live)
+- `src/lib/activityLinks.ts`: GetYourGuide (direct, partner tag), Tiqets and
+  Klook (Travelpayouts). Each partner's own search; **no prices** (none of
+  these give us an API yet). Links go through our redirects:
+  `/api/go/gyg?q=` (adds partner_id + utm_medium=online_publisher) and
+  `/api/go/tp?b=klook|tiqets&q=` (Travelpayouts `POST /links/v1/create`,
+  token `TRAVELPAYOUTS_TOKEN`, project trs 577683, edge-cached 30 days,
+  falls back to the plain search). Search only, never a free URL (400).
+- City pages (attractions + maps): `CityActivities.tsx` «جولات وتذاكر في
+  <المدينة>» (3 partner cards). Place cards: «تذاكر وجولات:» chips on
+  TICKETED_KINDS with fame ≥ 8, or hand-checked landmarks booked
+  official/guide; query = English name without "(…)" + city.
+- Live check 10 Oct: Istanbul 45 place chips, Dubai 69, London 63, Riyadh
+  15, Abha 0; Klook landed with aff_pid=marker (tracked), Tiqets with
+  partner=travelpayouts.com (11 results for Hagia Sophia), GetYourGuide
+  302 with partner_id. GA4 partner_click: data-partner + product=activity
+  + placement city_activities|place_card. Visual check pending (test
+  browser froze) → owner's phone screenshot.
+- Verified search URLs: GYG `/s/?q=` (auto Arabic), Tiqets `/en/search?q=`
+  (`/en/search/` = 404), Klook `/en-US/search/result/?query=`. KKday and
+  WeGoTrip search URLs did not verify → not linked yet.
+- Next for activities: Viator (API: description + live price + book) once
+  the owner's ID verification passes; descriptions + our own translation;
+  itinerary by proximity (CityPlacesPlanner already groups picked places
+  by distance).
+
 ## Next, in order
 
 **▶ Start here (new conversation, 9 Oct): finish the HERE hotel-name section.**
