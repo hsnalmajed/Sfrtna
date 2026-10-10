@@ -1,26 +1,33 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cachedJson } from "@/lib/edgeCache";
 import { partnerSearchUrl, type ActivityPartner } from "@/lib/activityLinks";
+import { essentialPage, type EssentialBrand } from "@/lib/tripEssentials";
 import { travelpayoutsMarker } from "@/lib/providers/travelpayouts";
 
 export const dynamic = "force-dynamic";
 
 /**
- * /api/go/tp?b=<klook|tiqets>&q=<what to search> → that partner's search,
- * through our Travelpayouts affiliate link.
+ * Our way out to Travelpayouts partners, through our affiliate link:
+ *
+ *   /api/go/tp?b=<klook|tiqets>&q=<what to search>   the partner's search
+ *   /api/go/tp?b=airalo&c=<country code>             a checked country page
+ *   /api/go/tp?b=<kiwitaxi|welcomepickups|localrent>&p=<city slug>
+ *                                                    a checked city page
  *
  * Travelpayouts makes the link (POST /links/v1/create, our server token);
  * each one is kept at the edge for 30 days, so a popular search asks once.
  * Should Travelpayouts refuse or be down, the visitor still lands on the
  * partner's search — without our tag, never on an error page.
  *
- * Only a partner from the list and a search are accepted, so this can never
- * send anyone to a page we did not choose.
+ * Only a partner from the lists, with a search or a place we hold a checked
+ * page for (tripEssentials.ts), is accepted — never a free URL — so this can
+ * never send anyone to a page we did not choose.
  */
 
-/** Our Travelpayouts project ("Sfrtna"), subscribed to Klook and Tiqets. */
+/** Our Travelpayouts project ("Sfrtna"), subscribed to these brands. */
 const TP_PROJECT = 577683;
-const BRANDS = new Set<ActivityPartner>(["klook", "tiqets"]);
+const SEARCH_BRANDS = new Set<string>(["klook", "tiqets"]);
+const PAGE_BRANDS = new Set<string>(["airalo", "kiwitaxi", "welcomepickups", "localrent"]);
 
 interface CreateResponse {
   result?: { links?: { url?: string; code?: string; partner_url?: string }[] };
@@ -55,12 +62,18 @@ async function partnerLink(url: string): Promise<string | null> {
 
 export async function GET(req: NextRequest) {
   const sp = req.nextUrl.searchParams;
-  const brand = sp.get("b") as ActivityPartner;
-  const q = (sp.get("q") || "").trim();
-  if (!BRANDS.has(brand) || !q || q.length > 120) {
-    return NextResponse.json({ error: "bad request" }, { status: 400 });
+  const brand = sp.get("b") || "";
+  let plain: string | null = null;
+  if (SEARCH_BRANDS.has(brand)) {
+    const q = (sp.get("q") || "").trim();
+    if (q && q.length <= 120) plain = partnerSearchUrl(brand as ActivityPartner, q);
+  } else if (PAGE_BRANDS.has(brand)) {
+    plain = essentialPage(brand as EssentialBrand, {
+      country: (sp.get("c") || "").toUpperCase(),
+      city: sp.get("p") || "",
+    });
   }
-  const plain = partnerSearchUrl(brand, q);
+  if (!plain) return NextResponse.json({ error: "bad request" }, { status: 400 });
   const target = (await partnerLink(plain)) ?? plain;
   return NextResponse.redirect(target, {
     status: 302,

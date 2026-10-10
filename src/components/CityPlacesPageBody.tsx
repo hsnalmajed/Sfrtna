@@ -18,6 +18,7 @@ import { BOOKING_SHORT_LABELS } from "@/lib/countryGuides";
 import { fetchCitiesForCountry, fetchToursForCity } from "@/lib/viator";
 import { type PlaceListItem } from "@/components/CityPlacesExplorer";
 import CityActivities from "@/components/CityActivities";
+import TripEssentials from "@/components/TripEssentials";
 import { TICKETED_KINDS } from "@/lib/activityLinks";
 import CityPlacesView, { type CityView } from "@/components/CityPlacesView";
 import TourCard from "@/components/TourCard";
@@ -225,6 +226,14 @@ export default async function CityPlacesPageBody({
       <div className="mx-auto max-w-6xl px-4 sm:px-6 py-10">
         <CountryQuickFacts locale={loc} facts={facts} heading={dict.attractions.quickFactsHeading} />
         <CityActivities locale={loc} cityName={cityName} cityNameEn={cityEntry.nameEn} t={dict.attractions} />
+        <TripEssentials
+          locale={loc}
+          countryCode={country.code}
+          citySlug={cityEntry.slug}
+          cityName={cityName}
+          countryName={loc === "ar" ? country.nameAr : country.nameEn}
+          t={dict.attractions}
+        />
         {tours.length > 0 && (
           <section className="mb-10">
             <SectionHeading title={dict.attractions.toursHeading} />
