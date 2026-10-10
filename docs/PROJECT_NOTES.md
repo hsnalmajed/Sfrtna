@@ -393,8 +393,14 @@ Travelpayouts.
 - Viator direct: the owner HAS an account (named "iTravel"), status
   "Retry account verification" → owner must re-submit (dashboard → Try
   again; site sfrtna.com).
-- GetYourGuide direct: partner.getyourguide.com (Sign Up). Headout:
+- **GetYourGuide direct: account active 10 Oct** (owner signed up as
+  content creator, site sfrtna.com). Public partner tag `partner_id=NNJW64J`
+  (rides in link URLs, not a secret). Tools offered: links, activity / city /
+  availability widgets — **no API** on this account; widget languages
+  exclude Arabic. 2FA now mandatory (owner to set up). Headout:
   partner.headout.com/affiliate.
+- Viator verification = government ID photo + live selfie (camera), done by
+  the owner; account name/site can only be changed via Viator support.
 - Owner's direction: everything a traveller needs in one place; activity
   page in our site = description (ar/en, our own translation) + live price
   + book button to the activity's own page; every place needs a
