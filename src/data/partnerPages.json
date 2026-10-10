@@ -1,5 +1,774 @@
 {
- "checked": "",
- "countries": {},
- "cities": {}
+ "checked": "2026-10-10",
+ "countries": {
+  "AE": {
+   "airalo": "https://www.airalo.com/united-arab-emirates-esim"
+  },
+  "AL": {
+   "airalo": "https://www.airalo.com/albania-esim"
+  },
+  "AM": {
+   "airalo": "https://www.airalo.com/armenia-esim"
+  },
+  "AT": {
+   "airalo": "https://www.airalo.com/austria-esim"
+  },
+  "AU": {
+   "airalo": "https://www.airalo.com/australia-esim"
+  },
+  "AZ": {
+   "airalo": "https://www.airalo.com/azerbaijan-esim"
+  },
+  "BA": {
+   "airalo": "https://www.airalo.com/bosnia-and-herzegovina-esim"
+  },
+  "BE": {
+   "airalo": "https://www.airalo.com/belgium-esim"
+  },
+  "BH": {
+   "airalo": "https://www.airalo.com/bahrain-esim"
+  },
+  "BR": {
+   "airalo": "https://www.airalo.com/brazil-esim"
+  },
+  "CA": {
+   "airalo": "https://www.airalo.com/canada-esim"
+  },
+  "CH": {
+   "airalo": "https://www.airalo.com/switzerland-esim"
+  },
+  "CN": {
+   "airalo": "https://www.airalo.com/china-esim"
+  },
+  "CY": {
+   "airalo": "https://www.airalo.com/cyprus-esim"
+  },
+  "CZ": {
+   "airalo": "https://www.airalo.com/czech-republic-esim"
+  },
+  "DE": {
+   "airalo": "https://www.airalo.com/germany-esim"
+  },
+  "DK": {
+   "airalo": "https://www.airalo.com/denmark-esim"
+  },
+  "EG": {
+   "airalo": "https://www.airalo.com/egypt-esim"
+  },
+  "ES": {
+   "airalo": "https://www.airalo.com/spain-esim"
+  },
+  "FI": {
+   "airalo": "https://www.airalo.com/finland-esim"
+  },
+  "FR": {
+   "airalo": "https://www.airalo.com/france-esim"
+  },
+  "GB": {
+   "airalo": "https://www.airalo.com/united-kingdom-esim"
+  },
+  "GE": {
+   "airalo": "https://www.airalo.com/georgia-esim"
+  },
+  "GR": {
+   "airalo": "https://www.airalo.com/greece-esim"
+  },
+  "HR": {
+   "airalo": "https://www.airalo.com/croatia-esim"
+  },
+  "HU": {
+   "airalo": "https://www.airalo.com/hungary-esim"
+  },
+  "ID": {
+   "airalo": "https://www.airalo.com/indonesia-esim"
+  },
+  "IE": {
+   "airalo": "https://www.airalo.com/ireland-esim"
+  },
+  "IN": {
+   "airalo": "https://www.airalo.com/india-esim"
+  },
+  "IS": {
+   "airalo": "https://www.airalo.com/iceland-esim"
+  },
+  "IT": {
+   "airalo": "https://www.airalo.com/italy-esim"
+  },
+  "JO": {
+   "airalo": "https://www.airalo.com/jordan-esim"
+  },
+  "JP": {
+   "airalo": "https://www.airalo.com/japan-esim"
+  },
+  "KE": {
+   "airalo": "https://www.airalo.com/kenya-esim"
+  },
+  "KG": {
+   "airalo": "https://www.airalo.com/kyrgyzstan-esim"
+  },
+  "KH": {
+   "airalo": "https://www.airalo.com/cambodia-esim"
+  },
+  "KR": {
+   "airalo": "https://www.airalo.com/south-korea-esim"
+  },
+  "KW": {
+   "airalo": "https://www.airalo.com/kuwait-esim"
+  },
+  "KZ": {
+   "airalo": "https://www.airalo.com/kazakhstan-esim"
+  },
+  "LB": {
+   "airalo": "https://www.airalo.com/lebanon-esim"
+  },
+  "LK": {
+   "airalo": "https://www.airalo.com/sri-lanka-esim"
+  },
+  "MA": {
+   "airalo": "https://www.airalo.com/morocco-esim"
+  },
+  "ME": {
+   "airalo": "https://www.airalo.com/montenegro-esim"
+  },
+  "MT": {
+   "airalo": "https://www.airalo.com/malta-esim"
+  },
+  "MU": {
+   "airalo": "https://www.airalo.com/mauritius-esim"
+  },
+  "MV": {
+   "airalo": "https://www.airalo.com/maldives-esim"
+  },
+  "MX": {
+   "airalo": "https://www.airalo.com/mexico-esim"
+  },
+  "MY": {
+   "airalo": "https://www.airalo.com/malaysia-esim"
+  },
+  "NL": {
+   "airalo": "https://www.airalo.com/netherlands-esim"
+  },
+  "NO": {
+   "airalo": "https://www.airalo.com/norway-esim"
+  },
+  "NP": {
+   "airalo": "https://www.airalo.com/nepal-esim"
+  },
+  "OM": {
+   "airalo": "https://www.airalo.com/oman-esim"
+  },
+  "PH": {
+   "airalo": "https://www.airalo.com/philippines-esim"
+  },
+  "PK": {
+   "airalo": "https://www.airalo.com/pakistan-esim"
+  },
+  "PL": {
+   "airalo": "https://www.airalo.com/poland-esim"
+  },
+  "PT": {
+   "airalo": "https://www.airalo.com/portugal-esim"
+  },
+  "QA": {
+   "airalo": "https://www.airalo.com/qatar-esim"
+  },
+  "RO": {
+   "airalo": "https://www.airalo.com/romania-esim"
+  },
+  "RS": {
+   "airalo": "https://www.airalo.com/serbia-esim"
+  },
+  "RU": {},
+  "SA": {
+   "airalo": "https://www.airalo.com/saudi-arabia-esim"
+  },
+  "SC": {
+   "airalo": "https://www.airalo.com/seychelles-esim"
+  },
+  "SE": {
+   "airalo": "https://www.airalo.com/sweden-esim"
+  },
+  "SG": {
+   "airalo": "https://www.airalo.com/singapore-esim"
+  },
+  "SI": {
+   "airalo": "https://www.airalo.com/slovenia-esim"
+  },
+  "TH": {
+   "airalo": "https://www.airalo.com/thailand-esim"
+  },
+  "TN": {
+   "airalo": "https://www.airalo.com/tunisia-esim"
+  },
+  "TR": {
+   "airalo": "https://www.airalo.com/turkey-esim"
+  },
+  "TZ": {
+   "airalo": "https://www.airalo.com/tanzania-esim"
+  },
+  "US": {
+   "airalo": "https://www.airalo.com/united-states-esim"
+  },
+  "UZ": {
+   "airalo": "https://www.airalo.com/uzbekistan-esim"
+  },
+  "VN": {
+   "airalo": "https://www.airalo.com/vietnam-esim"
+  },
+  "ZA": {
+   "airalo": "https://www.airalo.com/south-africa-esim"
+  }
+ },
+ "cities": {
+  "abha": {
+   "kiwitaxi": "https://kiwitaxi.com/en/saudi-arabia/abha"
+  },
+  "abu-dhabi": {
+   "kiwitaxi": "https://kiwitaxi.com/en/uae/abu-dhabi",
+   "localrent": "https://localrent.com/en/uae/abu-dhabi/"
+  },
+  "agra": {},
+  "al-wakrah": {
+   "kiwitaxi": "https://kiwitaxi.com/en/qatar/al-wakrah",
+   "localrent": "https://localrent.com/en/qatar/al-wakrah/"
+  },
+  "alexandria": {
+   "kiwitaxi": "https://kiwitaxi.com/en/egypt/alexandria"
+  },
+  "almaty": {
+   "localrent": "https://localrent.com/en/kazakhstan/almaty/"
+  },
+  "alula": {},
+  "amman": {
+   "kiwitaxi": "https://kiwitaxi.com/en/jordan/amman",
+   "welcomepickups": "https://www.welcomepickups.com/amman/airport-transfer/",
+   "localrent": "https://localrent.com/en/jordan/amman/"
+  },
+  "amsterdam": {
+   "welcomepickups": "https://www.welcomepickups.com/amsterdam/airport-transfer/"
+  },
+  "antalya": {
+   "kiwitaxi": "https://kiwitaxi.com/en/turkey/antalya",
+   "welcomepickups": "https://www.welcomepickups.com/antalya/airport-transfer/",
+   "localrent": "https://localrent.com/en/turkey/antalya/"
+  },
+  "aqaba": {
+   "kiwitaxi": "https://kiwitaxi.com/en/jordan/aqaba",
+   "localrent": "https://localrent.com/en/jordan/aqaba/"
+  },
+  "arusha": {},
+  "astana": {},
+  "aswan": {
+   "kiwitaxi": "https://kiwitaxi.com/en/egypt/aswan",
+   "localrent": "https://localrent.com/en/egypt/aswan/"
+  },
+  "athens": {
+   "welcomepickups": "https://www.welcomepickups.com/athens/airport-transfer/",
+   "localrent": "https://localrent.com/en/greece/athens/"
+  },
+  "baalbek": {},
+  "baku": {
+   "localrent": "https://localrent.com/en/azerbaijan/baku/"
+  },
+  "bali": {
+   "welcomepickups": "https://www.welcomepickups.com/bali/airport-transfer/",
+   "localrent": "https://localrent.com/en/indonesia/bali/"
+  },
+  "banff": {},
+  "bangkok": {
+   "welcomepickups": "https://www.welcomepickups.com/bangkok/airport-transfer/",
+   "localrent": "https://localrent.com/en/thailand/bangkok/"
+  },
+  "barcelona": {
+   "kiwitaxi": "https://kiwitaxi.com/en/spain/barcelona",
+   "welcomepickups": "https://www.welcomepickups.com/barcelona/airport-transfer/",
+   "localrent": "https://localrent.com/en/spain/barcelona/"
+  },
+  "batumi": {
+   "localrent": "https://localrent.com/en/georgia/batumi/"
+  },
+  "beijing": {},
+  "beirut": {
+   "welcomepickups": "https://www.welcomepickups.com/beirut/airport-transfer/"
+  },
+  "belgrade": {
+   "welcomepickups": "https://www.welcomepickups.com/belgrade/airport-transfer/",
+   "localrent": "https://localrent.com/en/serbia/belgrade/"
+  },
+  "bergen": {},
+  "berlin": {
+   "welcomepickups": "https://www.welcomepickups.com/berlin/airport-transfer/",
+   "localrent": "https://localrent.com/en/germany/berlin/"
+  },
+  "bishkek": {
+   "localrent": "https://localrent.com/en/kyrgyzstan/bishkek/"
+  },
+  "bled": {},
+  "boracay": {},
+  "brasov": {},
+  "brisbane": {},
+  "bruges": {},
+  "brussels": {
+   "welcomepickups": "https://www.welcomepickups.com/brussels/airport-transfer/"
+  },
+  "bucharest": {
+   "welcomepickups": "https://www.welcomepickups.com/bucharest/airport-transfer/",
+   "localrent": "https://localrent.com/en/romania/bucharest/"
+  },
+  "budapest": {
+   "welcomepickups": "https://www.welcomepickups.com/budapest/airport-transfer/",
+   "localrent": "https://localrent.com/en/hungary/budapest/"
+  },
+  "budva": {
+   "localrent": "https://localrent.com/en/montenegro/budva/"
+  },
+  "bukhara": {},
+  "bursa": {
+   "kiwitaxi": "https://kiwitaxi.com/en/turkey/bursa",
+   "localrent": "https://localrent.com/en/turkey/bursa/"
+  },
+  "busan": {},
+  "byblos": {},
+  "cairo": {
+   "kiwitaxi": "https://kiwitaxi.com/en/egypt/cairo",
+   "welcomepickups": "https://www.welcomepickups.com/cairo/airport-transfer/",
+   "localrent": "https://localrent.com/en/egypt/cairo/"
+  },
+  "cancun": {
+   "localrent": "https://localrent.com/en/mexico/cancun/"
+  },
+  "cape-town": {},
+  "cappadocia": {
+   "kiwitaxi": "https://kiwitaxi.com/en/turkey/cappadocia"
+  },
+  "casablanca": {
+   "kiwitaxi": "https://kiwitaxi.com/en/morocco/casablanca",
+   "welcomepickups": "https://www.welcomepickups.com/casablanca/airport-transfer/",
+   "localrent": "https://localrent.com/en/morocco/casablanca/"
+  },
+  "cebu": {},
+  "chefchaouen": {
+   "kiwitaxi": "https://kiwitaxi.com/en/morocco/chefchaouen",
+   "localrent": "https://localrent.com/en/morocco/chefchaouen/"
+  },
+  "chiang-mai": {},
+  "colombo": {
+   "welcomepickups": "https://www.welcomepickups.com/colombo/airport-transfer/"
+  },
+  "copenhagen": {},
+  "cordoba": {},
+  "da-nang": {
+   "localrent": "https://localrent.com/en/vietnam/da-nang/"
+  },
+  "delhi": {},
+  "djerba": {
+   "localrent": "https://localrent.com/en/tunisia/djerba/"
+  },
+  "doha": {
+   "kiwitaxi": "https://kiwitaxi.com/en/qatar/doha",
+   "welcomepickups": "https://www.welcomepickups.com/doha/airport-transfer/",
+   "localrent": "https://localrent.com/en/qatar/doha/"
+  },
+  "dubai": {
+   "kiwitaxi": "https://kiwitaxi.com/en/uae/dubai",
+   "localrent": "https://localrent.com/en/uae/dubai/"
+  },
+  "dublin": {
+   "welcomepickups": "https://www.welcomepickups.com/dublin/airport-transfer/"
+  },
+  "dubrovnik": {
+   "welcomepickups": "https://www.welcomepickups.com/dubrovnik/airport-transfer/",
+   "localrent": "https://localrent.com/en/croatia/dubrovnik/"
+  },
+  "durban": {},
+  "durres": {},
+  "edinburgh": {
+   "kiwitaxi": "https://kiwitaxi.com/en/united-kingdom/edinburgh",
+   "welcomepickups": "https://www.welcomepickups.com/edinburgh/airport-transfer/"
+  },
+  "ella": {},
+  "fes": {},
+  "florence": {
+   "welcomepickups": "https://www.welcomepickups.com/florence/airport-transfer/",
+   "localrent": "https://localrent.com/en/italy/florence/"
+  },
+  "frankfurt": {
+   "localrent": "https://localrent.com/en/germany/frankfurt/"
+  },
+  "gabala": {},
+  "galle": {},
+  "galway": {},
+  "geneva": {
+   "welcomepickups": "https://www.welcomepickups.com/geneva/airport-transfer/"
+  },
+  "goa": {},
+  "gold-coast": {},
+  "granada": {
+   "kiwitaxi": "https://kiwitaxi.com/en/spain/granada",
+   "welcomepickups": "https://www.welcomepickups.com/granada/airport-transfer/",
+   "localrent": "https://localrent.com/en/spain/granada/"
+  },
+  "grand-baie": {
+   "localrent": "https://localrent.com/en/mauritius/grand-baie/"
+  },
+  "guadalajara": {},
+  "guangzhou": {},
+  "guba": {
+   "localrent": "https://localrent.com/en/azerbaijan/quba/"
+  },
+  "hamburg": {
+   "welcomepickups": "https://www.welcomepickups.com/hamburg/airport-transfer/",
+   "localrent": "https://localrent.com/en/germany/hamburg/"
+  },
+  "hanoi": {
+   "welcomepickups": "https://www.welcomepickups.com/hanoi/airport-transfer/",
+   "localrent": "https://localrent.com/en/vietnam/hanoi/"
+  },
+  "helsinki": {
+   "welcomepickups": "https://www.welcomepickups.com/helsinki/airport-transfer/",
+   "localrent": "https://localrent.com/en/finland/helsinki/"
+  },
+  "hiroshima": {},
+  "ho-chi-minh-city": {
+   "localrent": "https://localrent.com/en/vietnam/ho-chi-minh-city/"
+  },
+  "hoi-an": {
+   "localrent": "https://localrent.com/en/vietnam/hoi-an/"
+  },
+  "innsbruck": {},
+  "interlaken": {},
+  "islamabad": {},
+  "istanbul": {
+   "kiwitaxi": "https://kiwitaxi.com/en/turkey/istanbul",
+   "welcomepickups": "https://www.welcomepickups.com/istanbul/airport-transfer/",
+   "localrent": "https://localrent.com/en/turkey/istanbul/"
+  },
+  "izmir": {},
+  "jaipur": {},
+  "jakarta": {},
+  "jeddah": {
+   "kiwitaxi": "https://kiwitaxi.com/en/saudi-arabia/jeddah"
+  },
+  "jeju": {
+   "localrent": "https://localrent.com/en/korea/jeju/"
+  },
+  "johannesburg": {
+   "welcomepickups": "https://www.welcomepickups.com/johannesburg/airport-transfer/"
+  },
+  "kandy": {},
+  "karakol": {},
+  "karlovy-vary": {},
+  "kathmandu": {},
+  "kazan": {},
+  "kazbegi": {
+   "localrent": "https://localrent.com/en/georgia/stepantsminda/"
+  },
+  "kotor": {
+   "localrent": "https://localrent.com/en/montenegro/kotor/"
+  },
+  "krakow": {},
+  "kuala-lumpur": {
+   "localrent": "https://localrent.com/en/malaysia/kuala-lumpur/"
+  },
+  "kuwait-city": {
+   "kiwitaxi": "https://kiwitaxi.com/en/kuwait/kuwait-city"
+  },
+  "kyoto": {},
+  "lahore": {},
+  "langkawi": {},
+  "larnaca": {
+   "localrent": "https://localrent.com/en/cyprus/larnaca/"
+  },
+  "las-vegas": {
+   "welcomepickups": "https://www.welcomepickups.com/las-vegas/airport-transfer/"
+  },
+  "limassol": {
+   "localrent": "https://localrent.com/en/cyprus/limassol/"
+  },
+  "lisbon": {
+   "welcomepickups": "https://www.welcomepickups.com/lisbon/airport-transfer/",
+   "localrent": "https://localrent.com/en/portugal/lisbon/"
+  },
+  "ljubljana": {
+   "localrent": "https://localrent.com/en/slovenia/ljubljana/"
+  },
+  "london": {
+   "welcomepickups": "https://www.welcomepickups.com/london/airport-transfer/"
+  },
+  "los-angeles": {
+   "welcomepickups": "https://www.welcomepickups.com/los-angeles/airport-transfer/"
+  },
+  "lucerne": {},
+  "luxor": {
+   "kiwitaxi": "https://kiwitaxi.com/en/egypt/luxor",
+   "localrent": "https://localrent.com/en/egypt/luxor/"
+  },
+  "lyon": {
+   "kiwitaxi": "https://kiwitaxi.com/en/france/lyon",
+   "welcomepickups": "https://www.welcomepickups.com/lyon/airport-transfer/",
+   "localrent": "https://localrent.com/en/france/lyon/"
+  },
+  "madeira": {
+   "localrent": "https://localrent.com/en/portugal/madeira/"
+  },
+  "madinah": {
+   "kiwitaxi": "https://kiwitaxi.com/en/saudi-arabia/medina"
+  },
+  "madrid": {
+   "kiwitaxi": "https://kiwitaxi.com/en/spain/madrid",
+   "welcomepickups": "https://www.welcomepickups.com/madrid/airport-transfer/",
+   "localrent": "https://localrent.com/en/spain/madrid/"
+  },
+  "mahe": {},
+  "makkah": {
+   "kiwitaxi": "https://kiwitaxi.com/en/saudi-arabia/mecca"
+  },
+  "malacca": {},
+  "male": {},
+  "manama": {
+   "kiwitaxi": "https://kiwitaxi.com/en/bahrain/manama"
+  },
+  "manchester": {
+   "kiwitaxi": "https://kiwitaxi.com/en/united-kingdom/manchester",
+   "welcomepickups": "https://www.welcomepickups.com/manchester/airport-transfer/"
+  },
+  "manila": {
+   "welcomepickups": "https://www.welcomepickups.com/manila/airport-transfer/"
+  },
+  "marrakesh": {},
+  "marseille": {
+   "kiwitaxi": "https://kiwitaxi.com/en/france/marseille",
+   "localrent": "https://localrent.com/en/france/marseille/"
+  },
+  "melbourne": {
+   "welcomepickups": "https://www.welcomepickups.com/melbourne/airport-transfer/"
+  },
+  "mexico-city": {
+   "welcomepickups": "https://www.welcomepickups.com/mexico-city/airport-transfer/",
+   "localrent": "https://localrent.com/en/mexico/mexico-city/"
+  },
+  "miami": {
+   "welcomepickups": "https://www.welcomepickups.com/miami/airport-transfer/"
+  },
+  "milan": {
+   "welcomepickups": "https://www.welcomepickups.com/milan/airport-transfer/",
+   "localrent": "https://localrent.com/en/italy/milan/"
+  },
+  "mombasa": {},
+  "montreal": {
+   "welcomepickups": "https://www.welcomepickups.com/montreal/airport-transfer/"
+  },
+  "moscow": {},
+  "mostar": {},
+  "mumbai": {},
+  "munich": {
+   "welcomepickups": "https://www.welcomepickups.com/munich/airport-transfer/"
+  },
+  "muscat": {
+   "kiwitaxi": "https://kiwitaxi.com/en/oman/muscat",
+   "welcomepickups": "https://www.welcomepickups.com/muscat/airport-transfer/",
+   "localrent": "https://localrent.com/en/oman/muscat/"
+  },
+  "mykonos": {},
+  "nairobi": {},
+  "naples": {
+   "welcomepickups": "https://www.welcomepickups.com/naples/airport-transfer/",
+   "localrent": "https://localrent.com/en/italy/naples/"
+  },
+  "new-york": {},
+  "nice": {
+   "kiwitaxi": "https://kiwitaxi.com/en/france/nice",
+   "welcomepickups": "https://www.welcomepickups.com/nice/airport-transfer/",
+   "localrent": "https://localrent.com/en/france/nice/"
+  },
+  "nizwa": {
+   "kiwitaxi": "https://kiwitaxi.com/en/oman/nizwa"
+  },
+  "novi-sad": {
+   "localrent": "https://localrent.com/en/serbia/novi-sad/"
+  },
+  "osaka": {
+   "welcomepickups": "https://www.welcomepickups.com/osaka/airport-transfer/"
+  },
+  "oslo": {
+   "welcomepickups": "https://www.welcomepickups.com/oslo/airport-transfer/"
+  },
+  "oxford": {},
+  "paphos": {
+   "localrent": "https://localrent.com/en/cyprus/paphos/"
+  },
+  "paris": {
+   "kiwitaxi": "https://kiwitaxi.com/en/france/paris",
+   "welcomepickups": "https://www.welcomepickups.com/paris/airport-transfer/",
+   "localrent": "https://localrent.com/en/france/paris/"
+  },
+  "pattaya": {
+   "localrent": "https://localrent.com/en/thailand/pattaya/"
+  },
+  "penang": {
+   "localrent": "https://localrent.com/en/malaysia/penang/"
+  },
+  "petra": {
+   "kiwitaxi": "https://kiwitaxi.com/en/jordan/petra",
+   "localrent": "https://localrent.com/en/jordan/petra/"
+  },
+  "phnom-penh": {},
+  "phuket": {
+   "welcomepickups": "https://www.welcomepickups.com/phuket/airport-transfer/",
+   "localrent": "https://localrent.com/en/thailand/phuket/"
+  },
+  "podgorica": {
+   "welcomepickups": "https://www.welcomepickups.com/podgorica/airport-transfer/",
+   "localrent": "https://localrent.com/en/montenegro/podgorica/"
+  },
+  "pokhara": {},
+  "port-louis": {
+   "localrent": "https://localrent.com/en/mauritius/port-louis/"
+  },
+  "porto": {
+   "welcomepickups": "https://www.welcomepickups.com/porto/airport-transfer/",
+   "localrent": "https://localrent.com/en/portugal/porto/"
+  },
+  "prague": {
+   "welcomepickups": "https://www.welcomepickups.com/prague/airport-transfer/"
+  },
+  "ras-al-khaimah": {
+   "kiwitaxi": "https://kiwitaxi.com/en/uae/ras-al-khaimah",
+   "localrent": "https://localrent.com/en/uae/ras-al-khaimah/"
+  },
+  "reykjavik": {},
+  "rio-de-janeiro": {
+   "welcomepickups": "https://www.welcomepickups.com/rio-de-janeiro/airport-transfer/"
+  },
+  "riyadh": {},
+  "rome": {
+   "welcomepickups": "https://www.welcomepickups.com/rome/airport-transfer/",
+   "localrent": "https://localrent.com/en/italy/rome/"
+  },
+  "rotterdam": {},
+  "rovaniemi": {
+   "localrent": "https://localrent.com/en/finland/rovaniemi/"
+  },
+  "saint-petersburg": {},
+  "salalah": {
+   "kiwitaxi": "https://kiwitaxi.com/en/oman/salalah",
+   "localrent": "https://localrent.com/en/oman/salalah/"
+  },
+  "salvador": {},
+  "salzburg": {
+   "localrent": "https://localrent.com/en/austria/salzburg/"
+  },
+  "samarkand": {},
+  "san-francisco": {},
+  "santorini": {
+   "welcomepickups": "https://www.welcomepickups.com/santorini/airport-transfer/",
+   "localrent": "https://localrent.com/en/greece/santorini/"
+  },
+  "sao-paulo": {},
+  "sarajevo": {
+   "welcomepickups": "https://www.welcomepickups.com/sarajevo/airport-transfer/"
+  },
+  "saranda": {
+   "localrent": "https://localrent.com/en/albania/sarande/"
+  },
+  "seoul": {
+   "welcomepickups": "https://www.welcomepickups.com/seoul/airport-transfer/"
+  },
+  "seville": {
+   "welcomepickups": "https://www.welcomepickups.com/seville/airport-transfer/",
+   "localrent": "https://localrent.com/en/spain/seville/"
+  },
+  "shanghai": {},
+  "sharjah": {
+   "kiwitaxi": "https://kiwitaxi.com/en/uae/sharjah",
+   "localrent": "https://localrent.com/en/uae/sharjah/"
+  },
+  "sharm-el-sheikh": {
+   "kiwitaxi": "https://kiwitaxi.com/en/egypt/sharm-el-sheikh"
+  },
+  "siem-reap": {},
+  "singapore": {
+   "welcomepickups": "https://www.welcomepickups.com/singapore/airport-transfer/"
+  },
+  "sochi": {},
+  "sousse": {
+   "localrent": "https://localrent.com/en/tunisia/sousse/"
+  },
+  "split": {
+   "localrent": "https://localrent.com/en/croatia/split/"
+  },
+  "stockholm": {
+   "welcomepickups": "https://www.welcomepickups.com/stockholm/airport-transfer/"
+  },
+  "sydney": {
+   "welcomepickups": "https://www.welcomepickups.com/sydney/airport-transfer/",
+   "localrent": "https://localrent.com/en/australia/sydney/"
+  },
+  "tangier": {
+   "kiwitaxi": "https://kiwitaxi.com/en/morocco/tangier",
+   "localrent": "https://localrent.com/en/morocco/tangier/"
+  },
+  "tashkent": {
+   "localrent": "https://localrent.com/en/uzbekistan/tashkent/"
+  },
+  "tbilisi": {
+   "localrent": "https://localrent.com/en/georgia/tbilisi/"
+  },
+  "the-hague": {},
+  "thessaloniki": {
+   "welcomepickups": "https://www.welcomepickups.com/thessaloniki/airport-transfer/",
+   "localrent": "https://localrent.com/en/greece/thessaloniki/"
+  },
+  "tirana": {
+   "welcomepickups": "https://www.welcomepickups.com/tirana/airport-transfer/",
+   "localrent": "https://localrent.com/en/albania/tirana/"
+  },
+  "tokyo": {
+   "welcomepickups": "https://www.welcomepickups.com/tokyo/airport-transfer/"
+  },
+  "toronto": {},
+  "trabzon": {
+   "kiwitaxi": "https://kiwitaxi.com/en/turkey/trabzon",
+   "localrent": "https://localrent.com/en/turkey/trabzon/"
+  },
+  "tromso": {},
+  "tunis": {
+   "localrent": "https://localrent.com/en/tunisia/tunis/"
+  },
+  "ubud": {
+   "localrent": "https://localrent.com/en/indonesia/ubud/"
+  },
+  "valletta": {
+   "localrent": "https://localrent.com/en/malta/valletta/"
+  },
+  "vancouver": {
+   "welcomepickups": "https://www.welcomepickups.com/vancouver/airport-transfer/"
+  },
+  "venice": {
+   "welcomepickups": "https://www.welcomepickups.com/venice/airport-transfer/",
+   "localrent": "https://localrent.com/en/italy/venice/"
+  },
+  "vienna": {
+   "welcomepickups": "https://www.welcomepickups.com/vienna/airport-transfer/",
+   "localrent": "https://localrent.com/en/austria/vienna/"
+  },
+  "warsaw": {
+   "localrent": "https://localrent.com/en/poland/warsaw/"
+  },
+  "xian": {},
+  "yerevan": {
+   "localrent": "https://localrent.com/en/armenia/yerevan/"
+  },
+  "yogyakarta": {},
+  "zagreb": {
+   "localrent": "https://localrent.com/en/croatia/zagreb/"
+  },
+  "zakopane": {},
+  "zanzibar": {
+   "localrent": "https://localrent.com/en/tanzania/zanzibar/"
+  },
+  "zurich": {
+   "welcomepickups": "https://www.welcomepickups.com/zurich/airport-transfer/"
+  }
+ }
 }
