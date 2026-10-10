@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cachedJson } from "@/lib/edgeCache";
 import { partnerSearchUrl, type ActivityPartner } from "@/lib/activityLinks";
-import { essentialPage, type EssentialBrand } from "@/lib/tripEssentials";
+import { BRANDS, brandPage, type PlaceBrand } from "@/lib/tripEssentials";
 import { travelpayoutsMarker } from "@/lib/providers/travelpayouts";
 
 export const dynamic = "force-dynamic";
@@ -10,9 +10,9 @@ export const dynamic = "force-dynamic";
  * Our way out to Travelpayouts partners, through our affiliate link:
  *
  *   /api/go/tp?b=<klook|tiqets>&q=<what to search>   the partner's search
- *   /api/go/tp?b=airalo&c=<country code>             a checked country page
- *   /api/go/tp?b=<kiwitaxi|welcomepickups|localrent>&p=<city slug>
- *                                                    a checked city page
+ *   /api/go/tp?b=<brand>&c=<country code>&p=<city slug>
+ *       a page checked for that place, or the partner's own home when it is
+ *       itself a search (see tripEssentials.ts)
  *
  * Travelpayouts makes the link (POST /links/v1/create, our server token);
  * each one is kept at the edge for 30 days, so a popular search asks once.
@@ -27,7 +27,7 @@ export const dynamic = "force-dynamic";
 /** Our Travelpayouts project ("Sfrtna"), subscribed to these brands. */
 const TP_PROJECT = 577683;
 const SEARCH_BRANDS = new Set<string>(["klook", "tiqets"]);
-const PAGE_BRANDS = new Set<string>(["airalo", "kiwitaxi", "welcomepickups", "localrent"]);
+const PAGE_BRANDS = new Set<string>(Object.keys(BRANDS));
 
 interface CreateResponse {
   result?: { links?: { url?: string; code?: string; partner_url?: string }[] };
@@ -68,7 +68,7 @@ export async function GET(req: NextRequest) {
     const q = (sp.get("q") || "").trim();
     if (q && q.length <= 120) plain = partnerSearchUrl(brand as ActivityPartner, q);
   } else if (PAGE_BRANDS.has(brand)) {
-    plain = essentialPage(brand as EssentialBrand, {
+    plain = brandPage(brand as PlaceBrand, {
       country: (sp.get("c") || "").toUpperCase(),
       city: sp.get("p") || "",
     });

@@ -9,7 +9,8 @@
 //
 // Each partner's address pattern was checked by hand on 10 Oct 2026 (Airalo
 // /turkey-esim, Kiwitaxi /en/turkey/istanbul, Welcome Pickups
-// /istanbul/airport-transfer/, Localrent /en/turkey/istanbul/). A page counts
+// /istanbul/airport-transfer/, Localrent /en/turkey/istanbul/, Radical Storage
+// /luggage-storage/istanbul, Go City /<city>/en-us). A page counts
 // as found when it answers 200, was not redirected away from the place, and
 // names the place in its <title>. Runs on GitHub Actions
 // (.github/workflows/partner-pages.yml); polite: one request at a time.
@@ -81,7 +82,10 @@ async function first(candidates: { url: string; keep: string }[], names: string[
 
 async function main() {
   const countries: Record<string, { airalo?: string }> = {};
-  const cities: Record<string, { kiwitaxi?: string; welcomepickups?: string; localrent?: string }> = {};
+  const cities: Record<
+    string,
+    { kiwitaxi?: string; welcomepickups?: string; localrent?: string; radicalstorage?: string; gocity?: string }
+  > = {};
 
   const used = new Set(Object.keys(COUNTRY_CITIES));
   for (const c of COUNTRIES.filter((x) => used.has(x.code))) {
@@ -121,6 +125,18 @@ async function main() {
         names
       );
       if (lr) entry.localrent = lr.url;
+
+      const rs = await first(
+        sSlugs.map((s) => ({ url: `https://radicalstorage.com/luggage-storage/${s}`, keep: `/${s}` })),
+        names
+      );
+      if (rs) entry.radicalstorage = rs.url;
+
+      const gc = await first(
+        sSlugs.map((s) => ({ url: `https://gocity.com/${s}/en-us`, keep: `/${s}` })),
+        names
+      );
+      if (gc) entry.gocity = gc.url;
 
       cities[city.slug] = entry;
       console.log(`${city.slug}: ${Object.keys(entry).join(", ") || "-"}`);

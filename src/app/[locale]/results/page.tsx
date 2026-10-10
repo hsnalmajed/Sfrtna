@@ -10,8 +10,7 @@ import type { RoomType, Locale, SearchParams, TripType } from "@/lib/types";
 import TripCurrencyInline from "@/components/TripCurrencyInline";
 import FlightMetasearch, { warmFlightSearch } from "@/components/FlightMetasearch";
 import FlightResultsGuide from "@/components/FlightResultsGuide";
-import TripEssentials from "@/components/TripEssentials";
-import CityActivities from "@/components/CityActivities";
+import TripServices from "@/components/TripServices";
 import VisaBadge from "@/components/VisaBadge";
 import VisaRequirementsDialog from "@/components/VisaRequirementsDialog";
 import { visaStatusFor } from "@/data/visaStatus";
@@ -497,15 +496,15 @@ function ResultsContent() {
           hold a checked partner page (TripEssentials hides itself). */}
       {destinationCity && destinationCountry && (
         <div className="mt-10">
-          <TripEssentials
+          <TripServices
             locale={locale}
             countryCode={destinationCountry.code}
             citySlug={destinationCity.slug}
             cityName={destinationCityName ?? destinationCity.nameEn}
-            countryName={locale === "ar" ? destinationCountry.nameAr : destinationCountry.nameEn}
+            cityNameEn={destinationCity.nameEn}
+            withCompensation
             t={dict.attractions}
           />
-          <CityActivities locale={locale} cityName={destinationCityName ?? destinationCity.nameEn} cityNameEn={destinationCity.nameEn} t={dict.attractions} />
         </div>
       )}
 

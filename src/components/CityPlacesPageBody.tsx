@@ -17,8 +17,7 @@ import CountryQuickFacts, { type QuickFact } from "@/components/CountryQuickFact
 import { BOOKING_SHORT_LABELS } from "@/lib/countryGuides";
 import { fetchCitiesForCountry, fetchToursForCity } from "@/lib/viator";
 import { type PlaceListItem } from "@/components/CityPlacesExplorer";
-import CityActivities from "@/components/CityActivities";
-import TripEssentials from "@/components/TripEssentials";
+import TripServices from "@/components/TripServices";
 import { TICKETED_KINDS } from "@/lib/activityLinks";
 import CityPlacesView, { type CityView } from "@/components/CityPlacesView";
 import TourCard from "@/components/TourCard";
@@ -117,7 +116,10 @@ export default async function CityPlacesPageBody({
     if (hit) covered.add(hit.landmark.nameEn);
     const ticketed = hit
       ? sellsTickets(hit.landmark.booking)
-      : TICKETED_KINDS.has(p.kind ?? "") && (p.fame ?? 0) >= 8;
+      : (TICKETED_KINDS.has(p.kind ?? "") && (p.fame ?? 0) >= 8) ||
+        // Hagia Sophia, St Peter's, Westminster Abbey: famous enough that
+        // tickets and guided tours are sold for them.
+        (p.kind === "place_of_worship" && (p.fame ?? 0) >= 40);
     return {
       key: p.id,
       // Our own hand-written name wins for a curated landmark: it is checked,
@@ -225,13 +227,12 @@ export default async function CityPlacesPageBody({
 
       <div className="mx-auto max-w-6xl px-4 sm:px-6 py-10">
         <CountryQuickFacts locale={loc} facts={facts} heading={dict.attractions.quickFactsHeading} />
-        <CityActivities locale={loc} cityName={cityName} cityNameEn={cityEntry.nameEn} t={dict.attractions} />
-        <TripEssentials
+        <TripServices
           locale={loc}
           countryCode={country.code}
           citySlug={cityEntry.slug}
           cityName={cityName}
-          countryName={loc === "ar" ? country.nameAr : country.nameEn}
+          cityNameEn={cityEntry.nameEn}
           t={dict.attractions}
         />
         {tours.length > 0 && (
