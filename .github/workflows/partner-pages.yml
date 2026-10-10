@@ -1,0 +1,58 @@
+# Checks which partner pages exist for our countries and cities (eSIM per
+# country; airport transfers and car rental per city) and stores only those:
+# scripts/partners/check-pages.ts → src/data/partnerPages.json. The site links
+# to a partner page only when this check found it.
+#
+#   - monthly, on the 7th;
+#   - when the checker or the city list changes;
+#   - by hand from the Actions tab.
+name: Partner pages
+
+on:
+  schedule:
+    - cron: "23 4 7 * *"
+  push:
+    branches: [main]
+    paths:
+      - "scripts/partners/check-pages.ts"
+      - "src/lib/cities.ts"
+      - ".github/workflows/partner-pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: partner-pages
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Check partner pages
+        run: |
+          npm ci --no-audit --no-fund
+          npx --yes tsx@4 scripts/partners/check-pages.ts
+
+      - name: Commit
+        run: |
+          git add src/data/partnerPages.json
+          if git diff --cached --quiet; then
+            echo "Nothing new."
+            exit 0
+          fi
+          git config user.name "Claude"
+          git config user.email "noreply@anthropic.com"
+          git commit -m "Partner pages: checked addresses (automatic run)" \
+            -m "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
+          git pull --rebase origin main
+          git push origin HEAD:main
