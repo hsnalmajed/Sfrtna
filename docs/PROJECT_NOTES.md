@@ -703,6 +703,19 @@ on the same route/dates (checked: same 19 flights and prices). Always shows
 links to the same search on Google Flights, KAYAK, Skyscanner. No allowance →
 links only, no numbers. Fallback earns nothing (no partner).
 
+**Phone check + speed (13 Oct late, owner: "slow, many buttons don't work on the phone"):**
+`scripts/mobile-taps.mjs` + workflow `mobile-taps.yml` (by hand): every button
+on 14 main pages tapped on emulated Pixel 7 / iPhone 13, fresh page per tap →
+all worked (only already-selected ones changed nothing), no page errors.
+`mobile-speed.yml` (Lighthouse mobile, report in scripts/mobile-speed-report.txt).
+Found: Stay22 LetMeAllez held the main thread 0.7 s per page, 3.9 s on home
+(taps ignored meanwhile) → now only on /results and /hotel-results
+(`Stay22LinkSwap.tsx`), lazyOnload; gtag lazyOnload; logo 175 KB PNG → 9 KB
+WebP (`sfrtna-logo-360.webp`); Arabic faces self-hosted in public/fonts with
+2 preloads (CLS home 0.13→0.006); hero srcset 828w/1280w. Home score 37–63 →
+84, TBT 3.8 s → 0.46 s. Still: LCP ~5 s on some pages (photos, noisy runs),
+dictionary chunk ships both languages (~100 KB raw) — next.
+
 **Section 7 item done early, 13 Oct (owner's screenshot):** home photo is the
 background of the whole home block down to the footer's gold line
 (`.home-photo` wrapper in `[locale]/page.tsx`: fixed layer + clip-path, so no
