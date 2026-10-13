@@ -12,7 +12,7 @@ permissions:
 jobs:
   speed:
     runs-on: ubuntu-latest
-    timeout-minutes: 50
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -38,8 +38,21 @@ jobs:
                 --chrome-flags="--headless=new --no-sandbox" --output=json --output-path="lh-$(echo $p | tr / _)-$r.json" || true
             done
           done
+          # One more run per page with applied throttling (Chrome really slowed
+          # to phone speed and network) — an independent check on the
+          # simulated numbers above.
+          for p in $PAGES; do
+            npx lighthouse "$BASE$p" --quiet --only-categories=performance --form-factor=mobile --throttling-method=devtools \
+              --extra-headers="{\"x-sfrtna-smoke\":\"$SMOKE_TOKEN\"}" \
+              --chrome-flags="--headless=new --no-sandbox" --output=json --output-path="dt-$(echo $p | tr / _).json" || true
+          done
           for p in $PAGES; do
             node scripts/mobile-speed-summary.mjs "$p" lh-$(echo $p | tr / _)-*.json >> scripts/mobile-speed-report.txt
+            node -e '
+              try { const a=require("./"+process.argv[1]).audits;
+                console.log("   applied throttling (1 run): FCP "+a["first-contentful-paint"].displayValue+", LCP "+a["largest-contentful-paint"].displayValue+", TBT "+a["total-blocking-time"].displayValue);
+              } catch { console.log("   applied throttling: no run"); }
+            ' "dt-$(echo $p | tr / _).json" >> scripts/mobile-speed-report.txt
           done
           cat scripts/mobile-speed-report.txt
       - name: Keep the report

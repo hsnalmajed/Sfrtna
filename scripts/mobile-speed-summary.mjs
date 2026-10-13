@@ -37,6 +37,20 @@ console.log(
   ].join(" | "),
 );
 
+// Per run: the simulated LCP next to what Chrome actually saw (unthrottled),
+// and how much main-thread work ran before the first frame. Simulated
+// numbers jump by seconds when the scripts happened to run before the first
+// paint on the CI machine (they are then charged ×4 to it) — a phone on 4G
+// gets its first frame long before the scripts arrive.
+for (const [i, x] of runs.entries()) {
+  const m = x.audits.metrics?.details?.items?.[0] || {};
+  const tasks = x.audits["main-thread-tasks"]?.details?.items || [];
+  const before = tasks.filter((t) => t.startTime < (m.observedFirstContentfulPaint ?? 0)).reduce((n, t) => n + t.duration, 0);
+  console.log(
+    `   run ${i + 1}: simulated FCP ${(m.firstContentfulPaint / 1000).toFixed(1)} s, LCP ${(m.largestContentfulPaint / 1000).toFixed(1)} s | observed FCP ${m.observedFirstContentfulPaint} ms, LCP ${m.observedLargestContentfulPaint} ms | main-thread work before first frame ${Math.round(before)} ms`,
+  );
+}
+
 const lcpItems = a["largest-contentful-paint-element"]?.details?.items || [];
 const lcpNode = lcpItems[0]?.items?.[0]?.node?.snippet || "";
 console.log("   LCP element: " + lcpNode.slice(0, 140));
