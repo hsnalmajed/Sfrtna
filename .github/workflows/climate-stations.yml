@@ -1,0 +1,52 @@
+# Downloads the official WMO 1991–2020 station normals (NOAA NCEI, no key)
+# and keeps them as one compact file (scripts/climate/data/wmo_normals.json),
+# so station matching and the accuracy checks of the climate data can run
+# anywhere. Runs here because the cloud workspace cannot reach NOAA.
+name: Climate stations
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/climate/fetch_wmo_normals.py"
+      - "scripts/climate/compact_wmo.py"
+      - ".github/workflows/climate-stations.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: climate-stations
+  cancel-in-progress: false
+
+jobs:
+  stations:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Download and compact
+        run: |
+          pip install --quiet pandas
+          cd scripts/climate
+          python3 fetch_wmo_normals.py
+          python3 compact_wmo.py
+
+      - name: Commit
+        run: |
+          git add scripts/climate/data/wmo_normals.json
+          if git diff --cached --quiet; then
+            echo "Nothing new."
+            exit 0
+          fi
+          git config user.name "Claude"
+          git config user.email "noreply@anthropic.com"
+          git commit -m "Climate: WMO 1991–2020 station normals (NOAA NCEI)"
+          git pull --rebase origin main
+          git push
