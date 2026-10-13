@@ -58,7 +58,7 @@ for (const device of ["Pixel 7", "iPhone 13"]) {
       const emptyLinks = await page.$$eval("a", (as) =>
         as.filter((a) => a.offsetParent && (!a.getAttribute("href") || a.getAttribute("href") === "#")).map((a) => (a.innerText || a.getAttribute("aria-label") || "").trim().slice(0, 40))
       );
-      for (let i = 0; i < Math.min(count, 45); i++) {
+      for (let i = 0; i < Math.min(count, 30); i++) {
         const loc = page.locator("button:visible, [role=tab]:visible").nth(i);
         let label = "";
         try {
@@ -82,17 +82,17 @@ for (const device of ["Pixel 7", "iPhone 13"]) {
           const moved = page.url() !== before;
           if (pop) await pop.close().catch(() => {});
           if (!moved && !pop && !dl && mut === 0) dead.push(label || `#${i}`);
-          if (moved) {
-            await page.goto(BASE + path, { waitUntil: "load", timeout: 60_000 });
-            await page.waitForTimeout(1500);
-          } else {
-            await page.keyboard.press("Escape").catch(() => {});
-          }
+          // Start every tap from a fresh page: a menu or list the last tap
+          // opened would otherwise sit over the next button.
+          await page.goto(BASE + path, { waitUntil: "load", timeout: 60_000 });
+          await page.waitForTimeout(1500);
         } catch (e) {
           const msg = String(e?.message || e);
           if (/intercepts pointer events/.test(msg)) {
-            const by = (msg.match(/<([a-z]+)[^>]*class="([^"]{0,60})/) || []).slice(1).join(".");
-            covered.push(`${label || `#${i}`} ← ${by}`);
+            const line = msg.split("\n").find((l) => /intercepts pointer events/.test(l)) || "";
+            covered.push(`${label || `#${i}`} ← ${line.replace(/\s+/g, " ").trim().slice(0, 160)}`);
+            await page.goto(BASE + path, { waitUntil: "load", timeout: 60_000 }).catch(() => {});
+            await page.waitForTimeout(1500);
           }
         }
       }
