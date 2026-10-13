@@ -783,7 +783,7 @@ function PlanView({
         {/* On screen: the same heading, in the site's own style. */}
         <div data-pdf className="print:hidden overflow-hidden rounded-3xl bg-gradient-to-br from-navy-800 to-navy-990 p-6 text-white">
           {/* eslint-disable-next-line @next/next/no-img-element -- local asset; image optimizer is off on Workers */}
-          <img src="/sfrtna-logo.png" alt="" className="mb-4 h-10 w-auto rounded-lg bg-white px-2 py-1" />
+          <img src="/sfrtna-logo-360.webp" alt="" className="mb-4 h-10 w-auto rounded-lg bg-white px-2 py-1" />
           <h2 className="font-display text-2xl font-black sm:text-3xl">{title}</h2>
           <p className="mt-2 text-sm font-bold text-sun-300">{subtitle}</p>
         </div>

@@ -23,7 +23,8 @@ import Image from "next/image";
 // Intrinsic sizes match the files on disk. Images are served unoptimized on
 // Workers (see next.config.ts), so the browser performs every downscale.
 const SOURCES = {
-  full: { src: "/sfrtna-logo.png", width: 720, height: 289 },
+  // 360 px wide (3× its largest display, h-12) as WebP: 9 KB instead of 175 KB.
+  full: { src: "/sfrtna-logo-360.webp", width: 360, height: 144 },
   mark: { src: "/sfrtna-mark.png", width: 256, height: 256 },
 } as const;
 
