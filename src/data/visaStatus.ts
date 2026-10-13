@@ -11,8 +11,9 @@
 // A country we could not confirm from an official source is simply absent,
 // and the visa directory leaves it out rather than show a status we cannot
 // back. Still to confirm (their official pages blocked automated reading or
-// did not name Saudi Arabia on 26 Sep 2026): IE, AU, JO, MA, BH, EG, ET, TZ,
-// UG, CL, CU, KH, DZ, RU, TH.
+// did not name Saudi Arabia on 26 Sep 2026; list updated 13 Oct 2026):
+// AM, AU, BR, IE, JO, KH, KW, KZ, LB, MA, ME, MU, PK, TN, TZ, and the
+// countries being added (scripts/coverage/report.md lists them).
 //
 // The four categories, easiest first — what a traveller has to do before
 // flying:
@@ -82,6 +83,32 @@ export const VISA_STATUS: Record<string, VisaStatus> = {
   AZ: { category: "free", source: "https://evisa.gov.az/en/countries", quote: "Azerbaijan official e-visa portal: \"from February 15, 2026 to February 15, 2027, citizens of the Kingdom of Saudi Arabia ... are eligible to enter the territory of the Republic of Azerbaijan visa-free 3 times within 1 year.\"", until: "2027-02-15" },
   EG: { category: "eta", source: "https://www.visa2egypt.gov.eg/eVisa/FAQ", quote: "Egypt e-Visa Portal (official): \"Nationals of the countries listed below may be issued with an e-Visa upon application\" — the list includes Saudi Arabia" },
   TH: { category: "free", source: "https://www.mfa.go.th/en/content/pb-summary-03092026-en", quote: "Thai MFA, revision of visa exemption schemes effective 15 September 2026: \"30-day visa exemption\" list includes \"Saudi Arabia\" (image.mfa.go.th summary, 22 May 2026)" },
+  // Added 13 Oct 2026 (coverage section), each read that day on the page named.
+  BE: { category: "required", source: "https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:02018R1806-20251230", quote: "Regulation (EU) 2018/1806 consolidated 30.12.2025, Annex I (visa required) lists \"Saudi Arabia\"" },
+  FI: { category: "required", source: "https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:02018R1806-20251230", quote: "Regulation (EU) 2018/1806 consolidated 30.12.2025, Annex I (visa required) lists \"Saudi Arabia\"" },
+  HR: { category: "required", source: "https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:02018R1806-20251230", quote: "Regulation (EU) 2018/1806 consolidated 30.12.2025, Annex I (visa required) lists \"Saudi Arabia\"" },
+  PL: { category: "required", source: "https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:02018R1806-20251230", quote: "Regulation (EU) 2018/1806 consolidated 30.12.2025, Annex I (visa required) lists \"Saudi Arabia\"" },
+  SI: { category: "required", source: "https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:02018R1806-20251230", quote: "Regulation (EU) 2018/1806 consolidated 30.12.2025, Annex I (visa required) lists \"Saudi Arabia\"" },
+  RO: { category: "required", source: "https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:02018R1806-20251230", quote: "Regulation (EU) 2018/1806 consolidated 30.12.2025, Annex I (visa required) lists \"Saudi Arabia\"" },
+  IS: { category: "required", source: "https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:02018R1806-20251230", quote: "Regulation (EU) 2018/1806 consolidated 30.12.2025, Annex I (visa required) lists \"Saudi Arabia\"" },
+  CA: { category: "required", source: "https://www.canada.ca/en/immigration-refugees-citizenship/services/visit-canada/entry-requirements-country.html", quote: "IRCC: \"Saudi Arabia, Kingdom of\" is listed among countries whose citizens need a visitor visa; it is not on the eTA lists" },
+  ZA: { category: "free", source: "https://www.dha.gov.za/index.php/immigration-services/exempt-countries", quote: "Department of Home Affairs exemption list: \"Saudi Arabia (Kingdom of) 90 Days\"" },
+  UZ: { category: "free", source: "https://uzbekistan.travel/en/o/uzbekistan-introduces-visa-free-regime-citizens-saudi-arabia", quote: "National Tourism Information Centre of Uzbekistan (state): visa-free regime for Saudi citizens \"for a period of 30 days\" from 1 January 2023, with a return or onward ticket" },
+  MV: { category: "arrival", source: "https://immigration.gov.mv/visa/tourist-visa/", quote: "Maldives Immigration: \"Tourist visa is granted on arrival to the Maldives.\" (return ticket, booking and funds required)" },
+  NP: { category: "arrival", source: "https://www.immigration.gov.np/en/page/visa-on-arrival", quote: "Department of Immigration, Nepal: tourist visa on arrival at Tribhuvan International Airport and land borders; Saudi Arabia is not among the nationalities excluded" },
+  LK: { category: "eta", source: "https://www.eta.gov.lk/slvisa/visainfo/center.jsp?locale=en_US", quote: "Sri Lanka Department of Immigration: foreign nationals \"are required to obtain an Electronic Travel Authorization (ETA) prior to their arrival in Sri Lanka\"" },
+  MX: { category: "required", source: "https://embamex.sre.gob.mx/arabiasaudita/index.php/en/services/visa?id=123", quote: "Embassy of Mexico in Saudi Arabia: Saudi nationals apply for a visitor visa in person; the nationality \"is not exempted from the visitor visa\" (holders of some US, Canada, UK, Japan or Schengen visas may enter on those)" },
+  PH: { category: "free", source: "https://jeddahpcg.dfa.gov.ph/consular-services/visa", quote: "Philippine Consulate General, Jeddah: nationals \"including Saudi Arabia, may avail themselves of visa-free entry\" for stays up to 30 days" },
+  KG: { category: "free", source: "https://invest.gov.kg/visa-free-regime/", quote: "Kyrgyz Republic (invest.gov.kg): \"Kingdom of Saudi Arabia\" is in the list exempted from visa requirements for up to 60 days" },
+  EE: { category: "required", source: "https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:02018R1806-20251230", quote: "Regulation (EU) 2018/1806 consolidated 30.12.2025, Annex I (visa required) lists \"Saudi Arabia\"" },
+  LT: { category: "required", source: "https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:02018R1806-20251230", quote: "Regulation (EU) 2018/1806 consolidated 30.12.2025, Annex I (visa required) lists \"Saudi Arabia\"" },
+  LV: { category: "required", source: "https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:02018R1806-20251230", quote: "Regulation (EU) 2018/1806 consolidated 30.12.2025, Annex I (visa required) lists \"Saudi Arabia\"" },
+  LU: { category: "required", source: "https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:02018R1806-20251230", quote: "Regulation (EU) 2018/1806 consolidated 30.12.2025, Annex I (visa required) lists \"Saudi Arabia\"" },
+  SK: { category: "required", source: "https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:02018R1806-20251230", quote: "Regulation (EU) 2018/1806 consolidated 30.12.2025, Annex I (visa required) lists \"Saudi Arabia\"" },
+  RS: { category: "required", source: "https://mfa.gov.rs/en/citizens/travel-serbia/visa-regime/saudijska-arabija", quote: "Serbian MFA, Saudi Arabia: holders of ordinary passports — \"Visas required.\"" },
+  BA: { category: "required", source: "https://fipa.vijeceministara.gov.ba/en/visasinformation-for-visitors", quote: "Council of Ministers (FIPA): Saudi Arabia is not on the standing visa-exempt lists; a summer exemption (1 June – 30 September in 2025) allowed up to 30 days, and holders of a valid multiple-entry Schengen or EU visa may enter without one" },
+  AL: { category: "free", source: "https://punetejashtme.gov.al/en/?p=553", quote: "Albanian MFA: \"Nationals of Saudi Arabia and Qatar may travel visa-free, for tourism purposes only, from 15 April 2026 to 31 December 2026\"", until: "2026-12-31" },
+  RU: { category: "free", source: "https://www.arabnews.com/node/2643134/amp", quote: "Saudi Press Agency (via Arab News): the Saudi–Russian mutual visa exemption in force from 11 May 2026; stays of up to 90 days within a calendar year for tourism, business and family visits" },
 };
 
 export function visaStatusFor(code: string): VisaStatus | undefined {

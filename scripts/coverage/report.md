@@ -8,14 +8,14 @@
 - climate: 144/214
 - places: 214/214
 - hotels: 214/214
-- visa: 125/214
+- visa: 176/214
 - currency: 214/214
 - country: 214/214
 - tourism (expected): 113/214
 - guide (expected): 145/214
 - photo (expected): 0/214
 
-Missing a required item (104):
+Missing a required item (92):
 
 - KW kuwait-city: visa
 - MA marrakesh: visa
@@ -27,18 +27,7 @@ Missing a required item (104):
 - JO petra: visa
 - JO aqaba: visa
 - PT madeira: climate
-- MV male: visa
-- LK colombo: visa
-- LK kandy: visa
-- LK galle: visa
-- LK ella: visa
 - GE kazbegi: climate
-- ZA cape-town: visa
-- ZA johannesburg: visa
-- ZA durban: visa
-- MX mexico-city: visa
-- MX cancun: visa
-- MX guadalajara: visa
 - BR rio-de-janeiro: visa
 - BR sao-paulo: visa
 - BR salvador: visa
@@ -52,64 +41,63 @@ Missing a required item (104):
 - LB beirut: visa
 - LB byblos: visa
 - LB baalbek: visa
-- RU moscow: climate, visa
-- RU saint-petersburg: climate, visa
-- RU kazan: climate, visa
-- RU sochi: climate, visa
-- BA sarajevo: climate, visa
-- BA mostar: climate, visa
-- AL tirana: climate, visa
-- AL durres: climate, visa
-- AL saranda: climate, visa
+- RU moscow: climate
+- RU saint-petersburg: climate
+- RU kazan: climate
+- RU sochi: climate
+- BA sarajevo: climate
+- BA mostar: climate
+- AL tirana: climate
+- AL durres: climate
+- AL saranda: climate
 - ME kotor: climate, visa
 - ME budva: climate, visa
 - ME podgorica: climate, visa
-- RS belgrade: climate, visa
-- RS novi-sad: climate, visa
-- HR zagreb: climate, visa
-- HR split: climate, visa
-- HR dubrovnik: climate, visa
+- RS belgrade: climate
+- RS novi-sad: climate
+- HR zagreb: climate
+- HR split: climate
+- HR dubrovnik: climate
 - CZ prague: climate
 - CZ karlovy-vary: climate
 - HU budapest: climate
-- PL warsaw: climate, visa
-- PL krakow: climate, visa
-- PL zakopane: climate, visa
+- PL warsaw: climate
+- PL krakow: climate
+- PL zakopane: climate
 - IE dublin: climate, visa
 - IE galway: climate, visa
-- BE brussels: climate, visa
-- BE bruges: climate, visa
+- BE brussels: climate
+- BE bruges: climate
 - SE stockholm: climate
 - NO oslo: climate
 - NO bergen: climate
 - NO tromso: climate
 - DK copenhagen: climate
-- FI helsinki: climate, visa
-- FI rovaniemi: climate, visa
-- SI ljubljana: climate, visa
-- SI bled: climate, visa
+- FI helsinki: climate
+- FI rovaniemi: climate
+- SI ljubljana: climate
+- SI bled: climate
 - CY larnaca: climate
 - CY limassol: climate
 - CY paphos: climate
 - MT valletta: climate
-- RO bucharest: climate, visa
-- RO brasov: climate, visa
-- IS reykjavik: visa
+- RO bucharest: climate
+- RO brasov: climate
 - AM yerevan: climate, visa
 - KZ almaty: climate, visa
 - KZ astana: climate, visa
-- UZ tashkent: climate, visa
-- UZ samarkand: climate, visa
-- UZ bukhara: climate, visa
-- KG bishkek: climate, visa
-- KG karakol: climate, visa
+- UZ tashkent: climate
+- UZ samarkand: climate
+- UZ bukhara: climate
+- KG bishkek: climate
+- KG karakol: climate
 - PK islamabad: climate, visa
 - PK lahore: climate, visa
-- NP kathmandu: climate, visa
-- NP pokhara: climate, visa
-- PH manila: climate, visa
-- PH cebu: climate, visa
-- PH boracay: climate, visa
+- NP kathmandu: climate
+- NP pokhara: climate
+- PH manila: climate
+- PH cebu: climate
+- PH boracay: climate
 - KH siem-reap: climate, visa
 - KH phnom-penh: climate, visa
 - TZ zanzibar: climate, visa
@@ -117,10 +105,10 @@ Missing a required item (104):
 - MU port-louis: climate, visa
 - MU grand-baie: climate, visa
 - SC mahe: climate
-- CA toronto: climate, visa
-- CA vancouver: climate, visa
-- CA montreal: climate, visa
-- CA banff: climate, visa
+- CA toronto: climate
+- CA vancouver: climate
+- CA montreal: climate
+- CA banff: climate
 
 ## Staged (not on the site yet): 156 cities in 98 countries
 
@@ -130,7 +118,7 @@ Missing a required item (104):
 - climate: 0/156
 - places: 0/156
 - hotels: 0/156
-- visa: 55/156
+- visa: 69/156
 - currency: 156/156
 - country: 153/156
 - tourism (expected): 0/156
@@ -143,10 +131,10 @@ Missing a required item (156):
 - SA taif: centre, airport, type, climate, places, hotels
 - TR bodrum: centre, airport, type, climate, places, hotels
 - GE kutaisi: centre, airport, type, climate, places, hotels
-- KG osh: centre, airport, type, climate, places, hotels, visa
+- KG osh: centre, airport, type, climate, places, hotels
 - IN kochi: centre, airport, type, climate, places, hotels
 - IN bengaluru: centre, airport, type, climate, places, hotels
-- MV maafushi: centre, airport, type, climate, places, hotels, visa
+- MV maafushi: centre, airport, type, climate, places, hotels
 - BT paro: centre, airport, type, climate, places, hotels, visa
 - BD dhaka: centre, airport, type, climate, places, hotels, visa
 - CN shenzhen: centre, airport, type, climate, places, hotels
@@ -164,7 +152,7 @@ Missing a required item (156):
 - ID labuan-bajo: centre, airport, type, climate, places, hotels
 - VN nha-trang: centre, airport, type, climate, places, hotels
 - VN phu-quoc: centre, airport, type, climate, places, hotels
-- PH puerto-princesa: centre, airport, type, climate, places, hotels, visa
+- PH puerto-princesa: centre, airport, type, climate, places, hotels
 - LA luang-prabang: centre, airport, type, climate, places, hotels, visa
 - LA vientiane: centre, airport, type, climate, places, hotels, visa
 - BN bandar-seri-begawan: centre, airport, type, climate, places, hotels, visa
@@ -187,19 +175,19 @@ Missing a required item (156):
 - CH lausanne: centre, airport, type, climate, places, hotels
 - CH zermatt: centre, airport, climate, places, hotels
 - CZ brno: centre, airport, type, climate, places, hotels
-- PL gdansk: centre, airport, type, climate, places, hotels, visa
-- SK bratislava: centre, airport, type, climate, places, hotels, visa
+- PL gdansk: centre, airport, type, climate, places, hotels
+- SK bratislava: centre, airport, type, climate, places, hotels
 - GR heraklion: centre, airport, type, climate, places, hotels
 - GR rhodes: centre, airport, type, climate, places, hotels
 - GR corfu: centre, airport, type, climate, places, hotels
 - SE gothenburg: centre, airport, type, climate, places, hotels
-- EE tallinn: centre, airport, type, climate, places, hotels, visa
-- LV riga: centre, airport, type, climate, places, hotels, visa
-- LT vilnius: centre, airport, type, climate, places, hotels, visa
+- EE tallinn: centre, airport, type, climate, places, hotels
+- LV riga: centre, airport, type, climate, places, hotels
+- LT vilnius: centre, airport, type, climate, places, hotels
 - BG sofia: centre, airport, type, climate, places, hotels
 - BG varna: centre, airport, type, climate, places, hotels
 - MK skopje: centre, airport, type, climate, places, hotels, visa
-- LU luxembourg: centre, airport, type, climate, places, hotels, visa
+- LU luxembourg: centre, airport, type, climate, places, hotels
 - MC monte-carlo: centre, airport, type, climate, places, hotels, visa
 - SM san-marino: centre, airport, type, climate, places, hotels, visa
 - VA vatican-city: centre, airport, type, climate, places, hotels, visa
@@ -233,11 +221,11 @@ Missing a required item (156):
 - US seattle: centre, airport, type, climate, places, hotels
 - US honolulu: centre, airport, type, climate, places, hotels
 - US boston: centre, airport, type, climate, places, hotels
-- CA calgary: centre, airport, type, climate, places, hotels, visa
-- CA quebec-city: centre, airport, type, climate, places, hotels, visa
-- CA ottawa: centre, airport, type, climate, places, hotels, visa
-- MX los-cabos: centre, airport, type, climate, places, hotels, visa
-- MX puerto-vallarta: centre, airport, type, climate, places, hotels, visa
+- CA calgary: centre, airport, type, climate, places, hotels
+- CA quebec-city: centre, airport, type, climate, places, hotels
+- CA ottawa: centre, airport, type, climate, places, hotels
+- MX los-cabos: centre, airport, type, climate, places, hotels
+- MX puerto-vallarta: centre, airport, type, climate, places, hotels
 - CU havana: centre, airport, type, climate, places, hotels, visa
 - CU varadero: centre, airport, type, climate, places, hotels, visa
 - DO punta-cana: centre, airport, type, climate, places, hotels, visa
