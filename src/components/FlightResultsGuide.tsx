@@ -102,6 +102,44 @@ function currencyOf(text: string): string | null {
 function western(text: string): string {
   return text.replace(/[٠-٩]/g, (d) => String(d.charCodeAt(0) - 0x0660));
 }
+/**
+ * The widget runs in Arabic, so the times, days and waits it prints are
+ * Arabic. On the English pages they are put into English here: "01:25 م" →
+ * "1:25 PM", "17 نوفمبر, ثلاثاء" → "Tue, 17 Nov", "15س 15م" → "15h 15m"
+ * (English page showed Arabic inside its cards, 13 Oct).
+ */
+const AR_MONTHS: Record<string, string> = {
+  يناير: "Jan", فبراير: "Feb", مارس: "Mar", أبريل: "Apr", ابريل: "Apr", مايو: "May", يونيو: "Jun",
+  يوليو: "Jul", أغسطس: "Aug", اغسطس: "Aug", سبتمبر: "Sep", أكتوبر: "Oct", اكتوبر: "Oct", نوفمبر: "Nov", ديسمبر: "Dec",
+};
+const AR_DAYS: [RegExp, string][] = [
+  [/(ال)?سبت/, "Sat"], [/(ال)?أحد|(ال)?احد/, "Sun"], [/(ال)?اثنين|(ال)?إثنين/, "Mon"], [/(ال)?ثلاثاء/, "Tue"],
+  [/(ال)?أربعاء|(ال)?اربعاء/, "Wed"], [/(ال)?خميس/, "Thu"], [/(ال)?جمعة/, "Fri"],
+];
+function enTime(text: string): string {
+  const s = western(text).trim();
+  const m = s.match(/(\d{1,2}):(\d{2})\s*([صم])?/);
+  if (!m) return s;
+  const h = Number(m[1]);
+  return m[3] ? `${h}:${m[2]} ${m[3] === "ص" ? "AM" : "PM"}` : `${m[1]}:${m[2]}`;
+}
+function enDay(text: string): string {
+  const s = western(text);
+  const day = s.match(/\d{1,2}/)?.[0];
+  const mon = Object.keys(AR_MONTHS).find((k) => s.includes(k));
+  const wd = AR_DAYS.find(([re]) => re.test(s))?.[1];
+  if (!day || !mon) return s;
+  return `${wd ? `${wd}, ` : ""}${day} ${AR_MONTHS[mon]}`;
+}
+function enSpan(text: string): string {
+  return western(text)
+    .replace(/(\d+)\s*(?:يوم|أيام|ايام)/g, "$1d")
+    .replace(/(\d+)\s*س/g, "$1h")
+    .replace(/(\d+)\s*(?:دقيقة|دقائق|د|م)(?![a-z])/g, "$1m")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 function amountOf(text: string): number | null {
   const n = Number(western(text).replace(/[^\d.,]/g, "").replace(/,/g, ""));
   return Number.isFinite(n) && n > 0 ? n : null;
@@ -246,6 +284,7 @@ export default function FlightResultsGuide({
   // Read the widget's cards every 800ms: it re-draws them whenever it
   // sorts, loads more, or refreshes a fare.
   useEffect(() => {
+    const en = locale === "en";
     const cityOf = (code: string) => {
       const a = findAirport(code);
       return a ? (locale === "ar" ? a.cityAr : a.cityEn) : code;
@@ -289,19 +328,19 @@ export default function FlightResultsGuide({
         const stops = [...leg.querySelectorAll('[class*="cardFlightTravelLineTransfer"]')].map((s) => {
           const code = clean(s.querySelector('[class*="airportCode"]'));
           const wait = clean(s).replace(code, "").replace(/transfer/i, "").trim();
-          return { city: cityOf(code), wait };
+          return { city: cityOf(code), wait: en ? enSpan(wait) : wait };
         });
         const duration = clean(leg.querySelector('[class*="cardFlightTravelTime"]')).replace(/^.*:\s*/, "");
         return {
-          depTime: part(dep, "cardFlightTime"),
+          depTime: en ? enTime(part(dep, "cardFlightTime")) : part(dep, "cardFlightTime"),
           depCode: part(dep, "cardFlightAirport"),
-          depCity: part(dep, "cardFlightCity"),
-          depDay,
-          arrTime: part(arr, "cardFlightTime"),
+          depCity: en ? cityOf(part(dep, "cardFlightAirport")) : part(dep, "cardFlightCity"),
+          depDay: en ? enDay(depDay) : depDay,
+          arrTime: en ? enTime(part(arr, "cardFlightTime")) : part(arr, "cardFlightTime"),
           arrCode: part(arr, "cardFlightAirport"),
-          arrCity: part(arr, "cardFlightCity"),
+          arrCity: en ? cityOf(part(arr, "cardFlightAirport")) : part(arr, "cardFlightCity"),
           plusDays,
-          duration,
+          duration: en ? enSpan(duration) : duration,
           minutes: minutesOf(duration),
           stops,
         };
