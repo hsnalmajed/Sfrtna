@@ -760,6 +760,17 @@ site had 214 / 73. Decisions (mine, owner said "do the best and accurate"):
   Prague, Budapest: Lonely Planet names no single best period) — "expected",
   not required.
 
+**13 Oct afternoon, owner said "do all my notes":** done and live —
+section 2 hotels (every site's price, «عرض السعر», cards + more pages + the
+partners' full list always), section 5 (one row of city tabs), section 6
+(/services with city/country search), section 3 (travel-tools plan opens the
+city planner; site calendar; «بدون تفضيل»; meals from stored OSM restaurants,
+workflow `restaurants.yml`), section 7 rain line + cached fares removed.
+Results in TEST_PLAN sections 2, 3, 5, 6. Still open: accounts + «save
+plan» (needs a store: Cloudflare D1 is the natural choice — ask the owner),
+sign-in in «المزيد», visa for the remaining countries (needs a visible
+Chrome), climate v2 after the owner's download, publishing staged cities.
+
 ## Next, in order
 
 **▶ Start here: finish the coverage section above (owner's ERA5 run →

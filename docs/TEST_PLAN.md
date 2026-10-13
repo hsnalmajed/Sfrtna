@@ -87,3 +87,15 @@ flight answers are tested by hand on sfrtna.com (above).
 | 6.1 | /ar/services, type «تركيا» | Lists Turkish cities; pick one → services | to test by owner (typing) |
 | 6.2 | /ar/services?code=TR&city=istanbul | Every service row | ✅ 13 Oct live: 5 rows, all partners |
 | 6.3 | Menu, footer, app «المزيد», home tools | «خدمات رحلتك» link everywhere | ✅ menu + footer seen live |
+
+## Section 3 — trip plan, one engine (13 Oct)
+
+| # | Scenario | Expected | Result |
+|---|---|---|---|
+| 3.1 | Travel tools → «خطتك السياحية» | City (picked) + the site's calendar + «أنشئ لي خطة» / «أختار بنفسي» | ✅ 13 Oct live: fields and both buttons |
+| 3.2 | Istanbul 20–23 Nov, «أنشئ لي خطة», «بدون تفضيل» | 4 days, real named places, near each other per day, no cost | ✅ 13 Oct live: 16 places in 4 days (Taksim/Galata day, Sultanahmet day …) |
+| 3.3 | Dates carried from the address | Calendar shows 20 → 23 Nov | ✅ |
+| 3.4 | Meals per day | 2 nearest restaurants, halal tag when known | ⏳ restaurants are being collected (workflow «Restaurants», ~3 h); re-test after |
+| 3.5 | PDF / Google Maps file | Print to PDF, KML download | ✅ buttons present (unchanged); PDF to test by owner |
+| 3.6 | Save to account | — | ⏳ needs accounts (Google/Apple/email) — owner decision on the storage |
+| 3.7 | Phone / app | Sheet as bottom sheet, calendar usable | to test by owner |
