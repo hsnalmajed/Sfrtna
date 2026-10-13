@@ -67,3 +67,4 @@ flight answers are tested by hand on sfrtna.com (above).
 | 2.7 | Free allowance paced out | One line + partners' widget, no number | not tested live (needs the allowance used up) |
 | 2.8 | Named hotel («لدي فندق محدد») | Same every-site rows on its page | to test by owner |
 | 2.9 | Phone 390 px / app | Card stacks (photo on top), buttons reachable | to test by owner (phone screenshot) |
+| 2.10 | Coverage (owner: "only 20 hotels?") | Never fewer than the partners' full list | ✅ 13 Oct after fix: our 20 cards + «عرض المزيد» (page 2 = 20, 16 new; token «CBI=» was refused by a too-strict check — fixed) + the partners' full city list under them, always |
