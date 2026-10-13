@@ -692,6 +692,17 @@ Root causes found in the code (13 Oct):
   number — fits the live-price rule (checked 13 Oct; earlier question to the
   owner withdrawn).
 
+**Flight fallback (13 Oct night, owner: "no second source is not acceptable"):**
+the owner's home network could not reach any Aviasales host (aviasales.com
+itself: Chrome error page; works on his mobile data) → endless search. Now
+`FlightResultsGuide` waits 12 s for the widget; if it never loads, or the
+search ends with 0 flights, `FallbackFlights.tsx` asks `/api/flight-fallback`
+→ `googleFlights()` in serpapi.ts (Google Flights via SerpApi, same paced
+free allowance as hotels, edge cache 20 min). Each fare opens Google Flights
+on the same route/dates (checked: same 19 flights and prices). Always shows
+links to the same search on Google Flights, KAYAK, Skyscanner. No allowance →
+links only, no numbers. Fallback earns nothing (no partner).
+
 **Section 7 item done early, 13 Oct (owner's screenshot):** home photo is the
 background of the whole home block down to the footer's gold line
 (`.home-photo` wrapper in `[locale]/page.tsx`: fixed layer + clip-path, so no
