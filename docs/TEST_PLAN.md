@@ -53,3 +53,17 @@ card too tall on phones.
 Automated (GitHub, 49f1e12): API check 18/18 ✓, browser 7/7 ✓ — the flight
 widget returns no flights on the workers.dev address (domain-bound), so
 flight answers are tested by hand on sfrtna.com (above).
+
+## Section 2 — hotel results (13 Oct, owner's decisions of the afternoon)
+
+| # | Scenario | Expected | Result |
+|---|---|---|---|
+| 2.1 | «اقترح لي فندق» Istanbul, 20–23 Nov, 2 adults | Our cards (no English widget): photo, stars, rating + reviews, km from centre, check-in/out, amenities, lowest price for the stay | ✅ 13 Oct live: 20 cards, e.g. Skalion 0.9 km, 793 SAR |
+| 2.2 | «الأسعار في كل المواقع» on a card | Every site's price, cheapest first; cheapest + partners + known names in view, rest folded; button «عرض السعر» | ✅ 13 Oct: 12 sites, KAYAK 793 → Expedia/Hotels.com 1,196, «عرض 8 مواقع أخرى» |
+| 2.3 | A non-partner site's button | Lands on the same hotel, same dates, same guests | ✅ 13 Oct: KAYAK → Skalion Hotel, 20–23 Nov, 2 adults |
+| 2.4 | A partner's button (Expedia/Hotels.com/Booking/Agoda) | Stay22 Allez → the hotel itself | ✅ 6 Oct (unchanged links); re-check by owner |
+| 2.5 | Free breakfast badge | Only for "Free breakfast", not "Breakfast ($)" | ✅ fixed after the live run (paid breakfast showed the badge) |
+| 2.6 | Clicktrip.com etc. | Not pinned as a "known name" | ✅ fixed (matched "trip.com") |
+| 2.7 | Free allowance paced out | One line + partners' widget, no number | not tested live (needs the allowance used up) |
+| 2.8 | Named hotel («لدي فندق محدد») | Same every-site rows on its page | to test by owner |
+| 2.9 | Phone 390 px / app | Card stacks (photo on top), buttons reachable | to test by owner (phone screenshot) |

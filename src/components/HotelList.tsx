@@ -25,7 +25,9 @@ function km(a: { lat: number; lon: number }, b: { lat: number; lon: number }) {
   return 2 * 6371 * Math.asin(Math.sqrt(x));
 }
 
-const hasBreakfast = (h: HotelResult) => h.amenities.some((a) => /breakfast/i.test(a) && !/paid|fee/i.test(a));
+// Google writes "Free breakfast" when it is included and "Breakfast ($)"
+// when it is paid: only the first counts.
+const hasBreakfast = (h: HotelResult) => h.amenities.some((a) => /free breakfast/i.test(a));
 
 export default function HotelList({
   cityQuery,
@@ -136,7 +138,7 @@ function HotelCard({
   const { t } = c;
   const [open, setOpen] = useState(false);
   const total = hotel.total ?? (hotel.perNight ? hotel.perNight * c.nights : null);
-  const amenities = amenityLabels(hotel.amenities, locale, 4);
+  const amenities = amenityLabels(hotel.amenities.filter((a) => !/free breakfast/i.test(a)), locale, 4);
   const img = hotel.images[0];
   return (
     <article className="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-black/5">

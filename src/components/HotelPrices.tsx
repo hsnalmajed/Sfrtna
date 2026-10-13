@@ -86,7 +86,7 @@ export interface SiteOffer {
 }
 
 /** Names travellers book with out of habit or trust: always in view. */
-const KNOWN = /booking\.com|agoda|expedia|hotels\.com|trip\.com|almosafer|المسافر|wego|tajawal|marriott|hilton|accor|ihg|hyatt|rotana|radisson/i;
+const KNOWN = /booking\.com|agoda|expedia|hotels\.com|(^|[^a-z])trip\.com|almosafer|المسافر|wego|tajawal|marriott|hilton|accor|ihg|hyatt|rotana|radisson/i;
 
 export function siteOffers(hotel: HotelResult, c: Common): SiteOffer[] {
   const links = hotelPartnerLinks({
