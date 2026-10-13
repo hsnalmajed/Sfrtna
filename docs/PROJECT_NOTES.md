@@ -663,6 +663,13 @@ Root causes found in the code (13 Oct):
   number — fits the live-price rule (checked 13 Oct; earlier question to the
   owner withdrawn).
 
+**Section 7 item done early, 13 Oct (owner's screenshot):** home photo is the
+background of the whole home block down to the footer's gold line
+(`.home-photo` wrapper in `[locale]/page.tsx`: fixed layer + clip-path, so no
+re-crop when the planner changes height); app header clear over it until
+scroll (`data-solid` on `.site-header-bar`, CSS `html.in-app:has(.home-photo)`).
+Checked desktop, 390 px phone, app.
+
 ## Next, in order
 
 **▶ Start here: section 1 of the plan above (started 13 Oct).**
