@@ -68,3 +68,22 @@ flight answers are tested by hand on sfrtna.com (above).
 | 2.8 | Named hotel («لدي فندق محدد») | Same every-site rows on its page | to test by owner |
 | 2.9 | Phone 390 px / app | Card stacks (photo on top), buttons reachable | to test by owner (phone screenshot) |
 | 2.10 | Coverage (owner: "only 20 hotels?") | Never fewer than the partners' full list | ✅ 13 Oct after fix: our 20 cards + «عرض المزيد» (page 2 = 20, 16 new; token «CBI=» was refused by a too-strict check — fixed) + the partners' full city list under them, always |
+
+## Section 5 — destinations page (13 Oct)
+
+| # | Scenario | Expected | Result |
+|---|---|---|---|
+| 5.1 | City page (Istanbul) | One row: المعالم (count) · الخريطة · خطة سياحية · الأنشطة والتذاكر · خدمات رحلتك · download GPX/KML | ✅ 13 Oct live: all six in one row |
+| 5.2 | «خدمات رحلتك» tab | eSIM, transfer, car, luggage — every partner | ✅ 4 rows (Airalo/Yesim/Saily · Kiwitaxi/Welcome Pickups/intui/GetTransfer · Localrent/GetRentacar/Economybookings/QEEQ/Auto Europe · Radical Storage) |
+| 5.3 | «الأنشطة والتذاكر» tab | Activity partners (+ tours when any) | ✅ GetYourGuide, Tiqets, Klook, KKday, WeGoTrip |
+| 5.4 | Phone 390 px | Row scrolls sideways, sticky under the header | ✅ 13 Oct iframe 390 px: row one line, scrolls |
+| 5.5 | «خطة سياحية» tab | Scrolls to the planner | to test by owner (needs a visible window) |
+| 5.6 | App (html.in-app) | Same as 5.4 with the tab bar | to test by owner |
+
+## Section 6 — travel tools (13 Oct)
+
+| # | Scenario | Expected | Result |
+|---|---|---|---|
+| 6.1 | /ar/services, type «تركيا» | Lists Turkish cities; pick one → services | to test by owner (typing) |
+| 6.2 | /ar/services?code=TR&city=istanbul | Every service row | ✅ 13 Oct live: 5 rows, all partners |
+| 6.3 | Menu, footer, app «المزيد», home tools | «خدمات رحلتك» link everywhere | ✅ menu + footer seen live |
