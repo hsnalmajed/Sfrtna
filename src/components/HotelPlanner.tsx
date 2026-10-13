@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { Locale, TravelerCounts } from "@/lib/types";
-import { getDictionary } from "@/lib/dictionaries";
+import { useDictionary } from "@/lib/dict/context";
 import TravelersPicker from "@/components/TravelersPicker";
 import DateRangeInput from "@/components/DateRangeInput";
 import Icon from "@/components/ui/Icon";
@@ -55,7 +55,7 @@ export default function HotelPlanner({
   preset?: string;
   tone?: FormTone;
 }) {
-  const dict = getDictionary(locale);
+  const dict = useDictionary();
   const router = useRouter();
   const urlParams = useSearchParams();
   // Only initial values are read from here, so which source wins is fixed

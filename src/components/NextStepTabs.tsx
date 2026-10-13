@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import type { Locale } from "@/lib/types";
-import { getDictionary } from "@/lib/dictionaries";
+import { useDictionary } from "@/lib/dict/context";
 import { COUNTRY_CITIES, type CityEntry } from "@/lib/cities";
 import { CITY_AIRPORTS } from "@/data/cityAirports";
 import { searchEquals } from "@/lib/search";
@@ -90,7 +90,7 @@ export default function NextStepTabs({
   infants?: number;
   withCompensation?: boolean;
 }) {
-  const dict = getDictionary(locale);
+  const dict = useDictionary();
   const t = dict.nextSteps;
   const isAr = locale === "ar";
   const name = isAr ? city.nameAr : city.nameEn;

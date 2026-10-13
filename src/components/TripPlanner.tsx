@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { warmFlightSearch } from "@/components/FlightMetasearch";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { DestinationCategory, FlightRoute, Locale, TravelerCounts } from "@/lib/types";
-import { getDictionary } from "@/lib/dictionaries";
+import { useDictionary } from "@/lib/dict/context";
 import TravelersPicker from "@/components/TravelersPicker";
 import AirportInput from "@/components/AirportInput";
 import { currencyForOrigin } from "@/components/CurrencySelect";
@@ -95,7 +95,7 @@ export default function TripPlanner({
   useEffect(() => {
     warmFlightSearch();
   }, []);
-  const dict = getDictionary(locale);
+  const dict = useDictionary();
   const router = useRouter();
   const urlParams = useSearchParams();
   // Only initial values are read from here, so which source wins is fixed

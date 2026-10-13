@@ -2,7 +2,8 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { getDictionary } from "@/lib/dictionaries";
+import { useDictionary } from "@/lib/dict/context";
+import type { Dictionary } from "@/lib/dictionaries";
 import type { Locale } from "@/lib/types";
 import { countLabel } from "@/lib/format";
 import { PIN_STYLES } from "@/lib/pinStyles";
@@ -216,7 +217,7 @@ export default function CityPlacesPlanner({
   onShowOnMap?: (place: PlaceListItem) => void;
   showOnMapLabel?: string;
 }) {
-  const full = getDictionary(locale);
+  const full = useDictionary();
   const t = full.tripPlan;
 
   const [mode, setMode] = useState<"pick" | "auto" | null>(null);
@@ -557,7 +558,7 @@ export default function CityPlacesPlanner({
   );
 }
 
-type TripDict = ReturnType<typeof getDictionary>["tripPlan"];
+type TripDict = Dictionary["tripPlan"];
 
 function DatesFields({
   t,
@@ -673,7 +674,7 @@ function PlanView({
   onEdit: () => void;
   onClose: () => void;
 }) {
-  const t = getDictionary(locale).tripPlan;
+  const t = useDictionary().tripPlan;
   const isAr = locale === "ar";
   const all = plan.days.flat();
   const meals = useMemo(() => mealsFor(plan.days, restaurants), [plan.days, restaurants]);

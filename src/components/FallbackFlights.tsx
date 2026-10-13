@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import type { Locale } from "@/lib/types";
-import { getDictionary } from "@/lib/dictionaries";
+import { useDictionary } from "@/lib/dict/context";
 import { findAirport } from "@/lib/airports";
 
 export interface FallbackRoute {
@@ -60,7 +60,7 @@ export default function FallbackFlights({
   currency: string;
   directOnly: boolean;
 }) {
-  const t = getDictionary(locale).results;
+  const t = useDictionary().results;
   const isAr = locale === "ar";
   const [answer, setAnswer] = useState<Answer | null | "none">(null);
   const [limit, setLimit] = useState(8);

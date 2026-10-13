@@ -14,6 +14,9 @@ import VisaBadge, { VISA_STYLES } from "@/components/VisaBadge";
 import VisaRequirementsDialog from "@/components/VisaRequirementsDialog";
 import type { VisaCategory } from "@/data/visaStatus";
 
+/** Cities in the drifting season strip (the full list opens as a grid). */
+const MARQUEE_CITIES = 16;
+
 /** A city in season this month, with the two numbers that put it there. */
 export interface ShowcaseCity {
   code: string;
@@ -159,6 +162,7 @@ export default function HomeShowcase({
   // The cities in season this month are what a visitor sees first — a page
   // of places is the better welcome. Arriving to search (a search asked for
   // in the address, or /#plan) opens the search instead.
+  const marqueeCities = seasonCities.slice(0, MARQUEE_CITIES);
   const [active, setActive] = useState<TabKey>(initialPlan || seasonCities.length === 0 ? "plan" : "season");
   // The season tab runs every city in season past as a moving strip; the
   // button lays them all out as a still grid, in place rather than on
@@ -592,14 +596,19 @@ export default function HomeShowcase({
                     {seasonCities.map((c) => cityCard(c))}
                   </div>
                 ) : (
-                  // Every city in season, drifting past (see .marquee in
+                  // The month's cities drifting past (see .marquee in
                   // globals.css). The second copy is only there to close the
                   // loop, so it is inert: screen readers and the Tab key meet
                   // each city once.
+                  // The drift carries the month's best MARQUEE_CITIES (the list is
+                  // ranked best first); «كل المدن» above opens every one as a grid.
+                  // Drawing all of them twice (78 → 156 cards) made the phone's
+                  // main thread busy for seconds after the page appeared, so taps
+                  // waited (Lighthouse mobile, 13 Oct: TBT up to 2.5 s on /ar).
                   <div className="marquee -mx-4 px-4 py-1 sm:-mx-7 sm:px-7">
                     <div
                       className="marquee-track"
-                      style={{ "--marquee-duration": `${seasonCities.length * 5}s` } as CSSProperties}
+                      style={{ "--marquee-duration": `${marqueeCities.length * 5}s` } as CSSProperties}
                     >
                       {[0, 1].map((copy) => (
                         <div
@@ -608,7 +617,7 @@ export default function HomeShowcase({
                           aria-hidden={copy === 1 || undefined}
                           inert={copy === 1}
                         >
-                          {seasonCities.map((c) => (
+                          {marqueeCities.map((c) => (
                             <div key={`${c.code}-${c.slug}`} className="w-44 shrink-0 sm:w-48">
                               {cityCard(c)}
                             </div>

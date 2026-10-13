@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import type { Locale } from "@/lib/types";
-import { getDictionary } from "@/lib/dictionaries";
+import { useDictionary } from "@/lib/dict/context";
 import { useAccount } from "@/lib/useAccount";
 
 /**
@@ -19,7 +19,7 @@ export default function AccountLink({
   variant: "header" | "drawer" | "sheet";
   onNavigate?: (e: React.MouseEvent, href: string) => void;
 }) {
-  const nav = getDictionary(locale).nav;
+  const nav = useDictionary().nav;
   const { status, user, methods } = useAccount();
   // While the account is being asked for, the header keeps the button's
   // place (invisible), so nothing beside it jumps when it appears.

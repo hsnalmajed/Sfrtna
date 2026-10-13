@@ -4,7 +4,8 @@ import FallbackFlights, { type FallbackRoute } from "@/components/FallbackFlight
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import type { Locale } from "@/lib/types";
-import { getDictionary } from "@/lib/dictionaries";
+import { useDictionary } from "@/lib/dict/context";
+import type { Dictionary } from "@/lib/dictionaries";
 import { findAirport } from "@/lib/airports";
 import { countLabel } from "@/lib/format";
 import Icon from "@/components/ui/Icon";
@@ -269,7 +270,7 @@ export default function FlightResultsGuide({
   /** The trip, for the second source of fares when the partner cannot be reached. */
   route?: FallbackRoute;
 }) {
-  const t = getDictionary(locale).results;
+  const t = useDictionary().results;
   const [state, setState] = useState<State>(EMPTY);
   const [tab, setTab] = useState<Tab>("best");
   // The fares come from the flight partner's own search, loaded from its
@@ -909,7 +910,7 @@ export default function FlightResultsGuide({
   );
 }
 
-type Dict = ReturnType<typeof getDictionary>["results"];
+type Dict = Dictionary["results"];
 
 /**
  * One flight, as a card: the airline and two tags — direct (blue) or its

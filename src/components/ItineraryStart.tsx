@@ -3,7 +3,7 @@
 import { Suspense, useMemo, useState } from "react";
 import Link from "next/link";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { getDictionary } from "@/lib/dictionaries";
+import { useDictionary } from "@/lib/dict/context";
 import type { Locale } from "@/lib/types";
 import type { SectionHero } from "@/lib/heroPhotos";
 import PageHero from "@/components/ui/PageHero";
@@ -36,7 +36,7 @@ function countryOf(city: CityEntry): string | undefined {
 function Start({ hero }: { hero?: SectionHero }) {
   const params = useParams();
   const locale = (params.locale === "en" ? "en" : "ar") as Locale;
-  const dict = getDictionary(locale);
+  const dict = useDictionary();
   const t = dict.tripPlan;
   const sp = useSearchParams();
   const router = useRouter();

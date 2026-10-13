@@ -2,7 +2,7 @@
 
 import { useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { getDictionary } from "@/lib/dictionaries";
+import { useDictionary } from "@/lib/dict/context";
 import type { Locale } from "@/lib/types";
 import { type Currency } from "@/lib/currencies";
 import { flagImageUrl } from "@/lib/visaProviders";
@@ -40,7 +40,7 @@ export default function TripCurrencyInline({
   /** "dark" for the results band; "light" for a white card (a country page's facts). */
   variant?: "dark" | "light";
 }) {
-  const dict = getDictionary(locale);
+  const dict = useDictionary();
   const [rate, setRate] = useState<number | null>(null);
   const [open, setOpen] = useState(false);
 
@@ -101,7 +101,6 @@ export default function TripCurrencyInline({
           from={from}
           to={to}
           rate={rate}
-          locale={locale}
           name={name}
           fmt={fmt}
           onClose={() => setOpen(false)}
@@ -115,7 +114,6 @@ function ConverterDialog({
   from,
   to,
   rate,
-  locale,
   name,
   fmt,
   onClose,
@@ -123,12 +121,11 @@ function ConverterDialog({
   from: Currency;
   to: Currency;
   rate: number;
-  locale: Locale;
   name: (c: Currency) => string;
   fmt: (value: number, decimals: number) => string;
   onClose: () => void;
 }) {
-  const dict = getDictionary(locale);
+  const dict = useDictionary();
   const panelRef = useRef<HTMLDivElement>(null);
   const headingId = useId();
   const inputId = useId();

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { getDictionary } from "@/lib/dictionaries";
+import { useDictionary } from "@/lib/dict/context";
 import type { Locale } from "@/lib/types";
 import { PENDING_PLAN_KEY, refreshAccount, useAccount } from "@/lib/useAccount";
 
@@ -41,7 +41,7 @@ export default function SavePlanButton({
   /** The look of the button (it sits in the plan's toolbar). */
   className?: string;
 }) {
-  const t = getDictionary(locale).account;
+  const t = useDictionary().account;
   const account = useAccount();
   const router = useRouter();
   const [state, setState] = useState<"idle" | "saving" | "saved" | "error" | "full">("idle");

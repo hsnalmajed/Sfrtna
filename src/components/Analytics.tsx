@@ -15,7 +15,7 @@ import {
   type ConsentChoice,
 } from "@/lib/analytics";
 import type { Locale } from "@/lib/types";
-import { getDictionary } from "@/lib/dictionaries";
+import { useDictionary } from "@/lib/dict/context";
 
 /**
  * GA4 tag, the site-wide click listener and the consent banner.
@@ -108,7 +108,7 @@ function onClick(e: MouseEvent) {
 export default function Analytics({ locale }: { locale: Locale }) {
   const [measured, setMeasured] = useState(false);
   const [askConsent, setAskConsent] = useState(false);
-  const t = getDictionary(locale).consent;
+  const t = useDictionary().consent;
 
   useEffect(() => {
     if (!isMeasuredHost()) return;

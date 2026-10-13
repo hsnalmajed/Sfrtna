@@ -3,7 +3,7 @@
 import { Suspense, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useParams, useSearchParams } from "next/navigation";
-import { getDictionary } from "@/lib/dictionaries";
+import { useDictionary } from "@/lib/dict/context";
 import type { ItineraryResult, Locale } from "@/lib/types";
 import { findAirport } from "@/lib/airports";
 import { findCountry, findCountryByEnglishName } from "@/lib/countries";
@@ -72,7 +72,7 @@ function safeBackHref(raw: string | null): string | undefined {
 function ItineraryContent({ hero }: { hero?: SectionHero }) {
   const params = useParams();
   const locale = (params.locale === "en" ? "en" : "ar") as Locale;
-  const dict = getDictionary(locale);
+  const dict = useDictionary();
   const sp = useSearchParams();
 
   // The link in from the results page carries an airport code. A code is not

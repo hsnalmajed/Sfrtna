@@ -10,7 +10,7 @@ import { searchMatches } from "@/lib/search";
 import { CLASS_DOT } from "@/lib/travelSeason/labels";
 import Photo from "@/components/Photo";
 import FilterPill, { FilterToggle } from "@/components/ui/FilterPill";
-import { getDictionary } from "@/lib/dictionaries";
+import { useDictionary } from "@/lib/dict/context";
 import { VISA_STYLES } from "@/components/VisaBadge";
 import type { VisaCategory } from "@/data/visaStatus";
 
@@ -148,7 +148,7 @@ export default function CitySeasons({
   const top = useRef<HTMLDivElement>(null);
   const isAr = locale === "ar";
   const t = dict.ts;
-  const ft = getDictionary(locale).filters;
+  const ft = useDictionary().filters;
 
   const temps = (m: SeasonMonth) =>
     m.high === null

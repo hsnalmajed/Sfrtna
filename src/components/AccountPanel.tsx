@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { getDictionary } from "@/lib/dictionaries";
+import { useDictionary } from "@/lib/dict/context";
 import type { Locale } from "@/lib/types";
 import { inApp } from "@/lib/nativeApp";
 import { PENDING_PLAN_KEY, refreshAccount, setSignedIn, useAccount, type AccountUser } from "@/lib/useAccount";
@@ -45,7 +45,7 @@ export function savedPlanHref(locale: Locale, p: SavedPlan): string {
  * saved right after, and they are taken back to it.
  */
 export default function AccountPanel({ locale }: { locale: Locale }) {
-  const t = getDictionary(locale).account;
+  const t = useDictionary().account;
   const account = useAccount();
   const router = useRouter();
 
@@ -88,7 +88,7 @@ function SignInForm({
   methods: { google: string | null; email: boolean };
   onSignedIn: (u: AccountUser) => void;
 }) {
-  const t = getDictionary(locale).account;
+  const t = useDictionary().account;
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
   const [step, setStep] = useState<"email" | "code">("email");
@@ -274,7 +274,7 @@ function SignInForm({
 }
 
 function SignedIn({ locale, user }: { locale: Locale; user: AccountUser }) {
-  const t = getDictionary(locale).account;
+  const t = useDictionary().account;
   const [plans, setPlans] = useState<SavedPlan[] | null>(null);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [removing, setRemoving] = useState<string | null>(null);

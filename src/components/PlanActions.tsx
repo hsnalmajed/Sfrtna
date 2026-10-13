@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getDictionary } from "@/lib/dictionaries";
+import { useDictionary } from "@/lib/dict/context";
 import type { Locale } from "@/lib/types";
 import { downloadText, safeFileName, toKML } from "@/lib/mapExport";
 import { printPage } from "@/lib/nativeApp";
@@ -50,7 +50,7 @@ export default function PlanActions({
   /** False where there is no document on the page worth printing. */
   showPrint?: boolean;
 }) {
-  const dict = getDictionary(locale);
+  const dict = useDictionary();
   const [places, setPlaces] = useState<CountryPlace[] | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
 

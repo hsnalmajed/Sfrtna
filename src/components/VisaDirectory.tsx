@@ -11,7 +11,7 @@ import Photo from "@/components/Photo";
 import VisaBadge from "@/components/VisaBadge";
 import { VISA_ORDER, type VisaCategory } from "@/data/visaStatus";
 import FilterPill from "@/components/ui/FilterPill";
-import { getDictionary } from "@/lib/dictionaries";
+import { useDictionary } from "@/lib/dict/context";
 
 export interface VisaCountry {
   code: string;
@@ -65,7 +65,7 @@ export default function VisaDirectory({
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<VisaCategory | "all">("all");
   const [continent, setContinent] = useState<Continent | "all">("all");
-  const ft = getDictionary(locale).filters;
+  const ft = useDictionary().filters;
 
   const counts = useMemo(() => {
     const c = { free: 0, arrival: 0, eta: 0, required: 0 } as Record<VisaCategory, number>;

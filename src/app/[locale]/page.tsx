@@ -18,6 +18,7 @@ import HomeShowcase, { type ShowcaseCity } from "@/components/HomeShowcase";
 import { planFromParams } from "@/lib/planEvents";
 import Photo from "@/components/Photo";
 import { brandJsonLd } from "@/lib/seo";
+import { preload } from "react-dom";
 
 export const dynamic = "force-dynamic";
 
@@ -33,6 +34,11 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
   const loc = (locale === "en" ? "en" : "ar") as Locale;
   const dict = getDictionary(loc);
   const isAr = loc === "ar";
+  // The headline is Tajawal 900 (font-black), the page's largest paint. The
+  // layout preloads 800 only; without this the phone asked for 900 after the
+  // scripts ran and repainted the headline with it — that late repaint was
+  // the "largest paint" Lighthouse timed (13 Oct: ~5 s simulated on mobile).
+  if (isAr) preload("/fonts/tajawal-ar-900.woff2", { as: "font", type: "font/woff2", crossOrigin: "anonymous" });
 
   // The same set the destinations page lists (destinationList.ts): every
   // country with a guide or city pages. Counting guides only said 41

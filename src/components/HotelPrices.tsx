@@ -5,7 +5,7 @@ import { nightsLabel } from "@/lib/format";
 import { useEffect, useMemo, useState } from "react";
 import type { HotelResult, HotelSearch } from "@/lib/providers/serpapi";
 import { hotelPartnerLinks } from "@/lib/affiliateLinks";
-import type { getDictionary } from "@/lib/dictionaries";
+import type { Dictionary } from "@/lib/dictionaries";
 import { amenityLabels } from "@/lib/hotelAmenities";
 import Icon from "@/components/ui/Icon";
 import PartnerLink from "@/components/PartnerLink";
@@ -24,7 +24,7 @@ import PartnerLink from "@/components/PartnerLink";
  * under «عرض N مواقع أخرى». Sorted by price, honestly.
  */
 
-export type T = ReturnType<typeof getDictionary>["hotelResults"];
+export type T = Dictionary["hotelResults"];
 
 /** Google's name for each partner's site → our partner's name in the links. */
 const PARTNERS: { match: RegExp; partner: string; label: string }[] = [

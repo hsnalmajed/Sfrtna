@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { getDictionary } from "@/lib/dictionaries";
+import { useDictionary } from "@/lib/dict/context";
 import type { Locale } from "@/lib/types";
 
 /**
@@ -57,7 +57,7 @@ export default function FilterPill<T extends string | number>(
   )
 ) {
   const [open, setOpen] = useState(false);
-  const t = getDictionary(props.locale).filters;
+  const t = useDictionary().filters;
 
   useEffect(() => {
     if (!open) return;

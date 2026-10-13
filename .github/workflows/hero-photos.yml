@@ -1,0 +1,40 @@
+# Copies the hero photographs to our own domain (scripts/hero-photos.mjs):
+# by hand, or when the list of heroes changes.
+name: Hero photos
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - src/lib/heroPhotos.ts
+      - scripts/hero-photos.mjs
+
+permissions:
+  contents: write
+
+concurrency:
+  group: hero-photos
+  cancel-in-progress: false
+
+jobs:
+  copy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Copy and convert
+        run: |
+          npm install --no-save --no-audit --no-fund sharp@0.34
+          node scripts/hero-photos.mjs
+      - name: Commit
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/hero src/data/heroLocal.json
+          git commit -m "Hero photos on our domain" || exit 0
+          git pull --rebase origin main && git push

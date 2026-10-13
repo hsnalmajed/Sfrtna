@@ -4,7 +4,7 @@ import AccountLink from "@/components/AccountLink";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { getDictionary } from "@/lib/dictionaries";
+import { useDictionary } from "@/lib/dict/context";
 import { openPlanner } from "@/lib/planEvents";
 import type { Locale } from "@/lib/types";
 import LanguageSwitcher from "./LanguageSwitcher";
@@ -24,7 +24,7 @@ import Logo from "@/components/ui/Logo";
  * could not promise.
  */
 export default function Header({ locale }: { locale: Locale }) {
-  const dict = getDictionary(locale);
+  const dict = useDictionary();
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);

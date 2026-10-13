@@ -2,7 +2,7 @@ import Link from "next/link";
 import VisaDetailsButton from "@/components/VisaDetailsButton";
 import { CLASS_DOT } from "@/lib/travelSeason/labels";
 import type { DestinationSuggestion, Locale, TravelerCounts } from "@/lib/types";
-import { getDictionary } from "@/lib/dictionaries";
+import { useDictionary } from "@/lib/dict/context";
 import { serializeChildrenAges } from "@/lib/searchParamsUtil";
 import { findCountry } from "@/lib/countries";
 import { monthName } from "@/lib/seasons";
@@ -59,7 +59,7 @@ export default function DestinationCard({
   /** "Hotel only" search: the hotel search is the card's main button. */
   hotelFirst?: boolean;
 }) {
-  const dict = getDictionary(locale);
+  const dict = useDictionary();
   const d = dict.discoverResults;
   const isAr = locale === "ar";
   const name = isAr ? suggestion.destinationNameAr : suggestion.destinationNameEn;

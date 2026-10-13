@@ -3,7 +3,7 @@
 import { Suspense, useCallback, useMemo, useState } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { getDictionary } from "@/lib/dictionaries";
+import { useDictionary } from "@/lib/dict/context";
 import type { Locale } from "@/lib/types";
 import { parseChildrenAges } from "@/lib/searchParamsUtil";
 import { hotelPartnerLinks } from "@/lib/affiliateLinks";
@@ -43,7 +43,7 @@ export default function HotelResultsPage() {
 function HotelResultsContent() {
   const params = useParams();
   const locale = (params.locale === "en" ? "en" : "ar") as Locale;
-  const dict = getDictionary(locale);
+  const dict = useDictionary();
   const t = dict.hotelResults;
   const sp = useSearchParams();
 

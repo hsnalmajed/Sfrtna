@@ -1,4 +1,4 @@
-import { getDictionary } from "@/lib/dictionaries";
+import { useDictionary } from "@/lib/dict/context";
 import type { Locale } from "@/lib/types";
 
 /**
@@ -18,17 +18,17 @@ import type { Locale } from "@/lib/types";
  * component that might lazy-load.
  */
 export default function PrintHeader({
-  locale,
   title,
   subtitle,
 }: {
+  /** Kept for callers; the words come from useDictionary(). */
   locale: Locale;
   /** What this document is — printed beside the mark, larger than it. */
   title: string;
   /** The line under it: days, picks, dates. Optional. */
   subtitle?: string;
 }) {
-  const dict = getDictionary(locale);
+  const dict = useDictionary();
 
   return (
     <header className="print-header hidden print:block">

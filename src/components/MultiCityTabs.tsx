@@ -1,7 +1,7 @@
 "use client";
 
 import type { Locale, MultiCityLegInput } from "@/lib/types";
-import { getDictionary } from "@/lib/dictionaries";
+import { useDictionary } from "@/lib/dict/context";
 import { findAirport } from "@/lib/airports";
 import Icon from "@/components/ui/Icon";
 
@@ -36,7 +36,7 @@ export default function MultiCityTabs({
   budget: number;
   currency: string;
 }) {
-  const t = getDictionary(locale).multicity;
+  const t = useDictionary().multicity;
   const isAr = locale === "ar";
   const money = (n: number) => `${Math.round(Math.abs(n)).toLocaleString("en-US")} ${currency}`;
   const city = (code: string) => {

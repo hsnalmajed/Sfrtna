@@ -4,7 +4,7 @@ import { countLabel } from "@/lib/format";
 
 import { Suspense, useEffect, useMemo, useState } from "react";
 import { useParams, useSearchParams } from "next/navigation";
-import { getDictionary } from "@/lib/dictionaries";
+import { useDictionary } from "@/lib/dict/context";
 import type { RoomType, DestinationCategory, DestinationSuggestion, Locale, RouteSuggestion, TripType } from "@/lib/types";
 import DestinationCard from "@/components/DestinationCard";
 import PricesUnavailable from "@/components/PricesUnavailable";
@@ -28,7 +28,7 @@ export default function DiscoverResultsPage() {
 function DiscoverResultsContent() {
   const params = useParams();
   const locale = (params.locale === "en" ? "en" : "ar") as Locale;
-  const dict = getDictionary(locale);
+  const dict = useDictionary();
   const sp = useSearchParams();
 
   const tripType = (sp.get("tripType") as TripType) || "both";

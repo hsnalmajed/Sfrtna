@@ -9,6 +9,8 @@ import Footer from "@/components/Footer";
 import NavTracker from "@/components/NavTracker";
 import Analytics from "@/components/Analytics";
 import AppTabBar from "@/components/AppTabBar";
+import { DictionaryProvider } from "@/lib/dict/context";
+import { clientDictionary } from "@/lib/dict/clientSections";
 
 export async function generateStaticParams() {
   return [{ locale: "ar" }, { locale: "en" }];
@@ -86,14 +88,18 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
         undo the whole effect. Each hero carries its own top padding instead.
       */}
       <body className="flex min-h-full flex-col bg-mist-50 text-navy-900">
-        <Header locale={loc} />
-        <main className="flex-1">{children}</main>
-        <Footer locale={loc} />
-        <AppTabBar locale={loc} />
-        <NavTracker />
-        {/* GA4 + consent banner + partner-click tracking (sfrtna.com only). */}
-        <Analytics locale={loc} />
-        <Stay22LinkSwap />
+        {/* Client components read their words from here (useDictionary): only
+            this page's language reaches the browser, not both. */}
+        <DictionaryProvider dict={clientDictionary(dict)}>
+          <Header locale={loc} />
+          <main className="flex-1">{children}</main>
+          <Footer locale={loc} />
+          <AppTabBar locale={loc} />
+          <NavTracker />
+          {/* GA4 + consent banner + partner-click tracking (sfrtna.com only). */}
+          <Analytics locale={loc} />
+          <Stay22LinkSwap />
+        </DictionaryProvider>
       </body>
     </html>
   );

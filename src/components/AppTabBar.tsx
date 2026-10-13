@@ -4,7 +4,7 @@ import AccountLink from "@/components/AccountLink";
 import { useEffect, useLayoutEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { getDictionary } from "@/lib/dictionaries";
+import { useDictionary } from "@/lib/dict/context";
 import { openPlanner, HOME_TAB_EVENT, HOME_SEASON_EVENT } from "@/lib/planEvents";
 import { track } from "@/lib/analytics";
 import { saveLanguage } from "@/lib/langCookie";
@@ -30,7 +30,7 @@ import { CONTACT_EMAIL } from "@/lib/contact";
  * pages that say who runs the site and the partner note.
  */
 export default function AppTabBar({ locale }: { locale: Locale }) {
-  const dict = getDictionary(locale);
+  const dict = useDictionary();
   const pathname = usePathname() ?? `/${locale}`;
   const router = useRouter();
   const [moreOpen, setMoreOpen] = useState(false);

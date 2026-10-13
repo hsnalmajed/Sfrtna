@@ -2,7 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { Locale, TravelerCounts } from "@/lib/types";
-import { getDictionary } from "@/lib/dictionaries";
+import { useDictionary } from "@/lib/dict/context";
+import type { ClientDictionary } from "@/lib/dict/clientSections";
 import { countLabel } from "@/lib/format";
 import { formStyles, type FormTone } from "@/lib/formTone";
 import { keepPopoverOnScreen } from "@/lib/popover";
@@ -21,7 +22,7 @@ const DEFAULT_CHILD_AGE = 6;
  * pair, where Arabic has a dual. Each noun now carries all four shapes and
  * the number is inside the string, because for one and two it disappears.
  */
-function summarize(value: TravelerCounts, dict: ReturnType<typeof getDictionary>): string {
+function summarize(value: TravelerCounts, dict: ClientDictionary): string {
   const t = dict.travelers;
   const parts: string[] = [
     countLabel(value.adults, {
@@ -99,18 +100,18 @@ function Counter({
 }
 
 export default function TravelersPicker({
-  locale,
   value,
   onChange,
   tone = "light",
 }: {
+  /** Kept for callers; the words come from useDictionary(). */
   locale: Locale;
   value: TravelerCounts;
   onChange: (next: TravelerCounts) => void;
   /** Only the trigger changes; the counter popover stays light. */
   tone?: FormTone;
 }) {
-  const dict = getDictionary(locale);
+  const dict = useDictionary();
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 

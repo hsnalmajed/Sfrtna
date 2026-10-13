@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import type { Locale } from "@/lib/types";
-import { getDictionary } from "@/lib/dictionaries";
+import { useDictionary } from "@/lib/dict/context";
 import { findCountry } from "@/lib/countries";
 import { VISA_CHECKED_AT, visaStatusFor } from "@/data/visaStatus";
 import { checklistFor } from "@/lib/visaDocuments";
@@ -45,7 +45,7 @@ export default function VisaRequirementsDialog({
   /** What that back button says ("Back to Istanbul"). */
   backLabel?: string;
 }) {
-  const dict = getDictionary(locale);
+  const dict = useDictionary();
   const v = dict.visa;
   const r = dict.results;
   const isAr = locale === "ar";

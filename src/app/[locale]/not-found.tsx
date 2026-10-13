@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { getDictionary } from "@/lib/dictionaries";
+import { useDictionary } from "@/lib/dict/context";
 import type { Locale } from "@/lib/types";
 import { COUNTRY_CITIES } from "@/lib/cities";
 import { findCountry } from "@/lib/countries";
@@ -36,7 +36,7 @@ export default function LocaleNotFound() {
   const pathname = usePathname();
   const router = useRouter();
   const locale: Locale = pathname?.startsWith("/en") ? "en" : "ar";
-  const dict = getDictionary(locale);
+  const dict = useDictionary();
   const isAr = locale === "ar";
   const [query, setQuery] = useState("");
 

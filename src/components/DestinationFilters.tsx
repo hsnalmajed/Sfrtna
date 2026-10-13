@@ -6,7 +6,7 @@ import { searchMatches } from "@/lib/search";
 import type { Locale } from "@/lib/types";
 import type { Continent } from "@/lib/countries";
 import { MONTHS } from "@/lib/seasons";
-import { getDictionary } from "@/lib/dictionaries";
+import { useDictionary } from "@/lib/dict/context";
 import FilterPill from "@/components/ui/FilterPill";
 
 export const CONTINENT_ORDER: Continent[] = [
@@ -89,7 +89,7 @@ export default function DestinationFilters({
   const isFiltered =
     state.query.trim() !== "" || state.continent !== "all" || state.month !== "all";
 
-  const t = getDictionary(locale).filters;
+  const t = useDictionary().filters;
 
   return (
     <div className="rounded-3xl bg-white p-3.5 shadow-[var(--shadow-card)] ring-1 ring-navy-950/5 sm:p-5">

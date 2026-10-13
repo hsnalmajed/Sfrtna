@@ -1,6 +1,6 @@
 import { CLASS_DOT } from "@/lib/travelSeason/labels";
 import type { Locale, RouteSuggestion, TravelerCounts } from "@/lib/types";
-import { getDictionary } from "@/lib/dictionaries";
+import { useDictionary } from "@/lib/dict/context";
 import { serializeChildrenAges } from "@/lib/searchParamsUtil";
 import { findCountry } from "@/lib/countries";
 import { countLabel } from "@/lib/format";
@@ -46,7 +46,7 @@ export default function RouteCard({
   /** The whole-trip budget, carried to the flights' tabs. */
   budget?: number;
 }) {
-  const dict = getDictionary(locale);
+  const dict = useDictionary();
   const d = dict.discoverResults;
   const isAr = locale === "ar";
   const arrow = isAr ? "←" : "→";

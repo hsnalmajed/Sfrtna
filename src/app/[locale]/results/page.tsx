@@ -5,7 +5,7 @@ import { countLabel } from "@/lib/format";
 import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { getDictionary } from "@/lib/dictionaries";
+import { useDictionary } from "@/lib/dict/context";
 import type { RoomType, Locale, MultiCityLegInput, SearchParams, TripType } from "@/lib/types";
 import TripCurrencyInline from "@/components/TripCurrencyInline";
 import FlightMetasearch, { warmFlightSearch } from "@/components/FlightMetasearch";
@@ -39,7 +39,7 @@ export default function ResultsPage() {
 function ResultsContent() {
   const params = useParams();
   const locale = (params.locale === "en" ? "en" : "ar") as Locale;
-  const dict = getDictionary(locale);
+  const dict = useDictionary();
   const sp = useSearchParams();
 
   // Where the trip lives on this page, and why it moved.

@@ -3,7 +3,7 @@
 import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import type { Locale } from "@/lib/types";
-import { getDictionary } from "@/lib/dictionaries";
+import { useDictionary } from "@/lib/dict/context";
 import { countLabel } from "@/lib/format";
 import { formStyles, type FormTone } from "@/lib/formTone";
 import Icon from "@/components/ui/Icon";
@@ -152,7 +152,7 @@ export default function DateRangeInput({
    */
   purpose?: "flight" | "hotel" | "trip";
 }) {
-  const dict = getDictionary(locale);
+  const dict = useDictionary();
   const isAr = locale === "ar";
   const [open, setOpen] = useState(false);
   // Which end the next click sets. Always "depart" when the panel opens, so
