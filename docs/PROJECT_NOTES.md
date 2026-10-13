@@ -687,7 +687,25 @@ home form (filled in); its way back is the browser's back.
 
 ## Next, in order
 
-**▶ Start here: section 1 of the plan above (started 13 Oct).**
+**▶ Start here (new conversation after 13 Oct): section 2 — hotel results.**
+Done so far: section 1 (flight search, 22/22 in `docs/TEST_PLAN.md`),
+section 4 (next-step tabs), section 7 item "home photo full-bleed" (+ app
+logo on the photo, 40 px gap to the footer). Remaining order: 2 → 3 → 5 → 6
+→ rest of 7 (rain line off, sign-in in «المزيد»).
+First step of section 2: check the exact current price/plans of the hotel
+data source (SerpApi Google Hotels — searches/month, cost, what a city
+search returns: name, stars, rating, distance, check-in/out, amenities,
+breakfast, prices per site) and **show the owner before subscribing**
+(business decision). Then build the hotel card like the flight card, the
+«احجز» list of every site with its price, remove the long intro text, same
+card on «اقترح لي فندق»; test with a written list in TEST_PLAN.md (site,
+390 px phone, app) before reporting.
+How to test (see TEST_PLAN.md header): the owner must keep the Chrome test
+window visible; phone = same-origin iframe 390 px (window can't resize);
+app = same iframe with `html.in-app` added.
+Owner preference: reply in Arabic only; report what was tested and what was
+not, honestly; send progress in short Arabic messages.
+
 Previous hand-off state (still true):
 - Hotel-name search done (stored names → HERE capped → OSM). UI dropdown not
   yet seen on a phone.
