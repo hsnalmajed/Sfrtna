@@ -310,18 +310,38 @@
    "nameAr": "هونغ كونغ",
    "nameEn": "Hong Kong",
    "wikiTitle": "Hong Kong",
-   "flags": [
-    "not geocoded"
-   ]
+   "flags": [],
+   "lat": 22.28183,
+   "lon": 114.15828,
+   "geocode": "Central, Central District, Hong Kong Island, Hong Kong, China",
+   "airport": {
+    "iata": "HKG",
+    "name": "Hong Kong International Airport",
+    "km": 25,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 22.31184,
+    "lon": 113.914862,
+    "type": "large_airport"
+   }
   },
   "macau": {
    "country": "MO",
    "nameAr": "ماكاو",
    "nameEn": "Macau",
    "wikiTitle": "Macau",
-   "flags": [
-    "not geocoded"
-   ]
+   "flags": [],
+   "lat": 22.11589,
+   "lon": 113.5717,
+   "geocode": "龍輝半島 A Península, Long Chao Kok, Hac Sa Village, 聖方濟各堂區 São Francisco Xavier, Coloane, Macau, China",
+   "airport": {
+    "iata": "MFM",
+    "name": "Macau International Airport",
+    "km": 4,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 22.149599,
+    "lon": 113.592003,
+    "type": "large_airport"
+   }
   },
   "krabi": {
    "country": "TH",
@@ -404,20 +424,18 @@
    "nameAr": "لابوان باجو",
    "nameEn": "Labuan Bajo",
    "wikiTitle": "Labuan Bajo",
-   "flags": [
-    "named gateway 'LBJ' not a scheduled large/medium airport in OurAirports"
-   ],
-   "lat": -0.66104,
-   "lon": 119.73259,
-   "geocode": "Labuan Bajo, Donggala Regency, Central Sulawesi, Indonesia",
+   "flags": [],
+   "lat": -8.48107,
+   "lon": 119.88351,
+   "geocode": "Ra Signature Komodo Labuan Bajo, Jalan Binongko, Labuan Bajo, Manggarai Barat, East Nusa Tenggara, 86763, Indonesia",
    "airport": {
-    "iata": "PLW",
-    "name": "Mutiara - SIS Al-Jufrie Airport",
-    "km": 34,
-    "source": "nearest-airport rule",
-    "lat": -0.916462,
-    "lon": 119.908647,
-    "type": "medium_airport"
+    "iata": "LBJ",
+    "name": "Komodo Airport",
+    "km": 1,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": -8.480694,
+    "lon": 119.888306,
+    "type": "small_airport"
    }
   },
   "nha-trang": {
@@ -615,19 +633,17 @@
    "nameAr": "باليرمو",
    "nameEn": "Palermo",
    "wikiTitle": "Palermo",
-   "flags": [
-    "gateway 11638 km away"
-   ],
+   "flags": [],
    "lat": 38.11123,
    "lon": 13.35244,
    "geocode": "Palermo, Sicily, Italy",
    "airport": {
-    "iata": "DPS",
-    "name": "Denpasar I Gusti Ngurah Rai International Airport",
-    "km": 11638,
+    "iata": "PMO",
+    "name": "Falcone–Borsellino Airport",
+    "km": 24,
     "source": "owner list, confirmed in OurAirports",
-    "lat": -8.748409,
-    "lon": 115.167123,
+    "lat": 38.175999,
+    "lon": 13.091,
     "type": "large_airport"
    }
   },
@@ -734,7 +750,7 @@
    "flags": [],
    "lat": 55.86115,
    "lon": -4.25017,
-   "geocode": "Glasgow, Glasgow City, Scotland, G2 1AL, United Kingdom",
+   "geocode": "Glasgow, Glasgow City, Scotland, G2 1AR, United Kingdom",
    "airport": {
     "iata": "GLA",
     "name": "Glasgow Airport",
@@ -1131,13 +1147,13 @@
    "nameEn": "Luxembourg",
    "wikiTitle": "Luxembourg City",
    "flags": [],
-   "lat": 49.60105,
-   "lon": 6.06399,
-   "geocode": "Sky Bar Luxembourg, 80, Route de Longwy, City Concorde, Bertrange, Canton Luxembourg, 8080, Luxembourg",
+   "lat": 49.61128,
+   "lon": 6.1298,
+   "geocode": "Luxembourg, Canton Luxembourg, Luxembourg",
    "airport": {
     "iata": "LUX",
     "name": "Luxembourg-Findel International Airport",
-    "km": 11,
+    "km": 6,
     "source": "owner list, confirmed in OurAirports",
     "lat": 49.626845,
     "lon": 6.212134,
@@ -1605,19 +1621,9 @@
    "nameAr": "شلالات فيكتوريا",
    "nameEn": "Victoria Falls",
    "wikiTitle": "Victoria Falls (city)",
-   "flags": [],
-   "lat": -17.9229,
-   "lon": 25.84768,
-   "geocode": "Devil's Cataract, Victoria Falls, Hwange, Matabeleland North Province, Zimbabwe",
-   "airport": {
-    "iata": "VFA",
-    "name": "Victoria Falls International Airport",
-    "km": 19,
-    "source": "owner list, confirmed in OurAirports",
-    "lat": -18.097437,
-    "lon": 25.836867,
-    "type": "large_airport"
-   }
+   "flags": [
+    "not geocoded"
+   ]
   },
   "maputo": {
    "country": "MZ",
@@ -1642,15 +1648,15 @@
    "country": "CV",
    "nameAr": "سال",
    "nameEn": "Sal",
-   "wikiTitle": "Sal, Cape Verde",
+   "wikiTitle": "Santa Maria, Cape Verde",
    "flags": [],
-   "lat": 16.17597,
-   "lon": -22.91698,
-   "geocode": "Sal Rei, Boa Vista, 5110, Cape Verde",
+   "lat": 16.59869,
+   "lon": -22.90503,
+   "geocode": "Santa Maria, Sal, 4111, Cape Verde",
    "airport": {
     "iata": "SID",
     "name": "Amílcar Cabral International Airport",
-    "km": 63,
+    "km": 17,
     "source": "owner list, confirmed in OurAirports",
     "lat": 16.7414,
     "lon": -22.9494,
@@ -1909,16 +1915,14 @@
    "nameAr": "بونتا كانا",
    "nameEn": "Punta Cana",
    "wikiTitle": "Punta Cana",
-   "flags": [
-    "gateway 316 km away"
-   ],
-   "lat": 18.87818,
-   "lon": -71.3461,
-   "geocode": "Punta Caña, San Juan de la Maguana, San Juan, 12505, Dominican Republic",
+   "flags": [],
+   "lat": 18.55655,
+   "lon": -68.36916,
+   "geocode": "Punta Cana, Higüey, La Altagracia, 41201, Dominican Republic",
    "airport": {
     "iata": "PUJ",
     "name": "Punta Cana International Airport",
-    "km": 316,
+    "km": 1,
     "source": "owner list, confirmed in OurAirports",
     "lat": 18.567093,
     "lon": -68.364558,
@@ -2481,19 +2485,17 @@
    "nameAr": "غواياكيل",
    "nameEn": "Guayaquil",
    "wikiTitle": "Guayaquil",
-   "flags": [
-    "gateway 16783 km away"
-   ],
+   "flags": [],
    "lat": -2.19006,
    "lon": -79.88687,
    "geocode": "Guayaquil, Guayas, Ecuador",
    "airport": {
-    "iata": "GOI",
-    "name": "Goa Dabolim International Airport",
-    "km": 16783,
+    "iata": "GYE",
+    "name": "José Joaquín de Olmedo International Airport",
+    "km": 4,
     "source": "owner list, confirmed in OurAirports",
-    "lat": 15.380062,
-    "lon": 73.833328,
+    "lat": -2.15742,
+    "lon": -79.883598,
     "type": "large_airport"
    }
   },
@@ -2942,7 +2944,7 @@
    "flags": [],
    "lat": 6.88705,
    "lon": 158.24061,
-   "geocode": "Pohnpei, Sapwohn Kousapw, Pohnpei, 96941, Federated States of Micronesia",
+   "geocode": "Pohnpei, Roie Kousapw, Pohnpei, 96941, Federated States of Micronesia",
    "airport": {
     "iata": "PNI",
     "name": "Pohnpei International Airport",
@@ -2955,11 +2957,6 @@
   }
  },
  "review": [
-  "hong-kong",
-  "macau",
-  "labuan-bajo",
-  "palermo",
-  "punta-cana",
-  "guayaquil"
+  "victoria-falls"
  ]
 }

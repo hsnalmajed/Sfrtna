@@ -1,6 +1,6 @@
 {
  "source": "OpenStreetMap Nominatim",
- "retrievedAt": "2026-10-13T08:17:59+00:00",
+ "retrievedAt": "2026-10-13T08:39:21+00:00",
  "cities": {
   "dammam": {
    "country": "SA",
@@ -75,12 +75,12 @@
    "country": "GE",
    "query": "Kutaisi",
    "plain": {
-    "lat": 42.27161,
-    "lon": 42.70545,
+    "lat": 42.25968,
+    "lon": 42.66337,
     "display_name": "Kutaisi, Imereti, 4600, Georgia",
     "osm_type": "relation",
-    "osm_id": 2024547,
-    "type": "administrative",
+    "osm_id": 8742174,
+    "type": "city",
     "url": "https://nominatim.openstreetmap.org/search?q=Kutaisi&countrycodes=ge&format=jsonv2&limit=1&accept-language=en"
    },
    "city": {
@@ -365,16 +365,32 @@
   "hong-kong": {
    "country": "HK",
    "query": "Hong Kong",
-   "plain": null,
+   "plain": {
+    "lat": 22.28183,
+    "lon": 114.15828,
+    "display_name": "Central, Central District, Hong Kong Island, Hong Kong, China",
+    "osm_type": "node",
+    "osm_id": 26412835,
+    "type": "suburb",
+    "url": "https://nominatim.openstreetmap.org/search?q=Central%2C+Hong+Kong&countrycodes=cn&format=jsonv2&limit=1&accept-language=en"
+   },
    "city": null,
-   "chosen": null
+   "chosen": "plain"
   },
   "macau": {
    "country": "MO",
    "query": "Macau",
-   "plain": null,
+   "plain": {
+    "lat": 22.11589,
+    "lon": 113.5717,
+    "display_name": "龍輝半島 A Península, Long Chao Kok, Hac Sa Village, 聖方濟各堂區 São Francisco Xavier, Coloane, Macau, China",
+    "osm_type": "way",
+    "osm_id": 315010155,
+    "type": "residential",
+    "url": "https://nominatim.openstreetmap.org/search?q=Macau+Peninsula&countrycodes=cn&format=jsonv2&limit=1&accept-language=en"
+   },
    "city": null,
-   "chosen": null
+   "chosen": "plain"
   },
   "krabi": {
    "country": "TH",
@@ -472,24 +488,16 @@
    "country": "ID",
    "query": "Labuan Bajo",
    "plain": {
-    "lat": -8.48993,
-    "lon": 119.87646,
-    "display_name": "Labuan Bajo, Manggarai Barat, East Nusa Tenggara, 86554, Indonesia",
+    "lat": -8.48107,
+    "lon": 119.88351,
+    "display_name": "Ra Signature Komodo Labuan Bajo, Jalan Binongko, Labuan Bajo, Manggarai Barat, East Nusa Tenggara, 86763, Indonesia",
     "osm_type": "node",
-    "osm_id": 14110180681,
-    "type": "suburb",
-    "url": "https://nominatim.openstreetmap.org/search?q=Labuan+Bajo&countrycodes=id&format=jsonv2&limit=1&accept-language=en"
+    "osm_id": 14211524358,
+    "type": "hotel",
+    "url": "https://nominatim.openstreetmap.org/search?q=Labuan+Bajo%2C+Komodo%2C+Manggarai+Barat&countrycodes=id&format=jsonv2&limit=1&accept-language=en"
    },
-   "city": {
-    "lat": -0.66104,
-    "lon": 119.73259,
-    "display_name": "Labuan Bajo, Donggala Regency, Central Sulawesi, Indonesia",
-    "osm_type": "node",
-    "osm_id": 1308683658,
-    "type": "village",
-    "url": "https://nominatim.openstreetmap.org/search?q=Labuan+Bajo&countrycodes=id&format=jsonv2&limit=1&accept-language=en&featureType=city"
-   },
-   "chosen": "city"
+   "city": null,
+   "chosen": "plain"
   },
   "nha-trang": {
    "country": "VN",
@@ -865,7 +873,7 @@
    "plain": {
     "lat": 55.86115,
     "lon": -4.25017,
-    "display_name": "Glasgow, Glasgow City, Scotland, G2 1AR, United Kingdom",
+    "display_name": "Glasgow, Glasgow City, Scotland, G2 1AL, United Kingdom",
     "osm_type": "node",
     "osm_id": 11127374,
     "type": "city",
@@ -874,7 +882,7 @@
    "city": {
     "lat": 55.86115,
     "lon": -4.25017,
-    "display_name": "Glasgow, Glasgow City, Scotland, G2 1AL, United Kingdom",
+    "display_name": "Glasgow, Glasgow City, Scotland, G2 1AR, United Kingdom",
     "osm_type": "node",
     "osm_id": 11127374,
     "type": "city",
@@ -1070,11 +1078,11 @@
    "country": "PL",
    "query": "Gdańsk",
    "plain": {
-    "lat": 54.4288,
-    "lon": 18.79833,
+    "lat": 54.34829,
+    "lon": 18.65402,
     "display_name": "Gdańsk, Pomeranian Voivodeship, Poland",
     "osm_type": "relation",
-    "osm_id": 2723259,
+    "osm_id": 1553098,
     "type": "administrative",
     "url": "https://nominatim.openstreetmap.org/search?q=Gda%C5%84sk&countrycodes=pl&format=jsonv2&limit=1&accept-language=en"
    },
@@ -1346,16 +1354,24 @@
    "country": "LU",
    "query": "Luxembourg City",
    "plain": {
-    "lat": 49.60105,
-    "lon": 6.06399,
-    "display_name": "Sky Bar Luxembourg, 80, Route de Longwy, City Concorde, Bertrange, Canton Luxembourg, 8080, Luxembourg",
-    "osm_type": "node",
-    "osm_id": 7197953486,
-    "type": "restaurant",
-    "url": "https://nominatim.openstreetmap.org/search?q=Luxembourg+City&countrycodes=lu&format=jsonv2&limit=1&accept-language=en"
+    "lat": 49.61128,
+    "lon": 6.1298,
+    "display_name": "Luxembourg, Canton Luxembourg, Luxembourg",
+    "osm_type": "relation",
+    "osm_id": 407489,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Luxembourg%2C+Canton+Luxembourg&countrycodes=lu&format=jsonv2&limit=1&accept-language=en"
    },
-   "city": null,
-   "chosen": "plain"
+   "city": {
+    "lat": 49.61128,
+    "lon": 6.1298,
+    "display_name": "Luxembourg, Canton Luxembourg, Luxembourg",
+    "osm_type": "relation",
+    "osm_id": 407489,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Luxembourg%2C+Canton+Luxembourg&countrycodes=lu&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
   },
   "monte-carlo": {
    "country": "MC",
@@ -1824,8 +1840,8 @@
     "lat": -22.57761,
     "lon": 17.07727,
     "display_name": "Windhoek, Khomas, Namibia",
-    "osm_type": "way",
-    "osm_id": 29989621,
+    "osm_type": "relation",
+    "osm_id": 8650326,
     "type": "administrative",
     "url": "https://nominatim.openstreetmap.org/search?q=Windhoek&countrycodes=na&format=jsonv2&limit=1&accept-language=en&featureType=city"
    },
@@ -1880,17 +1896,9 @@
   "victoria-falls": {
    "country": "ZW",
    "query": "Victoria Falls (city)",
-   "plain": {
-    "lat": -17.9229,
-    "lon": 25.84768,
-    "display_name": "Devil's Cataract, Victoria Falls, Hwange, Matabeleland North Province, Zimbabwe",
-    "osm_type": "way",
-    "osm_id": 579843538,
-    "type": "cliff",
-    "url": "https://nominatim.openstreetmap.org/search?q=Victoria+Falls&countrycodes=zw&format=jsonv2&limit=1&accept-language=en"
-   },
+   "plain": null,
    "city": null,
-   "chosen": "plain"
+   "chosen": null
   },
   "maputo": {
    "country": "MZ",
@@ -1917,24 +1925,24 @@
   },
   "sal": {
    "country": "CV",
-   "query": "Sal, Cape Verde",
+   "query": "Santa Maria, Cape Verde",
    "plain": {
-    "lat": 16.72046,
-    "lon": -22.93868,
-    "display_name": "Sal, Cape Verde",
+    "lat": 16.59869,
+    "lon": -22.90503,
+    "display_name": "Santa Maria, Sal, 4111, Cape Verde",
     "osm_type": "relation",
-    "osm_id": 3830198,
-    "type": "administrative",
-    "url": "https://nominatim.openstreetmap.org/search?q=Sal&countrycodes=cv&format=jsonv2&limit=1&accept-language=en"
+    "osm_id": 14592144,
+    "type": "residential",
+    "url": "https://nominatim.openstreetmap.org/search?q=Santa+Maria%2C+Sal&countrycodes=cv&format=jsonv2&limit=1&accept-language=en"
    },
    "city": {
-    "lat": 16.17597,
-    "lon": -22.91698,
-    "display_name": "Sal Rei, Boa Vista, 5110, Cape Verde",
-    "osm_type": "node",
-    "osm_id": 2444366506,
-    "type": "town",
-    "url": "https://nominatim.openstreetmap.org/search?q=Sal&countrycodes=cv&format=jsonv2&limit=1&accept-language=en&featureType=city"
+    "lat": 16.59869,
+    "lon": -22.90503,
+    "display_name": "Santa Maria, Sal, 4111, Cape Verde",
+    "osm_type": "relation",
+    "osm_id": 14592144,
+    "type": "residential",
+    "url": "https://nominatim.openstreetmap.org/search?q=Santa+Maria%2C+Sal&countrycodes=cv&format=jsonv2&limit=1&accept-language=en&featureType=city"
    },
    "chosen": "city"
   },
@@ -2247,18 +2255,10 @@
     "osm_type": "node",
     "osm_id": 2613949295,
     "type": "town",
-    "url": "https://nominatim.openstreetmap.org/search?q=Punta+Cana&countrycodes=do&format=jsonv2&limit=1&accept-language=en"
+    "url": "https://nominatim.openstreetmap.org/search?q=Punta+Cana%2C+La+Altagracia&countrycodes=do&format=jsonv2&limit=1&accept-language=en"
    },
-   "city": {
-    "lat": 18.87818,
-    "lon": -71.3461,
-    "display_name": "Punta Caña, San Juan de la Maguana, San Juan, 12505, Dominican Republic",
-    "osm_type": "node",
-    "osm_id": 14095814232,
-    "type": "village",
-    "url": "https://nominatim.openstreetmap.org/search?q=Punta+Cana&countrycodes=do&format=jsonv2&limit=1&accept-language=en&featureType=city"
-   },
-   "chosen": "city"
+   "city": null,
+   "chosen": "plain"
   },
   "santo-domingo": {
    "country": "DO",
@@ -3063,10 +3063,10 @@
    "plain": {
     "lat": -25.28005,
     "lon": -57.63438,
-    "display_name": "Asuncion, Asunción, Distrito Capital, Región Oriental, 001013, Paraguay",
-    "osm_type": "node",
-    "osm_id": 249854726,
-    "type": "city",
+    "display_name": "Asuncion, Región Oriental, Paraguay",
+    "osm_type": "relation",
+    "osm_id": 12556624,
+    "type": "administrative",
     "url": "https://nominatim.openstreetmap.org/search?q=Asunci%C3%B3n&countrycodes=py&format=jsonv2&limit=1&accept-language=en"
    },
    "city": {
@@ -3086,10 +3086,10 @@
    "plain": {
     "lat": 6.80326,
     "lon": -58.14554,
-    "display_name": "City of Georgetown, Demerara-Mahaica, Guyana",
+    "display_name": "Georgetown, Plaisance-Industry Local Government, Demerara-Mahaica, Guyana",
     "osm_type": "relation",
-    "osm_id": 11210397,
-    "type": "administrative",
+    "osm_id": 18902918,
+    "type": "city",
     "url": "https://nominatim.openstreetmap.org/search?q=Georgetown&countrycodes=gy&format=jsonv2&limit=1&accept-language=en"
    },
    "city": {
@@ -3477,7 +3477,7 @@
    "plain": {
     "lat": 6.88705,
     "lon": 158.24061,
-    "display_name": "Pohnpei, Sapwohn Kousapw, Pohnpei, 96941, Federated States of Micronesia",
+    "display_name": "Pohnpei, Roie Kousapw, Pohnpei, 96941, Federated States of Micronesia",
     "osm_type": "relation",
     "osm_id": 11779483,
     "type": "island",
