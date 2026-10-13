@@ -588,6 +588,19 @@ Root causes found in the code (13 Oct):
    builder, so a fix in one page never reaches the others.
 5. Smoke checks open pages but never run the search buttons end to end.
 
+**Four app notes added by the owner later on 13 Oct (not in the first file):**
+- App home: photo over the WHOLE home background (not only the top part),
+  Sfrtna logo on that background instead of on a separate band → section 7.
+- App search: same search failures as the site, plus others → section 1
+  (the app loads sfrtna.com, so the fixes reach it; re-test at phone width
+  and inside the app, UA `SfrtnaApp/Android`).
+- App layout: tabs sized for the phone; test users said the app is "very
+  crowded" — things shown that aren't needed, tab rows taking space → every
+  section gets its own phone layout check (390 px) before hand-off.
+- Test EVERY scenario in site and app (round trip, one way, multi-city,
+  suggest a destination, hotels, itinerary, landmarks, everything) — e2e
+  checks grow with each section, not one page only.
+
 **Owner's decisions (13 Oct):**
 - Hotel list prices: **paid data plan now** (Google Hotels via SerpApi —
   confirm exact price with the owner before subscribing).
