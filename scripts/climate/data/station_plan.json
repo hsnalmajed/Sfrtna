@@ -1044,11 +1044,11 @@
      "name": "ELAT"
     },
     {
-     "id": "00040190",
-     "source": "wmo",
-     "km": 114.2,
-     "elev": 279.0,
-     "name": "BEERSHEVA"
+     "id": "ghcn:IS000051690",
+     "source": "ghcn",
+     "km": 113.5,
+     "elev": 280.0,
+     "name": "BEER SHEVA"
     }
    ]
   },
@@ -1097,11 +1097,11 @@
      "name": "Northolt"
     },
     {
-     "id": "00003772",
-     "source": "wmo",
-     "km": 22.6,
-     "elev": 25.0,
-     "name": "Heathrow"
+     "id": "ghcn:UKE00105915",
+     "source": "ghcn",
+     "km": 22.0,
+     "elev": 137.0,
+     "name": "HAMPSTEAD"
     }
    ],
    "calibrate": [
@@ -1120,11 +1120,11 @@
      "name": "Northolt"
     },
     {
-     "id": "00003772",
-     "source": "wmo",
-     "km": 22.6,
-     "elev": 25.0,
-     "name": "Heathrow"
+     "id": "ghcn:UKE00105915",
+     "source": "ghcn",
+     "km": 22.0,
+     "elev": 137.0,
+     "name": "HAMPSTEAD"
     }
    ]
   },
@@ -2294,18 +2294,18 @@
      "name": "VoorschotenAws"
     },
     {
+     "id": "ghcn:NLE00101982",
+     "source": "ghcn",
+     "km": 12.9,
+     "elev": 0.0,
+     "name": "VALKENBURG"
+    },
+    {
      "id": "00006344",
      "source": "wmo",
      "km": 16.2,
      "elev": -5.1,
      "name": "RotterdamTheHagueAp"
-    },
-    {
-     "id": "ghcn:NLE00152490",
-     "source": "ghcn",
-     "km": 16.2,
-     "elev": -4.0,
-     "name": "ROTTERDAM"
     }
    ],
    "calibrate": [
@@ -2317,18 +2317,18 @@
      "name": "VoorschotenAws"
     },
     {
+     "id": "ghcn:NLE00101982",
+     "source": "ghcn",
+     "km": 12.9,
+     "elev": 0.0,
+     "name": "VALKENBURG"
+    },
+    {
      "id": "00006344",
      "source": "wmo",
      "km": 16.2,
      "elev": -5.1,
      "name": "RotterdamTheHagueAp"
-    },
-    {
-     "id": "ghcn:NLE00152490",
-     "source": "ghcn",
-     "km": 16.2,
-     "elev": -4.0,
-     "name": "ROTTERDAM"
     }
    ]
   },
@@ -3848,6 +3848,13 @@
      "km": 10.7,
      "elev": 650.0,
      "name": "LAS_VEGAS_MCCARRAN_AP"
+    },
+    {
+     "id": "ghcn:USC00264439",
+     "source": "ghcn",
+     "km": 13.8,
+     "elev": 693.4,
+     "name": "LAS VEGAS WFO"
     }
    ],
    "calibrate": [
@@ -3859,18 +3866,18 @@
      "name": "LAS_VEGAS_MCCARRAN_AP"
     },
     {
-     "id": "ghcn:USR0000NRER",
+     "id": "ghcn:USC00264439",
      "source": "ghcn",
-     "km": 25.3,
-     "elev": 1146.0,
-     "name": "RED ROCK NEVADA"
+     "km": 13.8,
+     "elev": 693.4,
+     "name": "LAS VEGAS WFO"
     },
     {
-     "id": "ghcn:USC00262243",
-     "source": "ghcn",
-     "km": 35.6,
-     "elev": 888.2,
-     "name": "DESERT NWR"
+     "id": "00072387",
+     "source": "wmo",
+     "km": 93.5,
+     "elev": 985.0,
+     "name": "MERCURY_DESERT_ROCK_AP"
     }
    ]
   },
@@ -4115,18 +4122,18 @@
      "name": "Pasanauri"
     },
     {
+     "id": "ghcn:RSM00037228",
+     "source": "ghcn",
+     "km": 43.6,
+     "elev": 668.0,
+     "name": "VLADIKAVKAZ"
+    },
+    {
      "id": "00037439",
      "source": "wmo",
      "km": 67.6,
      "elev": 1105.0,
      "name": "Tianeti"
-    },
-    {
-     "id": "00037531",
-     "source": "wmo",
-     "km": 86.5,
-     "elev": 609.0,
-     "name": "Gori"
     }
    ]
   },
@@ -4362,6 +4369,13 @@
    "staged": false,
    "direct": [
     {
+     "id": "ghcn:ASN00086071",
+     "source": "ghcn",
+     "km": 1.0,
+     "elev": 31.2,
+     "name": "MELBOURNE REGIONAL OFFICE"
+    },
+    {
      "id": "00095936",
      "source": "wmo",
      "km": 2.1,
@@ -4369,22 +4383,22 @@
      "name": "MelbourneOlympicPark"
     },
     {
-     "id": "00094865",
-     "source": "wmo",
-     "km": 18.8,
-     "elev": 20.0,
-     "name": "LavertonRAAF"
-    },
-    {
-     "id": "00094866",
-     "source": "wmo",
-     "km": 20.2,
-     "elev": 113.0,
-     "name": "MelbourneAirport"
+     "id": "ghcn:ASN00086351",
+     "source": "ghcn",
+     "km": 13.1,
+     "elev": 83.0,
+     "name": "BUNDOORA (LATROBE UNIVERSITY)"
     }
    ],
    "calibrate": [
     {
+     "id": "ghcn:ASN00086071",
+     "source": "ghcn",
+     "km": 1.0,
+     "elev": 31.2,
+     "name": "MELBOURNE REGIONAL OFFICE"
+    },
+    {
      "id": "00095936",
      "source": "wmo",
      "km": 2.1,
@@ -4392,18 +4406,11 @@
      "name": "MelbourneOlympicPark"
     },
     {
-     "id": "00094865",
-     "source": "wmo",
-     "km": 18.8,
-     "elev": 20.0,
-     "name": "LavertonRAAF"
-    },
-    {
-     "id": "00094866",
-     "source": "wmo",
-     "km": 20.2,
-     "elev": 113.0,
-     "name": "MelbourneAirport"
+     "id": "ghcn:ASN00086351",
+     "source": "ghcn",
+     "km": 13.1,
+     "elev": 83.0,
+     "name": "BUNDOORA (LATROBE UNIVERSITY)"
     }
    ]
   },
@@ -4722,6 +4729,13 @@
      "km": 9.2,
      "elev": 147.0,
      "name": "Moskva"
+    },
+    {
+     "id": "ghcn:RSM00027625",
+     "source": "ghcn",
+     "km": 99.5,
+     "elev": 114.0,
+     "name": "KOLOMNA"
     }
    ]
   },
@@ -6100,6 +6114,13 @@
    "staged": false,
    "direct": [
     {
+     "id": "ghcn:SIE00114966",
+     "source": "ghcn",
+     "km": 7.7,
+     "elev": 515.0,
+     "name": "LESCE"
+    },
+    {
      "id": "00014008",
      "source": "wmo",
      "km": 19.7,
@@ -6108,6 +6129,13 @@
     }
    ],
    "calibrate": [
+    {
+     "id": "ghcn:SIE00114966",
+     "source": "ghcn",
+     "km": 7.7,
+     "elev": 515.0,
+     "name": "LESCE"
+    },
     {
      "id": "00014008",
      "source": "wmo",
@@ -6121,13 +6149,6 @@
      "km": 33.4,
      "elev": 864.0,
      "name": "Ratece"
-    },
-    {
-     "id": "ghcn:SIE00115206",
-     "source": "ghcn",
-     "km": 34.7,
-     "elev": 864.0,
-     "name": "RATECE-PLANICA"
     }
    ]
   },
@@ -7079,6 +7100,20 @@
      "km": 1.6,
      "elev": 113.0,
      "name": "Toronto_City"
+    },
+    {
+     "id": "ghcn:CAN0615S001",
+     "source": "ghcn",
+     "km": 15.6,
+     "elev": 187.0,
+     "name": "TORONTO NORTH YORK"
+    },
+    {
+     "id": "ghcn:CAN0615HMAK",
+     "source": "ghcn",
+     "km": 23.2,
+     "elev": 198.1,
+     "name": "TORONTO BUTTONVILLE A"
     }
    ],
    "calibrate": [
@@ -7090,18 +7125,18 @@
      "name": "Toronto_City"
     },
     {
-     "id": "ghcn:CAN06155878",
+     "id": "ghcn:CAN0615S001",
      "source": "ghcn",
-     "km": 50.2,
-     "elev": 83.8,
-     "name": "OSHAWA WPCP"
+     "km": 15.6,
+     "elev": 187.0,
+     "name": "TORONTO NORTH YORK"
     },
     {
-     "id": "ghcn:CAN06119055",
+     "id": "ghcn:CAN0615HMAK",
      "source": "ghcn",
-     "km": 70.0,
-     "elev": 262.0,
-     "name": "UDORA"
+     "km": 23.2,
+     "elev": 198.1,
+     "name": "TORONTO BUTTONVILLE A"
     }
    ]
   },
@@ -7124,6 +7159,13 @@
      "km": 10.1,
      "elev": 3.0,
      "name": "RICHMOND NATURE PARK"
+    },
+    {
+     "id": "ghcn:CAN01108824",
+     "source": "ghcn",
+     "km": 11.2,
+     "elev": 170.2,
+     "name": "WEST VANCOUVER AUT"
     }
    ],
    "calibrate": [
@@ -7142,11 +7184,11 @@
      "name": "RICHMOND NATURE PARK"
     },
     {
-     "id": "00071207",
-     "source": "wmo",
-     "km": 58.2,
-     "elev": 54.0,
-     "name": "Squamish_Airport"
+     "id": "ghcn:CAN01108824",
+     "source": "ghcn",
+     "km": 11.2,
+     "elev": 170.2,
+     "name": "WEST VANCOUVER AUT"
     }
    ]
   },
@@ -7157,20 +7199,6 @@
    "staged": false,
    "direct": [],
    "calibrate": [
-    {
-     "id": "ghcn:CAN07028700",
-     "source": "ghcn",
-     "km": 33.3,
-     "elev": 21.0,
-     "name": "VERCHERES"
-    },
-    {
-     "id": "ghcn:CAN07014160",
-     "source": "ghcn",
-     "km": 35.6,
-     "elev": 21.0,
-     "name": "L'ASSOMPTION"
-    },
     {
      "id": "00072617",
      "source": "wmo",
@@ -7210,11 +7238,11 @@
      "name": "KANANASKIS"
     },
     {
-     "id": "ghcn:CAN01154410",
+     "id": "ghcn:CAN0303M9JM",
      "source": "ghcn",
-     "km": 69.6,
-     "elev": 935.0,
-     "name": "KOOTENAY NP WEST GATE"
+     "km": 123.3,
+     "elev": 1081.0,
+     "name": "OKOTOKS"
     }
    ]
   },
@@ -8488,11 +8516,11 @@
      "name": "ShannonAirport"
     },
     {
-     "id": "00003953",
-     "source": "wmo",
-     "km": 121.4,
-     "elev": 24.0,
-     "name": "ValentiaObservatory"
+     "id": "ghcn:EIE00107762",
+     "source": "ghcn",
+     "km": 99.8,
+     "elev": 49.0,
+     "name": "WATERFORD (TYCOR)"
     }
    ]
   },
@@ -9980,11 +10008,11 @@
      "name": "CHICAGO_OHARE_INTL_AP"
     },
     {
-     "id": "ghcn:USC00116616",
+     "id": "ghcn:USC00111497",
      "source": "ghcn",
-     "km": 42.6,
-     "elev": 216.4,
-     "name": "PARK FOREST WATER"
+     "km": 32.3,
+     "elev": 192.0,
+     "name": "CHICAGO BOTANIC GARDEN"
     }
    ]
   },
@@ -10218,11 +10246,11 @@
      "name": "KANANASKIS"
     },
     {
-     "id": "ghcn:CAN03035340",
-     "source": "ghcn",
-     "km": 89.9,
-     "elev": 940.0,
-     "name": "QUEENSTOWN"
+     "id": "00071122",
+     "source": "wmo",
+     "km": 105.7,
+     "elev": 1397.0,
+     "name": "Banff_Cs"
     }
    ]
   },
@@ -10238,6 +10266,20 @@
      "km": 8.3,
      "elev": 69.0,
      "name": "LAUZON"
+    },
+    {
+     "id": "ghcn:CAN0701S001",
+     "source": "ghcn",
+     "km": 13.2,
+     "elev": 60.0,
+     "name": "QUEBEC/JEAN LESAGE INTL"
+    },
+    {
+     "id": "ghcn:CAN07020567",
+     "source": "ghcn",
+     "km": 16.7,
+     "elev": 106.7,
+     "name": "BEAUSEJOUR"
     }
    ],
    "calibrate": [
@@ -10249,18 +10291,18 @@
      "name": "LAUZON"
     },
     {
-     "id": "ghcn:CAN07057567",
+     "id": "ghcn:CAN0701S001",
      "source": "ghcn",
-     "km": 25.4,
-     "elev": 69.0,
-     "name": "SAINT MICHEL"
+     "km": 13.2,
+     "elev": 60.0,
+     "name": "QUEBEC/JEAN LESAGE INTL"
     },
     {
-     "id": "ghcn:CAN07027840",
+     "id": "ghcn:CAN07020567",
      "source": "ghcn",
-     "km": 36.2,
-     "elev": 144.8,
-     "name": "SCOTT"
+     "km": 16.7,
+     "elev": 106.7,
+     "name": "BEAUSEJOUR"
     }
    ]
   },
@@ -12389,12 +12431,12 @@
    "name": "ELAT",
    "source": "wmo"
   },
-  "st-00040190": {
+  "st-ghcn-IS000051690": {
    "lat": 31.25,
-   "lon": 34.8,
-   "elev": 279.0,
-   "name": "BEERSHEVA",
-   "source": "wmo"
+   "lon": 34.8164,
+   "elev": 280.0,
+   "name": "BEER SHEVA",
+   "source": "ghcn"
   },
   "st-00003770": {
    "lat": 51.505,
@@ -12410,12 +12452,12 @@
    "name": "Northolt",
    "source": "wmo"
   },
-  "st-00003772": {
-   "lat": 51.479,
-   "lon": -0.451,
-   "elev": 25.0,
-   "name": "Heathrow",
-   "source": "wmo"
+  "st-ghcn-UKE00105915": {
+   "lat": 51.5608,
+   "lon": 0.1789,
+   "elev": 137.0,
+   "name": "HAMPSTEAD",
+   "source": "ghcn"
   },
   "st-ghcn-UKE00105888": {
    "lat": 55.9667,
@@ -12969,6 +13011,13 @@
    "elev": -1.1,
    "name": "VoorschotenAws",
    "source": "wmo"
+  },
+  "st-ghcn-NLE00101982": {
+   "lat": 52.1703,
+   "lon": 4.4292,
+   "elev": 0.0,
+   "name": "VALKENBURG",
+   "source": "ghcn"
   },
   "st-00010384": {
    "lat": 52.467,
@@ -13628,19 +13677,19 @@
    "name": "LAS_VEGAS_MCCARRAN_AP",
    "source": "wmo"
   },
-  "st-ghcn-USR0000NRER": {
-   "lat": 36.1353,
-   "lon": -115.4272,
-   "elev": 1146.0,
-   "name": "RED ROCK NEVADA",
+  "st-ghcn-USC00264439": {
+   "lat": 36.0469,
+   "lon": -115.1847,
+   "elev": 693.4,
+   "name": "LAS VEGAS WFO",
    "source": "ghcn"
   },
-  "st-ghcn-USC00262243": {
-   "lat": 36.4381,
-   "lon": -115.36,
-   "elev": 888.2,
-   "name": "DESERT NWR",
-   "source": "ghcn"
+  "st-00072387": {
+   "lat": 36.621,
+   "lon": -116.028,
+   "elev": 985.0,
+   "name": "MERCURY_DESERT_ROCK_AP",
+   "source": "wmo"
   },
   "st-ghcn-USW00023272": {
    "lat": 37.7706,
@@ -13747,18 +13796,18 @@
    "name": "Pasanauri",
    "source": "wmo"
   },
+  "st-ghcn-RSM00037228": {
+   "lat": 43.05,
+   "lon": 44.65,
+   "elev": 668.0,
+   "name": "VLADIKAVKAZ",
+   "source": "ghcn"
+  },
   "st-00037439": {
    "lat": 42.1,
    "lon": 44.967,
    "elev": 1105.0,
    "name": "Tianeti",
-   "source": "wmo"
-  },
-  "st-00037531": {
-   "lat": 41.983,
-   "lon": 44.117,
-   "elev": 609.0,
-   "name": "Gori",
    "source": "wmo"
   },
   "st-00068816": {
@@ -13838,6 +13887,13 @@
    "name": "SydneyOlympicPark",
    "source": "wmo"
   },
+  "st-ghcn-ASN00086071": {
+   "lat": -37.8075,
+   "lon": 144.97,
+   "elev": 31.2,
+   "name": "MELBOURNE REGIONAL OFFICE",
+   "source": "ghcn"
+  },
   "st-00095936": {
    "lat": -37.826,
    "lon": 144.982,
@@ -13845,19 +13901,12 @@
    "name": "MelbourneOlympicPark",
    "source": "wmo"
   },
-  "st-00094865": {
-   "lat": -37.856,
-   "lon": 144.756,
-   "elev": 20.0,
-   "name": "LavertonRAAF",
-   "source": "wmo"
-  },
-  "st-00094866": {
-   "lat": -37.665,
-   "lon": 144.832,
-   "elev": 113.0,
-   "name": "MelbourneAirport",
-   "source": "wmo"
+  "st-ghcn-ASN00086351": {
+   "lat": -37.7163,
+   "lon": 145.0453,
+   "elev": 83.0,
+   "name": "BUNDOORA (LATROBE UNIVERSITY)",
+   "source": "ghcn"
   },
   "st-00094575": {
    "lat": -27.572,
@@ -13998,6 +14047,13 @@
    "elev": 147.0,
    "name": "Moskva",
    "source": "wmo"
+  },
+  "st-ghcn-RSM00027625": {
+   "lat": 55.1,
+   "lon": 38.7,
+   "elev": 114.0,
+   "name": "KOLOMNA",
+   "source": "ghcn"
   },
   "st-00026063": {
    "lat": 59.967,
@@ -14587,6 +14643,13 @@
    "name": "LETALISCE JOZETA PUCNIKA LJUBL",
    "source": "ghcn"
   },
+  "st-ghcn-SIE00114966": {
+   "lat": 46.4,
+   "lon": 14.2,
+   "elev": 515.0,
+   "name": "LESCE",
+   "source": "ghcn"
+  },
   "st-00014008": {
    "lat": 46.379,
    "lon": 13.854,
@@ -14600,13 +14663,6 @@
    "elev": 864.0,
    "name": "Ratece",
    "source": "wmo"
-  },
-  "st-ghcn-SIE00115206": {
-   "lat": 46.5,
-   "lon": 13.7,
-   "elev": 864.0,
-   "name": "RATECE-PLANICA",
-   "source": "ghcn"
   },
   "st-00017609": {
    "lat": 34.874,
@@ -15063,18 +15119,18 @@
    "name": "Toronto_City",
    "source": "wmo"
   },
-  "st-ghcn-CAN06155878": {
-   "lat": 43.8667,
-   "lon": -78.8333,
-   "elev": 83.8,
-   "name": "OSHAWA WPCP",
+  "st-ghcn-CAN0615S001": {
+   "lat": 43.78,
+   "lon": -79.4678,
+   "elev": 187.0,
+   "name": "TORONTO NORTH YORK",
    "source": "ghcn"
   },
-  "st-ghcn-CAN06119055": {
-   "lat": 44.2625,
-   "lon": -79.1614,
-   "elev": 262.0,
-   "name": "UDORA",
+  "st-ghcn-CAN0615HMAK": {
+   "lat": 43.8622,
+   "lon": -79.37,
+   "elev": 198.1,
+   "name": "TORONTO BUTTONVILLE A",
    "source": "ghcn"
   },
   "st-ghcn-CAN01108446": {
@@ -15091,25 +15147,11 @@
    "name": "RICHMOND NATURE PARK",
    "source": "ghcn"
   },
-  "st-00071207": {
-   "lat": 49.783,
-   "lon": -123.161,
-   "elev": 54.0,
-   "name": "Squamish_Airport",
-   "source": "wmo"
-  },
-  "st-ghcn-CAN07028700": {
-   "lat": 45.7667,
-   "lon": -73.3667,
-   "elev": 21.0,
-   "name": "VERCHERES",
-   "source": "ghcn"
-  },
-  "st-ghcn-CAN07014160": {
-   "lat": 45.8094,
-   "lon": -73.4347,
-   "elev": 21.0,
-   "name": "L'ASSOMPTION",
+  "st-ghcn-CAN01108824": {
+   "lat": 49.347,
+   "lon": -123.1933,
+   "elev": 170.2,
+   "name": "WEST VANCOUVER AUT",
    "source": "ghcn"
   },
   "st-00072617": {
@@ -15133,11 +15175,11 @@
    "name": "KANANASKIS",
    "source": "ghcn"
   },
-  "st-ghcn-CAN01154410": {
-   "lat": 50.6308,
-   "lon": -116.0614,
-   "elev": 935.0,
-   "name": "KOOTENAY NP WEST GATE",
+  "st-ghcn-CAN0303M9JM": {
+   "lat": 50.7292,
+   "lon": -113.9609,
+   "elev": 1081.0,
+   "name": "OKOTOKS",
    "source": "ghcn"
   },
   "st-00041036": {
@@ -15665,12 +15707,12 @@
    "name": "CorkAirport",
    "source": "wmo"
   },
-  "st-00003953": {
-   "lat": 51.938,
-   "lon": -10.241,
-   "elev": 24.0,
-   "name": "ValentiaObservatory",
-   "source": "wmo"
+  "st-ghcn-EIE00107762": {
+   "lat": 52.2531,
+   "lon": -7.1308,
+   "elev": 49.0,
+   "name": "WATERFORD (TYCOR)",
+   "source": "ghcn"
   },
   "st-00010400": {
    "lat": 51.296,
@@ -16232,11 +16274,11 @@
    "name": "CHICAGO_OHARE_INTL_AP",
    "source": "wmo"
   },
-  "st-ghcn-USC00116616": {
-   "lat": 41.4944,
-   "lon": -87.6794,
-   "elev": 216.4,
-   "name": "PARK FOREST WATER",
+  "st-ghcn-USC00111497": {
+   "lat": 42.14,
+   "lon": -87.7853,
+   "elev": 192.0,
+   "name": "CHICAGO BOTANIC GARDEN",
    "source": "ghcn"
   },
   "st-00072405": {
@@ -16323,20 +16365,6 @@
    "name": "BLUE HILL COOP",
    "source": "ghcn"
   },
-  "st-ghcn-CAN0303M9JM": {
-   "lat": 50.7292,
-   "lon": -113.9609,
-   "elev": 1081.0,
-   "name": "OKOTOKS",
-   "source": "ghcn"
-  },
-  "st-ghcn-CAN03035340": {
-   "lat": 50.6064,
-   "lon": -112.9833,
-   "elev": 940.0,
-   "name": "QUEENSTOWN",
-   "source": "ghcn"
-  },
   "st-ghcn-CAN07024254": {
    "lat": 46.8167,
    "lon": -71.1,
@@ -16344,18 +16372,18 @@
    "name": "LAUZON",
    "source": "ghcn"
   },
-  "st-ghcn-CAN07057567": {
-   "lat": 46.8667,
-   "lon": -70.8833,
-   "elev": 69.0,
-   "name": "SAINT MICHEL",
+  "st-ghcn-CAN0701S001": {
+   "lat": 46.8036,
+   "lon": -71.3817,
+   "elev": 60.0,
+   "name": "QUEBEC/JEAN LESAGE INTL",
    "source": "ghcn"
   },
-  "st-ghcn-CAN07027840": {
-   "lat": 46.5,
-   "lon": -71.0833,
-   "elev": 144.8,
-   "name": "SCOTT",
+  "st-ghcn-CAN07020567": {
+   "lat": 46.6667,
+   "lon": -71.1667,
+   "elev": 106.7,
+   "name": "BEAUSEJOUR",
    "source": "ghcn"
   },
   "st-ghcn-CAN06105976": {
