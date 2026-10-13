@@ -752,6 +752,13 @@ site had 214 / 73. Decisions (mine, owner said "do the best and accurate"):
   months before replacing v1 (v1 today: 83 % of board months rated good,
   62 % of our top months in the board's list; wrong in humid tropics and
   Salalah khareef). Engine v2 not written yet — needs hci.json.
+- **Staged data collected ahead (13 Oct evening):** places, hotels and
+  restaurants workflows take input `staged` (scripts use `--staged`,
+  `scripts/lib/cityPoints.ts`); files land under the usual folders but no page
+  links them until the city is in cityCoords.ts; build-index skips staged
+  hotels. Partner pages (check-pages.ts) run at publish time (needs the city
+  in COUNTRY_CITIES). Visa 13 Oct evening: + AU BR IE KZ LB MU PK AM ME
+  (ME switches to required on 1 Nov via `then`); still JO KH KW MA TN TZ.
 - **Owner runs (his Copernicus key never leaves his PC):**
   `scripts/climate/run_coverage.bat` (fetch_static, 6 ERA5-Land workers,
   fetch_cloud — hours), then `run_build.bat` (check_cells, build_normals,
