@@ -25,6 +25,7 @@ export default function Footer({ locale }: { locale: Locale }) {
     { href: `/${locale}/itinerary`, label: dict.nav.itinerary },
     { href: `/${locale}/visa`, label: dict.nav.visa },
     { href: `/${locale}/currency`, label: dict.nav.currency },
+    { href: `/${locale}/services`, label: dict.nav.services },
   ];
   /**
    * The pages that say who is behind this.

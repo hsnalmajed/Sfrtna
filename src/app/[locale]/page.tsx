@@ -178,6 +178,7 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
     { href: `/${loc}/attractions`, icon: "🏛", title: dict.home.toolAttractions, body: dict.home.toolAttractionsBody },
     { href: `/${loc}/visa`, icon: "🛂", title: dict.home.toolVisa, body: dict.home.toolVisaBody },
     { href: `/${loc}/currency`, icon: "💱", title: dict.home.toolCurrency, body: dict.home.toolCurrencyBody },
+    { href: `/${loc}/services`, icon: "🧳", title: dict.services.title, body: dict.services.subtitle },
   ];
 
 

@@ -18,6 +18,7 @@ export const dictionaries = {
       seasons: "مواسم السفر",
       visa: "متطلبات السفر",
       currency: "تحويل العملة",
+      services: "خدمات رحلتك",
       planCta: "احجز رحلتك",
       menu: "القائمة",
       // Four items instead of seven. "المعالم" and "الخرائط" are two views of
@@ -332,6 +333,13 @@ export const dictionaries = {
       budgetPlaceholder: "للإقامة كاملة",
       submitKnown: "ابحث عن الفندق",
       submitDiscover: "اقترح لي فنادق",
+    },
+    services: {
+      title: "خدمات رحلتك",
+      subtitle: "كل ما تحتاجه حول رحلتك في مكان واحد: الجولات والتذاكر، شريحة الإنترنت، التوصيل من المطار، تأجير السيارات، وحفظ الأمتعة.",
+      label: "إلى أي مدينة تسافر؟",
+      placeholder: "اكتب مدينة أو دولة",
+      hint: "اختر مدينة لتظهر لك كل الخدمات المتاحة فيها من شركائنا.",
     },
     hotelResults: {
       eyebrowKnown: "فندقك",
@@ -1125,6 +1133,7 @@ export const dictionaries = {
       seasons: "Travel Seasons",
       visa: "Entry Requirements",
       currency: "Currency",
+      services: "Trip services",
       planCta: "Book your trip",
       menu: "Menu",
       destinations: "Destinations",
@@ -1428,6 +1437,13 @@ export const dictionaries = {
       budgetPlaceholder: "For the whole stay",
       submitKnown: "Find this hotel",
       submitDiscover: "Suggest hotels",
+    },
+    services: {
+      title: "Trip services",
+      subtitle: "Everything around your trip in one place: tours and tickets, mobile data, airport transfers, car rental and luggage storage.",
+      label: "Which city are you going to?",
+      placeholder: "Type a city or a country",
+      hint: "Pick a city to see every service our partners offer there.",
     },
     hotelResults: {
       eyebrowKnown: "Your hotel",

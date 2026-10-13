@@ -71,6 +71,7 @@ export default function Header({ locale }: { locale: Locale }) {
   const toolLinks = [
     { href: `/${locale}/visa`, label: dict.nav.visa },
     { href: `/${locale}/currency`, label: dict.nav.currency },
+    { href: `/${locale}/services`, label: dict.nav.services },
     { href: `/${locale}/itinerary`, label: dict.nav.itinerary },
   ];
 
