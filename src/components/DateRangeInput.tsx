@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useId, useMemo, useRef, useState } from "react";
+import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import type { Locale } from "@/lib/types";
 import { getDictionary } from "@/lib/dictionaries";
 import { countLabel } from "@/lib/format";
 import { formStyles, type FormTone } from "@/lib/formTone";
-import { keepPopoverOnScreen } from "@/lib/popover";
 import Icon from "@/components/ui/Icon";
 
 /**
@@ -121,6 +121,7 @@ export default function DateRangeInput({
   fareRoute,
   minDate,
   title,
+  purpose = "flight",
 }: {
   locale: Locale;
   departDate: string;
@@ -144,6 +145,12 @@ export default function DateRangeInput({
   minDate?: string;
   /** The calendar's heading for a one-date pick, e.g. "Flight 2". */
   title?: string;
+  /**
+   * What the two dates are: a flight (departure / return), a hotel stay
+   * (check-in / check-out) or a trip plan (first / last day). Only the
+   * calendar's wording changes.
+   */
+  purpose?: "flight" | "hotel" | "trip";
 }) {
   const dict = getDictionary(locale);
   const isAr = locale === "ar";
@@ -152,6 +159,11 @@ export default function DateRangeInput({
   // a second visit starts a new range rather than editing half of the old one.
   const [picking, setPicking] = useState<"depart" | "return">("depart");
   const rootRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+  // Where the panel goes (owner, 13 Oct: the calendar was cut off inside the
+  // plan sheet). It is drawn over the page, outside any box that could clip
+  // it: a sheet from the bottom on a phone, under the field on a wider screen.
+  const [place, setPlace] = useState<{ sheet: boolean; top: number; left: number; up: boolean } | null>(null);
   const panelId = useId();
 
   const realToday = useMemo(() => iso(todayUtc()), []);
@@ -177,7 +189,9 @@ export default function DateRangeInput({
   useEffect(() => {
     if (!open) return;
     const onDown = (e: MouseEvent) => {
-      if (rootRef.current && !rootRef.current.contains(e.target as Node)) setOpen(false);
+      const t = e.target as Node;
+      if (rootRef.current?.contains(t) || panelRef.current?.contains(t)) return;
+      setOpen(false);
     };
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setOpen(false);
@@ -189,6 +203,31 @@ export default function DateRangeInput({
       document.removeEventListener("keydown", onKey);
     };
   }, [open]);
+
+  useLayoutEffect(() => {
+    if (!open) return;
+    const measure = () => {
+      const field = rootRef.current?.getBoundingClientRect();
+      if (!field) return;
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      if (vw < 640) return setPlace({ sheet: true, top: 0, left: 0, up: false });
+      const width = Math.min(34 * 16, vw - 24);
+      const height = panelRef.current?.offsetHeight ?? 420;
+      const below = vh - field.bottom;
+      const up = below < height + 16 && field.top > below;
+      const start = isAr ? field.right - width : field.left;
+      const left = Math.max(12, Math.min(start, vw - width - 12));
+      setPlace({ sheet: false, top: up ? field.top - 8 : field.bottom + 8, left, up });
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    window.addEventListener("scroll", measure, true);
+    return () => {
+      window.removeEventListener("resize", measure);
+      window.removeEventListener("scroll", measure, true);
+    };
+  }, [open, isAr]);
 
   const months = useMemo(() => {
     const a = buildMonth(cursor.year, cursor.month);
@@ -345,12 +384,36 @@ export default function DateRangeInput({
         />
       )}
 
-      {open && (
+      {open &&
+        createPortal(
+          <div dir={isAr ? "rtl" : "ltr"} lang={locale}>
+            {place?.sheet && (
+              <button
+                type="button"
+                aria-label={dict.nav.close}
+                onClick={() => setOpen(false)}
+                className="fixed inset-0 z-[90] bg-navy-990/50 backdrop-blur-[1px]"
+              />
+            )}
         <div
           id={panelId}
-          ref={keepPopoverOnScreen}
-          className="absolute z-30 mt-2 w-[19rem] max-w-[calc(100vw-1.5rem)] rounded-2xl border border-mist-200 bg-white p-4 shadow-[var(--shadow-lift)] sm:w-[34rem]"
+          ref={panelRef}
+          role="dialog"
+          aria-label={withReturn ? dict.form.pickDates : dict.form.pickDate}
+          style={
+            place && !place.sheet
+              ? { top: place.top, left: place.left, transform: place.up ? "translateY(-100%)" : undefined }
+              : place
+                ? undefined
+                : { visibility: "hidden" }
+          }
+          className={
+            place?.sheet
+              ? "fixed inset-x-0 bottom-0 z-[91] max-h-[85svh] overflow-y-auto rounded-t-3xl bg-white p-4 pb-[calc(1rem+var(--safe-area-inset-bottom,0px))] shadow-2xl"
+              : "fixed z-[91] w-[34rem] max-w-[calc(100vw-1.5rem)] rounded-2xl border border-mist-200 bg-white p-4 shadow-[var(--shadow-lift)]"
+          }
         >
+          {place?.sheet && <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-navy-900/15" aria-hidden="true" />}
           <div className="mb-3 flex items-center justify-between">
             <button
               type="button"
@@ -369,8 +432,18 @@ export default function DateRangeInput({
                       picking === "depart" ? "bg-sun-400 text-navy-950" : "bg-sea-600 text-white"
                     }`}
                   >
-                    <span aria-hidden="true">{picking === "depart" ? "🛫" : "🛬"}</span>
-                    {picking === "depart" ? dict.form.legDepart : dict.form.legReturn}
+                    {purpose === "flight" && <span aria-hidden="true">{picking === "depart" ? "🛫" : "🛬"}</span>}
+                    {purpose === "hotel"
+                      ? picking === "depart"
+                        ? dict.form.legCheckIn
+                        : dict.form.legCheckOut
+                      : purpose === "trip"
+                        ? picking === "depart"
+                          ? dict.form.legTripStart
+                          : dict.form.legTripEnd
+                        : picking === "depart"
+                          ? dict.form.legDepart
+                          : dict.form.legReturn}
                   </span>
                 </>
               ) : (
@@ -387,9 +460,9 @@ export default function DateRangeInput({
             </button>
           </div>
 
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+          <div className={`grid gap-5 ${place?.sheet ? "grid-cols-1" : "grid-cols-2"}`}>
             {months.map((m, i) => (
-              <div key={`${m.year}-${m.month}`} className={i === 1 ? "hidden sm:block" : undefined}>
+              <div key={`${m.year}-${m.month}`} className={i === 1 && place?.sheet ? "hidden" : undefined}>
                 <p className="mb-2 text-center text-xs font-bold text-navy-700">
                   {monthTitle(m.year, m.month, locale)}
                 </p>
@@ -457,8 +530,19 @@ export default function DateRangeInput({
               {summary}
             </p>
           )}
+          {place?.sheet && (
+            <button
+              type="button"
+              onClick={() => setOpen(false)}
+              className="mt-3 w-full rounded-full bg-navy-900 py-3 text-sm font-extrabold text-white"
+            >
+              {dict.form.done}
+            </button>
+          )}
         </div>
-      )}
+          </div>,
+          document.body
+        )}
 
       {error && (
         <p role="alert" className="mt-1.5 text-xs font-semibold text-red-600">

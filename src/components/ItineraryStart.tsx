@@ -118,6 +118,7 @@ function Start({ hero }: { hero?: SectionHero }) {
           <div>
             <p className="mb-1.5 text-sm font-bold text-navy-900">🗓 {t.datesTitle}</p>
             <DateRangeInput
+        purpose="trip"
               locale={locale}
               departDate={from}
               returnDate={to}

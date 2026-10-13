@@ -278,6 +278,7 @@ export default function HotelPlanner({
             {dict.hotelForm.dates}
           </FieldLabel>
           <DateRangeInput
+        purpose="hotel"
             locale={locale}
             departDate={checkIn}
             returnDate={checkOut}

@@ -585,6 +585,7 @@ function DatesFields({
     <div className="mt-5">
       <p className="mb-2 text-sm font-extrabold text-navy-900">🗓 {t.datesTitle}</p>
       <DateRangeInput
+        purpose="trip"
         locale={locale}
         departDate={from}
         returnDate={to}

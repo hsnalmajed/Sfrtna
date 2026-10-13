@@ -379,7 +379,7 @@ function ResultsContent() {
                     type="button"
                     onClick={() => setVisaOpen(true)}
                     aria-haspopup="dialog"
-                    className="inline-flex items-center gap-1.5 rounded-xl bg-white/10 px-3 py-2 text-[13px] font-extrabold text-white ring-1 ring-white/20 transition hover:bg-white/20"
+                    className="inline-flex items-center gap-1.5 rounded-xl bg-sun-400 px-3 py-2 text-[13px] font-extrabold text-navy-950 shadow-[var(--shadow-sun)] transition hover:bg-sun-300"
                   >
                     📋 {dict.results.visaReqShort}
                   </button>

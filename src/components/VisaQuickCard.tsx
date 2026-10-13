@@ -44,7 +44,7 @@ export default function VisaQuickCard({ countryCode, locale }: { countryCode: st
       <VisaDetailsButton
         countryCode={countryCode}
         locale={locale}
-        className="inline-flex shrink-0 items-center justify-center gap-1.5 rounded-xl bg-navy-900 px-3.5 py-2.5 text-xs font-extrabold text-white transition hover:-translate-y-0.5 hover:bg-navy-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400"
+        className="inline-flex shrink-0 items-center justify-center gap-1.5 rounded-xl bg-sun-400 px-3.5 py-2.5 text-xs font-extrabold text-navy-950 transition hover:-translate-y-0.5 hover:bg-sun-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400"
       >
         📋 {dict.attractions.factVisaRequirements}
       </VisaDetailsButton>
