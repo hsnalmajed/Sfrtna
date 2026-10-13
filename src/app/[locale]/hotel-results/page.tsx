@@ -275,38 +275,43 @@ function HotelResultsContent() {
               />
             ) : (
               <div>
-                <h2 className="mb-4 font-display text-xl font-extrabold text-navy-950">
-                  {(budget > 0 ? t.discoverTitleBudget : t.discoverTitle).replace("{city}", label || query)}
-                </h2>
-                {!listDown ? (
-                  <HotelList
-                    cityQuery={hotelCityPlace(query) ?? query}
-                    citySlug={findHotelCity(query)?.slug}
-                    cityName={label || query}
-                    minStars={minStars}
-                    maxPerNight={budget > 0 && nights > 0 ? budget / nights : 0}
-                    breakfast={breakfast}
-                    c={listCommon}
-                    onUnavailable={onListDown}
-                  />
-                ) : (
+                {!listDown && (
                   <>
-                    <p className="mb-3 text-sm font-semibold text-navy-700">{t.listPartnersOnly}</p>
-                    <Stay22HotelMap
-                      title={(budget > 0 ? t.discoverTitleBudget : t.discoverTitle).replace("{city}", label || query)}
-                      address={hotelCityPlace(query) ?? query}
-                      checkIn={checkIn}
-                      checkOut={checkOut}
-                      adults={adults}
-                      kids={childrenAges.length}
-                      budget={budget}
-                      currency={currency}
-                      nights={nights}
+                    <h2 className="mb-4 font-display text-xl font-extrabold text-navy-950">
+                      {t.topHotelsTitle.replace("{city}", label || query)}
+                    </h2>
+                    <HotelList
+                      cityQuery={hotelCityPlace(query) ?? query}
+                      citySlug={findHotelCity(query)?.slug}
+                      cityName={label || query}
                       minStars={minStars}
-                      labels={{ list: t.viewList, map: t.viewMap, choose: t.viewChoose }}
+                      maxPerNight={budget > 0 && nights > 0 ? budget / nights : 0}
+                      breakfast={breakfast}
+                      c={listCommon}
+                      onUnavailable={onListDown}
                     />
                   </>
                 )}
+                {/* Every hotel in the city: our partners' full list (thousands
+                    in a big city), always under ours — Google gives about 20 a
+                    page, so the cards above are the top of the market, not all of it. */}
+                <section className={listDown ? "" : "mt-10"}>
+                  <h2 className="font-display text-xl font-extrabold text-navy-950">{t.allHotelsTitle.replace("{city}", label || query)}</h2>
+                  <p className="mb-3 mt-1 text-sm text-navy-600">{listDown ? t.listPartnersOnly : t.allHotelsSub}</p>
+                  <Stay22HotelMap
+                    title={t.allHotelsTitle.replace("{city}", label || query)}
+                    address={hotelCityPlace(query) ?? query}
+                    checkIn={checkIn}
+                    checkOut={checkOut}
+                    adults={adults}
+                    kids={childrenAges.length}
+                    budget={budget}
+                    currency={currency}
+                    nights={nights}
+                    minStars={minStars}
+                    labels={{ list: t.viewList, map: t.viewMap, choose: t.viewChoose }}
+                  />
+                </section>
                 <div className="mt-6">
                   <p className="text-xs font-bold text-navy-600">{t.otherPartners}</p>
                   <div className="mt-2 flex flex-wrap gap-2">

@@ -400,6 +400,11 @@ export const dictionaries = {
       listEmpty: "لا توجد فنادق مطابقة لاختياراتك في هذه التواريخ.",
       listPartnersOnly: "نعرض الآن فنادق شركائنا. أسعار كل المواقع تظهر لاحقاً اليوم.",
       checkedAtAll: "تحققنا من هذه الأسعار الساعة {time}. السعر النهائي والتوفّر وشروط الإلغاء يحددها الموقع.",
+      moreHotels: "عرض المزيد من الفنادق (ظاهر الآن {count})",
+      moreHotelsLater: "لا مزيد من الصفحات الآن. كل فنادق المدينة في القائمة التالية.",
+      allHotelsTitle: "كل فنادق {city} وشققها",
+      allHotelsSub: "القائمة الكاملة لدى شركائنا، بالصور والأسعار والخريطة. تُعرض بالإنجليزية.",
+      topHotelsTitle: "أبرز فنادق {city} بأسعار كل المواقع",
     },
     home: {
       stepsTitle: "من الميزانية إلى خطة سفر كاملة، بثلاث خطوات",
@@ -1488,6 +1493,11 @@ export const dictionaries = {
       listEmpty: "No hotels match your choices on these dates.",
       listPartnersOnly: "Showing our partners' hotels for now. Prices from every site come back later today.",
       checkedAtAll: "Prices checked at {time}. The site sets the final price, availability and cancellation terms.",
+      moreHotels: "Show more hotels ({count} shown)",
+      moreHotelsLater: "No more pages right now. Every hotel in the city is in the list below.",
+      allHotelsTitle: "Every hotel and apartment in {city}",
+      allHotelsSub: "The full list from our partners, with photos, prices and a map.",
+      topHotelsTitle: "Top hotels in {city} with every site's price",
     },
     home: {
       stepsTitle: "From your budget to a complete trip plan, in three steps",

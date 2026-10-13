@@ -146,6 +146,8 @@ export interface HotelSearch {
   currency: string;
   hotels: HotelResult[];
   checkedAt: string;
+  /** A city list's next page (Google gives about 20 hotels a page), if any. */
+  nextPage?: string | null;
 }
 
 type Rate = { extracted_lowest?: number; extracted_before_taxes_fees?: number } | undefined;
@@ -245,12 +247,14 @@ export async function hotelPrices(q: {
   minStars?: number;
   /** Highest price a night, in `currency` (a city list only). */
   maxPerNight?: number;
+  /** A city list's page token from a previous answer's `nextPage`. */
+  page?: string;
 }): Promise<HotelSearch | null> {
   const currency = (q.currency || "SAR").toUpperCase();
   const ages = (q.childrenAges ?? []).map((a) => Math.min(17, Math.max(1, Math.round(a))));
   const stars = q.minStars && q.minStars >= 2 && q.minStars <= 5 ? q.minStars : 0;
   const maxPrice = q.maxPerNight && q.maxPerNight > 0 ? Math.round(q.maxPerNight) : 0;
-  const cacheKey = `serp-hotels5:${q.q.toLowerCase()}:${q.token ?? ""}:${q.checkIn}:${q.checkOut}:${q.adults}:${ages.join(",")}:${currency}:${stars}:${maxPrice}`;
+  const cacheKey = `serp-hotels5:${q.q.toLowerCase()}:${q.token ?? ""}:${q.checkIn}:${q.checkOut}:${q.adults}:${ages.join(",")}:${currency}:${stars}:${maxPrice}:${q.page ?? ""}`;
   return cachedJson<HotelSearch>(cacheKey, 6 * 3600, async () => {
     const body = await search({
       engine: "google_hotels",
@@ -260,6 +264,7 @@ export async function hotelPrices(q: {
       adults: String(Math.max(1, q.adults)),
       ...(ages.length ? { children: String(ages.length), children_ages: ages.join(",") } : {}),
       ...(q.token ? { property_token: q.token } : {}),
+      ...(q.page ? { next_page_token: q.page } : {}),
       ...(stars ? { hotel_class: [2, 3, 4, 5].filter((c) => c >= stars).join(",") } : {}),
       ...(maxPrice ? { max_price: String(maxPrice) } : {}),
       currency,
@@ -271,6 +276,8 @@ export async function hotelPrices(q: {
     const kind: HotelSearch["kind"] = Array.isArray(props) ? "list" : "hotel";
     const hotels = kind === "list" ? (props ?? []).map(hotelOf) : [hotelOf(body as GhProperty)];
     if (!hotels.length || !hotels[0].name) return null;
-    return { kind, currency, hotels, checkedAt: new Date().toISOString() };
+    const pg = body.serpapi_pagination as { next_page_token?: string } | undefined;
+    const nextPage = kind === "list" && typeof pg?.next_page_token === "string" ? pg.next_page_token : null;
+    return { kind, currency, hotels, checkedAt: new Date().toISOString(), nextPage };
   });
 }

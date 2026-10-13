@@ -70,11 +70,40 @@ export default function HotelList({
     };
   }, [url]);
 
+  // Further pages, each one more search, only when asked.
+  const [more, setMore] = useState<{ url: string; hotels: HotelResult[]; next: string | null; busy: boolean; ended: boolean }>({
+    url: "",
+    hotels: [],
+    next: null,
+    busy: false,
+    ended: false,
+  });
+  const extra = more.url === url ? more : { url, hotels: [] as HotelResult[], next: null, busy: false, ended: false };
+
   const result = state?.url === url ? state.result : undefined;
   const failed = result === null || (result && result.kind !== "list");
   useEffect(() => {
     if (failed) onUnavailable();
   }, [failed, onUnavailable]);
+
+  const nextToken = extra.hotels.length ? extra.next : result?.nextPage ?? null;
+  const loadMore = () => {
+    if (!nextToken || extra.busy) return;
+    setMore({ ...extra, busy: true });
+    fetch(`${url}&page=${encodeURIComponent(nextToken)}`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((b: { result?: HotelSearch | null } | null) => {
+        const r = b?.result;
+        setMore({
+          url,
+          hotels: [...extra.hotels, ...(r?.hotels ?? [])],
+          next: r?.nextPage ?? null,
+          busy: false,
+          ended: !r,
+        });
+      })
+      .catch(() => setMore({ ...extra, busy: false, ended: true }));
+  };
 
   if (result === undefined) {
     return (
@@ -92,7 +121,13 @@ export default function HotelList({
   if (failed || !result) return null;
 
   const centre = citySlug ? CITY_COORDS[citySlug] : undefined;
-  let hotels = result.hotels.filter((h) => h.name && (h.total || h.perNight));
+  const seen = new Set<string>();
+  let hotels = [...result.hotels, ...extra.hotels].filter((h) => {
+    const key = h.token || h.name;
+    if (!h.name || !(h.total || h.perNight) || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
   let note = "";
   if (breakfast) {
     const withBreakfast = hotels.filter(hasBreakfast);
@@ -116,6 +151,18 @@ export default function HotelList({
           locale={locale}
         />
       ))}
+      {nextToken && !extra.ended && (
+        <button
+          type="button"
+          onClick={loadMore}
+          disabled={extra.busy}
+          className="flex w-full items-center justify-center gap-2 rounded-xl bg-white px-4 py-3 text-sm font-extrabold text-navy-900 ring-1 ring-mist-200 transition hover:ring-navy-300 disabled:opacity-60"
+        >
+          {extra.busy && <span className="h-4 w-4 animate-spin rounded-full border-2 border-navy-200 border-t-sun-500" aria-hidden="true" />}
+          {t.moreHotels.replace("{count}", String(hotels.length))}
+        </button>
+      )}
+      {extra.ended && <p className="text-center text-xs font-semibold text-navy-600">{t.moreHotelsLater}</p>}
     </div>
   );
 }
