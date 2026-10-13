@@ -873,12 +873,22 @@ Chrome), climate v2 after the owner's download, publishing staged cities.
    `C:\Sfrtna-climate`). Then validate (≥90 % within ±2 °C), season engine v2
    on hci.json, publish the 156 staged cities (places/hotels/restaurants
    collected with `staged=true`; partner pages at publish).
-3. **Visa:** JO, KH, KW, MA, TN, TZ still unconfirmed (official pages JS-only;
-   owner's Chrome window must be visible).
-4. **Accounts:** Google sign-in live (owner's OAuth client, published; origins
-   sfrtna.com + www). Email sign-in waits for `RESEND_API_KEY` (owner).
-   Owner to re-test «احفظ الخطة في حسابي» and «حفظ الخطة كـ PDF» on the site.
-5. Owner asks: reply in Arabic, test on phone (390 px) before saying ready,
+3. **Visa:** MA ✅ 14 Oct (consulat.ma exempt list names Arabie Saoudite).
+   Still JO, KH, KW, TN, TZ. Tried 14 Oct: KW — kuwaitvisa.moi.gov.kw
+   tourist list omits all GCC nationals but also Egypt/Iraq, so absence is
+   not proof; Saudi embassy in Kuwait and gcc-sg.org pages have no explicit
+   line (GCC-SG movement page now 404). TN — diplomatie.gov.tn/visa 404,
+   discovertunisia.com formalities page has no country list. KH —
+   evisa.gov.kh FAQ answers load on click; application is behind a CAPTCHA
+   (do not pass it). Next: KH FAQ answers, TZ immigration.go.tz visa page,
+   JO MOI / visitjordan list; for KW/TN look for an embassy page naming
+   Saudi Arabia.
+4. **Accounts:** ✅ owner tested 14 Oct 01:05 — saving the plan to the
+   account and the plan PDF work.
+5. **PayPal (owner, 14 Oct):** owner's PayPal account permanently limited;
+   Travelpayouts payout was PayPal → needs another payout method before
+   launch (no earnings yet). Appeal drafted for the owner.
+6. Owner asks: reply in Arabic, test on phone (390 px) before saying ready,
    no big blank spaces, labels centred in tabs, ask only business decisions.
 
 Older order (kept):
