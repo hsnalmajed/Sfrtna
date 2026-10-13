@@ -1293,18 +1293,18 @@
   "koror": "ROR",
   "pohnpei": "PNI"
  },
- "geocodeNote": "Queries that the first run placed wrongly (13 Oct): the stage report showed the town in another province or island. [query, country code for Nominatim].",
+ "geocodeNote": "Queries that the first run placed wrongly (13 Oct): the stage report showed the town in another province or island. [query, country code for Nominatim]. Where a town has no single settlement point in OpenStreetMap, its central square, main street or port stands for the centre (Macau: Senado Square; Victoria Falls: Livingstone Way; Labuan Bajo: the port).",
  "geocodeQueries": {
   "hong-kong": [
    "Central, Hong Kong",
    "cn"
   ],
   "macau": [
-   "Macau Peninsula",
+   "Largo do Senado, Macau",
    "cn"
   ],
   "labuan-bajo": [
-   "Labuan Bajo, Komodo, Manggarai Barat",
+   "Pelabuhan Labuan Bajo",
    "id"
   ],
   "punta-cana": [
@@ -1316,7 +1316,7 @@
    "cv"
   ],
   "victoria-falls": [
-   "Victoria Falls, Hwange District",
+   "Livingstone Way, Victoria Falls",
    "zw"
   ],
   "luxembourg": [
