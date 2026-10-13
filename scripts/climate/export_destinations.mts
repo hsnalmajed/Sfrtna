@@ -40,6 +40,35 @@ const qa = [
   { id: "zermatt", countryCode: "CH", name: "Zermatt", geocode: "Zermatt, Valais, Switzerland" },
 ].map((q) => ({ ...q, latitude: null, longitude: null, coordinateSource: null, qa: true }));
 
-const out = { generatedAt: new Date().toISOString(), destinations: [...destinations, ...qa] };
+// Cities being added (scripts/geo/out/*.staged.json) — fetched now so they
+// can go live complete — and the station points that calibrate cities with
+// no official station of their own (scripts/climate/data/station_plan.json).
+import { readdirSync, existsSync } from "node:fs";
+const known = new Set(destinations.map((d) => d.id));
+const staged: typeof destinations = [];
+const geoOut = join(root, "scripts/geo/out");
+for (const f of readdirSync(geoOut).filter((f) => f.endsWith(".staged.json"))) {
+  const cities = JSON.parse(readFileSync(join(geoOut, f), "utf8")).cities as Record<string, { country: string; nameEn: string; lat?: number; lon?: number }>;
+  for (const [id, c] of Object.entries(cities)) {
+    if (known.has(id) || c.lat == null || c.lon == null) continue;
+    known.add(id);
+    staged.push({ id, countryCode: c.country, name: c.nameEn, latitude: c.lat, longitude: c.lon, coordinateSource: `OpenStreetMap Nominatim, via scripts/geo/out/${f}`, qa: false });
+  }
+}
+const planPath = join(here, "data/station_plan.json");
+const stationPoints = existsSync(planPath)
+  ? Object.entries(JSON.parse(readFileSync(planPath, "utf8")).stationPoints as Record<string, { lat: number; lon: number; name: string; source: string }>).map(([id, p]) => ({
+      id,
+      countryCode: "",
+      name: p.name,
+      latitude: p.lat,
+      longitude: p.lon,
+      coordinateSource: `${p.source === "wmo" ? "WMO 1991–2020 normals" : "NOAA GHCN-Daily"} station position (calibration point)`,
+      qa: false,
+      station: true,
+    }))
+  : [];
+
+const out = { generatedAt: new Date().toISOString(), destinations: [...destinations, ...staged, ...qa.filter((q) => !known.has(q.id)), ...stationPoints] };
 writeFileSync(join(here, "destinations.json"), JSON.stringify(out, null, 1) + "\n");
-console.log(`${destinations.length} site destinations + ${qa.length} QA places → scripts/climate/destinations.json`);
+console.log(`${destinations.length} site destinations + ${staged.length} staged + ${stationPoints.length} station points → scripts/climate/destinations.json`);
