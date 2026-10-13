@@ -268,6 +268,27 @@ export default function FlightResultsGuide({
   const t = getDictionary(locale).results;
   const [state, setState] = useState<State>(EMPTY);
   const [tab, setTab] = useState<Tab>("best");
+  // The fares come from the flight partner's own search, loaded from its
+  // servers. When those cannot be reached (13 Oct: from the owner's network
+  // every partner host timed out after 30–40 s), the moving plane would run
+  // for ever. After 12 s with nothing loaded, the page says so and offers a
+  // retry — never a made-up result.
+  const [stalled, setStalled] = useState(false);
+  useEffect(() => {
+    const id = window.setTimeout(() => {
+      if (!document.getElementById("tpwl-tickets")?.shadowRoot) setStalled(true);
+    }, 12_000);
+    const watch = window.setInterval(() => {
+      if (document.getElementById("tpwl-tickets")?.shadowRoot) {
+        setStalled(false);
+        window.clearInterval(watch);
+      }
+    }, 1000);
+    return () => {
+      window.clearTimeout(id);
+      window.clearInterval(watch);
+    };
+  }, []);
   const [showWithin, setShowWithin] = useState(false);
   const [showOver, setShowOver] = useState(false);
   const [sort, setSort] = useState<Sort>("cheapest");
@@ -637,7 +658,20 @@ export default function FlightResultsGuide({
       {/* The search, while it runs: a plane along a line at the top, and
           how many flights are in so far. Results below appear as they
           arrive; the bar stays until every agency has answered. */}
-      {!state.settled && (
+      {stalled && (
+        <div role="alert" className="mb-5 rounded-2xl bg-amber-50 px-5 py-4 ring-1 ring-amber-200">
+          <p className="text-sm font-extrabold text-amber-900">{t.stalledTitle}</p>
+          <p className="mt-1 text-sm leading-relaxed text-amber-900/85">{t.stalledBody}</p>
+          <button
+            type="button"
+            onClick={() => window.location.reload()}
+            className="mt-3 rounded-full bg-navy-900 px-5 py-2.5 text-sm font-extrabold text-white hover:bg-navy-800"
+          >
+            {t.stalledRetry}
+          </button>
+        </div>
+      )}
+      {!state.settled && !stalled && (
         <div className="mb-5 overflow-hidden rounded-2xl bg-white px-5 py-3.5 shadow-sm ring-1 ring-black/5">
           <p className="flex items-center gap-2 text-sm font-semibold text-navy-700">
             <span className="h-2.5 w-2.5 shrink-0 animate-pulse rounded-full bg-sun-400" aria-hidden="true" />
