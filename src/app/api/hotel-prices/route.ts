@@ -25,7 +25,7 @@ export async function GET(req: NextRequest) {
   const tokenRaw = sp.get("token") || "";
   const token = /^[A-Za-z0-9_=-]{8,300}$/.test(tokenRaw) ? tokenRaw : undefined;
   const pageRaw = sp.get("page") || "";
-  const page = /^[A-Za-z0-9_=-]{8,300}$/.test(pageRaw) ? pageRaw : undefined;
+  const page = /^[A-Za-z0-9_=+/-]{2,300}$/.test(pageRaw) ? pageRaw : undefined;
   if (pageRaw && !page) return NextResponse.json({ error: "bad request" }, { status: 400 });
   const minStars = Math.min(5, Math.max(0, Number(sp.get("minStars")) || 0));
   const maxPerNight = Math.min(100_000, Math.max(0, Number(sp.get("maxPerNight")) || 0));
