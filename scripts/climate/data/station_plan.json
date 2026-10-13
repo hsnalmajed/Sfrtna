@@ -7720,6 +7720,82 @@
    "direct": [],
    "calibrate": []
   },
+  "hong-kong": {
+   "lat": 22.28183,
+   "lon": 114.15828,
+   "country": "HK",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00045005",
+     "source": "wmo",
+     "km": 2.8,
+     "elev": 31.7,
+     "name": "HongKongObservatory"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00045005",
+     "source": "wmo",
+     "km": 2.8,
+     "elev": 31.7,
+     "name": "HongKongObservatory"
+    },
+    {
+     "id": "00045011",
+     "source": "wmo",
+     "km": 62.6,
+     "elev": 110.0,
+     "name": "TaipaGrande"
+    },
+    {
+     "id": "00059287",
+     "source": "wmo",
+     "km": 125.4,
+     "elev": 71.5,
+     "name": "GUANGZHOU"
+    }
+   ]
+  },
+  "macau": {
+   "lat": 22.19383,
+   "lon": 113.53999,
+   "country": "MO",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00045011",
+     "source": "wmo",
+     "km": 4.6,
+     "elev": 110.0,
+     "name": "TaipaGrande"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00045011",
+     "source": "wmo",
+     "km": 4.6,
+     "elev": 110.0,
+     "name": "TaipaGrande"
+    },
+    {
+     "id": "00045005",
+     "source": "wmo",
+     "km": 66.3,
+     "elev": 31.7,
+     "name": "HongKongObservatory"
+    },
+    {
+     "id": "00059287",
+     "source": "wmo",
+     "km": 114.3,
+     "elev": 71.5,
+     "name": "GUANGZHOU"
+    }
+   ]
+  },
   "krabi": {
    "lat": 8.05924,
    "lon": 98.91243,
@@ -7828,8 +7904,8 @@
    "calibrate": []
   },
   "labuan-bajo": {
-   "lat": -0.66104,
-   "lon": 119.73259,
+   "lat": -8.49364,
+   "lon": 119.87536,
    "country": "ID",
    "staged": true,
    "direct": [],
@@ -9136,22 +9212,22 @@
    "calibrate": []
   },
   "luxembourg": {
-   "lat": 49.60105,
-   "lon": 6.06399,
+   "lat": 49.61128,
+   "lon": 6.1298,
    "country": "LU",
    "staged": true,
    "direct": [
     {
      "id": "00006590",
      "source": "wmo",
-     "km": 10.4,
+     "km": 5.5,
      "elev": 376.0,
      "name": "Luxembourg"
     },
     {
      "id": "99999999",
      "source": "wmo",
-     "km": 21.9,
+     "km": 17.8,
      "elev": 207.0,
      "name": "Remich"
     }
@@ -9160,21 +9236,21 @@
     {
      "id": "00006590",
      "source": "wmo",
-     "km": 10.4,
+     "km": 5.5,
      "elev": 376.0,
      "name": "Luxembourg"
     },
     {
      "id": "99999999",
      "source": "wmo",
-     "km": 21.9,
+     "km": 17.8,
      "elev": 207.0,
      "name": "Remich"
     },
     {
      "id": "ghcn:GME00123226",
      "source": "ghcn",
-     "km": 43.1,
+     "km": 39.8,
      "elev": 305.0,
      "name": "OLSDORF"
     }
@@ -9901,15 +9977,15 @@
    ]
   },
   "victoria-falls": {
-   "lat": -17.9229,
-   "lon": 25.84768,
+   "lat": -17.92794,
+   "lon": 25.839,
    "country": "ZW",
    "staged": true,
    "direct": [
     {
      "id": "00067743",
      "source": "wmo",
-     "km": 12.2,
+     "km": 12.6,
      "elev": 986.0,
      "name": "Livingstone"
     }
@@ -9918,7 +9994,7 @@
     {
      "id": "00067743",
      "source": "wmo",
-     "km": 12.2,
+     "km": 12.6,
      "elev": 986.0,
      "name": "Livingstone"
     }
@@ -9933,8 +10009,8 @@
    "calibrate": []
   },
   "sal": {
-   "lat": 16.17597,
-   "lon": -22.91698,
+   "lat": 16.59869,
+   "lon": -22.90503,
    "country": "CV",
    "staged": true,
    "direct": [],
@@ -10391,32 +10467,40 @@
    "calibrate": []
   },
   "punta-cana": {
-   "lat": 18.87818,
-   "lon": -71.3461,
+   "lat": 18.55655,
+   "lon": -68.36916,
    "country": "DO",
    "staged": true,
-   "direct": [],
+   "direct": [
+    {
+     "id": "00078479",
+     "source": "wmo",
+     "km": 1.4,
+     "elev": 7.0,
+     "name": "PuntaCana"
+    }
+   ],
    "calibrate": [
     {
-     "id": "00078480",
+     "id": "00078479",
      "source": "wmo",
-     "km": 68.4,
-     "elev": 45.0,
-     "name": "Jimani"
+     "km": 1.4,
+     "elev": 7.0,
+     "name": "PuntaCana"
     },
     {
-     "id": "00078482",
+     "id": "00078466",
      "source": "wmo",
-     "km": 73.8,
-     "elev": 8.0,
-     "name": "Barahona"
+     "km": 132.9,
+     "elev": 37.0,
+     "name": "ArroyoBarril"
     },
     {
-     "id": "00078467",
+     "id": "00078473",
      "source": "wmo",
-     "km": 73.8,
-     "elev": 8.0,
-     "name": "SDeLaMar"
+     "km": 134.5,
+     "elev": 53.0,
+     "name": "Bayaguana"
     }
    ]
   },
@@ -16407,25 +16491,25 @@
    "name": "ANGERS",
    "source": "ghcn"
   },
-  "st-00078480": {
-   "lat": 18.493,
-   "lon": -71.853,
-   "elev": 45.0,
-   "name": "Jimani",
+  "st-00078479": {
+   "lat": 18.564,
+   "lon": -68.359,
+   "elev": 7.0,
+   "name": "PuntaCana",
    "source": "wmo"
   },
-  "st-00078482": {
-   "lat": 18.249,
-   "lon": -71.123,
-   "elev": 8.0,
-   "name": "Barahona",
+  "st-00078466": {
+   "lat": 19.201,
+   "lon": -69.433,
+   "elev": 37.0,
+   "name": "ArroyoBarril",
    "source": "wmo"
   },
-  "st-00078467": {
-   "lat": 18.249,
-   "lon": -71.123,
-   "elev": 8.0,
-   "name": "SDeLaMar",
+  "st-00078473": {
+   "lat": 18.742,
+   "lon": -69.631,
+   "elev": 53.0,
+   "name": "Bayaguana",
    "source": "wmo"
   },
   "st-00078486": {
@@ -16440,13 +16524,6 @@
    "lon": -69.68,
    "elev": 7.0,
    "name": "LasAmericas",
-   "source": "wmo"
-  },
-  "st-00078473": {
-   "lat": 18.742,
-   "lon": -69.631,
-   "elev": 53.0,
-   "name": "Bayaguana",
    "source": "wmo"
   },
   "st-00078388": {
