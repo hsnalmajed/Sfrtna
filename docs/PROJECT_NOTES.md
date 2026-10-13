@@ -567,12 +567,61 @@ yet. Steps for the section:
   Report both for every new partner.
 - No travel insurance (EKTA rejected). Viator last.
 
+## Owner's notes of 13 Oct — root causes, decisions, section plan
+
+Owner tested site + app and sent 31 notes (strong complaint: fixes break other
+things, buttons not tested, "I want root fixes and you to find what I missed").
+Root causes found in the code (13 Oct):
+1. Flight results are read out of the Aviasales widget's shadow DOM
+   (`FlightResultsGuide.tsx`). Preferences (direct/bags) were applied only
+   with a budget in the widget's currency; with preferences set, every result
+   was hidden until the whole search settled (the "long wait"); no-match
+   fell back to all flights with a small note at the top; "none within
+   budget" also waited for settle.
+2. Multi-city and discover priced from **cached** fares
+   (`prices_for_dates`) — breaks the live-price rule and often finds nothing
+   for exact dates; multi-city budget checked per cheapest leg.
+3. Travel-tools itinerary (`src/lib/itinerary.ts`) = canned mock text
+   ("local breakfast", "visit landmarks") + invented "estimated cost".
+   Stored places have no restaurants.
+4. No shared engine: each page has its own date filter, cards and plan
+   builder, so a fix in one page never reaches the others.
+5. Smoke checks open pages but never run the search buttons end to end.
+
+**Owner's decisions (13 Oct):**
+- Hotel list prices: **paid data plan now** (Google Hotels via SerpApi —
+  confirm exact price with the owner before subscribing).
+- Accounts (to save plans in the app): **Google + Apple + email**.
+- Restaurants in plans: **OpenStreetMap, stored monthly** (name, location,
+  cuisine; no ratings).
+- Multi-city: **one tab per leg, each a live search**, picked fares summed
+  against the whole-trip budget.
+
+**Section plan (one at a time, each tested end to end):**
+1. Flight search engine: one way, multi-city (next leg date ≥ previous leg,
+   whole-trip budget), strict preferences in every case, results shown as
+   they arrive with a moving-plane progress bar, ask-before-showing dialog
+   when nothing meets the preferences, discover fixed, results header facts
+   in one row, + end-to-end tests of every search button.
+2. Hotel results: cards like flights (breakfast, stars, rating, distance to
+   centre, check-in/out, amenities), «احجز» lists every site with its price,
+   long intro text removed; same card on «اقترح لي فندق».
+3. One itinerary engine (destinations + travel tools): «أنشئ لي» / «أختار
+   بنفسي», real named landmarks/activities/restaurants with locations,
+   ordered by proximity, no estimated cost, «بدون تفضيل», unified date picker,
+   real PDF download, save to account. After any plan: PDF · download places
+   · save in app.
+4. Next-step tabs under every result (flight, hotel, trip services, plan,
+   landmarks) — show only what the traveller has not opened yet.
+5. Destinations page: services + plan as tabs; landmarks/map/places/
+   activities/download in one row.
+6. Travel tools: trip-services page with country search; plan on engine (3).
+7. Home: remove rain line, sign-in/up in «المزيد», photo full-bleed.
+
 ## Next, in order
 
-**▶ Start here (new conversation, 13 Oct): the owner has a list of notes.**
-Read them all first, group them into one ordered list (by section), ask only
-business decisions, then fix one section at a time per the standing rules.
-State at hand-off:
+**▶ Start here: section 1 of the plan above (started 13 Oct).**
+Previous hand-off state (still true):
 - Hotel-name search done (stored names → HERE capped → OSM). UI dropdown not
   yet seen on a phone.
 - Trip services panel `TripServices.tsx` live on city pages and flight results
