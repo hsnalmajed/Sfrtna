@@ -1,0 +1,45 @@
+# Phone speed of the main pages (Lighthouse, mobile, slow-4G throttling as
+# Google measures it). By hand; the summary is kept in
+# scripts/mobile-speed-report.txt.
+name: Mobile speed
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  speed:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Measure
+        env:
+          SMOKE_TOKEN: ${{ secrets.SMOKE_TOKEN }}
+        run: |
+          npm install --no-save --no-audit --no-fund lighthouse@12
+          BASE=https://sfrtna.almajedhsn.workers.dev
+          echo "page | score | FCP | LCP | TBT | CLS | JS KB" > scripts/mobile-speed-report.txt
+          for p in /ar /ar/attractions /ar/attractions/TR/istanbul /ar/seasons /ar/services /ar/itinerary /ar/visa; do
+            npx lighthouse "$BASE$p" --quiet --only-categories=performance --form-factor=mobile \
+              --extra-headers="{\"x-sfrtna-smoke\":\"$SMOKE_TOKEN\"}" \
+              --chrome-flags="--headless=new --no-sandbox" --output=json --output-path=lh.json || continue
+            node -e '
+              const r=require("./lh.json"); const a=r.audits;
+              const js=(a["resource-summary"]?.details?.items||[]).find(i=>i.resourceType==="script");
+              console.log([process.argv[1], Math.round(r.categories.performance.score*100), a["first-contentful-paint"].displayValue, a["largest-contentful-paint"].displayValue, a["total-blocking-time"].displayValue, a["cumulative-layout-shift"].displayValue, js?Math.round(js.transferSize/1024):"-"].join(" | "));
+            ' "$p" >> scripts/mobile-speed-report.txt
+          done
+          cat scripts/mobile-speed-report.txt
+      - name: Keep the report
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add scripts/mobile-speed-report.txt
+          git commit -m "Mobile speed report" || exit 0
+          git pull --rebase origin main && git push
