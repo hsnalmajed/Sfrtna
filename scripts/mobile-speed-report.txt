@@ -1,257 +1,289 @@
 page | score | FCP | LCP | TBT | CLS | JS KB | HTML KB | LCP of each run (median shown)
-/ar | 96 | 1.4 s | 2.5 s | 90 ms | 0.023 | 233 | 32 | LCP runs 1.7 / 2.5 / 4.2 s
+/ar | 94 | 1.4 s | 2.8 s | 100 ms | 0.05 | 233 | 32 | LCP runs 2.3 / 2.8 / 5.4 s
+   run 1: simulated FCP 1.2 s, LCP 2.3 s | observed FCP 1041 ms, LCP 1041 ms | main-thread work before first frame 84 ms
+   run 2: simulated FCP 1.4 s, LCP 2.8 s | observed FCP 1613 ms, LCP 1962 ms | main-thread work before first frame 48 ms
+   run 3: simulated FCP 3.5 s, LCP 5.4 s | observed FCP 2523 ms, LCP 2523 ms | main-thread work before first frame 156 ms
    LCP element: <h1 class="max-w-3xl font-display text-h1 font-black text-white drop-shadow-[0_2px_14…">
-   LCP phases: TTFB 1309ms; Load Delay 0ms; Load Time 0ms; Render Delay 1189ms
-   main-thread JS: /ar 634ms; /_next/static/chunks/3svhqtx7l0q9e.js 530ms; Unattributable 268ms
+   LCP phases: TTFB 1334ms; Load Delay 0ms; Load Time 0ms; Render Delay 1427ms
+   main-thread JS: /ar 856ms; /_next/static/chunks/3svhqtx7l0q9e.js 492ms; Unattributable 353ms; /_next/static/chunks/10n-p5z-lx4sq.js 74ms
    heaviest: /_next/static/chunks/3svhqtx7l0q9e.js 72KB; /fonts/plex-ar-600.woff2 45KB; /fonts/plex-ar-500.woff2 45KB; /fonts/plex-ar-700.woff2 44KB; /_next/static/chunks/10n-p5z-lx4sq.js 43KB
    requests before LCP (36):
-         1ms →  1348ms  VeryHigh   32KB  Document /ar
-      1314ms →  1543ms  High        9KB  Font /fonts/tajawal-ar-900.woff2
-      1314ms →  1627ms  High       42KB  Font /fonts/plex-ar-400.woff2
-      1314ms →  1549ms  High       10KB  Font /fonts/tajawal-ar-800.woff2
-      1327ms →  1580ms  VeryHigh   20KB  Stylesheet /_next/static/chunks/0ek5ismc2ia18.css
-      1327ms →  1552ms  Low         9KB  Image /sfrtna-logo-360.webp
-      1328ms →  1632ms  Medium      1KB  Manifest /manifest.webmanifest
-      1346ms →  1646ms  High       19KB  Image /hero/32634768-828.webp
-      1584ms →  1772ms  Low         5KB  Script /_next/static/chunks/3sb9w-3kdgsqo.js
-      1584ms →  1803ms  Low         9KB  Script /_next/static/chunks/2i51e627rllld.js
-      1584ms →  1938ms  Low        72KB  Script /_next/static/chunks/3svhqtx7l0q9e.js
-      1584ms →  1888ms  Low        43KB  Script /_next/static/chunks/10n-p5z-lx4sq.js
-      1584ms →  1847ms  Low         4KB  Script /_next/static/chunks/turbopack-2wp93lzlz3dqr.js
-      1585ms →  1958ms  Low         7KB  Script /_next/static/chunks/2mu5kw797e53k.js
-      1585ms →  2040ms  Low         9KB  Script /_next/static/chunks/3okpsgac4_oem.js
-      1585ms →  1847ms  Low        12KB  Script /_next/static/chunks/36wpztqgq5mf0.js
-      1585ms →  1999ms  Low        12KB  Script /_next/static/chunks/23p8hpcxh8uql.js
-      1585ms →  1966ms  Low         7KB  Script /_next/static/chunks/1gmvi1mzdyjuw.js
-      1586ms →  1991ms  Low        13KB  Script /_next/static/chunks/0crichi9mam7z.js
-      1586ms →  2097ms  Low        25KB  Script /_next/static/chunks/3vo-csef7ht-3.js
-      1586ms →  1867ms  Low        14KB  Script /_next/static/chunks/2-hpv9qjnsyf8.js
-      1635ms →  2106ms  VeryHigh   45KB  Font /fonts/plex-ar-600.woff2
-      1636ms →  2065ms  VeryHigh   19KB  Font /_next/static/media/ibm-plex-sans-arabic-latin-400-normal.1qbt_niprsjg
-      1636ms →  2065ms  VeryHigh   20KB  Font /_next/static/media/ibm-plex-sans-arabic-latin-700-normal.32zomdm7y06e
-      1636ms →  2105ms  VeryHigh   44KB  Font /fonts/plex-ar-700.woff2
-   render-blocking: /_next/static/chunks/0ek5ismc2ia18.css 311ms
-/ar/attractions | 72 | 2.8 s | 5.4 s | 30 ms | 0 | 181 | 36 | LCP runs 2.2 / 5.4 / 5.9 s
+         2ms →  1372ms  VeryHigh   32KB  Document /ar
+      1343ms →  1502ms  High        9KB  Font /fonts/tajawal-ar-900.woff2
+      1344ms →  1662ms  High       42KB  Font /fonts/plex-ar-400.woff2
+      1344ms →  1535ms  High       10KB  Font /fonts/tajawal-ar-800.woff2
+      1356ms →  1557ms  VeryHigh   20KB  Stylesheet /_next/static/chunks/0ek5ismc2ia18.css
+      1357ms →  1527ms  Low         9KB  Image /sfrtna-logo-360.webp
+      1360ms →  1724ms  Medium      1KB  Manifest /manifest.webmanifest
+      1374ms →  1669ms  High       19KB  Image /hero/32634768-828.webp
+      1562ms →  1734ms  Low         5KB  Script /_next/static/chunks/3sb9w-3kdgsqo.js
+      1564ms →  1991ms  Low         9KB  Script /_next/static/chunks/2i51e627rllld.js
+      1564ms →  2231ms  Low        72KB  Script /_next/static/chunks/3svhqtx7l0q9e.js
+      1564ms →  2197ms  Low        43KB  Script /_next/static/chunks/10n-p5z-lx4sq.js
+      1565ms →  1899ms  Low         4KB  Script /_next/static/chunks/turbopack-2wp93lzlz3dqr.js
+      1565ms →  1949ms  Low         7KB  Script /_next/static/chunks/2mu5kw797e53k.js
+      1565ms →  1980ms  Low         9KB  Script /_next/static/chunks/3okpsgac4_oem.js
+      1565ms →  1962ms  Low        12KB  Script /_next/static/chunks/36wpztqgq5mf0.js
+      1566ms →  2051ms  Low        12KB  Script /_next/static/chunks/23p8hpcxh8uql.js
+      1566ms →  1950ms  Low         7KB  Script /_next/static/chunks/1gmvi1mzdyjuw.js
+      1566ms →  1788ms  Low        13KB  Script /_next/static/chunks/0crichi9mam7z.js
+      1566ms →  2116ms  Low        25KB  Script /_next/static/chunks/3vo-csef7ht-3.js
+      1567ms →  2033ms  Low        14KB  Script /_next/static/chunks/2-hpv9qjnsyf8.js
+      1600ms →  2208ms  VeryHigh   45KB  Font /fonts/plex-ar-600.woff2
+      1600ms →  2112ms  VeryHigh   19KB  Font /_next/static/media/ibm-plex-sans-arabic-latin-400-normal.1qbt_niprsjg
+      1601ms →  2212ms  VeryHigh   44KB  Font /fonts/plex-ar-700.woff2
+      1601ms →  2039ms  VeryHigh    9KB  Font /fonts/tajawal-ar-700.woff2
+   render-blocking: /_next/static/chunks/0ek5ismc2ia18.css 300ms
+   applied throttling (1 run): FCP 1.9 s, LCP 2.3 s, TBT 440 ms
+/ar/attractions | 99 | 1.2 s | 2.2 s | 50 ms | 0.002 | 181 | 35 | LCP runs 2.1 / 2.2 / 2.2 s
+   run 1: simulated FCP 1.2 s, LCP 2.1 s | observed FCP 1144 ms, LCP 1152 ms | main-thread work before first frame 89 ms
+   run 2: simulated FCP 1.2 s, LCP 2.2 s | observed FCP 892 ms, LCP 900 ms | main-thread work before first frame 88 ms
+   run 3: simulated FCP 1.2 s, LCP 2.2 s | observed FCP 881 ms, LCP 890 ms | main-thread work before first frame 86 ms
    LCP element: <img src="https://sfrtna.almajedhsn.workers.dev/hero/6173322-828.webp" srcset="/hero/6173322-828.webp 828w, /hero/6173322-1280.webp 1280w, /
-   LCP phases: TTFB 479ms; Load Delay 327ms; Load Time 701ms; Render Delay 3870ms
-   main-thread JS: Unattributable 306ms; /ar/attractions 273ms; /_next/static/chunks/3svhqtx7l0q9e.js 190ms; /_next/static/chunks/10n-p5z-lx4sq.js 188ms
+   LCP phases: TTFB 514ms; Load Delay 652ms; Load Time 835ms; Render Delay 152ms
+   main-thread JS: /ar/attractions 700ms; Unattributable 377ms; /_next/static/chunks/3svhqtx7l0q9e.js 334ms; /_next/static/chunks/10n-p5z-lx4sq.js 95ms
    heaviest: /_next/static/chunks/3svhqtx7l0q9e.js 72KB; /fonts/plex-ar-600.woff2 45KB; /fonts/plex-ar-700.woff2 44KB; /_next/static/chunks/10n-p5z-lx4sq.js 43KB; /fonts/plex-ar-400.woff2 42KB
-   requests before LCP (87):
-         1ms →   407ms  VeryHigh   36KB  Document /ar/attractions
-       376ms →   637ms  High       42KB  Font /fonts/plex-ar-400.woff2
-       376ms →   624ms  High       10KB  Font /fonts/tajawal-ar-800.woff2
-       381ms →   714ms  High       42KB  Image /hero/6173322-828.webp
-       386ms →   691ms  VeryHigh   20KB  Stylesheet /_next/static/chunks/0ek5ismc2ia18.css
-       386ms →   590ms  Low         9KB  Image /sfrtna-logo-360.webp
-       389ms →  1217ms  Medium      1KB  Manifest /manifest.webmanifest
-       695ms →  1010ms  Low         5KB  Script /_next/static/chunks/3sb9w-3kdgsqo.js
-       695ms →   900ms  Low         9KB  Script /_next/static/chunks/2i51e627rllld.js
-       695ms →  1008ms  Low        72KB  Script /_next/static/chunks/3svhqtx7l0q9e.js
-       695ms →  1033ms  Low        43KB  Script /_next/static/chunks/10n-p5z-lx4sq.js
-       695ms →   856ms  Low         4KB  Script /_next/static/chunks/turbopack-2wp93lzlz3dqr.js
-       696ms →  1013ms  Low         7KB  Script /_next/static/chunks/2mu5kw797e53k.js
-       696ms →   883ms  Low         9KB  Script /_next/static/chunks/3okpsgac4_oem.js
-       696ms →   893ms  Low        12KB  Script /_next/static/chunks/36wpztqgq5mf0.js
-       696ms →   892ms  Low        12KB  Script /_next/static/chunks/23p8hpcxh8uql.js
-       696ms →   859ms  Low         7KB  Script /_next/static/chunks/1pdlg3197877j.js
-       719ms →  1077ms  VeryHigh   45KB  Font /fonts/plex-ar-600.woff2
-       719ms →   916ms  VeryHigh   19KB  Font /_next/static/media/ibm-plex-sans-arabic-latin-400-normal.1qbt_niprsjg
-       720ms →  1071ms  VeryHigh   44KB  Font /fonts/plex-ar-700.woff2
-       720ms →  1041ms  VeryHigh    9KB  Font /fonts/tajawal-ar-700.woff2
-       720ms →  1060ms  VeryHigh   20KB  Font /_next/static/media/ibm-plex-sans-arabic-latin-700-normal.32zomdm7y06e
-       720ms →  1050ms  VeryHigh   10KB  Font /_next/static/media/tajawal-latin-700-normal.34i5dk2ouqd61.woff2
-      1090ms →  1327ms  High        1KB  Fetch /api/auth/me
-      1096ms →  1268ms  High       13KB  Other /favicon.ico
-   render-blocking: /_next/static/chunks/0ek5ismc2ia18.css 202ms
-/ar/attractions/TR/istanbul | 98 | 1.4 s | 2.2 s | 50 ms | 0.008 | 196 | 49 | LCP runs 2.0 / 2.2 / 5.0 s
+   requests before LCP (80):
+         1ms →   507ms  VeryHigh   35KB  Document /ar/attractions
+       475ms →   817ms  High       42KB  Font /fonts/plex-ar-400.woff2
+       477ms →   688ms  High       10KB  Font /fonts/tajawal-ar-800.woff2
+       487ms →   836ms  High       42KB  Image /hero/6173322-828.webp
+       493ms →   768ms  VeryHigh   20KB  Stylesheet /_next/static/chunks/0ek5ismc2ia18.css
+       494ms →   721ms  Low         9KB  Image /sfrtna-logo-360.webp
+       494ms →   826ms  Medium      1KB  Manifest /manifest.webmanifest
+       772ms →   948ms  Low         5KB  Script /_next/static/chunks/3sb9w-3kdgsqo.js
+       772ms →   968ms  Low         9KB  Script /_next/static/chunks/2i51e627rllld.js
+       772ms →  1222ms  Low        72KB  Script /_next/static/chunks/3svhqtx7l0q9e.js
+       772ms →  1213ms  Low        43KB  Script /_next/static/chunks/10n-p5z-lx4sq.js
+       773ms →   960ms  Low         4KB  Script /_next/static/chunks/turbopack-2wp93lzlz3dqr.js
+       773ms →  1010ms  Low         8KB  Script /_next/static/chunks/2mu5kw797e53k.js
+       773ms →  1045ms  Low         9KB  Script /_next/static/chunks/3okpsgac4_oem.js
+       774ms →   998ms  Low        12KB  Script /_next/static/chunks/36wpztqgq5mf0.js
+       774ms →  1058ms  Low        12KB  Script /_next/static/chunks/23p8hpcxh8uql.js
+       774ms →   975ms  Low         7KB  Script /_next/static/chunks/1pdlg3197877j.js
+       801ms →  1216ms  VeryHigh   45KB  Font /fonts/plex-ar-600.woff2
+       801ms →  1156ms  VeryHigh   19KB  Font /_next/static/media/ibm-plex-sans-arabic-latin-400-normal.1qbt_niprsjg
+       801ms →  1212ms  VeryHigh   44KB  Font /fonts/plex-ar-700.woff2
+       802ms →  1046ms  VeryHigh    9KB  Font /fonts/tajawal-ar-700.woff2
+       802ms →  1140ms  VeryHigh   20KB  Font /_next/static/media/ibm-plex-sans-arabic-latin-700-normal.32zomdm7y06e
+       802ms →  1052ms  VeryHigh   10KB  Font /_next/static/media/tajawal-latin-700-normal.34i5dk2ouqd61.woff2
+       859ms →  1183ms  High        2KB  Image flagcdn.com/w160/sa.png
+       859ms →  1168ms  High        1KB  Image flagcdn.com/w160/tr.png
+   render-blocking: /_next/static/chunks/0ek5ismc2ia18.css 214ms
+   applied throttling (1 run): FCP 1.9 s, LCP 2.3 s, TBT 190 ms
+/ar/attractions/TR/istanbul | 90 | 1.4 s | 3.5 s | 60 ms | 0.01 | 196 | 49 | LCP runs 2.0 / 3.5 / 4.3 s
+   run 1: simulated FCP 1.2 s, LCP 2.0 s | observed FCP 1185 ms, LCP 1185 ms | main-thread work before first frame 76 ms
+   run 2: simulated FCP 1.4 s, LCP 3.5 s | observed FCP 1751 ms, LCP 2105 ms | main-thread work before first frame 48 ms
+   run 3: simulated FCP 1.2 s, LCP 4.3 s | observed FCP 1376 ms, LCP 1732 ms | main-thread work before first frame 48 ms
    LCP element: <h1 class="max-w-4xl font-display text-h1 font-extrabold text-white drop-shadow-[0_2p…">
-   LCP phases: TTFB 626ms; Load Delay 0ms; Load Time 0ms; Render Delay 1575ms
-   main-thread JS: /ar/attractions/TR/istanbul 543ms; /_next/static/chunks/3svhqtx7l0q9e.js 300ms; Unattributable 238ms; /_next/static/chunks/10n-p5z-lx4sq.js 67ms
+   LCP phases: TTFB 1426ms; Load Delay 0ms; Load Time 0ms; Render Delay 2114ms
+   main-thread JS: /ar/attractions/TR/istanbul 685ms; /_next/static/chunks/3svhqtx7l0q9e.js 395ms; Unattributable 230ms; /_next/static/chunks/10n-p5z-lx4sq.js 80ms
    heaviest: /_next/static/chunks/3svhqtx7l0q9e.js 72KB; /ar/attractions/TR/istanbul 49KB; /fonts/plex-ar-600.woff2 45KB; /fonts/plex-ar-700.woff2 44KB; /_next/static/chunks/10n-p5z-lx4sq.js 43KB
-   requests before LCP (32):
-         1ms →   678ms  VeryHigh   49KB  Document /ar/attractions/TR/istanbul
-       632ms →   921ms  High       42KB  Font /fonts/plex-ar-400.woff2
-       632ms →   857ms  High       10KB  Font /fonts/tajawal-ar-800.woff2
-       639ms →   895ms  VeryHigh   20KB  Stylesheet /_next/static/chunks/0ek5ismc2ia18.css
-       641ms →   868ms  Low         9KB  Image /sfrtna-logo-360.webp
-       645ms →   960ms  Medium      1KB  Manifest /manifest.webmanifest
-       898ms →  1078ms  Low         5KB  Script /_next/static/chunks/3sb9w-3kdgsqo.js
-       898ms →  1195ms  Low         9KB  Script /_next/static/chunks/2i51e627rllld.js
-       898ms →  1457ms  Low        72KB  Script /_next/static/chunks/3svhqtx7l0q9e.js
-       899ms →  1437ms  Low        43KB  Script /_next/static/chunks/10n-p5z-lx4sq.js
-       899ms →  1157ms  Low         4KB  Script /_next/static/chunks/turbopack-2wp93lzlz3dqr.js
-       899ms →  1182ms  Low         7KB  Script /_next/static/chunks/2mu5kw797e53k.js
-       899ms →  1269ms  Low         9KB  Script /_next/static/chunks/3okpsgac4_oem.js
-       900ms →  1245ms  Low        12KB  Script /_next/static/chunks/36wpztqgq5mf0.js
-       900ms →  1237ms  Low        10KB  Script /_next/static/chunks/3_vqlbvpht-a7.js
-       900ms →  1152ms  Low        13KB  Script /_next/static/chunks/3lxrpbfkzxb9i.js
-       900ms →  1252ms  Low        12KB  Script /_next/static/chunks/23p8hpcxh8uql.js
-       927ms →  1443ms  VeryHigh   45KB  Font /fonts/plex-ar-600.woff2
-       927ms →  1384ms  VeryHigh   19KB  Font /_next/static/media/ibm-plex-sans-arabic-latin-400-normal.1qbt_niprsjg
-       927ms →  1443ms  VeryHigh   44KB  Font /fonts/plex-ar-700.woff2
-       928ms →  1356ms  VeryHigh    9KB  Font /fonts/tajawal-ar-700.woff2
-       928ms →  1418ms  VeryHigh   20KB  Font /_next/static/media/ibm-plex-sans-arabic-latin-700-normal.32zomdm7y06e
-       928ms →  1299ms  VeryHigh   10KB  Font /_next/static/media/tajawal-latin-700-normal.34i5dk2ouqd61.woff2
-       967ms →  1300ms  VeryHigh   11KB  Font /_next/static/media/tajawal-latin-800-normal.2sz7n0ouqrk0-.woff2
-       968ms →  1379ms  VeryHigh   21KB  Font /_next/static/media/ibm-plex-sans-arabic-latin-600-normal.3a4qjieizncg
-   render-blocking: /_next/static/chunks/0ek5ismc2ia18.css 238ms
-/ar/seasons | 71 | 2.9 s | 5.5 s | 90 ms | 0 | 184 | 74 | LCP runs 2.6 / 5.5 / 5.6 s
+   requests before LCP (36):
+         1ms →  1505ms  VeryHigh   49KB  Document /ar/attractions/TR/istanbul
+      1435ms →  1721ms  High       42KB  Font /fonts/plex-ar-400.woff2
+      1435ms →  1662ms  High       10KB  Font /fonts/tajawal-ar-800.woff2
+      1447ms →  1703ms  VeryHigh   20KB  Stylesheet /_next/static/chunks/0ek5ismc2ia18.css
+      1447ms →  1680ms  Low         9KB  Image /sfrtna-logo-360.webp
+      1448ms →  2664ms  Medium      1KB  Manifest /manifest.webmanifest
+      1706ms →  1884ms  Low         5KB  Script /_next/static/chunks/3sb9w-3kdgsqo.js
+      1706ms →  1925ms  Low         9KB  Script /_next/static/chunks/2i51e627rllld.js
+      1707ms →  2072ms  Low        72KB  Script /_next/static/chunks/3svhqtx7l0q9e.js
+      1707ms →  2024ms  Low        43KB  Script /_next/static/chunks/10n-p5z-lx4sq.js
+      1708ms →  1897ms  Low         4KB  Script /_next/static/chunks/turbopack-2wp93lzlz3dqr.js
+      1708ms →  1945ms  Low         7KB  Script /_next/static/chunks/2mu5kw797e53k.js
+      1708ms →  1965ms  Low         9KB  Script /_next/static/chunks/3okpsgac4_oem.js
+      1708ms →  1970ms  Low        12KB  Script /_next/static/chunks/36wpztqgq5mf0.js
+      1709ms →  2086ms  Low        10KB  Script /_next/static/chunks/3_vqlbvpht-a7.js
+      1709ms →  2132ms  Low        13KB  Script /_next/static/chunks/3lxrpbfkzxb9i.js
+      1709ms →  2172ms  Low        12KB  Script /_next/static/chunks/23p8hpcxh8uql.js
+      1736ms →  2222ms  VeryHigh   45KB  Font /fonts/plex-ar-600.woff2
+      1737ms →  2190ms  VeryHigh   19KB  Font /_next/static/media/ibm-plex-sans-arabic-latin-400-normal.1qbt_niprsjg
+      1739ms →  2228ms  VeryHigh   44KB  Font /fonts/plex-ar-700.woff2
+      1739ms →  2152ms  VeryHigh    9KB  Font /fonts/tajawal-ar-700.woff2
+      1739ms →  2197ms  VeryHigh   20KB  Font /_next/static/media/ibm-plex-sans-arabic-latin-700-normal.32zomdm7y06e
+      1740ms →  2183ms  VeryHigh   10KB  Font /_next/static/media/tajawal-latin-700-normal.34i5dk2ouqd61.woff2
+      2078ms →  2251ms  VeryHigh   11KB  Font /_next/static/media/tajawal-latin-800-normal.2sz7n0ouqrk0-.woff2
+      2078ms →  2292ms  VeryHigh   21KB  Font /_next/static/media/ibm-plex-sans-arabic-latin-600-normal.3a4qjieizncg
+   render-blocking: /_next/static/chunks/0ek5ismc2ia18.css 228ms
+   applied throttling (1 run): FCP 1.7 s, LCP 2.1 s, TBT 190 ms
+/ar/seasons | 96 | 1.3 s | 2.5 s | 60 ms | 0.067 | 184 | 70 | LCP runs 2.5 / 2.5 / 2.7 s
+   run 1: simulated FCP 1.3 s, LCP 2.5 s | observed FCP 1443 ms, LCP 1456 ms | main-thread work before first frame 71 ms
+   run 2: simulated FCP 1.3 s, LCP 2.5 s | observed FCP 889 ms, LCP 915 ms | main-thread work before first frame 72 ms
+   run 3: simulated FCP 1.5 s, LCP 2.7 s | observed FCP 1119 ms, LCP 1133 ms | main-thread work before first frame 80 ms
    LCP element: <img src="https://sfrtna.almajedhsn.workers.dev/hero/37736013-828.webp" srcset="/hero/37736013-828.webp 828w, /hero/37736013-1280.webp 1280w
-   LCP phases: TTFB 472ms; Load Delay 267ms; Load Time 656ms; Render Delay 4073ms
-   main-thread JS: Unattributable 306ms; /_next/static/chunks/10n-p5z-lx4sq.js 290ms; /ar/seasons 215ms; /_next/static/chunks/3svhqtx7l0q9e.js 160ms
-   heaviest: /ar/seasons 74KB; /hero/37736013-828.webp 73KB; /_next/static/chunks/3svhqtx7l0q9e.js 72KB; /fonts/plex-ar-600.woff2 45KB; /fonts/plex-ar-700.woff2 44KB
-   requests before LCP (51):
-         1ms →   483ms  VeryHigh   74KB  Document /ar/seasons
-       335ms →   597ms  High       42KB  Font /fonts/plex-ar-400.woff2
-       335ms →   514ms  High       10KB  Font /fonts/tajawal-ar-800.woff2
-       338ms →   638ms  High       73KB  Image /hero/37736013-828.webp
-       343ms →   697ms  VeryHigh   20KB  Stylesheet /_next/static/chunks/0ek5ismc2ia18.css
-       344ms →   548ms  Low         9KB  Image /sfrtna-logo-360.webp
-       346ms →   733ms  Medium      1KB  Manifest /manifest.webmanifest
-       698ms →   856ms  Low         5KB  Script /_next/static/chunks/3sb9w-3kdgsqo.js
-       701ms →   861ms  Low         9KB  Script /_next/static/chunks/2i51e627rllld.js
-       701ms →   955ms  Low        72KB  Script /_next/static/chunks/3svhqtx7l0q9e.js
-       701ms →   995ms  Low        43KB  Script /_next/static/chunks/10n-p5z-lx4sq.js
-       701ms →   899ms  Low         4KB  Script /_next/static/chunks/turbopack-2wp93lzlz3dqr.js
-       701ms →   865ms  Low         7KB  Script /_next/static/chunks/2mu5kw797e53k.js
-       702ms →   852ms  Low         9KB  Script /_next/static/chunks/3okpsgac4_oem.js
-       702ms →   854ms  Low        12KB  Script /_next/static/chunks/36wpztqgq5mf0.js
-       702ms →   873ms  Low        12KB  Script /_next/static/chunks/23p8hpcxh8uql.js
-       702ms →   917ms  Low         9KB  Script /_next/static/chunks/0rmv1f6vldpqf.js
-       730ms →   994ms  VeryHigh   45KB  Font /fonts/plex-ar-600.woff2
-       731ms →   927ms  VeryHigh   19KB  Font /_next/static/media/ibm-plex-sans-arabic-latin-400-normal.1qbt_niprsjg
-       731ms →   994ms  VeryHigh   44KB  Font /fonts/plex-ar-700.woff2
-       732ms →   915ms  VeryHigh    9KB  Font /fonts/tajawal-ar-700.woff2
-      1043ms →  1193ms  VeryHigh   20KB  Font /_next/static/media/ibm-plex-sans-arabic-latin-700-normal.32zomdm7y06e
-      1043ms →  1197ms  VeryHigh   10KB  Font /_next/static/media/tajawal-latin-700-normal.34i5dk2ouqd61.woff2
-      1063ms →  1215ms  High        1KB  Fetch /api/auth/me
-      1200ms →  1352ms  High       13KB  Other /favicon.ico
-   render-blocking: /_next/static/chunks/0ek5ismc2ia18.css 172ms
-/ar/services | 76 | 2.6 s | 4.8 s | 70 ms | 0 | 189 | 27 | LCP runs 4.7 / 4.8 / 4.9 s
+   LCP phases: TTFB 504ms; Load Delay 952ms; Load Time 1014ms; Render Delay 80ms
+   main-thread JS: /_next/static/chunks/3svhqtx7l0q9e.js 329ms; /ar/seasons 316ms; Unattributable 297ms; /_next/static/chunks/10n-p5z-lx4sq.js 171ms
+   heaviest: /hero/37736013-828.webp 73KB; /_next/static/chunks/3svhqtx7l0q9e.js 72KB; /ar/seasons 70KB; /fonts/plex-ar-600.woff2 45KB; /fonts/plex-ar-700.woff2 44KB
+   requests before LCP (43):
+         1ms →   681ms  VeryHigh   70KB  Document /ar/seasons
+       510ms →   833ms  High       42KB  Font /fonts/plex-ar-400.woff2
+       510ms →   738ms  High       10KB  Font /fonts/tajawal-ar-800.woff2
+       521ms →   885ms  High       73KB  Image /hero/37736013-828.webp
+       528ms →   804ms  VeryHigh   20KB  Stylesheet /_next/static/chunks/0ek5ismc2ia18.css
+       528ms →   764ms  Low         9KB  Image /sfrtna-logo-360.webp
+       528ms →   885ms  Medium      1KB  Manifest /manifest.webmanifest
+       807ms →   989ms  Low         5KB  Script /_next/static/chunks/3sb9w-3kdgsqo.js
+       808ms →  1003ms  Low         9KB  Script /_next/static/chunks/2i51e627rllld.js
+       808ms →  1192ms  Low        72KB  Script /_next/static/chunks/3svhqtx7l0q9e.js
+       808ms →  1164ms  Low        43KB  Script /_next/static/chunks/10n-p5z-lx4sq.js
+       809ms →  1011ms  Low         4KB  Script /_next/static/chunks/turbopack-2wp93lzlz3dqr.js
+       809ms →  1023ms  Low         8KB  Script /_next/static/chunks/2mu5kw797e53k.js
+       809ms →  1030ms  Low         9KB  Script /_next/static/chunks/3okpsgac4_oem.js
+       810ms →  1043ms  Low        12KB  Script /_next/static/chunks/36wpztqgq5mf0.js
+       810ms →  1042ms  Low        12KB  Script /_next/static/chunks/23p8hpcxh8uql.js
+       810ms →  1048ms  Low         9KB  Script /_next/static/chunks/0rmv1f6vldpqf.js
+       843ms →  1177ms  VeryHigh   45KB  Font /fonts/plex-ar-600.woff2
+       867ms →  1115ms  VeryHigh   19KB  Font /_next/static/media/ibm-plex-sans-arabic-latin-400-normal.1qbt_niprsjg
+       868ms →  1186ms  VeryHigh   44KB  Font /fonts/plex-ar-700.woff2
+       868ms →  1090ms  VeryHigh    9KB  Font /fonts/tajawal-ar-700.woff2
+       868ms →  1093ms  VeryHigh   11KB  Font /_next/static/media/tajawal-latin-800-normal.2sz7n0ouqrk0-.woff2
+       869ms →  1119ms  VeryHigh   20KB  Font /_next/static/media/ibm-plex-sans-arabic-latin-700-normal.32zomdm7y06e
+       870ms →  1095ms  VeryHigh   10KB  Font /_next/static/media/tajawal-latin-700-normal.34i5dk2ouqd61.woff2
+      1130ms →  1309ms  VeryHigh   10KB  Font /_next/static/media/tajawal-latin-500-normal.0p2ns5yind3a6.woff2
+   render-blocking: /_next/static/chunks/0ek5ismc2ia18.css 187ms
+   applied throttling (1 run): FCP 1.9 s, LCP 2.2 s, TBT 150 ms
+/ar/services | 89 | 1.9 s | 3.5 s | 40 ms | 0.001 | 189 | 26 | LCP runs 2.0 / 3.5 / 4.7 s
+   run 1: simulated FCP 1.1 s, LCP 2.0 s | observed FCP 956 ms, LCP 1001 ms | main-thread work before first frame 45 ms
+   run 2: simulated FCP 1.9 s, LCP 3.5 s | observed FCP 1105 ms, LCP 1105 ms | main-thread work before first frame 54 ms
+   run 3: simulated FCP 2.6 s, LCP 4.7 s | observed FCP 2508 ms, LCP 2508 ms | main-thread work before first frame 113 ms
    LCP element: <img src="https://sfrtna.almajedhsn.workers.dev/hero/6173322-828.webp" srcset="/hero/6173322-828.webp 828w, /hero/6173322-1280.webp 1280w, /
-   LCP phases: TTFB 474ms; Load Delay 145ms; Load Time 633ms; Render Delay 3591ms
-   main-thread JS: /_next/static/chunks/3svhqtx7l0q9e.js 273ms; Unattributable 223ms; /ar/services 156ms; /_next/static/chunks/10n-p5z-lx4sq.js 75ms
+   LCP phases: TTFB 815ms; Load Delay 1828ms; Load Time 334ms; Render Delay 547ms
+   main-thread JS: /ar/services 254ms; Unattributable 181ms; /_next/static/chunks/3svhqtx7l0q9e.js 180ms; /_next/static/chunks/2i51e627rllld.js 121ms; /_next/static/chunks/10n-p5z-lx4sq.js 63ms
    heaviest: /_next/static/chunks/3svhqtx7l0q9e.js 72KB; /fonts/plex-ar-600.woff2 45KB; /fonts/plex-ar-700.woff2 44KB; /_next/static/chunks/10n-p5z-lx4sq.js 43KB; /fonts/plex-ar-400.woff2 42KB
-   requests before LCP (34):
-         1ms →   329ms  VeryHigh   27KB  Document /ar/services
-       310ms →   612ms  High       42KB  Font /fonts/plex-ar-400.woff2
-       310ms →   526ms  High       10KB  Font /fonts/tajawal-ar-800.woff2
-       316ms →   639ms  High       42KB  Image /hero/6173322-828.webp
-       320ms →   558ms  VeryHigh   20KB  Stylesheet /_next/static/chunks/0ek5ismc2ia18.css
-       320ms →   534ms  Low         9KB  Image /sfrtna-logo-360.webp
-       322ms →  1173ms  Medium      1KB  Manifest /manifest.webmanifest
-       562ms →   790ms  Low         5KB  Script /_next/static/chunks/3sb9w-3kdgsqo.js
-       562ms →   804ms  Low         9KB  Script /_next/static/chunks/2i51e627rllld.js
-       562ms →   963ms  Low        72KB  Script /_next/static/chunks/3svhqtx7l0q9e.js
-       562ms →   944ms  Low        43KB  Script /_next/static/chunks/10n-p5z-lx4sq.js
-       562ms →   717ms  Low         4KB  Script /_next/static/chunks/turbopack-2wp93lzlz3dqr.js
-       562ms →   748ms  Low         7KB  Script /_next/static/chunks/2mu5kw797e53k.js
-       563ms →   887ms  Low         9KB  Script /_next/static/chunks/3okpsgac4_oem.js
-       563ms →   795ms  Low        12KB  Script /_next/static/chunks/36wpztqgq5mf0.js
-       563ms →   741ms  Low         1KB  Script /_next/static/chunks/439i96qdc16l4.js
-       563ms →   892ms  Low        14KB  Script /_next/static/chunks/0kn0r8n3a38a1.js
-       564ms →   744ms  Low        12KB  Script /_next/static/chunks/23p8hpcxh8uql.js
-       582ms →   948ms  VeryHigh   45KB  Font /fonts/plex-ar-600.woff2
-       583ms →   917ms  VeryHigh   19KB  Font /_next/static/media/ibm-plex-sans-arabic-latin-400-normal.1qbt_niprsjg
-       583ms →   951ms  VeryHigh   44KB  Font /fonts/plex-ar-700.woff2
-       583ms →   857ms  VeryHigh    9KB  Font /fonts/tajawal-ar-700.woff2
-       583ms →   901ms  VeryHigh   20KB  Font /_next/static/media/ibm-plex-sans-arabic-latin-700-normal.32zomdm7y06e
-       583ms →   859ms  VeryHigh   10KB  Font /_next/static/media/tajawal-latin-700-normal.34i5dk2ouqd61.woff2
-      1016ms →  1167ms  High       13KB  Other /favicon.ico
-   render-blocking: /_next/static/chunks/0ek5ismc2ia18.css 174ms
-/ar/itinerary | 77 | 2.7 s | 4.9 s | 70 ms | 0 | 203 | 24 | LCP runs 2.5 / 4.9 / 5.1 s
+   requests before LCP (33):
+         1ms →   818ms  VeryHigh   26KB  Document /ar/services
+       822ms →   880ms  High       42KB  Font /fonts/plex-ar-400.woff2
+       823ms →   876ms  High       10KB  Font /fonts/tajawal-ar-800.woff2
+       828ms →   933ms  High       42KB  Image /hero/6173322-828.webp
+       835ms →  1032ms  VeryHigh   20KB  Stylesheet /_next/static/chunks/0ek5ismc2ia18.css
+       836ms →   995ms  Low         9KB  Image /sfrtna-logo-360.webp
+       836ms →  1136ms  Medium      1KB  Manifest /manifest.webmanifest
+      1033ms →  1057ms  Low         5KB  Script /_next/static/chunks/3sb9w-3kdgsqo.js
+      1036ms →  1207ms  Low         9KB  Script /_next/static/chunks/2i51e627rllld.js
+      1036ms →  1088ms  Low        72KB  Script /_next/static/chunks/3svhqtx7l0q9e.js
+      1037ms →  1086ms  Low        43KB  Script /_next/static/chunks/10n-p5z-lx4sq.js
+      1037ms →  1088ms  Low         4KB  Script /_next/static/chunks/turbopack-2wp93lzlz3dqr.js
+      1037ms →  1092ms  Low         7KB  Script /_next/static/chunks/2mu5kw797e53k.js
+      1037ms →  1143ms  Low         9KB  Script /_next/static/chunks/3okpsgac4_oem.js
+      1037ms →  1169ms  Low        12KB  Script /_next/static/chunks/36wpztqgq5mf0.js
+      1038ms →  1067ms  Low         1KB  Script /_next/static/chunks/439i96qdc16l4.js
+      1038ms →  1181ms  Low        14KB  Script /_next/static/chunks/0kn0r8n3a38a1.js
+      1038ms →  1141ms  Low        12KB  Script /_next/static/chunks/23p8hpcxh8uql.js
+      1070ms →  1102ms  VeryHigh   45KB  Font /fonts/plex-ar-600.woff2
+      1071ms →  1180ms  VeryHigh   19KB  Font /_next/static/media/ibm-plex-sans-arabic-latin-400-normal.1qbt_niprsjg
+      1071ms →  1109ms  VeryHigh   44KB  Font /fonts/plex-ar-700.woff2
+      1071ms →  1151ms  VeryHigh    9KB  Font /fonts/tajawal-ar-700.woff2
+      1072ms →  1101ms  VeryHigh   11KB  Font /_next/static/media/tajawal-latin-800-normal.2sz7n0ouqrk0-.woff2
+      1072ms →  1109ms  VeryHigh   20KB  Font /_next/static/media/ibm-plex-sans-arabic-latin-700-normal.32zomdm7y06e
+      1073ms →  1102ms  VeryHigh   10KB  Font /_next/static/media/tajawal-latin-700-normal.34i5dk2ouqd61.woff2
+   render-blocking: /_next/static/chunks/0ek5ismc2ia18.css 200ms
+   applied throttling (1 run): FCP 1.9 s, LCP 2.0 s, TBT 100 ms
+/ar/itinerary | 77 | 2.6 s | 4.9 s | 80 ms | 0 | 203 | 24 | LCP runs 2.3 / 4.9 / 5.6 s
+   run 1: simulated FCP 1.1 s, LCP 2.3 s | observed FCP 1369 ms, LCP 1384 ms | main-thread work before first frame 49 ms
+   run 2: simulated FCP 2.6 s, LCP 4.9 s | observed FCP 1552 ms, LCP 1552 ms | main-thread work before first frame 114 ms
+   run 3: simulated FCP 2.9 s, LCP 5.6 s | observed FCP 1548 ms, LCP 1548 ms | main-thread work before first frame 114 ms
    LCP element: <img src="https://sfrtna.almajedhsn.workers.dev/hero/11357903-828.webp" srcset="/hero/11357903-828.webp 828w, /hero/11357903-1280.webp 1280w
-   LCP phases: TTFB 488ms; Load Delay 633ms; Load Time 1172ms; Render Delay 2567ms
-   main-thread JS: /_next/static/chunks/3svhqtx7l0q9e.js 260ms; Unattributable 197ms; /ar/itinerary 152ms; /_next/static/chunks/10n-p5z-lx4sq.js 53ms
+   LCP phases: TTFB 481ms; Load Delay 738ms; Load Time 1229ms; Render Delay 2434ms
+   main-thread JS: /_next/static/chunks/3svhqtx7l0q9e.js 297ms; Unattributable 195ms; /ar/itinerary 192ms
    heaviest: /_next/static/chunks/3svhqtx7l0q9e.js 72KB; /hero/11357903-828.webp 56KB; /fonts/plex-ar-600.woff2 45KB; /fonts/plex-ar-700.woff2 44KB; /_next/static/chunks/10n-p5z-lx4sq.js 43KB
    requests before LCP (30):
-         1ms →   357ms  VeryHigh   24KB  Document /ar/itinerary
-       342ms →   682ms  High       42KB  Font /fonts/plex-ar-400.woff2
-       343ms →   530ms  High       10KB  Font /fonts/tajawal-ar-800.woff2
-       346ms →   709ms  High       56KB  Image /hero/11357903-828.webp
-       352ms →   700ms  VeryHigh   20KB  Stylesheet /_next/static/chunks/0ek5ismc2ia18.css
-       353ms →   684ms  Low         9KB  Image /sfrtna-logo-360.webp
-       356ms →   641ms  Medium      1KB  Manifest /manifest.webmanifest
-       700ms →   854ms  Low         5KB  Script /_next/static/chunks/3sb9w-3kdgsqo.js
-       703ms →   886ms  Low         9KB  Script /_next/static/chunks/2i51e627rllld.js
-       704ms →  1088ms  Low        72KB  Script /_next/static/chunks/3svhqtx7l0q9e.js
-       704ms →   951ms  Low        43KB  Script /_next/static/chunks/10n-p5z-lx4sq.js
-       704ms →   863ms  Low         4KB  Script /_next/static/chunks/turbopack-2wp93lzlz3dqr.js
-       704ms →   897ms  Low         7KB  Script /_next/static/chunks/2mu5kw797e53k.js
-       705ms →   863ms  Low         9KB  Script /_next/static/chunks/3okpsgac4_oem.js
-       705ms →   912ms  Low        12KB  Script /_next/static/chunks/36wpztqgq5mf0.js
-       705ms →  1039ms  Low        12KB  Script /_next/static/chunks/23p8hpcxh8uql.js
-       705ms →   920ms  Low         9KB  Script /_next/static/chunks/1vohqzc90vf-w.js
-       705ms →  1065ms  Low        19KB  Script /_next/static/chunks/3dov1m2bjjnvz.js
-       733ms →  1031ms  VeryHigh   45KB  Font /fonts/plex-ar-600.woff2
-       734ms →  1069ms  VeryHigh   19KB  Font /_next/static/media/ibm-plex-sans-arabic-latin-400-normal.1qbt_niprsjg
-       734ms →  1092ms  VeryHigh   44KB  Font /fonts/plex-ar-700.woff2
-       734ms →  1054ms  VeryHigh    9KB  Font /fonts/tajawal-ar-700.woff2
-       735ms →  1058ms  VeryHigh   11KB  Font /_next/static/media/tajawal-latin-800-normal.2sz7n0ouqrk0-.woff2
-       735ms →   943ms  VeryHigh   20KB  Font /_next/static/media/ibm-plex-sans-arabic-latin-700-normal.32zomdm7y06e
-       735ms →  1054ms  VeryHigh   10KB  Font /_next/static/media/tajawal-latin-700-normal.34i5dk2ouqd61.woff2
-   render-blocking: /_next/static/chunks/0ek5ismc2ia18.css 188ms
-/ar/visa | 96 | 1.2 s | 2.3 s | 40 ms | 0.088 | 185 | 28 | LCP runs 2.2 / 2.3 / 5.3 s
+         1ms →   399ms  VeryHigh   24KB  Document /ar/itinerary
+       381ms →   764ms  High       42KB  Font /fonts/plex-ar-400.woff2
+       381ms →   670ms  High       10KB  Font /fonts/tajawal-ar-800.woff2
+       387ms →   778ms  High       56KB  Image /hero/11357903-828.webp
+       395ms →   747ms  VeryHigh   20KB  Stylesheet /_next/static/chunks/0ek5ismc2ia18.css
+       398ms →   581ms  Low         9KB  Image /sfrtna-logo-360.webp
+       398ms →   713ms  Medium      1KB  Manifest /manifest.webmanifest
+       751ms →   924ms  Low         5KB  Script /_next/static/chunks/3sb9w-3kdgsqo.js
+       751ms →  1004ms  Low         9KB  Script /_next/static/chunks/2i51e627rllld.js
+       751ms →  1166ms  Low        72KB  Script /_next/static/chunks/3svhqtx7l0q9e.js
+       751ms →  1130ms  Low        43KB  Script /_next/static/chunks/10n-p5z-lx4sq.js
+       753ms →   913ms  Low         4KB  Script /_next/static/chunks/turbopack-2wp93lzlz3dqr.js
+       753ms →  1004ms  Low         7KB  Script /_next/static/chunks/2mu5kw797e53k.js
+       753ms →   919ms  Low         9KB  Script /_next/static/chunks/3okpsgac4_oem.js
+       754ms →   996ms  Low        12KB  Script /_next/static/chunks/36wpztqgq5mf0.js
+       754ms →   996ms  Low        12KB  Script /_next/static/chunks/23p8hpcxh8uql.js
+       754ms →  1002ms  Low         9KB  Script /_next/static/chunks/1vohqzc90vf-w.js
+       754ms →  1072ms  Low        19KB  Script /_next/static/chunks/3dov1m2bjjnvz.js
+       786ms →  1155ms  VeryHigh   45KB  Font /fonts/plex-ar-600.woff2
+       786ms →  1118ms  VeryHigh   19KB  Font /_next/static/media/ibm-plex-sans-arabic-latin-400-normal.1qbt_niprsjg
+       786ms →  1153ms  VeryHigh   44KB  Font /fonts/plex-ar-700.woff2
+       786ms →  1063ms  VeryHigh    9KB  Font /fonts/tajawal-ar-700.woff2
+       787ms →  1065ms  VeryHigh   11KB  Font /_next/static/media/tajawal-latin-800-normal.2sz7n0ouqrk0-.woff2
+       787ms →  1104ms  VeryHigh   20KB  Font /_next/static/media/ibm-plex-sans-arabic-latin-700-normal.32zomdm7y06e
+       787ms →  1104ms  VeryHigh   10KB  Font /_next/static/media/tajawal-latin-700-normal.34i5dk2ouqd61.woff2
+   render-blocking: /_next/static/chunks/0ek5ismc2ia18.css 181ms
+   applied throttling (1 run): FCP 2.8 s, LCP 3.0 s, TBT 110 ms
+/ar/visa | 74 | 2.6 s | 5.1 s | 90 ms | 0 | 185 | 29 | LCP runs 2.5 / 5.1 / 5.4 s
+   run 1: simulated FCP 1.2 s, LCP 2.5 s | observed FCP 2261 ms, LCP 2261 ms | main-thread work before first frame 94 ms
+   run 2: simulated FCP 2.6 s, LCP 5.1 s | observed FCP 2486 ms, LCP 2486 ms | main-thread work before first frame 149 ms
+   run 3: simulated FCP 2.8 s, LCP 5.4 s | observed FCP 2575 ms, LCP 2575 ms | main-thread work before first frame 138 ms
    LCP element: <img src="https://sfrtna.almajedhsn.workers.dev/hero/3140204-828.webp" srcset="/hero/3140204-828.webp 828w, /hero/3140204-1280.webp 1280w, /
-   LCP phases: TTFB 588ms; Load Delay 761ms; Load Time 773ms; Render Delay 135ms
-   main-thread JS: /ar/visa 613ms; Unattributable 284ms; /_next/static/chunks/3svhqtx7l0q9e.js 278ms; /_next/static/chunks/10n-p5z-lx4sq.js 56ms
+   LCP phases: TTFB 479ms; Load Delay 210ms; Load Time 683ms; Render Delay 3725ms
+   main-thread JS: /_next/static/chunks/3svhqtx7l0q9e.js 326ms; /ar/visa 317ms; Unattributable 265ms; /_next/static/chunks/10n-p5z-lx4sq.js 74ms
    heaviest: /_next/static/chunks/3svhqtx7l0q9e.js 72KB; /hero/3140204-828.webp 46KB; /fonts/plex-ar-600.woff2 45KB; /fonts/plex-ar-700.woff2 44KB; /_next/static/chunks/10n-p5z-lx4sq.js 43KB
-   requests before LCP (58):
-         1ms →   619ms  VeryHigh   28KB  Document /ar/visa
-       594ms →   940ms  High       42KB  Font /fonts/plex-ar-400.woff2
-       594ms →   781ms  High       10KB  Font /fonts/tajawal-ar-800.woff2
-       612ms →   963ms  High       46KB  Image /hero/3140204-828.webp
-       617ms →   926ms  VeryHigh   20KB  Stylesheet /_next/static/chunks/0ek5ismc2ia18.css
-       618ms →   840ms  Low         9KB  Image /sfrtna-logo-360.webp
-       618ms →   935ms  Medium      1KB  Manifest /manifest.webmanifest
-       931ms →  1132ms  Low         5KB  Script /_next/static/chunks/3sb9w-3kdgsqo.js
-       931ms →  1195ms  Low         9KB  Script /_next/static/chunks/2i51e627rllld.js
-       931ms →  1375ms  Low        72KB  Script /_next/static/chunks/3svhqtx7l0q9e.js
-       931ms →  1362ms  Low        43KB  Script /_next/static/chunks/10n-p5z-lx4sq.js
-       931ms →  1169ms  Low         4KB  Script /_next/static/chunks/turbopack-2wp93lzlz3dqr.js
-       932ms →  1176ms  Low         7KB  Script /_next/static/chunks/2mu5kw797e53k.js
-       932ms →  1120ms  Low         9KB  Script /_next/static/chunks/3okpsgac4_oem.js
-       932ms →  1276ms  Low        12KB  Script /_next/static/chunks/36wpztqgq5mf0.js
-       932ms →  1274ms  Low        12KB  Script /_next/static/chunks/23p8hpcxh8uql.js
-       933ms →  1210ms  Low        11KB  Script /_next/static/chunks/22ormwp9eqlxi.js
-       952ms →  1369ms  VeryHigh   45KB  Font /fonts/plex-ar-600.woff2
-       952ms →  1308ms  VeryHigh   19KB  Font /_next/static/media/ibm-plex-sans-arabic-latin-400-normal.1qbt_niprsjg
-       952ms →  1365ms  VeryHigh   44KB  Font /fonts/plex-ar-700.woff2
-       952ms →  1216ms  VeryHigh    9KB  Font /fonts/tajawal-ar-700.woff2
-       954ms →  1312ms  VeryHigh   20KB  Font /_next/static/media/ibm-plex-sans-arabic-latin-700-normal.32zomdm7y06e
-       954ms →  1278ms  VeryHigh   10KB  Font /_next/static/media/tajawal-latin-700-normal.34i5dk2ouqd61.woff2
-       990ms →  1345ms  Low         1KB  Image flagcdn.com/w160/bh.png
-       990ms →  1352ms  Low         1KB  Image flagcdn.com/w160/cn.png
-   render-blocking: /_next/static/chunks/0ek5ismc2ia18.css 229ms
-/en/visa | 97 | 1.2 s | 2.2 s | 40 ms | 0.083 | 185 | 25 | LCP runs 2.2 / 2.2 / 4.8 s
+   requests before LCP (61):
+         1ms →   347ms  VeryHigh   29KB  Document /ar/visa
+       328ms →   651ms  High       42KB  Font /fonts/plex-ar-400.woff2
+       329ms →   539ms  High       10KB  Font /fonts/tajawal-ar-800.woff2
+       335ms →   668ms  High       46KB  Image /hero/3140204-828.webp
+       343ms →   633ms  VeryHigh   20KB  Stylesheet /_next/static/chunks/0ek5ismc2ia18.css
+       343ms →   566ms  Low         9KB  Image /sfrtna-logo-360.webp
+       343ms →   645ms  Medium      1KB  Manifest /manifest.webmanifest
+       636ms →   788ms  Low         5KB  Script /_next/static/chunks/3sb9w-3kdgsqo.js
+       636ms →   853ms  Low         9KB  Script /_next/static/chunks/2i51e627rllld.js
+       637ms →  1009ms  Low        72KB  Script /_next/static/chunks/3svhqtx7l0q9e.js
+       637ms →   966ms  Low        43KB  Script /_next/static/chunks/10n-p5z-lx4sq.js
+       637ms →   790ms  Low         4KB  Script /_next/static/chunks/turbopack-2wp93lzlz3dqr.js
+       638ms →   824ms  Low         7KB  Script /_next/static/chunks/2mu5kw797e53k.js
+       638ms →   823ms  Low         9KB  Script /_next/static/chunks/3okpsgac4_oem.js
+       638ms →   866ms  Low        12KB  Script /_next/static/chunks/36wpztqgq5mf0.js
+       638ms →   834ms  Low        12KB  Script /_next/static/chunks/23p8hpcxh8uql.js
+       638ms →   807ms  Low        11KB  Script /_next/static/chunks/22ormwp9eqlxi.js
+       665ms →  1003ms  VeryHigh   45KB  Font /fonts/plex-ar-600.woff2
+       665ms →   928ms  VeryHigh   19KB  Font /_next/static/media/ibm-plex-sans-arabic-latin-400-normal.1qbt_niprsjg
+       665ms →   996ms  VeryHigh   44KB  Font /fonts/plex-ar-700.woff2
+       667ms →   864ms  VeryHigh    9KB  Font /fonts/tajawal-ar-700.woff2
+       667ms →   930ms  VeryHigh   20KB  Font /_next/static/media/ibm-plex-sans-arabic-latin-700-normal.32zomdm7y06e
+       668ms →   951ms  VeryHigh   10KB  Font /_next/static/media/tajawal-latin-700-normal.34i5dk2ouqd61.woff2
+      1068ms →  1217ms  High       13KB  Other /favicon.ico
+      1073ms →  1229ms  High       29KB  Other /favicon-192.png
+   render-blocking: /_next/static/chunks/0ek5ismc2ia18.css 179ms
+   applied throttling (1 run): FCP 2.4 s, LCP 2.7 s, TBT 210 ms
+/en/visa | 78 | 2.3 s | 4.7 s | 40 ms | 0 | 185 | 25 | LCP runs 2.2 / 4.7 / 4.8 s
+   run 1: simulated FCP 1.1 s, LCP 2.2 s | observed FCP 1576 ms, LCP 1589 ms | main-thread work before first frame 71 ms
+   run 2: simulated FCP 2.3 s, LCP 4.7 s | observed FCP 2589 ms, LCP 2589 ms | main-thread work before first frame 130 ms
+   run 3: simulated FCP 2.3 s, LCP 4.8 s | observed FCP 2506 ms, LCP 2506 ms | main-thread work before first frame 153 ms
    LCP element: <img src="https://sfrtna.almajedhsn.workers.dev/hero/3140204-828.webp" srcset="/hero/3140204-828.webp 828w, /hero/3140204-1280.webp 1280w, /
-   LCP phases: TTFB 959ms; Load Delay 582ms; Load Time 577ms; Render Delay 57ms
-   main-thread JS: /en/visa 461ms; /_next/static/chunks/3svhqtx7l0q9e.js 273ms; Unattributable 242ms
+   LCP phases: TTFB 510ms; Load Delay 315ms; Load Time 645ms; Render Delay 3256ms
+   main-thread JS: /_next/static/chunks/3svhqtx7l0q9e.js 321ms; /en/visa 283ms; Unattributable 243ms
    heaviest: /_next/static/chunks/3svhqtx7l0q9e.js 72KB; /hero/3140204-828.webp 46KB; /_next/static/chunks/10n-p5z-lx4sq.js 43KB; /fonts/plex-ar-400.woff2 42KB; /favicon-192.png 29KB
-   requests before LCP (52):
-         1ms →   985ms  VeryHigh   25KB  Document /en/visa
-       964ms →  1316ms  High       42KB  Font /fonts/plex-ar-400.woff2
-       964ms →  1155ms  High       10KB  Font /fonts/tajawal-ar-800.woff2
-       985ms →  1355ms  High       46KB  Image /hero/3140204-828.webp
-       990ms →  1250ms  VeryHigh   20KB  Stylesheet /_next/static/chunks/0ek5ismc2ia18.css
-       991ms →  1208ms  Low         9KB  Image /sfrtna-logo-360.webp
-       991ms →  1789ms  Medium      1KB  Manifest /manifest.webmanifest
-      1254ms →  1441ms  Low         5KB  Script /_next/static/chunks/3sb9w-3kdgsqo.js
-      1254ms →  1461ms  Low         9KB  Script /_next/static/chunks/2i51e627rllld.js
-      1254ms →  1665ms  Low        72KB  Script /_next/static/chunks/3svhqtx7l0q9e.js
-      1254ms →  1650ms  Low        43KB  Script /_next/static/chunks/10n-p5z-lx4sq.js
-      1255ms →  1472ms  Low         4KB  Script /_next/static/chunks/turbopack-2wp93lzlz3dqr.js
-      1255ms →  1512ms  Low         7KB  Script /_next/static/chunks/2mu5kw797e53k.js
-      1255ms →  1530ms  Low         9KB  Script /_next/static/chunks/3okpsgac4_oem.js
-      1255ms →  1501ms  Low        12KB  Script /_next/static/chunks/36wpztqgq5mf0.js
-      1256ms →  1546ms  Low        12KB  Script /_next/static/chunks/23p8hpcxh8uql.js
-      1256ms →  1556ms  Low        11KB  Script /_next/static/chunks/22ormwp9eqlxi.js
-      1275ms →  1613ms  VeryHigh   21KB  Font /_next/static/media/ibm-plex-sans-arabic-latin-600-normal.3a4qjieizncg
-      1276ms →  1614ms  VeryHigh   20KB  Font /_next/static/media/ibm-plex-sans-arabic-latin-700-normal.32zomdm7y06e
-      1276ms →  1552ms  VeryHigh   10KB  Font /_next/static/media/tajawal-latin-700-normal.34i5dk2ouqd61.woff2
-      1276ms →  1619ms  VeryHigh   19KB  Font /_next/static/media/ibm-plex-sans-arabic-latin-400-normal.1qbt_niprsjg
-      1350ms →  1639ms  Low         1KB  Image flagcdn.com/w160/bh.png
-      1351ms →  1640ms  Low         1KB  Image flagcdn.com/w160/cn.png
-      1351ms →  1640ms  Low         1KB  Image flagcdn.com/w160/ge.png
-      1352ms →  1640ms  Low         1KB  Image flagcdn.com/w160/my.png
-   render-blocking: /_next/static/chunks/0ek5ismc2ia18.css 225ms
+   requests before LCP (51):
+         1ms →   459ms  VeryHigh   25KB  Document /en/visa
+       433ms →   761ms  High       42KB  Font /fonts/plex-ar-400.woff2
+       434ms →   640ms  High       10KB  Font /fonts/tajawal-ar-800.woff2
+       451ms →   804ms  High       46KB  Image /hero/3140204-828.webp
+       457ms →   812ms  VeryHigh   20KB  Stylesheet /_next/static/chunks/0ek5ismc2ia18.css
+       457ms →   800ms  Low         9KB  Image /sfrtna-logo-360.webp
+       458ms →   790ms  Medium      1KB  Manifest /manifest.webmanifest
+       805ms →   965ms  Low         5KB  Script /_next/static/chunks/3sb9w-3kdgsqo.js
+       813ms →   981ms  Low         9KB  Script /_next/static/chunks/2i51e627rllld.js
+       816ms →  1171ms  Low        72KB  Script /_next/static/chunks/3svhqtx7l0q9e.js
+       817ms →  1149ms  Low        43KB  Script /_next/static/chunks/10n-p5z-lx4sq.js
+       817ms →  1059ms  Low         4KB  Script /_next/static/chunks/turbopack-2wp93lzlz3dqr.js
+       817ms →  1044ms  Low         8KB  Script /_next/static/chunks/2mu5kw797e53k.js
+       817ms →  1016ms  Low         9KB  Script /_next/static/chunks/3okpsgac4_oem.js
+       817ms →  1062ms  Low        12KB  Script /_next/static/chunks/36wpztqgq5mf0.js
+       818ms →  1030ms  Low        12KB  Script /_next/static/chunks/23p8hpcxh8uql.js
+       818ms →  1076ms  Low        11KB  Script /_next/static/chunks/22ormwp9eqlxi.js
+       839ms →  1147ms  VeryHigh   21KB  Font /_next/static/media/ibm-plex-sans-arabic-latin-600-normal.3a4qjieizncg
+       840ms →  1136ms  VeryHigh   20KB  Font /_next/static/media/ibm-plex-sans-arabic-latin-700-normal.32zomdm7y06e
+       840ms →  1067ms  VeryHigh   10KB  Font /_next/static/media/tajawal-latin-700-normal.34i5dk2ouqd61.woff2
+       840ms →  1130ms  VeryHigh   19KB  Font /_next/static/media/ibm-plex-sans-arabic-latin-400-normal.1qbt_niprsjg
+      1230ms →  1391ms  High       13KB  Other /favicon.ico
+      1232ms →  1400ms  High        1KB  Fetch /api/auth/me
+      1235ms →  1421ms  High       29KB  Other /favicon-192.png
+      1599ms →  1848ms  Low         1KB  Image flagcdn.com/w160/bh.png
+   render-blocking: /_next/static/chunks/0ek5ismc2ia18.css 210ms
+   applied throttling (1 run): FCP 2.0 s, LCP 2.5 s, TBT 170 ms
