@@ -257,7 +257,7 @@ function ServicesSheet({
         aria-modal="true"
         aria-labelledby={headingId}
         tabIndex={-1}
-        className="relative max-h-[88vh] w-full max-w-3xl overflow-y-auto rounded-t-3xl bg-mist-50 p-4 pb-[calc(1rem+var(--app-tabbar,0px))] shadow-2xl outline-none sm:rounded-2xl sm:p-6"
+        className="relative max-h-[88vh] w-full max-w-3xl overflow-y-auto rounded-t-3xl bg-mist-50 p-4 shadow-2xl app:pb-[calc(1rem+var(--app-tabbar))] outline-none sm:rounded-2xl sm:p-6"
       >
         <div className="mb-2 flex items-center justify-between gap-3">
           <p id={headingId} className="sr-only">

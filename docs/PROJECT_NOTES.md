@@ -670,6 +670,21 @@ re-crop when the planner changes height); app header clear over it until
 scroll (`data-solid` on `.site-header-bar`, CSS `html.in-app:has(.home-photo)`).
 Checked desktop, 390 px phone, app.
 
+**Section 4 done, 13 Oct (owner's screenshots + spec):** `NextStepTabs.tsx`
+under flight results (`current="flight"`) and hotel results
+(`current="hotel"`): four tabs in one row, each with its own SVG picture —
+hotel ↔ flight (the page's own service swapped), «خدمات رحلتك» (sheet with
+`TripServices`), «خطة سياحية» (city attractions page `?from&to&plan=1#trip-plan`,
+planner reads the dates from the address), «المعالم السياحية». Every target
+carries `back` (hotel results + attractions show «العودة إلى نتائج رحلتك»).
+Opened tabs / booked flight («احجز» → `markStep`) / hotel partner click are
+remembered per city in sessionStorage `sfr-steps` and not offered again.
+Replaced on the flight page: hotel banner, services table, itinerary prompt
+(to the mock planner) and attractions card. Live-tested 13 Oct: all four
+tabs, sheet, plan dates prefilled, back link, hotel page swaps in flight,
+phone row 138 px. e2e check added. Flight tab from the hotel page opens the
+home form (filled in); its way back is the browser's back.
+
 ## Next, in order
 
 **▶ Start here: section 1 of the plan above (started 13 Oct).**
