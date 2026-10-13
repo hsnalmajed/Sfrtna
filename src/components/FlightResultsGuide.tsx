@@ -498,8 +498,10 @@ export default function FlightResultsGuide({
   const found = [...state.fits, ...state.over];
   // Flights found, none of them meeting the preferences (yet).
   const prefsNone = strict && state.filtering && found.length > 0 && !found.some(meets);
-  // Every agency has answered and still none: ask before showing others.
-  const prefsAsk = prefsNone && state.settled;
+  // Still none: asked on the page once enough flights are in (no waiting
+  // the 2–3 minutes a full search takes), and over the page when every
+  // agency has answered.
+  const prefsAsk = prefsNone && (state.settled || found.length >= 20);
   const fits = strict ? state.fits.filter(meets) : state.fits;
   const over = strict ? state.over.filter(meets) : state.over;
   const prefsLabel = [directOnly ? t.chipDirect : "", bagIncluded ? t.chipBag : ""].filter(Boolean).join(" · ");
@@ -621,8 +623,9 @@ export default function FlightResultsGuide({
       )}
 
       {/* Nothing meets the preferences: asked, never assumed. */}
-      {prefsAsk && !prefsDismissed && (
+      {prefsAsk && state.settled && !prefsDismissed && (
         <NoneWithinDialog
+          icon="✈️"
           title={t.prefsAskTitle}
           body={t.prefsAskBody.replace("{prefs}", prefsLabel)}
           searching={false}
@@ -638,7 +641,11 @@ export default function FlightResultsGuide({
       {prefsAsk && (
         <div className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-black/5">
           <p className="font-display text-lg font-extrabold text-navy-950">{t.prefsAskTitle}</p>
-          <p className="mt-1 text-sm leading-relaxed text-navy-600">{t.prefsAskBody.replace("{prefs}", prefsLabel)}</p>
+          <p className="mt-1 text-sm leading-relaxed text-navy-600">
+            {state.settled
+              ? t.prefsAskBody.replace("{prefs}", prefsLabel)
+              : t.prefsAskSoFar.replace("{n}", flightsLabel(found.length)).replace("{prefs}", prefsLabel)}
+          </p>
           <div className="mt-4 flex flex-col gap-2 sm:flex-row">
             <a
               href={editHref}
@@ -1078,6 +1085,7 @@ function Amount({ template, amount }: { template: string; amount: string }) {
 
 /** "No flight fits your budget": the cheapest real fare, and the two ways on. */
 function NoneWithinDialog({
+  icon = "💸",
   title,
   body,
   searching,
@@ -1089,6 +1097,7 @@ function NoneWithinDialog({
   onShow,
   onClose,
 }: {
+  icon?: string;
   title: string;
   body: string;
   searching: boolean;
@@ -1139,7 +1148,7 @@ function NoneWithinDialog({
           </svg>
         </button>
         <span className="flex h-12 w-12 items-center justify-center rounded-full bg-rose-50 text-2xl" aria-hidden="true">
-          💸
+          {icon}
         </span>
         <h2 id={headingId} className="mt-4 font-display text-xl font-extrabold text-navy-950">
           {title}

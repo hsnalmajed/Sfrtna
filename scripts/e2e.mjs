@@ -157,5 +157,13 @@ await check("suggest a route shows routes with tabbed flights", async (p) => {
 await browser.close();
 
 console.log([...passes, ...notes, ...failures].join("\n"));
+// On GitHub, each line also as an annotation: shown on the run's page and
+// readable through the API without downloading the log.
+if (process.env.GITHUB_ACTIONS) {
+  const esc = (m) => m.replace(/%/g, "%25").replace(/\r/g, "%0D").replace(/\n/g, "%0A");
+  for (const f of failures) console.log(`::error title=Search page check::${esc(f)}`);
+  for (const n of notes) console.log(`::warning title=Search page check::${esc(n)}`);
+  console.log(`::notice title=Search page check::${esc(passes.join(" || ") || "no passes")}`);
+}
 console.log(`\n${passes.length} passed, ${failures.length} failed`);
 if (failures.length) process.exit(1);
