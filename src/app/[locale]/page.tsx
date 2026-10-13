@@ -193,7 +193,7 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
     // looked unfinished). It is fixed to the screen, not stretched to the
     // page, so it never re-crops when the planner grows or shrinks; the
     // clip-path keeps it inside this block, so the footer stays navy.
-    <div className="home-photo relative isolate -mb-20 bg-navy-990 pb-20 [clip-path:inset(0)]">
+    <div className="home-photo relative isolate -mb-20 bg-navy-990 pb-10 [clip-path:inset(0)]">
       <div className="fixed inset-0 -z-10" aria-hidden="true">
         <Photo
           src={heroPhoto}
@@ -259,7 +259,7 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
       {/* ── What the site is ────────────────────────────────────────────
           Four sections of the old page, now four tabs in one panel that
           straddles the seam below the photograph. See HomeShowcase. */}
-      <section className="relative z-10 -mt-20 bg-[radial-gradient(60rem_24rem_at_50%_0%,rgb(255_255_255/0.04),transparent)] pb-6 sm:-mt-24 sm:pb-8">
+      <section className="relative z-10 -mt-20 bg-[radial-gradient(60rem_24rem_at_50%_0%,rgb(255_255_255/0.04),transparent)] sm:-mt-24">
         <HomeShowcase
           locale={loc}
           seasonCities={seasonCities}
