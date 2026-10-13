@@ -21,7 +21,7 @@ import statistics as st
 import sys
 from pathlib import Path
 
-from merge_sources import CAL_KM, haversine_km, load_station_pool, station_months, calibration
+from merge_sources import CAL_KM, haversine_km, load_station_pool, station_months, calibration, regional_offsets
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent.parent
@@ -39,6 +39,7 @@ def main():
 
     raw_err = {"high": [], "low": []}
     cal_err = {"high": [], "low": []}
+    reg_err = {"high": [], "low": []}
     rows = []
     for did, rec in normals.items():
         st_info = rec.get("station") or {}
@@ -62,6 +63,11 @@ def main():
         for m in range(12):
             raw_err["high"].append(e_hi[m] - truth_hi[m])
             raw_err["low"].append(e_lo[m] - truth_lo[m])
+        reg = regional_offsets(base["latitude"], pool, era5, exclude_km_of=(own["lat"], own["lon"]))
+        if reg:
+            for m in range(12):
+                reg_err["high"].append(e_hi[m] + reg["highOffsetC"][m] - truth_hi[m])
+                reg_err["low"].append(e_lo[m] + reg["lowOffsetC"][m] - truth_lo[m])
         if calib:
             c_hi = [e_hi[m] + calib["highOffsetC"][m] for m in range(12)]
             c_lo = [e_lo[m] + calib["lowOffsetC"][m] for m in range(12)]
@@ -83,7 +89,9 @@ def main():
     for k in ("high", "low"):
         rtxt, _ = summary(raw_err[k])
         ctxt, share = summary(cal_err[k])
-        lines += [f"- Average {k}: ERA5-Land as it is — {rtxt}", f"- Average {k}: station-calibrated — {ctxt}"]
+        gtxt, gshare = summary(reg_err[k])
+        lines += [f"- Average {k}: ERA5-Land as it is — {rtxt}", f"- Average {k}: station-calibrated — {ctxt}",
+                  f"- Average {k}: regional median only (cities with no station within {CAL_KM:g} km) — {gtxt}"]
         ok = ok and share >= TARGET_SHARE
     lines += ["", "| City | Calibrated MAE (high) | Raw MAE (high) |", "|---|---|---|"]
     lines += [f"| {d} | {a} | {b} |" for d, a, b in sorted(rows, key=lambda r: -r[1])]

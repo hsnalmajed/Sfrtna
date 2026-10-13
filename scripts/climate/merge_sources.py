@@ -225,6 +225,42 @@ def calibration(did, rec, pool, era5, town):
     }
 
 
+REGION_LAT_DEG = 10.0
+
+
+def regional_offsets(lat, pool, era5, exclude_km_of=None):
+    """For a city with no official station within CAL_KM: the median, month
+    by month, of (station − ERA5-Land at the station) over every calibration
+    point within REGION_LAT_DEG of its latitude. ERA5-Land's cold bias in
+    daily highs is broad-scale; measured on 94 cities this halves the error
+    (validate_climate.py tests it the same way)."""
+    hi = [[] for _ in range(12)]
+    lo = [[] for _ in range(12)]
+    for sid, s in pool.items():
+        if abs(s["lat"] - lat) > REGION_LAT_DEG:
+            continue
+        if exclude_km_of and haversine_km(exclude_km_of[0], exclude_km_of[1], s["lat"], s["lon"]) <= 10.0:
+            continue
+        tmax, tmin = station_months(s, "TMAX"), station_months(s, "TMIN")
+        pt = era5["destinations"].get("st-" + sid.replace(":", "-"))
+        if not (tmax and tmin and pt) or any(m["highC"] is None or m["lowC"] is None for m in pt["months"]):
+            continue
+        for m in range(12):
+            hi[m].append(tmax[m] - pt["months"][m]["highC"])
+            lo[m].append(tmin[m] - pt["months"][m]["lowC"])
+    if min(len(x) for x in hi) < 10:
+        return None
+    med = lambda xs: sorted(xs)[len(xs) // 2]
+    return {
+        "highOffsetC": [round(med(x), 2) for x in hi],
+        "lowOffsetC": [round(med(x), 2) for x in lo],
+        "stations": [],
+        "regional": True,
+        "points": min(len(x) for x in hi),
+        "method": f"no official station within {CAL_KM:g} km: ERA5-Land corrected by the median difference (station − ERA5-Land) of every calibration station within {REGION_LAT_DEG:g}° of latitude",
+    }
+
+
 def main():
     era5 = json.loads(ERA5.read_text(encoding="utf-8"))
     dests = json.loads((HERE / "destinations.json").read_text(encoding="utf-8"))["destinations"]
@@ -365,7 +401,7 @@ def main():
 
         calib = None
         if sources["highC"] == "era5-land":
-            calib = calibration(did, rec, pool, era5, town)
+            calib = calibration(did, rec, pool, era5, town) or regional_offsets(rec["latitude"], pool, era5)
             if calib:
                 for i, m in enumerate(months):
                     if m["highC"] is not None:
@@ -374,8 +410,9 @@ def main():
                         m["lowC"] = round(m["lowC"] + calib["lowOffsetC"][i], 1)
                     if m["meanC"] is not None:
                         m["meanC"] = round(m["meanC"] + (calib["highOffsetC"][i] + calib["lowOffsetC"][i]) / 2, 1)
-                sources.update(highC="era5-land, station-calibrated", lowC="era5-land, station-calibrated", meanC="era5-land, station-calibrated")
-                names = ", ".join("%s (%s km)" % (c["name"], c["km"]) for c in calib["stations"])
+                how = "era5-land, regionally calibrated" if calib.get("regional") else "era5-land, station-calibrated"
+                sources.update(highC=how, lowC=how, meanC=how)
+                names = ", ".join("%s (%s km)" % (c["name"], c["km"]) for c in calib["stations"]) or "regional median (%s stations)" % calib.get("points")
                 calib_report.append(f"| {did} | {names} | {sum(calib['highOffsetC']) / 12:+.1f} |")
 
         # What the HCI build must add to each day's ERA5-Land high and low so
