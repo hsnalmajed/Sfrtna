@@ -435,7 +435,11 @@ function ResultsContent() {
                 <span className="whitespace-nowrap">{dateRange(search.departDate, search.returnDate)}</span>
                 <span className="h-4 w-px shrink-0 bg-mist-300" aria-hidden="true" />
                 <Icon name="users" className="h-4 w-4 shrink-0 text-navy-500" />
-                <span className="min-w-0 truncate">
+                {/* Phone: the number alone (the label was cut off); wider: in words. */}
+                <span className="sm:hidden" aria-label={countLabel(travelers, { one: dict.results.travelersOne, two: dict.results.travelersTwo, few: dict.results.travelersFew, many: dict.results.travelersMany })}>
+                  {travelers}
+                </span>
+                <span className="hidden whitespace-nowrap sm:inline">
                   {countLabel(travelers, { one: dict.results.travelersOne, two: dict.results.travelersTwo, few: dict.results.travelersFew, many: dict.results.travelersMany })}
                 </span>
                 <span className="ms-auto inline-flex shrink-0 items-center gap-1 rounded-lg bg-sun-400 px-2.5 py-1 text-xs font-extrabold text-navy-950 transition group-hover:bg-sun-300 sm:ms-0">
