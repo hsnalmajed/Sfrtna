@@ -601,6 +601,23 @@ Root causes found in the code (13 Oct):
   suggest a destination, hotels, itinerary, landmarks, everything) — e2e
   checks grow with each section, not one page only.
 
+**Owner's decisions (13 Oct, afternoon) — prices from every site:**
+- Show **every** site's live price, partner or not (hotels and flights):
+  more visitors now, partner terms (traffic thresholds) met later.
+- Display: cheapest always · all our partners · well-known names always
+  (the hotel's/airline's own site, Booking, Agoda, Almosafer…) · the rest
+  folded under «عرض N مواقع أخرى»; sorted by price honestly — the owner
+  dropped his idea of hiding pricier competitors (trust).
+- The button shows **the price** («عرض السعر» / the amount), never «احجز الآن».
+- A click must land on **the same hotel/flight with the same dates** on that
+  site (partners via Stay22 Allez / our redirects; others via the source's
+  own deep link) — test every site's landing before release.
+- Hotels first (Google Hotels via SerpApi has every site); flights from other
+  sources only via Google Flights (SerpApi, costs extra searches, measured
+  25 % above Aviasales on 6 Oct) — measure before adding. Never scrape a
+  site against its terms. SerpApi plan: Starter $25 proposed, owner to
+  confirm/subscribe.
+
 **Owner's decisions (13 Oct):**
 - Hotel list prices: **paid data plan now** (Google Hotels via SerpApi —
   confirm exact price with the owner before subscribing).
