@@ -6,6 +6,9 @@ name: Mobile taps
 on:
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   taps:
     runs-on: ubuntu-latest
@@ -22,4 +25,11 @@ jobs:
       - name: Tap every button
         env:
           SMOKE_TOKEN: ${{ secrets.SMOKE_TOKEN }}
-        run: node scripts/mobile-taps.mjs
+        run: node scripts/mobile-taps.mjs | tee scripts/mobile-taps-report.txt
+      - name: Keep the report
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add scripts/mobile-taps-report.txt
+          git commit -m "Mobile tap report" || exit 0
+          git pull --rebase origin main && git push
