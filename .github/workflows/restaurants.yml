@@ -1,0 +1,58 @@
+# Stores every city's restaurants from OpenStreetMap for the trip plan's
+# meals (scripts/places/fetch-restaurants.ts → public/data/restaurants/).
+# Monthly on the 4th, when the city list or the collector changes (new
+# cities only on a push), or by hand.
+name: Restaurants
+
+on:
+  schedule:
+    - cron: "17 3 4 * *"
+  push:
+    branches: [main]
+    paths:
+      - "scripts/places/fetch-restaurants.ts"
+      - "src/data/cityCoords.ts"
+      - ".github/workflows/restaurants.yml"
+  workflow_dispatch:
+    inputs:
+      missing_only:
+        description: "Only cities with no stored file yet"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: restaurants
+  cancel-in-progress: false
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - name: Fetch restaurants
+        run: |
+          npm ci --no-audit --no-fund
+          FLAGS=""
+          if [ "${{ github.event_name }}" = "push" ] && [ -d public/data/restaurants ]; then FLAGS="--missing"; fi
+          if [ "${{ inputs.missing_only }}" = "true" ]; then FLAGS="--missing"; fi
+          npx --yes tsx@4 scripts/places/fetch-restaurants.ts $FLAGS
+      - name: Commit
+        run: |
+          git add public/data/restaurants
+          if git diff --cached --quiet; then
+            echo "Nothing new."
+            exit 0
+          fi
+          git config user.name "Claude"
+          git config user.email "noreply@anthropic.com"
+          git commit -m "Restaurants: stored from OpenStreetMap"
+          git pull --rebase origin main
+          git push

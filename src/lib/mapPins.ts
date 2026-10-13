@@ -333,6 +333,48 @@ async function readStoredPlaces(slug: string): Promise<StoredPlace[] | null> {
   }
 }
 
+/** A restaurant as stored by scripts/places/fetch-restaurants.ts. */
+export interface StoredRestaurant {
+  i: string;
+  n: string;
+  e?: string;
+  a?: string;
+  u?: string;
+  h?: 1;
+  y: number;
+  x: number;
+  f: number;
+}
+
+/**
+ * A city's stored restaurants (OpenStreetMap, refreshed monthly), best
+ * documented first — the trip plan's meals. Empty when the city has none
+ * stored yet.
+ */
+export async function readStoredRestaurants(slug: string): Promise<StoredRestaurant[]> {
+  if (!/^[a-z0-9-]+$/.test(slug)) return [];
+  try {
+    const { getCloudflareContext } = await import("@opennextjs/cloudflare");
+    let assets: AssetsBinding | undefined;
+    try {
+      assets = (getCloudflareContext().env as unknown as { ASSETS?: AssetsBinding }).ASSETS;
+    } catch {
+      assets = undefined;
+    }
+    if (!assets) {
+      if (process.env.NODE_ENV === "production" && !process.env.SFRTNA_LOCAL_PLACES) return [];
+      const { readFile } = await import("node:fs/promises");
+      const text = await readFile(`${process.cwd()}/public/data/restaurants/${slug}.json`, "utf8").catch(() => null);
+      return text ? (JSON.parse(text) as StoredRestaurant[]) : [];
+    }
+    const res = await assets.fetch(new Request(`https://assets.local/data/restaurants/${slug}.json`));
+    if (!res.ok) return [];
+    return (await res.json()) as StoredRestaurant[];
+  } catch {
+    return [];
+  }
+}
+
 function distanceMetres(aLat: number, aLon: number, bLat: number, bLon: number): number {
   const R = 6371000;
   const toRad = (d: number) => (d * Math.PI) / 180;
