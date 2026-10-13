@@ -159,6 +159,17 @@ await check("country places", async () => {
   return `${j.places.length} places`;
 });
 
+await check("account page", () => page("/ar/account"));
+await check("accounts: signed-out answer", async () => {
+  const j = await api("/api/auth/me", { page: "/ar/account" });
+  if (!j || j.user !== null || !j.methods) throw new Error("unexpected answer");
+  return `google ${j.methods.google ? "on" : "off"}, email ${j.methods.email ? "on" : "off"}`;
+});
+await check("accounts: saved plans need sign-in", async () => {
+  const res = await fetch(`${BASE}/api/plans`, { headers: fromPage("/ar/account") });
+  if (res.status !== 401) throw new Error(`expected 401, got ${res.status}`);
+});
+
 // The protection must still hold.
 await check("protection: workers.dev without the key goes to sfrtna.com", async () => {
   const res = await fetch(`${BASE}/ar`, { headers: { "User-Agent": UA }, redirect: "manual" });
