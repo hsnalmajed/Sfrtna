@@ -90,6 +90,64 @@ export const CURRENCIES: Currency[] = [
   { code: "ARS", nameAr: "البيزو الأرجنتيني", nameEn: "Argentine Peso", country: "AR", decimals: 2 },
 
   { code: "NZD", nameAr: "الدولار النيوزيلندي", nameEn: "New Zealand Dollar", country: "NZ", decimals: 2 },
+  // Added with the coverage section (13 Oct 2026): the currency of every
+  // country the site covers or is adding. ISO 4217 codes; `decimals` is how
+  // prices are quoted there (currencies that trade in thousands show none).
+  { code: "ALL", nameAr: "الليك الألباني", nameEn: "Albanian Lek", country: "AL", decimals: 0 },
+  { code: "AMD", nameAr: "الدرام الأرميني", nameEn: "Armenian Dram", country: "AM", decimals: 0 },
+  { code: "BAM", nameAr: "المارك البوسني", nameEn: "Bosnia-Herzegovina Convertible Mark", country: "BA", decimals: 2 },
+  { code: "ISK", nameAr: "الكرونة الآيسلندية", nameEn: "Icelandic Króna", country: "IS", decimals: 0 },
+  { code: "KGS", nameAr: "السوم القيرغيزي", nameEn: "Kyrgyzstani Som", country: "KG", decimals: 2 },
+  { code: "KHR", nameAr: "الريال الكمبودي", nameEn: "Cambodian Riel", country: "KH", decimals: 0 },
+  { code: "KZT", nameAr: "التينغي الكازاخستاني", nameEn: "Kazakhstani Tenge", country: "KZ", decimals: 0 },
+  { code: "NPR", nameAr: "الروبية النيبالية", nameEn: "Nepalese Rupee", country: "NP", decimals: 2 },
+  { code: "RSD", nameAr: "الدينار الصربي", nameEn: "Serbian Dinar", country: "RS", decimals: 0 },
+  { code: "TZS", nameAr: "الشلن التنزاني", nameEn: "Tanzanian Shilling", country: "TZ", decimals: 0 },
+  { code: "UZS", nameAr: "السوم الأوزبكي", nameEn: "Uzbekistani Som", country: "UZ", decimals: 0 },
+  { code: "MKD", nameAr: "الدينار المقدوني", nameEn: "Macedonian Denar", country: "MK", decimals: 0 },
+  { code: "BDT", nameAr: "التاكا البنغلاديشي", nameEn: "Bangladeshi Taka", country: "BD", decimals: 2 },
+  { code: "BTN", nameAr: "النغولترم البوتاني", nameEn: "Bhutanese Ngultrum", country: "BT", decimals: 2 },
+  { code: "BND", nameAr: "الدولار البروني", nameEn: "Brunei Dollar", country: "BN", decimals: 2 },
+  { code: "LAK", nameAr: "الكيب اللاوسي", nameEn: "Lao Kip", country: "LA", decimals: 0 },
+  { code: "MOP", nameAr: "الباتاكا الماكاوية", nameEn: "Macanese Pataca", country: "MO", decimals: 2 },
+  { code: "TWD", nameAr: "الدولار التايواني الجديد", nameEn: "New Taiwan Dollar", country: "TW", decimals: 0 },
+  { code: "ETB", nameAr: "البير الإثيوبي", nameEn: "Ethiopian Birr", country: "ET", decimals: 2 },
+  { code: "UGX", nameAr: "الشلن الأوغندي", nameEn: "Ugandan Shilling", country: "UG", decimals: 0 },
+  { code: "RWF", nameAr: "الفرنك الرواندي", nameEn: "Rwandan Franc", country: "RW", decimals: 0 },
+  { code: "SCR", nameAr: "الروبية السيشلية", nameEn: "Seychellois Rupee", country: "SC", decimals: 2 },
+  { code: "MGA", nameAr: "الأرياري الملغاشي", nameEn: "Malagasy Ariary", country: "MG", decimals: 0 },
+  { code: "XOF", nameAr: "فرنك غرب أفريقيا", nameEn: "West African CFA Franc", country: "SN", decimals: 0 },
+  { code: "GHS", nameAr: "السيدي الغاني", nameEn: "Ghanaian Cedi", country: "GH", decimals: 2 },
+  { code: "NGN", nameAr: "النيرة النيجيرية", nameEn: "Nigerian Naira", country: "NG", decimals: 0 },
+  { code: "NAD", nameAr: "الدولار الناميبي", nameEn: "Namibian Dollar", country: "NA", decimals: 2 },
+  { code: "BWP", nameAr: "البولا البوتسواني", nameEn: "Botswana Pula", country: "BW", decimals: 2 },
+  { code: "ZMW", nameAr: "الكواشا الزامبية", nameEn: "Zambian Kwacha", country: "ZM", decimals: 2 },
+  { code: "MZN", nameAr: "الميتيكال الموزمبيقي", nameEn: "Mozambican Metical", country: "MZ", decimals: 2 },
+  { code: "CVE", nameAr: "الإسكودو الأخضر", nameEn: "Cape Verdean Escudo", country: "CV", decimals: 0 },
+  { code: "CUP", nameAr: "البيزو الكوبي", nameEn: "Cuban Peso", country: "CU", decimals: 0 },
+  { code: "DOP", nameAr: "البيزو الدومينيكاني", nameEn: "Dominican Peso", country: "DO", decimals: 0 },
+  { code: "JMD", nameAr: "الدولار الجامايكي", nameEn: "Jamaican Dollar", country: "JM", decimals: 0 },
+  { code: "CRC", nameAr: "الكولون الكوستاريكي", nameEn: "Costa Rican Colón", country: "CR", decimals: 0 },
+  { code: "GTQ", nameAr: "الكتزال الغواتيمالي", nameEn: "Guatemalan Quetzal", country: "GT", decimals: 2 },
+  { code: "HNL", nameAr: "اللمبيرا الهندوراسية", nameEn: "Honduran Lempira", country: "HN", decimals: 2 },
+  { code: "BZD", nameAr: "الدولار البليزي", nameEn: "Belize Dollar", country: "BZ", decimals: 2 },
+  { code: "BSD", nameAr: "الدولار البهامي", nameEn: "Bahamian Dollar", country: "BS", decimals: 2 },
+  { code: "BBD", nameAr: "الدولار البربادوسي", nameEn: "Barbadian Dollar", country: "BB", decimals: 2 },
+  { code: "TTD", nameAr: "دولار ترينيداد وتوباغو", nameEn: "Trinidad and Tobago Dollar", country: "TT", decimals: 2 },
+  { code: "CLP", nameAr: "البيزو التشيلي", nameEn: "Chilean Peso", country: "CL", decimals: 0 },
+  { code: "PEN", nameAr: "السول البيروفي", nameEn: "Peruvian Sol", country: "PE", decimals: 2 },
+  { code: "COP", nameAr: "البيزو الكولومبي", nameEn: "Colombian Peso", country: "CO", decimals: 0 },
+  { code: "UYU", nameAr: "البيزو الأوروغواياني", nameEn: "Uruguayan Peso", country: "UY", decimals: 0 },
+  { code: "BOB", nameAr: "البوليفيانو", nameEn: "Bolivian Boliviano", country: "BO", decimals: 2 },
+  { code: "PYG", nameAr: "الغواراني الباراغوياني", nameEn: "Paraguayan Guaraní", country: "PY", decimals: 0 },
+  { code: "GYD", nameAr: "الدولار الغوياني", nameEn: "Guyanese Dollar", country: "GY", decimals: 0 },
+  { code: "SRD", nameAr: "الدولار السورينامي", nameEn: "Surinamese Dollar", country: "SR", decimals: 2 },
+  { code: "FJD", nameAr: "الدولار الفيجي", nameEn: "Fijian Dollar", country: "FJ", decimals: 2 },
+  { code: "PGK", nameAr: "الكينا البابوية", nameEn: "Papua New Guinean Kina", country: "PG", decimals: 2 },
+  { code: "WST", nameAr: "التالا الساموية", nameEn: "Samoan Tālā", country: "WS", decimals: 2 },
+  { code: "TOP", nameAr: "البانغا التونغية", nameEn: "Tongan Paʻanga", country: "TO", decimals: 2 },
+  { code: "VUV", nameAr: "الفاتو الفانواتي", nameEn: "Vanuatu Vatu", country: "VU", decimals: 0 },
+  { code: "SBD", nameAr: "دولار جزر سليمان", nameEn: "Solomon Islands Dollar", country: "SB", decimals: 2 },
 ];
 
 export function findCurrency(code: string): Currency | undefined {
@@ -119,6 +177,12 @@ const COUNTRY_CURRENCY_OVERRIDES: Record<string, string> = {
   PA: "USD",
   // Liechtenstein spends Swiss francs.
   LI: "CHF",
+  // The US dollar is the legal tender of El Salvador, Palau and Micronesia;
+  // Zimbabwe's own ZiG exists but visitors pay in US dollars.
+  SV: "USD",
+  PW: "USD",
+  FM: "USD",
+  ZW: "USD",
 };
 
 /**
