@@ -8,7 +8,6 @@ import { countLabel } from "@/lib/format";
 import { PIN_STYLES } from "@/lib/pinStyles";
 import { downloadText, safeFileName, toKML } from "@/lib/mapExport";
 import { inApp, printPage } from "@/lib/nativeApp";
-import { GOOGLE_MY_MAPS_URL } from "@/lib/tripPlaces";
 import CityPlacesExplorer, { score, type PlaceListItem } from "@/components/CityPlacesExplorer";
 import PrintHeader from "@/components/PrintHeader";
 import DateRangeInput from "@/components/DateRangeInput";
@@ -226,7 +225,8 @@ export default function CityPlacesPlanner({
   const [autoOpen, setAutoOpen] = useState(false);
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
-  const [interests, setInterests] = useState<Interest[]>(["sights"]);
+  // Owner, 13 Oct: «بدون تفضيل» is where a new plan starts.
+  const [interests, setInterests] = useState<Interest[]>(["sights", "activities", "shopping"]);
   const [plan, setPlan] = useState<Plan | null>(null);
   // The last add or remove, said out loud for a moment — a button changing
   // colour at the bottom of a card is easy to miss.
@@ -504,13 +504,15 @@ export default function CityPlacesPlanner({
                 ["shopping", "🛍", t.interestShopping],
               ] as [Interest, string, string][]
             ).map(([key, icon, label]) => {
-              const on = interests.includes(key);
+              // With «بدون تفضيل» on, no single kind is lit; tapping one picks just it.
+              const noPref = interests.length === 3;
+              const on = !noPref && interests.includes(key);
               return (
                 <button
                   key={key}
                   type="button"
                   aria-pressed={on}
-                  onClick={() => setInterests((cur) => (on ? cur.filter((x) => x !== key) : [...cur, key]))}
+                  onClick={() => setInterests((cur) => (noPref ? [key] : on ? cur.filter((x) => x !== key) : [...cur, key]))}
                   className={`flex flex-col items-center gap-1 rounded-2xl px-3 py-4 text-sm font-extrabold ring-1 transition ${
                     on ? "bg-navy-900 text-white ring-navy-900" : "bg-white text-navy-800 ring-mist-200 hover:ring-navy-300"
                   }`}
@@ -751,22 +753,24 @@ function PlanView({
 
   return createPortal(
     <div className="plan-root fixed inset-0 z-[70] overflow-y-auto bg-mist-50">
-      {/* The toolbar: back, edit, PDF, Google Maps. */}
+      {/* The toolbar (owner, 13 Oct): back, then every action on the plan
+          in one row — save to my account, PDF, Google Maps, edit — and
+          nothing repeated further down the page. */}
       <div className="print:hidden sticky top-0 z-10 border-b border-mist-200 bg-white/95 backdrop-blur">
-        <div className="mx-auto flex max-w-3xl flex-wrap items-center justify-between gap-2 px-4 py-3">
-          <button type="button" onClick={onClose} className={`${btn} bg-mist-100 text-navy-800 hover:bg-mist-200`}>
+        <div className="mx-auto flex max-w-3xl flex-col gap-2 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+          <button type="button" onClick={onClose} className={`${btn} self-start bg-mist-100 text-navy-800 hover:bg-mist-200`}>
             <span aria-hidden="true">{isAr ? "→" : "←"}</span> {t.close}
           </button>
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:justify-end">
+            <SavePlanButton locale={locale} plan={plan} title={`${title} · ${dates}`} cityName={cityName} countryCode={countryCode} className={`${btn} bg-navy-900 text-white hover:bg-navy-800`} />
+            <button type="button" onClick={savePdf} disabled={pdfBusy} className={`${btn} bg-sun-400 text-navy-950 hover:bg-sun-300`}>
+              <span aria-hidden="true">📄</span> {pdfBusy ? t.pdfMaking : t.pdf}
+            </button>
+            <button type="button" onClick={downloadKml} className={`${btn} bg-sea-600 text-white hover:bg-sea-700`}>
+              <span aria-hidden="true">📍</span> {t.mapsKml}
+            </button>
             <button type="button" onClick={onEdit} className={`${btn} text-navy-700 ring-1 ring-mist-300 hover:ring-navy-300`}>
-              ✏️ {t.edit}
-            </button>
-            {/* Compact copies of the two big actions below, for when the page is scrolled. */}
-            <button type="button" onClick={savePdf} disabled={pdfBusy} title={t.pdf} aria-label={t.pdf} className={`${btn} !px-3 bg-sun-400 text-navy-950 hover:bg-sun-300`}>
-              📄 <span className="hidden sm:inline">PDF</span>
-            </button>
-            <button type="button" onClick={downloadKml} title={t.mapsKml} aria-label={t.mapsKml} className={`${btn} !px-3 bg-sea-600 text-white hover:bg-sea-700`}>
-              🗺️ <span className="hidden sm:inline">Google Maps</span>
+              <span aria-hidden="true">✏️</span> {t.edit}
             </button>
           </div>
         </div>
@@ -791,61 +795,6 @@ function PlanView({
             ⚠️ {t.autoShort}
           </p>
         )}
-        {/* Take it with you: the two things a traveller does with a finished plan. */}
-        <div className="print:hidden mt-5 grid gap-3 sm:grid-cols-2">
-          <button
-            type="button"
-            onClick={savePdf}
-            disabled={pdfBusy}
-            className="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-sun-300 via-sun-400 to-sun-500 p-5 text-start text-navy-950 shadow-[var(--shadow-sun)] ring-1 ring-sun-500/40 transition duration-300 hover:-translate-y-1 hover:shadow-[0_18px_40px_-12px_rgba(245,158,11,0.6)]"
-          >
-            <span className="pointer-events-none absolute -end-6 -top-8 text-[7rem] leading-none opacity-15 transition duration-500 group-hover:rotate-6 group-hover:scale-110" aria-hidden="true">
-              📄
-            </span>
-            <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/80 text-2xl shadow-sm" aria-hidden="true">
-              📄
-            </span>
-            <span className="mt-3 block font-display text-xl font-black">{t.pdfCardTitle}</span>
-            <span className="mt-1 block text-sm font-semibold text-navy-900/75">{t.pdfCardBody}</span>
-            <span className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-navy-900 px-4 py-2 text-sm font-extrabold text-white transition group-hover:gap-2.5">
-              {pdfBusy ? t.pdfMaking : t.pdf} <span aria-hidden="true">{isAr ? "←" : "→"}</span>
-            </span>
-          </button>
-
-          <div className="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-sea-500 via-sea-600 to-navy-900 p-5 text-white shadow-[var(--shadow-lift)] ring-1 ring-white/10 transition duration-300 hover:-translate-y-1">
-            <span className="pointer-events-none absolute -end-6 -top-8 text-[7rem] leading-none opacity-15 transition duration-500 group-hover:-rotate-6 group-hover:scale-110" aria-hidden="true">
-              🗺️
-            </span>
-            <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/15 text-2xl ring-1 ring-white/25" aria-hidden="true">
-              📍
-            </span>
-            <span className="mt-3 block font-display text-xl font-black">{t.mapsCardTitle}</span>
-            <span className="mt-1 block text-sm font-semibold text-white/80">
-              {t.mapsCardBody.replace("{count}", placesText(all.filter(hasCoords).length))}
-            </span>
-            <span className="mt-4 flex flex-wrap items-center gap-2">
-              <button
-                type="button"
-                onClick={downloadKml}
-                className="inline-flex items-center gap-1.5 rounded-full bg-white px-4 py-2 text-sm font-extrabold text-sea-800 transition hover:gap-2.5"
-              >
-                ⬇️ {t.mapsKml}
-              </button>
-              <a
-                href={GOOGLE_MY_MAPS_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xs font-bold text-white/85 underline underline-offset-2 hover:text-white"
-              >
-                {t.openMyMaps} ↗
-              </a>
-            </span>
-            <span className="mt-3 block text-[11px] leading-relaxed text-white/65">{t.mapsHint}</span>
-          </div>
-        </div>
-        <SavePlanButton locale={locale} plan={plan} title={`${title} · ${dates}`} cityName={cityName} countryCode={countryCode} />
-        {inApp() && <p className="print:hidden mt-2 text-center text-[11px] text-navy-400">💡 {t.pdfHint}</p>}
-
         <ol className="mt-5 space-y-4">
           {plan.days.map((items, i) => {
             const route = routeUrl(items);

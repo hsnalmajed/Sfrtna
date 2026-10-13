@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { getDictionary } from "@/lib/dictionaries";
 import type { Locale } from "@/lib/types";
@@ -32,12 +31,15 @@ export default function SavePlanButton({
   title,
   cityName,
   countryCode,
+  className = "",
 }: {
   locale: Locale;
   plan: PlanToSave;
   title: string;
   cityName: string;
   countryCode: string;
+  /** The look of the button (it sits in the plan's toolbar). */
+  className?: string;
 }) {
   const t = getDictionary(locale).account;
   const account = useAccount();
@@ -105,28 +107,17 @@ export default function SavePlanButton({
   const label =
     state === "saving" ? t.saving : state === "saved" ? t.saved : account.user ? t.savePlan : t.saveSignIn;
 
+  const failed = state === "error" || state === "full";
   return (
-    <div className="print:hidden mt-3 flex flex-col items-center gap-2">
-      <button
-        type="button"
-        onClick={save}
-        disabled={state === "saving" || state === "saved"}
-        className={`inline-flex w-full items-center justify-center gap-2 rounded-full px-5 py-3 font-extrabold transition sm:w-auto ${
-          state === "saved" ? "bg-sea-50 text-sea-800 ring-1 ring-sea-200" : "bg-navy-900 text-white hover:bg-navy-800"
-        }`}
-      >
-        <span aria-hidden="true">{state === "saved" ? "✓" : "💾"}</span> {label}
-      </button>
-      {state === "saved" && (
-        <Link href={`/${locale}/account`} className="text-xs font-bold text-sea-700 hover:underline">
-          {t.myPlans} {locale === "ar" ? "←" : "→"}
-        </Link>
-      )}
-      {(state === "error" || state === "full") && (
-        <p role="alert" className="text-xs font-bold text-red-700">
-          {state === "full" ? t.tooManyPlans : t.saveFailed}
-        </p>
-      )}
-    </div>
+    <button
+      type="button"
+      onClick={save}
+      disabled={state === "saving" || state === "saved"}
+      title={failed ? (state === "full" ? t.tooManyPlans : t.saveFailed) : undefined}
+      className={`${className} ${state === "saved" ? "!bg-emerald-600" : failed ? "!bg-rose-700" : ""}`}
+    >
+      <span aria-hidden="true">{state === "saved" ? "✓" : failed ? "⚠️" : "💾"}</span>{" "}
+      {failed ? (state === "full" ? t.tooManyPlans : t.saveFailed) : label}
+    </button>
   );
 }
