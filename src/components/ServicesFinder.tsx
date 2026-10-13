@@ -21,7 +21,7 @@ export default function ServicesFinder({
   const router = useRouter();
   const [text, setText] = useState(initial);
   return (
-    <div className="relative z-10 mt-6 rounded-3xl bg-white p-4 shadow-[var(--shadow-lift)] ring-1 ring-black/5 sm:-mt-12 sm:p-6">
+    <div className="relative z-10 mt-6 rounded-3xl bg-white p-4 shadow-[var(--shadow-lift)] ring-1 ring-black/5 sm:-mt-8 sm:p-6">
       <label htmlFor="services-city" className="mb-2.5 flex items-center gap-2 font-display text-base font-extrabold text-navy-900">
         <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-sun-400 text-navy-950" aria-hidden="true">
           <Icon name="pin" className="h-4 w-4" />
@@ -29,7 +29,7 @@ export default function ServicesFinder({
         {label}
       </label>
       <div className="relative">
-        <Icon name="search" className="pointer-events-none absolute start-4 top-1/2 h-4 w-4 -translate-y-1/2 text-navy-400" />
+        <Icon name="search" className="pointer-events-none absolute start-4 top-1/2 z-10 h-4 w-4 -translate-y-1/2 text-navy-400" />
       <HotelCityInput
         id="services-city"
         locale={locale}
