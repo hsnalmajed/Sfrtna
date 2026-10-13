@@ -299,6 +299,8 @@ export async function GET(req: Request) {
         pexels: Boolean(process.env.PEXELS_API_KEY),
         here: Boolean(process.env.HERE_API_KEY),
         serpapi: Boolean(process.env.SERPAPI_KEY),
+        googleSignIn: Boolean(process.env.GOOGLE_CLIENT_ID),
+        emailSignIn: Boolean(process.env.RESEND_API_KEY),
       },
       flightProbe: probe,
     },

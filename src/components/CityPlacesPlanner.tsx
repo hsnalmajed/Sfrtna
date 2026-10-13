@@ -12,6 +12,7 @@ import { GOOGLE_MY_MAPS_URL } from "@/lib/tripPlaces";
 import CityPlacesExplorer, { score, type PlaceListItem } from "@/components/CityPlacesExplorer";
 import PrintHeader from "@/components/PrintHeader";
 import DateRangeInput from "@/components/DateRangeInput";
+import SavePlanButton from "@/components/SavePlanButton";
 
 /**
  * More than this in one day and the day is travelling, not visiting.
@@ -248,6 +249,33 @@ export default function CityPlacesPlanner({
       );
     }
   }, []);
+  // «افتح» on a saved plan (حسابي → ?saved=<id>): the plan is rebuilt from
+  // this page's own places, by key, and opened.
+  useEffect(() => {
+    const id = new URLSearchParams(window.location.search).get("saved");
+    if (!id) return;
+    let live = true;
+    fetch("/api/plans", { cache: "no-store" })
+      .then((r) => r.json() as Promise<{ ok: boolean; plans?: { id: string; plan: { source: "pick" | "auto"; from: string; to: string; days: string[][]; short?: boolean } }[] }>)
+      .then((j) => {
+        if (!live) return;
+        const saved = j.plans?.find((p) => p.id === id)?.plan;
+        const byKey = new Map(places.map((p) => [p.key, p]));
+        const rebuilt = saved?.days.map((d) => d.map((k) => byKey.get(k)).filter((p): p is PlaceListItem => Boolean(p)));
+        if (!saved || !rebuilt || rebuilt.every((d) => d.length === 0)) {
+          setToast({ text: full.account.savedMissing, added: false, id: Date.now() });
+          return;
+        }
+        setFrom(saved.from);
+        setTo(saved.to);
+        if (saved.source === "pick") setPicked(rebuilt.flat());
+        setPlan({ source: saved.source, from: saved.from, to: saved.to, days: rebuilt, short: Boolean(saved.short) });
+      })
+      .catch(() => live && setToast({ text: full.account.savedMissing, added: false, id: Date.now() }));
+    return () => {
+      live = false;
+    };
+  }, [places, full.account.savedMissing]);
   useEffect(() => {
     if (!toast) return;
     const timer = window.setTimeout(() => setToast(null), 2600);
@@ -796,6 +824,7 @@ function PlanView({
             <span className="mt-3 block text-[11px] leading-relaxed text-white/65">{t.mapsHint}</span>
           </div>
         </div>
+        <SavePlanButton locale={locale} plan={plan} title={`${title} · ${dates}`} cityName={cityName} countryCode={countryCode} />
         <p className="print:hidden mt-2 text-center text-[11px] text-navy-400">💡 {t.pdfHint}</p>
 
         <ol className="mt-5 space-y-4">

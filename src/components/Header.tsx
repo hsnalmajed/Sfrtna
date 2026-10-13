@@ -1,5 +1,6 @@
 "use client";
 
+import AccountLink from "@/components/AccountLink";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -182,6 +183,7 @@ export default function Header({ locale }: { locale: Locale }) {
             >
               {dict.nav.planCta}
             </Link>
+            <AccountLink locale={locale} variant="header" />
             <LanguageSwitcher locale={locale} />
             <button
               type="button"
@@ -240,6 +242,7 @@ export default function Header({ locale }: { locale: Locale }) {
             >
               {dict.nav.planCta}
             </Link>
+            <AccountLink locale={locale} variant="drawer" />
           </nav>
         )}
       </div>

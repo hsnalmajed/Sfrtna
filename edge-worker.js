@@ -32,6 +32,8 @@ import { guardApi, markApiResponse } from "./edge-guard.js";
 
 // The site-wide counter behind the HERE daily cap (src/lib/providers/hereQuota.ts).
 export { HereQuota } from "./here-quota.js";
+// Accounts and saved plans (src/lib/accounts.ts).
+export { Accounts } from "./accounts.js";
 
 const FRESH_SECONDS = 3600;
 const KEEP_SECONDS = 7 * 24 * 3600;

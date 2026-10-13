@@ -24,9 +24,16 @@
   // One site-wide counter for the HERE daily cap (here-quota.js). SQLite-backed
   // Durable Objects are on the Workers free plan.
   "durable_objects": {
-    "bindings": [{ "name": "HERE_QUOTA", "class_name": "HereQuota" }]
+    "bindings": [
+      { "name": "HERE_QUOTA", "class_name": "HereQuota" },
+      // Accounts and saved plans (accounts.js).
+      { "name": "ACCOUNTS", "class_name": "Accounts" }
+    ]
   },
-  "migrations": [{ "tag": "here-quota-v1", "new_sqlite_classes": ["HereQuota"] }]
+  "migrations": [
+    { "tag": "here-quota-v1", "new_sqlite_classes": ["HereQuota"] },
+    { "tag": "accounts-v1", "new_sqlite_classes": ["Accounts"] }
+  ]
   // After deploying, set real secrets with:
   //   npx wrangler secret put AMADEUS_API_KEY
   //   npx wrangler secret put AMADEUS_API_SECRET

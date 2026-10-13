@@ -1,5 +1,6 @@
 "use client";
 
+import AccountLink from "@/components/AccountLink";
 import { useEffect, useLayoutEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -189,6 +190,7 @@ export default function AppTabBar({ locale }: { locale: Locale }) {
           <div className="app-sheet relative max-h-[80svh] overflow-y-auto rounded-t-3xl bg-white px-4 pt-2 text-navy-900 shadow-2xl">
             <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-navy-900/15" aria-hidden="true" />
 
+            <AccountLink locale={locale} variant="sheet" onNavigate={go} />
             <p className="px-1 pb-2 text-xs font-bold text-navy-900/50">{dict.nav.tools}</p>
             <div className="grid grid-cols-3 gap-2">
               {tools.map((t) => (
