@@ -631,7 +631,9 @@ Root causes found in the code (13 Oct):
 **Owner's decisions (13 Oct):**
 - Hotel list prices: **paid data plan now** (Google Hotels via SerpApi —
   confirm exact price with the owner before subscribing).
-- Accounts (to save plans in the app): **Google + Apple + email**.
+- Accounts (to save plans in the app): **Google + email now; Apple later**
+  (owner, 13 Oct 17:42: no Apple account; Apple sign-in and the iPhone app
+  come after the website and the Android app are finished and approved).
 - Restaurants in plans: **OpenStreetMap, stored monthly** (name, location,
   cuisine; no ratings).
 - Multi-city: **one tab per leg, each a live search**, picked fares summed
