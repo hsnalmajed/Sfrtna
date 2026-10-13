@@ -20,25 +20,36 @@ Route used unless said: RUH → IST, 1 adult, SAR. Dates 30–45 days ahead.
 
 | # | Scenario | Expected | Result |
 |---|---|---|---|
-| 1.1 | Round trip, budget 8,000, no preferences | Pick card ≤ 20 s, plane bar until done, "remaining budget" correct (budget − price) | |
-| 1.2 | Round trip, budget 8,000, direct | Every card ours shows «مباشرة»; tab and list too | |
-| 1.3 | Round trip, budget 8,000, bags | Every card shows «الأمتعة مشمولة» | |
-| 1.4 | Round trip, budget 8,000, direct + bags | Both on every card; no early "nothing matches" while matches are still loading | |
-| 1.5 | Round trip, budget 300 (too low) | "None within budget" card on the page at once with cheapest found and how much over; dialog at the end; time noted | |
-| 1.6 | Round trip, no budget | Our cards, title «أفضل رحلة لتواريخك», no budget lines | |
-| 1.7 | One way, budget 3,000 | Pick card, one leg only on cards | |
-| 1.8 | One way, no budget, direct | All shown direct | |
-| 1.9 | Route with no direct flight (RUH → LIS), direct | Question on the page after ≥ 100 flights, dialog at the end, «نعم» shows others with the amber line, «لا» goes to the form filled in | |
-| 1.10 | Multi-city 3 flights, budget 9,000 | 3 tabs; tab 1 live; «احجز» on tab 1 saves the fare; tab 2 shows "picked X · left Y" and its budget = 9,000 − X | |
-| 1.11 | Multi-city form | Flight 2 can't be dated before flight 1; changing flight 1 later clears an earlier flight 2; calendar names the flight | |
-| 1.12 | Old /multicity-results link | Forwards to tab 1 with all answers | |
-| 1.13 | Discover round trip / one way / flight+hotel / hotel only | Destinations listed; «اعرض السعر الحي» carries budget + preferences | |
-| 1.14 | Discover routes (2 and 3 countries) | Each flight button opens the multi-city tabs with the whole budget | |
-| 1.15 | Children + infant (2 adults, 1 child, 1 infant) | Widget code `…211`; card says 4 travellers | |
-| 1.16 | Past date in the link | "Date passed" notice, no search | |
-| 1.17 | Price check | Our card price = the partner's price on its offer page (no click recorded as a booking: compare the widget card) | |
-| 1.18 | Edit search | Opens the form with every answer filled (round trip, one way, multi-city legs) | |
-| 1.19 | English page | Same as 1.1 and 1.10, left-to-right, English labels | |
-| 1.20 | Domestic (RUH → JED) | No visa line, no currency line | |
-| 1.21 | Phone 390 px | Header: trip card + one swipe line; tabs one line each; cards readable; nothing cut | |
-| 1.22 | App (UA SfrtnaApp/Android, `html.in-app`) | Same as 1.21 with the tab bar; nothing hidden behind it | |
+| 1.1 | Round trip, budget 8,000, no preferences | Pick card ≤ 20 s, plane bar until done, "remaining budget" correct (budget − price) | ✅ 13 Oct: partner 9.6 s, pick 18 s, done 36 s; remaining = budget − price |
+| 1.2 | Round trip, budget 8,000, direct | Every card ours shows «مباشرة»; tab and list too | ✅ 13 Oct: all direct (Turkish/Pegasus) |
+| 1.3 | Round trip, budget 8,000, bags | Every card shows «الأمتعة مشمولة» | ✅ 13 Oct (with 1.4) |
+| 1.4 | Round trip, budget 8,000, direct + bags | Both on every card; no early "nothing matches" while matches are still loading | ✅ 13 Oct after fix (early question waited for 100 flights; showed at 6 s before) |
+| 1.5 | Round trip, budget 300 (too low) | "None within budget" card on the page at once with cheapest found and how much over; dialog at the end; time noted | ✅ 13 Oct: card 7.4 s (cheapest 786 → 747 as it ran), dialog 23.9 s |
+| 1.6 | Round trip, no budget | Our cards, title «أفضل رحلة لتواريخك», no budget lines | ✅ 13 Oct after fix (labels said «ضمن ميزانيتك» without a budget) |
+| 1.7 | One way, budget 3,000 | Pick card, one leg only on cards | ✅ 13 Oct (RUH → JED one leg) |
+| 1.8 | One way, no budget, direct | All shown direct | ✅ 13 Oct: 11 direct of 200, all shown direct |
+| 1.9 | Route with no direct flight (RUH → LIS), direct | Question on the page after ≥ 100 flights, dialog at the end, «نعم» shows others with the amber line, «لا» goes to the form filled in | ✅ 13 Oct: dialog at end, «نعم» shows others + amber line |
+| 1.10 | Multi-city 3 flights, budget 9,000 | 3 tabs; tab 1 live; «احجز» on tab 1 saves the fare; tab 2 shows "picked X · left Y" and its budget = 9,000 − X | ✅ 13 Oct: tab 1 picked 373 → tab 2 budget 8,627, after 1,115 pick 7,512 left |
+| 1.11 | Multi-city form | Flight 2 can't be dated before flight 1; changing flight 1 later clears an earlier flight 2; calendar names the flight | ✅ 13 Oct by hand + e2e: days before flight 1 blocked; calendar names the flight |
+| 1.12 | Old /multicity-results link | Forwards to tab 1 with all answers | ✅ 13 Oct + e2e |
+| 1.13 | Discover round trip / one way / flight+hotel / hotel only | Destinations listed; «اعرض السعر الحي» carries budget + preferences | ✅ 13 Oct after fix: hotel-only cards lead with the hotel; budget label per type |
+| 1.14 | Discover routes (2 and 3 countries) | Each flight button opens the multi-city tabs with the whole budget | ✅ 13 Oct + e2e: 72 flight links with legs + budget |
+| 1.15 | Children + infant (2 adults, 1 child, 1 infant) | Widget code `…211`; card says 4 travellers | ✅ 13 Oct: code …211, «4 مسافرين» |
+| 1.16 | Past date in the link | "Date passed" notice, no search | ✅ 13 Oct after fix (hotel offer was shown for past dates) |
+| 1.17 | Price check | Our card price = the partner's price on its offer page (no click recorded as a booking: compare the widget card) | ✅ 13 Oct: card 747 SAR = cheapest offer (Turna.com 747) on the partner panel |
+| 1.18 | Edit search | Opens the form with every answer filled (round trip, one way, multi-city legs) | ✅ 13 Oct after fix: every answer filled; now lands on the form |
+| 1.19 | English page | Same as 1.1 and 1.10, left-to-right, English labels | ✅ 13 Oct after fix: times/days/cities/waits were Arabic in English cards |
+| 1.20 | Domestic (RUH → JED) | No visa line, no currency line | ✅ 13 Oct: no visa, no currency |
+| 1.21 | Phone 390 px | Header: trip card + one swipe line; tabs one line each; cards readable; nothing cut | ✅ 13 Oct after fixes: short date range, travellers as number, card 471 → ~385 px, price beside button |
+| 1.22 | App (UA SfrtnaApp/Android, `html.in-app`) | Same as 1.21 with the tab bar; nothing hidden behind it | ✅ 13 Oct: same as 1.21 with tab bar |
+
+Fixes found by this run (13 Oct): early preferences question; return date
+cut on phones; emoji flags shown as letters (4 places); footer called
+prices estimates; no-budget wording; edit search landed on the hero;
+multi-city tab 2 currency in Turkish lira; hotel offer on a past date;
+English cards in Arabic; discover hotel-only led with flights; flight
+card too tall on phones.
+
+Automated (GitHub, 49f1e12): API check 18/18 ✓, browser 7/7 ✓ — the flight
+widget returns no flights on the workers.dev address (domain-bound), so
+flight answers are tested by hand on sfrtna.com (above).
