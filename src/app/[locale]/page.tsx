@@ -194,7 +194,7 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
     // looked unfinished). It is fixed to the screen, not stretched to the
     // page, so it never re-crops when the planner grows or shrinks; the
     // clip-path keeps it inside this block, so the footer stays navy.
-    <div className="home-photo relative isolate -mb-8 bg-navy-990 pb-10 [clip-path:inset(0)]">
+    <div className="home-photo relative isolate bg-navy-990 pb-10 [clip-path:inset(0)]">
       <div className="fixed inset-0 -z-10" aria-hidden="true">
         <Photo
           src={heroPhoto}

@@ -733,7 +733,7 @@ export default function FlightResultsGuide({
                   aria-selected={on}
                   disabled={!f}
                   onClick={() => setTab(key)}
-                  className={`px-3 py-3 text-start transition sm:px-5 ${i > 0 ? "border-s border-mist-200" : ""} ${
+                  className={`px-3 py-3 text-center transition sm:px-5 ${i > 0 ? "border-s border-mist-200" : ""} ${
                     on ? "bg-navy-950 text-white" : "text-navy-950 hover:bg-mist-50"
                   }`}
                 >

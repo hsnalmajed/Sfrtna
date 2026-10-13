@@ -163,13 +163,13 @@ export default function NextStepTabs({
   if (shown.length === 0) return null;
 
   const tile =
-    "group flex h-full flex-col overflow-hidden rounded-2xl bg-white text-start shadow-sm ring-1 ring-mist-200 transition hover:-translate-y-0.5 hover:shadow-md hover:ring-sun-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400";
+    "group flex h-full flex-col overflow-hidden rounded-2xl bg-white text-center shadow-sm ring-1 ring-mist-200 transition hover:-translate-y-0.5 hover:shadow-md hover:ring-sun-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400";
   const body = (tab: (typeof tabs)[number]) => (
     <>
       <span className="relative block aspect-[16/10] overflow-hidden bg-gradient-to-br from-navy-800 to-navy-990" aria-hidden="true">
         {tab.art}
       </span>
-      <span className="flex flex-1 flex-col px-2.5 py-2 sm:px-4 sm:py-3">
+      <span className="flex flex-1 flex-col items-center justify-center px-2 py-2 sm:px-4 sm:py-3">
         <span className="font-display text-[13px] font-extrabold leading-tight text-navy-950 sm:text-base">{tab.title}</span>
         <span className="mt-0.5 hidden text-xs text-navy-500 sm:block">{tab.sub}</span>
       </span>

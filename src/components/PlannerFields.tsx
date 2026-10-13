@@ -227,7 +227,7 @@ export function EdgeTabs<T extends string>({
             role="tab"
             aria-selected={active}
             onClick={() => onChange(t.value)}
-            className={`flex min-w-0 items-center gap-2.5 rounded-xl px-3 py-2.5 text-start transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400 sm:px-4 ${
+            className={`flex min-w-0 items-center justify-center gap-2.5 rounded-xl px-3 py-2.5 text-center transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400 sm:px-4 ${
               active
                 ? "bg-sun-400 text-navy-950 shadow-[var(--shadow-sun)]"
                 : dark

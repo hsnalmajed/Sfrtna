@@ -40,7 +40,7 @@ export default function LegalPage({
     <div className="bg-mist-50">
       <PageHero size="sm" title={title} subtitle={lead} />
 
-      <div className="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6">
+      <div className="mx-auto max-w-2xl px-4 pb-10 pt-10 sm:px-6">
         {children}
 
         <div className="space-y-7">

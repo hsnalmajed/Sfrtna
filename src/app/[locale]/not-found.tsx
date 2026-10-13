@@ -78,7 +78,7 @@ export default function LocaleNotFound() {
         </div>
       </section>
 
-      <div className="mx-auto max-w-3xl px-4 pb-16 pt-10 sm:px-6">
+      <div className="mx-auto max-w-3xl px-4 pb-10 pt-10 sm:px-6">
         <div className="card p-5 sm:p-7">
           <label
             htmlFor="notfound-search"

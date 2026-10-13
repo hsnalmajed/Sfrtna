@@ -228,7 +228,7 @@ export default function CitySeasons({
               role="tab"
               aria-selected={active}
               onClick={() => setMode(o.m)}
-              className={`flex items-start gap-3 rounded-2xl p-4 text-start transition sm:p-5 ${
+              className={`flex items-center justify-center gap-3 rounded-2xl p-4 text-center transition sm:items-start sm:justify-start sm:p-5 sm:text-start ${
                 active
                   ? "bg-navy-900 text-white shadow-[var(--shadow-lift)]"
                   : "bg-white text-navy-900 shadow-[var(--shadow-card)] ring-1 ring-navy-950/5 hover:ring-sea-400/50"
@@ -238,7 +238,7 @@ export default function CitySeasons({
                 {o.icon}
               </span>
               <span className="min-w-0">
-                <span className="flex flex-wrap items-baseline gap-x-2">
+                <span className="flex flex-wrap items-baseline justify-center gap-x-2 sm:justify-start">
                   <span className="font-display text-lg font-extrabold">{o.title}</span>
                   <span className={`text-sm font-bold ${active ? "text-sun-300" : "text-sea-600"}`}>{o.q}</span>
                 </span>
