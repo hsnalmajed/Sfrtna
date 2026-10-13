@@ -8,14 +8,14 @@
 - climate: 144/214
 - places: 214/214
 - hotels: 214/214
-- visa: 176/214
+- visa: 198/214
 - currency: 214/214
 - country: 214/214
 - tourism (expected): 113/214
 - guide (expected): 145/214
 - photo (expected): 0/214
 
-Missing a required item (92):
+Missing a required item (82):
 
 - KW kuwait-city: visa
 - MA marrakesh: visa
@@ -28,19 +28,9 @@ Missing a required item (92):
 - JO aqaba: visa
 - PT madeira: climate
 - GE kazbegi: climate
-- BR rio-de-janeiro: visa
-- BR sao-paulo: visa
-- BR salvador: visa
-- AU sydney: visa
-- AU melbourne: visa
-- AU brisbane: visa
-- AU gold-coast: visa
 - TN tunis: visa
 - TN sousse: visa
 - TN djerba: visa
-- LB beirut: visa
-- LB byblos: visa
-- LB baalbek: visa
 - RU moscow: climate
 - RU saint-petersburg: climate
 - RU kazan: climate
@@ -50,9 +40,9 @@ Missing a required item (92):
 - AL tirana: climate
 - AL durres: climate
 - AL saranda: climate
-- ME kotor: climate, visa
-- ME budva: climate, visa
-- ME podgorica: climate, visa
+- ME kotor: climate
+- ME budva: climate
+- ME podgorica: climate
 - RS belgrade: climate
 - RS novi-sad: climate
 - HR zagreb: climate
@@ -64,8 +54,8 @@ Missing a required item (92):
 - PL warsaw: climate
 - PL krakow: climate
 - PL zakopane: climate
-- IE dublin: climate, visa
-- IE galway: climate, visa
+- IE dublin: climate
+- IE galway: climate
 - BE brussels: climate
 - BE bruges: climate
 - SE stockholm: climate
@@ -83,16 +73,16 @@ Missing a required item (92):
 - MT valletta: climate
 - RO bucharest: climate
 - RO brasov: climate
-- AM yerevan: climate, visa
-- KZ almaty: climate, visa
-- KZ astana: climate, visa
+- AM yerevan: climate
+- KZ almaty: climate
+- KZ astana: climate
 - UZ tashkent: climate
 - UZ samarkand: climate
 - UZ bukhara: climate
 - KG bishkek: climate
 - KG karakol: climate
-- PK islamabad: climate, visa
-- PK lahore: climate, visa
+- PK islamabad: climate
+- PK lahore: climate
 - NP kathmandu: climate
 - NP pokhara: climate
 - PH manila: climate
@@ -102,8 +92,8 @@ Missing a required item (92):
 - KH phnom-penh: climate, visa
 - TZ zanzibar: climate, visa
 - TZ arusha: climate, visa
-- MU port-louis: climate, visa
-- MU grand-baie: climate, visa
+- MU port-louis: climate
+- MU grand-baie: climate
 - SC mahe: climate
 - CA toronto: climate
 - CA vancouver: climate
@@ -118,7 +108,7 @@ Missing a required item (92):
 - climate: 0/156
 - places: 0/156
 - hotels: 0/156
-- visa: 69/156
+- visa: 75/156
 - currency: 156/156
 - country: 153/156
 - tourism (expected): 0/156
@@ -169,7 +159,7 @@ Missing a required item (156):
 - GB glasgow: centre, airport, type, climate, places, hotels
 - GB birmingham: centre, airport, type, climate, places, hotels
 - GB belfast: centre, airport, type, climate, places, hotels
-- IE cork: centre, airport, type, climate, places, hotels, visa
+- IE cork: centre, airport, type, climate, places, hotels
 - DE dusseldorf: centre, airport, type, climate, places, hotels
 - DE cologne: centre, airport, type, climate, places, hotels
 - CH lausanne: centre, airport, type, climate, places, hotels
@@ -242,8 +232,8 @@ Missing a required item (156):
 - BS nassau: centre, airport, type, climate, places, hotels, visa
 - BB bridgetown: centre, airport, type, climate, places, hotels, visa
 - TT port-of-spain: centre, airport, type, climate, places, hotels, visa
-- BR foz-do-iguacu: centre, airport, type, climate, places, hotels, visa
-- BR florianopolis: centre, airport, type, climate, places, hotels, visa
+- BR foz-do-iguacu: centre, airport, type, climate, places, hotels
+- BR florianopolis: centre, airport, type, climate, places, hotels
 - AR buenos-aires: centre, airport, type, climate, places, hotels, visa
 - AR mendoza: centre, airport, type, climate, places, hotels, visa
 - AR bariloche: centre, airport, type, climate, places, hotels, visa
@@ -267,9 +257,9 @@ Missing a required item (156):
 - PY asuncion: centre, airport, type, climate, places, hotels, visa
 - GY georgetown: centre, airport, type, climate, places, hotels, visa
 - SR paramaribo: centre, airport, type, climate, places, hotels, visa
-- AU perth: centre, airport, type, climate, places, hotels, visa
-- AU adelaide: centre, airport, type, climate, places, hotels, visa
-- AU cairns: centre, airport, type, climate, places, hotels, visa
+- AU perth: centre, airport, type, climate, places, hotels
+- AU adelaide: centre, airport, type, climate, places, hotels
+- AU cairns: centre, airport, type, climate, places, hotels
 - NZ auckland: centre, airport, type, climate, places, hotels
 - NZ wellington: centre, airport, type, climate, places, hotels
 - NZ christchurch: centre, airport, type, climate, places, hotels

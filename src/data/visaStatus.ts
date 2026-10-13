@@ -12,7 +12,7 @@
 // and the visa directory leaves it out rather than show a status we cannot
 // back. Still to confirm (their official pages blocked automated reading or
 // did not name Saudi Arabia on 26 Sep 2026; list updated 13 Oct 2026):
-// AM, AU, BR, IE, JO, KH, KW, KZ, LB, MA, ME, MU, PK, TN, TZ, and the
+// JO, KH, KW, MA, TN, TZ (JS-only or bot-walled pages), and the
 // countries being added (scripts/coverage/report.md lists them).
 //
 // The four categories, easiest first — what a traveller has to do before
@@ -36,6 +36,8 @@ export interface VisaStatus {
   quote: string;
   /** Last day the stated arrangement is announced to run, when it has one. */
   until?: string;
+  /** An announced change: from that day this status replaces the one above. */
+  then?: Omit<VisaStatus, "then"> & { from: string };
 }
 
 export const VISA_CHECKED_AT = "2026-09-26";
@@ -109,8 +111,24 @@ export const VISA_STATUS: Record<string, VisaStatus> = {
   BA: { category: "required", source: "https://fipa.vijeceministara.gov.ba/en/visasinformation-for-visitors", quote: "Council of Ministers (FIPA): Saudi Arabia is not on the standing visa-exempt lists; a summer exemption (1 June – 30 September in 2025) allowed up to 30 days, and holders of a valid multiple-entry Schengen or EU visa may enter without one" },
   AL: { category: "free", source: "https://punetejashtme.gov.al/en/?p=553", quote: "Albanian MFA: \"Nationals of Saudi Arabia and Qatar may travel visa-free, for tourism purposes only, from 15 April 2026 to 31 December 2026\"", until: "2026-12-31" },
   RU: { category: "free", source: "https://www.arabnews.com/node/2643134/amp", quote: "Saudi Press Agency (via Arab News): the Saudi–Russian mutual visa exemption in force from 11 May 2026; stays of up to 90 days within a calendar year for tourism, business and family visits" },
+  AU: { category: "required", source: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/electronic-travel-authority-601", quote: "Department of Home Affairs: ETA eligible passports are listed (Andorra … Vatican City); Saudi Arabia is not among them, so a Visitor visa (subclass 600) is needed" },
+  BR: { category: "required", source: "https://cop30.br/pt-br/servicos-da-cop30/visto/2025-04_quadrogeral-regime-de-vistos_pt.pdf/@@download/file", quote: "Government of Brazil, Quadro Geral de Regime de Vistos (updated 8 Apr 2025): \"Arábia Saudita\" — visit visa \"1. Visto exigido\" (a 5-year multiple-entry visit visa under the 2019 Brazil–Saudi agreement)" },
+  IE: { category: "required", source: "https://assets.ireland.ie/documents/List_of_Visa_Required_Non_Visa_Required_Nationalities_-_May_2025.pdf", quote: "Government of Ireland, list of May 2025: Saudi Arabia is under \"Visa Required Nationalities\"" },
+  KZ: { category: "free", source: "https://aifc.kz/news/kazakhstan-government-sets-visa-free-regime-for-12-more-countries/", quote: "Astana International Financial Centre (state): Government decree of 30.09.2019 adds Saudi Arabia to the visa-free list — stays that do \"not exceed 30 calendar days\"" },
+  LB: { category: "free", source: "https://www.general-security.gov.lb/en/posts/38", quote: "General Security: citizens of the Gulf Cooperation Council, incl. \"Saudi Arabia\", arriving as tourists \"are exempted from entry visas\"; 6 months stamped free of charge at the border" },
+  MU: { category: "free", source: "https://passport.govmu.org/passport/wp-content/uploads/2021/03/Visa-Requirement-Country-22062022.pdf", quote: "Passport and Immigration Office, Visa Requirement Country-wise: Saudi Arabia — \"No visa required.\"" },
+  PK: { category: "eta", source: "https://parepjeddah.org/visa/", quote: "Consulate General of Pakistan, Jeddah: \"Visa-on-arrival (VOA) for 50 countries including Saudi Arabia\" with an \"Electronic Travel Authorization to be issued within 72 hours\" (30 days, multiple entries); apply at visa.nadra.gov.pk" },
+  AM: { category: "eta", source: "https://www.mfa.am/en/visa", quote: "Armenian MFA: Saudi Arabia is not on the visa-free list nor the invitation-only list; other passports \"are required to obtain an entry visa\" — \"To apply for E-VISA please visit https://evisa.mfa.am\"" },
+  ME: { category: "free", source: "https://www.slobodnaevropa.org/a/vize-crna-gora-rusija-kina-turska-/33816126.html", quote: "Government of Montenegro decree (reported by RFE/RL, 27 Jul 2026): Saudi citizens enter visa-free until 31 October 2026; a visa is required from 1 November 2026", until: "2026-10-31",
+    then: { from: "2026-11-01", category: "required", source: "https://europeanwesternbalkans.com/2026/07/28/montenegro-introduces-visas-for-citizens-of-belarus-china-russia-saudi-arabia-and-turkiye/", quote: "Government of Montenegro decree aligning with EU visa policy: nationals of Saudi Arabia \"will require a visa to enter Montenegro as of 1 November 2026\"" } },
 };
 
 export function visaStatusFor(code: string): VisaStatus | undefined {
-  return VISA_STATUS[code.toUpperCase()];
+  const s = VISA_STATUS[code.toUpperCase()];
+  if (s?.then && new Date().toISOString().slice(0, 10) >= s.then.from) {
+    const { from: _from, ...next } = s.then;
+    void _from;
+    return next;
+  }
+  return s;
 }
