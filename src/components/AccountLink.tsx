@@ -21,6 +21,14 @@ export default function AccountLink({
 }) {
   const nav = getDictionary(locale).nav;
   const { status, user, methods } = useAccount();
+  // While the account is being asked for, the header keeps the button's
+  // place (invisible), so nothing beside it jumps when it appears.
+  if (status !== "ready" && variant === "header")
+    return (
+      <span aria-hidden="true" className="invisible hidden items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-bold sm:inline-flex">
+        <PersonIcon /> {nav.signIn}
+      </span>
+    );
   if (status !== "ready" || (!user && !methods.email && !methods.google)) return null;
   const href = `/${locale}/account`;
   const label = user ? nav.account : nav.signIn;

@@ -56,6 +56,9 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
     // element's class before React hydrates it — on purpose.
     <html lang={loc} dir={dict.dir} className="h-full antialiased" suppressHydrationWarning>
       <head>
+        {/* The two Arabic faces of the first screen, fetched with the page (globals.css). */}
+        <link rel="preload" href="/fonts/plex-ar-400.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        <link rel="preload" href="/fonts/tajawal-ar-800.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
         {/*
           Inside the phone app (mobile/, user agent "SfrtnaApp/…") the page
           wears app chrome — bottom tab bar, compact header, no footer — set
@@ -95,13 +98,13 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
           on hotel pages into affiliate links. The lmaID is a public account
           id, not a secret. Loaded after hydration so it never delays a page.
         */}
-        <Script id="stay22-params" strategy="afterInteractive">
+        <Script id="stay22-params" strategy="lazyOnload">
           {`window.Stay22=window.Stay22||{};window.Stay22.params={lmaID:'6abee21c6e93226dc14e814b'};`}
         </Script>
         <Script
           id="stay22-lma"
           src="https://scripts.stay22.com/letmeallez.js"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
         />
       </body>
     </html>

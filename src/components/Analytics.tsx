@@ -144,7 +144,7 @@ gtag('set','ads_data_redaction',true);
 gtag('set','user_properties',{app_platform:/SfrtnaApp\\/Android/.test(navigator.userAgent)?'android_app':/SfrtnaApp\\/iOS/.test(navigator.userAgent)?'ios_app':'web'});
 gtag('js',new Date());gtag('config','${GA_ID}');`}
       </Script>
-      <Script id="ga4" src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} strategy="afterInteractive" />
+      <Script id="ga4" src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} strategy="lazyOnload" />
 
       {askConsent && (
         <div
