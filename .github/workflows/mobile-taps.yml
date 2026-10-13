@@ -1,0 +1,25 @@
+# Taps every button on the main pages on an emulated phone (Pixel 7 and
+# iPhone 13) and lists the ones that did nothing, the ones covered by
+# something else, and page errors (scripts/mobile-taps.mjs). By hand.
+name: Mobile taps
+
+on:
+  workflow_dispatch:
+
+jobs:
+  taps:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install the browser
+        run: |
+          npm install --no-save --no-audit --no-fund playwright@1
+          npx playwright install --with-deps chromium
+      - name: Tap every button
+        env:
+          SMOKE_TOKEN: ${{ secrets.SMOKE_TOKEN }}
+        run: node scripts/mobile-taps.mjs
