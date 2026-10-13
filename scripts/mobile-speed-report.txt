@@ -1,8 +1,29 @@
 page | score | FCP | LCP | TBT | CLS | JS KB
-/ar | 37 | 3.1 s | 7.5 s | 3,790 ms | 0.093 | 364
-/ar/attractions | 58 | 1.3 s | 5.9 s | 890 ms | 0.002 | 312
-/ar/attractions/TR/istanbul | 89 | 1.3 s | 3.0 s | 250 ms | 0.016 | 328
-/ar/seasons | 70 | 1.5 s | 8.0 s | 250 ms | 0.06 | 315
-/ar/services | 83 | 1.4 s | 4.1 s | 190 ms | 0.003 | 320
-/ar/itinerary | 66 | 3.1 s | 7.8 s | 200 ms | 0 | 334
-/ar/visa | 70 | 1.3 s | 7.4 s | 220 ms | 0.079 | 317
+/ar | 44 | 2.0 s | 5.9 s | 3,680 ms | 0.03 | 364
+   LCP element: <h1 class="max-w-3xl font-display text-h1 font-black text-white drop-shadow-[0_2px_14…">
+   main-thread JS: scripts.stay22.com/letmeallez.js 3905ms; sfrtna.almajedhsn.workers.dev/ar 1118ms; Unattributable 906ms; sfrtna.almajedhsn.workers.dev/_next/static/chunks/3svhqtx7l0 490ms; sfrtna.almajedhsn.workers.dev/_next/static/chunks/10n-p5z-lx 185ms
+   heaviest: sfrtna.almajedhsn.workers.dev/sfrtna-logo.png 175KB; images.pexels.com/photos/32634768/pexels-photo-32634768/free 99KB; scripts.stay22.com/letmeallez.js 92KB; sfrtna.almajedhsn.workers.dev/_next/static/chunks/3svhqtx7l0 72KB
+/ar/attractions | 82 | 1.7 s | 3.5 s | 340 ms | 0.002 | 312
+   LCP element: <img src="https://images.pexels.com/photos/6173322/pexels-photo-6173322.jpeg?auto=co…" srcset="https://images.pexels.com/photos/6173322/pexe
+   main-thread JS: Unattributable 785ms; scripts.stay22.com/letmeallez.js 778ms; sfrtna.almajedhsn.workers.dev/ar/attractions 679ms; sfrtna.almajedhsn.workers.dev/_next/static/chunks/3svhqtx7l0 382ms; sfrtna.almajedhsn.workers.dev/_next/static/chunks/10n-p5z-lx 94ms
+   heaviest: images.pexels.com/photos/6173322/pexels-photo-6173322.jpeg?a 206KB; sfrtna.almajedhsn.workers.dev/sfrtna-logo.png 175KB; scripts.stay22.com/letmeallez.js 92KB; sfrtna.almajedhsn.workers.dev/_next/static/chunks/3svhqtx7l0 72KB
+/ar/attractions/TR/istanbul | 74 | 2.2 s | 4.0 s | 390 ms | 0.009 | 327
+   LCP element: <h1 class="max-w-4xl font-display text-h1 font-extrabold text-white drop-shadow-[0_2p…">
+   main-thread JS: scripts.stay22.com/letmeallez.js 761ms; sfrtna.almajedhsn.workers.dev/ar/attractions/TR/istanbul 669ms; Unattributable 429ms; sfrtna.almajedhsn.workers.dev/_next/static/chunks/3svhqtx7l0 343ms; sfrtna.almajedhsn.workers.dev/_next/static/chunks/10n-p5z-lx 63ms
+   heaviest: sfrtna.almajedhsn.workers.dev/sfrtna-logo.png 175KB; scripts.stay22.com/letmeallez.js 92KB; sfrtna.almajedhsn.workers.dev/_next/static/chunks/3svhqtx7l0 72KB; sfrtna.almajedhsn.workers.dev/fonts/plex-ar-600.woff2 45KB
+/ar/seasons | 72 | 1.9 s | 4.8 s | 340 ms | 0.067 | 315
+   LCP element: <img src="https://images.pexels.com/photos/37736013/pexels-photo-37736013/free-photo…" srcset="https://images.pexels.com/photos/37736013/pex
+   main-thread JS: scripts.stay22.com/letmeallez.js 713ms; Unattributable 574ms; sfrtna.almajedhsn.workers.dev/ar/seasons 353ms; sfrtna.almajedhsn.workers.dev/_next/static/chunks/3svhqtx7l0 319ms; sfrtna.almajedhsn.workers.dev/_next/static/chunks/10n-p5z-lx 151ms
+   heaviest: images.pexels.com/photos/37736013/pexels-photo-37736013/free 363KB; sfrtna.almajedhsn.workers.dev/sfrtna-logo.png 175KB; scripts.stay22.com/letmeallez.js 92KB; sfrtna.almajedhsn.workers.dev/_next/static/chunks/3svhqtx7l0 72KB
+/ar/services | 83 | 1.6 s | 3.5 s | 310 ms | 0.001 | 320
+   LCP element: <img src="https://images.pexels.com/photos/6173322/pexels-photo-6173322.jpeg?auto=co…" srcset="https://images.pexels.com/photos/6173322/pexe
+   main-thread JS: scripts.stay22.com/letmeallez.js 714ms; Unattributable 402ms; sfrtna.almajedhsn.workers.dev/_next/static/chunks/3svhqtx7l0 300ms; sfrtna.almajedhsn.workers.dev/ar/services 246ms; sfrtna.almajedhsn.workers.dev/_next/static/chunks/10n-p5z-lx 69ms
+   heaviest: images.pexels.com/photos/6173322/pexels-photo-6173322.jpeg?a 206KB; sfrtna.almajedhsn.workers.dev/sfrtna-logo.png 175KB; scripts.stay22.com/letmeallez.js 92KB; sfrtna.almajedhsn.workers.dev/_next/static/chunks/3svhqtx7l0 72KB
+/ar/itinerary | 83 | 1.7 s | 3.5 s | 280 ms | 0 | 334
+   LCP element: <img src="https://images.pexels.com/photos/11357903/pexels-photo-11357903.jpeg?auto=…" srcset="https://images.pexels.com/photos/11357903/pex
+   main-thread JS: scripts.stay22.com/letmeallez.js 669ms; Unattributable 363ms; sfrtna.almajedhsn.workers.dev/_next/static/chunks/3svhqtx7l0 311ms; sfrtna.almajedhsn.workers.dev/ar/itinerary 226ms
+   heaviest: images.pexels.com/photos/11357903/pexels-photo-11357903.jpeg 235KB; sfrtna.almajedhsn.workers.dev/sfrtna-logo.png 175KB; scripts.stay22.com/letmeallez.js 92KB; sfrtna.almajedhsn.workers.dev/_next/static/chunks/3svhqtx7l0 72KB
+/ar/visa | 74 | 1.9 s | 4.2 s | 350 ms | 0.089 | 317
+   LCP element: <img src="https://images.pexels.com/photos/3140204/pexels-photo-3140204.jpeg?auto=co…" srcset="https://images.pexels.com/photos/3140204/pexe
+   main-thread JS: scripts.stay22.com/letmeallez.js 798ms; sfrtna.almajedhsn.workers.dev/ar/visa 690ms; Unattributable 487ms; sfrtna.almajedhsn.workers.dev/_next/static/chunks/3svhqtx7l0 331ms; sfrtna.almajedhsn.workers.dev/_next/static/chunks/10n-p5z-lx 72ms
+   heaviest: images.pexels.com/photos/3140204/pexels-photo-3140204.jpeg?a 328KB; sfrtna.almajedhsn.workers.dev/sfrtna-logo.png 175KB; scripts.stay22.com/letmeallez.js 92KB; sfrtna.almajedhsn.workers.dev/_next/static/chunks/3svhqtx7l0 72KB
