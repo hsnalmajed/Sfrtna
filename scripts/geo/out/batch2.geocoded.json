@@ -1,0 +1,3490 @@
+{
+ "source": "OpenStreetMap Nominatim",
+ "retrievedAt": "2026-10-13T08:17:59+00:00",
+ "cities": {
+  "dammam": {
+   "country": "SA",
+   "query": "Dammam",
+   "plain": {
+    "lat": 26.43678,
+    "lon": 50.104,
+    "display_name": "Dammam, Dammam Governorate, Eastern Province, 32242, Saudi Arabia",
+    "osm_type": "node",
+    "osm_id": 287865393,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Dammam&countrycodes=sa&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 26.43678,
+    "lon": 50.104,
+    "display_name": "Dammam, Dammam Governorate, Eastern Province, 32242, Saudi Arabia",
+    "osm_type": "node",
+    "osm_id": 287865393,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Dammam&countrycodes=sa&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "taif": {
+   "country": "SA",
+   "query": "Taif",
+   "plain": {
+    "lat": 21.27028,
+    "lon": 40.41583,
+    "display_name": "At Ta'if, Al Taif, Makkah Region, 26511, Saudi Arabia",
+    "osm_type": "node",
+    "osm_id": 1236468526,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Taif&countrycodes=sa&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 21.27028,
+    "lon": 40.41583,
+    "display_name": "At Ta'if, Al Taif, Makkah Region, 26511, Saudi Arabia",
+    "osm_type": "node",
+    "osm_id": 1236468526,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Taif&countrycodes=sa&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "bodrum": {
+   "country": "TR",
+   "query": "Bodrum",
+   "plain": {
+    "lat": 37.0344,
+    "lon": 27.43065,
+    "display_name": "Bodrum, Muğla, Aegean Region, Turkey",
+    "osm_type": "relation",
+    "osm_id": 1827275,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Bodrum&countrycodes=tr&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 37.0344,
+    "lon": 27.43065,
+    "display_name": "Bodrum, Muğla, Aegean Region, Turkey",
+    "osm_type": "relation",
+    "osm_id": 1827275,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Bodrum&countrycodes=tr&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "kutaisi": {
+   "country": "GE",
+   "query": "Kutaisi",
+   "plain": {
+    "lat": 42.27161,
+    "lon": 42.70545,
+    "display_name": "Kutaisi, Imereti, 4600, Georgia",
+    "osm_type": "relation",
+    "osm_id": 2024547,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Kutaisi&countrycodes=ge&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 42.25968,
+    "lon": 42.66337,
+    "display_name": "Kutaisi, Imereti, 4600, Georgia",
+    "osm_type": "relation",
+    "osm_id": 8742174,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Kutaisi&countrycodes=ge&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "osh": {
+   "country": "KG",
+   "query": "Osh",
+   "plain": {
+    "lat": 40.10828,
+    "lon": 73.19314,
+    "display_name": "Osh Region, Kyrgyzstan",
+    "osm_type": "relation",
+    "osm_id": 178020,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Osh&countrycodes=kg&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 40.51727,
+    "lon": 72.80499,
+    "display_name": "Osh City, Kyrgyzstan",
+    "osm_type": "relation",
+    "osm_id": 8496351,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Osh&countrycodes=kg&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "kochi": {
+   "country": "IN",
+   "query": "Kochi",
+   "plain": {
+    "lat": 9.9679,
+    "lon": 76.24444,
+    "display_name": "Kochi, Ernakulam, Kerala, 682001, India",
+    "osm_type": "node",
+    "osm_id": 3862624198,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Kochi&countrycodes=in&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 9.9679,
+    "lon": 76.24444,
+    "display_name": "Kochi, Ernakulam, Kerala, 682001, India",
+    "osm_type": "node",
+    "osm_id": 3862624198,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Kochi&countrycodes=in&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "bengaluru": {
+   "country": "IN",
+   "query": "Bengaluru",
+   "plain": {
+    "lat": 12.97679,
+    "lon": 77.59008,
+    "display_name": "Bengaluru, Bangalore North, Bengaluru Urban, Karnataka, India",
+    "osm_type": "relation",
+    "osm_id": 7902476,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Bengaluru&countrycodes=in&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 12.97679,
+    "lon": 77.59008,
+    "display_name": "Bengaluru, Bangalore North, Bengaluru Urban, Karnataka, India",
+    "osm_type": "relation",
+    "osm_id": 7902476,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Bengaluru&countrycodes=in&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "maafushi": {
+   "country": "MV",
+   "query": "Maafushi",
+   "plain": {
+    "lat": 3.94116,
+    "lon": 73.49001,
+    "display_name": "Maafushi, Malé Atoll, 08090, Maldives",
+    "osm_type": "relation",
+    "osm_id": 9328389,
+    "type": "island",
+    "url": "https://nominatim.openstreetmap.org/search?q=Maafushi&countrycodes=mv&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": null,
+   "chosen": "plain"
+  },
+  "paro": {
+   "country": "BT",
+   "query": "Paro, Bhutan",
+   "plain": {
+    "lat": 27.46464,
+    "lon": 89.31834,
+    "display_name": "Paro District, Bhutan",
+    "osm_type": "relation",
+    "osm_id": 3899610,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Paro&countrycodes=bt&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 27.43077,
+    "lon": 89.41299,
+    "display_name": "Paro, Wangchang Gewog, Paro District, 12001, Bhutan",
+    "osm_type": "node",
+    "osm_id": 247439158,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Paro&countrycodes=bt&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "dhaka": {
+   "country": "BD",
+   "query": "Dhaka",
+   "plain": {
+    "lat": 23.76439,
+    "lon": 90.38901,
+    "display_name": "Dhaka, Dhaka Metropolitan, Dhaka District, Dhaka Division, 1215, Bangladesh",
+    "osm_type": "node",
+    "osm_id": 3442474911,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Dhaka&countrycodes=bd&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 23.76439,
+    "lon": 90.38901,
+    "display_name": "Dhaka, Dhaka Metropolitan, Dhaka District, Dhaka Division, 1215, Bangladesh",
+    "osm_type": "node",
+    "osm_id": 3442474911,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Dhaka&countrycodes=bd&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "shenzhen": {
+   "country": "CN",
+   "query": "Shenzhen",
+   "plain": {
+    "lat": 22.54457,
+    "lon": 114.05454,
+    "display_name": "Shenzhen, Guangdong, China",
+    "osm_type": "relation",
+    "osm_id": 3464353,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Shenzhen&countrycodes=cn&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 22.54457,
+    "lon": 114.05454,
+    "display_name": "Shenzhen, Guangdong, China",
+    "osm_type": "relation",
+    "osm_id": 3464353,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Shenzhen&countrycodes=cn&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "chengdu": {
+   "country": "CN",
+   "query": "Chengdu",
+   "plain": {
+    "lat": 30.65987,
+    "lon": 104.06332,
+    "display_name": "Chengdu, Sichuan, China",
+    "osm_type": "relation",
+    "osm_id": 2110264,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Chengdu&countrycodes=cn&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 30.65987,
+    "lon": 104.06332,
+    "display_name": "Chengdu, Sichuan, China",
+    "osm_type": "relation",
+    "osm_id": 2110264,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Chengdu&countrycodes=cn&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "sapporo": {
+   "country": "JP",
+   "query": "Sapporo",
+   "plain": {
+    "lat": 43.06194,
+    "lon": 141.35429,
+    "display_name": "Sapporo, Ishikari Subprefecture, Hokkaido Prefecture, Hokkaido Region, Japan",
+    "osm_type": "relation",
+    "osm_id": 4085749,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Sapporo&countrycodes=jp&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 43.06194,
+    "lon": 141.35429,
+    "display_name": "Sapporo, Ishikari Subprefecture, Hokkaido Prefecture, Hokkaido Region, Japan",
+    "osm_type": "relation",
+    "osm_id": 4085749,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Sapporo&countrycodes=jp&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "fukuoka": {
+   "country": "JP",
+   "query": "Fukuoka",
+   "plain": {
+    "lat": 33.62512,
+    "lon": 130.618,
+    "display_name": "Fukuoka Prefecture, Japan",
+    "osm_type": "relation",
+    "osm_id": 1553735,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Fukuoka&countrycodes=jp&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 33.5899,
+    "lon": 130.40175,
+    "display_name": "Fukuoka, Fukuoka Prefecture, Japan",
+    "osm_type": "relation",
+    "osm_id": 4008611,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Fukuoka&countrycodes=jp&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "okinawa": {
+   "country": "JP",
+   "query": "Naha",
+   "plain": {
+    "lat": 26.21223,
+    "lon": 127.67915,
+    "display_name": "Naha, Okinawa Prefecture, 900-8585, Japan",
+    "osm_type": "relation",
+    "osm_id": 4556097,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Naha&countrycodes=jp&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 26.21223,
+    "lon": 127.67915,
+    "display_name": "Naha, Okinawa Prefecture, 900-8585, Japan",
+    "osm_type": "relation",
+    "osm_id": 4556097,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Naha&countrycodes=jp&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "taipei": {
+   "country": "TW",
+   "query": "Taipei",
+   "plain": {
+    "lat": 25.03752,
+    "lon": 121.56368,
+    "display_name": "Taipei, Taiwan",
+    "osm_type": "relation",
+    "osm_id": 1293250,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Taipei&countrycodes=tw&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 25.03752,
+    "lon": 121.56368,
+    "display_name": "Taipei, Taiwan",
+    "osm_type": "relation",
+    "osm_id": 1293250,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Taipei&countrycodes=tw&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "hong-kong": {
+   "country": "HK",
+   "query": "Hong Kong",
+   "plain": null,
+   "city": null,
+   "chosen": null
+  },
+  "macau": {
+   "country": "MO",
+   "query": "Macau",
+   "plain": null,
+   "city": null,
+   "chosen": null
+  },
+  "krabi": {
+   "country": "TH",
+   "query": "Krabi (town)",
+   "plain": {
+    "lat": 8.11117,
+    "lon": 99.10973,
+    "display_name": "Krabi Province, Thailand",
+    "osm_type": "relation",
+    "osm_id": 1908779,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Krabi&countrycodes=th&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 8.05924,
+    "lon": 98.91243,
+    "display_name": "Krabi, Krabi Town Municipality, Mueang Krabi District, Krabi Province, 81300, Thailand",
+    "osm_type": "node",
+    "osm_id": 14247095946,
+    "type": "town",
+    "url": "https://nominatim.openstreetmap.org/search?q=Krabi&countrycodes=th&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "koh-samui": {
+   "country": "TH",
+   "query": "Ko Samui",
+   "plain": {
+    "lat": 9.50715,
+    "lon": 99.99576,
+    "display_name": "Ko Samui District, Surat Thani Province, Thailand",
+    "osm_type": "relation",
+    "osm_id": 18990148,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Ko+Samui&countrycodes=th&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 9.50715,
+    "lon": 99.99576,
+    "display_name": "Ko Samui District, Surat Thani Province, Thailand",
+    "osm_type": "relation",
+    "osm_id": 18990148,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Ko+Samui&countrycodes=th&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "kota-kinabalu": {
+   "country": "MY",
+   "query": "Kota Kinabalu",
+   "plain": {
+    "lat": 5.97801,
+    "lon": 116.0729,
+    "display_name": "Kota Kinabalu, West Coast Division, Sabah, 88000, Malaysia",
+    "osm_type": "node",
+    "osm_id": 303545829,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Kota+Kinabalu&countrycodes=my&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 5.97801,
+    "lon": 116.0729,
+    "display_name": "Kota Kinabalu, West Coast Division, Sabah, 88000, Malaysia",
+    "osm_type": "node",
+    "osm_id": 303545829,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Kota+Kinabalu&countrycodes=my&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "lombok": {
+   "country": "ID",
+   "query": "Mataram (city)",
+   "plain": {
+    "lat": -8.58377,
+    "lon": 116.10685,
+    "display_name": "Mataram, Kec. Selaparang, West Nusa Tenggara, Indonesia",
+    "osm_type": "relation",
+    "osm_id": 14315479,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Mataram&countrycodes=id&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": -8.58377,
+    "lon": 116.10685,
+    "display_name": "Mataram, Kec. Selaparang, West Nusa Tenggara, Indonesia",
+    "osm_type": "relation",
+    "osm_id": 14315479,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Mataram&countrycodes=id&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "labuan-bajo": {
+   "country": "ID",
+   "query": "Labuan Bajo",
+   "plain": {
+    "lat": -8.48993,
+    "lon": 119.87646,
+    "display_name": "Labuan Bajo, Manggarai Barat, East Nusa Tenggara, 86554, Indonesia",
+    "osm_type": "node",
+    "osm_id": 14110180681,
+    "type": "suburb",
+    "url": "https://nominatim.openstreetmap.org/search?q=Labuan+Bajo&countrycodes=id&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": -0.66104,
+    "lon": 119.73259,
+    "display_name": "Labuan Bajo, Donggala Regency, Central Sulawesi, Indonesia",
+    "osm_type": "node",
+    "osm_id": 1308683658,
+    "type": "village",
+    "url": "https://nominatim.openstreetmap.org/search?q=Labuan+Bajo&countrycodes=id&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "nha-trang": {
+   "country": "VN",
+   "query": "Nha Trang",
+   "plain": {
+    "lat": 12.2085,
+    "lon": 109.28712,
+    "display_name": "Nha Trang, Khánh Hòa Province, Vietnam",
+    "osm_type": "relation",
+    "osm_id": 7081538,
+    "type": "historic",
+    "url": "https://nominatim.openstreetmap.org/search?q=Nha+Trang&countrycodes=vn&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 12.23488,
+    "lon": 109.19414,
+    "display_name": "Nha Trang, Khánh Hòa Province, Vietnam",
+    "osm_type": "relation",
+    "osm_id": 16203649,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Nha+Trang&countrycodes=vn&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "phu-quoc": {
+   "country": "VN",
+   "query": "Phú Quốc",
+   "plain": {
+    "lat": 10.22879,
+    "lon": 104.01436,
+    "display_name": "Phú Quốc, An Giang Province, Vietnam",
+    "osm_type": "relation",
+    "osm_id": 7135978,
+    "type": "historic",
+    "url": "https://nominatim.openstreetmap.org/search?q=Ph%C3%BA+Qu%E1%BB%91c&countrycodes=vn&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 10.21635,
+    "lon": 103.95879,
+    "display_name": "Phú Quốc, An Giang Province, 92516, Vietnam",
+    "osm_type": "relation",
+    "osm_id": 12852607,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Ph%C3%BA+Qu%E1%BB%91c&countrycodes=vn&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "puerto-princesa": {
+   "country": "PH",
+   "query": "Puerto Princesa",
+   "plain": {
+    "lat": 9.73986,
+    "lon": 118.74382,
+    "display_name": "Puerto Princesa, Mimaropa, 5300, Philippines",
+    "osm_type": "relation",
+    "osm_id": 9481097,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Puerto+Princesa&countrycodes=ph&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 9.73986,
+    "lon": 118.74382,
+    "display_name": "Puerto Princesa, Mimaropa, 5300, Philippines",
+    "osm_type": "relation",
+    "osm_id": 9481097,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Puerto+Princesa&countrycodes=ph&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "luang-prabang": {
+   "country": "LA",
+   "query": "Luang Prabang",
+   "plain": {
+    "lat": 19.88874,
+    "lon": 102.1359,
+    "display_name": "Luang Prabang, Luang Prabang District, Luang Prabang, 10554, Laos",
+    "osm_type": "node",
+    "osm_id": 116056557,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Luang+Prabang&countrycodes=la&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 19.88874,
+    "lon": 102.1359,
+    "display_name": "Luang Prabang, Luang Prabang District, Luang Prabang, 10554, Laos",
+    "osm_type": "node",
+    "osm_id": 116056557,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Luang+Prabang&countrycodes=la&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "vientiane": {
+   "country": "LA",
+   "query": "Vientiane",
+   "plain": {
+    "lat": 17.9641,
+    "lon": 102.61337,
+    "display_name": "Vientiane Capital, Chanthabuly District, Vientiane Prefecture, Laos",
+    "osm_type": "relation",
+    "osm_id": 6979808,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Vientiane&countrycodes=la&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 17.9641,
+    "lon": 102.61337,
+    "display_name": "Vientiane Capital, Chanthabuly District, Vientiane Prefecture, Laos",
+    "osm_type": "relation",
+    "osm_id": 6979808,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Vientiane&countrycodes=la&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "bandar-seri-begawan": {
+   "country": "BN",
+   "query": "Bandar Seri Begawan",
+   "plain": {
+    "lat": 4.88955,
+    "lon": 114.94176,
+    "display_name": "Bandar Seri Begawan, Mukim Kianggeh, Brunei-Muara District, Brunei",
+    "osm_type": "relation",
+    "osm_id": 8748136,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Bandar+Seri+Begawan&countrycodes=bn&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 4.88955,
+    "lon": 114.94176,
+    "display_name": "Bandar Seri Begawan, Mukim Kianggeh, Brunei-Muara District, Brunei",
+    "osm_type": "relation",
+    "osm_id": 8748136,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Bandar+Seri+Begawan&countrycodes=bn&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "bordeaux": {
+   "country": "FR",
+   "query": "Bordeaux",
+   "plain": {
+    "lat": 44.84123,
+    "lon": -0.58004,
+    "display_name": "Bordeaux, Gironde, Nouvelle-Aquitaine, Metropolitan France, France",
+    "osm_type": "relation",
+    "osm_id": 105270,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Bordeaux&countrycodes=fr&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 44.84123,
+    "lon": -0.58004,
+    "display_name": "Bordeaux, Gironde, Nouvelle-Aquitaine, Metropolitan France, France",
+    "osm_type": "relation",
+    "osm_id": 105270,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Bordeaux&countrycodes=fr&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "strasbourg": {
+   "country": "FR",
+   "query": "Strasbourg",
+   "plain": {
+    "lat": 48.58461,
+    "lon": 7.75071,
+    "display_name": "Strasbourg, Bas-Rhin, European Collectivity of Alsace, Grand Est, Metropolitan France, France",
+    "osm_type": "relation",
+    "osm_id": 71033,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Strasbourg&countrycodes=fr&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 48.58461,
+    "lon": 7.75071,
+    "display_name": "Strasbourg, Bas-Rhin, European Collectivity of Alsace, Grand Est, Metropolitan France, France",
+    "osm_type": "relation",
+    "osm_id": 71033,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Strasbourg&countrycodes=fr&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "pisa": {
+   "country": "IT",
+   "query": "Pisa",
+   "plain": {
+    "lat": 43.47147,
+    "lon": 10.67979,
+    "display_name": "Pisa, Tuscany, Italy",
+    "osm_type": "relation",
+    "osm_id": 42338,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Pisa&countrycodes=it&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 43.71594,
+    "lon": 10.40186,
+    "display_name": "Pisa, Tuscany, Italy",
+    "osm_type": "relation",
+    "osm_id": 42527,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Pisa&countrycodes=it&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "bologna": {
+   "country": "IT",
+   "query": "Bologna",
+   "plain": {
+    "lat": 44.49382,
+    "lon": 11.34263,
+    "display_name": "Bologna, Emilia-Romagna, Italy",
+    "osm_type": "relation",
+    "osm_id": 43172,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Bologna&countrycodes=it&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 44.49382,
+    "lon": 11.34263,
+    "display_name": "Bologna, Emilia-Romagna, Italy",
+    "osm_type": "relation",
+    "osm_id": 43172,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Bologna&countrycodes=it&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "palermo": {
+   "country": "IT",
+   "query": "Palermo",
+   "plain": {
+    "lat": 38.11123,
+    "lon": 13.35244,
+    "display_name": "Palermo, Sicily, Italy",
+    "osm_type": "relation",
+    "osm_id": 39513,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Palermo&countrycodes=it&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 38.11123,
+    "lon": 13.35244,
+    "display_name": "Palermo, Sicily, Italy",
+    "osm_type": "relation",
+    "osm_id": 39513,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Palermo&countrycodes=it&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "malaga": {
+   "country": "ES",
+   "query": "Málaga",
+   "plain": {
+    "lat": 36.76479,
+    "lon": -4.4422,
+    "display_name": "Málaga, Málaga-Costa del Sol, Malaga, Andalusia, Spain",
+    "osm_type": "relation",
+    "osm_id": 340746,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=M%C3%A1laga&countrycodes=es&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 36.76479,
+    "lon": -4.4422,
+    "display_name": "Málaga, Málaga-Costa del Sol, Malaga, Andalusia, Spain",
+    "osm_type": "relation",
+    "osm_id": 340746,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=M%C3%A1laga&countrycodes=es&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "valencia": {
+   "country": "ES",
+   "query": "Valencia",
+   "plain": {
+    "lat": 39.46971,
+    "lon": -0.37634,
+    "display_name": "Valencia, Comarca de València, Valencia, Valencian Community, Spain",
+    "osm_type": "relation",
+    "osm_id": 344953,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Valencia&countrycodes=es&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 39.46971,
+    "lon": -0.37634,
+    "display_name": "Valencia, Comarca de València, Valencia, Valencian Community, Spain",
+    "osm_type": "relation",
+    "osm_id": 344953,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Valencia&countrycodes=es&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "ibiza": {
+   "country": "ES",
+   "query": "Ibiza (town)",
+   "plain": {
+    "lat": 38.97439,
+    "lon": 1.41975,
+    "display_name": "Ibiza, Balearic Islands, Spain",
+    "osm_type": "relation",
+    "osm_id": 6076060,
+    "type": "island",
+    "url": "https://nominatim.openstreetmap.org/search?q=Ibiza&countrycodes=es&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 38.91007,
+    "lon": 1.43045,
+    "display_name": "Ibiza, Balearic Islands, 07800, Spain",
+    "osm_type": "relation",
+    "osm_id": 347249,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Ibiza&countrycodes=es&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "palma": {
+   "country": "ES",
+   "query": "Palma de Mallorca",
+   "plain": {
+    "lat": 39.56958,
+    "lon": 2.65007,
+    "display_name": "Palma de Mallorca, Palma, Balearic Islands, Spain",
+    "osm_type": "relation",
+    "osm_id": 341321,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Palma+de+Mallorca&countrycodes=es&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 39.56958,
+    "lon": 2.65007,
+    "display_name": "Palma de Mallorca, Palma, Balearic Islands, Spain",
+    "osm_type": "relation",
+    "osm_id": 341321,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Palma+de+Mallorca&countrycodes=es&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "faro": {
+   "country": "PT",
+   "query": "Faro, Portugal",
+   "plain": {
+    "lat": 37.01629,
+    "lon": -7.93518,
+    "display_name": "Faro, Portugal",
+    "osm_type": "relation",
+    "osm_id": 5404220,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Faro&countrycodes=pt&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 37.01629,
+    "lon": -7.93518,
+    "display_name": "Faro, Portugal",
+    "osm_type": "relation",
+    "osm_id": 5404220,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Faro&countrycodes=pt&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "glasgow": {
+   "country": "GB",
+   "query": "Glasgow",
+   "plain": {
+    "lat": 55.86115,
+    "lon": -4.25017,
+    "display_name": "Glasgow, Glasgow City, Scotland, G2 1AR, United Kingdom",
+    "osm_type": "node",
+    "osm_id": 11127374,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Glasgow&countrycodes=gb&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 55.86115,
+    "lon": -4.25017,
+    "display_name": "Glasgow, Glasgow City, Scotland, G2 1AL, United Kingdom",
+    "osm_type": "node",
+    "osm_id": 11127374,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Glasgow&countrycodes=gb&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "birmingham": {
+   "country": "GB",
+   "query": "Birmingham",
+   "plain": {
+    "lat": 52.4949,
+    "lon": -1.85184,
+    "display_name": "Birmingham, West Midlands, England, United Kingdom",
+    "osm_type": "relation",
+    "osm_id": 162378,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Birmingham&countrycodes=gb&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 52.4949,
+    "lon": -1.85184,
+    "display_name": "Birmingham, West Midlands, England, United Kingdom",
+    "osm_type": "relation",
+    "osm_id": 162378,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Birmingham&countrycodes=gb&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "belfast": {
+   "country": "GB",
+   "query": "Belfast",
+   "plain": {
+    "lat": 54.59639,
+    "lon": -5.93018,
+    "display_name": "Belfast City District, County Antrim, Northern Ireland, United Kingdom",
+    "osm_type": "relation",
+    "osm_id": 19414244,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Belfast&countrycodes=gb&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 54.59639,
+    "lon": -5.93018,
+    "display_name": "Belfast City District, County Antrim, Northern Ireland, United Kingdom",
+    "osm_type": "relation",
+    "osm_id": 19414244,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Belfast&countrycodes=gb&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "cork": {
+   "country": "IE",
+   "query": "Cork (city)",
+   "plain": {
+    "lat": 51.89851,
+    "lon": -8.47264,
+    "display_name": "Cork, County Cork, Munster, Ireland",
+    "osm_type": "relation",
+    "osm_id": 11797890,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Cork&countrycodes=ie&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 51.89851,
+    "lon": -8.47264,
+    "display_name": "Cork, County Cork, Munster, Ireland",
+    "osm_type": "relation",
+    "osm_id": 11797890,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Cork&countrycodes=ie&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "dusseldorf": {
+   "country": "DE",
+   "query": "Düsseldorf",
+   "plain": {
+    "lat": 51.2254,
+    "lon": 6.77631,
+    "display_name": "Dusseldorf, North Rhine-Westphalia, Germany",
+    "osm_type": "relation",
+    "osm_id": 62539,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=D%C3%BCsseldorf&countrycodes=de&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 51.2254,
+    "lon": 6.77631,
+    "display_name": "Dusseldorf, North Rhine-Westphalia, Germany",
+    "osm_type": "relation",
+    "osm_id": 62539,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=D%C3%BCsseldorf&countrycodes=de&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "cologne": {
+   "country": "DE",
+   "query": "Cologne",
+   "plain": {
+    "lat": 50.93836,
+    "lon": 6.95997,
+    "display_name": "Cologne, North Rhine-Westphalia, Germany",
+    "osm_type": "relation",
+    "osm_id": 62578,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Cologne&countrycodes=de&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 50.93836,
+    "lon": 6.95997,
+    "display_name": "Cologne, North Rhine-Westphalia, Germany",
+    "osm_type": "relation",
+    "osm_id": 62578,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Cologne&countrycodes=de&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "lausanne": {
+   "country": "CH",
+   "query": "Lausanne",
+   "plain": {
+    "lat": 46.52183,
+    "lon": 6.6327,
+    "display_name": "Lausanne, District de Lausanne, Vaud, Switzerland",
+    "osm_type": "relation",
+    "osm_id": 1685018,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Lausanne&countrycodes=ch&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 46.52183,
+    "lon": 6.6327,
+    "display_name": "Lausanne, District de Lausanne, Vaud, Switzerland",
+    "osm_type": "relation",
+    "osm_id": 1685018,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Lausanne&countrycodes=ch&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "zermatt": {
+   "country": "CH",
+   "query": "Zermatt",
+   "plain": {
+    "lat": 46.02121,
+    "lon": 7.74925,
+    "display_name": "Zermatt, Visp, Oberwallis, Valais/Wallis, 3920, Switzerland",
+    "osm_type": "relation",
+    "osm_id": 1685406,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Zermatt&countrycodes=ch&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 46.02121,
+    "lon": 7.74925,
+    "display_name": "Zermatt, Visp, Oberwallis, Valais/Wallis, 3920, Switzerland",
+    "osm_type": "relation",
+    "osm_id": 1685406,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Zermatt&countrycodes=ch&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "brno": {
+   "country": "CZ",
+   "query": "Brno",
+   "plain": {
+    "lat": 49.19224,
+    "lon": 16.61134,
+    "display_name": "Brno, okres Brno-město, South Moravian Region, Czechia",
+    "osm_type": "relation",
+    "osm_id": 438171,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Brno&countrycodes=cz&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 49.19224,
+    "lon": 16.61134,
+    "display_name": "Brno, okres Brno-město, South Moravian Region, Czechia",
+    "osm_type": "relation",
+    "osm_id": 438171,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Brno&countrycodes=cz&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "gdansk": {
+   "country": "PL",
+   "query": "Gdańsk",
+   "plain": {
+    "lat": 54.4288,
+    "lon": 18.79833,
+    "display_name": "Gdańsk, Pomeranian Voivodeship, Poland",
+    "osm_type": "relation",
+    "osm_id": 2723259,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Gda%C5%84sk&countrycodes=pl&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 54.34829,
+    "lon": 18.65402,
+    "display_name": "Gdańsk, Pomeranian Voivodeship, Poland",
+    "osm_type": "relation",
+    "osm_id": 1553098,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Gda%C5%84sk&countrycodes=pl&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "bratislava": {
+   "country": "SK",
+   "query": "Bratislava",
+   "plain": {
+    "lat": 48.1435,
+    "lon": 17.10829,
+    "display_name": "Bratislava, Region of Bratislava, Slovakia",
+    "osm_type": "relation",
+    "osm_id": 1702499,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Bratislava&countrycodes=sk&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 48.1435,
+    "lon": 17.10829,
+    "display_name": "Bratislava, Region of Bratislava, Slovakia",
+    "osm_type": "relation",
+    "osm_id": 1702499,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Bratislava&countrycodes=sk&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "heraklion": {
+   "country": "GR",
+   "query": "Heraklion",
+   "plain": {
+    "lat": 35.33908,
+    "lon": 25.13328,
+    "display_name": "Heraklion, Heraklion Municipal Unit, Municipality of Heraklion, Heraklion Regional Unit, Region of Crete, 712 02, Greece",
+    "osm_type": "node",
+    "osm_id": 29438069,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Heraklion&countrycodes=gr&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 35.33908,
+    "lon": 25.13328,
+    "display_name": "Heraklion, Heraklion Municipal Unit, Municipality of Heraklion, Heraklion Regional Unit, Region of Crete, 712 02, Greece",
+    "osm_type": "node",
+    "osm_id": 29438069,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Heraklion&countrycodes=gr&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "rhodes": {
+   "country": "GR",
+   "query": "Rhodes (city)",
+   "plain": {
+    "lat": 36.1724,
+    "lon": 27.91948,
+    "display_name": "Rhodes, Aegean, Greece",
+    "osm_type": "relation",
+    "osm_id": 452614,
+    "type": "island",
+    "url": "https://nominatim.openstreetmap.org/search?q=Rhodes&countrycodes=gr&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 36.44372,
+    "lon": 28.22737,
+    "display_name": "Rhodes, Municipal Unit of Rhodes, Municipality of Rhodes, Rhodes Regional Unit, South Aegean, Aegean, 851 00, Greece",
+    "osm_type": "node",
+    "osm_id": 126244310,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Rhodes&countrycodes=gr&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "corfu": {
+   "country": "GR",
+   "query": "Corfu (city)",
+   "plain": {
+    "lat": 39.59134,
+    "lon": 19.85962,
+    "display_name": "Corfu, Corfu Regional Unit, Ioanian Islands, Peloponnese, Western Greece and the Ionian, Greece",
+    "osm_type": "relation",
+    "osm_id": 966358,
+    "type": "island",
+    "url": "https://nominatim.openstreetmap.org/search?q=Corfu&countrycodes=gr&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 39.62173,
+    "lon": 19.91809,
+    "display_name": "Corfu, Municipality of Central Corfu and Diapontia Islands, Corfu Regional Unit, Ioanian Islands, Peloponnese, Western Greece and the Ionian, 491 00, Greece",
+    "osm_type": "node",
+    "osm_id": 1827940532,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Corfu&countrycodes=gr&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "gothenburg": {
+   "country": "SE",
+   "query": "Gothenburg",
+   "plain": {
+    "lat": 57.70723,
+    "lon": 11.96702,
+    "display_name": "Gothenburg, Göteborgs Stad, Västra Götaland County, 411 10, Sweden",
+    "osm_type": "node",
+    "osm_id": 25930131,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Gothenburg&countrycodes=se&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 57.70723,
+    "lon": 11.96702,
+    "display_name": "Gothenburg, Göteborgs Stad, Västra Götaland County, 411 10, Sweden",
+    "osm_type": "node",
+    "osm_id": 25930131,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Gothenburg&countrycodes=se&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "tallinn": {
+   "country": "EE",
+   "query": "Tallinn",
+   "plain": {
+    "lat": 59.43724,
+    "lon": 24.75727,
+    "display_name": "Tallinn, Harju County, Estonia",
+    "osm_type": "relation",
+    "osm_id": 2164745,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Tallinn&countrycodes=ee&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 59.43724,
+    "lon": 24.75727,
+    "display_name": "Tallinn, Harju County, Estonia",
+    "osm_type": "relation",
+    "osm_id": 2164745,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Tallinn&countrycodes=ee&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "riga": {
+   "country": "LV",
+   "query": "Riga",
+   "plain": {
+    "lat": 56.9494,
+    "lon": 24.10518,
+    "display_name": "Riga, Latvia",
+    "osm_type": "relation",
+    "osm_id": 13048688,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Riga&countrycodes=lv&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 56.9494,
+    "lon": 24.10518,
+    "display_name": "Riga, Latvia",
+    "osm_type": "relation",
+    "osm_id": 13048688,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Riga&countrycodes=lv&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "vilnius": {
+   "country": "LT",
+   "query": "Vilnius",
+   "plain": {
+    "lat": 54.68705,
+    "lon": 25.28291,
+    "display_name": "Vilnius, Vilnius city municipality, Vilnius County, Lithuania",
+    "osm_type": "relation",
+    "osm_id": 1529146,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Vilnius&countrycodes=lt&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 54.68705,
+    "lon": 25.28291,
+    "display_name": "Vilnius, Vilnius city municipality, Vilnius County, Lithuania",
+    "osm_type": "relation",
+    "osm_id": 1529146,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Vilnius&countrycodes=lt&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "sofia": {
+   "country": "BG",
+   "query": "Sofia",
+   "plain": {
+    "lat": 42.6977,
+    "lon": 23.32174,
+    "display_name": "Sofia, Sredec, Stolichna, Sofia-City, Bulgaria",
+    "osm_type": "relation",
+    "osm_id": 4283101,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Sofia&countrycodes=bg&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 42.6977,
+    "lon": 23.32174,
+    "display_name": "Sofia, Sredec, Stolichna, Sofia-City, Bulgaria",
+    "osm_type": "relation",
+    "osm_id": 4283101,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Sofia&countrycodes=bg&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "varna": {
+   "country": "BG",
+   "query": "Varna, Bulgaria",
+   "plain": {
+    "lat": 43.20739,
+    "lon": 27.91667,
+    "display_name": "Varna, Odessos, Varna, Bulgaria",
+    "osm_type": "relation",
+    "osm_id": 13477567,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Varna&countrycodes=bg&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 43.20739,
+    "lon": 27.91667,
+    "display_name": "Varna, Odessos, Varna, Bulgaria",
+    "osm_type": "relation",
+    "osm_id": 13477567,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Varna&countrycodes=bg&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "skopje": {
+   "country": "MK",
+   "query": "Skopje",
+   "plain": {
+    "lat": 41.99621,
+    "lon": 21.43189,
+    "display_name": "Skopje, City of Skopje, North Macedonia",
+    "osm_type": "relation",
+    "osm_id": 6966465,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Skopje&countrycodes=mk&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 41.99621,
+    "lon": 21.43189,
+    "display_name": "Skopje, City of Skopje, North Macedonia",
+    "osm_type": "relation",
+    "osm_id": 6966465,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Skopje&countrycodes=mk&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "luxembourg": {
+   "country": "LU",
+   "query": "Luxembourg City",
+   "plain": {
+    "lat": 49.60105,
+    "lon": 6.06399,
+    "display_name": "Sky Bar Luxembourg, 80, Route de Longwy, City Concorde, Bertrange, Canton Luxembourg, 8080, Luxembourg",
+    "osm_type": "node",
+    "osm_id": 7197953486,
+    "type": "restaurant",
+    "url": "https://nominatim.openstreetmap.org/search?q=Luxembourg+City&countrycodes=lu&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": null,
+   "chosen": "plain"
+  },
+  "monte-carlo": {
+   "country": "MC",
+   "query": "Monte Carlo",
+   "plain": {
+    "lat": 43.7403,
+    "lon": 7.42656,
+    "display_name": "Monte-Carlo, Monaco",
+    "osm_type": "relation",
+    "osm_id": 5986438,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Monte+Carlo&countrycodes=mc&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": null,
+   "chosen": "plain"
+  },
+  "san-marino": {
+   "country": "SM",
+   "query": "City of San Marino",
+   "plain": {
+    "lat": 43.9364,
+    "lon": 12.4467,
+    "display_name": "City of San Marino, 47890, San Marino",
+    "osm_type": "relation",
+    "osm_id": 3012945,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=City+of+San+Marino&countrycodes=sm&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 43.9364,
+    "lon": 12.4467,
+    "display_name": "City of San Marino, 47890, San Marino",
+    "osm_type": "relation",
+    "osm_id": 3012945,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=City+of+San+Marino&countrycodes=sm&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "vatican-city": {
+   "country": "VA",
+   "query": "Vatican City",
+   "plain": {
+    "lat": 41.90341,
+    "lon": 12.45285,
+    "display_name": "Vatican City",
+    "osm_type": "relation",
+    "osm_id": 36989,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Vatican+City&countrycodes=va&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": null,
+   "chosen": "plain"
+  },
+  "andorra-la-vella": {
+   "country": "AD",
+   "query": "Andorra la Vella",
+   "plain": {
+    "lat": 42.49792,
+    "lon": 1.50323,
+    "display_name": "Andorra la Vella, AD500, Andorra",
+    "osm_type": "relation",
+    "osm_id": 2804753,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Andorra+la+Vella&countrycodes=ad&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 42.49792,
+    "lon": 1.50323,
+    "display_name": "Andorra la Vella, AD500, Andorra",
+    "osm_type": "relation",
+    "osm_id": 2804753,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Andorra+la+Vella&countrycodes=ad&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "giza": {
+   "country": "EG",
+   "query": "Giza",
+   "plain": {
+    "lat": 29.98708,
+    "lon": 31.21181,
+    "display_name": "Giza, Aj Jiza, 12524, Egypt",
+    "osm_type": "node",
+    "osm_id": 27565120,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Giza&countrycodes=eg&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 29.98708,
+    "lon": 31.21181,
+    "display_name": "Giza, Aj Jiza, 12524, Egypt",
+    "osm_type": "node",
+    "osm_id": 27565120,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Giza&countrycodes=eg&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "hurghada": {
+   "country": "EG",
+   "query": "Hurghada",
+   "plain": {
+    "lat": 27.22256,
+    "lon": 33.83071,
+    "display_name": "Hurghada, Red Sea, 84512, Egypt",
+    "osm_type": "node",
+    "osm_id": 27084072,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Hurghada&countrycodes=eg&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 27.22256,
+    "lon": 33.83071,
+    "display_name": "Hurghada, Red Sea, 84512, Egypt",
+    "osm_type": "node",
+    "osm_id": 27084072,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Hurghada&countrycodes=eg&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "agadir": {
+   "country": "MA",
+   "query": "Agadir",
+   "plain": {
+    "lat": 30.42052,
+    "lon": -9.58385,
+    "display_name": "Agadir, Pachalik d'Agadir ⵍⴱⴰⵛⴰⵡⵉⵢⴰ ⵏ ⴰⴳⴰⴷⵉⵔ باشوية أكادير, Agadir Ida-Outanane Prefecture, Souss-Massa, Morocco",
+    "osm_type": "relation",
+    "osm_id": 2529624,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Agadir&countrycodes=ma&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 30.42052,
+    "lon": -9.58385,
+    "display_name": "Agadir, Pachalik d'Agadir ⵍⴱⴰⵛⴰⵡⵉⵢⴰ ⵏ ⴰⴳⴰⴷⵉⵔ باشوية أكادير, Agadir Ida-Outanane Prefecture, Souss-Massa, Morocco",
+    "osm_type": "relation",
+    "osm_id": 2529624,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Agadir&countrycodes=ma&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "rabat": {
+   "country": "MA",
+   "query": "Rabat",
+   "plain": {
+    "lat": 34.02185,
+    "lon": -6.84089,
+    "display_name": "Rabat, باشوية الرباط, Rabat Prefecture, Rabat-Salé-Kénitra, Morocco",
+    "osm_type": "relation",
+    "osm_id": 2799215,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Rabat&countrycodes=ma&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 34.02185,
+    "lon": -6.84089,
+    "display_name": "Rabat, باشوية الرباط, Rabat Prefecture, Rabat-Salé-Kénitra, Morocco",
+    "osm_type": "relation",
+    "osm_id": 2799215,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Rabat&countrycodes=ma&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "hammamet": {
+   "country": "TN",
+   "query": "Hammamet",
+   "plain": {
+    "lat": 36.40066,
+    "lon": 10.61906,
+    "display_name": "Hammamet, الحمامات الشرقية, معتمدية الحمامات, Nabeul, 8050, Tunisia",
+    "osm_type": "node",
+    "osm_id": 287583296,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Hammamet&countrycodes=tn&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 36.40066,
+    "lon": 10.61906,
+    "display_name": "Hammamet, الحمامات الشرقية, معتمدية الحمامات, Nabeul, 8050, Tunisia",
+    "osm_type": "node",
+    "osm_id": 287583296,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Hammamet&countrycodes=tn&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "algiers": {
+   "country": "DZ",
+   "query": "Algiers",
+   "plain": {
+    "lat": 36.77293,
+    "lon": 3.05884,
+    "display_name": "Algiers, Sidi M'Hamed District, Algiers, 16000, Algeria",
+    "osm_type": "node",
+    "osm_id": 299617915,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Algiers&countrycodes=dz&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 36.77293,
+    "lon": 3.05884,
+    "display_name": "Algiers, Sidi M'Hamed District, Algiers, 16000, Algeria",
+    "osm_type": "node",
+    "osm_id": 299617915,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Algiers&countrycodes=dz&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "oran": {
+   "country": "DZ",
+   "query": "Oran",
+   "plain": {
+    "lat": 35.70444,
+    "lon": -0.6503,
+    "display_name": "Oran, Oran District, Oran, 31000, Algeria",
+    "osm_type": "relation",
+    "osm_id": 1259562,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Oran&countrycodes=dz&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 35.70444,
+    "lon": -0.6503,
+    "display_name": "Oran, Oran District, Oran, 31000, Algeria",
+    "osm_type": "relation",
+    "osm_id": 1259562,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Oran&countrycodes=dz&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "dar-es-salaam": {
+   "country": "TZ",
+   "query": "Dar es Salaam",
+   "plain": {
+    "lat": -6.81608,
+    "lon": 39.28036,
+    "display_name": "Dar es Salaam, Coastal Zone, Tanzania",
+    "osm_type": "relation",
+    "osm_id": 7202037,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Dar+es+Salaam&countrycodes=tz&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": -6.81608,
+    "lon": 39.28036,
+    "display_name": "Dar es Salaam, Coastal Zone, Tanzania",
+    "osm_type": "relation",
+    "osm_id": 7202037,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Dar+es+Salaam&countrycodes=tz&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "addis-ababa": {
+   "country": "ET",
+   "query": "Addis Ababa",
+   "plain": {
+    "lat": 9.0,
+    "lon": 38.75,
+    "display_name": "Addis Ababa, Ethiopia",
+    "osm_type": "relation",
+    "osm_id": 1707699,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Addis+Ababa&countrycodes=et&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 9.03581,
+    "lon": 38.75243,
+    "display_name": "Addis Ababa, Arada, Addis Ababa, 3578, Ethiopia",
+    "osm_type": "node",
+    "osm_id": 27565076,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Addis+Ababa&countrycodes=et&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "entebbe": {
+   "country": "UG",
+   "query": "Entebbe",
+   "plain": {
+    "lat": 0.06117,
+    "lon": 32.46986,
+    "display_name": "Entebbe City, Central Region, Uganda",
+    "osm_type": "relation",
+    "osm_id": 14723820,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Entebbe&countrycodes=ug&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 0.06117,
+    "lon": 32.46986,
+    "display_name": "Entebbe City, Central Region, Uganda",
+    "osm_type": "relation",
+    "osm_id": 14723820,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Entebbe&countrycodes=ug&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "kigali": {
+   "country": "RW",
+   "query": "Kigali",
+   "plain": {
+    "lat": -1.95344,
+    "lon": 30.11401,
+    "display_name": "City of Kigali, Rwanda",
+    "osm_type": "relation",
+    "osm_id": 1708283,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Kigali&countrycodes=rw&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": -1.95344,
+    "lon": 30.11401,
+    "display_name": "City of Kigali, Rwanda",
+    "osm_type": "relation",
+    "osm_id": 1708283,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Kigali&countrycodes=rw&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "praslin": {
+   "country": "SC",
+   "query": "Praslin",
+   "plain": {
+    "lat": -4.32507,
+    "lon": 55.73561,
+    "display_name": "Praslin, Seychelles",
+    "osm_type": "relation",
+    "osm_id": 16184684,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Praslin&countrycodes=sc&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": null,
+   "chosen": "plain"
+  },
+  "antananarivo": {
+   "country": "MG",
+   "query": "Antananarivo",
+   "plain": {
+    "lat": -18.91001,
+    "lon": 47.52558,
+    "display_name": "Antananarivo, Analamanga, Province d’Antananarivo, 101, Madagascar",
+    "osm_type": "node",
+    "osm_id": 27565116,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Antananarivo&countrycodes=mg&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": -18.91001,
+    "lon": 47.52558,
+    "display_name": "Antananarivo, Analamanga, Province d’Antananarivo, 101, Madagascar",
+    "osm_type": "node",
+    "osm_id": 27565116,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Antananarivo&countrycodes=mg&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "nosy-be": {
+   "country": "MG",
+   "query": "Nosy Be",
+   "plain": {
+    "lat": -13.31195,
+    "lon": 48.2534,
+    "display_name": "Nosy Be, Diana Region, Antsiranana Province, Madagascar",
+    "osm_type": "relation",
+    "osm_id": 8099596,
+    "type": "island",
+    "url": "https://nominatim.openstreetmap.org/search?q=Nosy+Be&countrycodes=mg&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": null,
+   "chosen": "plain"
+  },
+  "dakar": {
+   "country": "SN",
+   "query": "Dakar",
+   "plain": {
+    "lat": 14.69342,
+    "lon": -17.44794,
+    "display_name": "Dakar, Dakar Region, Senegal",
+    "osm_type": "relation",
+    "osm_id": 12982139,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Dakar&countrycodes=sn&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 14.69342,
+    "lon": -17.44794,
+    "display_name": "Dakar, Dakar Region, Senegal",
+    "osm_type": "relation",
+    "osm_id": 12982139,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Dakar&countrycodes=sn&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "accra": {
+   "country": "GH",
+   "query": "Accra",
+   "plain": {
+    "lat": 5.55711,
+    "lon": -0.20124,
+    "display_name": "Accra, Korle-Klottey Municipal District, Greater Accra Region, Ghana",
+    "osm_type": "relation",
+    "osm_id": 12803764,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Accra&countrycodes=gh&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 5.55711,
+    "lon": -0.20124,
+    "display_name": "Accra, Korle-Klottey Municipal District, Greater Accra Region, Ghana",
+    "osm_type": "relation",
+    "osm_id": 12803764,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Accra&countrycodes=gh&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "lagos": {
+   "country": "NG",
+   "query": "Lagos",
+   "plain": {
+    "lat": 6.45506,
+    "lon": 3.39418,
+    "display_name": "Lagos, Lagos Island, Lagos State, 100242, Nigeria",
+    "osm_type": "node",
+    "osm_id": 27565124,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Lagos&countrycodes=ng&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 6.45506,
+    "lon": 3.39418,
+    "display_name": "Lagos, Lagos Island, Lagos State, 100242, Nigeria",
+    "osm_type": "node",
+    "osm_id": 27565124,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Lagos&countrycodes=ng&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "windhoek": {
+   "country": "NA",
+   "query": "Windhoek",
+   "plain": {
+    "lat": -22.53356,
+    "lon": 17.04548,
+    "display_name": "Windhoek, Khomas, Namibia",
+    "osm_type": "relation",
+    "osm_id": 8650326,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Windhoek&countrycodes=na&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": -22.57761,
+    "lon": 17.07727,
+    "display_name": "Windhoek, Khomas, Namibia",
+    "osm_type": "way",
+    "osm_id": 29989621,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Windhoek&countrycodes=na&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "gaborone": {
+   "country": "BW",
+   "query": "Gaborone",
+   "plain": {
+    "lat": -24.65814,
+    "lon": 25.90885,
+    "display_name": "Gaborone, Botswana",
+    "osm_type": "relation",
+    "osm_id": 17349208,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Gaborone&countrycodes=bw&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": -24.65814,
+    "lon": 25.90885,
+    "display_name": "Gaborone, Botswana",
+    "osm_type": "relation",
+    "osm_id": 17349208,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Gaborone&countrycodes=bw&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "livingstone": {
+   "country": "ZM",
+   "query": "Livingstone, Zambia",
+   "plain": {
+    "lat": -17.85314,
+    "lon": 25.86143,
+    "display_name": "Livingstone, Livingstone District, Southern Province, Zambia",
+    "osm_type": "node",
+    "osm_id": 89085357,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Livingstone&countrycodes=zm&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": -17.85314,
+    "lon": 25.86143,
+    "display_name": "Livingstone, Livingstone District, Southern Province, Zambia",
+    "osm_type": "node",
+    "osm_id": 89085357,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Livingstone&countrycodes=zm&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "victoria-falls": {
+   "country": "ZW",
+   "query": "Victoria Falls (city)",
+   "plain": {
+    "lat": -17.9229,
+    "lon": 25.84768,
+    "display_name": "Devil's Cataract, Victoria Falls, Hwange, Matabeleland North Province, Zimbabwe",
+    "osm_type": "way",
+    "osm_id": 579843538,
+    "type": "cliff",
+    "url": "https://nominatim.openstreetmap.org/search?q=Victoria+Falls&countrycodes=zw&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": null,
+   "chosen": "plain"
+  },
+  "maputo": {
+   "country": "MZ",
+   "query": "Maputo",
+   "plain": {
+    "lat": -25.96621,
+    "lon": 32.56745,
+    "display_name": "Maputo, Zona Sul, Mozambique",
+    "osm_type": "relation",
+    "osm_id": 3348644,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Maputo&countrycodes=mz&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": -25.96621,
+    "lon": 32.56745,
+    "display_name": "Maputo, Zona Sul, Mozambique",
+    "osm_type": "relation",
+    "osm_id": 3348644,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Maputo&countrycodes=mz&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "sal": {
+   "country": "CV",
+   "query": "Sal, Cape Verde",
+   "plain": {
+    "lat": 16.72046,
+    "lon": -22.93868,
+    "display_name": "Sal, Cape Verde",
+    "osm_type": "relation",
+    "osm_id": 3830198,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Sal&countrycodes=cv&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 16.17597,
+    "lon": -22.91698,
+    "display_name": "Sal Rei, Boa Vista, 5110, Cape Verde",
+    "osm_type": "node",
+    "osm_id": 2444366506,
+    "type": "town",
+    "url": "https://nominatim.openstreetmap.org/search?q=Sal&countrycodes=cv&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "orlando": {
+   "country": "US",
+   "query": "Orlando, Florida",
+   "plain": {
+    "lat": 28.54212,
+    "lon": -81.37905,
+    "display_name": "Orlando, Orange County, Florida, United States",
+    "osm_type": "relation",
+    "osm_id": 1128379,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Orlando&countrycodes=us&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 28.54212,
+    "lon": -81.37905,
+    "display_name": "Orlando, Orange County, Florida, United States",
+    "osm_type": "relation",
+    "osm_id": 1128379,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Orlando&countrycodes=us&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "chicago": {
+   "country": "US",
+   "query": "Chicago",
+   "plain": {
+    "lat": 41.87556,
+    "lon": -87.62442,
+    "display_name": "Chicago, South Chicago Township, Cook County, Illinois, United States",
+    "osm_type": "relation",
+    "osm_id": 122604,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Chicago&countrycodes=us&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 41.87556,
+    "lon": -87.62442,
+    "display_name": "Chicago, South Chicago Township, Cook County, Illinois, United States",
+    "osm_type": "relation",
+    "osm_id": 122604,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Chicago&countrycodes=us&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "washington-dc": {
+   "country": "US",
+   "query": "Washington, D.C.",
+   "plain": {
+    "lat": 38.8951,
+    "lon": -77.03638,
+    "display_name": "Washington, District of Columbia, United States",
+    "osm_type": "relation",
+    "osm_id": 5396194,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Washington%2C+D.C.&countrycodes=us&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 38.8951,
+    "lon": -77.03638,
+    "display_name": "Washington, District of Columbia, United States",
+    "osm_type": "relation",
+    "osm_id": 5396194,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Washington%2C+D.C.&countrycodes=us&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "seattle": {
+   "country": "US",
+   "query": "Seattle",
+   "plain": {
+    "lat": 47.60383,
+    "lon": -122.33006,
+    "display_name": "Seattle, King County, Washington, United States",
+    "osm_type": "relation",
+    "osm_id": 237385,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Seattle&countrycodes=us&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 47.60383,
+    "lon": -122.33006,
+    "display_name": "Seattle, King County, Washington, United States",
+    "osm_type": "relation",
+    "osm_id": 237385,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Seattle&countrycodes=us&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "honolulu": {
+   "country": "US",
+   "query": "Honolulu",
+   "plain": {
+    "lat": 21.30455,
+    "lon": -157.85568,
+    "display_name": "Honolulu, Honolulu County, Hawaii, United States",
+    "osm_type": "relation",
+    "osm_id": 119231,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Honolulu&countrycodes=us&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 21.30455,
+    "lon": -157.85568,
+    "display_name": "Honolulu, Honolulu County, Hawaii, United States",
+    "osm_type": "relation",
+    "osm_id": 119231,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Honolulu&countrycodes=us&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "boston": {
+   "country": "US",
+   "query": "Boston",
+   "plain": {
+    "lat": 42.35883,
+    "lon": -71.05783,
+    "display_name": "Boston, Suffolk County, Massachusetts, United States",
+    "osm_type": "relation",
+    "osm_id": 2315704,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Boston&countrycodes=us&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 42.35883,
+    "lon": -71.05783,
+    "display_name": "Boston, Suffolk County, Massachusetts, United States",
+    "osm_type": "relation",
+    "osm_id": 2315704,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Boston&countrycodes=us&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "calgary": {
+   "country": "CA",
+   "query": "Calgary",
+   "plain": {
+    "lat": 51.04561,
+    "lon": -114.05754,
+    "display_name": "Calgary, Alberta, Canada",
+    "osm_type": "relation",
+    "osm_id": 3227127,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Calgary&countrycodes=ca&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 51.04561,
+    "lon": -114.05754,
+    "display_name": "Calgary, Alberta, Canada",
+    "osm_type": "relation",
+    "osm_id": 3227127,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Calgary&countrycodes=ca&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "quebec-city": {
+   "country": "CA",
+   "query": "Quebec City",
+   "plain": {
+    "lat": 46.81374,
+    "lon": -71.20841,
+    "display_name": "Quebec, Urban agglomeration of Québec, Capitale-Nationale, Quebec, Canada",
+    "osm_type": "relation",
+    "osm_id": 2319206,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Quebec+City&countrycodes=ca&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 46.81374,
+    "lon": -71.20841,
+    "display_name": "Quebec, Urban agglomeration of Québec, Capitale-Nationale, Quebec, Canada",
+    "osm_type": "relation",
+    "osm_id": 2319206,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Quebec+City&countrycodes=ca&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "ottawa": {
+   "country": "CA",
+   "query": "Ottawa",
+   "plain": {
+    "lat": 45.42088,
+    "lon": -75.69011,
+    "display_name": "Ottawa, Eastern Ontario, Ontario, Canada",
+    "osm_type": "relation",
+    "osm_id": 4136816,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Ottawa&countrycodes=ca&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 45.42088,
+    "lon": -75.69011,
+    "display_name": "Ottawa, Eastern Ontario, Ontario, Canada",
+    "osm_type": "relation",
+    "osm_id": 4136816,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Ottawa&countrycodes=ca&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "los-cabos": {
+   "country": "MX",
+   "query": "Cabo San Lucas",
+   "plain": {
+    "lat": 22.89389,
+    "lon": -109.92006,
+    "display_name": "Cabo San Lucas, Los Cabos Municipality, Baja California Sur, 23470, Mexico",
+    "osm_type": "node",
+    "osm_id": 303079568,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Cabo+San+Lucas&countrycodes=mx&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 22.89389,
+    "lon": -109.92006,
+    "display_name": "Cabo San Lucas, Los Cabos Municipality, Baja California Sur, 23470, Mexico",
+    "osm_type": "node",
+    "osm_id": 303079568,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Cabo+San+Lucas&countrycodes=mx&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "puerto-vallarta": {
+   "country": "MX",
+   "query": "Puerto Vallarta",
+   "plain": {
+    "lat": 20.64072,
+    "lon": -105.22031,
+    "display_name": "Puerto Vallarta, Región Costa Norte, Jalisco, 48300, Mexico",
+    "osm_type": "node",
+    "osm_id": 2052329081,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Puerto+Vallarta&countrycodes=mx&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 20.64072,
+    "lon": -105.22031,
+    "display_name": "Puerto Vallarta, Región Costa Norte, Jalisco, 48300, Mexico",
+    "osm_type": "node",
+    "osm_id": 2052329081,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Puerto+Vallarta&countrycodes=mx&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "havana": {
+   "country": "CU",
+   "query": "Havana",
+   "plain": {
+    "lat": 23.1353,
+    "lon": -82.35896,
+    "display_name": "Havana, 10000, Cuba",
+    "osm_type": "node",
+    "osm_id": 26396457,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Havana&countrycodes=cu&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 23.1353,
+    "lon": -82.35896,
+    "display_name": "Havana, 10000, Cuba",
+    "osm_type": "node",
+    "osm_id": 26396457,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Havana&countrycodes=cu&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "varadero": {
+   "country": "CU",
+   "query": "Varadero",
+   "plain": {
+    "lat": 23.14958,
+    "lon": -81.26002,
+    "display_name": "Varadero, Matanzas, Cuba",
+    "osm_type": "relation",
+    "osm_id": 11281805,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Varadero&countrycodes=cu&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 23.14958,
+    "lon": -81.26002,
+    "display_name": "Varadero, Matanzas, Cuba",
+    "osm_type": "relation",
+    "osm_id": 11281805,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Varadero&countrycodes=cu&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "punta-cana": {
+   "country": "DO",
+   "query": "Punta Cana",
+   "plain": {
+    "lat": 18.55655,
+    "lon": -68.36916,
+    "display_name": "Punta Cana, Higüey, La Altagracia, 41201, Dominican Republic",
+    "osm_type": "node",
+    "osm_id": 2613949295,
+    "type": "town",
+    "url": "https://nominatim.openstreetmap.org/search?q=Punta+Cana&countrycodes=do&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 18.87818,
+    "lon": -71.3461,
+    "display_name": "Punta Caña, San Juan de la Maguana, San Juan, 12505, Dominican Republic",
+    "osm_type": "node",
+    "osm_id": 14095814232,
+    "type": "village",
+    "url": "https://nominatim.openstreetmap.org/search?q=Punta+Cana&countrycodes=do&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "santo-domingo": {
+   "country": "DO",
+   "query": "Santo Domingo",
+   "plain": {
+    "lat": 18.47139,
+    "lon": -69.89184,
+    "display_name": "Santo Domingo, Distrito Nacional, 03201, Dominican Republic",
+    "osm_type": "relation",
+    "osm_id": 7407678,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Santo+Domingo&countrycodes=do&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 18.47139,
+    "lon": -69.89184,
+    "display_name": "Santo Domingo, Distrito Nacional, 03201, Dominican Republic",
+    "osm_type": "relation",
+    "osm_id": 7407678,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Santo+Domingo&countrycodes=do&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "montego-bay": {
+   "country": "JM",
+   "query": "Montego Bay",
+   "plain": {
+    "lat": 18.47246,
+    "lon": -77.92174,
+    "display_name": "Montego Bay, Saint James, Cornwall County, Jamaica",
+    "osm_type": "way",
+    "osm_id": 1286677876,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Montego+Bay&countrycodes=jm&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 18.47246,
+    "lon": -77.92174,
+    "display_name": "Montego Bay, Saint James, Cornwall County, Jamaica",
+    "osm_type": "way",
+    "osm_id": 1286677876,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Montego+Bay&countrycodes=jm&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "kingston": {
+   "country": "JM",
+   "query": "Kingston, Jamaica",
+   "plain": {
+    "lat": 17.97121,
+    "lon": -76.79281,
+    "display_name": "Kingston, Surrey County, Jamaica",
+    "osm_type": "node",
+    "osm_id": 53371112,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Kingston&countrycodes=jm&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 17.97121,
+    "lon": -76.79281,
+    "display_name": "Kingston, Surrey County, Jamaica",
+    "osm_type": "node",
+    "osm_id": 53371112,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Kingston&countrycodes=jm&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "san-jose": {
+   "country": "CR",
+   "query": "San José, Costa Rica",
+   "plain": {
+    "lat": 9.93274,
+    "lon": -84.07967,
+    "display_name": "San José, San Jose Province, Costa Rica",
+    "osm_type": "relation",
+    "osm_id": 19827540,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=San+Jos%C3%A9&countrycodes=cr&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 9.93274,
+    "lon": -84.07967,
+    "display_name": "San José, San Jose Province, Costa Rica",
+    "osm_type": "relation",
+    "osm_id": 19827540,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=San+Jos%C3%A9&countrycodes=cr&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "liberia": {
+   "country": "CR",
+   "query": "Liberia, Costa Rica",
+   "plain": {
+    "lat": 10.63198,
+    "lon": -85.43932,
+    "display_name": "Liberia, Guanacaste, 50101, Costa Rica",
+    "osm_type": "relation",
+    "osm_id": 5726714,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Liberia&countrycodes=cr&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 10.63198,
+    "lon": -85.43932,
+    "display_name": "Liberia, Guanacaste, 50101, Costa Rica",
+    "osm_type": "relation",
+    "osm_id": 5726714,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Liberia&countrycodes=cr&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "panama-city": {
+   "country": "PA",
+   "query": "Panama City",
+   "plain": {
+    "lat": 8.97145,
+    "lon": -79.53418,
+    "display_name": "Panama City, Calidonia, Distrito de Panamá, Panamá Province, 0843, Panama",
+    "osm_type": "node",
+    "osm_id": 1242998122,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Panama+City&countrycodes=pa&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 8.97145,
+    "lon": -79.53418,
+    "display_name": "Panama City, Calidonia, Distrito de Panamá, Panamá Province, 0843, Panama",
+    "osm_type": "node",
+    "osm_id": 1242998122,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Panama+City&countrycodes=pa&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "guatemala-city": {
+   "country": "GT",
+   "query": "Guatemala City",
+   "plain": {
+    "lat": 14.64161,
+    "lon": -90.51328,
+    "display_name": "Guatemala City, Zona 2, Guatemala Department, Guatemala",
+    "osm_type": "relation",
+    "osm_id": 67992,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Guatemala+City&countrycodes=gt&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 14.64161,
+    "lon": -90.51328,
+    "display_name": "Guatemala City, Zona 2, Guatemala Department, Guatemala",
+    "osm_type": "relation",
+    "osm_id": 67992,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Guatemala+City&countrycodes=gt&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "san-salvador": {
+   "country": "SV",
+   "query": "San Salvador",
+   "plain": {
+    "lat": 13.69763,
+    "lon": -89.19116,
+    "display_name": "San Salvador, San Salvador Centro, San Salvador, El Salvador",
+    "osm_type": "relation",
+    "osm_id": 6462027,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=San+Salvador&countrycodes=sv&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 13.69763,
+    "lon": -89.19116,
+    "display_name": "San Salvador, San Salvador Centro, San Salvador, El Salvador",
+    "osm_type": "relation",
+    "osm_id": 6462027,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=San+Salvador&countrycodes=sv&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "roatan": {
+   "country": "HN",
+   "query": "Roatán",
+   "plain": {
+    "lat": 16.34902,
+    "lon": -86.49775,
+    "display_name": "Roatán, Bay Islands, Honduras",
+    "osm_type": "relation",
+    "osm_id": 5989963,
+    "type": "island",
+    "url": "https://nominatim.openstreetmap.org/search?q=Roat%C3%A1n&countrycodes=hn&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 16.31674,
+    "lon": -86.53748,
+    "display_name": "Roatán, Bay Islands, Honduras",
+    "osm_type": "relation",
+    "osm_id": 3146641,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Roat%C3%A1n&countrycodes=hn&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "belize-city": {
+   "country": "BZ",
+   "query": "Belize City",
+   "plain": {
+    "lat": 17.50028,
+    "lon": -88.19887,
+    "display_name": "Belize City, Belize District, Belize",
+    "osm_type": "relation",
+    "osm_id": 14902774,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Belize+City&countrycodes=bz&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 17.50028,
+    "lon": -88.19887,
+    "display_name": "Belize City, Belize District, Belize",
+    "osm_type": "relation",
+    "osm_id": 14902774,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Belize+City&countrycodes=bz&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "nassau": {
+   "country": "BS",
+   "query": "Nassau, Bahamas",
+   "plain": {
+    "lat": 25.07823,
+    "lon": -77.33834,
+    "display_name": "Nassau, New Providence, Bahamas",
+    "osm_type": "node",
+    "osm_id": 115664268,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Nassau&countrycodes=bs&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 25.07823,
+    "lon": -77.33834,
+    "display_name": "Nassau, New Providence, Bahamas",
+    "osm_type": "node",
+    "osm_id": 115664268,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Nassau&countrycodes=bs&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "bridgetown": {
+   "country": "BB",
+   "query": "Bridgetown",
+   "plain": {
+    "lat": 13.09778,
+    "lon": -59.61842,
+    "display_name": "Bridgetown, Saint Michael, Barbados",
+    "osm_type": "relation",
+    "osm_id": 7751694,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Bridgetown&countrycodes=bb&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 13.09778,
+    "lon": -59.61842,
+    "display_name": "Bridgetown, Saint Michael, Barbados",
+    "osm_type": "relation",
+    "osm_id": 7751694,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Bridgetown&countrycodes=bb&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "port-of-spain": {
+   "country": "TT",
+   "query": "Port of Spain",
+   "plain": {
+    "lat": 10.65727,
+    "lon": -61.51802,
+    "display_name": "Port of Spain, Trinidad and Tobago",
+    "osm_type": "relation",
+    "osm_id": 7363637,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Port+of+Spain&countrycodes=tt&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 10.65727,
+    "lon": -61.51802,
+    "display_name": "Port of Spain, Trinidad and Tobago",
+    "osm_type": "relation",
+    "osm_id": 7363637,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Port+of+Spain&countrycodes=tt&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "foz-do-iguacu": {
+   "country": "BR",
+   "query": "Foz do Iguaçu",
+   "plain": {
+    "lat": -25.5304,
+    "lon": -54.58307,
+    "display_name": "Foz do Iguaçu, Paraná, South Region, Brazil",
+    "osm_type": "relation",
+    "osm_id": 297473,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Foz+do+Igua%C3%A7u&countrycodes=br&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": -25.5304,
+    "lon": -54.58307,
+    "display_name": "Foz do Iguaçu, Paraná, South Region, Brazil",
+    "osm_type": "relation",
+    "osm_id": 297473,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Foz+do+Igua%C3%A7u&countrycodes=br&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "florianopolis": {
+   "country": "BR",
+   "query": "Florianópolis",
+   "plain": {
+    "lat": -27.5973,
+    "lon": -48.54961,
+    "display_name": "Florianópolis, Santa Catarina, South Region, Brazil",
+    "osm_type": "relation",
+    "osm_id": 296561,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Florian%C3%B3polis&countrycodes=br&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": -27.5973,
+    "lon": -48.54961,
+    "display_name": "Florianópolis, Santa Catarina, South Region, Brazil",
+    "osm_type": "relation",
+    "osm_id": 296561,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Florian%C3%B3polis&countrycodes=br&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "buenos-aires": {
+   "country": "AR",
+   "query": "Buenos Aires",
+   "plain": {
+    "lat": -34.60956,
+    "lon": -58.38879,
+    "display_name": "Buenos Aires, Comuna 1, Autonomous City of Buenos Aires, Argentina",
+    "osm_type": "relation",
+    "osm_id": 1224652,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Buenos+Aires&countrycodes=ar&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": -34.60956,
+    "lon": -58.38879,
+    "display_name": "Buenos Aires, Comuna 1, Autonomous City of Buenos Aires, Argentina",
+    "osm_type": "relation",
+    "osm_id": 1224652,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Buenos+Aires&countrycodes=ar&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "mendoza": {
+   "country": "AR",
+   "query": "Mendoza, Argentina",
+   "plain": {
+    "lat": -34.59703,
+    "lon": -68.73048,
+    "display_name": "Mendoza, Argentina",
+    "osm_type": "relation",
+    "osm_id": 153540,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Mendoza&countrycodes=ar&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": -32.88942,
+    "lon": -68.84462,
+    "display_name": "Mendoza, Sección 2ª Barrio Cívico, Departamento Capital, Mendoza, Argentina",
+    "osm_type": "relation",
+    "osm_id": 4206710,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Mendoza&countrycodes=ar&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "bariloche": {
+   "country": "AR",
+   "query": "San Carlos de Bariloche",
+   "plain": {
+    "lat": -41.13348,
+    "lon": -71.31015,
+    "display_name": "San Carlos de Bariloche, Municipio de San Carlos de Bariloche, Departamento Bariloche, Río Negro, 8400, Argentina",
+    "osm_type": "relation",
+    "osm_id": 3405247,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=San+Carlos+de+Bariloche&countrycodes=ar&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": -41.13348,
+    "lon": -71.31015,
+    "display_name": "San Carlos de Bariloche, Municipio de San Carlos de Bariloche, Departamento Bariloche, Río Negro, 8400, Argentina",
+    "osm_type": "relation",
+    "osm_id": 3405247,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=San+Carlos+de+Bariloche&countrycodes=ar&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "el-calafate": {
+   "country": "AR",
+   "query": "El Calafate",
+   "plain": {
+    "lat": -50.33874,
+    "lon": -72.27372,
+    "display_name": "El Calafate, Lago Argentino, Santa Cruz, Argentina",
+    "osm_type": "relation",
+    "osm_id": 3439478,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=El+Calafate&countrycodes=ar&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": -50.33874,
+    "lon": -72.27372,
+    "display_name": "El Calafate, Lago Argentino, Santa Cruz, Argentina",
+    "osm_type": "relation",
+    "osm_id": 3439478,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=El+Calafate&countrycodes=ar&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "santiago": {
+   "country": "CL",
+   "query": "Santiago",
+   "plain": {
+    "lat": -33.4377,
+    "lon": -70.65107,
+    "display_name": "Santiago, Provincia de Santiago, Santiago Metropolitan Region, 8320000, Chile",
+    "osm_type": "node",
+    "osm_id": 50016356,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Santiago&countrycodes=cl&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": -33.4377,
+    "lon": -70.65107,
+    "display_name": "Santiago, Provincia de Santiago, Santiago Metropolitan Region, 8320000, Chile",
+    "osm_type": "node",
+    "osm_id": 50016356,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Santiago&countrycodes=cl&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "punta-arenas": {
+   "country": "CL",
+   "query": "Punta Arenas",
+   "plain": {
+    "lat": -53.16257,
+    "lon": -70.90782,
+    "display_name": "Punta Arenas, Provincia de Magallanes, Magallanes and Chilean Antarctica Region, 6201065, Chile",
+    "osm_type": "node",
+    "osm_id": 181356942,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Punta+Arenas&countrycodes=cl&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": -53.16257,
+    "lon": -70.90782,
+    "display_name": "Punta Arenas, Provincia de Magallanes, Magallanes and Chilean Antarctica Region, 6201065, Chile",
+    "osm_type": "node",
+    "osm_id": 181356942,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Punta+Arenas&countrycodes=cl&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "easter-island": {
+   "country": "CL",
+   "query": "Hanga Roa",
+   "plain": {
+    "lat": -27.14812,
+    "lon": -109.42734,
+    "display_name": "Hanga Roa, Easter Island, Easter Island Province, Valparaiso Region, 2770000, Chile",
+    "osm_type": "node",
+    "osm_id": 214231955,
+    "type": "town",
+    "url": "https://nominatim.openstreetmap.org/search?q=Hanga+Roa&countrycodes=cl&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": null,
+   "chosen": "plain"
+  },
+  "lima": {
+   "country": "PE",
+   "query": "Lima",
+   "plain": {
+    "lat": -12.04598,
+    "lon": -77.03059,
+    "display_name": "Lima, Province of Lima, Lima Metropolitan Area, Lima, 15001, Peru",
+    "osm_type": "node",
+    "osm_id": 4289361265,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Lima&countrycodes=pe&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": -12.04598,
+    "lon": -77.03059,
+    "display_name": "Lima, Province of Lima, Lima Metropolitan Area, Lima, 15001, Peru",
+    "osm_type": "node",
+    "osm_id": 4289361265,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Lima&countrycodes=pe&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "cusco": {
+   "country": "PE",
+   "query": "Cusco",
+   "plain": {
+    "lat": -13.51709,
+    "lon": -71.97854,
+    "display_name": "Cuzco, Distrito de Cusco, Province of Cusco, Cusco, 08001, Peru",
+    "osm_type": "node",
+    "osm_id": 59115290,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Cusco&countrycodes=pe&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": -13.51709,
+    "lon": -71.97854,
+    "display_name": "Cuzco, Distrito de Cusco, Province of Cusco, Cusco, 08001, Peru",
+    "osm_type": "node",
+    "osm_id": 59115290,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Cusco&countrycodes=pe&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "arequipa": {
+   "country": "PE",
+   "query": "Arequipa",
+   "plain": {
+    "lat": -16.39887,
+    "lon": -71.53696,
+    "display_name": "Arequipa, Province of Arequipa, Arequipa, 04001, Peru",
+    "osm_type": "node",
+    "osm_id": 253855157,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Arequipa&countrycodes=pe&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": -16.39887,
+    "lon": -71.53696,
+    "display_name": "Arequipa, Province of Arequipa, Arequipa, 04001, Peru",
+    "osm_type": "node",
+    "osm_id": 253855157,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Arequipa&countrycodes=pe&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "bogota": {
+   "country": "CO",
+   "query": "Bogotá",
+   "plain": {
+    "lat": 4.65338,
+    "lon": -74.08363,
+    "display_name": "Bogota, Bogota, Capital District, RAP (Especial) Central, Colombia",
+    "osm_type": "relation",
+    "osm_id": 7426387,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Bogot%C3%A1&countrycodes=co&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 4.65338,
+    "lon": -74.08363,
+    "display_name": "Bogota, Bogota, Capital District, RAP (Especial) Central, Colombia",
+    "osm_type": "relation",
+    "osm_id": 7426387,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Bogot%C3%A1&countrycodes=co&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "medellin": {
+   "country": "CO",
+   "query": "Medellín",
+   "plain": {
+    "lat": 6.26973,
+    "lon": -75.60256,
+    "display_name": "Medellín, Valle de Aburrá, Antioquia, RAP del Agua y la Montaña, 0500, Colombia",
+    "osm_type": "relation",
+    "osm_id": 1343264,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Medell%C3%ADn&countrycodes=co&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 6.26973,
+    "lon": -75.60256,
+    "display_name": "Medellín, Valle de Aburrá, Antioquia, RAP del Agua y la Montaña, 0500, Colombia",
+    "osm_type": "relation",
+    "osm_id": 1343264,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Medell%C3%ADn&countrycodes=co&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "cartagena": {
+   "country": "CO",
+   "query": "Cartagena, Colombia",
+   "plain": {
+    "lat": 10.42656,
+    "lon": -75.54417,
+    "display_name": "Cartagena, Dique, Bolívar, RAP Caribe, Colombia",
+    "osm_type": "relation",
+    "osm_id": 1343457,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Cartagena&countrycodes=co&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 10.42656,
+    "lon": -75.54417,
+    "display_name": "Cartagena, Dique, Bolívar, RAP Caribe, Colombia",
+    "osm_type": "relation",
+    "osm_id": 1343457,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Cartagena&countrycodes=co&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "quito": {
+   "country": "EC",
+   "query": "Quito",
+   "plain": {
+    "lat": -0.22016,
+    "lon": -78.51233,
+    "display_name": "Quito, Quito Canton, Pichincha, 170130, Ecuador",
+    "osm_type": "node",
+    "osm_id": 58950371,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Quito&countrycodes=ec&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": -0.22016,
+    "lon": -78.51233,
+    "display_name": "Quito, Quito Canton, Pichincha, 170130, Ecuador",
+    "osm_type": "node",
+    "osm_id": 58950371,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Quito&countrycodes=ec&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "guayaquil": {
+   "country": "EC",
+   "query": "Guayaquil",
+   "plain": {
+    "lat": -2.19006,
+    "lon": -79.88687,
+    "display_name": "Guayaquil, Guayas, Ecuador",
+    "osm_type": "relation",
+    "osm_id": 3652281,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Guayaquil&countrycodes=ec&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": -2.19006,
+    "lon": -79.88687,
+    "display_name": "Guayaquil, Guayas, Ecuador",
+    "osm_type": "relation",
+    "osm_id": 3652281,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Guayaquil&countrycodes=ec&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "galapagos": {
+   "country": "EC",
+   "query": "Puerto Ayora",
+   "plain": {
+    "lat": -0.74717,
+    "lon": -90.31342,
+    "display_name": "Puerto Ayora, Parroquia Bella Vista, Cantón Santa Cruz, Galápagos, Ecuador",
+    "osm_type": "way",
+    "osm_id": 24821672,
+    "type": "town",
+    "url": "https://nominatim.openstreetmap.org/search?q=Puerto+Ayora&countrycodes=ec&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": -0.74717,
+    "lon": -90.31342,
+    "display_name": "Puerto Ayora, Parroquia Bella Vista, Cantón Santa Cruz, Galápagos, Ecuador",
+    "osm_type": "way",
+    "osm_id": 24821672,
+    "type": "town",
+    "url": "https://nominatim.openstreetmap.org/search?q=Puerto+Ayora&countrycodes=ec&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "montevideo": {
+   "country": "UY",
+   "query": "Montevideo",
+   "plain": {
+    "lat": -34.90589,
+    "lon": -56.19131,
+    "display_name": "Montevideo, Uruguay",
+    "osm_type": "relation",
+    "osm_id": 2929054,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Montevideo&countrycodes=uy&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": -34.90589,
+    "lon": -56.19131,
+    "display_name": "Montevideo, Uruguay",
+    "osm_type": "relation",
+    "osm_id": 2929054,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Montevideo&countrycodes=uy&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "punta-del-este": {
+   "country": "UY",
+   "query": "Punta del Este",
+   "plain": {
+    "lat": -34.96323,
+    "lon": -54.944,
+    "display_name": "Punta Del Este, Maldonado, 20100, Uruguay",
+    "osm_type": "relation",
+    "osm_id": 2470435,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Punta+del+Este&countrycodes=uy&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": -34.96323,
+    "lon": -54.944,
+    "display_name": "Punta Del Este, Maldonado, 20100, Uruguay",
+    "osm_type": "relation",
+    "osm_id": 2470435,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Punta+del+Este&countrycodes=uy&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "la-paz": {
+   "country": "BO",
+   "query": "La Paz",
+   "plain": {
+    "lat": -16.49555,
+    "lon": -68.13362,
+    "display_name": "La Paz, Provincia Pedro Domingo Murillo, La Paz, Bolivia",
+    "osm_type": "relation",
+    "osm_id": 4499870,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=La+Paz&countrycodes=bo&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": -16.49555,
+    "lon": -68.13362,
+    "display_name": "La Paz, Provincia Pedro Domingo Murillo, La Paz, Bolivia",
+    "osm_type": "relation",
+    "osm_id": 4499870,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=La+Paz&countrycodes=bo&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "santa-cruz": {
+   "country": "BO",
+   "query": "Santa Cruz de la Sierra",
+   "plain": {
+    "lat": -17.78342,
+    "lon": -63.18209,
+    "display_name": "Santa Cruz de la Sierra, Provincia Andrés Ibáñez, Santa Cruz, Bolivia",
+    "osm_type": "relation",
+    "osm_id": 4511527,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Santa+Cruz+de+la+Sierra&countrycodes=bo&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": -17.78342,
+    "lon": -63.18209,
+    "display_name": "Santa Cruz de la Sierra, Provincia Andrés Ibáñez, Santa Cruz, Bolivia",
+    "osm_type": "relation",
+    "osm_id": 4511527,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Santa+Cruz+de+la+Sierra&countrycodes=bo&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "asuncion": {
+   "country": "PY",
+   "query": "Asunción",
+   "plain": {
+    "lat": -25.28005,
+    "lon": -57.63438,
+    "display_name": "Asuncion, Asunción, Distrito Capital, Región Oriental, 001013, Paraguay",
+    "osm_type": "node",
+    "osm_id": 249854726,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Asunci%C3%B3n&countrycodes=py&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": -25.28005,
+    "lon": -57.63438,
+    "display_name": "Asuncion, Asunción, Distrito Capital, Región Oriental, 001013, Paraguay",
+    "osm_type": "node",
+    "osm_id": 249854726,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Asunci%C3%B3n&countrycodes=py&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "georgetown": {
+   "country": "GY",
+   "query": "Georgetown, Guyana",
+   "plain": {
+    "lat": 6.80326,
+    "lon": -58.14554,
+    "display_name": "City of Georgetown, Demerara-Mahaica, Guyana",
+    "osm_type": "relation",
+    "osm_id": 11210397,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Georgetown&countrycodes=gy&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 6.80326,
+    "lon": -58.14554,
+    "display_name": "City of Georgetown, Demerara-Mahaica, Guyana",
+    "osm_type": "relation",
+    "osm_id": 11210397,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Georgetown&countrycodes=gy&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "paramaribo": {
+   "country": "SR",
+   "query": "Paramaribo",
+   "plain": {
+    "lat": 5.82418,
+    "lon": -55.16628,
+    "display_name": "Centrum, Paramaribo, Suriname",
+    "osm_type": "relation",
+    "osm_id": 13026345,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Paramaribo&countrycodes=sr&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 5.82476,
+    "lon": -55.17039,
+    "display_name": "Paramaribo, Centrum, Paramaribo, Suriname",
+    "osm_type": "node",
+    "osm_id": 281537750,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Paramaribo&countrycodes=sr&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "perth": {
+   "country": "AU",
+   "query": "Perth",
+   "plain": {
+    "lat": -31.9559,
+    "lon": 115.86058,
+    "display_name": "Perth, Western Australia, 6000, Australia",
+    "osm_type": "node",
+    "osm_id": 29277817,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Perth&countrycodes=au&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": -31.9559,
+    "lon": 115.86058,
+    "display_name": "Perth, Western Australia, 6000, Australia",
+    "osm_type": "node",
+    "osm_id": 29277817,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Perth&countrycodes=au&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "adelaide": {
+   "country": "AU",
+   "query": "Adelaide",
+   "plain": {
+    "lat": -34.92818,
+    "lon": 138.59993,
+    "display_name": "Adelaide, South Australia, Australia",
+    "osm_type": "relation",
+    "osm_id": 11381689,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Adelaide&countrycodes=au&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": -34.92818,
+    "lon": 138.59993,
+    "display_name": "Adelaide, South Australia, Australia",
+    "osm_type": "relation",
+    "osm_id": 11381689,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Adelaide&countrycodes=au&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "cairns": {
+   "country": "AU",
+   "query": "Cairns",
+   "plain": {
+    "lat": -16.92067,
+    "lon": 145.77219,
+    "display_name": "Cairns, Queensland, 4870, Australia",
+    "osm_type": "node",
+    "osm_id": 29405229,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Cairns&countrycodes=au&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": -16.92067,
+    "lon": 145.77219,
+    "display_name": "Cairns, Queensland, 4870, Australia",
+    "osm_type": "node",
+    "osm_id": 29405229,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Cairns&countrycodes=au&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "auckland": {
+   "country": "NZ",
+   "query": "Auckland",
+   "plain": {
+    "lat": -36.85209,
+    "lon": 174.76318,
+    "display_name": "Auckland, Waitematā, Auckland, 1010, New Zealand",
+    "osm_type": "node",
+    "osm_id": 292806332,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Auckland&countrycodes=nz&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": -36.85209,
+    "lon": 174.76318,
+    "display_name": "Auckland, Waitematā, Auckland, 1010, New Zealand",
+    "osm_type": "node",
+    "osm_id": 292806332,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Auckland&countrycodes=nz&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "wellington": {
+   "country": "NZ",
+   "query": "Wellington",
+   "plain": {
+    "lat": -41.2888,
+    "lon": 174.77721,
+    "display_name": "Wellington, Wellington City, Wellington, 6011, New Zealand",
+    "osm_type": "node",
+    "osm_id": 204648,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Wellington&countrycodes=nz&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": -41.2888,
+    "lon": 174.77721,
+    "display_name": "Wellington, Wellington City, Wellington, 6011, New Zealand",
+    "osm_type": "node",
+    "osm_id": 204648,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Wellington&countrycodes=nz&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "christchurch": {
+   "country": "NZ",
+   "query": "Christchurch",
+   "plain": {
+    "lat": -43.53095,
+    "lon": 172.63643,
+    "display_name": "Christchurch, Christchurch City, Canterbury, New Zealand",
+    "osm_type": "relation",
+    "osm_id": 2730349,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Christchurch&countrycodes=nz&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": -43.53095,
+    "lon": 172.63643,
+    "display_name": "Christchurch, Christchurch City, Canterbury, New Zealand",
+    "osm_type": "relation",
+    "osm_id": 2730349,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Christchurch&countrycodes=nz&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "queenstown": {
+   "country": "NZ",
+   "query": "Queenstown, New Zealand",
+   "plain": {
+    "lat": -45.03219,
+    "lon": 168.661,
+    "display_name": "Queenstown, Queenstown-Lakes District, Otago, 9348, New Zealand",
+    "osm_type": "node",
+    "osm_id": 175734291,
+    "type": "town",
+    "url": "https://nominatim.openstreetmap.org/search?q=Queenstown&countrycodes=nz&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": -45.03219,
+    "lon": 168.661,
+    "display_name": "Queenstown, Queenstown-Lakes District, Otago, 9348, New Zealand",
+    "osm_type": "node",
+    "osm_id": 175734291,
+    "type": "town",
+    "url": "https://nominatim.openstreetmap.org/search?q=Queenstown&countrycodes=nz&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "nadi": {
+   "country": "FJ",
+   "query": "Nadi",
+   "plain": {
+    "lat": -17.79927,
+    "lon": 177.41785,
+    "display_name": "Nadi, Ba, Western, Fiji",
+    "osm_type": "node",
+    "osm_id": 1747350047,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Nadi&countrycodes=fj&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": -17.79927,
+    "lon": 177.41785,
+    "display_name": "Nadi, Ba, Western, Fiji",
+    "osm_type": "node",
+    "osm_id": 1747350047,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Nadi&countrycodes=fj&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "suva": {
+   "country": "FJ",
+   "query": "Suva",
+   "plain": {
+    "lat": -18.14159,
+    "lon": 178.44217,
+    "display_name": "Suva, Rewa, Central, Fiji",
+    "osm_type": "node",
+    "osm_id": 2289652909,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Suva&countrycodes=fj&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": -18.14159,
+    "lon": 178.44217,
+    "display_name": "Suva, Rewa, Central, Fiji",
+    "osm_type": "node",
+    "osm_id": 2289652909,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Suva&countrycodes=fj&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "port-moresby": {
+   "country": "PG",
+   "query": "Port Moresby",
+   "plain": {
+    "lat": -9.47433,
+    "lon": 147.15995,
+    "display_name": "Port Moresby, National Capital District, Southern Region, 111, Papua New Guinea",
+    "osm_type": "node",
+    "osm_id": 230628786,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Port+Moresby&countrycodes=pg&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": -9.47433,
+    "lon": 147.15995,
+    "display_name": "Port Moresby, National Capital District, Southern Region, 111, Papua New Guinea",
+    "osm_type": "node",
+    "osm_id": 230628786,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Port+Moresby&countrycodes=pg&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "apia": {
+   "country": "WS",
+   "query": "Apia",
+   "plain": {
+    "lat": -13.83452,
+    "lon": -171.7631,
+    "display_name": "Apia, Tuamasaga, Samoa",
+    "osm_type": "way",
+    "osm_id": 1322127938,
+    "type": "village",
+    "url": "https://nominatim.openstreetmap.org/search?q=Apia&countrycodes=ws&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": -13.83452,
+    "lon": -171.7631,
+    "display_name": "Apia, Tuamasaga, Samoa",
+    "osm_type": "way",
+    "osm_id": 1322127938,
+    "type": "village",
+    "url": "https://nominatim.openstreetmap.org/search?q=Apia&countrycodes=ws&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "nukualofa": {
+   "country": "TO",
+   "query": "Nukuʻalofa",
+   "plain": {
+    "lat": -21.13434,
+    "lon": -175.20181,
+    "display_name": "Nuku'alofa, Vahe Kolofo'ou, Tongatapu, Tonga",
+    "osm_type": "node",
+    "osm_id": 1082208696,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Nuku%CA%BBalofa&countrycodes=to&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": -21.13434,
+    "lon": -175.20181,
+    "display_name": "Nuku'alofa, Vahe Kolofo'ou, Tongatapu, Tonga",
+    "osm_type": "node",
+    "osm_id": 1082208696,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Nuku%CA%BBalofa&countrycodes=to&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "port-vila": {
+   "country": "VU",
+   "query": "Port Vila",
+   "plain": {
+    "lat": -17.7415,
+    "lon": 168.31502,
+    "display_name": "Port Vila, Shefa Province, Vanuatu",
+    "osm_type": "node",
+    "osm_id": 115622916,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Port+Vila&countrycodes=vu&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": -17.7415,
+    "lon": 168.31502,
+    "display_name": "Port Vila, Shefa Province, Vanuatu",
+    "osm_type": "node",
+    "osm_id": 115622916,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Port+Vila&countrycodes=vu&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "honiara": {
+   "country": "SB",
+   "query": "Honiara",
+   "plain": {
+    "lat": -9.43108,
+    "lon": 159.95526,
+    "display_name": "Honiara, Solomon Islands",
+    "osm_type": "relation",
+    "osm_id": 2536278,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Honiara&countrycodes=sb&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": -9.43108,
+    "lon": 159.95526,
+    "display_name": "Honiara, Solomon Islands",
+    "osm_type": "relation",
+    "osm_id": 2536278,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Honiara&countrycodes=sb&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "koror": {
+   "country": "PW",
+   "query": "Koror",
+   "plain": {
+    "lat": 7.22599,
+    "lon": 134.13123,
+    "display_name": "Koror, Palau",
+    "osm_type": "relation",
+    "osm_id": 3825290,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Koror&countrycodes=pw&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 7.34328,
+    "lon": 134.47668,
+    "display_name": "Koror, Palau",
+    "osm_type": "node",
+    "osm_id": 21447751,
+    "type": "town",
+    "url": "https://nominatim.openstreetmap.org/search?q=Koror&countrycodes=pw&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "pohnpei": {
+   "country": "FM",
+   "query": "Pohnpei",
+   "plain": {
+    "lat": 6.88705,
+    "lon": 158.24061,
+    "display_name": "Pohnpei, Sapwohn Kousapw, Pohnpei, 96941, Federated States of Micronesia",
+    "osm_type": "relation",
+    "osm_id": 11779483,
+    "type": "island",
+    "url": "https://nominatim.openstreetmap.org/search?q=Pohnpei&countrycodes=fm&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": null,
+   "chosen": "plain"
+  }
+ }
+}

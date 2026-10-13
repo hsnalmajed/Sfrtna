@@ -1,0 +1,2965 @@
+{
+ "batch": "batch2.json",
+ "cities": {
+  "dammam": {
+   "country": "SA",
+   "nameAr": "الدمام",
+   "nameEn": "Dammam",
+   "wikiTitle": "Dammam",
+   "flags": [],
+   "lat": 26.43678,
+   "lon": 50.104,
+   "geocode": "Dammam, Dammam Governorate, Eastern Province, 32242, Saudi Arabia",
+   "airport": {
+    "iata": "DMM",
+    "name": "King Fahd International Airport",
+    "km": 31,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 26.4691,
+    "lon": 49.798209,
+    "type": "large_airport"
+   }
+  },
+  "taif": {
+   "country": "SA",
+   "nameAr": "الطائف",
+   "nameEn": "Taif",
+   "wikiTitle": "Taif",
+   "flags": [],
+   "lat": 21.27028,
+   "lon": 40.41583,
+   "geocode": "At Ta'if, Al Taif, Makkah Region, 26511, Saudi Arabia",
+   "airport": {
+    "iata": "TIF",
+    "name": "Taif International Airport",
+    "km": 27,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 21.484739,
+    "lon": 40.544074,
+    "type": "large_airport"
+   }
+  },
+  "bodrum": {
+   "country": "TR",
+   "nameAr": "بودروم",
+   "nameEn": "Bodrum",
+   "wikiTitle": "Bodrum",
+   "flags": [],
+   "lat": 37.0344,
+   "lon": 27.43065,
+   "geocode": "Bodrum, Muğla, Aegean Region, Turkey",
+   "airport": {
+    "iata": "BJV",
+    "name": "Milas Bodrum International Airport",
+    "km": 32,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 37.249314,
+    "lon": 27.66401,
+    "type": "large_airport"
+   }
+  },
+  "kutaisi": {
+   "country": "GE",
+   "nameAr": "كوتايسي",
+   "nameEn": "Kutaisi",
+   "wikiTitle": "Kutaisi",
+   "flags": [],
+   "lat": 42.25968,
+   "lon": 42.66337,
+   "geocode": "Kutaisi, Imereti, 4600, Georgia",
+   "airport": {
+    "iata": "KUT",
+    "name": "David the Builder Kutaisi International Airport",
+    "km": 17,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 42.177448,
+    "lon": 42.485353,
+    "type": "large_airport"
+   }
+  },
+  "osh": {
+   "country": "KG",
+   "nameAr": "أوش",
+   "nameEn": "Osh",
+   "wikiTitle": "Osh",
+   "flags": [],
+   "lat": 40.51727,
+   "lon": 72.80499,
+   "geocode": "Osh City, Kyrgyzstan",
+   "airport": {
+    "iata": "OSS",
+    "name": "Osh International Airport",
+    "km": 10,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 40.609001,
+    "lon": 72.793297,
+    "type": "large_airport"
+   }
+  },
+  "kochi": {
+   "country": "IN",
+   "nameAr": "كوتشي",
+   "nameEn": "Kochi",
+   "wikiTitle": "Kochi",
+   "flags": [],
+   "lat": 9.9679,
+   "lon": 76.24444,
+   "geocode": "Kochi, Ernakulam, Kerala, 682001, India",
+   "airport": {
+    "iata": "COK",
+    "name": "Cochin International Airport",
+    "km": 27,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 10.151047,
+    "lon": 76.400838,
+    "type": "large_airport"
+   }
+  },
+  "bengaluru": {
+   "country": "IN",
+   "nameAr": "بنغالورو",
+   "nameEn": "Bengaluru",
+   "wikiTitle": "Bengaluru",
+   "flags": [],
+   "lat": 12.97679,
+   "lon": 77.59008,
+   "geocode": "Bengaluru, Bangalore North, Bengaluru Urban, Karnataka, India",
+   "airport": {
+    "iata": "BLR",
+    "name": "Kempegowda International Airport Bengaluru",
+    "km": 28,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 13.1979,
+    "lon": 77.706299,
+    "type": "large_airport"
+   }
+  },
+  "maafushi": {
+   "country": "MV",
+   "nameAr": "مافوشي",
+   "nameEn": "Maafushi",
+   "wikiTitle": "Maafushi",
+   "flags": [],
+   "lat": 3.94116,
+   "lon": 73.49001,
+   "geocode": "Maafushi, Malé Atoll, 08090, Maldives",
+   "airport": {
+    "iata": "MLE",
+    "name": "Velana International Airport",
+    "km": 28,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 4.19183,
+    "lon": 73.529099,
+    "type": "large_airport"
+   }
+  },
+  "paro": {
+   "country": "BT",
+   "nameAr": "بارو",
+   "nameEn": "Paro",
+   "wikiTitle": "Paro, Bhutan",
+   "flags": [],
+   "lat": 27.43077,
+   "lon": 89.41299,
+   "geocode": "Paro, Wangchang Gewog, Paro District, 12001, Bhutan",
+   "airport": {
+    "iata": "PBH",
+    "name": "Paro International Airport",
+    "km": 3,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 27.4032,
+    "lon": 89.424599,
+    "type": "large_airport"
+   }
+  },
+  "dhaka": {
+   "country": "BD",
+   "nameAr": "دكا",
+   "nameEn": "Dhaka",
+   "wikiTitle": "Dhaka",
+   "flags": [],
+   "lat": 23.76439,
+   "lon": 90.38901,
+   "geocode": "Dhaka, Dhaka Metropolitan, Dhaka District, Dhaka Division, 1215, Bangladesh",
+   "airport": {
+    "iata": "DAC",
+    "name": "Hazrat Shahjalal International Airport",
+    "km": 9,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 23.843347,
+    "lon": 90.397783,
+    "type": "large_airport"
+   }
+  },
+  "shenzhen": {
+   "country": "CN",
+   "nameAr": "شينزن",
+   "nameEn": "Shenzhen",
+   "wikiTitle": "Shenzhen",
+   "flags": [],
+   "lat": 22.54457,
+   "lon": 114.05454,
+   "geocode": "Shenzhen, Guangdong, China",
+   "airport": {
+    "iata": "SZX",
+    "name": "Shenzhen Bao'an International Airport",
+    "km": 28,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 22.639474,
+    "lon": 113.803262,
+    "type": "large_airport"
+   }
+  },
+  "chengdu": {
+   "country": "CN",
+   "nameAr": "تشنغدو",
+   "nameEn": "Chengdu",
+   "wikiTitle": "Chengdu",
+   "flags": [],
+   "lat": 30.65987,
+   "lon": 104.06332,
+   "geocode": "Chengdu, Sichuan, China",
+   "airport": {
+    "iata": "TFU",
+    "name": "Chengdu Tianfu International Airport",
+    "km": 53,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 30.31252,
+    "lon": 104.441284,
+    "type": "large_airport"
+   }
+  },
+  "sapporo": {
+   "country": "JP",
+   "nameAr": "سابورو",
+   "nameEn": "Sapporo",
+   "wikiTitle": "Sapporo",
+   "flags": [],
+   "lat": 43.06194,
+   "lon": 141.35429,
+   "geocode": "Sapporo, Ishikari Subprefecture, Hokkaido Prefecture, Hokkaido Region, Japan",
+   "airport": {
+    "iata": "CTS",
+    "name": "New Chitose Airport",
+    "km": 42,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 42.774753,
+    "lon": 141.690414,
+    "type": "large_airport"
+   }
+  },
+  "fukuoka": {
+   "country": "JP",
+   "nameAr": "فوكوكا",
+   "nameEn": "Fukuoka",
+   "wikiTitle": "Fukuoka",
+   "flags": [],
+   "lat": 33.5899,
+   "lon": 130.40175,
+   "geocode": "Fukuoka, Fukuoka Prefecture, Japan",
+   "airport": {
+    "iata": "FUK",
+    "name": "Fukuoka Airport",
+    "km": 5,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 33.585899353027344,
+    "lon": 130.4510040283203,
+    "type": "large_airport"
+   }
+  },
+  "okinawa": {
+   "country": "JP",
+   "nameAr": "أوكيناوا",
+   "nameEn": "Okinawa",
+   "wikiTitle": "Naha",
+   "flags": [],
+   "lat": 26.21223,
+   "lon": 127.67915,
+   "geocode": "Naha, Okinawa Prefecture, 900-8585, Japan",
+   "airport": {
+    "iata": "OKA",
+    "name": "Naha International Airport",
+    "km": 5,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 26.192437,
+    "lon": 127.639804,
+    "type": "large_airport"
+   }
+  },
+  "taipei": {
+   "country": "TW",
+   "nameAr": "تايبيه",
+   "nameEn": "Taipei",
+   "wikiTitle": "Taipei",
+   "flags": [],
+   "lat": 25.03752,
+   "lon": 121.56368,
+   "geocode": "Taipei, Taiwan",
+   "airport": {
+    "iata": "TPE",
+    "name": "Taiwan Taoyuan International Airport",
+    "km": 34,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 25.0777,
+    "lon": 121.233002,
+    "type": "large_airport"
+   }
+  },
+  "hong-kong": {
+   "country": "HK",
+   "nameAr": "هونغ كونغ",
+   "nameEn": "Hong Kong",
+   "wikiTitle": "Hong Kong",
+   "flags": [
+    "not geocoded"
+   ]
+  },
+  "macau": {
+   "country": "MO",
+   "nameAr": "ماكاو",
+   "nameEn": "Macau",
+   "wikiTitle": "Macau",
+   "flags": [
+    "not geocoded"
+   ]
+  },
+  "krabi": {
+   "country": "TH",
+   "nameAr": "كرابي",
+   "nameEn": "Krabi",
+   "wikiTitle": "Krabi (town)",
+   "flags": [],
+   "lat": 8.05924,
+   "lon": 98.91243,
+   "geocode": "Krabi, Krabi Town Municipality, Mueang Krabi District, Krabi Province, 81300, Thailand",
+   "airport": {
+    "iata": "KBV",
+    "name": "Krabi International Airport",
+    "km": 9,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 8.095591,
+    "lon": 98.988955,
+    "type": "large_airport"
+   }
+  },
+  "koh-samui": {
+   "country": "TH",
+   "nameAr": "كوه ساموي",
+   "nameEn": "Ko Samui",
+   "wikiTitle": "Ko Samui",
+   "flags": [],
+   "lat": 9.50715,
+   "lon": 99.99576,
+   "geocode": "Ko Samui District, Surat Thani Province, Thailand",
+   "airport": {
+    "iata": "USM",
+    "name": "Samui International Airport",
+    "km": 9,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 9.54779,
+    "lon": 100.061996,
+    "type": "large_airport"
+   }
+  },
+  "kota-kinabalu": {
+   "country": "MY",
+   "nameAr": "كوتا كينابالو",
+   "nameEn": "Kota Kinabalu",
+   "wikiTitle": "Kota Kinabalu",
+   "flags": [],
+   "lat": 5.97801,
+   "lon": 116.0729,
+   "geocode": "Kota Kinabalu, West Coast Division, Sabah, 88000, Malaysia",
+   "airport": {
+    "iata": "BKI",
+    "name": "Kota Kinabalu International Airport",
+    "km": 6,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 5.932743,
+    "lon": 116.049324,
+    "type": "large_airport"
+   }
+  },
+  "lombok": {
+   "country": "ID",
+   "nameAr": "لومبوك",
+   "nameEn": "Lombok",
+   "wikiTitle": "Mataram (city)",
+   "flags": [],
+   "lat": -8.58377,
+   "lon": 116.10685,
+   "geocode": "Mataram, Kec. Selaparang, West Nusa Tenggara, Indonesia",
+   "airport": {
+    "iata": "LOP",
+    "name": "Lombok International Airport",
+    "km": 27,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": -8.759962,
+    "lon": 116.278169,
+    "type": "large_airport"
+   }
+  },
+  "labuan-bajo": {
+   "country": "ID",
+   "nameAr": "لابوان باجو",
+   "nameEn": "Labuan Bajo",
+   "wikiTitle": "Labuan Bajo",
+   "flags": [
+    "named gateway 'LBJ' not a scheduled large/medium airport in OurAirports"
+   ],
+   "lat": -0.66104,
+   "lon": 119.73259,
+   "geocode": "Labuan Bajo, Donggala Regency, Central Sulawesi, Indonesia",
+   "airport": {
+    "iata": "PLW",
+    "name": "Mutiara - SIS Al-Jufrie Airport",
+    "km": 34,
+    "source": "nearest-airport rule",
+    "lat": -0.916462,
+    "lon": 119.908647,
+    "type": "medium_airport"
+   }
+  },
+  "nha-trang": {
+   "country": "VN",
+   "nameAr": "نها ترانغ",
+   "nameEn": "Nha Trang",
+   "wikiTitle": "Nha Trang",
+   "flags": [],
+   "lat": 12.23488,
+   "lon": 109.19414,
+   "geocode": "Nha Trang, Khánh Hòa Province, Vietnam",
+   "airport": {
+    "iata": "CXR",
+    "name": "Cam Ranh International Airport / Cam Ranh Air Base",
+    "km": 26,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 11.9982,
+    "lon": 109.219002,
+    "type": "large_airport"
+   }
+  },
+  "phu-quoc": {
+   "country": "VN",
+   "nameAr": "فو كوك",
+   "nameEn": "Phu Quoc",
+   "wikiTitle": "Phú Quốc",
+   "flags": [],
+   "lat": 10.21635,
+   "lon": 103.95879,
+   "geocode": "Phú Quốc, An Giang Province, 92516, Vietnam",
+   "airport": {
+    "iata": "PQC",
+    "name": "Phú Quốc International Airport",
+    "km": 6,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 10.169783,
+    "lon": 103.99353,
+    "type": "large_airport"
+   }
+  },
+  "puerto-princesa": {
+   "country": "PH",
+   "nameAr": "بويرتو برنسيسا",
+   "nameEn": "Puerto Princesa",
+   "wikiTitle": "Puerto Princesa",
+   "flags": [],
+   "lat": 9.73986,
+   "lon": 118.74382,
+   "geocode": "Puerto Princesa, Mimaropa, 5300, Philippines",
+   "airport": {
+    "iata": "PPS",
+    "name": "Puerto Princesa International Airport / PAF Antonio Bautista Air Base",
+    "km": 2,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 9.742044,
+    "lon": 118.75911,
+    "type": "large_airport"
+   }
+  },
+  "luang-prabang": {
+   "country": "LA",
+   "nameAr": "لوانغ برابانغ",
+   "nameEn": "Luang Prabang",
+   "wikiTitle": "Luang Prabang",
+   "flags": [],
+   "lat": 19.88874,
+   "lon": 102.1359,
+   "geocode": "Luang Prabang, Luang Prabang District, Luang Prabang, 10554, Laos",
+   "airport": {
+    "iata": "LPQ",
+    "name": "Luang Phabang International Airport",
+    "km": 4,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 19.904273,
+    "lon": 102.167191,
+    "type": "large_airport"
+   }
+  },
+  "vientiane": {
+   "country": "LA",
+   "nameAr": "فينتيان",
+   "nameEn": "Vientiane",
+   "wikiTitle": "Vientiane",
+   "flags": [],
+   "lat": 17.9641,
+   "lon": 102.61337,
+   "geocode": "Vientiane Capital, Chanthabuly District, Vientiane Prefecture, Laos",
+   "airport": {
+    "iata": "VTE",
+    "name": "Wattay International Airport",
+    "km": 5,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 17.985052,
+    "lon": 102.566692,
+    "type": "large_airport"
+   }
+  },
+  "bandar-seri-begawan": {
+   "country": "BN",
+   "nameAr": "بندر سري بيغاوان",
+   "nameEn": "Bandar Seri Begawan",
+   "wikiTitle": "Bandar Seri Begawan",
+   "flags": [],
+   "lat": 4.88955,
+   "lon": 114.94176,
+   "geocode": "Bandar Seri Begawan, Mukim Kianggeh, Brunei-Muara District, Brunei",
+   "airport": {
+    "iata": "BWN",
+    "name": "Brunei International Airport",
+    "km": 6,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 4.9442,
+    "lon": 114.928001,
+    "type": "large_airport"
+   }
+  },
+  "bordeaux": {
+   "country": "FR",
+   "nameAr": "بوردو",
+   "nameEn": "Bordeaux",
+   "wikiTitle": "Bordeaux",
+   "flags": [],
+   "lat": 44.84123,
+   "lon": -0.58004,
+   "geocode": "Bordeaux, Gironde, Nouvelle-Aquitaine, Metropolitan France, France",
+   "airport": {
+    "iata": "BOD",
+    "name": "Bordeaux–Mérignac Airport",
+    "km": 11,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 44.82865,
+    "lon": -0.715356,
+    "type": "large_airport"
+   }
+  },
+  "strasbourg": {
+   "country": "FR",
+   "nameAr": "ستراسبورغ",
+   "nameEn": "Strasbourg",
+   "wikiTitle": "Strasbourg",
+   "flags": [],
+   "lat": 48.58461,
+   "lon": 7.75071,
+   "geocode": "Strasbourg, Bas-Rhin, European Collectivity of Alsace, Grand Est, Metropolitan France, France",
+   "airport": {
+    "iata": "SXB",
+    "name": "Strasbourg Airport",
+    "km": 10,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 48.5383,
+    "lon": 7.62823,
+    "type": "large_airport"
+   }
+  },
+  "pisa": {
+   "country": "IT",
+   "nameAr": "بيزا",
+   "nameEn": "Pisa",
+   "wikiTitle": "Pisa",
+   "flags": [],
+   "lat": 43.71594,
+   "lon": 10.40186,
+   "geocode": "Pisa, Tuscany, Italy",
+   "airport": {
+    "iata": "PSA",
+    "name": "Pisa International Airport",
+    "km": 4,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 43.683899,
+    "lon": 10.3927,
+    "type": "large_airport"
+   }
+  },
+  "bologna": {
+   "country": "IT",
+   "nameAr": "بولونيا",
+   "nameEn": "Bologna",
+   "wikiTitle": "Bologna",
+   "flags": [],
+   "lat": 44.49382,
+   "lon": 11.34263,
+   "geocode": "Bologna, Emilia-Romagna, Italy",
+   "airport": {
+    "iata": "BLQ",
+    "name": "Bologna Guglielmo Marconi Airport",
+    "km": 6,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 44.5354,
+    "lon": 11.2887,
+    "type": "large_airport"
+   }
+  },
+  "palermo": {
+   "country": "IT",
+   "nameAr": "باليرمو",
+   "nameEn": "Palermo",
+   "wikiTitle": "Palermo",
+   "flags": [
+    "gateway 11638 km away"
+   ],
+   "lat": 38.11123,
+   "lon": 13.35244,
+   "geocode": "Palermo, Sicily, Italy",
+   "airport": {
+    "iata": "DPS",
+    "name": "Denpasar I Gusti Ngurah Rai International Airport",
+    "km": 11638,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": -8.748409,
+    "lon": 115.167123,
+    "type": "large_airport"
+   }
+  },
+  "malaga": {
+   "country": "ES",
+   "nameAr": "ملقة",
+   "nameEn": "Málaga",
+   "wikiTitle": "Málaga",
+   "flags": [],
+   "lat": 36.76479,
+   "lon": -4.4422,
+   "geocode": "Málaga, Málaga-Costa del Sol, Malaga, Andalusia, Spain",
+   "airport": {
+    "iata": "AGP",
+    "name": "Málaga-Costa del Sol Airport",
+    "km": 11,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 36.678234,
+    "lon": -4.500208,
+    "type": "large_airport"
+   }
+  },
+  "valencia": {
+   "country": "ES",
+   "nameAr": "فالنسيا",
+   "nameEn": "Valencia",
+   "wikiTitle": "Valencia",
+   "flags": [],
+   "lat": 39.46971,
+   "lon": -0.37634,
+   "geocode": "Valencia, Comarca de València, Valencia, Valencian Community, Spain",
+   "airport": {
+    "iata": "VLC",
+    "name": "Valencia Airport",
+    "km": 9,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 39.489162,
+    "lon": -0.480961,
+    "type": "large_airport"
+   }
+  },
+  "ibiza": {
+   "country": "ES",
+   "nameAr": "إيبيزا",
+   "nameEn": "Ibiza",
+   "wikiTitle": "Ibiza (town)",
+   "flags": [],
+   "lat": 38.91007,
+   "lon": 1.43045,
+   "geocode": "Ibiza, Balearic Islands, 07800, Spain",
+   "airport": {
+    "iata": "IBZ",
+    "name": "Ibiza Airport",
+    "km": 6,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 38.872898,
+    "lon": 1.37312,
+    "type": "large_airport"
+   }
+  },
+  "palma": {
+   "country": "ES",
+   "nameAr": "بالما دي مايوركا",
+   "nameEn": "Palma de Mallorca",
+   "wikiTitle": "Palma de Mallorca",
+   "flags": [],
+   "lat": 39.56958,
+   "lon": 2.65007,
+   "geocode": "Palma de Mallorca, Palma, Balearic Islands, Spain",
+   "airport": {
+    "iata": "PMI",
+    "name": "Palma de Mallorca Airport",
+    "km": 8,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 39.551701,
+    "lon": 2.73881,
+    "type": "large_airport"
+   }
+  },
+  "faro": {
+   "country": "PT",
+   "nameAr": "فارو",
+   "nameEn": "Faro",
+   "wikiTitle": "Faro, Portugal",
+   "flags": [],
+   "lat": 37.01629,
+   "lon": -7.93518,
+   "geocode": "Faro, Portugal",
+   "airport": {
+    "iata": "FAO",
+    "name": "Faro - Gago Coutinho International Airport",
+    "km": 3,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 37.015909,
+    "lon": -7.970939,
+    "type": "large_airport"
+   }
+  },
+  "glasgow": {
+   "country": "GB",
+   "nameAr": "غلاسكو",
+   "nameEn": "Glasgow",
+   "wikiTitle": "Glasgow",
+   "flags": [],
+   "lat": 55.86115,
+   "lon": -4.25017,
+   "geocode": "Glasgow, Glasgow City, Scotland, G2 1AL, United Kingdom",
+   "airport": {
+    "iata": "GLA",
+    "name": "Glasgow Airport",
+    "km": 11,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 55.871899,
+    "lon": -4.43306,
+    "type": "large_airport"
+   }
+  },
+  "birmingham": {
+   "country": "GB",
+   "nameAr": "برمنغهام",
+   "nameEn": "Birmingham",
+   "wikiTitle": "Birmingham",
+   "flags": [],
+   "lat": 52.4949,
+   "lon": -1.85184,
+   "geocode": "Birmingham, West Midlands, England, United Kingdom",
+   "airport": {
+    "iata": "BHX",
+    "name": "Birmingham Airport",
+    "km": 8,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 52.453899,
+    "lon": -1.74803,
+    "type": "large_airport"
+   }
+  },
+  "belfast": {
+   "country": "GB",
+   "nameAr": "بلفاست",
+   "nameEn": "Belfast",
+   "wikiTitle": "Belfast",
+   "flags": [],
+   "lat": 54.59639,
+   "lon": -5.93018,
+   "geocode": "Belfast City District, County Antrim, Northern Ireland, United Kingdom",
+   "airport": {
+    "iata": "BFS",
+    "name": "Belfast International Airport",
+    "km": 20,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 54.6575012207,
+    "lon": -6.2158298492399995,
+    "type": "large_airport"
+   }
+  },
+  "cork": {
+   "country": "IE",
+   "nameAr": "كورك",
+   "nameEn": "Cork",
+   "wikiTitle": "Cork (city)",
+   "flags": [],
+   "lat": 51.89851,
+   "lon": -8.47264,
+   "geocode": "Cork, County Cork, Munster, Ireland",
+   "airport": {
+    "iata": "ORK",
+    "name": "Cork International Airport",
+    "km": 6,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 51.841301,
+    "lon": -8.49111,
+    "type": "large_airport"
+   }
+  },
+  "dusseldorf": {
+   "country": "DE",
+   "nameAr": "دوسلدورف",
+   "nameEn": "Düsseldorf",
+   "wikiTitle": "Düsseldorf",
+   "flags": [],
+   "lat": 51.2254,
+   "lon": 6.77631,
+   "geocode": "Dusseldorf, North Rhine-Westphalia, Germany",
+   "airport": {
+    "iata": "DUS",
+    "name": "Düsseldorf Airport",
+    "km": 7,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 51.289501,
+    "lon": 6.76678,
+    "type": "large_airport"
+   }
+  },
+  "cologne": {
+   "country": "DE",
+   "nameAr": "كولونيا",
+   "nameEn": "Cologne",
+   "wikiTitle": "Cologne",
+   "flags": [],
+   "lat": 50.93836,
+   "lon": 6.95997,
+   "geocode": "Cologne, North Rhine-Westphalia, Germany",
+   "airport": {
+    "iata": "CGN",
+    "name": "Cologne Bonn Airport",
+    "km": 15,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 50.865898,
+    "lon": 7.14274,
+    "type": "large_airport"
+   }
+  },
+  "lausanne": {
+   "country": "CH",
+   "nameAr": "لوزان",
+   "nameEn": "Lausanne",
+   "wikiTitle": "Lausanne",
+   "flags": [],
+   "lat": 46.52183,
+   "lon": 6.6327,
+   "geocode": "Lausanne, District de Lausanne, Vaud, Switzerland",
+   "airport": {
+    "iata": "GVA",
+    "name": "Geneva International Airport",
+    "km": 51,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 46.238098,
+    "lon": 6.10895,
+    "type": "large_airport"
+   }
+  },
+  "zermatt": {
+   "country": "CH",
+   "nameAr": "زيرمات",
+   "nameEn": "Zermatt",
+   "wikiTitle": "Zermatt",
+   "flags": [],
+   "lat": 46.02121,
+   "lon": 7.74925,
+   "geocode": "Zermatt, Visp, Oberwallis, Valais/Wallis, 3920, Switzerland",
+   "airport": {
+    "iata": "GVA",
+    "name": "Geneva International Airport",
+    "km": 129,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 46.238098,
+    "lon": 6.10895,
+    "type": "large_airport"
+   }
+  },
+  "brno": {
+   "country": "CZ",
+   "nameAr": "برنو",
+   "nameEn": "Brno",
+   "wikiTitle": "Brno",
+   "flags": [],
+   "lat": 49.19224,
+   "lon": 16.61134,
+   "geocode": "Brno, okres Brno-město, South Moravian Region, Czechia",
+   "airport": {
+    "iata": "BRQ",
+    "name": "Brno-Tuřany Airport",
+    "km": 8,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 49.151276,
+    "lon": 16.693972,
+    "type": "medium_airport"
+   }
+  },
+  "gdansk": {
+   "country": "PL",
+   "nameAr": "غدانسك",
+   "nameEn": "Gdańsk",
+   "wikiTitle": "Gdańsk",
+   "flags": [],
+   "lat": 54.34829,
+   "lon": 18.65402,
+   "geocode": "Gdańsk, Pomeranian Voivodeship, Poland",
+   "airport": {
+    "iata": "GDN",
+    "name": "Gdańsk Lech Wałęsa Airport",
+    "km": 13,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 54.377602,
+    "lon": 18.4662,
+    "type": "large_airport"
+   }
+  },
+  "bratislava": {
+   "country": "SK",
+   "nameAr": "براتيسلافا",
+   "nameEn": "Bratislava",
+   "wikiTitle": "Bratislava",
+   "flags": [],
+   "lat": 48.1435,
+   "lon": 17.10829,
+   "geocode": "Bratislava, Region of Bratislava, Slovakia",
+   "airport": {
+    "iata": "BTS",
+    "name": "M. R. Štefánik Airport",
+    "km": 8,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 48.1702,
+    "lon": 17.2127,
+    "type": "large_airport"
+   }
+  },
+  "heraklion": {
+   "country": "GR",
+   "nameAr": "هيراكليون (كريت)",
+   "nameEn": "Heraklion (Crete)",
+   "wikiTitle": "Heraklion",
+   "flags": [],
+   "lat": 35.33908,
+   "lon": 25.13328,
+   "geocode": "Heraklion, Heraklion Municipal Unit, Municipality of Heraklion, Heraklion Regional Unit, Region of Crete, 712 02, Greece",
+   "airport": {
+    "iata": "HER",
+    "name": "Heraklion International Nikos Kazantzakis Airport",
+    "km": 4,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 35.339699,
+    "lon": 25.1803,
+    "type": "large_airport"
+   }
+  },
+  "rhodes": {
+   "country": "GR",
+   "nameAr": "رودس",
+   "nameEn": "Rhodes",
+   "wikiTitle": "Rhodes (city)",
+   "flags": [],
+   "lat": 36.44372,
+   "lon": 28.22737,
+   "geocode": "Rhodes, Municipal Unit of Rhodes, Municipality of Rhodes, Rhodes Regional Unit, South Aegean, Aegean, 851 00, Greece",
+   "airport": {
+    "iata": "RHO",
+    "name": "Rhodes International Airport \"Diagoras\"",
+    "km": 13,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 36.405399,
+    "lon": 28.086201,
+    "type": "large_airport"
+   }
+  },
+  "corfu": {
+   "country": "GR",
+   "nameAr": "كورفو",
+   "nameEn": "Corfu",
+   "wikiTitle": "Corfu (city)",
+   "flags": [],
+   "lat": 39.62173,
+   "lon": 19.91809,
+   "geocode": "Corfu, Municipality of Central Corfu and Diapontia Islands, Corfu Regional Unit, Ioanian Islands, Peloponnese, Western Greece and the Ionian, 491 00, Greece",
+   "airport": {
+    "iata": "CFU",
+    "name": "Corfu Ioannis Kapodistrias International Airport",
+    "km": 2,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 39.60145,
+    "lon": 19.912179,
+    "type": "large_airport"
+   }
+  },
+  "gothenburg": {
+   "country": "SE",
+   "nameAr": "غوتنبرغ",
+   "nameEn": "Gothenburg",
+   "wikiTitle": "Gothenburg",
+   "flags": [],
+   "lat": 57.70723,
+   "lon": 11.96702,
+   "geocode": "Gothenburg, Göteborgs Stad, Västra Götaland County, 411 10, Sweden",
+   "airport": {
+    "iata": "GOT",
+    "name": "Göteborg Landvetter Airport",
+    "km": 19,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 57.6628,
+    "lon": 12.2798,
+    "type": "large_airport"
+   }
+  },
+  "tallinn": {
+   "country": "EE",
+   "nameAr": "تالين",
+   "nameEn": "Tallinn",
+   "wikiTitle": "Tallinn",
+   "flags": [],
+   "lat": 59.43724,
+   "lon": 24.75727,
+   "geocode": "Tallinn, Harju County, Estonia",
+   "airport": {
+    "iata": "TLL",
+    "name": "Lennart Meri Tallinn Airport",
+    "km": 5,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 59.413246,
+    "lon": 24.83264,
+    "type": "large_airport"
+   }
+  },
+  "riga": {
+   "country": "LV",
+   "nameAr": "ريغا",
+   "nameEn": "Riga",
+   "wikiTitle": "Riga",
+   "flags": [],
+   "lat": 56.9494,
+   "lon": 24.10518,
+   "geocode": "Riga, Latvia",
+   "airport": {
+    "iata": "RIX",
+    "name": "Riga International Airport",
+    "km": 9,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 56.920752,
+    "lon": 23.970711,
+    "type": "large_airport"
+   }
+  },
+  "vilnius": {
+   "country": "LT",
+   "nameAr": "فيلنيوس",
+   "nameEn": "Vilnius",
+   "wikiTitle": "Vilnius",
+   "flags": [],
+   "lat": 54.68705,
+   "lon": 25.28291,
+   "geocode": "Vilnius, Vilnius city municipality, Vilnius County, Lithuania",
+   "airport": {
+    "iata": "VNO",
+    "name": "Vilnius International Airport",
+    "km": 6,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 54.634102,
+    "lon": 25.285801,
+    "type": "large_airport"
+   }
+  },
+  "sofia": {
+   "country": "BG",
+   "nameAr": "صوفيا",
+   "nameEn": "Sofia",
+   "wikiTitle": "Sofia",
+   "flags": [],
+   "lat": 42.6977,
+   "lon": 23.32174,
+   "geocode": "Sofia, Sredec, Stolichna, Sofia-City, Bulgaria",
+   "airport": {
+    "iata": "SOF",
+    "name": "Sofia Airport",
+    "km": 8,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 42.696357,
+    "lon": 23.417671,
+    "type": "large_airport"
+   }
+  },
+  "varna": {
+   "country": "BG",
+   "nameAr": "فارنا",
+   "nameEn": "Varna",
+   "wikiTitle": "Varna, Bulgaria",
+   "flags": [],
+   "lat": 43.20739,
+   "lon": 27.91667,
+   "geocode": "Varna, Odessos, Varna, Bulgaria",
+   "airport": {
+    "iata": "VAR",
+    "name": "Varna Airport",
+    "km": 8,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 43.232101,
+    "lon": 27.8251,
+    "type": "large_airport"
+   }
+  },
+  "skopje": {
+   "country": "MK",
+   "nameAr": "سكوبيه",
+   "nameEn": "Skopje",
+   "wikiTitle": "Skopje",
+   "flags": [],
+   "lat": 41.99621,
+   "lon": 21.43189,
+   "geocode": "Skopje, City of Skopje, North Macedonia",
+   "airport": {
+    "iata": "SKP",
+    "name": "Skopje International Airport",
+    "km": 16,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 41.958087,
+    "lon": 21.622581,
+    "type": "large_airport"
+   }
+  },
+  "luxembourg": {
+   "country": "LU",
+   "nameAr": "لوكسمبورغ",
+   "nameEn": "Luxembourg",
+   "wikiTitle": "Luxembourg City",
+   "flags": [],
+   "lat": 49.60105,
+   "lon": 6.06399,
+   "geocode": "Sky Bar Luxembourg, 80, Route de Longwy, City Concorde, Bertrange, Canton Luxembourg, 8080, Luxembourg",
+   "airport": {
+    "iata": "LUX",
+    "name": "Luxembourg-Findel International Airport",
+    "km": 11,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 49.626845,
+    "lon": 6.212134,
+    "type": "large_airport"
+   }
+  },
+  "monte-carlo": {
+   "country": "MC",
+   "nameAr": "مونت كارلو",
+   "nameEn": "Monte Carlo",
+   "wikiTitle": "Monte Carlo",
+   "flags": [],
+   "lat": 43.7403,
+   "lon": 7.42656,
+   "geocode": "Monte-Carlo, Monaco",
+   "airport": {
+    "iata": "NCE",
+    "name": "Nice-Côte d'Azur Airport",
+    "km": 19,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 43.658401,
+    "lon": 7.21587,
+    "type": "large_airport"
+   }
+  },
+  "san-marino": {
+   "country": "SM",
+   "nameAr": "سان مارينو",
+   "nameEn": "San Marino",
+   "wikiTitle": "City of San Marino",
+   "flags": [],
+   "lat": 43.9364,
+   "lon": 12.4467,
+   "geocode": "City of San Marino, 47890, San Marino",
+   "airport": {
+    "iata": "RMI",
+    "name": "Federico Fellini International Airport",
+    "km": 16,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 44.020024,
+    "lon": 12.612198,
+    "type": "large_airport"
+   }
+  },
+  "vatican-city": {
+   "country": "VA",
+   "nameAr": "الفاتيكان",
+   "nameEn": "Vatican City",
+   "wikiTitle": "Vatican City",
+   "flags": [],
+   "lat": 41.90341,
+   "lon": 12.45285,
+   "geocode": "Vatican City",
+   "airport": {
+    "iata": "FCO",
+    "name": "Rome–Fiumicino Leonardo da Vinci International Airport",
+    "km": 20,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 41.804532,
+    "lon": 12.251998,
+    "type": "large_airport"
+   }
+  },
+  "andorra-la-vella": {
+   "country": "AD",
+   "nameAr": "أندورا لا فيلا",
+   "nameEn": "Andorra la Vella",
+   "wikiTitle": "Andorra la Vella",
+   "flags": [],
+   "lat": 42.49792,
+   "lon": 1.50323,
+   "geocode": "Andorra la Vella, AD500, Andorra",
+   "airport": {
+    "iata": "BCN",
+    "name": "Josep Tarradellas Barcelona-El Prat Airport",
+    "km": 142,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 41.2971,
+    "lon": 2.07846,
+    "type": "large_airport"
+   }
+  },
+  "giza": {
+   "country": "EG",
+   "nameAr": "الجيزة",
+   "nameEn": "Giza",
+   "wikiTitle": "Giza",
+   "flags": [],
+   "lat": 29.98708,
+   "lon": 31.21181,
+   "geocode": "Giza, Aj Jiza, 12524, Egypt",
+   "airport": {
+    "iata": "SPX",
+    "name": "Sphinx International Airport",
+    "km": 33,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 30.108179,
+    "lon": 30.895728,
+    "type": "large_airport"
+   }
+  },
+  "hurghada": {
+   "country": "EG",
+   "nameAr": "الغردقة",
+   "nameEn": "Hurghada",
+   "wikiTitle": "Hurghada",
+   "flags": [],
+   "lat": 27.22256,
+   "lon": 33.83071,
+   "geocode": "Hurghada, Red Sea, 84512, Egypt",
+   "airport": {
+    "iata": "HRG",
+    "name": "Hurghada International Airport",
+    "km": 6,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 27.176776,
+    "lon": 33.796692,
+    "type": "large_airport"
+   }
+  },
+  "agadir": {
+   "country": "MA",
+   "nameAr": "أغادير",
+   "nameEn": "Agadir",
+   "wikiTitle": "Agadir",
+   "flags": [],
+   "lat": 30.42052,
+   "lon": -9.58385,
+   "geocode": "Agadir, Pachalik d'Agadir ⵍⴱⴰⵛⴰⵡⵉⵢⴰ ⵏ ⴰⴳⴰⴷⵉⵔ باشوية أكادير, Agadir Ida-Outanane Prefecture, Souss-Massa, Morocco",
+   "airport": {
+    "iata": "AGA",
+    "name": "Al Massira Airport",
+    "km": 20,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 30.322478,
+    "lon": -9.412003,
+    "type": "large_airport"
+   }
+  },
+  "rabat": {
+   "country": "MA",
+   "nameAr": "الرباط",
+   "nameEn": "Rabat",
+   "wikiTitle": "Rabat",
+   "flags": [],
+   "lat": 34.02185,
+   "lon": -6.84089,
+   "geocode": "Rabat, باشوية الرباط, Rabat Prefecture, Rabat-Salé-Kénitra, Morocco",
+   "airport": {
+    "iata": "RBA",
+    "name": "Rabat-Salé Airport",
+    "km": 9,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 34.051498,
+    "lon": -6.75152,
+    "type": "large_airport"
+   }
+  },
+  "hammamet": {
+   "country": "TN",
+   "nameAr": "الحمامات",
+   "nameEn": "Hammamet",
+   "wikiTitle": "Hammamet",
+   "flags": [],
+   "lat": 36.40066,
+   "lon": 10.61906,
+   "geocode": "Hammamet, الحمامات الشرقية, معتمدية الحمامات, Nabeul, 8050, Tunisia",
+   "airport": {
+    "iata": "NBE",
+    "name": "Enfidha - Hammamet International Airport",
+    "km": 40,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 36.075833,
+    "lon": 10.438611,
+    "type": "medium_airport"
+   }
+  },
+  "algiers": {
+   "country": "DZ",
+   "nameAr": "الجزائر العاصمة",
+   "nameEn": "Algiers",
+   "wikiTitle": "Algiers",
+   "flags": [],
+   "lat": 36.77293,
+   "lon": 3.05884,
+   "geocode": "Algiers, Sidi M'Hamed District, Algiers, 16000, Algeria",
+   "airport": {
+    "iata": "ALG",
+    "name": "Houari Boumediene Airport",
+    "km": 16,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 36.693886,
+    "lon": 3.214531,
+    "type": "large_airport"
+   }
+  },
+  "oran": {
+   "country": "DZ",
+   "nameAr": "وهران",
+   "nameEn": "Oran",
+   "wikiTitle": "Oran",
+   "flags": [],
+   "lat": 35.70444,
+   "lon": -0.6503,
+   "geocode": "Oran, Oran District, Oran, 31000, Algeria",
+   "airport": {
+    "iata": "ORN",
+    "name": "Oran Es-Sénia (Ahmed Ben Bella) International Airport",
+    "km": 10,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 35.620648,
+    "lon": -0.622486,
+    "type": "large_airport"
+   }
+  },
+  "dar-es-salaam": {
+   "country": "TZ",
+   "nameAr": "دار السلام",
+   "nameEn": "Dar es Salaam",
+   "wikiTitle": "Dar es Salaam",
+   "flags": [],
+   "lat": -6.81608,
+   "lon": 39.28036,
+   "geocode": "Dar es Salaam, Coastal Zone, Tanzania",
+   "airport": {
+    "iata": "DAR",
+    "name": "Julius Nyerere International Airport",
+    "km": 10,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": -6.873499,
+    "lon": 39.207288,
+    "type": "large_airport"
+   }
+  },
+  "addis-ababa": {
+   "country": "ET",
+   "nameAr": "أديس أبابا",
+   "nameEn": "Addis Ababa",
+   "wikiTitle": "Addis Ababa",
+   "flags": [],
+   "lat": 9.03581,
+   "lon": 38.75243,
+   "geocode": "Addis Ababa, Arada, Addis Ababa, 3578, Ethiopia",
+   "airport": {
+    "iata": "ADD",
+    "name": "Addis Ababa Bole International Airport",
+    "km": 8,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 8.97789,
+    "lon": 38.799301,
+    "type": "large_airport"
+   }
+  },
+  "entebbe": {
+   "country": "UG",
+   "nameAr": "عنتيبي",
+   "nameEn": "Entebbe",
+   "wikiTitle": "Entebbe",
+   "flags": [],
+   "lat": 0.06117,
+   "lon": 32.46986,
+   "geocode": "Entebbe City, Central Region, Uganda",
+   "airport": {
+    "iata": "EBB",
+    "name": "Entebbe International Airport",
+    "km": 4,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 0.042386,
+    "lon": 32.443501,
+    "type": "large_airport"
+   }
+  },
+  "kigali": {
+   "country": "RW",
+   "nameAr": "كيغالي",
+   "nameEn": "Kigali",
+   "wikiTitle": "Kigali",
+   "flags": [],
+   "lat": -1.95344,
+   "lon": 30.11401,
+   "geocode": "City of Kigali, Rwanda",
+   "airport": {
+    "iata": "KGL",
+    "name": "Kigali International Airport",
+    "km": 3,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": -1.96863,
+    "lon": 30.1395,
+    "type": "large_airport"
+   }
+  },
+  "praslin": {
+   "country": "SC",
+   "nameAr": "براسلين",
+   "nameEn": "Praslin",
+   "wikiTitle": "Praslin",
+   "flags": [],
+   "lat": -4.32507,
+   "lon": 55.73561,
+   "geocode": "Praslin, Seychelles",
+   "airport": {
+    "iata": "SEZ",
+    "name": "Seychelles International Airport",
+    "km": 45,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": -4.67434,
+    "lon": 55.521801,
+    "type": "large_airport"
+   }
+  },
+  "antananarivo": {
+   "country": "MG",
+   "nameAr": "أنتاناناريفو",
+   "nameEn": "Antananarivo",
+   "wikiTitle": "Antananarivo",
+   "flags": [],
+   "lat": -18.91001,
+   "lon": 47.52558,
+   "geocode": "Antananarivo, Analamanga, Province d’Antananarivo, 101, Madagascar",
+   "airport": {
+    "iata": "TNR",
+    "name": "Ivato International Airport",
+    "km": 14,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": -18.7969,
+    "lon": 47.478802,
+    "type": "large_airport"
+   }
+  },
+  "nosy-be": {
+   "country": "MG",
+   "nameAr": "نوسي بي",
+   "nameEn": "Nosy Be",
+   "wikiTitle": "Nosy Be",
+   "flags": [],
+   "lat": -13.31195,
+   "lon": 48.2534,
+   "geocode": "Nosy Be, Diana Region, Antsiranana Province, Madagascar",
+   "airport": {
+    "iata": "NOS",
+    "name": "Nosy Be International Airport",
+    "km": 7,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": -13.3121,
+    "lon": 48.3148,
+    "type": "large_airport"
+   }
+  },
+  "dakar": {
+   "country": "SN",
+   "nameAr": "داكار",
+   "nameEn": "Dakar",
+   "wikiTitle": "Dakar",
+   "flags": [],
+   "lat": 14.69342,
+   "lon": -17.44794,
+   "geocode": "Dakar, Dakar Region, Senegal",
+   "airport": {
+    "iata": "DSS",
+    "name": "Blaise Diagne International Airport",
+    "km": 40,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 14.670878,
+    "lon": -17.072829,
+    "type": "large_airport"
+   }
+  },
+  "accra": {
+   "country": "GH",
+   "nameAr": "أكرا",
+   "nameEn": "Accra",
+   "wikiTitle": "Accra",
+   "flags": [],
+   "lat": 5.55711,
+   "lon": -0.20124,
+   "geocode": "Accra, Korle-Klottey Municipal District, Greater Accra Region, Ghana",
+   "airport": {
+    "iata": "ACC",
+    "name": "Kotoka International Airport",
+    "km": 7,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 5.605189800262451,
+    "lon": -0.16678600013256073,
+    "type": "large_airport"
+   }
+  },
+  "lagos": {
+   "country": "NG",
+   "nameAr": "لاغوس",
+   "nameEn": "Lagos",
+   "wikiTitle": "Lagos",
+   "flags": [],
+   "lat": 6.45506,
+   "lon": 3.39418,
+   "geocode": "Lagos, Lagos Island, Lagos State, 100242, Nigeria",
+   "airport": {
+    "iata": "LOS",
+    "name": "Murtala Muhammed International Airport",
+    "km": 16,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 6.57737,
+    "lon": 3.32116,
+    "type": "large_airport"
+   }
+  },
+  "windhoek": {
+   "country": "NA",
+   "nameAr": "ويندهوك",
+   "nameEn": "Windhoek",
+   "wikiTitle": "Windhoek",
+   "flags": [],
+   "lat": -22.57761,
+   "lon": 17.07727,
+   "geocode": "Windhoek, Khomas, Namibia",
+   "airport": {
+    "iata": "WDH",
+    "name": "Hosea Kutako International Airport",
+    "km": 42,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": -22.4799,
+    "lon": 17.4709,
+    "type": "large_airport"
+   }
+  },
+  "gaborone": {
+   "country": "BW",
+   "nameAr": "غابورون",
+   "nameEn": "Gaborone",
+   "wikiTitle": "Gaborone",
+   "flags": [],
+   "lat": -24.65814,
+   "lon": 25.90885,
+   "geocode": "Gaborone, Botswana",
+   "airport": {
+    "iata": "GBE",
+    "name": "Sir Seretse Khama International Airport",
+    "km": 11,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": -24.555201,
+    "lon": 25.9182,
+    "type": "large_airport"
+   }
+  },
+  "livingstone": {
+   "country": "ZM",
+   "nameAr": "ليفينغستون",
+   "nameEn": "Livingstone",
+   "wikiTitle": "Livingstone, Zambia",
+   "flags": [],
+   "lat": -17.85314,
+   "lon": 25.86143,
+   "geocode": "Livingstone, Livingstone District, Southern Province, Zambia",
+   "airport": {
+    "iata": "LVI",
+    "name": "Harry Mwanga Nkumbula International Airport",
+    "km": 6,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": -17.821524,
+    "lon": 25.819642,
+    "type": "large_airport"
+   }
+  },
+  "victoria-falls": {
+   "country": "ZW",
+   "nameAr": "شلالات فيكتوريا",
+   "nameEn": "Victoria Falls",
+   "wikiTitle": "Victoria Falls (city)",
+   "flags": [],
+   "lat": -17.9229,
+   "lon": 25.84768,
+   "geocode": "Devil's Cataract, Victoria Falls, Hwange, Matabeleland North Province, Zimbabwe",
+   "airport": {
+    "iata": "VFA",
+    "name": "Victoria Falls International Airport",
+    "km": 19,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": -18.097437,
+    "lon": 25.836867,
+    "type": "large_airport"
+   }
+  },
+  "maputo": {
+   "country": "MZ",
+   "nameAr": "مابوتو",
+   "nameEn": "Maputo",
+   "wikiTitle": "Maputo",
+   "flags": [],
+   "lat": -25.96621,
+   "lon": 32.56745,
+   "geocode": "Maputo, Zona Sul, Mozambique",
+   "airport": {
+    "iata": "MPM",
+    "name": "Maputo Airport",
+    "km": 5,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": -25.920799,
+    "lon": 32.572601,
+    "type": "large_airport"
+   }
+  },
+  "sal": {
+   "country": "CV",
+   "nameAr": "سال",
+   "nameEn": "Sal",
+   "wikiTitle": "Sal, Cape Verde",
+   "flags": [],
+   "lat": 16.17597,
+   "lon": -22.91698,
+   "geocode": "Sal Rei, Boa Vista, 5110, Cape Verde",
+   "airport": {
+    "iata": "SID",
+    "name": "Amílcar Cabral International Airport",
+    "km": 63,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 16.7414,
+    "lon": -22.9494,
+    "type": "large_airport"
+   }
+  },
+  "orlando": {
+   "country": "US",
+   "nameAr": "أورلاندو",
+   "nameEn": "Orlando",
+   "wikiTitle": "Orlando, Florida",
+   "flags": [],
+   "lat": 28.54212,
+   "lon": -81.37905,
+   "geocode": "Orlando, Orange County, Florida, United States",
+   "airport": {
+    "iata": "MCO",
+    "name": "Orlando International Airport",
+    "km": 14,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 28.429399490356445,
+    "lon": -81.30899810791016,
+    "type": "large_airport"
+   }
+  },
+  "chicago": {
+   "country": "US",
+   "nameAr": "شيكاغو",
+   "nameEn": "Chicago",
+   "wikiTitle": "Chicago",
+   "flags": [],
+   "lat": 41.87556,
+   "lon": -87.62442,
+   "geocode": "Chicago, South Chicago Township, Cook County, Illinois, United States",
+   "airport": {
+    "iata": "ORD",
+    "name": "Chicago O'Hare International Airport",
+    "km": 26,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 41.9786,
+    "lon": -87.9048,
+    "type": "large_airport"
+   }
+  },
+  "washington-dc": {
+   "country": "US",
+   "nameAr": "واشنطن العاصمة",
+   "nameEn": "Washington, D.C.",
+   "wikiTitle": "Washington, D.C.",
+   "flags": [],
+   "lat": 38.8951,
+   "lon": -77.03638,
+   "geocode": "Washington, District of Columbia, United States",
+   "airport": {
+    "iata": "IAD",
+    "name": "Washington Dulles International Airport",
+    "km": 37,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 38.9445,
+    "lon": -77.455803,
+    "type": "large_airport"
+   }
+  },
+  "seattle": {
+   "country": "US",
+   "nameAr": "سياتل",
+   "nameEn": "Seattle",
+   "wikiTitle": "Seattle",
+   "flags": [],
+   "lat": 47.60383,
+   "lon": -122.33006,
+   "geocode": "Seattle, King County, Washington, United States",
+   "airport": {
+    "iata": "SEA",
+    "name": "Seattle–Tacoma International Airport",
+    "km": 17,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 47.447943,
+    "lon": -122.310276,
+    "type": "large_airport"
+   }
+  },
+  "honolulu": {
+   "country": "US",
+   "nameAr": "هونولولو",
+   "nameEn": "Honolulu",
+   "wikiTitle": "Honolulu",
+   "flags": [],
+   "lat": 21.30455,
+   "lon": -157.85568,
+   "geocode": "Honolulu, Honolulu County, Hawaii, United States",
+   "airport": {
+    "iata": "HNL",
+    "name": "Daniel K. Inouye International Airport",
+    "km": 7,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 21.318387,
+    "lon": -157.92567,
+    "type": "large_airport"
+   }
+  },
+  "boston": {
+   "country": "US",
+   "nameAr": "بوسطن",
+   "nameEn": "Boston",
+   "wikiTitle": "Boston",
+   "flags": [],
+   "lat": 42.35883,
+   "lon": -71.05783,
+   "geocode": "Boston, Suffolk County, Massachusetts, United States",
+   "airport": {
+    "iata": "BOS",
+    "name": "Boston Logan International Airport",
+    "km": 4,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 42.36197,
+    "lon": -71.0079,
+    "type": "large_airport"
+   }
+  },
+  "calgary": {
+   "country": "CA",
+   "nameAr": "كالغاري",
+   "nameEn": "Calgary",
+   "wikiTitle": "Calgary",
+   "flags": [],
+   "lat": 51.04561,
+   "lon": -114.05754,
+   "geocode": "Calgary, Alberta, Canada",
+   "airport": {
+    "iata": "YYC",
+    "name": "Calgary International Airport",
+    "km": 9,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 51.118822,
+    "lon": -114.009933,
+    "type": "large_airport"
+   }
+  },
+  "quebec-city": {
+   "country": "CA",
+   "nameAr": "كيبيك",
+   "nameEn": "Quebec City",
+   "wikiTitle": "Quebec City",
+   "flags": [],
+   "lat": 46.81374,
+   "lon": -71.20841,
+   "geocode": "Quebec, Urban agglomeration of Québec, Capitale-Nationale, Quebec, Canada",
+   "airport": {
+    "iata": "YQB",
+    "name": "Quebec Jean Lesage International Airport",
+    "km": 14,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 46.7911,
+    "lon": -71.393303,
+    "type": "large_airport"
+   }
+  },
+  "ottawa": {
+   "country": "CA",
+   "nameAr": "أوتاوا",
+   "nameEn": "Ottawa",
+   "wikiTitle": "Ottawa",
+   "flags": [],
+   "lat": 45.42088,
+   "lon": -75.69011,
+   "geocode": "Ottawa, Eastern Ontario, Ontario, Canada",
+   "airport": {
+    "iata": "YOW",
+    "name": "Ottawa Macdonald-Cartier International Airport",
+    "km": 11,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 45.322498,
+    "lon": -75.669197,
+    "type": "large_airport"
+   }
+  },
+  "los-cabos": {
+   "country": "MX",
+   "nameAr": "لوس كابوس",
+   "nameEn": "Los Cabos",
+   "wikiTitle": "Cabo San Lucas",
+   "flags": [],
+   "lat": 22.89389,
+   "lon": -109.92006,
+   "geocode": "Cabo San Lucas, Los Cabos Municipality, Baja California Sur, 23470, Mexico",
+   "airport": {
+    "iata": "SJD",
+    "name": "Los Cabos International Airport",
+    "km": 35,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 23.151919,
+    "lon": -109.720731,
+    "type": "large_airport"
+   }
+  },
+  "puerto-vallarta": {
+   "country": "MX",
+   "nameAr": "بويرتو فالارتا",
+   "nameEn": "Puerto Vallarta",
+   "wikiTitle": "Puerto Vallarta",
+   "flags": [],
+   "lat": 20.64072,
+   "lon": -105.22031,
+   "geocode": "Puerto Vallarta, Región Costa Norte, Jalisco, 48300, Mexico",
+   "airport": {
+    "iata": "PVR",
+    "name": "Puerto Vallarta International Airport",
+    "km": 6,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 20.679913,
+    "lon": -105.254391,
+    "type": "large_airport"
+   }
+  },
+  "havana": {
+   "country": "CU",
+   "nameAr": "هافانا",
+   "nameEn": "Havana",
+   "wikiTitle": "Havana",
+   "flags": [],
+   "lat": 23.1353,
+   "lon": -82.35896,
+   "geocode": "Havana, 10000, Cuba",
+   "airport": {
+    "iata": "HAV",
+    "name": "José Martí International Airport",
+    "km": 17,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 22.989200592041016,
+    "lon": -82.40910339355469,
+    "type": "large_airport"
+   }
+  },
+  "varadero": {
+   "country": "CU",
+   "nameAr": "فاراديرو",
+   "nameEn": "Varadero",
+   "wikiTitle": "Varadero",
+   "flags": [],
+   "lat": 23.14958,
+   "lon": -81.26002,
+   "geocode": "Varadero, Matanzas, Cuba",
+   "airport": {
+    "iata": "VRA",
+    "name": "Juan Gualberto Gomez International Airport",
+    "km": 22,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 23.034401,
+    "lon": -81.435303,
+    "type": "large_airport"
+   }
+  },
+  "punta-cana": {
+   "country": "DO",
+   "nameAr": "بونتا كانا",
+   "nameEn": "Punta Cana",
+   "wikiTitle": "Punta Cana",
+   "flags": [
+    "gateway 316 km away"
+   ],
+   "lat": 18.87818,
+   "lon": -71.3461,
+   "geocode": "Punta Caña, San Juan de la Maguana, San Juan, 12505, Dominican Republic",
+   "airport": {
+    "iata": "PUJ",
+    "name": "Punta Cana International Airport",
+    "km": 316,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 18.567093,
+    "lon": -68.364558,
+    "type": "large_airport"
+   }
+  },
+  "santo-domingo": {
+   "country": "DO",
+   "nameAr": "سانتو دومينغو",
+   "nameEn": "Santo Domingo",
+   "wikiTitle": "Santo Domingo",
+   "flags": [],
+   "lat": 18.47139,
+   "lon": -69.89184,
+   "geocode": "Santo Domingo, Distrito Nacional, 03201, Dominican Republic",
+   "airport": {
+    "iata": "SDQ",
+    "name": "Las Américas International Airport",
+    "km": 24,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 18.42970085144,
+    "lon": -69.668899536133,
+    "type": "large_airport"
+   }
+  },
+  "montego-bay": {
+   "country": "JM",
+   "nameAr": "مونتيغو باي",
+   "nameEn": "Montego Bay",
+   "wikiTitle": "Montego Bay",
+   "flags": [],
+   "lat": 18.47246,
+   "lon": -77.92174,
+   "geocode": "Montego Bay, Saint James, Cornwall County, Jamaica",
+   "airport": {
+    "iata": "MBJ",
+    "name": "Sangster International Airport",
+    "km": 4,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 18.50342,
+    "lon": -77.91323,
+    "type": "large_airport"
+   }
+  },
+  "kingston": {
+   "country": "JM",
+   "nameAr": "كينغستون",
+   "nameEn": "Kingston",
+   "wikiTitle": "Kingston, Jamaica",
+   "flags": [],
+   "lat": 17.97121,
+   "lon": -76.79281,
+   "geocode": "Kingston, Surrey County, Jamaica",
+   "airport": {
+    "iata": "KIN",
+    "name": "Norman Manley International Airport",
+    "km": 4,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 17.935699462890625,
+    "lon": -76.7874984741211,
+    "type": "large_airport"
+   }
+  },
+  "san-jose": {
+   "country": "CR",
+   "nameAr": "سان خوسيه",
+   "nameEn": "San José",
+   "wikiTitle": "San José, Costa Rica",
+   "flags": [],
+   "lat": 9.93274,
+   "lon": -84.07967,
+   "geocode": "San José, San Jose Province, Costa Rica",
+   "airport": {
+    "iata": "SJO",
+    "name": "Juan Santamaría International Airport",
+    "km": 16,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 9.99386,
+    "lon": -84.208801,
+    "type": "large_airport"
+   }
+  },
+  "liberia": {
+   "country": "CR",
+   "nameAr": "ليبيريا",
+   "nameEn": "Liberia",
+   "wikiTitle": "Liberia, Costa Rica",
+   "flags": [],
+   "lat": 10.63198,
+   "lon": -85.43932,
+   "geocode": "Liberia, Guanacaste, 50101, Costa Rica",
+   "airport": {
+    "iata": "LIR",
+    "name": "Daniel Oduber Quirós International Airport",
+    "km": 12,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 10.5933,
+    "lon": -85.544403,
+    "type": "large_airport"
+   }
+  },
+  "panama-city": {
+   "country": "PA",
+   "nameAr": "مدينة بنما",
+   "nameEn": "Panama City",
+   "wikiTitle": "Panama City",
+   "flags": [],
+   "lat": 8.97145,
+   "lon": -79.53418,
+   "geocode": "Panama City, Calidonia, Distrito de Panamá, Panamá Province, 0843, Panama",
+   "airport": {
+    "iata": "PTY",
+    "name": "Tocumen International Airport",
+    "km": 20,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 9.07136,
+    "lon": -79.383499,
+    "type": "large_airport"
+   }
+  },
+  "guatemala-city": {
+   "country": "GT",
+   "nameAr": "مدينة غواتيمالا",
+   "nameEn": "Guatemala City",
+   "wikiTitle": "Guatemala City",
+   "flags": [],
+   "lat": 14.64161,
+   "lon": -90.51328,
+   "geocode": "Guatemala City, Zona 2, Guatemala Department, Guatemala",
+   "airport": {
+    "iata": "GUA",
+    "name": "La Aurora International Airport",
+    "km": 7,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 14.582896,
+    "lon": -90.527515,
+    "type": "large_airport"
+   }
+  },
+  "san-salvador": {
+   "country": "SV",
+   "nameAr": "سان سلفادور",
+   "nameEn": "San Salvador",
+   "wikiTitle": "San Salvador",
+   "flags": [],
+   "lat": 13.69763,
+   "lon": -89.19116,
+   "geocode": "San Salvador, San Salvador Centro, San Salvador, El Salvador",
+   "airport": {
+    "iata": "SAL",
+    "name": "El Salvador International Airport Saint Óscar Arnulfo Romero y Galdámez",
+    "km": 32,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 13.44447,
+    "lon": -89.055784,
+    "type": "large_airport"
+   }
+  },
+  "roatan": {
+   "country": "HN",
+   "nameAr": "رواتان",
+   "nameEn": "Roatán",
+   "wikiTitle": "Roatán",
+   "flags": [],
+   "lat": 16.31674,
+   "lon": -86.53748,
+   "geocode": "Roatán, Bay Islands, Honduras",
+   "airport": {
+    "iata": "RTB",
+    "name": "Juan Manuel Gálvez International Airport",
+    "km": 2,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 16.316799,
+    "lon": -86.523003,
+    "type": "large_airport"
+   }
+  },
+  "belize-city": {
+   "country": "BZ",
+   "nameAr": "مدينة بليز",
+   "nameEn": "Belize City",
+   "wikiTitle": "Belize City",
+   "flags": [],
+   "lat": 17.50028,
+   "lon": -88.19887,
+   "geocode": "Belize City, Belize District, Belize",
+   "airport": {
+    "iata": "BZE",
+    "name": "Philip S. W. Goldson International Airport",
+    "km": 12,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 17.539951,
+    "lon": -88.303556,
+    "type": "large_airport"
+   }
+  },
+  "nassau": {
+   "country": "BS",
+   "nameAr": "ناساو",
+   "nameEn": "Nassau",
+   "wikiTitle": "Nassau, Bahamas",
+   "flags": [],
+   "lat": 25.07823,
+   "lon": -77.33834,
+   "geocode": "Nassau, New Providence, Bahamas",
+   "airport": {
+    "iata": "NAS",
+    "name": "Lynden Pindling International Airport",
+    "km": 14,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 25.039,
+    "lon": -77.466202,
+    "type": "large_airport"
+   }
+  },
+  "bridgetown": {
+   "country": "BB",
+   "nameAr": "بريدجتاون",
+   "nameEn": "Bridgetown",
+   "wikiTitle": "Bridgetown",
+   "flags": [],
+   "lat": 13.09778,
+   "lon": -59.61842,
+   "geocode": "Bridgetown, Saint Michael, Barbados",
+   "airport": {
+    "iata": "BGI",
+    "name": "Grantley Adams International Airport",
+    "km": 14,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 13.074667,
+    "lon": -59.491034,
+    "type": "large_airport"
+   }
+  },
+  "port-of-spain": {
+   "country": "TT",
+   "nameAr": "بورت أوف سبين",
+   "nameEn": "Port of Spain",
+   "wikiTitle": "Port of Spain",
+   "flags": [],
+   "lat": 10.65727,
+   "lon": -61.51802,
+   "geocode": "Port of Spain, Trinidad and Tobago",
+   "airport": {
+    "iata": "POS",
+    "name": "Piarco International Airport",
+    "km": 21,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 10.59535,
+    "lon": -61.337568,
+    "type": "large_airport"
+   }
+  },
+  "foz-do-iguacu": {
+   "country": "BR",
+   "nameAr": "فوز دو إيغواسو",
+   "nameEn": "Foz do Iguaçu",
+   "wikiTitle": "Foz do Iguaçu",
+   "flags": [],
+   "lat": -25.5304,
+   "lon": -54.58307,
+   "geocode": "Foz do Iguaçu, Paraná, South Region, Brazil",
+   "airport": {
+    "iata": "IGU",
+    "name": "Cataratas International Airport",
+    "km": 12,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": -25.594167,
+    "lon": -54.489444,
+    "type": "large_airport"
+   }
+  },
+  "florianopolis": {
+   "country": "BR",
+   "nameAr": "فلوريانوبوليس",
+   "nameEn": "Florianópolis",
+   "wikiTitle": "Florianópolis",
+   "flags": [],
+   "lat": -27.5973,
+   "lon": -48.54961,
+   "geocode": "Florianópolis, Santa Catarina, South Region, Brazil",
+   "airport": {
+    "iata": "FLN",
+    "name": "Hercílio Luz International Airport",
+    "km": 8,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": -27.670279,
+    "lon": -48.552502,
+    "type": "large_airport"
+   }
+  },
+  "buenos-aires": {
+   "country": "AR",
+   "nameAr": "بوينس آيرس",
+   "nameEn": "Buenos Aires",
+   "wikiTitle": "Buenos Aires",
+   "flags": [],
+   "lat": -34.60956,
+   "lon": -58.38879,
+   "geocode": "Buenos Aires, Comuna 1, Autonomous City of Buenos Aires, Argentina",
+   "airport": {
+    "iata": "EZE",
+    "name": "Ezeiza International Airport - Ministro Pistarini",
+    "km": 27,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": -34.8222,
+    "lon": -58.5358,
+    "type": "large_airport"
+   }
+  },
+  "mendoza": {
+   "country": "AR",
+   "nameAr": "مندوزا",
+   "nameEn": "Mendoza",
+   "wikiTitle": "Mendoza, Argentina",
+   "flags": [],
+   "lat": -32.88942,
+   "lon": -68.84462,
+   "geocode": "Mendoza, Sección 2ª Barrio Cívico, Departamento Capital, Mendoza, Argentina",
+   "airport": {
+    "iata": "MDZ",
+    "name": "Governor Francisco Gabrielli International Airport",
+    "km": 8,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": -32.831699,
+    "lon": -68.7929,
+    "type": "large_airport"
+   }
+  },
+  "bariloche": {
+   "country": "AR",
+   "nameAr": "باريلوتشي",
+   "nameEn": "Bariloche",
+   "wikiTitle": "San Carlos de Bariloche",
+   "flags": [],
+   "lat": -41.13348,
+   "lon": -71.31015,
+   "geocode": "San Carlos de Bariloche, Municipio de San Carlos de Bariloche, Departamento Bariloche, Río Negro, 8400, Argentina",
+   "airport": {
+    "iata": "BRC",
+    "name": "Teniente Luis Candelaria International Airport",
+    "km": 13,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": -41.151199,
+    "lon": -71.157501,
+    "type": "large_airport"
+   }
+  },
+  "el-calafate": {
+   "country": "AR",
+   "nameAr": "إل كالافاتي",
+   "nameEn": "El Calafate",
+   "wikiTitle": "El Calafate",
+   "flags": [],
+   "lat": -50.33874,
+   "lon": -72.27372,
+   "geocode": "El Calafate, Lago Argentino, Santa Cruz, Argentina",
+   "airport": {
+    "iata": "FTE",
+    "name": "El Calafate - Commander Armando Tola International Airport",
+    "km": 17,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": -50.280267,
+    "lon": -72.053401,
+    "type": "medium_airport"
+   }
+  },
+  "santiago": {
+   "country": "CL",
+   "nameAr": "سانتياغو",
+   "nameEn": "Santiago",
+   "wikiTitle": "Santiago",
+   "flags": [],
+   "lat": -33.4377,
+   "lon": -70.65107,
+   "geocode": "Santiago, Provincia de Santiago, Santiago Metropolitan Region, 8320000, Chile",
+   "airport": {
+    "iata": "SCL",
+    "name": "Comodoro Arturo Merino Benítez International Airport",
+    "km": 13,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": -33.393001556396484,
+    "lon": -70.78579711914062,
+    "type": "large_airport"
+   }
+  },
+  "punta-arenas": {
+   "country": "CL",
+   "nameAr": "بونتا أريناس",
+   "nameEn": "Punta Arenas",
+   "wikiTitle": "Punta Arenas",
+   "flags": [],
+   "lat": -53.16257,
+   "lon": -70.90782,
+   "geocode": "Punta Arenas, Provincia de Magallanes, Magallanes and Chilean Antarctica Region, 6201065, Chile",
+   "airport": {
+    "iata": "PUQ",
+    "name": "President Carlos Ibáñez International Airport",
+    "km": 18,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": -53.002602,
+    "lon": -70.854599,
+    "type": "large_airport"
+   }
+  },
+  "easter-island": {
+   "country": "CL",
+   "nameAr": "جزيرة القيامة",
+   "nameEn": "Easter Island",
+   "wikiTitle": "Hanga Roa",
+   "flags": [],
+   "lat": -27.14812,
+   "lon": -109.42734,
+   "geocode": "Hanga Roa, Easter Island, Easter Island Province, Valparaiso Region, 2770000, Chile",
+   "airport": {
+    "iata": "IPC",
+    "name": "Mataveri International Airport",
+    "km": 2,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": -27.165411,
+    "lon": -109.421027,
+    "type": "large_airport"
+   }
+  },
+  "lima": {
+   "country": "PE",
+   "nameAr": "ليما",
+   "nameEn": "Lima",
+   "wikiTitle": "Lima",
+   "flags": [],
+   "lat": -12.04598,
+   "lon": -77.03059,
+   "geocode": "Lima, Province of Lima, Lima Metropolitan Area, Lima, 15001, Peru",
+   "airport": {
+    "iata": "LIM",
+    "name": "Jorge Chávez International Airport",
+    "km": 9,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": -12.0219,
+    "lon": -77.114305,
+    "type": "large_airport"
+   }
+  },
+  "cusco": {
+   "country": "PE",
+   "nameAr": "كوسكو",
+   "nameEn": "Cusco",
+   "wikiTitle": "Cusco",
+   "flags": [],
+   "lat": -13.51709,
+   "lon": -71.97854,
+   "geocode": "Cuzco, Distrito de Cusco, Province of Cusco, Cusco, 08001, Peru",
+   "airport": {
+    "iata": "CUZ",
+    "name": "Alejandro Velasco Astete International Airport",
+    "km": 5,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": -13.535699844400002,
+    "lon": -71.9387969971,
+    "type": "large_airport"
+   }
+  },
+  "arequipa": {
+   "country": "PE",
+   "nameAr": "أريكيبا",
+   "nameEn": "Arequipa",
+   "wikiTitle": "Arequipa",
+   "flags": [],
+   "lat": -16.39887,
+   "lon": -71.53696,
+   "geocode": "Arequipa, Province of Arequipa, Arequipa, 04001, Peru",
+   "airport": {
+    "iata": "AQP",
+    "name": "Rodríguez Ballón International Airport",
+    "km": 7,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": -16.340786,
+    "lon": -71.569485,
+    "type": "large_airport"
+   }
+  },
+  "bogota": {
+   "country": "CO",
+   "nameAr": "بوغوتا",
+   "nameEn": "Bogotá",
+   "wikiTitle": "Bogotá",
+   "flags": [],
+   "lat": 4.65338,
+   "lon": -74.08363,
+   "geocode": "Bogota, Bogota, Capital District, RAP (Especial) Central, Colombia",
+   "airport": {
+    "iata": "BOG",
+    "name": "El Dorado International Airport",
+    "km": 9,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 4.70159,
+    "lon": -74.1469,
+    "type": "large_airport"
+   }
+  },
+  "medellin": {
+   "country": "CO",
+   "nameAr": "ميديلين",
+   "nameEn": "Medellín",
+   "wikiTitle": "Medellín",
+   "flags": [],
+   "lat": 6.26973,
+   "lon": -75.60256,
+   "geocode": "Medellín, Valle de Aburrá, Antioquia, RAP del Agua y la Montaña, 0500, Colombia",
+   "airport": {
+    "iata": "MDE",
+    "name": "Jose Maria Córdova International Airport",
+    "km": 23,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 6.16454,
+    "lon": -75.4231,
+    "type": "large_airport"
+   }
+  },
+  "cartagena": {
+   "country": "CO",
+   "nameAr": "قرطاجنة",
+   "nameEn": "Cartagena",
+   "wikiTitle": "Cartagena, Colombia",
+   "flags": [],
+   "lat": 10.42656,
+   "lon": -75.54417,
+   "geocode": "Cartagena, Dique, Bolívar, RAP Caribe, Colombia",
+   "airport": {
+    "iata": "CTG",
+    "name": "Rafael Nuñez International Airport",
+    "km": 4,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 10.4424,
+    "lon": -75.513,
+    "type": "large_airport"
+   }
+  },
+  "quito": {
+   "country": "EC",
+   "nameAr": "كيتو",
+   "nameEn": "Quito",
+   "wikiTitle": "Quito",
+   "flags": [],
+   "lat": -0.22016,
+   "lon": -78.51233,
+   "geocode": "Quito, Quito Canton, Pichincha, 170130, Ecuador",
+   "airport": {
+    "iata": "UIO",
+    "name": "Mariscal Sucre International Airport",
+    "km": 20,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": -0.125399,
+    "lon": -78.354306,
+    "type": "large_airport"
+   }
+  },
+  "guayaquil": {
+   "country": "EC",
+   "nameAr": "غواياكيل",
+   "nameEn": "Guayaquil",
+   "wikiTitle": "Guayaquil",
+   "flags": [
+    "gateway 16783 km away"
+   ],
+   "lat": -2.19006,
+   "lon": -79.88687,
+   "geocode": "Guayaquil, Guayas, Ecuador",
+   "airport": {
+    "iata": "GOI",
+    "name": "Goa Dabolim International Airport",
+    "km": 16783,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 15.380062,
+    "lon": 73.833328,
+    "type": "large_airport"
+   }
+  },
+  "galapagos": {
+   "country": "EC",
+   "nameAr": "غالاباغوس",
+   "nameEn": "Galápagos",
+   "wikiTitle": "Puerto Ayora",
+   "flags": [],
+   "lat": -0.74717,
+   "lon": -90.31342,
+   "geocode": "Puerto Ayora, Parroquia Bella Vista, Cantón Santa Cruz, Galápagos, Ecuador",
+   "airport": {
+    "iata": "GPS",
+    "name": "Seymour Galapagos Ecological Airport",
+    "km": 33,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": -0.453758,
+    "lon": -90.2659,
+    "type": "medium_airport"
+   }
+  },
+  "montevideo": {
+   "country": "UY",
+   "nameAr": "مونتيفيديو",
+   "nameEn": "Montevideo",
+   "wikiTitle": "Montevideo",
+   "flags": [],
+   "lat": -34.90589,
+   "lon": -56.19131,
+   "geocode": "Montevideo, Uruguay",
+   "airport": {
+    "iata": "MVD",
+    "name": "Carrasco General Cesáreo L. Berisso International Airport",
+    "km": 17,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": -34.835647,
+    "lon": -56.026497,
+    "type": "large_airport"
+   }
+  },
+  "punta-del-este": {
+   "country": "UY",
+   "nameAr": "بونتا دل إستي",
+   "nameEn": "Punta del Este",
+   "wikiTitle": "Punta del Este",
+   "flags": [],
+   "lat": -34.96323,
+   "lon": -54.944,
+   "geocode": "Punta Del Este, Maldonado, 20100, Uruguay",
+   "airport": {
+    "iata": "PDP",
+    "name": "Capitan Corbeta CA Curbelo International Airport",
+    "km": 18,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": -34.855099,
+    "lon": -55.094299,
+    "type": "medium_airport"
+   }
+  },
+  "la-paz": {
+   "country": "BO",
+   "nameAr": "لاباز",
+   "nameEn": "La Paz",
+   "wikiTitle": "La Paz",
+   "flags": [],
+   "lat": -16.49555,
+   "lon": -68.13362,
+   "geocode": "La Paz, Provincia Pedro Domingo Murillo, La Paz, Bolivia",
+   "airport": {
+    "iata": "LPB",
+    "name": "El Alto International Airport",
+    "km": 6,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": -16.510272,
+    "lon": -68.189416,
+    "type": "large_airport"
+   }
+  },
+  "santa-cruz": {
+   "country": "BO",
+   "nameAr": "سانتا كروز",
+   "nameEn": "Santa Cruz de la Sierra",
+   "wikiTitle": "Santa Cruz de la Sierra",
+   "flags": [],
+   "lat": -17.78342,
+   "lon": -63.18209,
+   "geocode": "Santa Cruz de la Sierra, Provincia Andrés Ibáñez, Santa Cruz, Bolivia",
+   "airport": {
+    "iata": "VVI",
+    "name": "Viru Viru International Airport",
+    "km": 16,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": -17.6448,
+    "lon": -63.135399,
+    "type": "large_airport"
+   }
+  },
+  "asuncion": {
+   "country": "PY",
+   "nameAr": "أسونسيون",
+   "nameEn": "Asunción",
+   "wikiTitle": "Asunción",
+   "flags": [],
+   "lat": -25.28005,
+   "lon": -57.63438,
+   "geocode": "Asuncion, Asunción, Distrito Capital, Región Oriental, 001013, Paraguay",
+   "airport": {
+    "iata": "ASU",
+    "name": "Silvio Pettirossi International Airport",
+    "km": 12,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": -25.240156,
+    "lon": -57.519227,
+    "type": "large_airport"
+   }
+  },
+  "georgetown": {
+   "country": "GY",
+   "nameAr": "جورج تاون",
+   "nameEn": "Georgetown",
+   "wikiTitle": "Georgetown, Guyana",
+   "flags": [],
+   "lat": 6.80326,
+   "lon": -58.14554,
+   "geocode": "City of Georgetown, Demerara-Mahaica, Guyana",
+   "airport": {
+    "iata": "GEO",
+    "name": "Cheddi Jagan International Airport",
+    "km": 36,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 6.49855,
+    "lon": -58.254101,
+    "type": "large_airport"
+   }
+  },
+  "paramaribo": {
+   "country": "SR",
+   "nameAr": "باراماريبو",
+   "nameEn": "Paramaribo",
+   "wikiTitle": "Paramaribo",
+   "flags": [],
+   "lat": 5.82476,
+   "lon": -55.17039,
+   "geocode": "Paramaribo, Centrum, Paramaribo, Suriname",
+   "airport": {
+    "iata": "PBM",
+    "name": "Johan Adolf Pengel International Airport",
+    "km": 41,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 5.45283,
+    "lon": -55.187801,
+    "type": "large_airport"
+   }
+  },
+  "perth": {
+   "country": "AU",
+   "nameAr": "بيرث",
+   "nameEn": "Perth",
+   "wikiTitle": "Perth",
+   "flags": [],
+   "lat": -31.9559,
+   "lon": 115.86058,
+   "geocode": "Perth, Western Australia, 6000, Australia",
+   "airport": {
+    "iata": "PER",
+    "name": "Perth International Airport",
+    "km": 10,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": -31.94029998779297,
+    "lon": 115.96700286865234,
+    "type": "large_airport"
+   }
+  },
+  "adelaide": {
+   "country": "AU",
+   "nameAr": "أديلايد",
+   "nameEn": "Adelaide",
+   "wikiTitle": "Adelaide",
+   "flags": [],
+   "lat": -34.92818,
+   "lon": 138.59993,
+   "geocode": "Adelaide, South Australia, Australia",
+   "airport": {
+    "iata": "ADL",
+    "name": "Adelaide International Airport",
+    "km": 6,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": -34.947512,
+    "lon": 138.533393,
+    "type": "large_airport"
+   }
+  },
+  "cairns": {
+   "country": "AU",
+   "nameAr": "كيرنز",
+   "nameEn": "Cairns",
+   "wikiTitle": "Cairns",
+   "flags": [],
+   "lat": -16.92067,
+   "lon": 145.77219,
+   "geocode": "Cairns, Queensland, 4870, Australia",
+   "airport": {
+    "iata": "CNS",
+    "name": "Cairns International Airport",
+    "km": 5,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": -16.878921,
+    "lon": 145.74948,
+    "type": "large_airport"
+   }
+  },
+  "auckland": {
+   "country": "NZ",
+   "nameAr": "أوكلاند",
+   "nameEn": "Auckland",
+   "wikiTitle": "Auckland",
+   "flags": [],
+   "lat": -36.85209,
+   "lon": 174.76318,
+   "geocode": "Auckland, Waitematā, Auckland, 1010, New Zealand",
+   "airport": {
+    "iata": "AKL",
+    "name": "Auckland International Airport",
+    "km": 18,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": -37.01199,
+    "lon": 174.786331,
+    "type": "large_airport"
+   }
+  },
+  "wellington": {
+   "country": "NZ",
+   "nameAr": "ويلينغتون",
+   "nameEn": "Wellington",
+   "wikiTitle": "Wellington",
+   "flags": [],
+   "lat": -41.2888,
+   "lon": 174.77721,
+   "geocode": "Wellington, Wellington City, Wellington, 6011, New Zealand",
+   "airport": {
+    "iata": "WLG",
+    "name": "Wellington International Airport",
+    "km": 5,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": -41.326839,
+    "lon": 174.806862,
+    "type": "large_airport"
+   }
+  },
+  "christchurch": {
+   "country": "NZ",
+   "nameAr": "كرايستشيرش",
+   "nameEn": "Christchurch",
+   "wikiTitle": "Christchurch",
+   "flags": [],
+   "lat": -43.53095,
+   "lon": 172.63643,
+   "geocode": "Christchurch, Christchurch City, Canterbury, New Zealand",
+   "airport": {
+    "iata": "CHC",
+    "name": "Christchurch International Airport",
+    "km": 10,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": -43.489029,
+    "lon": 172.532065,
+    "type": "large_airport"
+   }
+  },
+  "queenstown": {
+   "country": "NZ",
+   "nameAr": "كوينزتاون",
+   "nameEn": "Queenstown",
+   "wikiTitle": "Queenstown, New Zealand",
+   "flags": [],
+   "lat": -45.03219,
+   "lon": 168.661,
+   "geocode": "Queenstown, Queenstown-Lakes District, Otago, 9348, New Zealand",
+   "airport": {
+    "iata": "ZQN",
+    "name": "Queenstown Airport",
+    "km": 7,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": -45.019205,
+    "lon": 168.746379,
+    "type": "large_airport"
+   }
+  },
+  "nadi": {
+   "country": "FJ",
+   "nameAr": "نادي",
+   "nameEn": "Nadi",
+   "wikiTitle": "Nadi",
+   "flags": [],
+   "lat": -17.79927,
+   "lon": 177.41785,
+   "geocode": "Nadi, Ba, Western, Fiji",
+   "airport": {
+    "iata": "NAN",
+    "name": "Nadi International Airport",
+    "km": 5,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": -17.761822,
+    "lon": 177.437843,
+    "type": "large_airport"
+   }
+  },
+  "suva": {
+   "country": "FJ",
+   "nameAr": "سوفا",
+   "nameEn": "Suva",
+   "wikiTitle": "Suva",
+   "flags": [],
+   "lat": -18.14159,
+   "lon": 178.44217,
+   "geocode": "Suva, Rewa, Central, Fiji",
+   "airport": {
+    "iata": "SUV",
+    "name": "Nausori International Airport",
+    "km": 17,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": -18.044226,
+    "lon": 178.561486,
+    "type": "large_airport"
+   }
+  },
+  "port-moresby": {
+   "country": "PG",
+   "nameAr": "بورت مورسبي",
+   "nameEn": "Port Moresby",
+   "wikiTitle": "Port Moresby",
+   "flags": [],
+   "lat": -9.47433,
+   "lon": 147.15995,
+   "geocode": "Port Moresby, National Capital District, Southern Region, 111, Papua New Guinea",
+   "airport": {
+    "iata": "POM",
+    "name": "Port Moresby Jacksons International Airport",
+    "km": 7,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": -9.443380355834961,
+    "lon": 147.22000122070312,
+    "type": "large_airport"
+   }
+  },
+  "apia": {
+   "country": "WS",
+   "nameAr": "أبيا",
+   "nameEn": "Apia",
+   "wikiTitle": "Apia",
+   "flags": [],
+   "lat": -13.83452,
+   "lon": -171.7631,
+   "geocode": "Apia, Tuamasaga, Samoa",
+   "airport": {
+    "iata": "APW",
+    "name": "Faleolo International Airport",
+    "km": 26,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": -13.83,
+    "lon": -172.007996,
+    "type": "large_airport"
+   }
+  },
+  "nukualofa": {
+   "country": "TO",
+   "nameAr": "نوكوالوفا",
+   "nameEn": "Nukuʻalofa",
+   "wikiTitle": "Nukuʻalofa",
+   "flags": [],
+   "lat": -21.13434,
+   "lon": -175.20181,
+   "geocode": "Nuku'alofa, Vahe Kolofo'ou, Tongatapu, Tonga",
+   "airport": {
+    "iata": "TBU",
+    "name": "Fua'amotu International Airport",
+    "km": 13,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": -21.241438,
+    "lon": -175.149164,
+    "type": "large_airport"
+   }
+  },
+  "port-vila": {
+   "country": "VU",
+   "nameAr": "بورت فيلا",
+   "nameEn": "Port Vila",
+   "wikiTitle": "Port Vila",
+   "flags": [],
+   "lat": -17.7415,
+   "lon": 168.31502,
+   "geocode": "Port Vila, Shefa Province, Vanuatu",
+   "airport": {
+    "iata": "VLI",
+    "name": "Bauerfield International Airport",
+    "km": 5,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": -17.699301,
+    "lon": 168.320007,
+    "type": "large_airport"
+   }
+  },
+  "honiara": {
+   "country": "SB",
+   "nameAr": "هونيارا",
+   "nameEn": "Honiara",
+   "wikiTitle": "Honiara",
+   "flags": [],
+   "lat": -9.43108,
+   "lon": 159.95526,
+   "geocode": "Honiara, Solomon Islands",
+   "airport": {
+    "iata": "HIR",
+    "name": "Honiara International Airport",
+    "km": 11,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": -9.428,
+    "lon": 160.054993,
+    "type": "large_airport"
+   }
+  },
+  "koror": {
+   "country": "PW",
+   "nameAr": "كورور",
+   "nameEn": "Koror",
+   "wikiTitle": "Koror",
+   "flags": [],
+   "lat": 7.34328,
+   "lon": 134.47668,
+   "geocode": "Koror, Palau",
+   "airport": {
+    "iata": "ROR",
+    "name": "Roman Tmetuchl International Airport",
+    "km": 8,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 7.366965,
+    "lon": 134.544085,
+    "type": "large_airport"
+   }
+  },
+  "pohnpei": {
+   "country": "FM",
+   "nameAr": "بونبي",
+   "nameEn": "Pohnpei",
+   "wikiTitle": "Pohnpei",
+   "flags": [],
+   "lat": 6.88705,
+   "lon": 158.24061,
+   "geocode": "Pohnpei, Sapwohn Kousapw, Pohnpei, 96941, Federated States of Micronesia",
+   "airport": {
+    "iata": "PNI",
+    "name": "Pohnpei International Airport",
+    "km": 11,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 6.985082,
+    "lon": 158.20992,
+    "type": "medium_airport"
+   }
+  }
+ },
+ "review": [
+  "hong-kong",
+  "macau",
+  "labuan-bajo",
+  "palermo",
+  "punta-cana",
+  "guayaquil"
+ ]
+}
