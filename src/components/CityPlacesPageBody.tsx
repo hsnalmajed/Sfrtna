@@ -4,7 +4,7 @@ import { getDictionary } from "@/lib/dictionaries";
 import type { Locale } from "@/lib/types";
 import { findCountry } from "@/lib/countries";
 import { findCity } from "@/lib/cities";
-import { fetchCityOverviews, fetchPlacesAroundCities } from "@/lib/mapPins";
+import { fetchCityOverviews, fetchPlacesAroundCities, readStoredRestaurants } from "@/lib/mapPins";
 import { fetchCityHighlights } from "@/lib/guideHighlights";
 import { countLabel, monthRanges, placeCountLabel } from "@/lib/format";
 import { flightHoursBetween } from "@/lib/originInfo";
@@ -162,6 +162,14 @@ export default async function CityPlacesPageBody({
   items.sort((a, b) => Number(Boolean(b.bookingLabel)) - Number(Boolean(a.bookingLabel)));
 
   const cityName = loc === "ar" ? cityEntry.nameAr : cityEntry.nameEn;
+  // The plan's meals: the city's stored restaurants, best documented first.
+  const restaurants = (await readStoredRestaurants(cityEntry.slug)).slice(0, 150).map((r) => ({
+    name: (loc === "ar" ? r.a : r.e) || r.n,
+    cuisine: r.u ? r.u.split(";")[0].replace(/_/g, " ") : undefined,
+    halal: r.h === 1,
+    lat: r.y,
+    lon: r.x,
+  }));
 
   // What depends on the city rather than the country: when to go there, how
   // long the flight from Riyadh is, and how much there is to see.
@@ -311,6 +319,7 @@ export default async function CityPlacesPageBody({
                 activities: dict.attractions.tabActivities,
                 services: dict.attractions.tabServices,
               }}
+              restaurants={restaurants}
               activities={
                 <div>
                   {tours.length > 0 && (

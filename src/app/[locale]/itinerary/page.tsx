@@ -1,13 +1,14 @@
 import type { Locale } from "@/lib/types";
 import { sectionHero } from "@/lib/sectionHero";
-import ItineraryPlanner from "@/components/ItineraryPlanner";
+import ItineraryStart from "@/components/ItineraryStart";
 
 // The hero is a fixed Pexels photograph, so the route is
 // rendered per request rather than frozen into the build.
 export const dynamic = "force-dynamic";
 
 /**
- * The plan page's shell.
+ * The plan page's shell: a city and dates, then the one plan engine on
+ * that city's page (see ItineraryStart).
  *
  * Everything on this page is a form, so the page itself used to be a client
  * component — which left it as the one section of the site with no hero at
@@ -20,5 +21,5 @@ export default async function ItineraryPage({ params }: PageProps<"/[locale]/iti
   const loc = (locale === "en" ? "en" : "ar") as Locale;
   const hero = await sectionHero("itinerary", loc);
 
-  return <ItineraryPlanner hero={hero} />;
+  return <ItineraryStart hero={hero} />;
 }

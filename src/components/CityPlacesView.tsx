@@ -4,7 +4,7 @@ import { useCallback, useMemo, useRef, useState } from "react";
 import type { Locale } from "@/lib/types";
 import type { MapPin } from "@/lib/mapPins";
 import type { PlaceListItem } from "@/components/CityPlacesExplorer";
-import CityPlacesPlanner from "@/components/CityPlacesPlanner";
+import CityPlacesPlanner, { type PlanRestaurant } from "@/components/CityPlacesPlanner";
 import AttractionsMap from "@/components/AttractionsMap";
 import MapDownloads from "@/components/MapDownloads";
 
@@ -39,6 +39,7 @@ export default function CityPlacesView({
   labels,
   activities,
   services,
+  restaurants,
 }: {
   locale: Locale;
   initialView: CityView;
@@ -65,6 +66,8 @@ export default function CityPlacesView({
   activities?: React.ReactNode;
   /** «خدمات رحلتك» tab: eSIM, transfers, car, luggage — every partner. */
   services?: React.ReactNode;
+  /** The city's stored restaurants, for the plan's meals. */
+  restaurants?: PlanRestaurant[];
 }) {
   const [view, setView] = useState<CityView>(initialView);
   const [focusKey, setFocusKey] = useState<string | null>(null);
@@ -203,6 +206,7 @@ export default function CityPlacesView({
           countryName={countryName}
           dict={plannerDict}
           onShowOnMap={pins.length ? showOnMap : undefined}
+          restaurants={restaurants}
           showOnMapLabel={labels.showOnMap}
         />
       </div>

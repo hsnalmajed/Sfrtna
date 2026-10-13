@@ -11,6 +11,7 @@ import { printPage } from "@/lib/nativeApp";
 import { GOOGLE_MY_MAPS_URL } from "@/lib/tripPlaces";
 import CityPlacesExplorer, { score, type PlaceListItem } from "@/components/CityPlacesExplorer";
 import PrintHeader from "@/components/PrintHeader";
+import DateRangeInput from "@/components/DateRangeInput";
 
 /**
  * More than this in one day and the day is travelling, not visiting.
@@ -135,6 +136,39 @@ function addDays(iso: string, n: number): Date {
   return new Date(Date.parse(`${iso}T00:00:00Z`) + n * 86400000);
 }
 
+/** A restaurant near the day's places (stored from OpenStreetMap monthly). */
+export interface PlanRestaurant {
+  name: string;
+  cuisine?: string;
+  halal?: boolean;
+  lat: number;
+  lon: number;
+}
+
+const MEALS_PER_DAY = 2;
+
+/**
+ * Each day's meals: the restaurants nearest the middle of that day's places,
+ * none repeated across the trip. No ratings — there is no honest source.
+ */
+function mealsFor(days: PlaceListItem[][], restaurants: PlanRestaurant[]): PlanRestaurant[][] {
+  const used = new Set<string>();
+  return days.map((items) => {
+    const pts = items.filter(hasCoords);
+    if (!pts.length || !restaurants.length) return [];
+    const lat = pts.reduce((a, p) => a + (p.lat as number), 0) / pts.length;
+    const lon = pts.reduce((a, p) => a + (p.lon as number), 0) / pts.length;
+    const near = restaurants
+      .filter((r) => !used.has(`${r.lat},${r.lon}`))
+      .map((r) => ({ r, d: (r.lat - lat) ** 2 + ((r.lon - lon) * Math.cos((lat * Math.PI) / 180)) ** 2 }))
+      .sort((a, b) => a.d - b.d)
+      .slice(0, MEALS_PER_DAY)
+      .map((x) => x.r);
+    for (const r of near) used.add(`${r.lat},${r.lon}`);
+    return near;
+  });
+}
+
 interface Plan {
   source: "pick" | "auto";
   from: string;
@@ -169,9 +203,12 @@ export default function CityPlacesPlanner({
   dict,
   onShowOnMap,
   showOnMapLabel,
+  restaurants = [],
 }: {
   locale: Locale;
   places: PlaceListItem[];
+  /** The city's stored restaurants, for each day's meals. */
+  restaurants?: PlanRestaurant[];
   cityName: string;
   countryCode: string;
   countryName: string;
@@ -203,6 +240,8 @@ export default function CityPlacesPlanner({
     // eslint-disable-next-line react-hooks/set-state-in-effect -- one read of the address on mount
     if (f) setFrom(f);
     if (tt && tt >= f) setTo(tt);
+    // From travel tools' «أنشئ لي خطة»: open the interests sheet at once.
+    if (q.get("mode") === "auto" && f && tt) setAutoOpen(true);
     if (q.get("plan") === "1") {
       requestAnimationFrame(() =>
         document.getElementById("trip-plan")?.scrollIntoView({ behavior: "smooth", block: "start" })
@@ -388,7 +427,7 @@ export default function CityPlacesPlanner({
             </ul>
           )}
 
-          <DatesFields t={t} from={from} to={to} setFrom={setFrom} setTo={setTo} days={days} error={datesError} daysText={daysText} />
+          <DatesFields t={t} locale={locale} from={from} to={to} setFrom={setFrom} setTo={setTo} days={days} error={datesError} daysText={daysText} />
 
           {!datesError && days && extra > 0 && (
             <p className="mt-4 rounded-2xl bg-amber-50 px-4 py-3 text-sm leading-relaxed text-amber-900 ring-1 ring-amber-200">
@@ -417,8 +456,18 @@ export default function CityPlacesPlanner({
       {autoOpen && (
         <Sheet onClose={() => setAutoOpen(false)} label={t.autoTitle.replace("{city}", cityName)} closeLabel={t.close}>
           <p className="font-display text-xl font-extrabold text-navy-900">✨ {t.autoTitle.replace("{city}", cityName)}</p>
-          <DatesFields t={t} from={from} to={to} setFrom={setFrom} setTo={setTo} days={days} error={datesError} daysText={daysText} />
+          <DatesFields t={t} locale={locale} from={from} to={to} setFrom={setFrom} setTo={setTo} days={days} error={datesError} daysText={daysText} />
           <p className="mt-5 text-sm font-extrabold text-navy-900">{t.interests}</p>
+          <button
+            type="button"
+            aria-pressed={interests.length === 3}
+            onClick={() => setInterests(["sights", "activities", "shopping"])}
+            className={`mt-2 w-full rounded-2xl px-3 py-3 text-sm font-extrabold ring-1 transition ${
+              interests.length === 3 ? "bg-navy-900 text-white ring-navy-900" : "bg-white text-navy-800 ring-mist-200 hover:ring-navy-300"
+            }`}
+          >
+            ✨ {t.noPreference}
+          </button>
           <div className="mt-2 grid grid-cols-3 gap-2">
             {(
               [
@@ -471,6 +520,7 @@ export default function CityPlacesPlanner({
             else setAutoOpen(true);
           }}
           onClose={() => setPlan(null)}
+          restaurants={restaurants}
         />
       )}
     </div>
@@ -481,6 +531,7 @@ type TripDict = ReturnType<typeof getDictionary>["tripPlan"];
 
 function DatesFields({
   t,
+  locale,
   from,
   to,
   setFrom,
@@ -490,6 +541,7 @@ function DatesFields({
   daysText,
 }: {
   t: TripDict;
+  locale: Locale;
   from: string;
   to: string;
   setFrom: (v: string) => void;
@@ -498,29 +550,20 @@ function DatesFields({
   error: string | null;
   daysText: (n: number) => string;
 }) {
-  const input =
-    "mt-1 w-full rounded-xl border border-mist-300 bg-white px-3 py-2.5 text-sm font-bold text-navy-900 outline-none transition focus:border-sun-400 focus:ring-4 focus:ring-sun-400/20";
+  // The site's one date picker (owner, 13 Oct: the same calendar everywhere).
   return (
     <div className="mt-5">
-      <p className="text-sm font-extrabold text-navy-900">🗓 {t.datesTitle}</p>
-      <div className="mt-2 grid grid-cols-2 gap-2">
-        <label className="text-xs font-bold text-navy-500">
-          {t.depart}
-          <input
-            type="date"
-            value={from}
-            onChange={(e) => {
-              setFrom(e.target.value);
-              if (!to || e.target.value > to) setTo(e.target.value);
-            }}
-            className={input}
-          />
-        </label>
-        <label className="text-xs font-bold text-navy-500">
-          {t.return}
-          <input type="date" value={to} min={from || undefined} onChange={(e) => setTo(e.target.value)} className={input} />
-        </label>
-      </div>
+      <p className="mb-2 text-sm font-extrabold text-navy-900">🗓 {t.datesTitle}</p>
+      <DateRangeInput
+        locale={locale}
+        departDate={from}
+        returnDate={to}
+        withReturn
+        onChange={({ departDate, returnDate }) => {
+          setFrom(departDate);
+          setTo(returnDate);
+        }}
+      />
       {error ? (
         <p className="mt-2 text-xs font-semibold text-navy-500">{error}</p>
       ) : (
@@ -587,8 +630,10 @@ function PlanView({
   placesText,
   onEdit,
   onClose,
+  restaurants,
 }: {
   plan: Plan;
+  restaurants: PlanRestaurant[];
   locale: Locale;
   cityName: string;
   countryCode: string;
@@ -600,6 +645,7 @@ function PlanView({
   const t = getDictionary(locale).tripPlan;
   const isAr = locale === "ar";
   const all = plan.days.flat();
+  const meals = useMemo(() => mealsFor(plan.days, restaurants), [plan.days, restaurants]);
   const title = t.planTitle.replace("{city}", cityName);
   const fmt = (d: Date, withDay: boolean) =>
     new Intl.DateTimeFormat(isAr ? "ar-SA-u-ca-gregory-nu-latn" : "en-GB", {
@@ -816,6 +862,30 @@ function PlanView({
                       </li>
                     ))}
                   </ol>
+                )}
+                {meals[i]?.length > 0 && (
+                  <div className="border-t border-mist-100 bg-amber-50/40 px-5 py-3">
+                    <p className="text-xs font-extrabold text-navy-800">🍽️ {t.mealsTitle}</p>
+                    <ul className="mt-1.5 space-y-1">
+                      {meals[i].map((r) => (
+                        <li key={`${r.lat},${r.lon}`} className="flex items-center justify-between gap-2 text-sm">
+                          <span className="min-w-0">
+                            <bdi className="font-bold text-navy-900">{r.name}</bdi>
+                            {r.cuisine && <span className="text-xs text-navy-500"> · {r.cuisine}</span>}
+                            {r.halal && <span className="ms-1.5 rounded-full bg-sea-50 px-1.5 py-0.5 text-[10px] font-extrabold text-sea-800 ring-1 ring-sea-200">{t.halal}</span>}
+                          </span>
+                          <a
+                            href={`https://www.google.com/maps/search/?api=1&query=${r.lat},${r.lon}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="print:hidden shrink-0 text-xs font-bold text-sea-700 hover:underline"
+                          >
+                            📍 {t.directions}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 )}
                 {spread >= 1 && (
                   <p className="border-t border-mist-100 px-5 py-2 text-2xs font-semibold text-navy-400">
