@@ -909,6 +909,15 @@ html.in-app .site-header-row {
 html.in-app .site-header-logo {
   height: 2.15rem;
 }
+/* App home (owner, 13 Oct): the logo sits on the home photograph, not on a
+   separate navy band — the bar is clear until the page scrolls. */
+html.in-app:has(.home-photo) .site-header-bar[data-solid="false"] {
+  background: transparent;
+  box-shadow: none;
+}
+html.in-app:has(.home-photo) .site-header-scrim {
+  display: block;
+}
 
 /* Heroes begin just under the bar. */
 html.in-app .hero-pad {

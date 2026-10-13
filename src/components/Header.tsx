@@ -90,6 +90,7 @@ export default function Header({ locale }: { locale: Locale }) {
       />
 
       <div
+        data-solid={solid ? "true" : "false"}
         className={`site-header-bar relative transition-all duration-300 ${
           solid
             ? "bg-navy-990/94 shadow-[0_1px_0_0_rgba(255,255,255,0.07),0_10px_30px_-18px_rgba(4,24,47,0.9)] backdrop-blur-xl"

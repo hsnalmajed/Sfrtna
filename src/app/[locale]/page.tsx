@@ -188,54 +188,41 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
   ];
 
   return (
-    // Dark to the footer. The light band that used to sit under the showcase
-    // was the FAQ's background; with the FAQ gone it was only empty white
-    // between two navy blocks. -mb-20 covers the footer's own top margin.
-    <div className="-mb-20 bg-navy-990 pb-20">
+    // The photograph is the background of the whole home page, down to the
+    // footer's gold line (owner, 13 Oct: the plain navy under the picture
+    // looked unfinished). It is fixed to the screen, not stretched to the
+    // page, so it never re-crops when the planner grows or shrinks; the
+    // clip-path keeps it inside this block, so the footer stays navy.
+    <div className="home-photo relative isolate -mb-20 bg-navy-990 pb-20 [clip-path:inset(0)]">
+      <div className="fixed inset-0 -z-10" aria-hidden="true">
+        <Photo
+          src={heroPhoto}
+          priority
+          srcSet={heroImage.srcSet}
+          sizes="100vw"
+          className="h-full w-full object-cover"
+          fallback={
+            <div className="h-full w-full bg-[radial-gradient(130%_100%_at_60%_0%,var(--navy-700),var(--navy-990))]" />
+          }
+        />
+        <div className="scrim-soft absolute inset-0" />
+        {/* A dark halo behind the headline: bright photographs left the
+            white and gold words hard to read. */}
+        <div className="absolute inset-0 bg-[radial-gradient(75%_48%_at_50%_30%,rgb(4_24_47/0.62),rgb(4_24_47/0.25)_60%,transparent)]" />
+        {/* Lower on the screen the panels sit over the photograph: a
+            deeper shade there keeps their edges and text crisp. */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-navy-990/30 to-navy-990/70" />
+      </div>
       {/* The site's name and every spelling of it, for search engines. Only
           on the homepage, which is where Google reads it from — see seo.ts. */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(brandJsonLd(loc)) }}
       />
-      {/* ── Hero ─────────────────────────────────────────────────────────
-          The photograph and the planner, together.
-
-          The photograph is its own fixed slab, pinned to the top of the
-          section, and the content flows over it. It used to be stretched to
-          whatever height the section happened to be — and the section's
-          height is the planner's height, which changes every time someone
-          switches to "hotels only" or opens the extra options. So the picture
-          silently re-cropped on every click: it looked like the background
-          was zooming in and out under the form. A fixed slab cannot do that.
-
-          The content is no longer vertically centred either. Centring inside
-          a box whose height is set by that same content means a tall form
-          pushes the headline up underneath the fixed header. It starts below
-          the header and grows downwards, where there is room. */}
-      <section className="home-hero relative isolate overflow-hidden bg-navy-990 pb-28 sm:pb-32">
-        <div className="absolute inset-x-0 top-0 -z-10 h-[46rem] overflow-hidden">
-          <Photo
-            src={heroPhoto}
-            priority
-            srcSet={heroImage.srcSet}
-            sizes="100vw"
-            className="h-full w-full object-cover"
-            fallback={
-              <div className="h-full w-full bg-[radial-gradient(130%_100%_at_60%_0%,var(--navy-700),var(--navy-990))]" />
-            }
-          />
-          <div className="scrim-soft absolute inset-0" />
-          {/* A dark halo behind the headline. Bright photographs — a pale
-              sky, a white town — left the white and gold words almost
-              invisible; this keeps them readable on any picture of the day
-              without darkening the whole photograph. */}
-          <div className="absolute inset-0 bg-[radial-gradient(75%_48%_at_50%_30%,rgb(4_24_47/0.62),rgb(4_24_47/0.25)_60%,transparent)]" />
-          {/* The picture ends; the page keeps going. Without this the slab
-              would cut off in a hard line across the middle of the form. */}
-          <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-navy-990" />
-        </div>
-
+      {/* ── Hero: the headline over the photograph; the content starts
+          below the header and grows downwards (centring it inside a box
+          sized by the planner pushed the headline under the header). */}
+      <section className="home-hero relative pb-28 sm:pb-32">
         {/* Centred, because the panel is the point.
             Left-aligned, the headline ran along one edge and the search
             panel — narrower than the page — sat under it off to one side,
