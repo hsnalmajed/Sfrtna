@@ -2,15 +2,16 @@
 
 import { countLabel, nightsLabel } from "@/lib/format";
 
-import { Suspense, useEffect, useMemo, useState } from "react";
+import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { getDictionary } from "@/lib/dictionaries";
-import type { RoomType, Locale, SearchParams, TripType } from "@/lib/types";
+import type { RoomType, Locale, MultiCityLegInput, SearchParams, TripType } from "@/lib/types";
 import TripCurrencyInline from "@/components/TripCurrencyInline";
 import FlightMetasearch, { warmFlightSearch } from "@/components/FlightMetasearch";
 import FlightResultsGuide from "@/components/FlightResultsGuide";
 import TripServices from "@/components/TripServices";
+import MultiCityTabs from "@/components/MultiCityTabs";
 import VisaBadge from "@/components/VisaBadge";
 import VisaRequirementsDialog from "@/components/VisaRequirementsDialog";
 import { visaStatusFor } from "@/data/visaStatus";
@@ -113,6 +114,68 @@ function ResultsContent() {
 
 
 
+  // ── A multi-city trip: one tab per flight, each a live search here ──
+  // `legs` (every flight) and `leg` (the one on screen) ride along with the
+  // search. The budget is for the whole trip: the flight on screen gets it
+  // minus the fares the traveller went to book on the other flights, kept
+  // for this browser tab only (sessionStorage).
+  const legsRaw = q.get("legs") || "";
+  const mcLegs = useMemo<MultiCityLegInput[]>(() => {
+    try {
+      const parsed = JSON.parse(legsRaw || "[]");
+      return Array.isArray(parsed) ? parsed.filter((l) => l && l.origin && l.destination && l.date) : [];
+    } catch {
+      return [];
+    }
+  }, [legsRaw]);
+  const mcActive = Math.max(0, Math.min(mcLegs.length - 1, Number(q.get("leg") || 0)));
+  const isMulti = mcLegs.length >= 2;
+  const mcKey = `sfr-mc:${legsRaw}`;
+  const [mcPicks, setMcPicks] = useState<Record<number, number>>({});
+  useEffect(() => {
+    if (!isMulti) return;
+    try {
+      const saved = JSON.parse(window.sessionStorage.getItem(mcKey) || "{}");
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- read once from storage
+      setMcPicks(saved && typeof saved === "object" ? saved : {});
+    } catch {
+      setMcPicks({});
+    }
+  }, [isMulti, mcKey]);
+  const savePick = useCallback(
+    (fare: number) => {
+      if (!isMulti) return;
+      setMcPicks((prev) => {
+        const next = { ...prev, [mcActive]: fare };
+        try {
+          window.sessionStorage.setItem(mcKey, JSON.stringify(next));
+        } catch {}
+        return next;
+      });
+    },
+    [isMulti, mcActive, mcKey]
+  );
+  const pickedElsewhere = Object.entries(mcPicks)
+    .filter(([i]) => Number(i) !== mcActive)
+    .reduce((a, [, v]) => a + v, 0);
+  // Never 0 when a budget was given: 0 means "no budget" to the results.
+  const flightBudget =
+    isMulti && search.budgetTotal > 0 ? Math.max(1, search.budgetTotal - pickedElsewhere) : search.budgetTotal;
+  const mcHref = useCallback(
+    (i: number) => {
+      const leg = mcLegs[i];
+      const p = new URLSearchParams(query);
+      p.delete("flightSearch");
+      p.set("origin", leg.origin);
+      p.set("destination", leg.destination);
+      p.set("departDate", leg.date);
+      p.set("returnDate", "");
+      p.set("leg", String(i));
+      return `/${locale}/results?${p.toString()}`;
+    },
+    [mcLegs, query, locale]
+  );
+
   // Everyone the fare has to cover. Flight prices are already priced for the
   // whole party (adults at full fare, children and infants at their usual
   // weights), so this is only used to *say so* — a total with no headcount
@@ -181,6 +244,9 @@ function ResultsContent() {
   const originAirport = findAirport(search.origin);
   const originCityName = originAirport ? (locale === "ar" ? originAirport.cityAr : originAirport.cityEn) : search.origin;
   const homeCurrency = currencyForCountry(originCountry?.code);
+  // A trip inside the traveller's own country needs no visa line at all
+  // (it was hidden only for Saudi Arabia, so Dubai → Abu Dhabi showed one).
+  const sameCountry = Boolean(destinationCountry && (destinationCountry.code === "SA" || destinationCountry.code === originCountry?.code));
   const visa = destinationCountry ? visaStatusFor(destinationCountry.code) : undefined;
   const [visaOpen, setVisaOpen] = useState(false);
   const visaLabels = {
@@ -208,7 +274,8 @@ function ResultsContent() {
   const editSearchParams = useMemo(() => {
     const p = new URLSearchParams({
       mode: "known",
-      tripRoute: search.returnDate ? "roundtrip" : "oneway",
+      tripRoute: isMulti ? "multicity" : search.returnDate ? "roundtrip" : "oneway",
+      ...(isMulti ? { legs: legsRaw } : {}),
       tripType: search.tripType,
       origin: search.origin,
       destination: search.destination,
@@ -225,8 +292,12 @@ function ResultsContent() {
       infants: String(search.infants || 0),
       roomType: search.roomType || "",
     });
+    if (isMulti) {
+      p.set("origin", mcLegs[0].origin);
+      p.set("departDate", mcLegs[0].date);
+    }
     return p.toString();
-  }, [search]);
+  }, [search, isMulti, legsRaw, mcLegs]);
 
   // Where "back" goes from anywhere this page sends the traveller. It is this
   // exact page with this exact search, so returning lands them on their own
@@ -336,75 +407,64 @@ function ResultsContent() {
               <span>{destinationCityName ?? search.destination}</span>
             </h1>
 
-            {/* The trip, and what decides whether it can happen, in one line
-                in the order it is checked: the days, how many are flying,
-                the visa and its requirements, what a riyal is worth there,
-                and a converter for any other amount. */}
-            <div className="mt-4 max-w-2xl space-y-2.5">
-              {/* The search, as a card: when and who on the start side, the
-                  way to change it on the other — one tidy block on a phone
-                  instead of a pill that ran off the screen. */}
+            {/* The trip, and what decides whether it can happen, in ONE row
+                (wrapping only on a narrow phone): the dates and party with the
+                way to change them, the visa, its requirements, and what a
+                riyal is worth there. Owner, 13 Oct: each on its own line made
+                the header tall for nothing. */}
+            <div className="mt-4 flex flex-wrap items-stretch gap-2">
               <Link
                 href={`/${locale}?${editSearchParams}#plan`}
-                className="group flex items-center justify-between gap-3 rounded-2xl bg-white px-4 py-3 text-navy-950 shadow-sm transition hover:ring-2 hover:ring-sun-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400"
+                className="group inline-flex max-w-full items-center gap-2.5 rounded-xl bg-white py-1.5 pe-1.5 ps-3 text-[13px] font-bold text-navy-950 shadow-sm transition hover:ring-2 hover:ring-sun-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400"
               >
-                <span className="min-w-0 space-y-1 text-[13px] font-bold">
-                  <span className="flex items-center gap-2">
-                    <Icon name="calendar" className="h-4 w-4 shrink-0 text-navy-500" />
-                    <span className="truncate">
-                      {shortDate(search.departDate)}
-                      {search.returnDate && (
-                        <>
-                          <span className="mx-1.5 text-navy-400" aria-hidden="true">
-                            {locale === "ar" ? "←" : "→"}
-                          </span>
-                          {shortDate(search.returnDate)}
-                        </>
-                      )}
-                    </span>
-                  </span>
-                  <span className="flex items-center gap-2">
-                    <Icon name="users" className="h-4 w-4 shrink-0 text-navy-500" />
-                    <span className="truncate">
-                      {countLabel(travelers, { one: dict.results.travelersOne, two: dict.results.travelersTwo, few: dict.results.travelersFew, many: dict.results.travelersMany })}
-                    </span>
-                  </span>
+                <Icon name="calendar" className="h-4 w-4 shrink-0 text-navy-500" />
+                <span className="truncate">
+                  {shortDate(search.departDate)}
+                  {search.returnDate && (
+                    <>
+                      <span className="mx-1 text-navy-400" aria-hidden="true">
+                        {locale === "ar" ? "←" : "→"}
+                      </span>
+                      {shortDate(search.returnDate)}
+                    </>
+                  )}
                 </span>
-                <span className="inline-flex shrink-0 items-center gap-1.5 rounded-xl bg-sun-400 px-3.5 py-2 text-xs font-extrabold text-navy-950 transition group-hover:bg-sun-300">
+                <span className="h-4 w-px shrink-0 bg-mist-300" aria-hidden="true" />
+                <Icon name="users" className="h-4 w-4 shrink-0 text-navy-500" />
+                <span className="whitespace-nowrap">
+                  {countLabel(travelers, { one: dict.results.travelersOne, two: dict.results.travelersTwo, few: dict.results.travelersFew, many: dict.results.travelersMany })}
+                </span>
+                <span className="inline-flex shrink-0 items-center gap-1 rounded-lg bg-sun-400 px-2.5 py-1 text-xs font-extrabold text-navy-950 transition group-hover:bg-sun-300">
                   <span aria-hidden="true">✎</span>
                   {dict.results.editSearch}
                 </span>
               </Link>
 
-              {/* What decides whether the trip can happen: the visa and its
-                  requirements side by side, then what a riyal is worth. */}
-              {destinationCountry && destinationCountry.code !== "SA" && (
+              {destinationCountry && !sameCountry && (
                 <>
-                  <div className="grid grid-cols-2 gap-2">
-                    {visa ? (
-                      <VisaBadge
-                        category={visa.category}
-                        label={visaLabels[visa.category]}
-                        className="w-full justify-center !rounded-xl !px-3 !py-2 !text-[13px]"
-                      />
-                    ) : (
-                      <span className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-white/10 px-3 py-2 text-[13px] font-bold text-white ring-1 ring-white/15">
-                        🛂 {dict.results.visaCheckTitle}
-                      </span>
-                    )}
-                    <button
-                      type="button"
-                      onClick={() => setVisaOpen(true)}
-                      aria-haspopup="dialog"
-                      className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-white/10 px-3 py-2 text-[13px] font-extrabold text-white ring-1 ring-white/20 transition hover:bg-white/20"
-                    >
-                      📋 {dict.results.visaReqShort}
-                    </button>
-                  </div>
-                  {showCurrencyStrip && homeCurrency && tripCurrency && (
-                    <TripCurrencyInline from={homeCurrency} to={tripCurrency} locale={locale} />
+                  {visa ? (
+                    <VisaBadge
+                      category={visa.category}
+                      label={visaLabels[visa.category]}
+                      className="!rounded-xl !px-3 !py-2 !text-[13px]"
+                    />
+                  ) : (
+                    <span className="inline-flex items-center gap-1.5 rounded-xl bg-white/10 px-3 py-2 text-[13px] font-bold text-white ring-1 ring-white/15">
+                      🛂 {dict.results.visaCheckTitle}
+                    </span>
                   )}
+                  <button
+                    type="button"
+                    onClick={() => setVisaOpen(true)}
+                    aria-haspopup="dialog"
+                    className="inline-flex items-center gap-1.5 rounded-xl bg-white/10 px-3 py-2 text-[13px] font-extrabold text-white ring-1 ring-white/20 transition hover:bg-white/20"
+                  >
+                    📋 {dict.results.visaReqShort}
+                  </button>
                 </>
+              )}
+              {showCurrencyStrip && homeCurrency && tripCurrency && (
+                <TripCurrencyInline from={homeCurrency} to={tripCurrency} locale={locale} />
               )}
             </div>
           </div>
@@ -436,9 +496,21 @@ function ResultsContent() {
       <>
       {/* 2. The answer: the flight picked within the budget, and the way
           to the others — see FlightResultsGuide. */}
+      {isMulti && (
+        <MultiCityTabs
+          locale={locale}
+          legs={mcLegs}
+          active={mcActive}
+          hrefFor={mcHref}
+          picks={mcPicks}
+          budget={search.budgetTotal}
+          currency={search.currency}
+        />
+      )}
       <FlightResultsGuide
         locale={locale}
-        budget={search.budgetTotal}
+        budget={flightBudget}
+        onPicked={isMulti ? savePick : undefined}
         currency={search.currency}
         travelers={travelers}
         cityName={destinationCityName ?? search.destination}

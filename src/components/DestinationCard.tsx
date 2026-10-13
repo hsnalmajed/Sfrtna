@@ -165,7 +165,9 @@ export default function DestinationCard({
                   })}
             </span>
           )}
-          {place?.visa ? (
+          {/* A Saudi city needs no visa line for a Saudi traveller (Jeddah
+              from Riyadh said "visa: check before travel", 13 Oct). */}
+          {place?.countryCode === "SA" ? null : place?.visa ? (
             <VisaBadge category={place.visa} label={visaLabels[place.visa]} className="!px-2 !py-0.5 !text-[11px] sm:!px-2.5 sm:!py-1 sm:!text-xs" />
           ) : place ? (
             // Not confirmed at the official source yet: say so, and where to check.

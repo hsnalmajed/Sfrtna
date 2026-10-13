@@ -618,6 +618,38 @@ Root causes found in the code (13 Oct):
 6. Travel tools: trip-services page with country search; plan on engine (3).
 7. Home: remove rain line, sign-in/up in «المزيد», photo full-bleed.
 
+**Section 1 work, 13 Oct (pushed, live re-test below):**
+- `FlightResultsGuide.tsx`: our cards drawn with or without a budget (no
+  budget → every flight "fits", budget lines hidden); "more" auto-pressed per
+  new batch during the search; preferences strict always — matches shown as
+  they arrive; none at the end → dialog «لا توجد رحلات تطابق تفضيلاتك» with
+  «نعم، اعرض الرحلات الأخرى» / «لا، عدّل البحث» (+ same card in page); after
+  yes, an amber line says so. Moving-plane bar (`.sfr-flight-track` in
+  globals.css) + «وجدنا N حتى الآن» until every agency answered. "None within
+  budget" card shows at once ("so far"), dialog at the end.
+- Results header: dates · travellers · edit, visa, requirements, currency in
+  one wrapping row; no visa line for Saudi or same-country trips (same fix on
+  discover cards in `DestinationCard.tsx`).
+- Multi-city = `MultiCityTabs.tsx` on the results page (`legs` JSON + `leg`
+  index in the query/hash). Each tab is a full page load (the widget reads
+  its route once). Fare clicked «احجز» per flight kept in sessionStorage
+  (`sfr-mc:<legs>`); the flight on screen gets budget − picks on the others.
+  Form posts straight there; `/multicity-results` only forwards old links;
+  discover route flights open the same tabs with the budget.
+  `/api/multicity` (cached fares) is no longer called by any page — kept.
+- Date picker `minDate`: a multi-city flight can't be dated before the
+  previous one; later flights dated earlier are cleared.
+- `scripts/e2e.mjs` (Playwright) + job `pages` in smoke.yml: opens result
+  pages on workers.dev and waits for an answer; token header sent to our host
+  only. The flight widget may refuse workers.dev → reported as a note, not a
+  failure; flight answers then checked by hand on sfrtna.com.
+- **Testing note:** the "frozen test browser" is Chrome throttling timers in
+  a background tab (`document.visibilityState = hidden`), not the site. Use
+  short synchronous JS probes; never `await` long timers in a probe.
+- Open question for the owner: the date picker shows cached fares under
+  each day (`/api/day-fares`) — against the live-price rule; asked whether to
+  remove.
+
 ## Next, in order
 
 **▶ Start here: section 1 of the plan above (started 13 Oct).**

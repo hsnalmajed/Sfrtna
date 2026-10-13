@@ -9,6 +9,10 @@
 #
 # Runs every six hours, and after each push to main once the deploy has had
 # time to go out (Cloudflare takes about five minutes).
+#
+# Second job (13 Oct): scripts/e2e.mjs opens the search result pages in a
+# real browser and waits for an answer — one way, round trip with
+# preferences, multi-city tabs, suggest a destination / a route.
 name: Site check
 
 on:
@@ -42,3 +46,28 @@ jobs:
             exit 0
           fi
           node scripts/smoke.mjs
+
+  pages:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Wait for the deploy
+        if: github.event_name == 'push'
+        run: sleep 480
+      - name: Install the browser
+        run: |
+          npm install --no-save --no-audit --no-fund playwright@1
+          npx playwright install --with-deps chromium
+      - name: Search pages in a real browser
+        env:
+          SMOKE_TOKEN: ${{ secrets.SMOKE_TOKEN }}
+        run: |
+          if [ -z "$SMOKE_TOKEN" ]; then
+            echo "SMOKE_TOKEN is not set — check skipped."
+            exit 0
+          fi
+          node scripts/e2e.mjs

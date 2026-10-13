@@ -211,6 +211,7 @@ export default function FlightResultsGuide({
   editHref,
   directOnly = false,
   bagIncluded = false,
+  onPicked,
 }: {
   locale: Locale;
   /** The flight budget for the whole party; 0 when none was given. */
@@ -223,6 +224,8 @@ export default function FlightResultsGuide({
   /** Preferences from the search form: held to on the pick and the lists. */
   directOnly?: boolean;
   bagIncluded?: boolean;
+  /** Told the fare the traveller went to book (multi-city keeps the sum). */
+  onPicked?: (fare: number) => void;
 }) {
   const t = getDictionary(locale).results;
   const [state, setState] = useState<State>(EMPTY);
@@ -250,7 +253,7 @@ export default function FlightResultsGuide({
     let lastKey = "";
     let lastChange = Date.now();
     let sawProgress = false;
-    let autoLoaded = false;
+    let autoLoadedAt = 0;
     let lastSettled = false;
     let flights: Flight[] = [];
     // Reading two hundred cards takes tens of milliseconds; once the search
@@ -360,22 +363,29 @@ export default function FlightResultsGuide({
         return { card, price: amountOf(text), cur: currencyOf(text), best };
       });
       const widgetCurrency = priced.find((p) => p.cur)?.cur ?? null;
-      const comparable = budget > 0 && (widgetCurrency === null || widgetCurrency === currency);
+      // Our cards are the list whenever the fares are in the traveller's
+      // currency — with a budget or without. Before 13 Oct they were drawn
+      // only with a budget, so a search without one never read a single
+      // flight and the preferences (direct, bag) were never applied.
+      const comparable = widgetCurrency === null || widgetCurrency === currency;
       const filtering = comparable && priced.length > 0;
       if (filtering) host.setAttribute("data-sfr-filter", "");
       else host.removeAttribute("data-sfr-filter");
-      // Until a fare shows otherwise, assume it can be held to the budget.
-      if (budget > 0 && (priced.length === 0 || comparable)) host.setAttribute("data-sfr-own", "");
+      // Until a fare shows otherwise, assume the fares are ours to draw.
+      if (priced.length === 0 || comparable) host.setAttribute("data-sfr-own", "");
       else host.removeAttribute("data-sfr-own");
 
       const searching = Boolean(root.querySelector('[class*="SearchProgressbar"]'));
       if (searching) sawProgress = true;
       const moreButton = root.querySelector('[class*="TicketsWidget-module__moreTickets"]');
       // The widget shows its ten cheapest first — often all low-cost fares
-      // without a bag. Load the rest once the search is done, so "best",
-      // "fastest" and "bag included" are chosen from every flight found.
-      if (filtering && !searching && sawProgress && !autoLoaded && moreButton) {
-        autoLoaded = true;
+      // without a bag. Load the rest as soon as it offers them (during the
+      // search too), so "best", "fastest", "direct" and "bag included" are
+      // chosen from every flight found so far, not from the first ten.
+      // Once per batch: clicked again only after the last click has added
+      // cards, so a button that does nothing is not pressed in a loop.
+      if (filtering && moreButton && priced.length > autoLoadedAt) {
+        autoLoadedAt = priced.length;
         ((moreButton.querySelector("button") ?? moreButton) as HTMLElement).click();
       }
       const hasMore = Boolean(moreButton);
@@ -406,12 +416,14 @@ export default function FlightResultsGuide({
       if (!changed && settled === lastSettled) return;
       lastSettled = settled;
 
-      const fits = flights.filter((f) => f.price <= budget).sort((a, b) => a.price - b.price);
-      const over = flights.filter((f) => f.price > budget).sort((a, b) => a.price - b.price);
+      // Without a budget every flight "fits": the pick, the tabs and the
+      // list work the same, only the budget lines are left out.
+      const fits = flights.filter((f) => budget <= 0 || f.price <= budget).sort((a, b) => a.price - b.price);
+      const over = budget <= 0 ? [] : flights.filter((f) => f.price > budget).sort((a, b) => a.price - b.price);
       setState({
         searching: searching && !settled,
         filtering,
-        comparable: budget <= 0 || comparable,
+        comparable,
         total: priced.length,
         fits,
         over,
@@ -431,9 +443,13 @@ export default function FlightResultsGuide({
   }, [locale, budget, currency, t]);
 
   /** The widget opens this flight's offers, as its own button would. */
-  const book = useCallback((id: string) => {
-    (cardById(id)?.querySelector('[class*="FlightCard-module__cardLeftButton"]') as HTMLElement | null)?.click();
-  }, []);
+  const book = useCallback(
+    (f: Flight) => {
+      onPicked?.(f.bagOn ? f.total : f.price);
+      (cardById(f.id)?.querySelector('[class*="FlightCard-module__cardLeftButton"]') as HTMLElement | null)?.click();
+    },
+    [onPicked]
+  );
   /** Add or remove the bag through the widget's own switch, so its fare is the one booked. */
   const toggleBag = useCallback((f: Flight) => {
     const input = cardById(f.id)?.querySelector('[class*="cardLeftBaggage"] input') as HTMLInputElement | null;
@@ -470,17 +486,22 @@ export default function FlightResultsGuide({
   }, [state, hasBudget, budget, currency]);
 
   // The traveller's preferences from the search form — direct only, a
-  // checked bag in the fare — decide what can be picked. A bag counts only
-  // when the fare includes it, so the price shown is the price with it.
-  // When nothing found meets them, say so and show everything found.
+  // checked bag in the fare — are held to strictly: a flight that breaks
+  // them is never shown unless the traveller agrees to see such flights.
+  // A bag counts only when the fare includes it, so the price shown is the
+  // price with it. Matches are shown the moment they arrive; nothing waits
+  // for the whole search to finish.
   const meets = (f: Flight) => (!directOnly || f.maxStops === 0) && (!bagIncluded || f.bag === "in");
   const prefsSet = directOnly || bagIncluded;
-  const prefsMatch = !prefsSet || [...state.fits, ...state.over].some(meets);
-  // Until every flight is in, a flight that ignores the preferences is not
-  // shown as the answer: the one that meets them may still be loading.
-  const waitForPrefs = prefsSet && !prefsMatch && !state.settled;
-  const fits = waitForPrefs ? [] : prefsSet && prefsMatch ? state.fits.filter(meets) : state.fits;
-  const over = waitForPrefs ? [] : prefsSet && prefsMatch ? state.over.filter(meets) : state.over;
+  const [relaxed, setRelaxed] = useState(false);
+  const strict = prefsSet && !relaxed;
+  const found = [...state.fits, ...state.over];
+  // Flights found, none of them meeting the preferences (yet).
+  const prefsNone = strict && state.filtering && found.length > 0 && !found.some(meets);
+  // Every agency has answered and still none: ask before showing others.
+  const prefsAsk = prefsNone && state.settled;
+  const fits = strict ? state.fits.filter(meets) : state.fits;
+  const over = strict ? state.over.filter(meets) : state.over;
   const prefsLabel = [directOnly ? t.chipDirect : "", bagIncluded ? t.chipBag : ""].filter(Boolean).join(" · ");
   const bestFit = fits.find((f) => f.best) ?? fits[0] ?? null;
   const cheapestFit = fits[0] ?? null;
@@ -489,21 +510,24 @@ export default function FlightResultsGuide({
     : null;
   const shown = tab === "cheapest" ? cheapestFit : tab === "fastest" ? fastestFit : bestFit;
   const others = fits.filter((f) => f !== shown);
-  // Nothing fits — said only once every agency has answered. Said earlier,
-  // from the first fares in, it flashed up and then vanished when a fare
-  // within budget arrived a few seconds later (reported 6 Oct 2026); until
-  // the search settles the page shows that it is still searching.
-  const noneWithin = hasBudget && state.filtering && state.settled && !shown && over.length > 0 && !waitForPrefs;
+  // Nothing within the budget among the flights found: said on the page
+  // straight away ("so far", with the search still running above it), and
+  // over the page once every agency has answered.
+  const noneWithin = hasBudget && state.filtering && !shown && over.length > 0;
   const noneBody = (state.settled ? t.guideNoneBody : t.guideNoneSoFar)
     .replace("{city}", cityName)
     .replace("{amount}", money(over[0]?.price ?? 0))
     .replace("{count}", String(travelers))
     .replace("{budget}", money(budget))
     .replace("{over}", money((over[0]?.price ?? budget) - budget));
-  // Nothing fits: say so over the page, once, when every flight is in —
-  // not from the first ten, whose cheapest may not be the cheapest.
   const [noneDismissed, setNoneDismissed] = useState(false);
   const closeNone = useCallback(() => setNoneDismissed(true), []);
+  const [prefsDismissed, setPrefsDismissed] = useState(false);
+  const closePrefs = useCallback(() => setPrefsDismissed(true), []);
+  const showOthers = useCallback(() => {
+    setPrefsDismissed(true);
+    setRelaxed(true);
+  }, []);
   const flightsLabel = (n: number) =>
     countLabel(n, { one: t.flightsOne, two: t.flightsTwo, few: t.flightsFew, many: t.flightsMany });
   const overFrom = over.length ? over[0].price - budget : 0;
@@ -567,38 +591,86 @@ export default function FlightResultsGuide({
 
   return (
     <section aria-live="polite">
-      {state.settled && prefsSet && !prefsMatch && state.total > 0 && (
-        <p className="mb-4 rounded-xl bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-900 ring-1 ring-amber-200">
-          {t.prefsNoMatch.replace("{prefs}", prefsLabel)}
-        </p>
-      )}
-
-      {/* The search, while it runs: at the top, where the answer will be. */}
-      {(state.searching || (!state.settled && !shown)) && !noneWithin && (
-        <div className="mb-6 overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-black/5">
-          <div className="flex flex-wrap items-center justify-between gap-2 px-5 py-4">
-            <p className="flex items-center gap-2 text-sm font-semibold text-navy-700">
-              <span className="h-2.5 w-2.5 animate-pulse rounded-full bg-sun-400" aria-hidden="true" />
-              {hasBudget ? t.guideSearching : t.guideSearchingAny}
-            </p>
-          </div>
-          <div className="h-1 w-full overflow-hidden bg-sun-100" aria-hidden="true">
-            <div className="sfr-progress h-full w-1/3 rounded-full bg-sun-400" />
+      {/* The search, while it runs: a plane along a line at the top, and
+          how many flights are in so far. Results below appear as they
+          arrive; the bar stays until every agency has answered. */}
+      {!state.settled && (
+        <div className="mb-5 overflow-hidden rounded-2xl bg-white px-5 py-3.5 shadow-sm ring-1 ring-black/5">
+          <p className="flex items-center gap-2 text-sm font-semibold text-navy-700">
+            <span className="h-2.5 w-2.5 shrink-0 animate-pulse rounded-full bg-sun-400" aria-hidden="true" />
+            {prefsNone
+              ? t.prefsWaiting.replace("{prefs}", prefsLabel)
+              : state.total > 0
+                ? t.guideFoundSoFar.replace("{n}", flightsLabel(state.total))
+                : hasBudget
+                  ? t.guideSearching
+                  : t.guideSearchingAny}
+          </p>
+          <div className="sfr-flight-track mt-2 text-sun-500" aria-hidden="true">
+            <span className="sfr-flight-plane">
+              <Icon name="plane" className="h-[22px] w-[22px]" />
+            </span>
           </div>
         </div>
       )}
 
+      {relaxed && prefsSet && (
+        <p className="mb-4 rounded-xl bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-900 ring-1 ring-amber-200">
+          {t.prefsRelaxed.replace("{prefs}", prefsLabel)}
+        </p>
+      )}
+
+      {/* Nothing meets the preferences: asked, never assumed. */}
+      {prefsAsk && !prefsDismissed && (
+        <NoneWithinDialog
+          title={t.prefsAskTitle}
+          body={t.prefsAskBody.replace("{prefs}", prefsLabel)}
+          searching={false}
+          searchingLabel=""
+          showLabel={t.prefsAskShow}
+          editLabel={t.prefsAskEdit}
+          closeLabel={t.closeOptions}
+          editHref={editHref}
+          onShow={showOthers}
+          onClose={closePrefs}
+        />
+      )}
+      {prefsAsk && (
+        <div className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-black/5">
+          <p className="font-display text-lg font-extrabold text-navy-950">{t.prefsAskTitle}</p>
+          <p className="mt-1 text-sm leading-relaxed text-navy-600">{t.prefsAskBody.replace("{prefs}", prefsLabel)}</p>
+          <div className="mt-4 flex flex-col gap-2 sm:flex-row">
+            <a
+              href={editHref}
+              className="flex flex-1 items-center justify-center rounded-xl bg-sun-400 px-4 py-3 text-sm font-extrabold text-navy-950 transition hover:bg-sun-300"
+            >
+              {t.prefsAskEdit}
+            </a>
+            <button
+              type="button"
+              onClick={showOthers}
+              className="flex flex-1 items-center justify-center rounded-xl bg-white px-4 py-3 text-sm font-bold text-navy-800 ring-1 ring-mist-300 transition hover:ring-navy-300"
+            >
+              {t.prefsAskShow}
+            </button>
+          </div>
+        </div>
+      )}
 
       {shown && (
         <>
           <div className="mb-3 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
             <div>
-              <h2 className="font-display text-xl font-extrabold text-navy-950">{t.guidePickedTitle}</h2>
-              {prefsSet && prefsMatch && (
+              <h2 className="font-display text-xl font-extrabold text-navy-950">
+                {hasBudget ? t.guidePickedTitle : t.guidePickedTitleAny}
+              </h2>
+              {strict && (
                 <p className="mt-1 text-sm font-semibold text-navy-600">{t.prefsApplied.replace("{prefs}", prefsLabel)}</p>
               )}
             </div>
-            <p className="text-sm font-semibold text-navy-600">{t.pickLeft.replace("{amount}", money(budget - shown.price))}</p>
+            {hasBudget && (
+              <p className="text-sm font-semibold text-navy-600">{t.pickLeft.replace("{amount}", money(budget - shown.price))}</p>
+            )}
           </div>
 
           {/* Best, cheapest, fastest — within the budget, at a glance. */}
@@ -679,7 +751,7 @@ export default function FlightResultsGuide({
         </>
       )}
 
-      {noneWithin && !noneDismissed && over.length > 0 && (
+      {noneWithin && state.settled && !noneDismissed && (
         <NoneWithinDialog
           title={t.guideNoneTitle}
           body={noneBody}
@@ -697,7 +769,7 @@ export default function FlightResultsGuide({
         />
       )}
 
-      {noneWithin && state.total > 0 && over.length > 0 && (
+      {noneWithin && (
         <div className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-black/5">
           <p className="font-display text-lg font-extrabold text-navy-950">{t.guideNoneTitle}</p>
           <p className="mt-1 text-sm leading-relaxed text-navy-600">{noneBody}</p>
@@ -733,12 +805,7 @@ export default function FlightResultsGuide({
         </div>
       )}
 
-      {!hasBudget && state.settled && (
-        <p className="rounded-2xl bg-white px-5 py-4 text-sm text-navy-600 ring-1 ring-black/5">
-          {t.guideNoBudget.replace("{count}", String(travelers))}
-        </p>
-      )}
-      {hasBudget && state.settled && !state.comparable && (
+      {state.settled && !state.comparable && (
         <p className="rounded-2xl bg-white px-5 py-4 text-sm text-navy-600 ring-1 ring-black/5">{t.guideOtherCurrency}</p>
       )}
       {state.settled && state.total === 0 && (
@@ -778,7 +845,7 @@ function FlightCard({
   money: (n: number) => string;
   travelers: number;
   budget: number;
-  onBook: (id: string) => void;
+  onBook: (f: Flight) => void;
   onBag: (f: Flight) => void;
   featured?: boolean;
   badge?: string;
@@ -979,7 +1046,7 @@ function FlightCard({
           )}
           <button
             type="button"
-            onClick={() => onBook(flight.id)}
+            onClick={() => onBook(flight)}
             className={`flex w-full items-center justify-center gap-2 rounded-xl bg-sun-400 px-4 font-extrabold text-navy-950 shadow-[var(--shadow-sun)] transition hover:bg-sun-300 ${
               featured ? "py-3.5 text-base" : "py-3 text-sm"
             }`}

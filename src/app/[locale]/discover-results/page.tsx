@@ -236,6 +236,7 @@ function DiscoverResultsContent() {
           directOnly={directOnly}
           baggageIncluded={baggageIncluded}
           photos={photos}
+          budget={Number(budget)}
         />
       ))}
     </div>

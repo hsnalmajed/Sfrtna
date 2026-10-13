@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { CLASS_DOT } from "@/lib/travelSeason/labels";
 import type { Locale, RouteSuggestion, TravelerCounts } from "@/lib/types";
 import { getDictionary } from "@/lib/dictionaries";
@@ -33,6 +32,7 @@ export default function RouteCard({
   directOnly,
   baggageIncluded,
   photos,
+  budget = 0,
 }: {
   route: RouteSuggestion;
   locale: Locale;
@@ -42,6 +42,8 @@ export default function RouteCard({
   directOnly: boolean;
   baggageIncluded: boolean;
   photos: Record<string, string>;
+  /** The whole-trip budget, carried to the flights' tabs. */
+  budget?: number;
 }) {
   const dict = getDictionary(locale);
   const d = dict.discoverResults;
@@ -161,18 +163,23 @@ export default function RouteCard({
         <p className="mb-2 text-xs font-bold text-navy-500">{d.flightsHeading}</p>
         <ol className="divide-y divide-mist-100 rounded-xl ring-1 ring-mist-200">
           {route.legs.map((leg, i) => {
+            // The route's flights as one multi-city trip: this flight's tab
+            // first, the others beside it, all held to the whole budget.
             const href = `/${locale}/results?${new URLSearchParams({
               tripType: "flight",
-              tripRoute: "oneway",
+              tripRoute: "multicity",
               mode: "known",
               origin: leg.from,
               destination: leg.to,
               departDate: leg.date,
               returnDate: "",
               ...party,
+              budget: String(budget),
               currency,
               directOnly: String(directOnly),
               baggageIncluded: String(baggageIncluded),
+              legs: JSON.stringify(route.legs.map((l) => ({ origin: l.from, destination: l.to, date: l.date }))),
+              leg: String(i),
             })}`;
             return (
               <li key={i} className="flex flex-wrap items-center gap-3 px-3 py-3">
@@ -185,12 +192,12 @@ export default function RouteCard({
                     <span className="ms-2 font-semibold text-navy-500">{dateLabel(leg.date)}</span>
                   </p>
                 </div>
-                <Link
+                <a
                   href={href}
                   className="rounded-lg bg-sun-400 px-3 py-2 text-xs font-extrabold text-navy-950 transition hover:bg-sun-300"
                 >
                   {dict.multicity.bookLeg}
-                </Link>
+                </a>
               </li>
             );
           })}

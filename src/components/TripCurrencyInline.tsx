@@ -71,7 +71,7 @@ export default function TripCurrencyInline({
         className={
           variant === "light"
             ? "inline-flex max-w-full flex-wrap items-center gap-2 text-[13px] font-bold text-navy-800"
-            : "flex w-full items-center justify-between overflow-hidden whitespace-nowrap rounded-xl bg-white/10 text-[13px] font-bold text-white ring-1 ring-white/15"
+            : "inline-flex max-w-full items-stretch overflow-hidden whitespace-nowrap rounded-xl bg-white/10 text-[13px] font-bold text-white ring-1 ring-white/15"
         }
       >
         <span className={variant === "light" ? "inline-flex items-center gap-2" : "inline-flex min-w-0 items-center gap-2 truncate px-3 py-2"}>

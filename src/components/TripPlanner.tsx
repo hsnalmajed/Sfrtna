@@ -287,9 +287,20 @@ export default function TripPlanner({
         destination: l.destination,
         date: i === 0 ? departDate : l.date,
       }));
-      const params = new URLSearchParams({ ...shared, legs: JSON.stringify(flights) });
-      trackSearchUrl(`/${locale}/multicity-results?${params.toString()}`);
-      router.push(`/${locale}/multicity-results?${params.toString()}`);
+      // Straight to the first flight's live results; the other flights are
+      // tabs on that page (owner's decision, 13 Oct).
+      const params = new URLSearchParams({
+        ...shared,
+        tripRoute: "multicity",
+        origin: flights[0].origin,
+        destination: flights[0].destination,
+        departDate: flights[0].date,
+        returnDate: "",
+        legs: JSON.stringify(flights),
+        leg: "0",
+      });
+      trackSearchUrl(`/${locale}/results?${params.toString()}`);
+      router.push(`/${locale}/results?${params.toString()}`);
       return;
     }
 
@@ -559,6 +570,10 @@ export default function TripPlanner({
             {legs.map((leg, i) => {
               const legOrigin = i === 0 ? origin : leg.origin;
               const legDate = i === 0 ? departDate : leg.date;
+              // A flight cannot leave before the one before it (owner,
+              // 13 Oct: 17 Nov to Istanbul, then the next flight offered
+              // days before the 17th).
+              const prevDate = i === 0 ? "" : i === 1 ? departDate : legs[i - 1].date;
               return (
                 <div key={i} className={`rounded-xl border p-3 sm:p-4 ${divider}`}>
                   <div className="mb-2 flex items-center justify-between">
@@ -622,6 +637,7 @@ export default function TripPlanner({
                         withReturn={false}
                         required
                         tone={tone}
+                        minDate={prevDate || undefined}
                         onChange={({ departDate: d }) => {
                           if (i === 0) {
                             setDepartDate(d);
@@ -629,6 +645,9 @@ export default function TripPlanner({
                           } else {
                             updateLeg(i, { date: d });
                           }
+                          // Later flights now dated before this one are
+                          // cleared, to be picked again from this day on.
+                          setLegs((prev) => prev.map((l, j) => (j > Math.max(i, 0) && l.date && l.date < d ? { ...l, date: "" } : l)));
                         }}
                       />
                     </div>

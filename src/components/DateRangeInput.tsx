@@ -119,6 +119,7 @@ export default function DateRangeInput({
   error,
   tone = "light",
   fareRoute,
+  minDate,
 }: {
   locale: Locale;
   departDate: string;
@@ -135,6 +136,11 @@ export default function DateRangeInput({
    * empty, the calendar is plain.
    */
   fareRoute?: { origin: string; destination: string; currency?: string; seats?: number };
+  /**
+   * The first day that may be picked (YYYY-MM-DD), when later than today —
+   * a multi-city flight cannot leave before the one before it.
+   */
+  minDate?: string;
 }) {
   const dict = getDictionary(locale);
   const isAr = locale === "ar";
@@ -145,10 +151,12 @@ export default function DateRangeInput({
   const rootRef = useRef<HTMLDivElement>(null);
   const panelId = useId();
 
-  const today = useMemo(() => iso(todayUtc()), []);
+  const realToday = useMemo(() => iso(todayUtc()), []);
+  // "today" below is the first pickable day: today, or minDate when later.
+  const today = minDate && minDate > realToday ? minDate : realToday;
 
   const [cursor, setCursor] = useState(() => {
-    const start = parseIso(departDate) ?? todayUtc();
+    const start = parseIso(departDate) ?? parseIso(minDate ?? "") ?? todayUtc();
     return { year: start.getUTCFullYear(), month: start.getUTCMonth() };
   });
 

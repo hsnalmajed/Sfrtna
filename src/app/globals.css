@@ -817,6 +817,38 @@ select optgroup {
   }
 }
 
+/* The search is still running: a plane flies along a dashed line, start
+   side to end side, and loops until every agency has answered. */
+.sfr-flight-track {
+  position: relative;
+  height: 22px;
+  background: linear-gradient(to right, rgb(255 166 48 / 0.55) 50%, transparent 0) repeat-x center / 12px 2px;
+}
+.sfr-flight-plane {
+  position: absolute;
+  top: 50%;
+  inset-inline-start: 0;
+  translate: 0 -50%;
+  animation: sfrFlight 2.6s ease-in-out infinite;
+}
+[dir="rtl"] .sfr-flight-plane > * {
+  transform: scaleX(-1);
+}
+@keyframes sfrFlight {
+  from {
+    inset-inline-start: 0;
+  }
+  to {
+    inset-inline-start: calc(100% - 22px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sfr-flight-plane {
+    animation: none;
+    inset-inline-start: calc(50% - 11px);
+  }
+}
+
 /* ─────────────────────────────────────────────────────────────────────────
    The phone app (mobile/ — sfrtna.com in a Capacitor shell).
 
