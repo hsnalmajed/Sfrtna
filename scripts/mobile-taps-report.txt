@@ -1,0 +1,102 @@
+
+## Pixel 7 /ar
+  buttons 78, tapped 3
+  COVERED: احجز رحلتك ← button.relative inline-flex shrink-0 items-center gap-2 rounded-ful | أفضل الوجهات في أكتوبر ← button.shrink-0 rounded-full px-4 py-2.5 text-sm font-bold transiti | قبل أن تحجز ← button.shrink-0 rounded-full px-4 py-2.5 text-sm font-bold transiti | كيف يعمل الموقع ← button.shrink-0 rounded-full px-4 py-2.5 text-sm font-bold transiti | تصفّح كل وجهات أكتوبر (36) ← ← button.inline-flex shrink-0 items-center gap-1.5 rounded-full bg-wh
+
+## Pixel 7 /ar/attractions
+  buttons 5, tapped 3
+  COVERED: 🌍 كل القارات ← button.inline-flex max-w-full shrink-0 items-center gap-1.5 rounded | 🗓 كل الشهور ← button.inline-flex max-w-full shrink-0 items-center gap-1.5 rounded
+
+## Pixel 7 /ar/attractions/TR
+  buttons 5, tapped 3
+  COVERED: 📋 متطلبات السفر ← button.inline-flex shrink-0 items-center justify-center gap-1.5 rou | احسب مبلغاً آخر ← button.inline-flex items-center gap-1.5 rounded-full bg-sun-400 px-
+
+## Pixel 7 /ar/attractions/TR/istanbul
+  buttons 39, tapped 39
+  NO EFFECT: 📍 المعالم 500
+
+## Pixel 7 /ar/seasons
+  buttons 5, tapped 3
+  COVERED: 🗓 حسب الشهر أين أسافر في شهر معيّن؟ ← button.flex items-center justify-center gap-3 rounded-2xl p-4 text- | 🏙 حسب المدينة متى أزور مدينة معيّنة؟ ← button.flex items-center justify-center gap-3 rounded-2xl p-4 text-
+
+## Pixel 7 /ar/visa
+  buttons 5, tapped 5
+
+## Pixel 7 /ar/visa/TR
+  buttons 3, tapped 3
+
+## Pixel 7 /ar/currency
+  buttons 10, tapped 3
+  COVERED: SAR — الريال السعودي ← button.flex w-full items-center justify-between gap-2 rounded-xl bo | 100 ← button.rounded-full px-3 py-1 text-xs font-bold ring-1 transition b | 500 ← button.rounded-full px-3 py-1 text-xs font-bold ring-1 transition b | 1,000 ← button.rounded-full px-3 py-1 text-xs font-bold ring-1 transition b | 5,000 ← button.rounded-full px-3 py-1 text-xs font-bold ring-1 transition b | عكس العملتين ← button.flex h-11 w-11 items-center justify-center rounded-full bg-s | USD — الدولار الأمريكي ← button.flex w-full items-center justify-between gap-2 rounded-xl bo
+
+## Pixel 7 /ar/services
+  buttons 3, tapped 3
+
+## Pixel 7 /ar/services?code=TR&city=istanbul
+  buttons 3, tapped 3
+
+## Pixel 7 /ar/itinerary
+  buttons 6, tapped 4
+  COVERED: اختر تواريخ رحلتك ← button.w-full rounded-xl border border-gray-200 bg-white px-4 py-2. | ✨ أنشئ لي خطة سياحية تختار اهتماماتك، ون ← button.rounded-2xl bg-sun-400 px-5 py-4 text-start font-display tex
+
+## Pixel 7 /ar/account
+  buttons 3, tapped 3
+  NO EFFECT: عربي
+
+## Pixel 7 /ar/results?tripType=flight&tripRoute=oneway&origin=RUH&destination=IST&departDate=2026-11-22&returnDate=&adults=1&childrenAges=&infants=0&budget=0&currency=SAR&directOnly=false&baggageIncluded=false&nights=0
+  buttons 6, tapped 3
+  COVERED: 📋 متطلبات السفر ← button.inline-flex items-center gap-1.5 rounded-xl bg-sun-400 px-3  | احسب مبلغاً آخر ← button.inline-flex items-center gap-1.5 self-stretch border-s borde | الأفضل 397 SAR 4س 00د ← button.px-3 py-3 text-center transition sm:px-5  bg-navy-950 text-w
+
+## Pixel 7 /ar/hotel-results?hmode=discover&checkIn=2026-11-22&checkOut=2026-11-26&adults=2&childrenAges=&infants=0&city=Istanbul&label=%D8%A5%D8%B3%D8%B7%D9%86%D8%A8%D9%88%D9%84&budget=0&currency=SAR
+  buttons 25, tapped 25
+
+## iPhone 13 /ar
+  buttons 80, tapped 3
+  COVERED: احجز رحلتك ← button.relative inline-flex shrink-0 items-center gap-2 rounded-ful | أفضل الوجهات في أكتوبر ← button.shrink-0 rounded-full px-4 py-2.5 text-sm font-bold transiti | قبل أن تحجز ← button.shrink-0 rounded-full px-4 py-2.5 text-sm font-bold transiti | كيف يعمل الموقع ← button.shrink-0 rounded-full px-4 py-2.5 text-sm font-bold transiti | تصفّح كل وجهات أكتوبر (35) ← ← button.inline-flex shrink-0 items-center gap-1.5 rounded-full bg-wh
+
+## iPhone 13 /ar/attractions
+  buttons 5, tapped 3
+  COVERED: 🌍 كل القارات ← button.inline-flex max-w-full shrink-0 items-center gap-1.5 rounded | 🗓 كل الشهور ← button.inline-flex max-w-full shrink-0 items-center gap-1.5 rounded
+
+## iPhone 13 /ar/attractions/TR
+  buttons 5, tapped 3
+  COVERED: 📋 متطلبات السفر ← button.inline-flex shrink-0 items-center justify-center gap-1.5 rou | احسب مبلغاً آخر ← button.inline-flex items-center gap-1.5 rounded-full bg-sun-400 px-
+
+## iPhone 13 /ar/attractions/TR/istanbul
+  buttons 39, tapped 39
+
+## iPhone 13 /ar/seasons
+  buttons 5, tapped 3
+  COVERED: 🗓 حسب الشهر أين أسافر في شهر معيّن؟ ← button.flex items-center justify-center gap-3 rounded-2xl p-4 text- | 🏙 حسب المدينة متى أزور مدينة معيّنة؟ ← button.flex items-center justify-center gap-3 rounded-2xl p-4 text-
+
+## iPhone 13 /ar/visa
+  buttons 5, tapped 5
+
+## iPhone 13 /ar/visa/TR
+  buttons 3, tapped 3
+
+## iPhone 13 /ar/currency
+  buttons 10, tapped 3
+  COVERED: SAR — الريال السعودي ← button.flex w-full items-center justify-between gap-2 rounded-xl bo | 100 ← button.rounded-full px-3 py-1 text-xs font-bold ring-1 transition b | 500 ← button.rounded-full px-3 py-1 text-xs font-bold ring-1 transition b | 1,000 ← button.rounded-full px-3 py-1 text-xs font-bold ring-1 transition b | 5,000 ← button.rounded-full px-3 py-1 text-xs font-bold ring-1 transition b | عكس العملتين ← button.flex h-11 w-11 items-center justify-center rounded-full bg-s | USD — الدولار الأمريكي ← button.flex w-full items-center justify-between gap-2 rounded-xl bo
+
+## iPhone 13 /ar/services
+  buttons 3, tapped 3
+
+## iPhone 13 /ar/services?code=TR&city=istanbul
+  buttons 3, tapped 3
+
+## iPhone 13 /ar/itinerary
+  buttons 6, tapped 4
+  COVERED: اختر تواريخ رحلتك ← button.w-full rounded-xl border border-gray-200 bg-white px-4 py-2. | ✨ أنشئ لي خطة سياحية تختار اهتماماتك، ون ← button.rounded-2xl bg-sun-400 px-5 py-4 text-start font-display tex
+
+## iPhone 13 /ar/account
+  buttons 3, tapped 3
+  NO EFFECT: عربي
+
+## iPhone 13 /ar/results?tripType=flight&tripRoute=oneway&origin=RUH&destination=IST&departDate=2026-11-22&returnDate=&adults=1&childrenAges=&infants=0&budget=0&currency=SAR&directOnly=false&baggageIncluded=false&nights=0
+  buttons 11, tapped 6
+  NO EFFECT: الأرخص
+  COVERED: 📋 متطلبات السفر ← button.inline-flex items-center gap-1.5 rounded-xl bg-sun-400 px-3  | احسب مبلغاً آخر ← button.inline-flex items-center gap-1.5 self-stretch border-s borde | الأفضل 377 SAR 4س 00د ← button.px-3 py-3 text-center transition sm:px-5  bg-navy-950 text-w | الأرخص 377 SAR 4س 00د ← button.px-3 py-3 text-center transition sm:px-5 border-s border-mis | الأسرع 388 SAR 3س 55د ← button.px-3 py-3 text-center transition sm:px-5 border-s border-mis
+
+## iPhone 13 /ar/hotel-results?hmode=discover&checkIn=2026-11-22&checkOut=2026-11-26&adults=2&childrenAges=&infants=0&city=Istanbul&label=%D8%A5%D8%B3%D8%B7%D9%86%D8%A8%D9%88%D9%84&budget=0&currency=SAR
+  buttons 25, tapped 25
