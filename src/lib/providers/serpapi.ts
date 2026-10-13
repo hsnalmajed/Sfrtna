@@ -281,3 +281,115 @@ export async function hotelPrices(q: {
     return { kind, currency, hotels, checkedAt: new Date().toISOString(), nextPage };
   });
 }
+
+// ---- Flights: the fallback when the flight partner cannot be reached ------
+//
+// Owner, 13 Oct 2026: "if the flight partner fails, on their side or ours,
+// it is not acceptable that there is no other way to show results." The
+// results page normally reads the partner's own live search in the visitor's
+// browser; when that cannot load, it asks here instead. Google Flights'
+// live prices, through the same paced allowance as hotels — so a fallback
+// can never run the month dry for hotels either. No allowance left → no
+// numbers, only links to search elsewhere (results page).
+
+export interface FallbackLeg {
+  depTime: string;
+  depCode: string;
+  arrTime: string;
+  arrCode: string;
+  minutes: number;
+  airline: string;
+  logo: string;
+  flightNumber: string;
+}
+
+export interface FallbackFlight {
+  price: number;
+  minutes: number;
+  stops: number;
+  layovers: { code: string; minutes: number }[];
+  legs: FallbackLeg[];
+  best: boolean;
+}
+
+export interface FallbackFlights {
+  flights: FallbackFlight[];
+  /** Google Flights, opened on the same route and dates. */
+  url: string;
+  roundTrip: boolean;
+  currency: string;
+}
+
+interface GfSegment {
+  departure_airport?: { id?: string; time?: string };
+  arrival_airport?: { id?: string; time?: string };
+  duration?: number;
+  airline?: string;
+  airline_logo?: string;
+  flight_number?: string;
+}
+interface GfOption {
+  flights?: GfSegment[];
+  layovers?: { id?: string; duration?: number }[];
+  total_duration?: number;
+  price?: number;
+}
+
+export async function googleFlights(q: {
+  origin: string;
+  destination: string;
+  departDate: string;
+  returnDate?: string;
+  adults: number;
+  children: number;
+  infants: number;
+  currency: string;
+  locale: "ar" | "en";
+  directOnly: boolean;
+}): Promise<FallbackFlights | null> {
+  const round = Boolean(q.returnDate);
+  const cacheKey = `serp-flights1:${q.origin}:${q.destination}:${q.departDate}:${q.returnDate || "-"}:${q.adults}:${q.children}:${q.infants}:${q.currency}:${q.locale}:${q.directOnly ? 1 : 0}`;
+  return cachedJson<FallbackFlights>(cacheKey, 20 * 60, async () => {
+    const params: Record<string, string> = {
+      engine: "google_flights",
+      departure_id: q.origin,
+      arrival_id: q.destination,
+      outbound_date: q.departDate,
+      type: round ? "1" : "2",
+      adults: String(q.adults),
+      currency: q.currency,
+      hl: q.locale,
+      gl: "sa",
+    };
+    if (round) params.return_date = q.returnDate as string;
+    if (q.children) params.children = String(q.children);
+    if (q.infants) params.infants_on_lap = String(q.infants);
+    if (q.directOnly) params.stops = "1";
+    const body = await search(params);
+    if (!body) return null;
+    const best = (body.best_flights as GfOption[] | undefined) ?? [];
+    const other = (body.other_flights as GfOption[] | undefined) ?? [];
+    const time = (s?: string) => (s ? s.slice(11, 16) : "");
+    const flights: FallbackFlight[] = [...best.map((o) => [o, true] as const), ...other.map((o) => [o, false] as const)]
+      .filter(([o]) => typeof o.price === "number" && (o.flights?.length ?? 0) > 0)
+      .map(([o, isBest]) => ({
+        price: o.price as number,
+        minutes: o.total_duration ?? 0,
+        stops: (o.flights?.length ?? 1) - 1,
+        layovers: (o.layovers ?? []).map((l) => ({ code: l.id ?? "", minutes: l.duration ?? 0 })),
+        legs: (o.flights ?? []).map((s) => ({
+          depTime: time(s.departure_airport?.time),
+          depCode: s.departure_airport?.id ?? "",
+          arrTime: time(s.arrival_airport?.time),
+          arrCode: s.arrival_airport?.id ?? "",
+          minutes: s.duration ?? 0,
+          airline: s.airline ?? "",
+          logo: httpsOnly(s.airline_logo),
+          flightNumber: s.flight_number ?? "",
+        })),
+        best: isBest,
+      }));
+    const meta = body.search_metadata as { google_flights_url?: string } | undefined;
+    return { flights, url: httpsOnly(meta?.google_flights_url), roundTrip: round, currency: q.currency };
+  });
+}

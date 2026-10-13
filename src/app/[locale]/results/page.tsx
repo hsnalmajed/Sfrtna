@@ -443,6 +443,19 @@ function ResultsContent() {
         editHref={`/${locale}?${editSearchParams}#plan`}
         directOnly={Boolean(search.directFlightsOnly)}
         bagIncluded={Boolean(search.baggageIncluded)}
+        route={
+          search.origin && search.destination && search.departDate
+            ? {
+                origin: search.origin,
+                destination: search.destination,
+                departDate: search.departDate,
+                returnDate: isMulti ? "" : search.returnDate || "",
+                adults: search.adults,
+                children: search.childrenAges?.length ?? 0,
+                infants: search.infants ?? 0,
+              }
+            : undefined
+        }
       />
 
 

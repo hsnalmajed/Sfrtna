@@ -1,5 +1,6 @@
 "use client";
 
+import FallbackFlights, { type FallbackRoute } from "@/components/FallbackFlights";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import type { Locale } from "@/lib/types";
@@ -250,6 +251,7 @@ export default function FlightResultsGuide({
   directOnly = false,
   bagIncluded = false,
   onPicked,
+  route,
 }: {
   locale: Locale;
   /** The flight budget for the whole party; 0 when none was given. */
@@ -264,6 +266,8 @@ export default function FlightResultsGuide({
   bagIncluded?: boolean;
   /** Told the fare the traveller went to book (multi-city keeps the sum). */
   onPicked?: (fare: number) => void;
+  /** The trip, for the second source of fares when the partner cannot be reached. */
+  route?: FallbackRoute;
 }) {
   const t = getDictionary(locale).results;
   const [state, setState] = useState<State>(EMPTY);
@@ -658,18 +662,22 @@ export default function FlightResultsGuide({
       {/* The search, while it runs: a plane along a line at the top, and
           how many flights are in so far. Results below appear as they
           arrive; the bar stays until every agency has answered. */}
-      {stalled && (
-        <div role="alert" className="mb-5 rounded-2xl bg-amber-50 px-5 py-4 ring-1 ring-amber-200">
-          <p className="text-sm font-extrabold text-amber-900">{t.stalledTitle}</p>
-          <p className="mt-1 text-sm leading-relaxed text-amber-900/85">{t.stalledBody}</p>
-          <button
-            type="button"
-            onClick={() => window.location.reload()}
-            className="mt-3 rounded-full bg-navy-900 px-5 py-2.5 text-sm font-extrabold text-white hover:bg-navy-800"
-          >
-            {t.stalledRetry}
-          </button>
-        </div>
+      {(stalled || (state.settled && state.total === 0)) && (
+        <>
+          <div role="alert" className="mb-3 flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-amber-50 px-5 py-3 ring-1 ring-amber-200">
+            <p className="min-w-0 flex-1 text-sm leading-relaxed text-amber-900">
+              <span className="font-extrabold">{t.stalledTitle}</span> {route ? t.stalledBodyFallback : t.stalledBody}
+            </p>
+            <button
+              type="button"
+              onClick={() => window.location.reload()}
+              className="shrink-0 rounded-full bg-navy-900 px-4 py-2 text-sm font-extrabold text-white hover:bg-navy-800"
+            >
+              {t.stalledRetry}
+            </button>
+          </div>
+          {route && <FallbackFlights locale={locale} route={route} currency={currency} directOnly={directOnly} />}
+        </>
       )}
       {!state.settled && !stalled && (
         <div className="mb-5 overflow-hidden rounded-2xl bg-white px-5 py-3.5 shadow-sm ring-1 ring-black/5">

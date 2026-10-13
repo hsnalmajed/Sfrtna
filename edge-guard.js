@@ -44,6 +44,8 @@ export const ROUTES = {
   "/api/multicity": { methods: ["POST"], caller: "page", heavy: true },
   "/api/country-places": { methods: ["GET"], caller: "page", heavy: true },
   "/api/hotel-prices": { methods: ["GET"], caller: "page", heavy: true },
+  // Live fares when the flight partner cannot be reached (results page).
+  "/api/flight-fallback": { methods: ["GET"], caller: "page", heavy: true },
   "/api/itinerary": { methods: ["POST"], caller: "page", heavy: true },
   "/api/go/expedia": { methods: ["GET"], caller: "link" },
   "/api/go/gyg": { methods: ["GET"], caller: "link" },
