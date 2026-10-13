@@ -659,9 +659,9 @@ Root causes found in the code (13 Oct):
 - **Testing note:** the "frozen test browser" is Chrome throttling timers in
   a background tab (`document.visibilityState = hidden`), not the site. Use
   short synchronous JS probes; never `await` long timers in a probe.
-- Open question for the owner: the date picker shows cached fares under
-  each day (`/api/day-fares`) — against the live-price rule; asked whether to
-  remove.
+- Date picker day colours (`/api/day-fares`): a colour for cheaper days, no
+  number — fits the live-price rule (checked 13 Oct; earlier question to the
+  owner withdrawn).
 
 ## Next, in order
 

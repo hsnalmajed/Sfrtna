@@ -136,6 +136,32 @@ await check("old multi-city link forwards to the tabs", async (p) => {
   if (!/leg=0/.test(p.url()) && !/leg%3D0|leg=0/.test(decodeURIComponent(p.url()))) throw new Error(`landed on ${p.url().slice(0, 80)}`);
   return "";
 });
+await check("multi-city form: flight 2 cannot be dated before flight 1", async (p) => {
+  const legs2 = JSON.stringify([
+    { origin: "RUH", destination: "IST", date: D1 },
+    { origin: "IST", destination: "KUL", date: "" },
+  ]);
+  await p.goto(`${BASE}/ar?${q({ mode: "known", tripRoute: "multicity", product: "flights", origin: "RUH", departDate: D1, legs: legs2 })}#plan`, {
+    waitUntil: "networkidle",
+    timeout: 60_000,
+  });
+  const box = p.locator('[data-field="legs"]');
+  await box.locator("button[aria-expanded]").nth(1).click();
+  // The calendar opens on flight 1's month: every day before D1 is disabled,
+  // D1 itself and later are not.
+  const day = new Date(`${D1}T00:00:00Z`).getUTCDate();
+  const states = await box.locator("button[aria-pressed]").evaluateAll((btns) =>
+    btns.map((b) => ({ label: b.getAttribute("aria-label") || "", disabled: b.disabled, text: (b.textContent || "").trim() }))
+  );
+  if (!states.length) throw new Error("calendar did not open");
+  const num = (x) => Number((x.text.match(/^\d+/) || [NaN])[0]);
+  const month = states.slice(0, 31);
+  const before = month.filter((x) => num(x) < day && !x.disabled);
+  const from = month.filter((x) => num(x) >= day && x.disabled);
+  if (before.length) throw new Error(`${before.length} day(s) before flight 1 can be picked`);
+  if (from.length) throw new Error(`${from.length} day(s) from flight 1 on are blocked`);
+  return `days before ${D1} blocked`;
+});
 await check("suggest a destination shows destinations", async (p) => {
   await p.goto(
     `${BASE}/ar/discover-results?${q({ ...base, mode: "discover", tripRoute: "roundtrip", origin: "RUH", departDate: D1, returnDate: D2, budget: "8000", nights: "7" })}`,
