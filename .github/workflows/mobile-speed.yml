@@ -24,23 +24,12 @@ jobs:
         run: |
           npm install --no-save --no-audit --no-fund lighthouse@12
           BASE=https://sfrtna.almajedhsn.workers.dev
-          echo "page | score | FCP | LCP | TBT | CLS | JS KB" > scripts/mobile-speed-report.txt
-          for p in /ar /ar/attractions /ar/attractions/TR/istanbul /ar/seasons /ar/services /ar/itinerary /ar/visa; do
+          echo "page | score | FCP | LCP | TBT | CLS | JS KB | HTML KB" > scripts/mobile-speed-report.txt
+          for p in /ar /ar/attractions /ar/attractions/TR/istanbul /ar/seasons /ar/services /ar/itinerary /ar/visa /en/visa; do
             npx lighthouse "$BASE$p" --quiet --only-categories=performance --form-factor=mobile \
               --extra-headers="{\"x-sfrtna-smoke\":\"$SMOKE_TOKEN\"}" \
               --chrome-flags="--headless=new --no-sandbox" --output=json --output-path=lh.json || continue
-            node -e '
-              const r=require("./lh.json"); const a=r.audits;
-              const js=(a["resource-summary"]?.details?.items||[]).find(i=>i.resourceType==="script");
-              console.log([process.argv[1], Math.round(r.categories.performance.score*100), a["first-contentful-paint"].displayValue, a["largest-contentful-paint"].displayValue, a["total-blocking-time"].displayValue, a["cumulative-layout-shift"].displayValue, js?Math.round(js.transferSize/1024):"-"].join(" | "));
-            ' "$p" >> scripts/mobile-speed-report.txt
-            node -e '
-              const r=require("./lh.json"); const a=r.audits;
-              const lcp=a["largest-contentful-paint-element"]?.details?.items?.[0]?.items?.[0]?.node?.snippet||"";
-              const boot=(a["bootup-time"]?.details?.items||[]).slice(0,5).map(i=>`${i.url.replace(/^https?:\/\//,"").slice(0,60)} ${Math.round(i.total)}ms`).join("; ");
-              const big=(a["total-byte-weight"]?.details?.items||[]).slice(0,4).map(i=>`${i.url.replace(/^https?:\/\//,"").slice(0,60)} ${Math.round(i.totalBytes/1024)}KB`).join("; ");
-              console.log("   LCP element: "+lcp.slice(0,140)); console.log("   main-thread JS: "+boot); console.log("   heaviest: "+big);
-            ' >> scripts/mobile-speed-report.txt
+            node scripts/mobile-speed-summary.mjs lh.json "$p" >> scripts/mobile-speed-report.txt
           done
           cat scripts/mobile-speed-report.txt
       - name: Keep the report
