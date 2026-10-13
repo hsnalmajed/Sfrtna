@@ -110,6 +110,8 @@ export interface HotelOffer {
   /** Per night before taxes and fees, when Google gives it. */
   perNightBeforeTax: number | null;
   official: boolean;
+  /** The site's own page for this hotel and these dates (via Google), https only. */
+  link: string | null;
 }
 
 export interface HotelResult {
@@ -149,6 +151,7 @@ export interface HotelSearch {
 type Rate = { extracted_lowest?: number; extracted_before_taxes_fees?: number } | undefined;
 interface GhPrice {
   source?: string;
+  link?: string;
   official?: boolean;
   rate_per_night?: Rate;
   total_rate?: Rate;
@@ -188,6 +191,7 @@ function offersOf(p: GhProperty): HotelOffer[] {
       total: num(o.total_rate?.extracted_lowest),
       perNightBeforeTax: num(o.rate_per_night?.extracted_before_taxes_fees),
       official: Boolean(o.official),
+      link: httpsOnly(o.link) || null,
     });
   }
   return out;
@@ -246,7 +250,7 @@ export async function hotelPrices(q: {
   const ages = (q.childrenAges ?? []).map((a) => Math.min(17, Math.max(1, Math.round(a))));
   const stars = q.minStars && q.minStars >= 2 && q.minStars <= 5 ? q.minStars : 0;
   const maxPrice = q.maxPerNight && q.maxPerNight > 0 ? Math.round(q.maxPerNight) : 0;
-  const cacheKey = `serp-hotels4:${q.q.toLowerCase()}:${q.token ?? ""}:${q.checkIn}:${q.checkOut}:${q.adults}:${ages.join(",")}:${currency}:${stars}:${maxPrice}`;
+  const cacheKey = `serp-hotels5:${q.q.toLowerCase()}:${q.token ?? ""}:${q.checkIn}:${q.checkOut}:${q.adults}:${ages.join(",")}:${currency}:${stars}:${maxPrice}`;
   return cachedJson<HotelSearch>(cacheKey, 6 * 3600, async () => {
     const body = await search({
       engine: "google_hotels",

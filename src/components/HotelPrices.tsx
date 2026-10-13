@@ -11,16 +11,20 @@ import Icon from "@/components/ui/Icon";
 import PartnerLink from "@/components/PartnerLink";
 
 /**
- * One hotel in full: photos, what it offers, and its price at each partner.
+ * One hotel in full: photos, what it offers, and its price on every site.
  *
- * Prices come from Google Hotels (through SerpApi, cached six hours) and
- * only for the booking sites we earn from — Booking.com, Expedia, Agoda and
- * Hotels.com, each through a Stay22 Allez link that lands on this hotel —
- * each beside its own booking button. A hotel with no partner price shows no number, only the partner
- * searches. (A city's hotels are Stay22's widget — see Stay22HotelMap.)
+ * Prices come from Google Hotels (through SerpApi, cached six hours) for
+ * EVERY site selling the hotel — owner's decision 13 Oct 2026: partners or
+ * not, so the traveller sees the whole market here. Our partners (Booking,
+ * Expedia, Agoda, Hotels.com) open through a Stay22 Allez link that lands on
+ * this hotel and earns; any other site opens through the page Google gives
+ * for it, on this hotel and these dates. The button shows the price —
+ * «عرض السعر», never «احجز». Always in view: the cheapest, our partners and
+ * well-known names (the hotel's own site, the big agencies); the rest fold
+ * under «عرض N مواقع أخرى». Sorted by price, honestly.
  */
 
-type T = ReturnType<typeof getDictionary>["hotelResults"];
+export type T = ReturnType<typeof getDictionary>["hotelResults"];
 
 /** Google's name for each partner's site → our partner's name in the links. */
 const PARTNERS: { match: RegExp; partner: string; label: string }[] = [
@@ -30,7 +34,7 @@ const PARTNERS: { match: RegExp; partner: string; label: string }[] = [
   { match: /^hotels\.com$/i, partner: "Hotels.com", label: "Hotels.com" },
 ];
 
-interface Common {
+export interface Common {
   checkIn: string;
   checkOut: string;
   adults: number;
@@ -48,7 +52,7 @@ const nf = (locale: "ar" | "en") => (locale === "ar" ? "ar-SA-u-nu-latn" : "en-U
  * "1,074 SAR", isolated (FSI…PDI) so that inside an Arabic sentence the
  * amount and its code stay together, in order.
  */
-function money(n: number, locale: "ar" | "en") {
+export function money(n: number, locale: "ar" | "en") {
   return `⁨${Math.round(n).toLocaleString(nf(locale))} SAR⁩`;
 }
 
@@ -69,8 +73,22 @@ async function fetchSearch(url: string): Promise<HotelSearch | null> {
   }
 }
 
-/** Partner offers with a total, cheapest first, each with its booking link. */
-function partnerOffers(hotel: HotelResult, c: Common) {
+/** Every site's offer with a total, cheapest first, each with the link that opens it. */
+export interface SiteOffer {
+  label: string;
+  /** For the GA4 partner_click event: our partner's name, or the site's. */
+  partner: string;
+  total: number;
+  url: string | null;
+  earns: boolean;
+  official: boolean;
+  known: boolean;
+}
+
+/** Names travellers book with out of habit or trust: always in view. */
+const KNOWN = /booking\.com|agoda|expedia|hotels\.com|trip\.com|almosafer|المسافر|wego|tajawal|marriott|hilton|accor|ihg|hyatt|rotana|radisson/i;
+
+export function siteOffers(hotel: HotelResult, c: Common): SiteOffer[] {
   const links = hotelPartnerLinks({
     query: hotel.name,
     checkIn: c.checkIn,
@@ -83,12 +101,21 @@ function partnerOffers(hotel: HotelResult, c: Common) {
     lng: hotel.lng,
     locale: c.locale,
   });
-  const out: { label: string; partner: string; total: number; url: string }[] = [];
-  for (const p of PARTNERS) {
-    const offer = hotel.offers.find((o) => p.match.test(o.source));
-    const link = links.find((l) => l.partner === p.partner);
-    const total = offer?.total ?? (offer?.perNight ? offer.perNight * c.nights : null);
-    if (offer && link && total) out.push({ label: p.label, partner: p.partner, total, url: link.url });
+  const out: SiteOffer[] = [];
+  for (const o of hotel.offers) {
+    const total = o.total ?? (o.perNight ? o.perNight * c.nights : null);
+    if (!total) continue;
+    const p = PARTNERS.find((x) => x.match.test(o.source));
+    const partnerLink = p ? links.find((l) => l.partner === p.partner) : undefined;
+    out.push({
+      label: o.official ? `${o.source} · ${c.t.officialSite}` : p?.label ?? o.source,
+      partner: p?.partner ?? o.source,
+      total,
+      url: partnerLink?.url ?? o.link,
+      earns: Boolean(partnerLink),
+      official: o.official,
+      known: Boolean(p) || o.official || KNOWN.test(o.source),
+    });
   }
   return out.sort((a, b) => a.total - b.total);
 }
@@ -102,7 +129,7 @@ function ratingWord(r: number, t: T) {
 
 /* ───────────────────────────── small pieces ───────────────────────────── */
 
-function Stars({ count, className = "" }: { count: number | null; className?: string }) {
+export function Stars({ count, className = "" }: { count: number | null; className?: string }) {
   if (!count) return null;
   return (
     <span className={`tracking-tight text-sun-500 ${className}`} aria-label={`${count}★`}>
@@ -111,7 +138,7 @@ function Stars({ count, className = "" }: { count: number | null; className?: st
   );
 }
 
-function Rating({ hotel, c, size = "md" }: { hotel: HotelResult; c: Common; size?: "md" | "lg" }) {
+export function Rating({ hotel, c, size = "md" }: { hotel: HotelResult; c: Common; size?: "md" | "lg" }) {
   if (!hotel.rating) return null;
   const word = ratingWord(hotel.rating, c.t);
   return (
@@ -132,7 +159,7 @@ function Rating({ hotel, c, size = "md" }: { hotel: HotelResult; c: Common; size
 
 /* A photo from Google's hotel listing. Plain <img>: an external CDN the
    image optimiser cannot reach on this deployment. Hidden if it fails. */
-function Photo({ src, alt, className, eager }: { src: string; alt: string; className: string; eager?: boolean }) {
+export function Photo({ src, alt, className, eager }: { src: string; alt: string; className: string; eager?: boolean }) {
   const [ok, setOk] = useState(true);
   if (!ok) return <NoPhoto className={className} />;
   return (
@@ -156,13 +183,13 @@ function NoPhoto({ className }: { className: string }) {
   );
 }
 
-function Shimmer({ className }: { className: string }) {
+export function Shimmer({ className }: { className: string }) {
   return <div className={`animate-pulse rounded-xl bg-mist-200/70 ${className}`} />;
 }
 
 /* ───────────────────────────── prices ───────────────────────────── */
 
-function PriceRows({
+export function PriceRows({
   hotel,
   c,
   checkedAt,
@@ -174,11 +201,13 @@ function PriceRows({
   compact?: boolean;
 }) {
   const { t, locale } = c;
-  const offers = partnerOffers(hotel, c);
-  // The cheapest first and alone; the others a tap away, for travellers who
-  // book with one site out of habit or for its points.
+  const offers = siteOffers(hotel, c);
+  // In view: the cheapest, our partners and the well-known names; the rest
+  // a tap away. Order stays by price either way.
   const [all, setAll] = useState(false);
-  const shown = all ? offers : offers.slice(0, 1);
+  const pinned = offers.filter((o, i) => i === 0 || o.earns || o.known);
+  const shown = all ? offers : pinned;
+  const hiddenCount = offers.length - pinned.length;
   const time = new Date(checkedAt).toLocaleTimeString(nf(locale), { hour: "2-digit", minute: "2-digit" });
   if (!offers.length) {
     return (
@@ -188,65 +217,62 @@ function PriceRows({
       </div>
     );
   }
+  const strictlyCheapest = offers.length > 1 && offers[0].total < offers[1].total;
   return (
-    <div className="space-y-2.5">
+    <div className="space-y-2">
       {shown.map((o, i) => {
-        // The first row is the one to book: highlighted even on a tie, but
-        // called "cheapest" only when it is.
-        const best = i === 0;
-        const strictlyCheapest = offers.length > 1 && o.total < offers[1].total;
+        const best = o === offers[0];
         const over = c.budget > 0 ? o.total - c.budget : 0;
+        const button = `inline-flex shrink-0 items-center justify-center gap-1 rounded-xl font-extrabold transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400 ${
+          compact ? "px-3 py-2 text-xs" : "px-4 py-2.5 text-sm"
+        } ${best ? "bg-sun-400 text-navy-950 shadow-[var(--shadow-sun)] hover:bg-sun-300" : "bg-white text-navy-900 ring-1 ring-mist-200 hover:ring-navy-300"}`;
         return (
           <div
-            key={o.label}
-            className={`rounded-xl ring-1 ${compact ? "p-3" : "p-4"} ${
+            key={`${o.label}-${i}`}
+            className={`flex items-center justify-between gap-3 rounded-xl ring-1 ${compact ? "p-2.5" : "p-3.5"} ${
               best ? "bg-sun-50 ring-sun-300" : "bg-mist-50 ring-mist-200"
             }`}
           >
-            <div className="flex items-center justify-between gap-3">
-              <div className="min-w-0">
-                <p className="flex flex-wrap items-center gap-2 text-sm font-bold text-navy-800">
-                  {o.label}
-                  {best && strictlyCheapest && (
-                    <span className="rounded-full bg-sun-400 px-2 py-0.5 text-[11px] font-extrabold text-navy-950">{t.cheapest}</span>
-                  )}
-                </p>
-                <p className={`font-display font-extrabold text-navy-950 ${compact ? "text-lg" : "text-2xl"}`}>{money(o.total, locale)}</p>
-                <p className="text-xs text-navy-600">
-                  {c.nights === 1 ? t.stayTotalOne : t.stayTotal.replace("{nights}", nightsLabel(c.nights, t))}
-                  {c.nights > 1 && !compact && ` · ${t.perNight.replace("{amount}", money(o.total / c.nights, locale))}`}
-                </p>
-                {c.budget > 0 && (
-                  <p className={`mt-1 text-xs font-bold ${over > 0 ? "text-rose-700" : "text-sea-700"}`}>
-                    {over > 0 ? t.overBudget.replace("{amount}", money(over, locale)) : `✓ ${t.withinBudget}`}
-                  </p>
+            <div className="min-w-0">
+              <p className="flex flex-wrap items-center gap-1.5 text-sm font-bold text-navy-800">
+                <bdi className="truncate">{o.label}</bdi>
+                {best && strictlyCheapest && (
+                  <span className="rounded-full bg-sun-400 px-2 py-0.5 text-[11px] font-extrabold text-navy-950">{t.cheapest}</span>
                 )}
-              </div>
-              <PartnerLink
-                partner={o.partner}
-                href={o.url}
-                className={`inline-flex shrink-0 items-center justify-center rounded-xl font-extrabold transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400 ${
-                  compact ? "px-3.5 py-2.5 text-xs" : "px-5 py-3 text-sm"
-                } ${best ? "bg-sun-400 text-navy-950 shadow-[var(--shadow-sun)] hover:bg-sun-300" : "bg-white text-navy-900 ring-1 ring-mist-200 hover:ring-navy-300"}`}
-              >
-                {t.bookShort}
-              </PartnerLink>
+              </p>
+              <p className={`font-display font-extrabold text-navy-950 ${compact ? "text-base" : "text-xl"}`}>{money(o.total, locale)}</p>
+              {!compact && c.nights > 1 && (
+                <p className="text-xs text-navy-600">{t.perNight.replace("{amount}", money(o.total / c.nights, locale))}</p>
+              )}
+              {c.budget > 0 && (
+                <p className={`mt-0.5 text-xs font-bold ${over > 0 ? "text-rose-700" : "text-sea-700"}`}>
+                  {over > 0 ? t.overBudget.replace("{amount}", money(over, locale)) : `✓ ${t.withinBudget}`}
+                </p>
+              )}
             </div>
+            {o.url ? (
+              <PartnerLink partner={o.partner} href={o.url} className={button}>
+                {t.viewPrice}
+                <span aria-hidden="true">{locale === "ar" ? "←" : "→"}</span>
+              </PartnerLink>
+            ) : null}
           </div>
         );
       })}
-      {offers.length > 1 && (
+      {hiddenCount > 0 && (
         <button
           type="button"
           onClick={() => setAll((v) => !v)}
           aria-expanded={all}
           className="flex w-full items-center justify-center gap-1.5 rounded-xl bg-white px-4 py-2.5 text-xs font-extrabold text-navy-800 ring-1 ring-mist-200 transition hover:ring-navy-300"
         >
-          {all ? t.fewerPartners : t.morePartners.replace("{count}", String(offers.length - 1))}
+          {all ? t.fewerPartners : t.moreSites.replace("{count}", String(hiddenCount))}
           <span aria-hidden="true">{all ? "▴" : "▾"}</span>
         </button>
       )}
-      <p className="text-[11px] leading-relaxed text-navy-500">{t.checkedAt.replace("{time}", time)}</p>
+      <p className="text-[11px] leading-relaxed text-navy-500">
+        {c.nights === 1 ? t.stayTotalOne : t.stayTotal.replace("{nights}", nightsLabel(c.nights, t))} · {t.checkedAtAll.replace("{time}", time)}
+      </p>
     </div>
   );
 }
@@ -336,8 +362,8 @@ function HotelDetail({ hotel, c, checkedAt }: { hotel: HotelResult; c: Common; c
 
       <aside className="lg:sticky lg:top-24 lg:col-start-2 lg:row-span-2 lg:row-start-1">
         <div className="rounded-2xl bg-white p-5 shadow-[0_10px_40px_-15px_rgb(10_30_60/0.35)] ring-1 ring-black/5 sm:p-6">
-          <p className="font-display text-lg font-extrabold text-navy-950">{t.comparePrices}</p>
-          <p className="mb-4 mt-0.5 text-xs text-navy-500">{t.compareSub}</p>
+          <p className="font-display text-lg font-extrabold text-navy-950">{t.allSitesTitle}</p>
+          <p className="mb-4 mt-0.5 text-xs text-navy-500">{t.allSitesSub}</p>
           <PriceRows hotel={hotel} c={c} checkedAt={checkedAt} />
         </div>
         <div className="mt-4 px-1">

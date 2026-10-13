@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useMemo } from "react";
+import { Suspense, useCallback, useMemo, useState } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { getDictionary } from "@/lib/dictionaries";
@@ -11,15 +11,18 @@ import { nightsBetween } from "@/components/PlannerFields";
 import Icon from "@/components/ui/Icon";
 import HotelPrices from "@/components/HotelPrices";
 import Stay22HotelMap from "@/components/Stay22HotelMap";
-import { hotelCityPlace } from "@/components/HotelCityInput";
+import HotelList from "@/components/HotelList";
+import { findHotelCity, hotelCityPlace } from "@/components/HotelCityInput";
 import PartnerLink from "@/components/PartnerLink";
 import NextStepTabs, { markStep, tripCityFrom } from "@/components/NextStepTabs";
 
 /**
- * Hotel results: the search read back, then live prices from our partners.
+ * Hotel results: the search read back, then live prices from every site.
  *
- * Prices come from Google Hotels (through SerpApi, see HotelPrices) and only
- * for the booking sites we earn from, each next to its own booking button.
+ * Prices come from Google Hotels (through SerpApi, see HotelPrices and
+ * HotelList) for every site selling the hotel — our partners and the rest
+ * (owner, 13 Oct 2026). A city search lists its hotels as cards; a named
+ * hotel shows its page.
  * Checked on 6 Oct 2026 against Booking.com's own pages, Google's figure for
  * Booking was within 0.3% on three hotels of four; on the fourth Booking ran
  * a 10% deal, so the price we showed was the higher one, never the lower.
@@ -66,7 +69,14 @@ function HotelResultsContent() {
   const stay = stayRaw === "room" || stayRaw === "apartment" ? stayRaw : undefined;
 
   const complete = Boolean(query && checkIn && checkOut);
+  // No list from Google (allowance paced out, or down): our partners' list.
+  const [listDown, setListDown] = useState(false);
+  const onListDown = useCallback(() => setListDown(true), []);
   const nights = complete ? nightsBetween(checkIn, checkOut) : 0;
+  const listCommon = useMemo(
+    () => ({ checkIn, checkOut, adults, childrenAges, nights, locale, t, budget }),
+    [checkIn, checkOut, adults, childrenAges, nights, locale, t, budget]
+  );
   // Arabic counts nights like any noun: ليلة واحدة · ليلتان · 3–10 ليالٍ · 11+ ليلة.
   const nightsText =
     nights === 1
@@ -265,31 +275,41 @@ function HotelResultsContent() {
               />
             ) : (
               <div>
-                <div className="mb-4">
-                  <h2 className="font-display text-xl font-extrabold text-navy-950">
-                    {(budget > 0 ? t.discoverTitleBudget : t.discoverTitle).replace("{city}", label || query)}
-                  </h2>
-                  <p className="mt-1 max-w-3xl text-sm leading-relaxed text-navy-600">
-                    {t.discoverNote.replace("{nights}", nightsText)}
-                  </p>
-                  {locale === "ar" && <p className="mt-1 text-xs text-navy-500">{t.discoverEnglish}</p>}
-                </div>
-                <Stay22HotelMap
-                  title={(budget > 0 ? t.discoverTitleBudget : t.discoverTitle).replace("{city}", label || query)}
-                  address={hotelCityPlace(query) ?? query}
-                  checkIn={checkIn}
-                  checkOut={checkOut}
-                  adults={adults}
-                  kids={childrenAges.length}
-                  budget={budget}
-                  currency={currency}
-                  nights={nights}
-                  minStars={minStars}
-                  labels={{ list: t.viewList, map: t.viewMap, choose: t.viewChoose }}
-                />
-                <div className="mt-6 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-black/5">
-                  <p className="text-sm font-bold text-navy-900">{t.otherPartners}</p>
-                  <div className="mt-3 flex flex-wrap gap-2">
+                <h2 className="mb-4 font-display text-xl font-extrabold text-navy-950">
+                  {(budget > 0 ? t.discoverTitleBudget : t.discoverTitle).replace("{city}", label || query)}
+                </h2>
+                {!listDown ? (
+                  <HotelList
+                    cityQuery={hotelCityPlace(query) ?? query}
+                    citySlug={findHotelCity(query)?.slug}
+                    cityName={label || query}
+                    minStars={minStars}
+                    maxPerNight={budget > 0 && nights > 0 ? budget / nights : 0}
+                    breakfast={breakfast}
+                    c={listCommon}
+                    onUnavailable={onListDown}
+                  />
+                ) : (
+                  <>
+                    <p className="mb-3 text-sm font-semibold text-navy-700">{t.listPartnersOnly}</p>
+                    <Stay22HotelMap
+                      title={(budget > 0 ? t.discoverTitleBudget : t.discoverTitle).replace("{city}", label || query)}
+                      address={hotelCityPlace(query) ?? query}
+                      checkIn={checkIn}
+                      checkOut={checkOut}
+                      adults={adults}
+                      kids={childrenAges.length}
+                      budget={budget}
+                      currency={currency}
+                      nights={nights}
+                      minStars={minStars}
+                      labels={{ list: t.viewList, map: t.viewMap, choose: t.viewChoose }}
+                    />
+                  </>
+                )}
+                <div className="mt-6">
+                  <p className="text-xs font-bold text-navy-600">{t.otherPartners}</p>
+                  <div className="mt-2 flex flex-wrap gap-2">
                     {links.map((l) => (
                       <PartnerLink
                         key={l.partner}
