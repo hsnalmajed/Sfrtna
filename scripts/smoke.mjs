@@ -176,6 +176,11 @@ await check("protection: stored places are not downloadable", async () => {
 });
 
 console.log(passes.join("\n"));
+// On GitHub, failures also as annotations (readable without the log).
+if (process.env.GITHUB_ACTIONS) {
+  const esc = (m) => m.replace(/%/g, "%25").replace(/\r/g, "%0D").replace(/\n/g, "%0A");
+  for (const f of failures) console.log(`::error title=Site check::${esc(f)}`);
+}
 if (failures.length) {
   console.error("\n" + failures.join("\n"));
   process.exit(1);

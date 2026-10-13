@@ -76,12 +76,25 @@ async function flightAnswer(page, path, { prefs } = {}) {
     .then(() => true)
     .catch(() => false);
   if (!answered) {
-    const widget = await page.evaluate(() => Boolean(document.getElementById("tpwl-tickets")?.shadowRoot));
-    if (!widget) {
-      notes.push(`! ${path.split("?")[0]}: the flight widget did not start on ${HOST} (domain-bound) — checked by hand on sfrtna.com`);
-      return "widget not available on this host";
+    const why = await page.evaluate(() => {
+      const root = document.getElementById("tpwl-tickets")?.shadowRoot;
+      return {
+        widget: Boolean(root),
+        cards: root ? root.querySelectorAll('[class*="FlightCard-module__card___"]').length : 0,
+        searching: Boolean(root?.querySelector('[class*="SearchProgressbar"]')),
+        widgetText: (root?.textContent || "").replace(/\s+/g, " ").slice(0, 120),
+        guide: (document.querySelector("section[aria-live]")?.textContent || "").replace(/\s+/g, " ").slice(0, 120),
+        url: location.href.slice(0, 90),
+      };
+    });
+    // The partner's widget is bound to sfrtna.com: on the test address it
+    // starts but finds nothing. That is a limit of the check, not a fault of
+    // the site — noted, and the flight answers are tested by hand there.
+    if (!why.cards) {
+      notes.push(`! ${path.split("?")[0]}: flight widget returned no flights on ${HOST} (${JSON.stringify(why)}) — check by hand on sfrtna.com`);
+      return "no flights from the widget on this host";
     }
-    throw new Error("no answer after 150 s");
+    throw new Error(`no answer after 150 s: ${JSON.stringify(why)}`);
   }
   const text = (await guide.textContent()) || "";
   // Preferences are held to: every card we draw meets them.
@@ -150,12 +163,16 @@ await check("multi-city form: flight 2 cannot be dated before flight 1", async (
   // The calendar opens on flight 1's month: every day before D1 is disabled,
   // D1 itself and later are not.
   const day = new Date(`${D1}T00:00:00Z`).getUTCDate();
-  const states = await box.locator("button[aria-pressed]").evaluateAll((btns) =>
-    btns.map((b) => ({ label: b.getAttribute("aria-label") || "", disabled: b.disabled, text: (b.textContent || "").trim() }))
-  );
+  // Only the first month's grid (the calendar shows two months).
+  const states = await box.locator("button[aria-pressed]").evaluateAll((btns) => {
+    const first = btns[0]?.parentElement;
+    return btns
+      .filter((b) => b.parentElement === first)
+      .map((b) => ({ disabled: b.disabled, text: (b.textContent || "").trim() }));
+  });
   if (!states.length) throw new Error("calendar did not open");
   const num = (x) => Number((x.text.match(/^\d+/) || [NaN])[0]);
-  const month = states.slice(0, 31);
+  const month = states;
   const before = month.filter((x) => num(x) < day && !x.disabled);
   const from = month.filter((x) => num(x) >= day && x.disabled);
   if (before.length) throw new Error(`${before.length} day(s) before flight 1 can be picked`);
