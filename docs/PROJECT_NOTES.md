@@ -825,8 +825,11 @@ Chrome), climate v2 after the owner's download, publishing staged cities.
   2.1–2.9 s, the next run 1.9–6.3 s for the same pages: single Lighthouse
   runs on GitHub's shared machines swing by seconds. The workflow now warms
   the edge cache (a deploy changes the cache key), runs every page 3 times
-  interleaved and reports the median run + every run's LCP. Judge changes
-  on medians only.
+  interleaved and reports the median run + every run's LCP, each run's
+  observed paint times, and one applied-throttling run per page. The slow
+  simulated runs are runs where the CI machine painted late; applied
+  throttling gives LCP 2.0–3.0 s on every page (TEST_PLAN «Phone speed»).
+  Judge on the applied run + medians, never one simulated run.
 - **Words, one language per page:** `src/lib/dict/ar.ts`, `en.ts`;
   `src/lib/dictionaries.ts` = server only (both). Client components call
   `useDictionary()` (`src/lib/dict/context.tsx`); the [locale] layout passes
@@ -858,7 +861,8 @@ Chrome), climate v2 after the owner's download, publishing staged cities.
 ## Next, in order
 
 **▶ Start here (hand-off 14 Oct):**
-1. **Phone speed, remaining:** /ar/seasons sends ~700 KB raw of page data
+1. **Phone speed, remaining:** /ar/itinerary 3.0 s and /ar/visa 2.7 s
+   (applied throttling) are just over 2.5 s. /ar/seasons sends ~700 KB raw of page data
    (all cities' climate as props to a client list) — render the list on the
    server or send only what the first view shows. Biggest JS chunk
    (`3svhqtx…`, 72 KB gz) is the framework. Re-run both speed + taps

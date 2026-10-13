@@ -99,3 +99,28 @@ flight answers are tested by hand on sfrtna.com (above).
 | 3.5 | PDF / Google Maps file | Print to PDF, KML download | ✅ buttons present (unchanged); PDF to test by owner |
 | 3.6 | Save to account | — | ⏳ needs accounts (Google/Apple/email) — owner decision on the storage |
 | 3.7 | Phone / app | Sheet as bottom sheet, calendar usable | to test by owner |
+
+## Phone speed (14 Oct, workflow `mobile-speed.yml`, Lighthouse mobile)
+
+Simulated runs on GitHub swing by seconds (same page 2.2 s / 5.4 s); judge
+on the applied-throttling run (Chrome really slowed to phone CPU + 4G) and
+the median of three. Before = old report (13 Oct), after = 14 Oct 01:00.
+
+| Page | LCP before (1 run) | LCP after, applied throttling | Median of 3 simulated (runs) |
+|---|---|---|---|
+| /ar | 2.4–6.3 s, TBT up to 2.5 s | 2.3 s, TBT 440 ms | 2.8 s (2.3 / 2.8 / 5.4) |
+| /ar/attractions | 5.7 s | 2.3 s | 2.2 s (2.1 / 2.2 / 2.2) |
+| /ar/attractions/TR/istanbul | 2.1 s | 2.1 s | 3.5 s (2.0 / 3.5 / 4.3) |
+| /ar/seasons | 5.0 s | 2.2 s | 2.5 s (2.5 / 2.5 / 2.7) |
+| /ar/services | 2.3 s | 2.0 s | 3.5 s (2.0 / 3.5 / 4.7) |
+| /ar/itinerary | 4.7 s | 3.0 s | 4.9 s (2.3 / 4.9 / 5.6) |
+| /ar/visa | 5.9 s | 2.7 s | 5.1 s (2.5 / 5.1 / 5.4) |
+| /en/visa | — | 2.5 s | 4.7 s (2.2 / 4.7 / 4.8) |
+
+Also checked: local build — 11 pages hydrate at 390 px with no errors, only
+the page's language in its HTML, no dictionary text in any JS chunk; home
+«تصفّح كل وجهات أكتوبر (78)» opens all 78; e2e 7/8 locally (route
+suggestions need fare data), live site check: API ✓, browser ✓ except the
+stale calendar test (fixed). `mobile-taps.yml` on the new code: 28 page
+checks, no errors; "no effect" only on already-selected items (active tab,
+chosen amount, current language).
