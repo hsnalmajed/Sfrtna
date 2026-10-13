@@ -820,6 +820,27 @@ Chrome), climate v2 after the owner's download, publishing staged cities.
 
 ## Next, in order
 
+**▶ Start here (hand-off 13 Oct 23:30):**
+1. **Phone speed, continued:** LCP ≈ 5 s on /ar/attractions, /ar/seasons,
+   /ar/visa, /ar/itinerary (run workflow `mobile-speed.yml`, read
+   scripts/mobile-speed-report.txt); split `dictionaries.ts` so each page ships
+   one language (~100 KB raw today). Re-run `mobile-taps.yml` before reporting.
+2. **Climate:** owner runs `C:\Sfrtna-climate\Sfrtna-climate\1b_FINISH_DOWNLOAD.bat`
+   (39 places + cloud were refused when 7 ran at once), then `2_BUILD.bat`.
+   Folder is reachable through the device bridge (request access to
+   `C:\Sfrtna-climate`). Then validate (≥90 % within ±2 °C), season engine v2
+   on hci.json, publish the 156 staged cities (places/hotels/restaurants
+   collected with `staged=true`; partner pages at publish).
+3. **Visa:** JO, KH, KW, MA, TN, TZ still unconfirmed (official pages JS-only;
+   owner's Chrome window must be visible).
+4. **Accounts:** Google sign-in live (owner's OAuth client, published; origins
+   sfrtna.com + www). Email sign-in waits for `RESEND_API_KEY` (owner).
+   Owner to re-test «احفظ الخطة في حسابي» and «حفظ الخطة كـ PDF» on the site.
+5. Owner asks: reply in Arabic, test on phone (390 px) before saying ready,
+   no big blank spaces, labels centred in tabs, ask only business decisions.
+
+Older order (kept):
+
 **▶ Start here: finish the coverage section above (owner's ERA5 run →
 climate v2 → publish staged cities complete), then section 2 — hotel results.**
 Done so far: section 1 (flight search, 22/22 in `docs/TEST_PLAN.md`),
