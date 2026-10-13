@@ -742,6 +742,7 @@ export const dictionaries = {
       mapsCardTitle: "خذ أماكنك على قوقل ماب",
       mapsCardBody: "{count} من خطتك في ملف واحد، تفتحه على خرائط قوقل في جوالك.",
       pdfHint: "في نافذة الطباعة اختر «حفظ كملف PDF».",
+      pdfMaking: "جارٍ تجهيز الملف…",
       mapsKml: "تحميل المواقع لقوقل ماب",
       mapsHint:
         "حمّل الملف، ثم افتح «خرائطي» في قوقل ← خريطة جديدة ← استيراد، واختر الملف: تظهر كل أماكن خطتك على خرائط قوقل في جوالك.",
@@ -1902,6 +1903,7 @@ export const dictionaries = {
       mapsCardTitle: "Take your places to Google Maps",
       mapsCardBody: "{count} from your plan in one file, on Google Maps on your phone.",
       pdfHint: "In the print window, choose “Save as PDF”.",
+      pdfMaking: "Preparing the file…",
       mapsKml: "Download locations for Google Maps",
       mapsHint:
         "Download the file, then open Google My Maps → New map → Import and choose it: every place in your plan shows on Google Maps on your phone.",

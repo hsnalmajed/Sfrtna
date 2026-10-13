@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { getDictionary } from "@/lib/dictionaries";
 import type { Locale } from "@/lib/types";
 import { countLabel } from "@/lib/format";
 import { PIN_STYLES } from "@/lib/pinStyles";
 import { downloadText, safeFileName, toKML } from "@/lib/mapExport";
-import { printPage } from "@/lib/nativeApp";
+import { inApp, printPage } from "@/lib/nativeApp";
 import { GOOGLE_MY_MAPS_URL } from "@/lib/tripPlaces";
 import CityPlacesExplorer, { score, type PlaceListItem } from "@/components/CityPlacesExplorer";
 import PrintHeader from "@/components/PrintHeader";
@@ -715,6 +715,24 @@ function PlanView({
     );
   }
 
+  // The PDF is a file saved to the device (planPdf.ts). The app keeps its
+  // own print screen, whose «Save as PDF» is the phone's standard way.
+  const sheet = useRef<HTMLDivElement>(null);
+  const [pdfBusy, setPdfBusy] = useState(false);
+  async function savePdf() {
+    if (inApp() || !sheet.current) return printPage(title);
+    setPdfBusy(true);
+    try {
+      const { downloadPlanPdf } = await import("@/lib/planPdf");
+      const blocks = [...sheet.current.querySelectorAll<HTMLElement>("[data-pdf]")];
+      await downloadPlanPdf(blocks, safeFileName(`sfrtna-plan-${countryCode}-${cityName}`, "pdf"));
+    } catch {
+      printPage(title);
+    } finally {
+      setPdfBusy(false);
+    }
+  }
+
   const routeUrl = (items: PlaceListItem[]) => {
     const pts = items.filter(hasCoords).slice(0, 10).map((p) => `${p.lat},${p.lon}`);
     if (pts.length === 0) return null;
@@ -744,7 +762,7 @@ function PlanView({
               ✏️ {t.edit}
             </button>
             {/* Compact copies of the two big actions below, for when the page is scrolled. */}
-            <button type="button" onClick={() => printPage(title)} title={t.pdf} aria-label={t.pdf} className={`${btn} !px-3 bg-sun-400 text-navy-950 hover:bg-sun-300`}>
+            <button type="button" onClick={savePdf} disabled={pdfBusy} title={t.pdf} aria-label={t.pdf} className={`${btn} !px-3 bg-sun-400 text-navy-950 hover:bg-sun-300`}>
               📄 <span className="hidden sm:inline">PDF</span>
             </button>
             <button type="button" onClick={downloadKml} title={t.mapsKml} aria-label={t.mapsKml} className={`${btn} !px-3 bg-sea-600 text-white hover:bg-sea-700`}>
@@ -754,22 +772,22 @@ function PlanView({
         </div>
       </div>
 
-      <div className="mx-auto max-w-3xl px-4 py-6 sm:py-8">
+      <div ref={sheet} className="mx-auto max-w-3xl px-4 py-6 sm:py-8">
         <PrintHeader locale={locale} title={title} subtitle={subtitle} />
 
         {/* On screen: the same heading, in the site's own style. */}
-        <div className="print:hidden overflow-hidden rounded-3xl bg-gradient-to-br from-navy-800 to-navy-990 p-6 text-white">
+        <div data-pdf className="print:hidden overflow-hidden rounded-3xl bg-gradient-to-br from-navy-800 to-navy-990 p-6 text-white">
           {/* eslint-disable-next-line @next/next/no-img-element -- local asset; image optimizer is off on Workers */}
           <img src="/sfrtna-logo.png" alt="" className="mb-4 h-10 w-auto rounded-lg bg-white px-2 py-1" />
           <h2 className="font-display text-2xl font-black sm:text-3xl">{title}</h2>
           <p className="mt-2 text-sm font-bold text-sun-300">{subtitle}</p>
         </div>
 
-        <p className="mt-4 rounded-2xl bg-white px-4 py-3 text-sm leading-relaxed text-navy-700 ring-1 ring-mist-200 print-block">
+        <p data-pdf className="mt-4 rounded-2xl bg-white px-4 py-3 text-sm leading-relaxed text-navy-700 ring-1 ring-mist-200 print-block">
           {plan.source === "auto" ? t.planNoteAuto : t.planNotePick}
         </p>
         {plan.short && (
-          <p className="mt-3 rounded-2xl bg-amber-50 px-4 py-3 text-sm leading-relaxed text-amber-900 ring-1 ring-amber-200">
+          <p data-pdf className="mt-3 rounded-2xl bg-amber-50 px-4 py-3 text-sm leading-relaxed text-amber-900 ring-1 ring-amber-200">
             ⚠️ {t.autoShort}
           </p>
         )}
@@ -777,7 +795,8 @@ function PlanView({
         <div className="print:hidden mt-5 grid gap-3 sm:grid-cols-2">
           <button
             type="button"
-            onClick={() => printPage(title)}
+            onClick={savePdf}
+            disabled={pdfBusy}
             className="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-sun-300 via-sun-400 to-sun-500 p-5 text-start text-navy-950 shadow-[var(--shadow-sun)] ring-1 ring-sun-500/40 transition duration-300 hover:-translate-y-1 hover:shadow-[0_18px_40px_-12px_rgba(245,158,11,0.6)]"
           >
             <span className="pointer-events-none absolute -end-6 -top-8 text-[7rem] leading-none opacity-15 transition duration-500 group-hover:rotate-6 group-hover:scale-110" aria-hidden="true">
@@ -789,7 +808,7 @@ function PlanView({
             <span className="mt-3 block font-display text-xl font-black">{t.pdfCardTitle}</span>
             <span className="mt-1 block text-sm font-semibold text-navy-900/75">{t.pdfCardBody}</span>
             <span className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-navy-900 px-4 py-2 text-sm font-extrabold text-white transition group-hover:gap-2.5">
-              {t.pdf} <span aria-hidden="true">{isAr ? "←" : "→"}</span>
+              {pdfBusy ? t.pdfMaking : t.pdf} <span aria-hidden="true">{isAr ? "←" : "→"}</span>
             </span>
           </button>
 
@@ -825,14 +844,14 @@ function PlanView({
           </div>
         </div>
         <SavePlanButton locale={locale} plan={plan} title={`${title} · ${dates}`} cityName={cityName} countryCode={countryCode} />
-        <p className="print:hidden mt-2 text-center text-[11px] text-navy-400">💡 {t.pdfHint}</p>
+        {inApp() && <p className="print:hidden mt-2 text-center text-[11px] text-navy-400">💡 {t.pdfHint}</p>}
 
         <ol className="mt-5 space-y-4">
           {plan.days.map((items, i) => {
             const route = routeUrl(items);
             const spread = items.length > 1 ? spreadKm(items) : 0;
             return (
-              <li key={i} className="print-block overflow-hidden rounded-3xl bg-white shadow-[var(--shadow-card)] ring-1 ring-navy-950/5">
+              <li key={i} data-pdf className="print-block overflow-hidden rounded-3xl bg-white shadow-[var(--shadow-card)] ring-1 ring-navy-950/5">
                 <div className="flex flex-wrap items-center justify-between gap-2 border-b border-mist-200 bg-mist-50 px-5 py-3">
                   <p className="flex items-center gap-2.5">
                     <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-navy-900 text-sm font-black text-sun-300">

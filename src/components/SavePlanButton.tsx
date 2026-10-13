@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { getDictionary } from "@/lib/dictionaries";
 import type { Locale } from "@/lib/types";
-import { PENDING_PLAN_KEY, useAccount } from "@/lib/useAccount";
+import { PENDING_PLAN_KEY, refreshAccount, useAccount } from "@/lib/useAccount";
 
 export interface PlanToSave {
   source: "pick" | "auto";
@@ -63,29 +63,43 @@ export default function SavePlanButton({
       },
     });
 
-  async function save() {
-    if (!account.user) {
-      try {
-        sessionStorage.setItem(PENDING_PLAN_KEY, body());
-      } catch {
-        // Private mode: they can save again after signing in.
-      }
-      const here = new URL(window.location.href);
-      here.searchParams.delete("saved");
-      here.searchParams.set("from", plan.from);
-      here.searchParams.set("to", plan.to);
-      here.hash = "trip-plan";
-      router.push(`/${locale}/account?next=${encodeURIComponent(here.pathname + here.search + here.hash)}`);
-      return;
-    }
-    setState("saving");
+  function signInFirst() {
     try {
-      const res = await fetch("/api/plans", { method: "POST", headers: { "Content-Type": "application/json" }, body: body() });
-      const json = (await res.json()) as { ok: boolean; reason?: string };
-      setState(json.ok ? "saved" : json.reason === "too_many" ? "full" : "error");
+      sessionStorage.setItem(PENDING_PLAN_KEY, body());
     } catch {
-      setState("error");
+      // Private mode: they can save again after signing in.
     }
+    const here = new URL(window.location.href);
+    here.searchParams.delete("saved");
+    here.searchParams.set("from", plan.from);
+    here.searchParams.set("to", plan.to);
+    here.hash = "trip-plan";
+    router.push(`/${locale}/account?next=${encodeURIComponent(here.pathname + here.search + here.hash)}`);
+  }
+
+  async function save() {
+    if (!account.user) return signInFirst();
+    setState("saving");
+    // One quiet retry: a dropped connection should not cost the plan.
+    for (let attempt = 0; attempt < 2; attempt++) {
+      try {
+        const res = await fetch("/api/plans", { method: "POST", headers: { "Content-Type": "application/json" }, body: body() });
+        if (res.status === 401) {
+          // The sign-in ended (signed out on another page, or expired).
+          await refreshAccount();
+          setState("idle");
+          return signInFirst();
+        }
+        const json = (await res.json().catch(() => ({ ok: false, reason: `http_${res.status}` }))) as { ok: boolean; reason?: string };
+        if (json.ok) return setState("saved");
+        if (json.reason === "too_many") return setState("full");
+        console.warn("[sfrtna] save plan:", res.status, json.reason);
+        if (res.status < 500) break;
+      } catch (err) {
+        console.warn("[sfrtna] save plan:", err);
+      }
+    }
+    setState("error");
   }
 
   const label =
