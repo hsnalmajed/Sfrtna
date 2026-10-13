@@ -926,7 +926,7 @@ function FlightCard({
 
       <div className="grid md:grid-cols-[minmax(0,1fr)_260px]">
         {/* The flight. */}
-        <div className={`p-4 sm:p-5 ${featured ? "pt-6 sm:pt-7" : ""}`}>
+        <div className={`p-3 sm:p-5 ${featured ? "pt-6 sm:pt-7" : ""}`}>
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="flex min-w-0 items-center gap-3">
               <div className="flex shrink-0 -space-x-2 rtl:space-x-reverse">
@@ -973,20 +973,23 @@ function FlightCard({
             </div>
           </div>
 
-          <div className="mt-4 divide-y divide-mist-100 rounded-2xl ring-1 ring-mist-100">
+          <div className="mt-3 divide-y divide-mist-100 rounded-2xl ring-1 ring-mist-100 sm:mt-4">
             {flight.legs.map((l, i) => (
-              <div key={i} className="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-x-4 gap-y-3 p-3 sm:grid-cols-[140px_minmax(0,1fr)] sm:p-4">
+              <div key={i} className="grid grid-cols-[minmax(0,1fr)] items-center gap-x-4 gap-y-1.5 px-3 py-2.5 sm:grid-cols-[140px_minmax(0,1fr)] sm:gap-y-3 sm:p-4">
+                {/* Phone: "Outbound · Tue, 17 Nov" on one small line above the
+                    times; wider: an icon with the label and day beside them. */}
                 <div className="flex items-center gap-2.5">
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-mist-50 text-navy-800">
+                  <span className="hidden h-10 w-10 shrink-0 items-center justify-center rounded-full bg-mist-50 text-navy-800 sm:flex">
                     <Icon name={i === 0 ? "takeoff" : "plane"} className="h-4 w-4" />
                   </span>
-                  <div className="min-w-0">
-                    <p className="text-sm font-extrabold text-navy-950">{labels[i]}</p>
+                  <div className="flex min-w-0 items-baseline gap-1.5 sm:block">
+                    <p className="text-xs font-extrabold text-navy-950 sm:text-sm">{labels[i]}</p>
+                    <span className="text-xs text-navy-400 sm:hidden" aria-hidden="true">·</span>
                     <p className="truncate text-xs text-navy-500">{l.depDay}</p>
                   </div>
                 </div>
 
-                <div className="col-span-2 grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 sm:col-span-1">
+                <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3">
                   <div className="text-start">
                     <p className="font-display text-lg font-black text-navy-950 sm:text-xl">{l.depTime}</p>
                     <p className="text-xs font-bold text-navy-700">
@@ -1032,19 +1035,32 @@ function FlightCard({
         </div>
 
         {/* The price, the bag, and the way to book. */}
-        <div className="flex flex-col gap-3 border-t border-mist-100 p-4 sm:p-5 md:border-s md:border-t-0">
+        <div className="flex flex-col gap-3 border-t border-mist-100 p-3 sm:p-5 md:border-s md:border-t-0">
+          {/* Phone: the price and the booking button side by side. */}
+          <div className="flex items-end justify-between gap-3 md:block">
           <div>
             <p className="flex items-center gap-1.5 text-xs font-semibold text-navy-500">
               <Icon name="users" className="h-3.5 w-3.5" />
               {t.priceTotalLabel}
             </p>
-            <p className="mt-1 font-display text-3xl font-black text-navy-950">
+            <p className="mt-1 font-display text-2xl font-black text-navy-950 md:text-3xl">
               <bdi dir="ltr">{money(pay)}</bdi>
             </p>
             <p className="mt-0.5 text-xs text-navy-500">
               {countLabel(travelers, { one: t.travelersOne, two: t.travelersTwo, few: t.travelersFew, many: t.travelersMany })}
               {flight.bagOn && ` · ${t.bagAdded}`}
             </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => onBook(flight)}
+            className={`flex shrink-0 items-center justify-center gap-2 rounded-xl bg-sun-400 px-5 font-extrabold text-navy-950 shadow-[var(--shadow-sun)] transition hover:bg-sun-300 md:hidden ${
+              featured ? "py-3 text-base" : "py-2.5 text-sm"
+            }`}
+          >
+            {t.cardBook}
+            <span aria-hidden="true">{isAr ? "←" : "→"}</span>
+          </button>
           </div>
 
           {flight.bag === "extra" && flight.bagExtra !== null && (
@@ -1099,7 +1115,7 @@ function FlightCard({
           <button
             type="button"
             onClick={() => onBook(flight)}
-            className={`flex w-full items-center justify-center gap-2 rounded-xl bg-sun-400 px-4 font-extrabold text-navy-950 shadow-[var(--shadow-sun)] transition hover:bg-sun-300 ${
+            className={`hidden items-center justify-center gap-2 rounded-xl bg-sun-400 px-4 font-extrabold text-navy-950 shadow-[var(--shadow-sun)] transition hover:bg-sun-300 md:flex md:w-full ${
               featured ? "py-3.5 text-base" : "py-3 text-sm"
             }`}
           >
