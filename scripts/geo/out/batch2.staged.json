@@ -330,13 +330,13 @@
    "nameEn": "Macau",
    "wikiTitle": "Macau",
    "flags": [],
-   "lat": 22.11589,
-   "lon": 113.5717,
-   "geocode": "龍輝半島 A Península, Long Chao Kok, Hac Sa Village, 聖方濟各堂區 São Francisco Xavier, Coloane, Macau, China",
+   "lat": 22.19383,
+   "lon": 113.53999,
+   "geocode": "Senado Square, 中區 Centro, Sé, Macau, 519020, China",
    "airport": {
     "iata": "MFM",
     "name": "Macau International Airport",
-    "km": 4,
+    "km": 7,
     "source": "owner list, confirmed in OurAirports",
     "lat": 22.149599,
     "lon": 113.592003,
@@ -425,13 +425,13 @@
    "nameEn": "Labuan Bajo",
    "wikiTitle": "Labuan Bajo",
    "flags": [],
-   "lat": -8.48107,
-   "lon": 119.88351,
-   "geocode": "Ra Signature Komodo Labuan Bajo, Jalan Binongko, Labuan Bajo, Manggarai Barat, East Nusa Tenggara, 86763, Indonesia",
+   "lat": -8.49364,
+   "lon": 119.87536,
+   "geocode": "Labuan Bajo Port, Jalan Soekarno Hatta, Labuan Bajo, Manggarai Barat, East Nusa Tenggara, 86754, Indonesia",
    "airport": {
     "iata": "LBJ",
     "name": "Komodo Airport",
-    "km": 1,
+    "km": 2,
     "source": "owner list, confirmed in OurAirports",
     "lat": -8.480694,
     "lon": 119.888306,
@@ -1621,9 +1621,19 @@
    "nameAr": "شلالات فيكتوريا",
    "nameEn": "Victoria Falls",
    "wikiTitle": "Victoria Falls (city)",
-   "flags": [
-    "not geocoded"
-   ]
+   "flags": [],
+   "lat": -17.92794,
+   "lon": 25.839,
+   "geocode": "Livingstone Way, Victoria Falls, Victoria Falls Municipality, Hwange, Matabeleland North Province, Zimbabwe",
+   "airport": {
+    "iata": "VFA",
+    "name": "Victoria Falls International Airport",
+    "km": 19,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": -18.097437,
+    "lon": 25.836867,
+    "type": "large_airport"
+   }
   },
   "maputo": {
    "country": "MZ",
@@ -2956,7 +2966,5 @@
    }
   }
  },
- "review": [
-  "victoria-falls"
- ]
+ "review": []
 }

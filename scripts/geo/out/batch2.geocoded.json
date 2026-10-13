@@ -1,6 +1,6 @@
 {
  "source": "OpenStreetMap Nominatim",
- "retrievedAt": "2026-10-13T08:39:21+00:00",
+ "retrievedAt": "2026-10-13T08:49:34+00:00",
  "cities": {
   "dammam": {
    "country": "SA",
@@ -381,13 +381,13 @@
    "country": "MO",
    "query": "Macau",
    "plain": {
-    "lat": 22.11589,
-    "lon": 113.5717,
-    "display_name": "龍輝半島 A Península, Long Chao Kok, Hac Sa Village, 聖方濟各堂區 São Francisco Xavier, Coloane, Macau, China",
+    "lat": 22.19383,
+    "lon": 113.53999,
+    "display_name": "Senado Square, 中區 Centro, Sé, Macau, 519020, China",
     "osm_type": "way",
-    "osm_id": 315010155,
-    "type": "residential",
-    "url": "https://nominatim.openstreetmap.org/search?q=Macau+Peninsula&countrycodes=cn&format=jsonv2&limit=1&accept-language=en"
+    "osm_id": 192573684,
+    "type": "pedestrian",
+    "url": "https://nominatim.openstreetmap.org/search?q=Largo+do+Senado%2C+Macau&countrycodes=cn&format=jsonv2&limit=1&accept-language=en"
    },
    "city": null,
    "chosen": "plain"
@@ -488,13 +488,13 @@
    "country": "ID",
    "query": "Labuan Bajo",
    "plain": {
-    "lat": -8.48107,
-    "lon": 119.88351,
-    "display_name": "Ra Signature Komodo Labuan Bajo, Jalan Binongko, Labuan Bajo, Manggarai Barat, East Nusa Tenggara, 86763, Indonesia",
+    "lat": -8.49364,
+    "lon": 119.87536,
+    "display_name": "Labuan Bajo Port, Jalan Soekarno Hatta, Labuan Bajo, Manggarai Barat, East Nusa Tenggara, 86754, Indonesia",
     "osm_type": "node",
-    "osm_id": 14211524358,
-    "type": "hotel",
-    "url": "https://nominatim.openstreetmap.org/search?q=Labuan+Bajo%2C+Komodo%2C+Manggarai+Barat&countrycodes=id&format=jsonv2&limit=1&accept-language=en"
+    "osm_id": 3335120748,
+    "type": "ferry_terminal",
+    "url": "https://nominatim.openstreetmap.org/search?q=Pelabuhan+Labuan+Bajo&countrycodes=id&format=jsonv2&limit=1&accept-language=en"
    },
    "city": null,
    "chosen": "plain"
@@ -1896,9 +1896,17 @@
   "victoria-falls": {
    "country": "ZW",
    "query": "Victoria Falls (city)",
-   "plain": null,
+   "plain": {
+    "lat": -17.92794,
+    "lon": 25.839,
+    "display_name": "Livingstone Way, Victoria Falls, Victoria Falls Municipality, Hwange, Matabeleland North Province, Zimbabwe",
+    "osm_type": "way",
+    "osm_id": 30129421,
+    "type": "trunk",
+    "url": "https://nominatim.openstreetmap.org/search?q=Livingstone+Way%2C+Victoria+Falls&countrycodes=zw&format=jsonv2&limit=1&accept-language=en"
+   },
    "city": null,
-   "chosen": null
+   "chosen": "plain"
   },
   "maputo": {
    "country": "MZ",
