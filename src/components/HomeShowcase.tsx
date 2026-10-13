@@ -354,19 +354,9 @@ export default function HomeShowcase({
             🌡 {c.low !== null && c.low !== undefined ? dict.highLow.replace("{low}", String(Math.round(c.low))).replace("{high}", String(Math.round(c.high))) : `${Math.round(c.high)}°`}
           </span>
         </div>
-        <div className="mt-1 flex flex-wrap gap-1">
-          {/* The fare matters more than the rain; the rain only shows where
-              no fare was seen, so the card is never left with one number. */}
-          {c.fare ? (
-            <span className="inline-flex rounded-full bg-sun-400 px-2 py-0.5 text-xs font-extrabold text-navy-950">
-              {dict.seasonFare.replace("{price}", c.fare.toLocaleString("en-US"))}
-            </span>
-          ) : (
-            <span className="inline-flex rounded-full bg-navy-990/65 px-2 py-0.5 text-xs font-bold text-sea-200 backdrop-blur-sm">
-              {rainText(c.rainyDays)}
-            </span>
-          )}
-        </div>
+        {/* No chip under the name (owner, 13 Oct): the rain line went, and a
+            fare seen earlier is not a live price — the site shows live
+            prices or no number. Weather and booking are one tap away. */}
       </div>
     </button>
   );
@@ -435,12 +425,6 @@ export default function HomeShowcase({
               </p>
             )}
           </section>
-
-          {openCity.fare && (
-            <p className="rounded-2xl bg-sun-400/10 px-4 py-3 text-sm font-bold text-sun-200 ring-1 ring-sun-400/30">
-              ✈️ {dict.summaryFare.replace("{price}", openCity.fare.toLocaleString("en-US"))}
-            </p>
-          )}
 
           <div className="grid gap-4 sm:grid-cols-2">
             {/* Visa: only a status we confirmed at the source. */}
@@ -635,11 +619,6 @@ export default function HomeShowcase({
                   </div>
                 )}
                 <p className="mt-3 text-sm font-semibold text-white/75">👆 {dict.seasonTapHint}</p>
-                {seasonCities.some((c) => c.fare) && (
-                  <p className="mt-2 rounded-xl bg-sun-400/10 px-3 py-2 text-xs font-semibold leading-relaxed text-sun-200 ring-1 ring-sun-400/25">
-                    {dict.seasonFareNote}
-                  </p>
-                )}
               </>
             )}
 
