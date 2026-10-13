@@ -12,7 +12,7 @@ permissions:
 jobs:
   speed:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 50
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -24,12 +24,22 @@ jobs:
         run: |
           npm install --no-save --no-audit --no-fund lighthouse@12
           BASE=https://sfrtna.almajedhsn.workers.dev
-          echo "page | score | FCP | LCP | TBT | CLS | JS KB | HTML KB" > scripts/mobile-speed-report.txt
-          for p in /ar /ar/attractions /ar/attractions/TR/istanbul /ar/seasons /ar/services /ar/itinerary /ar/visa /en/visa; do
-            npx lighthouse "$BASE$p" --quiet --only-categories=performance --form-factor=mobile \
-              --extra-headers="{\"x-sfrtna-smoke\":\"$SMOKE_TOKEN\"}" \
-              --chrome-flags="--headless=new --no-sandbox" --output=json --output-path=lh.json || continue
-            node scripts/mobile-speed-summary.mjs lh.json "$p" >> scripts/mobile-speed-report.txt
+          echo "page | score | FCP | LCP | TBT | CLS | JS KB | HTML KB | LCP of each run (median shown)" > scripts/mobile-speed-report.txt
+          PAGES="/ar /ar/attractions /ar/attractions/TR/istanbul /ar/seasons /ar/services /ar/itinerary /ar/visa /en/visa"
+          # Warm the edge cache first: a deploy changes the cache key, and the
+          # first visit per data centre waits for the page to render.
+          for p in $PAGES; do curl -s -o /dev/null -H "x-sfrtna-smoke: $SMOKE_TOKEN" "$BASE$p" || true; done
+          # Three runs per page, interleaved so a slow minute on the runner
+          # does not land on one page only.
+          for r in 1 2 3; do
+            for p in $PAGES; do
+              npx lighthouse "$BASE$p" --quiet --only-categories=performance --form-factor=mobile \
+                --extra-headers="{\"x-sfrtna-smoke\":\"$SMOKE_TOKEN\"}" \
+                --chrome-flags="--headless=new --no-sandbox" --output=json --output-path="lh-$(echo $p | tr / _)-$r.json" || true
+            done
+          done
+          for p in $PAGES; do
+            node scripts/mobile-speed-summary.mjs "$p" lh-$(echo $p | tr / _)-*.json >> scripts/mobile-speed-report.txt
           done
           cat scripts/mobile-speed-report.txt
       - name: Keep the report

@@ -818,13 +818,51 @@ delete), Google token checks (good/aud/exp/tampered/unverified email), live
 Still open: visa for the remaining countries (needs a visible
 Chrome), climate v2 after the owner's download, publishing staged cities.
 
+**Phone speed, round 2 (14 Oct 00:00):**
+- Report (`mobile-speed.yml` → `scripts/mobile-speed-summary.mjs`) now prints
+  LCP phases (TTFB / load delay / load time / render delay), HTML size and
+  the requests before LCP. A fresh run showed the "LCP ≈ 5 s" pages at
+  2.1–2.9 s, the next run 1.9–6.3 s for the same pages: single Lighthouse
+  runs on GitHub's shared machines swing by seconds. The workflow now warms
+  the edge cache (a deploy changes the cache key), runs every page 3 times
+  interleaved and reports the median run + every run's LCP. Judge changes
+  on medians only.
+- **Words, one language per page:** `src/lib/dict/ar.ts`, `en.ts`;
+  `src/lib/dictionaries.ts` = server only (both). Client components call
+  `useDictionary()` (`src/lib/dict/context.tsx`); the [locale] layout passes
+  `clientDictionary(dict)` — only the sections client code reads
+  (`src/lib/dict/clientSections.ts`; `legal`/`home`/`attractions` key-picked).
+  The hook's type is that shape, so reading a missing section fails `tsc`
+  → add it to clientSections.ts. `scripts/check-client-words.mjs` (prebuild)
+  fails the build if browser code imports `@/lib/dictionaries`. Per page:
+  ~124 KB less JS to parse, ~25 KB less to download on a first visit (HTML
+  +15 KB gz carries the words). Two providers (one per language) were tried
+  first: Turbopack put both in the layout's chunk — don't retry that.
+- **Home strip:** the marquee drifted every in-season city twice (78 → 156
+  cards, DOM 2,640 elements); now the top 16 (`MARQUEE_CITIES` in
+  HomeShowcase), «تصفّح كل وجهات <شهر> (N)» still opens all N as a grid.
+  DOM 656; style/layout −0.5 s at 4× CPU slowdown.
+- **Headline font:** home h1 is Tajawal 900, not preloaded → fetched after
+  the scripts and repainted (that repaint was the LCP). Arabic home now
+  preloads `/fonts/tajawal-ar-900.woff2`. English home: Latin 900 is a
+  hashed fontsource file — not preloaded.
+- **Hero photos on our domain:** `scripts/hero-photos.mjs` +
+  `hero-photos.yml` (on change of heroPhotos.ts or by hand) → 13 heroes ×
+  828/1280/1920w WebP in `public/hero/`, listed in `src/data/heroLocal.json`;
+  `heroImage()` uses them when listed (4K screens still Pexels 3840w). Saves
+  the second connection (DNS+TCP+TLS) before the largest paint.
+- e2e: the multi-city calendar test looked inside the form box; the shared
+  date picker is a dialog → fixed. Local e2e: 7/8 (route suggestions need
+  fare data, pass live).
+
 ## Next, in order
 
-**▶ Start here (hand-off 13 Oct 23:30):**
-1. **Phone speed, continued:** LCP ≈ 5 s on /ar/attractions, /ar/seasons,
-   /ar/visa, /ar/itinerary (run workflow `mobile-speed.yml`, read
-   scripts/mobile-speed-report.txt); split `dictionaries.ts` so each page ships
-   one language (~100 KB raw today). Re-run `mobile-taps.yml` before reporting.
+**▶ Start here (hand-off 14 Oct):**
+1. **Phone speed, remaining:** /ar/seasons sends ~700 KB raw of page data
+   (all cities' climate as props to a client list) — render the list on the
+   server or send only what the first view shows. Biggest JS chunk
+   (`3svhqtx…`, 72 KB gz) is the framework. Re-run both speed + taps
+   workflows after each change.
 2. **Climate:** owner runs `C:\Sfrtna-climate\Sfrtna-climate\1b_FINISH_DOWNLOAD.bat`
    (39 places + cloud were refused when 7 ran at once), then `2_BUILD.bat`.
    Folder is reachable through the device bridge (request access to

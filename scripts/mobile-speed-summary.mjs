@@ -1,13 +1,22 @@
 // Summarises one Lighthouse JSON (mobile) for scripts/mobile-speed-report.txt.
-// Usage: node scripts/mobile-speed-summary.mjs <lh.json> <page path>
 // Prints the headline row, then why the largest paint came when it did:
 // its element, its phases (server answer → request start → download → paint),
 // the main-thread work, the heaviest files, and the requests that started
 // before the largest paint (so a slow page shows what it waited on).
 import { readFileSync } from "node:fs";
 
-const [file, page] = process.argv.slice(2);
-const r = JSON.parse(readFileSync(file, "utf8"));
+// Usage: node scripts/mobile-speed-summary.mjs <page path> <lh.json> [<lh.json> …]
+// With several runs of the same page, the run with the median LCP is shown
+// and every run's LCP is listed: single Lighthouse runs on shared CI machines
+// swing by several seconds (13–14 Oct: /ar 1.9 s and 6.3 s back to back).
+const [page, ...files] = process.argv.slice(2);
+const runs = files
+  .map((f) => { try { return JSON.parse(readFileSync(f, "utf8")); } catch { return null; } })
+  .filter((x) => x && x.audits?.["largest-contentful-paint"]?.numericValue)
+  .sort((x, y) => x.audits["largest-contentful-paint"].numericValue - y.audits["largest-contentful-paint"].numericValue);
+if (!runs.length) { console.log(`${page} | no run`); process.exit(0); }
+const r = runs[Math.floor((runs.length - 1) / 2)];
+const spread = runs.map((x) => (x.audits["largest-contentful-paint"].numericValue / 1000).toFixed(1)).join(" / ");
 const a = r.audits;
 const short = (u) => String(u || "").replace(/^https?:\/\//, "").replace(/^sfrtna\.almajedhsn\.workers\.dev/, "").slice(0, 70);
 const ms = (n) => `${Math.round(n)}ms`;
@@ -24,6 +33,7 @@ console.log(
     a["cumulative-layout-shift"].displayValue,
     js ? Math.round(js.transferSize / 1024) : "-",
     doc ? Math.round(doc.transferSize / 1024) : "-",
+    `LCP runs ${spread} s`,
   ].join(" | "),
 );
 
