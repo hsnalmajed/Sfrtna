@@ -16,6 +16,8 @@ export interface FallbackRoute {
 }
 
 interface Leg {
+  depDate: string;
+  arrDate: string;
   depTime: string;
   depCode: string;
   arrTime: string;
@@ -135,6 +137,10 @@ export default function FallbackFlights({
             {flights.slice(0, limit).map((f, i) => {
               const first = f.legs[0];
               const last = f.legs[f.legs.length - 1];
+              const plus =
+                first.depDate && last.arrDate
+                  ? Math.round((Date.parse(last.arrDate) - Date.parse(first.depDate)) / 86_400_000)
+                  : 0;
               const airlines = [...new Set(f.legs.map((l) => l.airline).filter(Boolean))];
               return (
                 <li key={i} className="flex flex-wrap items-center gap-3 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-mist-200">
@@ -149,7 +155,10 @@ export default function FallbackFlights({
                       <span>{first.depTime}</span>
                       <span className="text-xs font-bold text-navy-500">{first.depCode}</span>
                       <span className="text-navy-300">→</span>
-                      <span>{last.arrTime}</span>
+                      <span>
+                        {last.arrTime}
+                        {plus > 0 && <sup className="ms-0.5 text-xs font-extrabold text-rose-700">+{plus}</sup>}
+                      </span>
                       <span className="text-xs font-bold text-navy-500">{last.arrCode}</span>
                     </p>
                     <p className="mt-0.5 text-xs text-navy-500">

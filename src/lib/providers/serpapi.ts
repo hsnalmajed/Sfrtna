@@ -293,6 +293,8 @@ export async function hotelPrices(q: {
 // numbers, only links to search elsewhere (results page).
 
 export interface FallbackLeg {
+  depDate: string;
+  arrDate: string;
   depTime: string;
   depCode: string;
   arrTime: string;
@@ -348,7 +350,7 @@ export async function googleFlights(q: {
   directOnly: boolean;
 }): Promise<FallbackFlights | null> {
   const round = Boolean(q.returnDate);
-  const cacheKey = `serp-flights1:${q.origin}:${q.destination}:${q.departDate}:${q.returnDate || "-"}:${q.adults}:${q.children}:${q.infants}:${q.currency}:${q.locale}:${q.directOnly ? 1 : 0}`;
+  const cacheKey = `serp-flights2:${q.origin}:${q.destination}:${q.departDate}:${q.returnDate || "-"}:${q.adults}:${q.children}:${q.infants}:${q.currency}:${q.locale}:${q.directOnly ? 1 : 0}`;
   return cachedJson<FallbackFlights>(cacheKey, 20 * 60, async () => {
     const params: Record<string, string> = {
       engine: "google_flights",
@@ -378,6 +380,8 @@ export async function googleFlights(q: {
         stops: (o.flights?.length ?? 1) - 1,
         layovers: (o.layovers ?? []).map((l) => ({ code: l.id ?? "", minutes: l.duration ?? 0 })),
         legs: (o.flights ?? []).map((s) => ({
+          depDate: (s.departure_airport?.time ?? "").slice(0, 10),
+          arrDate: (s.arrival_airport?.time ?? "").slice(0, 10),
           depTime: time(s.departure_airport?.time),
           depCode: s.departure_airport?.id ?? "",
           arrTime: time(s.arrival_airport?.time),
