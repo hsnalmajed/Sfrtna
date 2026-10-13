@@ -193,6 +193,22 @@ export default function CityPlacesPlanner({
   // The last add or remove, said out loud for a moment — a button changing
   // colour at the bottom of a card is easy to miss.
   const [toast, setToast] = useState<{ text: string; added: boolean; id: number } | null>(null);
+  // Arriving from a search's «خطة سياحية» tab: the trip's dates are filled
+  // in and the two ways in are in view (?from=…&to=…&plan=1#trip-plan).
+  useEffect(() => {
+    const q = new URLSearchParams(window.location.search);
+    const iso = (v: string | null) => (v && /^\d{4}-\d{2}-\d{2}$/.test(v) ? v : "");
+    const f = iso(q.get("from"));
+    const tt = iso(q.get("to"));
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- one read of the address on mount
+    if (f) setFrom(f);
+    if (tt && tt >= f) setTo(tt);
+    if (q.get("plan") === "1") {
+      requestAnimationFrame(() =>
+        document.getElementById("trip-plan")?.scrollIntoView({ behavior: "smooth", block: "start" })
+      );
+    }
+  }, []);
   useEffect(() => {
     if (!toast) return;
     const timer = window.setTimeout(() => setToast(null), 2600);
@@ -251,7 +267,7 @@ export default function CityPlacesPlanner({
   return (
     <div>
       {/* ---- The two ways in ---- */}
-      <div className="print:hidden mb-5 overflow-hidden rounded-3xl bg-gradient-to-br from-navy-800 to-navy-990 p-5 text-white shadow-[var(--shadow-card)] sm:p-6">
+      <div id="trip-plan" className="print:hidden mb-5 scroll-mt-24 overflow-hidden rounded-3xl bg-gradient-to-br from-navy-800 to-navy-990 p-5 text-white shadow-[var(--shadow-card)] sm:p-6">
         <p className="font-display text-xl font-extrabold">🧳 {t.startTitle.replace("{city}", cityName)}</p>
         <p className="mt-1 max-w-2xl text-sm leading-relaxed text-white/70">{t.startBody}</p>
         <div className="mt-4 flex flex-col gap-3 sm:flex-row">

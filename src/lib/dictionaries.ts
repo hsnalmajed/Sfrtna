@@ -820,6 +820,20 @@ export const dictionaries = {
       currencyNote:
         "هذا سعر السوق المرجعي (mid-market) وليس سعر البنك أو مكتب الصرافة — يضيفون هامشاً، فاحسب تكلفتك على أساس أقل قليلاً. المصدر:",
     },
+    nextSteps: {
+      title: "أكمل رحلتك إلى {city}",
+      hotel: "حجز فندق",
+      hotelSub: "فنادق {city} لتواريخك",
+      flight: "حجز طيران",
+      flightSub: "رحلات إلى {city}",
+      services: "خدمات رحلتك",
+      servicesSub: "شريحة · توصيل · سيارة · جولات",
+      plan: "خطة سياحية",
+      planSub: "برنامج يوماً بيوم",
+      places: "المعالم السياحية",
+      placesSub: "معالم وأنشطة ومطاعم",
+      close: "إغلاق",
+    },
     multicity: {
       title: "رحلاتك بالترتيب",
       legFlight: "الرحلة {n}",
@@ -1872,6 +1886,20 @@ export const dictionaries = {
       currencyAmountPlaceholder: "Enter an amount",
       currencyNote:
         "This is the mid-market reference rate, not what a bank or exchange counter gives you — they add a margin, so budget on slightly less. Source:",
+    },
+    nextSteps: {
+      title: "Complete your trip to {city}",
+      hotel: "Book a hotel",
+      hotelSub: "Hotels in {city} for your dates",
+      flight: "Book a flight",
+      flightSub: "Flights to {city}",
+      services: "Trip services",
+      servicesSub: "eSIM · transfer · car · tours",
+      plan: "Trip plan",
+      planSub: "Day by day",
+      places: "Attractions",
+      placesSub: "Sights, activities, restaurants",
+      close: "Close",
     },
     multicity: {
       title: "Your flights, in order",

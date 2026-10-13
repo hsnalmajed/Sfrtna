@@ -1,6 +1,6 @@
 "use client";
 
-import { countLabel, nightsLabel } from "@/lib/format";
+import { countLabel } from "@/lib/format";
 
 import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import { useParams, useSearchParams } from "next/navigation";
@@ -10,7 +10,7 @@ import type { RoomType, Locale, MultiCityLegInput, SearchParams, TripType } from
 import TripCurrencyInline from "@/components/TripCurrencyInline";
 import FlightMetasearch, { warmFlightSearch } from "@/components/FlightMetasearch";
 import FlightResultsGuide from "@/components/FlightResultsGuide";
-import TripServices from "@/components/TripServices";
+import NextStepTabs, { markStep } from "@/components/NextStepTabs";
 import MultiCityTabs from "@/components/MultiCityTabs";
 import VisaBadge from "@/components/VisaBadge";
 import VisaRequirementsDialog from "@/components/VisaRequirementsDialog";
@@ -22,23 +22,7 @@ import { findAirport } from "@/lib/airports";
 import { flightSearchCode, parseFlightSearchCode } from "@/lib/flightSearchCode";
 import { findCityByName } from "@/lib/cities";
 import { findCountryByEnglishName } from "@/lib/countries";
-import Flag from "@/components/ui/Flag";
 
-function nightsBetween(a: string, b: string) {
-  const t1 = new Date(a).getTime();
-  const t2 = new Date(b).getTime();
-  return Math.max(1, Math.round((t2 - t1) / (1000 * 60 * 60 * 24)));
-}
-
-/**
- * The night the traveller checks out.
- *
- * A round trip says so with its return date. A one-way trip with a hotel in
- * it has no return date at all, and the hotel search was being handed the
- * departure date as the checkout — pricing a month in Paris as a single
- * night. The planner asks how long the stay is in that case, and this is
- * where the answer is used.
- */
 
 export default function ResultsPage() {
   // Outside the Suspense boundary, so the static page's own <head> already
@@ -177,20 +161,15 @@ function ResultsContent() {
     [mcLegs, query, locale]
   );
 
+  // The night the stay ends, for the hotel tab: the return date, or on a
+  // multi-city trip the day the next flight leaves; one way → no hotel tab.
+  const stayEnd = search.returnDate || (isMulti && mcLegs[mcActive + 1]?.date) || "";
+
   // Everyone the fare has to cover. Flight prices are already priced for the
   // whole party (adults at full fare, children and infants at their usual
   // weights), so this is only used to *say so* — a total with no headcount
   // beside it reads as a per-person price and gets doubled in someone's head.
   const travelers = search.adults + (search.childrenAges?.length ?? 0) + (search.infants ?? 0);
-  const prettyDate = (iso: string) =>
-    iso
-      ? new Date(`${iso}T00:00:00Z`).toLocaleDateString(locale === "ar" ? "ar-u-ca-gregory-nu-latn" : "en-GB", {
-          weekday: "short",
-          day: "numeric",
-          month: "long",
-          timeZone: "UTC",
-        })
-      : "";
 
   // "17 – 24 نوفمبر", or "28 نوفمبر – 3 ديسمبر": short enough for a phone
   // line, so the return date is never cut off.
@@ -210,7 +189,6 @@ function ResultsContent() {
         })
       : "";
 
-  const nights = search.returnDate ? nightsBetween(search.departDate, search.returnDate) : 0;
 
   // Bridges the destination airport to its country so we can link into the
   // "Tourist Attractions" guide. Airports in a non-UN territory (e.g. Hong
@@ -310,71 +288,6 @@ function ResultsContent() {
     }
     return p.toString();
   }, [search, isMulti, legsRaw, mcLegs]);
-
-  // Where "back" goes from anywhere this page sends the traveller. It is this
-  // exact page with this exact search, so returning lands them on their own
-  // results rather than on a blank search form.
-  const backHref = `/${locale}/results?${query}`;
-
-  const itineraryHref = useMemo(() => {
-    const p = new URLSearchParams({
-      city: search.destination,
-      country: destinationCountry?.code ?? "",
-      nights: String(nights || 3),
-      currency: search.currency,
-      origin: search.origin,
-      departDate: search.departDate,
-      returnDate: search.returnDate || "",
-      travelers: String(travelers),
-      back: backHref,
-    });
-    return `/${locale}/itinerary?${p.toString()}`;
-  }, [
-    locale,
-    search.destination,
-    search.currency,
-    search.origin,
-    search.departDate,
-    search.returnDate,
-    destinationCountry,
-    nights,
-    travelers,
-    backHref,
-  ]);
-
-  // Straight to the city they searched for when the guide has it, and to the
-  // country only when it doesn't. The trip length comes along so the day
-  // planner there is already set to their stay, and so does the way back —
-  // that page is part of their search, not somewhere else they got sent.
-  const exploreHref = useMemo(() => {
-    if (!destinationCountry) return undefined;
-    const p = new URLSearchParams({ nights: String(nights || 3), back: backHref });
-    return destinationCity
-      ? `/${locale}/attractions/${destinationCountry.code}/${destinationCity.slug}?${p}`
-      : `/${locale}/attractions/${destinationCountry.code}?${p}#guide`;
-  }, [locale, destinationCountry, destinationCity, nights, backHref]);
-
-  // The hotel search this flight implies. Only for a round trip — a one-way
-  // flight says nothing about how long the stay is. The search uses the
-  // city's English name (partners match it more reliably); the page shows
-  // the traveller's own-language name.
-  const hotelCityLabel =
-    destinationCityName ?? (locale === "ar" ? destinationAirport?.cityAr : destinationAirport?.cityEn) ?? "";
-  const hotelNextHref = useMemo(() => {
-    const cityEn = destinationCity?.nameEn ?? destinationAirport?.cityEn;
-    if (!cityEn || !search.departDate || !search.returnDate) return undefined;
-    const p = new URLSearchParams({
-      hmode: "discover",
-      city: cityEn,
-      label: hotelCityLabel,
-      checkIn: search.departDate,
-      checkOut: search.returnDate,
-      adults: String(search.adults),
-      childrenAges: serializeChildrenAges(search.childrenAges || []),
-      infants: String(search.infants || 0),
-    });
-    return `/${locale}/hotel-results?${p.toString()}`;
-  }, [locale, destinationCity, destinationAirport, hotelCityLabel, search]);
 
   return (
     <div className="bg-mist-50">
@@ -520,7 +433,10 @@ function ResultsContent() {
       <FlightResultsGuide
         locale={locale}
         budget={flightBudget}
-        onPicked={isMulti ? savePick : undefined}
+        onPicked={(fare) => {
+          if (isMulti) savePick(fare);
+          if (destinationCity) markStep(destinationCity.slug, "flight");
+        }}
         currency={search.currency}
         travelers={travelers}
         cityName={destinationCityName ?? search.destination}
@@ -542,105 +458,27 @@ function ResultsContent() {
         <VisaRequirementsDialog countryCode={destinationCountry.code} locale={locale} onClose={() => setVisaOpen(false)} />
       )}
 
-      {/* The next half of the trip. We cannot see whether the flight was
-          booked — that happens at the agency — so this is offered, not
-          assumed: the same city, the same dates, the same party, carried to
-          the hotels page so nothing is typed twice. */}
-      {hotelNextHref && !searchProblem && (
-        <Link
-          href={hotelNextHref}
-          className="mt-10 flex flex-wrap items-center justify-between gap-4 rounded-2xl bg-gradient-to-l from-sea-600 to-navy-900 p-5 shadow-sm ring-1 ring-sea-400/40 transition hover:ring-sun-400/60 sm:p-6"
-        >
-          <div className="flex items-center gap-3.5">
-            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-sun-400 text-navy-950">
-              <Icon name="hotel" className="h-6 w-6" />
-            </span>
-            <div>
-              <p className="font-display font-extrabold text-white">
-                {dict.results.hotelNextTitle.replace("{city}", hotelCityLabel)}
-              </p>
-              <p className="mt-1 text-sm text-white/70">
-                {dict.results.hotelNextBody
-                  .replace("{checkIn}", prettyDate(search.departDate))
-                  .replace("{checkOut}", prettyDate(search.returnDate || ""))
-                  .replace("{nights}", nightsLabel(nights, dict.hotelResults))}
-              </p>
-            </div>
-          </div>
-          <span className="shrink-0 rounded-xl bg-sun-400 px-5 py-3 text-sm font-extrabold text-navy-950 shadow-[var(--shadow-sun)]">
-            {dict.results.hotelNextCta}
-          </span>
-        </Link>
+      {/* What comes next for this trip: hotel, services, a plan, the
+          attractions — four tabs in one row (owner, 13 Oct), replacing the
+          four stacked blocks that were here. */}
+      {destinationCity && destinationCountry && !searchProblem && (
+        <NextStepTabs
+          locale={locale}
+          current="flight"
+          city={{
+            countryCode: destinationCountry.code,
+            slug: destinationCity.slug,
+            nameAr: destinationCity.nameAr,
+            nameEn: destinationCity.nameEn,
+          }}
+          checkIn={search.departDate}
+          checkOut={stayEnd}
+          adults={search.adults}
+          childrenAges={search.childrenAges}
+          infants={search.infants}
+          withCompensation
+        />
       )}
-
-      {/* Around the trip, at the destination: mobile data, a driver from
-          the airport, a car, then tours and tickets. Shown only where we
-          hold a checked partner page (TripEssentials hides itself). */}
-      {destinationCity && destinationCountry && (
-        <div className="mt-10">
-          <TripServices
-            locale={locale}
-            countryCode={destinationCountry.code}
-            citySlug={destinationCity.slug}
-            cityName={destinationCityName ?? destinationCity.nameEn}
-            cityNameEn={destinationCity.nameEn}
-            withCompensation
-            t={dict.attractions}
-          />
-        </div>
-      )}
-
-      <div className="mt-10 space-y-4">
-          {/* Itinerary prompt — surfaced first, as requested, so the itinerary
-              option always sits above the destination-exploration card. */}
-          <div className="rounded-2xl bg-gradient-to-br from-brand-800 to-brand-950 p-5 sm:p-6 shadow-sm flex flex-wrap items-center justify-between gap-4">
-            <div>
-              <p className="font-bold text-white">{dict.results.itineraryPromptTitle}</p>
-              <p className="text-sm text-white/70 mt-1 max-w-xl">{dict.results.itineraryPromptBody}</p>
-            </div>
-            <Link
-              // Everything the plan page needs to belong to *this* trip: the
-              // city, the country (for its map exports), the dates, and the
-              // way back to these results. The search budget deliberately does
-              // not travel — that money is already spent on the flight and the
-              // hotel.
-              href={itineraryHref}
-              className="shrink-0 rounded-xl bg-white px-5 py-3 text-sm font-bold text-brand-900 shadow-sm transition hover:bg-brand-50 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-brand-900"
-            >
-              {dict.results.viewItinerary}
-            </Link>
-          </div>
-
-          {destinationCountry && exploreHref && (
-            <Link
-              href={exploreHref}
-              className="flex flex-wrap items-center justify-between gap-4 rounded-2xl bg-white p-5 sm:p-6 shadow-sm ring-1 ring-black/5 transition hover:ring-brand-200 hover:shadow-md"
-            >
-              <div className="flex items-center gap-3">
-                <Flag code={destinationCountry.code} size={24} />
-                <div>
-                  {/* Named, when we know the name. "Explore your destination"
-                      is a slogan; "Attractions in Istanbul" is a promise the
-                      next page actually keeps. */}
-                  <p className="font-bold text-gray-900">
-                    {destinationCityName
-                      ? dict.results.exploreCityTitle.replace("{city}", destinationCityName)
-                      : dict.results.exploreDestinationTitle}
-                  </p>
-                  <p className="text-sm text-gray-500 mt-1 max-w-xl">
-                    {destinationCityName
-                      ? dict.results.exploreCityBody.replace("{city}", destinationCityName)
-                      : dict.results.exploreDestinationBody}
-                  </p>
-                </div>
-              </div>
-              <span className="shrink-0 rounded-xl border border-brand-200 px-5 py-3 text-sm font-bold text-brand-800">
-                {dict.results.exploreDestinationCta}
-              </span>
-            </Link>
-          )}
-      </div>
-
       </div>
     </div>
   );

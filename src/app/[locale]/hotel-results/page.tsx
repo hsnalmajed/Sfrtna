@@ -13,6 +13,7 @@ import HotelPrices from "@/components/HotelPrices";
 import Stay22HotelMap from "@/components/Stay22HotelMap";
 import { hotelCityPlace } from "@/components/HotelCityInput";
 import PartnerLink from "@/components/PartnerLink";
+import NextStepTabs, { markStep, tripCityFrom } from "@/components/NextStepTabs";
 
 /**
  * Hotel results: the search read back, then live prices from our partners.
@@ -94,6 +95,22 @@ function HotelResultsContent() {
     [complete, query, checkIn, checkOut, adults, childrenAges, mode, minStars, breakfast, stay, locale, hotelArea]
   );
 
+  // The city of this stay, for the next-step tabs: the searched city, or
+  // for a named hotel the first part of its address that is a city we cover.
+  const tripCity = useMemo(() => {
+    if (mode === "discover") return tripCityFrom(query) ?? tripCityFrom(label);
+    for (const part of hotelArea.split(/[,،]/)) {
+      const c = tripCityFrom(part);
+      if (c) return c;
+    }
+    return undefined;
+  }, [mode, query, label, hotelArea]);
+
+  // Where the traveller came from (a flight's «حجز فندق» tab): a relative
+  // path on this site only — anyone can write the query string.
+  const backRaw = sp.get("back") || "";
+  const backHref = backRaw.startsWith("/") && !backRaw.startsWith("//") ? backRaw : "";
+
   // Back to the hotel planner, filled in. `product` opens the right planner
   // and `hmode` the right tab inside it.
   const editHref = useMemo(() => {
@@ -156,6 +173,15 @@ function HotelResultsContent() {
           aria-hidden="true"
         />
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          {backHref && (
+            <a
+              href={backHref}
+              className="mb-3 inline-flex w-fit items-center gap-1.5 rounded-full bg-white/10 px-3.5 py-2 text-sm font-semibold text-white/90 ring-1 ring-white/20 backdrop-blur-md transition hover:bg-white/20"
+            >
+              <span aria-hidden="true">{locale === "ar" ? "→" : "←"}</span>
+              {dict.itinerary.backToResults}
+            </a>
+          )}
           <p className="eyebrow eyebrow-light mb-2.5">{mode === "known" ? t.eyebrowKnown : t.eyebrowDiscover}</p>
           <h1 className="flex items-center gap-3 font-display text-h1 font-extrabold text-white">
             <Icon name="hotel" className="h-8 w-8 shrink-0 text-sun-400" />
@@ -204,7 +230,13 @@ function HotelResultsContent() {
         </div>
       </section>
 
-      <div className="mx-auto max-w-6xl px-4 pb-14 pt-8 sm:px-6">
+      <div
+        className="mx-auto max-w-6xl px-4 pb-14 pt-8 sm:px-6"
+        onClickCapture={(e) => {
+          // A booking site opened from here: the hotel step is taken.
+          if (tripCity && (e.target as HTMLElement).closest("a[data-partner]")) markStep(tripCity.slug, "hotel");
+        }}
+      >
         {!complete ? (
           <div className="rounded-2xl bg-white p-6 text-center shadow-sm ring-1 ring-black/5">
             <p className="font-semibold text-navy-700">{t.missing}</p>
@@ -274,6 +306,18 @@ function HotelResultsContent() {
               </div>
             )}
             <p className="mt-8 text-center text-xs text-navy-500">{t.partnerNote}</p>
+            {tripCity && (
+              <NextStepTabs
+                locale={locale}
+                current="hotel"
+                city={tripCity}
+                checkIn={checkIn}
+                checkOut={checkOut}
+                adults={adults}
+                childrenAges={childrenAges}
+                infants={Number(sp.get("infants")) || 0}
+              />
+            )}
           </>
         )}
       </div>

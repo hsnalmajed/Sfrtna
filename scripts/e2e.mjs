@@ -179,6 +179,31 @@ await check("multi-city form: flight 2 cannot be dated before flight 1", async (
   if (from.length) throw new Error(`${from.length} day(s) from flight 1 on are blocked`);
   return `days before ${D1} blocked`;
 });
+await check("next-step tabs under flight and hotel results", async (p) => {
+  await p.goto(`${BASE}/ar/results?${q({ ...base, origin: "RUH", destination: "IST", departDate: D1, returnDate: D2, budget: "8000" })}`, {
+    waitUntil: "domcontentloaded",
+    timeout: 60_000,
+  });
+  const flightTabs = p.locator('section[aria-label^="أكمل رحلتك"] a, section[aria-label^="أكمل رحلتك"] button');
+  await flightTabs.first().waitFor({ timeout: 30_000 });
+  const nf = await flightTabs.count();
+  if (nf < 4) throw new Error(`flight page: ${nf} tabs`);
+  const hotelHref = await p.locator('section[aria-label^="أكمل رحلتك"] a[href*="/hotel-results"]').getAttribute("href");
+  if (!hotelHref?.includes("checkIn=") || !hotelHref.includes("back=")) throw new Error("hotel tab misses dates or back");
+  // Services open as a sheet.
+  await p.locator('section[aria-label^="أكمل رحلتك"] button').first().click();
+  await p.locator('[role="dialog"]').waitFor({ timeout: 10_000 });
+  // The hotel page offers a flight instead of a hotel.
+  await p.goto(`${BASE}${hotelHref.startsWith("/") ? hotelHref : new URL(hotelHref).pathname + new URL(hotelHref).search}`, {
+    waitUntil: "domcontentloaded",
+    timeout: 60_000,
+  });
+  await p.locator('section[aria-label^="أكمل رحلتك"]').waitFor({ timeout: 30_000 });
+  const hasFlight = await p.locator('section[aria-label^="أكمل رحلتك"] a[href*="product=flights"]').count();
+  const hasHotel = await p.locator('section[aria-label^="أكمل رحلتك"] a[href*="/hotel-results"]').count();
+  if (!hasFlight || hasHotel) throw new Error(`hotel page tabs wrong (flight ${hasFlight}, hotel ${hasHotel})`);
+  return `${nf} tabs; hotel page swaps in the flight`;
+});
 await check("suggest a destination shows destinations", async (p) => {
   await p.goto(
     `${BASE}/ar/discover-results?${q({ ...base, mode: "discover", tripRoute: "roundtrip", origin: "RUH", departDate: D1, returnDate: D2, budget: "8000", nights: "7" })}`,
