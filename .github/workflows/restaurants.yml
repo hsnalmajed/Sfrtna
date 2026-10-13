@@ -19,6 +19,10 @@ on:
         description: "Only cities with no stored file yet"
         type: boolean
         default: false
+      staged:
+        description: "The staged cities (not live yet) instead of the live ones"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -43,6 +47,7 @@ jobs:
           FLAGS=""
           if [ "${{ github.event_name }}" = "push" ] && [ -d public/data/restaurants ]; then FLAGS="--missing"; fi
           if [ "${{ inputs.missing_only }}" = "true" ]; then FLAGS="--missing"; fi
+          if [ "${{ inputs.staged }}" = "true" ]; then FLAGS="$FLAGS --staged"; fi
           npx --yes tsx@4 scripts/places/fetch-restaurants.ts $FLAGS
       - name: Commit
         run: |

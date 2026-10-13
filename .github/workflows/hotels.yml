@@ -27,6 +27,10 @@ on:
         description: "Only cities with no collected file yet"
         type: boolean
         default: false
+      staged:
+        description: "The staged cities (not live yet) instead of the live ones"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -52,6 +56,7 @@ jobs:
           npm ci --no-audit --no-fund
           FLAGS=""
           if [ "${{ github.event_name }}" = "push" ] || [ "${{ inputs.missing_only }}" = "true" ]; then FLAGS="--missing"; fi
+          if [ "${{ inputs.staged }}" = "true" ]; then FLAGS="$FLAGS --staged"; fi
           npx --yes tsx@4 scripts/hotels/fetch-hotels.ts $FLAGS
 
       - name: Build search files

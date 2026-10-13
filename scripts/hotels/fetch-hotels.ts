@@ -2,7 +2,7 @@
 // hotel-name search answers from our own files (src/lib/hotelIndex.ts) and
 // never waits on — or runs out of — an outside service.
 //
-//   npx tsx scripts/hotels/fetch-hotels.ts [--missing] [--max N] [--only slug,slug]
+//   npx tsx scripts/hotels/fetch-hotels.ts [--missing] [--staged] [--max N] [--only slug,slug]
 //
 // Output: scripts/hotels/cities/<slug>.json — the raw list for one city,
 // [name, name:en, name:ar, stars, fame]. The files the site reads are built
@@ -15,7 +15,7 @@
 
 import { existsSync, mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { CITY_COORDS } from "@/data/cityCoords";
+import { cityPoint, jobSlugs } from "../lib/cityPoints";
 import { OVERPASS, type OverpassElement } from "@/lib/mapPins";
 
 const DIR = join(process.cwd(), "scripts/hotels/cities");
@@ -78,7 +78,7 @@ type Raw = [string, string, string, number, number];
 
 async function main() {
   mkdirSync(DIR, { recursive: true });
-  let slugs = Object.keys(CITY_COORDS).sort();
+  let slugs = jobSlugs(process.argv);
   const only = arg("--only");
   if (only) slugs = only.split(",").map((s) => s.trim());
   if (process.argv.includes("--missing")) slugs = slugs.filter((s) => !existsSync(join(DIR, `${s}.json`)));
@@ -87,7 +87,7 @@ async function main() {
   console.log(`cities to fetch: ${slugs.length}`);
   const failed: string[] = [];
   for (const [n, slug] of slugs.entries()) {
-    const point = CITY_COORDS[slug];
+    const point = cityPoint(slug);
     if (!point) continue;
     const elements = (await ask(point.lat, point.lon, RADIUS)) ?? (await ask(point.lat, point.lon, SMALL_RADIUS));
     if (elements === null) {

@@ -2,7 +2,7 @@
 // meals (owner's decision 13 Oct 2026: OpenStreetMap, stored monthly — name,
 // location, cuisine; no ratings, since there is no honest source for them).
 //
-//   npx tsx scripts/places/fetch-restaurants.ts [--missing] [--only slug,slug]
+//   npx tsx scripts/places/fetch-restaurants.ts [--missing] [--staged] [--only slug,slug]
 //
 // Output: public/data/restaurants/<slug>.json — up to PER_CITY restaurants
 // within RADIUS of the centre, the best documented first (names in several
@@ -14,7 +14,7 @@
 
 import { existsSync, mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { CITY_COORDS } from "@/data/cityCoords";
+import { cityPoint, jobSlugs } from "../lib/cityPoints";
 import { OVERPASS } from "@/lib/mapPins";
 
 const DIR = join(process.cwd(), "public/data/restaurants");
@@ -109,11 +109,12 @@ async function main() {
   const onlyArg = process.argv.includes("--only") ? process.argv[process.argv.indexOf("--only") + 1] : "";
   const only = new Set(onlyArg ? onlyArg.split(",") : []);
   const missing = process.argv.includes("--missing");
-  const slugs = Object.keys(CITY_COORDS).filter((s) => (!only.size || only.has(s)) && (!missing || !existsSync(join(DIR, `${s}.json`))));
+  const slugs = jobSlugs(process.argv).filter((s) => (!only.size || only.has(s)) && (!missing || !existsSync(join(DIR, `${s}.json`))));
   let ok = 0;
   const failed: string[] = [];
   for (const slug of slugs) {
-    const c = CITY_COORDS[slug];
+    const c = cityPoint(slug);
+    if (!c) continue;
     const els = await ask(c.lat, c.lon);
     if (!els) {
       failed.push(slug);

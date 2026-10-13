@@ -1,7 +1,9 @@
 // Stores every city's places from OpenStreetMap, so pages never wait on
 // Overpass (see "Stored places" in src/lib/mapPins.ts).
 //
-//   npx tsx scripts/places/fetch-places.ts [--missing] [--max N] [--only slug,slug]
+//   npx tsx scripts/places/fetch-places.ts [--missing] [--staged] [--max N] [--only slug,slug]
+//
+// --staged   the staged cities (scripts/lib/cityPoints.ts) instead of the live ones.
 //
 // --missing  only cities that have no file yet (new cities).
 // --max N    at most N cities this run (default: all).
@@ -18,7 +20,7 @@
 
 import { existsSync, readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
-import { CITY_COORDS } from "@/data/cityCoords";
+import { cityPoint, jobSlugs } from "../lib/cityPoints";
 import {
   OVERPASS,
   STORED_PER_CITY,
@@ -74,7 +76,7 @@ async function main() {
   mkdirSync(DIR, { recursive: true });
   const counts: Record<string, number> = JSON.parse(readFileSync(COUNTS, "utf8"));
 
-  let slugs = Object.keys(CITY_COORDS).sort();
+  let slugs = jobSlugs(process.argv);
   const only = arg("--only");
   if (only) slugs = only.split(",").map((s) => s.trim());
   if (process.argv.includes("--missing")) slugs = slugs.filter((s) => !existsSync(join(DIR, `${s}.json`)));
@@ -85,7 +87,7 @@ async function main() {
   const failed: string[] = [];
 
   for (const [n, slug] of slugs.entries()) {
-    const point = CITY_COORDS[slug];
+    const point = cityPoint(slug);
     if (!point) continue;
     const elements = await ask(point.lat, point.lon);
     if (elements === null) {

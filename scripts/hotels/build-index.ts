@@ -11,6 +11,7 @@
 
 import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
+import { CITY_COORDS } from "@/data/cityCoords";
 import { HOTELS_PER_CITY_FILE, indexWords, shardKey, type StoredHotel } from "@/lib/hotelIndex";
 
 const SRC = join(process.cwd(), "scripts/hotels/cities");
@@ -39,6 +40,8 @@ function main() {
   let hotels = 0;
   for (const file of readdirSync(SRC).filter((f) => f.endsWith(".json")).sort()) {
     const slug = file.replace(/\.json$/, "");
+    // Staged cities are collected ahead of time but searched only once live.
+    if (!(slug in CITY_COORDS)) continue;
     const raw = JSON.parse(readFileSync(join(SRC, file), "utf8")) as Raw[];
     const stored: StoredHotel[] = raw.filter((r) => !notAHotel([r[0], r[1], r[2]])).map(([name, en, ar, stars]) => {
       const arabicName = /[؀-ۿ]/.test(name);
