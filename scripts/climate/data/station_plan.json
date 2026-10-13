@@ -1,0 +1,10018 @@
+{
+ "rules": {
+  "directKm": 25.0,
+  "calibrateKm": 150.0,
+  "calibrateN": 3
+ },
+ "cities": {
+  "riyadh": {
+   "lat": 24.63892,
+   "lon": 46.71601,
+   "country": "SA",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00040438",
+     "source": "wmo",
+     "km": 8.3,
+     "elev": 620.0,
+     "name": "RiyadhOld"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00040438",
+     "source": "wmo",
+     "km": 8.3,
+     "elev": 620.0,
+     "name": "RiyadhOld"
+    },
+    {
+     "id": "00040437",
+     "source": "wmo",
+     "km": 31.8,
+     "elev": 614.0,
+     "name": "RiyadhNew"
+    }
+   ]
+  },
+  "jeddah": {
+   "lat": 21.55044,
+   "lon": 39.17424,
+   "country": "SA",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00041024",
+     "source": "wmo",
+     "km": 17.8,
+     "elev": 17.0,
+     "name": "Jeddah_KAIA"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00041024",
+     "source": "wmo",
+     "km": 17.8,
+     "elev": 17.0,
+     "name": "Jeddah_KAIA"
+    },
+    {
+     "id": "00041030",
+     "source": "wmo",
+     "km": 62.8,
+     "elev": 240.0,
+     "name": "Makkah"
+    },
+    {
+     "id": "00041032",
+     "source": "wmo",
+     "km": 86.2,
+     "elev": 308.0,
+     "name": "ARAFAT"
+    }
+   ]
+  },
+  "makkah": {
+   "lat": 21.42085,
+   "lon": 39.82687,
+   "country": "SA",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00041030",
+     "source": "wmo",
+     "km": 6.3,
+     "elev": 240.0,
+     "name": "Makkah"
+    },
+    {
+     "id": "00041032",
+     "source": "wmo",
+     "km": 18.0,
+     "elev": 308.0,
+     "name": "ARAFAT"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00041030",
+     "source": "wmo",
+     "km": 6.3,
+     "elev": 240.0,
+     "name": "Makkah"
+    },
+    {
+     "id": "00041032",
+     "source": "wmo",
+     "km": 18.0,
+     "elev": 308.0,
+     "name": "ARAFAT"
+    },
+    {
+     "id": "00041024",
+     "source": "wmo",
+     "km": 73.6,
+     "elev": 17.0,
+     "name": "Jeddah_KAIA"
+    }
+   ]
+  },
+  "madinah": {
+   "lat": 24.47115,
+   "lon": 39.61112,
+   "country": "SA",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00040430",
+     "source": "wmo",
+     "km": 12.3,
+     "elev": 636.0,
+     "name": "Madinah"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00040430",
+     "source": "wmo",
+     "km": 12.3,
+     "elev": 636.0,
+     "name": "Madinah"
+    }
+   ]
+  },
+  "alula": {
+   "lat": 26.5589,
+   "lon": 37.95965,
+   "country": "SA",
+   "staged": false,
+   "direct": [],
+   "calibrate": []
+  },
+  "abha": {
+   "lat": 18.21643,
+   "lon": 42.50436,
+   "country": "SA",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00041112",
+     "source": "wmo",
+     "km": 16.6,
+     "elev": 2093.0,
+     "name": "Abha"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00041112",
+     "source": "wmo",
+     "km": 16.6,
+     "elev": 2093.0,
+     "name": "Abha"
+    },
+    {
+     "id": "00041114",
+     "source": "wmo",
+     "km": 33.1,
+     "elev": 2056.0,
+     "name": "Khamis-Mushait"
+    },
+    {
+     "id": "00041140",
+     "source": "wmo",
+     "km": 147.0,
+     "elev": 7.0,
+     "name": "Gizan"
+    }
+   ]
+  },
+  "istanbul": {
+   "lat": 41.00638,
+   "lon": 28.97587,
+   "country": "TR",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00017636",
+     "source": "wmo",
+     "km": 16.3,
+     "elev": 37.0,
+     "name": "Florya"
+    },
+    {
+     "id": "00017061",
+     "source": "wmo",
+     "km": 16.7,
+     "elev": 59.0,
+     "name": "Sariyer"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00017636",
+     "source": "wmo",
+     "km": 16.3,
+     "elev": 37.0,
+     "name": "Florya"
+    },
+    {
+     "id": "00017061",
+     "source": "wmo",
+     "km": 16.7,
+     "elev": 59.0,
+     "name": "Sariyer"
+    },
+    {
+     "id": "00017059",
+     "source": "wmo",
+     "km": 27.7,
+     "elev": 38.0,
+     "name": "SariyerKumkoyKilyos"
+    }
+   ]
+  },
+  "antalya": {
+   "lat": 36.88657,
+   "lon": 30.70302,
+   "country": "TR",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00017300",
+     "source": "wmo",
+     "km": 8.8,
+     "elev": 64.0,
+     "name": "AntalyaHavalimani"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00017300",
+     "source": "wmo",
+     "km": 8.8,
+     "elev": 64.0,
+     "name": "AntalyaHavalimani"
+    },
+    {
+     "id": "00017926",
+     "source": "wmo",
+     "km": 49.2,
+     "elev": 1017.0,
+     "name": "Korkuteli"
+    },
+    {
+     "id": "00017954",
+     "source": "wmo",
+     "km": 66.6,
+     "elev": 38.0,
+     "name": "Manavgat"
+    }
+   ]
+  },
+  "cappadocia": {
+   "lat": 38.63861,
+   "lon": 34.84552,
+   "country": "TR",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00017193",
+     "source": "wmo",
+     "km": 12.7,
+     "elev": 1260.0,
+     "name": "Nevsehir"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00017193",
+     "source": "wmo",
+     "km": 12.7,
+     "elev": 1260.0,
+     "name": "Nevsehir"
+    },
+    {
+     "id": "00017196",
+     "source": "wmo",
+     "km": 57.1,
+     "elev": 1094.0,
+     "name": "Kayseri_Bolge"
+    },
+    {
+     "id": "00017760",
+     "source": "wmo",
+     "km": 70.7,
+     "elev": 1070.0,
+     "name": "Bogazliyan"
+    }
+   ]
+  },
+  "trabzon": {
+   "lat": 41.00546,
+   "lon": 39.73015,
+   "country": "TR",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00017037",
+     "source": "wmo",
+     "km": 3.0,
+     "elev": 25.0,
+     "name": "Trabzon_Bolge"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00017037",
+     "source": "wmo",
+     "km": 3.0,
+     "elev": 25.0,
+     "name": "Trabzon_Bolge"
+    },
+    {
+     "id": "00017088",
+     "source": "wmo",
+     "km": 64.6,
+     "elev": 1216.0,
+     "name": "Gumushane"
+    },
+    {
+     "id": "00017040",
+     "source": "wmo",
+     "km": 64.8,
+     "elev": 3.0,
+     "name": "Rize"
+    }
+   ]
+  },
+  "izmir": {
+   "lat": 38.41925,
+   "lon": 27.12847,
+   "country": "TR",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00017220",
+     "source": "wmo",
+     "km": 4.9,
+     "elev": 29.0,
+     "name": "Izmir_Bolge"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00017220",
+     "source": "wmo",
+     "km": 4.9,
+     "elev": 29.0,
+     "name": "Izmir_Bolge"
+    },
+    {
+     "id": "00017186",
+     "source": "wmo",
+     "km": 32.4,
+     "elev": 71.0,
+     "name": "Manisa"
+    },
+    {
+     "id": "00017820",
+     "source": "wmo",
+     "km": 35.4,
+     "elev": 22.0,
+     "name": "Seferihisar"
+    }
+   ]
+  },
+  "bursa": {
+   "lat": 40.18257,
+   "lon": 29.0675,
+   "country": "TR",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00017116",
+     "source": "wmo",
+     "km": 7.1,
+     "elev": 100.0,
+     "name": "Bursa"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00017116",
+     "source": "wmo",
+     "km": 7.1,
+     "elev": 100.0,
+     "name": "Bursa"
+    },
+    {
+     "id": "00017119",
+     "source": "wmo",
+     "km": 55.9,
+     "elev": 4.0,
+     "name": "Yalova"
+    },
+    {
+     "id": "00017700",
+     "source": "wmo",
+     "km": 76.8,
+     "elev": 637.0,
+     "name": "Dursunbey"
+    }
+   ]
+  },
+  "dubai": {
+   "lat": 25.26472,
+   "lon": 55.29241,
+   "country": "AE",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00041194",
+     "source": "wmo",
+     "km": 4.4,
+     "elev": 8.0,
+     "name": "DubaiIntlAirport"
+    },
+    {
+     "id": "00041196",
+     "source": "wmo",
+     "km": 23.7,
+     "elev": 34.0,
+     "name": "SharjahIntlAirport"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00041194",
+     "source": "wmo",
+     "km": 4.4,
+     "elev": 8.0,
+     "name": "DubaiIntlAirport"
+    },
+    {
+     "id": "00041196",
+     "source": "wmo",
+     "km": 23.7,
+     "elev": 34.0,
+     "name": "SharjahIntlAirport"
+    },
+    {
+     "id": "00040890",
+     "source": "wmo",
+     "km": 73.3,
+     "elev": 6.6,
+     "name": "AbumusaIsland"
+    }
+   ]
+  },
+  "abu-dhabi": {
+   "lat": 24.45384,
+   "lon": 54.3774,
+   "country": "AE",
+   "staged": false,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00041217",
+     "source": "wmo",
+     "km": 27.7,
+     "elev": 27.0,
+     "name": "AbuDhabiIntlAirport"
+    },
+    {
+     "id": "00041218",
+     "source": "wmo",
+     "km": 126.6,
+     "elev": 264.0,
+     "name": "AlAinIntlAirport"
+    },
+    {
+     "id": "00041194",
+     "source": "wmo",
+     "km": 130.9,
+     "elev": 8.0,
+     "name": "DubaiIntlAirport"
+    }
+   ]
+  },
+  "sharjah": {
+   "lat": 25.34615,
+   "lon": 55.42106,
+   "country": "AE",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00041196",
+     "source": "wmo",
+     "km": 9.8,
+     "elev": 34.0,
+     "name": "SharjahIntlAirport"
+    },
+    {
+     "id": "00041194",
+     "source": "wmo",
+     "km": 13.9,
+     "elev": 8.0,
+     "name": "DubaiIntlAirport"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00041196",
+     "source": "wmo",
+     "km": 9.8,
+     "elev": 34.0,
+     "name": "SharjahIntlAirport"
+    },
+    {
+     "id": "00041194",
+     "source": "wmo",
+     "km": 13.9,
+     "elev": 8.0,
+     "name": "DubaiIntlAirport"
+    },
+    {
+     "id": "00041184",
+     "source": "wmo",
+     "km": 59.9,
+     "elev": 31.0,
+     "name": "RasAlKhaimahIntlAirport"
+    }
+   ]
+  },
+  "ras-al-khaimah": {
+   "lat": 25.77377,
+   "lon": 55.93823,
+   "country": "AE",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00041184",
+     "source": "wmo",
+     "km": 17.8,
+     "elev": 31.0,
+     "name": "RasAlKhaimahIntlAirport"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00041184",
+     "source": "wmo",
+     "km": 17.8,
+     "elev": 31.0,
+     "name": "RasAlKhaimahIntlAirport"
+    },
+    {
+     "id": "00041196",
+     "source": "wmo",
+     "km": 65.1,
+     "elev": 34.0,
+     "name": "SharjahIntlAirport"
+    },
+    {
+     "id": "00041198",
+     "source": "wmo",
+     "km": 83.2,
+     "elev": 46.0,
+     "name": "AlFujairahIntlAirport"
+    }
+   ]
+  },
+  "doha": {
+   "lat": 25.28563,
+   "lon": 51.52642,
+   "country": "QA",
+   "staged": false,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00041150",
+     "source": "wmo",
+     "km": 140.0,
+     "elev": 2.0,
+     "name": "BahrainInternationalAirport"
+    }
+   ]
+  },
+  "al-wakrah": {
+   "lat": 25.15666,
+   "lon": 51.60132,
+   "country": "QA",
+   "staged": false,
+   "direct": [],
+   "calibrate": []
+  },
+  "kuwait-city": {
+   "lat": 29.37965,
+   "lon": 47.97342,
+   "country": "KW",
+   "staged": false,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00040831",
+     "source": "wmo",
+     "km": 113.3,
+     "elev": 6.6,
+     "name": "Abadan"
+    },
+    {
+     "id": "00040690",
+     "source": "wmo",
+     "km": 127.8,
+     "elev": -9999.0,
+     "name": "BASRA"
+    }
+   ]
+  },
+  "manama": {
+   "lat": 26.2235,
+   "lon": 50.58224,
+   "country": "BH",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00041150",
+     "source": "wmo",
+     "km": 8.3,
+     "elev": 2.0,
+     "name": "BahrainInternationalAirport"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00041150",
+     "source": "wmo",
+     "km": 8.3,
+     "elev": 2.0,
+     "name": "BahrainInternationalAirport"
+    },
+    {
+     "id": "00040416",
+     "source": "wmo",
+     "km": 42.2,
+     "elev": 17.0,
+     "name": "Dhahran"
+    },
+    {
+     "id": "00040417",
+     "source": "wmo",
+     "km": 80.3,
+     "elev": 12.0,
+     "name": "KFIA"
+    }
+   ]
+  },
+  "muscat": {
+   "lat": 23.61236,
+   "lon": 58.59381,
+   "country": "OM",
+   "staged": false,
+   "direct": [],
+   "calibrate": []
+  },
+  "salalah": {
+   "lat": 17.01749,
+   "lon": 54.10109,
+   "country": "OM",
+   "staged": false,
+   "direct": [],
+   "calibrate": []
+  },
+  "nizwa": {
+   "lat": 22.93239,
+   "lon": 57.5311,
+   "country": "OM",
+   "staged": false,
+   "direct": [],
+   "calibrate": []
+  },
+  "cairo": {
+   "lat": 30.04439,
+   "lon": 31.23573,
+   "country": "EG",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00062366",
+     "source": "wmo",
+     "km": 18.6,
+     "elev": 64.1,
+     "name": "CairoAP"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00062366",
+     "source": "wmo",
+     "km": 18.6,
+     "elev": 64.1,
+     "name": "CairoAP"
+    }
+   ]
+  },
+  "luxor": {
+   "lat": 25.7021,
+   "lon": 32.64719,
+   "country": "EG",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00062405",
+     "source": "wmo",
+     "km": 6.6,
+     "elev": 81.6,
+     "name": "Luxor"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00062405",
+     "source": "wmo",
+     "km": 6.6,
+     "elev": 81.6,
+     "name": "Luxor"
+    }
+   ]
+  },
+  "aswan": {
+   "lat": 24.09107,
+   "lon": 32.89731,
+   "country": "EG",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00062414",
+     "source": "wmo",
+     "km": 18.0,
+     "elev": 191.7,
+     "name": "Asswan"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00062414",
+     "source": "wmo",
+     "km": 18.0,
+     "elev": 191.7,
+     "name": "Asswan"
+    }
+   ]
+  },
+  "alexandria": {
+   "lat": 31.19918,
+   "lon": 29.89517,
+   "country": "EG",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00062318",
+     "source": "wmo",
+     "km": 5.2,
+     "elev": 1.8,
+     "name": "AlexandriaNouzha"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00062318",
+     "source": "wmo",
+     "km": 5.2,
+     "elev": 1.8,
+     "name": "AlexandriaNouzha"
+    }
+   ]
+  },
+  "sharm-el-sheikh": {
+   "lat": 27.86444,
+   "lon": 34.29545,
+   "country": "EG",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00062460",
+     "source": "wmo",
+     "km": 14.3,
+     "elev": -876.5,
+     "name": "SharmElSheikhAP"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00062460",
+     "source": "wmo",
+     "km": 14.3,
+     "elev": -876.5,
+     "name": "SharmElSheikhAP"
+    },
+    {
+     "id": "00062463",
+     "source": "wmo",
+     "km": 97.8,
+     "elev": 8.4,
+     "name": "HurghadaAP"
+    }
+   ]
+  },
+  "marrakesh": {
+   "lat": 31.62583,
+   "lon": -7.98916,
+   "country": "MA",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00060230",
+     "source": "wmo",
+     "km": 4.1,
+     "elev": 464.0,
+     "name": "MARRAKECH"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00060230",
+     "source": "wmo",
+     "km": 4.1,
+     "elev": 464.0,
+     "name": "MARRAKECH"
+    },
+    {
+     "id": "00060265",
+     "source": "wmo",
+     "km": 128.1,
+     "elev": 1136.0,
+     "name": "OUARZAZATE"
+    },
+    {
+     "id": "00060185",
+     "source": "wmo",
+     "km": 138.2,
+     "elev": 43.0,
+     "name": "SAFI"
+    }
+   ]
+  },
+  "casablanca": {
+   "lat": 33.59451,
+   "lon": -7.62003,
+   "country": "MA",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00060155",
+     "source": "wmo",
+     "km": 5.9,
+     "elev": 56.0,
+     "name": "CASABLANCAANFA"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00060155",
+     "source": "wmo",
+     "km": 5.9,
+     "elev": 56.0,
+     "name": "CASABLANCAANFA"
+    },
+    {
+     "id": "00060135",
+     "source": "wmo",
+     "km": 93.7,
+     "elev": 75.0,
+     "name": "RABATSALE"
+    },
+    {
+     "id": "00060120",
+     "source": "wmo",
+     "km": 122.5,
+     "elev": 5.0,
+     "name": "KENITRA"
+    }
+   ]
+  },
+  "fes": {
+   "lat": 34.03465,
+   "lon": -5.01619,
+   "country": "MA",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00060141",
+     "source": "wmo",
+     "km": 8.1,
+     "elev": 571.0,
+     "name": "FESSAIS"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00060141",
+     "source": "wmo",
+     "km": 8.1,
+     "elev": 571.0,
+     "name": "FESSAIS"
+    },
+    {
+     "id": "00060150",
+     "source": "wmo",
+     "km": 49.7,
+     "elev": 548.0,
+     "name": "MEKNES"
+    },
+    {
+     "id": "00060160",
+     "source": "wmo",
+     "km": 60.8,
+     "elev": 1663.0,
+     "name": "IFRANE"
+    }
+   ]
+  },
+  "chefchaouen": {
+   "lat": 35.16877,
+   "lon": -5.26835,
+   "country": "MA",
+   "staged": false,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00060318",
+     "source": "wmo",
+     "km": 47.5,
+     "elev": 5.0,
+     "name": "TETOUAN"
+    },
+    {
+     "id": "00060105",
+     "source": "wmo",
+     "km": 77.1,
+     "elev": 47.0,
+     "name": "LARACHE"
+    },
+    {
+     "id": "00060107",
+     "source": "wmo",
+     "km": 129.8,
+     "elev": 12.0,
+     "name": "ALHOUCEIMA"
+    }
+   ]
+  },
+  "tangier": {
+   "lat": 35.76963,
+   "lon": -5.80335,
+   "country": "MA",
+   "staged": false,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00060318",
+     "source": "wmo",
+     "km": 46.9,
+     "elev": 5.0,
+     "name": "TETOUAN"
+    },
+    {
+     "id": "00060105",
+     "source": "wmo",
+     "km": 73.2,
+     "elev": 47.0,
+     "name": "LARACHE"
+    },
+    {
+     "id": "00008452",
+     "source": "wmo",
+     "km": 90.9,
+     "elev": 2.0,
+     "name": "CADIZOBS"
+    }
+   ]
+  },
+  "amman": {
+   "lat": 31.95157,
+   "lon": 35.92396,
+   "country": "JO",
+   "staged": false,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00040183",
+     "source": "wmo",
+     "km": 68.9,
+     "elev": 810.0,
+     "name": "JERUSALEM"
+    },
+    {
+     "id": "00040179",
+     "source": "wmo",
+     "km": 105.3,
+     "elev": 31.0,
+     "name": "BETDAGAN"
+    },
+    {
+     "id": "00040193",
+     "source": "wmo",
+     "km": 114.3,
+     "elev": -388.0,
+     "name": "SEDOM"
+    }
+   ]
+  },
+  "petra": {
+   "lat": 30.34977,
+   "lon": 35.37648,
+   "country": "JO",
+   "staged": false,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00040193",
+     "source": "wmo",
+     "km": 75.6,
+     "elev": -388.0,
+     "name": "SEDOM"
+    },
+    {
+     "id": "00040199",
+     "source": "wmo",
+     "km": 98.0,
+     "elev": 22.0,
+     "name": "ELAT"
+    },
+    {
+     "id": "00040190",
+     "source": "wmo",
+     "km": 114.2,
+     "elev": 279.0,
+     "name": "BEERSHEVA"
+    }
+   ]
+  },
+  "aqaba": {
+   "lat": 29.52665,
+   "lon": 35.00754,
+   "country": "JO",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00040199",
+     "source": "wmo",
+     "km": 6.1,
+     "elev": 22.0,
+     "name": "ELAT"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00040199",
+     "source": "wmo",
+     "km": 6.1,
+     "elev": 22.0,
+     "name": "ELAT"
+    }
+   ]
+  },
+  "london": {
+   "lat": 51.50745,
+   "lon": -0.12777,
+   "country": "GB",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00003770",
+     "source": "wmo",
+     "km": 0.4,
+     "elev": 5.0,
+     "name": "London"
+    },
+    {
+     "id": "00003672",
+     "source": "wmo",
+     "km": 20.5,
+     "elev": 33.0,
+     "name": "Northolt"
+    },
+    {
+     "id": "00003772",
+     "source": "wmo",
+     "km": 22.6,
+     "elev": 25.0,
+     "name": "Heathrow"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00003770",
+     "source": "wmo",
+     "km": 0.4,
+     "elev": 5.0,
+     "name": "London"
+    },
+    {
+     "id": "00003672",
+     "source": "wmo",
+     "km": 20.5,
+     "elev": 33.0,
+     "name": "Northolt"
+    },
+    {
+     "id": "00003772",
+     "source": "wmo",
+     "km": 22.6,
+     "elev": 25.0,
+     "name": "Heathrow"
+    }
+   ]
+  },
+  "edinburgh": {
+   "lat": 55.95335,
+   "lon": -3.18837,
+   "country": "GB",
+   "staged": false,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00003155",
+     "source": "wmo",
+     "km": 49.9,
+     "elev": 245.0,
+     "name": "Drumalbin"
+    },
+    {
+     "id": "00003171",
+     "source": "wmo",
+     "km": 51.3,
+     "elev": 10.0,
+     "name": "Leuchars"
+    },
+    {
+     "id": "00003144",
+     "source": "wmo",
+     "km": 53.3,
+     "elev": 35.0,
+     "name": "StrathallanAirfield"
+    }
+   ]
+  },
+  "manchester": {
+   "lat": 53.44246,
+   "lon": -2.23245,
+   "country": "GB",
+   "staged": false,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00003344",
+     "source": "wmo",
+     "km": 47.5,
+     "elev": 262.0,
+     "name": "Bingley"
+    },
+    {
+     "id": "00003316",
+     "source": "wmo",
+     "km": 55.0,
+     "elev": 9.0,
+     "name": "Crosby"
+    },
+    {
+     "id": "00003321",
+     "source": "wmo",
+     "km": 58.2,
+     "elev": 11.0,
+     "name": "HawardenAirport"
+    }
+   ]
+  },
+  "oxford": {
+   "lat": 51.75201,
+   "lon": -1.25785,
+   "country": "GB",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00003658",
+     "source": "wmo",
+     "km": 18.3,
+     "elev": 57.0,
+     "name": "Benson"
+    },
+    {
+     "id": "00003649",
+     "source": "wmo",
+     "km": 22.1,
+     "elev": 82.0,
+     "name": "BrizeNorton"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00003658",
+     "source": "wmo",
+     "km": 18.3,
+     "elev": 57.0,
+     "name": "Benson"
+    },
+    {
+     "id": "00003649",
+     "source": "wmo",
+     "km": 22.1,
+     "elev": 82.0,
+     "name": "BrizeNorton"
+    },
+    {
+     "id": "00003740",
+     "source": "wmo",
+     "km": 57.7,
+     "elev": 145.0,
+     "name": "Lyneham"
+    }
+   ]
+  },
+  "paris": {
+   "lat": 48.8535,
+   "lon": 2.34839,
+   "country": "FR",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00007156",
+     "source": "wmo",
+     "km": 3.6,
+     "elev": 75.0,
+     "name": "PARIS_MONTSOURIS"
+    },
+    {
+     "id": "00007150",
+     "source": "wmo",
+     "km": 13.9,
+     "elev": 49.0,
+     "name": "LE_BOURGET"
+    },
+    {
+     "id": "00007149",
+     "source": "wmo",
+     "km": 15.5,
+     "elev": 86.0,
+     "name": "ORLY"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00007156",
+     "source": "wmo",
+     "km": 3.6,
+     "elev": 75.0,
+     "name": "PARIS_MONTSOURIS"
+    },
+    {
+     "id": "00007150",
+     "source": "wmo",
+     "km": 13.9,
+     "elev": 49.0,
+     "name": "LE_BOURGET"
+    },
+    {
+     "id": "00007149",
+     "source": "wmo",
+     "km": 15.5,
+     "elev": 86.0,
+     "name": "ORLY"
+    }
+   ]
+  },
+  "nice": {
+   "lat": 43.70094,
+   "lon": 7.26839,
+   "country": "FR",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00007690",
+     "source": "wmo",
+     "km": 7.5,
+     "elev": 2.0,
+     "name": "NICE"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00007690",
+     "source": "wmo",
+     "km": 7.5,
+     "elev": 2.0,
+     "name": "NICE"
+    },
+    {
+     "id": "00007684",
+     "source": "wmo",
+     "km": 30.2,
+     "elev": 2.0,
+     "name": "CANNES"
+    },
+    {
+     "id": "00016153",
+     "source": "wmo",
+     "km": 77.7,
+     "elev": 220.0,
+     "name": "Capo_Mele"
+    }
+   ]
+  },
+  "lyon": {
+   "lat": 45.75781,
+   "lon": 4.83201,
+   "country": "FR",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00007480",
+     "source": "wmo",
+     "km": 10.0,
+     "elev": 202.0,
+     "name": "LYON_BRON"
+    },
+    {
+     "id": "00007481",
+     "source": "wmo",
+     "km": 19.4,
+     "elev": 235.0,
+     "name": "LYON_ST_EXUPERY"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00007480",
+     "source": "wmo",
+     "km": 10.0,
+     "elev": 202.0,
+     "name": "LYON_BRON"
+    },
+    {
+     "id": "00007481",
+     "source": "wmo",
+     "km": 19.4,
+     "elev": 235.0,
+     "name": "LYON_ST_EXUPERY"
+    },
+    {
+     "id": "00007482",
+     "source": "wmo",
+     "km": 45.5,
+     "elev": 250.0,
+     "name": "AMBERIEU"
+    }
+   ]
+  },
+  "marseille": {
+   "lat": 43.2964,
+   "lon": 5.37779,
+   "country": "FR",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00007650",
+     "source": "wmo",
+     "km": 20.5,
+     "elev": 9.0,
+     "name": "MARIGNANE"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00007650",
+     "source": "wmo",
+     "km": 20.5,
+     "elev": 9.0,
+     "name": "MARIGNANE"
+    },
+    {
+     "id": "00007648",
+     "source": "wmo",
+     "km": 40.7,
+     "elev": 58.0,
+     "name": "SALON_DE_PROVENCE"
+    },
+    {
+     "id": "00007647",
+     "source": "wmo",
+     "km": 44.3,
+     "elev": 23.0,
+     "name": "ISTRES"
+    }
+   ]
+  },
+  "barcelona": {
+   "lat": 41.38258,
+   "lon": 2.17707,
+   "country": "ES",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00008181",
+     "source": "wmo",
+     "km": 13.4,
+     "elev": 4.0,
+     "name": "BARCELONAAEROPUERTO"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00008181",
+     "source": "wmo",
+     "km": 13.4,
+     "elev": 4.0,
+     "name": "BARCELONAAEROPUERTO"
+    },
+    {
+     "id": "00008184",
+     "source": "wmo",
+     "km": 76.4,
+     "elev": 143.0,
+     "name": "GIRONACOSTABRAVA"
+    },
+    {
+     "id": "00008175",
+     "source": "wmo",
+     "km": 88.7,
+     "elev": 71.0,
+     "name": "REUSAEROPUERTO"
+    }
+   ]
+  },
+  "madrid": {
+   "lat": 40.41678,
+   "lon": -3.70351,
+   "country": "ES",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00008222",
+     "source": "wmo",
+     "km": 2.2,
+     "elev": 667.0,
+     "name": "MADRIDRETIRO"
+    },
+    {
+     "id": "00008223",
+     "source": "wmo",
+     "km": 8.3,
+     "elev": 690.0,
+     "name": "MADRIDCUATROVIENTOS"
+    },
+    {
+     "id": "00008224",
+     "source": "wmo",
+     "km": 13.2,
+     "elev": 620.0,
+     "name": "MADRIDGETAFE"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00008222",
+     "source": "wmo",
+     "km": 2.2,
+     "elev": 667.0,
+     "name": "MADRIDRETIRO"
+    },
+    {
+     "id": "00008223",
+     "source": "wmo",
+     "km": 8.3,
+     "elev": 690.0,
+     "name": "MADRIDCUATROVIENTOS"
+    },
+    {
+     "id": "00008224",
+     "source": "wmo",
+     "km": 13.2,
+     "elev": 620.0,
+     "name": "MADRIDGETAFE"
+    }
+   ]
+  },
+  "granada": {
+   "lat": 37.1735,
+   "lon": -3.59953,
+   "country": "ES",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00008420",
+     "source": "wmo",
+     "km": 4.9,
+     "elev": 687.0,
+     "name": "GRANADABASEAEREA"
+    },
+    {
+     "id": "00008419",
+     "source": "wmo",
+     "km": 16.9,
+     "elev": 567.0,
+     "name": "GRANADAAEROPUERTO"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00008420",
+     "source": "wmo",
+     "km": 4.9,
+     "elev": 687.0,
+     "name": "GRANADABASEAEREA"
+    },
+    {
+     "id": "00008419",
+     "source": "wmo",
+     "km": 16.9,
+     "elev": 567.0,
+     "name": "GRANADAAEROPUERTO"
+    },
+    {
+     "id": "00008417",
+     "source": "wmo",
+     "km": 69.7,
+     "elev": 580.0,
+     "name": "JAEN"
+    }
+   ]
+  },
+  "seville": {
+   "lat": 37.38863,
+   "lon": -5.99534,
+   "country": "ES",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00008391",
+     "source": "wmo",
+     "km": 10.7,
+     "elev": 34.0,
+     "name": "SEVILLASANPABLO"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00008391",
+     "source": "wmo",
+     "km": 10.7,
+     "elev": 34.0,
+     "name": "SEVILLASANPABLO"
+    },
+    {
+     "id": "00008397",
+     "source": "wmo",
+     "km": 42.2,
+     "elev": 87.0,
+     "name": "MORONDELAFRONTERA"
+    },
+    {
+     "id": "00008451",
+     "source": "wmo",
+     "km": 71.1,
+     "elev": 27.0,
+     "name": "JEREZDELAFRONTERAAEROPUERTO"
+    }
+   ]
+  },
+  "cordoba": {
+   "lat": 37.88458,
+   "lon": -4.77601,
+   "country": "ES",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00008410",
+     "source": "wmo",
+     "km": 7.4,
+     "elev": 90.0,
+     "name": "CORDOBAAEROPUERTO"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00008410",
+     "source": "wmo",
+     "km": 7.4,
+     "elev": 90.0,
+     "name": "CORDOBAAEROPUERTO"
+    },
+    {
+     "id": "00008417",
+     "source": "wmo",
+     "km": 85.7,
+     "elev": 580.0,
+     "name": "JAEN"
+    },
+    {
+     "id": "00008430",
+     "source": "wmo",
+     "km": 101.3,
+     "elev": 61.0,
+     "name": "MURCIA"
+    }
+   ]
+  },
+  "rome": {
+   "lat": 41.89332,
+   "lon": 12.48293,
+   "country": "IT",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00016239",
+     "source": "wmo",
+     "km": 13.9,
+     "elev": 129.0,
+     "name": "Roma_Ciampino"
+    },
+    {
+     "id": "00016242",
+     "source": "wmo",
+     "km": 21.3,
+     "elev": 5.0,
+     "name": "Roma_Fiumicino"
+    },
+    {
+     "id": "00016234",
+     "source": "wmo",
+     "km": 23.6,
+     "elev": 89.0,
+     "name": "Guidonia"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00016239",
+     "source": "wmo",
+     "km": 13.9,
+     "elev": 129.0,
+     "name": "Roma_Ciampino"
+    },
+    {
+     "id": "00016242",
+     "source": "wmo",
+     "km": 21.3,
+     "elev": 5.0,
+     "name": "Roma_Fiumicino"
+    },
+    {
+     "id": "00016234",
+     "source": "wmo",
+     "km": 23.6,
+     "elev": 89.0,
+     "name": "Guidonia"
+    }
+   ]
+  },
+  "venice": {
+   "lat": 45.43719,
+   "lon": 12.33459,
+   "country": "IT",
+   "staged": false,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00016099",
+     "source": "wmo",
+     "km": 26.4,
+     "elev": 18.0,
+     "name": "Treviso_Sant_Angelo"
+    },
+    {
+     "id": "00016098",
+     "source": "wmo",
+     "km": 32.7,
+     "elev": 42.0,
+     "name": "Treviso_Istrana"
+    },
+    {
+     "id": "00016045",
+     "source": "wmo",
+     "km": 81.7,
+     "elev": 51.0,
+     "name": "Udine_Rivolto"
+    }
+   ]
+  },
+  "florence": {
+   "lat": 43.7698,
+   "lon": 11.25564,
+   "country": "IT",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00016170",
+     "source": "wmo",
+     "km": 6.1,
+     "elev": 44.0,
+     "name": "Firenze_Peretola"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00016170",
+     "source": "wmo",
+     "km": 6.1,
+     "elev": 44.0,
+     "name": "Firenze_Peretola"
+    },
+    {
+     "id": "00016172",
+     "source": "wmo",
+     "km": 58.7,
+     "elev": 248.0,
+     "name": "Arezzo"
+    },
+    {
+     "id": "00016134",
+     "source": "wmo",
+     "km": 64.8,
+     "elev": 2165.0,
+     "name": "Monte_Cimone"
+    }
+   ]
+  },
+  "milan": {
+   "lat": 45.46419,
+   "lon": 9.18963,
+   "country": "IT",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00016080",
+     "source": "wmo",
+     "km": 7.1,
+     "elev": 108.0,
+     "name": "Milano_Linate"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00016080",
+     "source": "wmo",
+     "km": 7.1,
+     "elev": 108.0,
+     "name": "Milano_Linate"
+    },
+    {
+     "id": "00016066",
+     "source": "wmo",
+     "km": 40.7,
+     "elev": 234.0,
+     "name": "Milano_Malpensa"
+    },
+    {
+     "id": "00016064",
+     "source": "wmo",
+     "km": 41.4,
+     "elev": 178.0,
+     "name": "Novara_Cameri"
+    }
+   ]
+  },
+  "naples": {
+   "lat": 40.83588,
+   "lon": 14.24877,
+   "country": "IT",
+   "staged": false,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00016253",
+     "source": "wmo",
+     "km": 28.8,
+     "elev": 10.0,
+     "name": "Grazzanise"
+    },
+    {
+     "id": "00016294",
+     "source": "wmo",
+     "km": 31.1,
+     "elev": 160.0,
+     "name": "Capri"
+    },
+    {
+     "id": "00016263",
+     "source": "wmo",
+     "km": 85.9,
+     "elev": 1085.0,
+     "name": "Trevico"
+    }
+   ]
+  },
+  "athens": {
+   "lat": 37.97556,
+   "lon": 23.73483,
+   "country": "GR",
+   "staged": false,
+   "direct": [],
+   "calibrate": []
+  },
+  "santorini": {
+   "lat": 36.40711,
+   "lon": 25.45666,
+   "country": "GR",
+   "staged": false,
+   "direct": [],
+   "calibrate": []
+  },
+  "mykonos": {
+   "lat": 37.45139,
+   "lon": 25.39231,
+   "country": "GR",
+   "staged": false,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00017221",
+     "source": "wmo",
+     "km": 128.0,
+     "elev": 5.0,
+     "name": "Cesme"
+    }
+   ]
+  },
+  "thessaloniki": {
+   "lat": 40.64032,
+   "lon": 22.93527,
+   "country": "GR",
+   "staged": false,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00015712",
+     "source": "wmo",
+     "km": 104.9,
+     "elev": 206.0,
+     "name": "Sandanski"
+    }
+   ]
+  },
+  "zurich": {
+   "lat": 47.37445,
+   "lon": 8.54104,
+   "country": "CH",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00006660",
+     "source": "wmo",
+     "km": 1.9,
+     "elev": 556.0,
+     "name": "ZuerichFluntern"
+    },
+    {
+     "id": "00006664",
+     "source": "wmo",
+     "km": 6.2,
+     "elev": 444.0,
+     "name": "ZuerichAffoltern"
+    },
+    {
+     "id": "00006670",
+     "source": "wmo",
+     "km": 11.7,
+     "elev": 426.0,
+     "name": "ZuerichKloten"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00006660",
+     "source": "wmo",
+     "km": 1.9,
+     "elev": 556.0,
+     "name": "ZuerichFluntern"
+    },
+    {
+     "id": "00006664",
+     "source": "wmo",
+     "km": 6.2,
+     "elev": 444.0,
+     "name": "ZuerichAffoltern"
+    },
+    {
+     "id": "00006670",
+     "source": "wmo",
+     "km": 11.7,
+     "elev": 426.0,
+     "name": "ZuerichKloten"
+    }
+   ]
+  },
+  "geneva": {
+   "lat": 46.20176,
+   "lon": 6.1466,
+   "country": "CH",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00006700",
+     "source": "wmo",
+     "km": 5.3,
+     "elev": 411.0,
+     "name": "GeneveCointrin"
+    },
+    {
+     "id": "00006705",
+     "source": "wmo",
+     "km": 23.0,
+     "elev": 458.0,
+     "name": "NyonChangins"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00006700",
+     "source": "wmo",
+     "km": 5.3,
+     "elev": 411.0,
+     "name": "GeneveCointrin"
+    },
+    {
+     "id": "00006705",
+     "source": "wmo",
+     "km": 23.0,
+     "elev": 458.0,
+     "name": "NyonChangins"
+    },
+    {
+     "id": "00006702",
+     "source": "wmo",
+     "km": 25.1,
+     "elev": 1670.0,
+     "name": "LaDole"
+    }
+   ]
+  },
+  "interlaken": {
+   "lat": 46.68552,
+   "lon": 7.85851,
+   "country": "CH",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00006734",
+     "source": "wmo",
+     "km": 1.7,
+     "elev": 577.0,
+     "name": "Interlaken"
+    },
+    {
+     "id": "00006730",
+     "source": "wmo",
+     "km": 18.1,
+     "elev": 3571.0,
+     "name": "Jungfraujoch"
+    },
+    {
+     "id": "00006637",
+     "source": "wmo",
+     "km": 24.2,
+     "elev": 589.0,
+     "name": "Meiringen"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00006734",
+     "source": "wmo",
+     "km": 1.7,
+     "elev": 577.0,
+     "name": "Interlaken"
+    },
+    {
+     "id": "00006730",
+     "source": "wmo",
+     "km": 18.1,
+     "elev": 3571.0,
+     "name": "Jungfraujoch"
+    },
+    {
+     "id": "00006637",
+     "source": "wmo",
+     "km": 24.2,
+     "elev": 589.0,
+     "name": "Meiringen"
+    }
+   ]
+  },
+  "lucerne": {
+   "lat": 47.05214,
+   "lon": 8.30581,
+   "country": "CH",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00006650",
+     "source": "wmo",
+     "km": 1.8,
+     "elev": 454.0,
+     "name": "Luzern"
+    },
+    {
+     "id": "00006659",
+     "source": "wmo",
+     "km": 9.1,
+     "elev": 2105.0,
+     "name": "Pilatus"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00006650",
+     "source": "wmo",
+     "km": 1.8,
+     "elev": 454.0,
+     "name": "Luzern"
+    },
+    {
+     "id": "00006659",
+     "source": "wmo",
+     "km": 9.1,
+     "elev": 2105.0,
+     "name": "Pilatus"
+    },
+    {
+     "id": "00006655",
+     "source": "wmo",
+     "km": 26.8,
+     "elev": 1036.0,
+     "name": "Engelberg"
+    }
+   ]
+  },
+  "vienna": {
+   "lat": 48.20835,
+   "lon": 16.3725,
+   "country": "AT",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00011035",
+     "source": "wmo",
+     "km": 4.7,
+     "elev": 198.0,
+     "name": "Wien_Hohe_Warte"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00011035",
+     "source": "wmo",
+     "km": 4.7,
+     "elev": 198.0,
+     "name": "Wien_Hohe_Warte"
+    },
+    {
+     "id": "00011813",
+     "source": "wmo",
+     "km": 54.6,
+     "elev": 286.0,
+     "name": "BRATISLAVA_KOLIBA"
+    },
+    {
+     "id": "00011816",
+     "source": "wmo",
+     "km": 62.1,
+     "elev": 133.0,
+     "name": "BRATISLAVA_AIRPORT"
+    }
+   ]
+  },
+  "salzburg": {
+   "lat": 47.79813,
+   "lon": 13.04648,
+   "country": "AT",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00011150",
+     "source": "wmo",
+     "km": 3.0,
+     "elev": 430.0,
+     "name": "Salzburg_Flughafen"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00011150",
+     "source": "wmo",
+     "km": 3.0,
+     "elev": 430.0,
+     "name": "Salzburg_Flughafen"
+    },
+    {
+     "id": "00011155",
+     "source": "wmo",
+     "km": 50.2,
+     "elev": 1618.0,
+     "name": "Feuerkogel"
+    },
+    {
+     "id": "00010875",
+     "source": "wmo",
+     "km": 67.1,
+     "elev": 405.6,
+     "name": "Muehldorf"
+    }
+   ]
+  },
+  "innsbruck": {
+   "lat": 47.26543,
+   "lon": 11.39277,
+   "country": "AT",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00011120",
+     "source": "wmo",
+     "km": 2.8,
+     "elev": 578.0,
+     "name": "Innsbruck_Flugplatz"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00011120",
+     "source": "wmo",
+     "km": 2.8,
+     "elev": 578.0,
+     "name": "Innsbruck_Flugplatz"
+    },
+    {
+     "id": "00010963",
+     "source": "wmo",
+     "km": 34.7,
+     "elev": 719.3,
+     "name": "Garmisch-Partenkirchen"
+    },
+    {
+     "id": "00010961",
+     "source": "wmo",
+     "km": 35.3,
+     "elev": 2956.0,
+     "name": "Zugspitze"
+    }
+   ]
+  },
+  "amsterdam": {
+   "lat": 52.37308,
+   "lon": 4.89245,
+   "country": "NL",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00006240",
+     "source": "wmo",
+     "km": 9.3,
+     "elev": -3.9,
+     "name": "AmsterdamSchipholAp"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00006240",
+     "source": "wmo",
+     "km": 9.3,
+     "elev": -3.9,
+     "name": "AmsterdamSchipholAp"
+    },
+    {
+     "id": "00006260",
+     "source": "wmo",
+     "km": 36.2,
+     "elev": 1.9,
+     "name": "DeBiltAws"
+    },
+    {
+     "id": "00006215",
+     "source": "wmo",
+     "km": 40.5,
+     "elev": -1.1,
+     "name": "VoorschotenAws"
+    }
+   ]
+  },
+  "rotterdam": {
+   "lat": 51.92444,
+   "lon": 4.47775,
+   "country": "NL",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00006344",
+     "source": "wmo",
+     "km": 4.6,
+     "elev": -5.1,
+     "name": "RotterdamTheHagueAp"
+    },
+    {
+     "id": "00006215",
+     "source": "wmo",
+     "km": 24.1,
+     "elev": -1.1,
+     "name": "VoorschotenAws"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00006344",
+     "source": "wmo",
+     "km": 4.6,
+     "elev": -5.1,
+     "name": "RotterdamTheHagueAp"
+    },
+    {
+     "id": "00006215",
+     "source": "wmo",
+     "km": 24.1,
+     "elev": -1.1,
+     "name": "VoorschotenAws"
+    },
+    {
+     "id": "00006348",
+     "source": "wmo",
+     "km": 31.1,
+     "elev": -0.7,
+     "name": "CabauwTowerAws"
+    }
+   ]
+  },
+  "the-hague": {
+   "lat": 52.07998,
+   "lon": 4.31135,
+   "country": "NL",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00006215",
+     "source": "wmo",
+     "km": 10.8,
+     "elev": -1.1,
+     "name": "VoorschotenAws"
+    },
+    {
+     "id": "00006344",
+     "source": "wmo",
+     "km": 16.2,
+     "elev": -5.1,
+     "name": "RotterdamTheHagueAp"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00006215",
+     "source": "wmo",
+     "km": 10.8,
+     "elev": -1.1,
+     "name": "VoorschotenAws"
+    },
+    {
+     "id": "00006344",
+     "source": "wmo",
+     "km": 16.2,
+     "elev": -5.1,
+     "name": "RotterdamTheHagueAp"
+    },
+    {
+     "id": "00006240",
+     "source": "wmo",
+     "km": 41.9,
+     "elev": -3.9,
+     "name": "AmsterdamSchipholAp"
+    }
+   ]
+  },
+  "berlin": {
+   "lat": 52.51739,
+   "lon": 13.39513,
+   "country": "DE",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00010384",
+     "source": "wmo",
+     "km": 5.6,
+     "elev": 47.7,
+     "name": "Berlin-Tempelhof"
+    },
+    {
+     "id": "00010382",
+     "source": "wmo",
+     "km": 7.8,
+     "elev": 35.5,
+     "name": "Berlin-Tegel"
+    },
+    {
+     "id": "00010381",
+     "source": "wmo",
+     "km": 9.5,
+     "elev": 51.0,
+     "name": "Berlin-Dahlem-FU"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00010384",
+     "source": "wmo",
+     "km": 5.6,
+     "elev": 47.7,
+     "name": "Berlin-Tempelhof"
+    },
+    {
+     "id": "00010382",
+     "source": "wmo",
+     "km": 7.8,
+     "elev": 35.5,
+     "name": "Berlin-Tegel"
+    },
+    {
+     "id": "00010381",
+     "source": "wmo",
+     "km": 9.5,
+     "elev": 51.0,
+     "name": "Berlin-Dahlem-FU"
+    }
+   ]
+  },
+  "munich": {
+   "lat": 48.13711,
+   "lon": 11.57538,
+   "country": "DE",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00010865",
+     "source": "wmo",
+     "km": 3.7,
+     "elev": 515.4,
+     "name": "Muenchen-Stadt"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00010865",
+     "source": "wmo",
+     "km": 3.7,
+     "elev": 515.4,
+     "name": "Muenchen-Stadt"
+    },
+    {
+     "id": "00010870",
+     "source": "wmo",
+     "km": 29.3,
+     "elev": 445.5,
+     "name": "Muenchen-Flughafen"
+    },
+    {
+     "id": "00010863",
+     "source": "wmo",
+     "km": 30.8,
+     "elev": 477.1,
+     "name": "Weihenstephan-Duernast"
+    }
+   ]
+  },
+  "hamburg": {
+   "lat": 53.55017,
+   "lon": 10.00132,
+   "country": "DE",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00010147",
+     "source": "wmo",
+     "km": 9.3,
+     "elev": 10.7,
+     "name": "Hamburg-Fuhlsbuettel"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00010147",
+     "source": "wmo",
+     "km": 9.3,
+     "elev": 10.7,
+     "name": "Hamburg-Fuhlsbuettel"
+    },
+    {
+     "id": "00010249",
+     "source": "wmo",
+     "km": 48.8,
+     "elev": 44.7,
+     "name": "Boizenburg"
+    },
+    {
+     "id": "00010156",
+     "source": "wmo",
+     "km": 53.9,
+     "elev": 14.7,
+     "name": "Luebeck-Blankensee"
+    }
+   ]
+  },
+  "frankfurt": {
+   "lat": 50.11064,
+   "lon": 8.68209,
+   "country": "DE",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00010637",
+     "source": "wmo",
+     "km": 14.9,
+     "elev": 99.7,
+     "name": "FrankfurtMain"
+    },
+    {
+     "id": "00010635",
+     "source": "wmo",
+     "km": 20.8,
+     "elev": 822.1,
+     "name": "Kleiner-FeldbergTaunus"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00010637",
+     "source": "wmo",
+     "km": 14.9,
+     "elev": 99.7,
+     "name": "FrankfurtMain"
+    },
+    {
+     "id": "00010635",
+     "source": "wmo",
+     "km": 20.8,
+     "elev": 822.1,
+     "name": "Kleiner-FeldbergTaunus"
+    },
+    {
+     "id": "00010648",
+     "source": "wmo",
+     "km": 52.9,
+     "elev": 452.8,
+     "name": "Michelstadt-Vielbrunn"
+    }
+   ]
+  },
+  "lisbon": {
+   "lat": 38.70775,
+   "lon": -9.13659,
+   "country": "PT",
+   "staged": false,
+   "direct": [],
+   "calibrate": []
+  },
+  "porto": {
+   "lat": 41.15022,
+   "lon": -8.61035,
+   "country": "PT",
+   "staged": false,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00008045",
+     "source": "wmo",
+     "km": 121.1,
+     "elev": 261.0,
+     "name": "VIGOPEINADOR"
+    },
+    {
+     "id": "00008044",
+     "source": "wmo",
+     "km": 143.2,
+     "elev": 108.0,
+     "name": "PONTEVEDRA"
+    },
+    {
+     "id": "00008048",
+     "source": "wmo",
+     "km": 144.7,
+     "elev": 143.0,
+     "name": "OURENSE"
+    }
+   ]
+  },
+  "madeira": {
+   "lat": 32.75175,
+   "lon": -16.98175,
+   "country": "PT",
+   "staged": false,
+   "direct": [],
+   "calibrate": []
+  },
+  "male": {
+   "lat": 4.17799,
+   "lon": 73.51074,
+   "country": "MV",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00043555",
+     "source": "wmo",
+     "km": 2.9,
+     "elev": 1.7,
+     "name": "Hulhule"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00043555",
+     "source": "wmo",
+     "km": 2.9,
+     "elev": 1.7,
+     "name": "Hulhule"
+    }
+   ]
+  },
+  "colombo": {
+   "lat": 6.93886,
+   "lon": 79.8542,
+   "country": "LK",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00043466",
+     "source": "wmo",
+     "km": 4.5,
+     "elev": 7.0,
+     "name": "Colombo"
+    },
+    {
+     "id": "00043467",
+     "source": "wmo",
+     "km": 13.9,
+     "elev": 5.0,
+     "name": "Rathmalana"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00043466",
+     "source": "wmo",
+     "km": 4.5,
+     "elev": 7.0,
+     "name": "Colombo"
+    },
+    {
+     "id": "00043467",
+     "source": "wmo",
+     "km": 13.9,
+     "elev": 5.0,
+     "name": "Rathmalana"
+    },
+    {
+     "id": "00043450",
+     "source": "wmo",
+     "km": 25.6,
+     "elev": 8.0,
+     "name": "Katunayaka"
+    }
+   ]
+  },
+  "kandy": {
+   "lat": 7.29312,
+   "lon": 80.63504,
+   "country": "LK",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00043444",
+     "source": "wmo",
+     "km": 4.4,
+     "elev": 477.0,
+     "name": "Katugastota"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00043444",
+     "source": "wmo",
+     "km": 4.4,
+     "elev": 477.0,
+     "name": "Katugastota"
+    },
+    {
+     "id": "00043441",
+     "source": "wmo",
+     "km": 35.3,
+     "elev": 116.0,
+     "name": "Kurunegala"
+    },
+    {
+     "id": "00043473",
+     "source": "wmo",
+     "km": 39.1,
+     "elev": 1894.0,
+     "name": "NuwaraEliya"
+    }
+   ]
+  },
+  "galle": {
+   "lat": 6.03281,
+   "lon": 80.21496,
+   "country": "LK",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00043495",
+     "source": "wmo",
+     "km": 0.2,
+     "elev": 13.0,
+     "name": "Galle"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00043495",
+     "source": "wmo",
+     "km": 0.2,
+     "elev": 13.0,
+     "name": "Galle"
+    },
+    {
+     "id": "00043486",
+     "source": "wmo",
+     "km": 75.1,
+     "elev": 86.0,
+     "name": "Ratnapura"
+    },
+    {
+     "id": "00043467",
+     "source": "wmo",
+     "km": 94.6,
+     "elev": 5.0,
+     "name": "Rathmalana"
+    }
+   ]
+  },
+  "ella": {
+   "lat": 6.87361,
+   "lon": 81.04899,
+   "country": "LK",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00043476",
+     "source": "wmo",
+     "km": 8.6,
+     "elev": 1226.0,
+     "name": "Bandarawela"
+    },
+    {
+     "id": "00043479",
+     "source": "wmo",
+     "km": 12.2,
+     "elev": 670.0,
+     "name": "Badulla"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00043476",
+     "source": "wmo",
+     "km": 8.6,
+     "elev": 1226.0,
+     "name": "Bandarawela"
+    },
+    {
+     "id": "00043479",
+     "source": "wmo",
+     "km": 12.2,
+     "elev": 670.0,
+     "name": "Badulla"
+    },
+    {
+     "id": "00043473",
+     "source": "wmo",
+     "km": 32.8,
+     "elev": 1894.0,
+     "name": "NuwaraEliya"
+    }
+   ]
+  },
+  "bali": {
+   "lat": -8.22713,
+   "lon": 115.19192,
+   "country": "ID",
+   "staged": false,
+   "direct": [],
+   "calibrate": []
+  },
+  "ubud": {
+   "lat": -8.51702,
+   "lon": 115.25505,
+   "country": "ID",
+   "staged": false,
+   "direct": [],
+   "calibrate": []
+  },
+  "jakarta": {
+   "lat": -6.1754,
+   "lon": 106.82717,
+   "country": "ID",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00096745",
+     "source": "wmo",
+     "km": 2.6,
+     "elev": 4.0,
+     "name": "StasiunMeteorologiKemayoran"
+    },
+    {
+     "id": "00096741",
+     "source": "wmo",
+     "km": 9.6,
+     "elev": 3.0,
+     "name": "StasiunMeteorologiMaritimTanju"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00096745",
+     "source": "wmo",
+     "km": 2.6,
+     "elev": 4.0,
+     "name": "StasiunMeteorologiKemayoran"
+    },
+    {
+     "id": "00096741",
+     "source": "wmo",
+     "km": 9.6,
+     "elev": 3.0,
+     "name": "StasiunMeteorologiMaritimTanju"
+    }
+   ]
+  },
+  "yogyakarta": {
+   "lat": -7.80135,
+   "lon": 110.36474,
+   "country": "ID",
+   "staged": false,
+   "direct": [],
+   "calibrate": []
+  },
+  "bangkok": {
+   "lat": 13.75249,
+   "lon": 100.49351,
+   "country": "TH",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00048455",
+     "source": "wmo",
+     "km": 7.8,
+     "elev": 3.0,
+     "name": "BangkokMetropolis"
+    },
+    {
+     "id": "00048454",
+     "source": "wmo",
+     "km": 9.5,
+     "elev": 2.8,
+     "name": "BangkokPortKlongToei"
+    },
+    {
+     "id": "00048456",
+     "source": "wmo",
+     "km": 22.1,
+     "elev": 12.0,
+     "name": "DonMuangAirport"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00048455",
+     "source": "wmo",
+     "km": 7.8,
+     "elev": 3.0,
+     "name": "BangkokMetropolis"
+    },
+    {
+     "id": "00048454",
+     "source": "wmo",
+     "km": 9.5,
+     "elev": 2.8,
+     "name": "BangkokPortKlongToei"
+    },
+    {
+     "id": "00048456",
+     "source": "wmo",
+     "km": 22.1,
+     "elev": 12.0,
+     "name": "DonMuangAirport"
+    }
+   ]
+  },
+  "phuket": {
+   "lat": 7.88479,
+   "lon": 98.38915,
+   "country": "TH",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00048564",
+     "source": "wmo",
+     "km": 1.2,
+     "elev": 1.8,
+     "name": "Phuket"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00048564",
+     "source": "wmo",
+     "km": 1.2,
+     "elev": 1.8,
+     "name": "Phuket"
+    },
+    {
+     "id": "00048565",
+     "source": "wmo",
+     "km": 30.1,
+     "elev": 5.9,
+     "name": "PhuketAirport"
+    },
+    {
+     "id": "00048566",
+     "source": "wmo",
+     "km": 82.7,
+     "elev": 2.0,
+     "name": "KoLanta"
+    }
+   ]
+  },
+  "chiang-mai": {
+   "lat": 18.78828,
+   "lon": 98.98588,
+   "country": "TH",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00048327",
+     "source": "wmo",
+     "km": 2.4,
+     "elev": 304.6,
+     "name": "ChiangMai"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00048327",
+     "source": "wmo",
+     "km": 2.4,
+     "elev": 304.6,
+     "name": "ChiangMai"
+    },
+    {
+     "id": "00048329",
+     "source": "wmo",
+     "km": 25.1,
+     "elev": 296.4,
+     "name": "Lamphun"
+    },
+    {
+     "id": "00048328",
+     "source": "wmo",
+     "km": 79.3,
+     "elev": 242.0,
+     "name": "Lampang"
+    }
+   ]
+  },
+  "pattaya": {
+   "lat": 12.93669,
+   "lon": 100.8865,
+   "country": "TH",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00048461",
+     "source": "wmo",
+     "km": 2.7,
+     "elev": 58.9,
+     "name": "Phatthaya"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00048461",
+     "source": "wmo",
+     "km": 2.7,
+     "elev": 58.9,
+     "name": "Phatthaya"
+    },
+    {
+     "id": "00048460",
+     "source": "wmo",
+     "km": 26.7,
+     "elev": 24.9,
+     "name": "KoSichang"
+    },
+    {
+     "id": "00048477",
+     "source": "wmo",
+     "km": 30.1,
+     "elev": 16.0,
+     "name": "Sattahip"
+    }
+   ]
+  },
+  "kuala-lumpur": {
+   "lat": 3.1517,
+   "lon": 101.69424,
+   "country": "MY",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00048647",
+     "source": "wmo",
+     "km": 15.8,
+     "elev": 17.0,
+     "name": "Subang"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00048647",
+     "source": "wmo",
+     "km": 15.8,
+     "elev": 17.0,
+     "name": "Subang"
+    },
+    {
+     "id": "00048665",
+     "source": "wmo",
+     "km": 116.1,
+     "elev": 9.0,
+     "name": "Melaka"
+    }
+   ]
+  },
+  "penang": {
+   "lat": 5.4065,
+   "lon": 100.25591,
+   "country": "MY",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00048601",
+     "source": "wmo",
+     "km": 12.3,
+     "elev": 3.0,
+     "name": "BayanLepas"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00048601",
+     "source": "wmo",
+     "km": 12.3,
+     "elev": 3.0,
+     "name": "BayanLepas"
+    },
+    {
+     "id": "00048570",
+     "source": "wmo",
+     "km": 139.6,
+     "elev": 4.1,
+     "name": "Satun"
+    },
+    {
+     "id": "00048620",
+     "source": "wmo",
+     "km": 140.7,
+     "elev": 7.0,
+     "name": "Sitiawan"
+    }
+   ]
+  },
+  "langkawi": {
+   "lat": 6.37004,
+   "lon": 99.79286,
+   "country": "MY",
+   "staged": false,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00048570",
+     "source": "wmo",
+     "km": 44.7,
+     "elev": 4.1,
+     "name": "Satun"
+    },
+    {
+     "id": "00048569",
+     "source": "wmo",
+     "km": 93.3,
+     "elev": 27.4,
+     "name": "HatYaiAirport"
+    },
+    {
+     "id": "00048568",
+     "source": "wmo",
+     "km": 127.4,
+     "elev": 4.6,
+     "name": "Songkhla"
+    }
+   ]
+  },
+  "malacca": {
+   "lat": 2.19426,
+   "lon": 102.24867,
+   "country": "MY",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00048665",
+     "source": "wmo",
+     "km": 8.1,
+     "elev": 9.0,
+     "name": "Melaka"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00048665",
+     "source": "wmo",
+     "km": 8.1,
+     "elev": 9.0,
+     "name": "Melaka"
+    },
+    {
+     "id": "00048647",
+     "source": "wmo",
+     "km": 129.7,
+     "elev": 17.0,
+     "name": "Subang"
+    }
+   ]
+  },
+  "singapore": {
+   "lat": 1.28992,
+   "lon": 103.85191,
+   "country": "SG",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00048698",
+     "source": "wmo",
+     "km": 16.9,
+     "elev": 14.0,
+     "name": "ChangiAirport"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00048698",
+     "source": "wmo",
+     "km": 16.9,
+     "elev": 14.0,
+     "name": "ChangiAirport"
+    },
+    {
+     "id": "00048674",
+     "source": "wmo",
+     "km": 129.0,
+     "elev": 44.0,
+     "name": "Mersing"
+    }
+   ]
+  },
+  "tokyo": {
+   "lat": 35.67686,
+   "lon": 139.76389,
+   "country": "JP",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00047662",
+     "source": "wmo",
+     "km": 2.1,
+     "elev": 25.2,
+     "name": "Tokyo"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00047662",
+     "source": "wmo",
+     "km": 2.1,
+     "elev": 25.2,
+     "name": "Tokyo"
+    },
+    {
+     "id": "00047648",
+     "source": "wmo",
+     "km": 98.9,
+     "elev": 20.1,
+     "name": "Choshi"
+    },
+    {
+     "id": "00047629",
+     "source": "wmo",
+     "km": 100.6,
+     "elev": 29.0,
+     "name": "Mito"
+    }
+   ]
+  },
+  "kyoto": {
+   "lat": 35.01158,
+   "lon": 135.76814,
+   "country": "JP",
+   "staged": false,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00047772",
+     "source": "wmo",
+     "km": 43.2,
+     "elev": 23.0,
+     "name": "Osaka"
+    },
+    {
+     "id": "00047750",
+     "source": "wmo",
+     "km": 63.7,
+     "elev": 2.4,
+     "name": "Maizuru"
+    },
+    {
+     "id": "00047651",
+     "source": "wmo",
+     "km": 75.1,
+     "elev": 2.7,
+     "name": "Tsu"
+    }
+   ]
+  },
+  "osaka": {
+   "lat": 34.69376,
+   "lon": 135.50145,
+   "country": "JP",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00047772",
+     "source": "wmo",
+     "km": 2.0,
+     "elev": 23.0,
+     "name": "Osaka"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00047772",
+     "source": "wmo",
+     "km": 2.0,
+     "elev": 23.0,
+     "name": "Osaka"
+    },
+    {
+     "id": "00047750",
+     "source": "wmo",
+     "km": 85.7,
+     "elev": 2.4,
+     "name": "Maizuru"
+    },
+    {
+     "id": "00047651",
+     "source": "wmo",
+     "km": 93.0,
+     "elev": 2.7,
+     "name": "Tsu"
+    }
+   ]
+  },
+  "hiroshima": {
+   "lat": 34.39172,
+   "lon": 132.45176,
+   "country": "JP",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00047765",
+     "source": "wmo",
+     "km": 1.2,
+     "elev": 3.6,
+     "name": "Hiroshima"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00047765",
+     "source": "wmo",
+     "km": 1.2,
+     "elev": 3.6,
+     "name": "Hiroshima"
+    },
+    {
+     "id": "00047887",
+     "source": "wmo",
+     "km": 68.0,
+     "elev": 32.2,
+     "name": "Matsuyama"
+    },
+    {
+     "id": "00047741",
+     "source": "wmo",
+     "km": 131.0,
+     "elev": 16.9,
+     "name": "Matsue"
+    }
+   ]
+  },
+  "seoul": {
+   "lat": 37.56668,
+   "lon": 126.97829,
+   "country": "KR",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00047108",
+     "source": "wmo",
+     "km": 1.2,
+     "elev": 85.0,
+     "name": "Seoul"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00047108",
+     "source": "wmo",
+     "km": 1.2,
+     "elev": 85.0,
+     "name": "Seoul"
+    },
+    {
+     "id": "00047112",
+     "source": "wmo",
+     "km": 32.7,
+     "elev": 68.0,
+     "name": "Incheon"
+    },
+    {
+     "id": "00047119",
+     "source": "wmo",
+     "km": 34.4,
+     "elev": 39.0,
+     "name": "Suwon"
+    }
+   ]
+  },
+  "busan": {
+   "lat": 35.17995,
+   "lon": 129.07524,
+   "country": "KR",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00047159",
+     "source": "wmo",
+     "km": 9.3,
+     "elev": 69.0,
+     "name": "Busan"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00047159",
+     "source": "wmo",
+     "km": 9.3,
+     "elev": 69.0,
+     "name": "Busan"
+    },
+    {
+     "id": "00047155",
+     "source": "wmo",
+     "km": 45.7,
+     "elev": 34.0,
+     "name": "Changwon"
+    },
+    {
+     "id": "00047288",
+     "source": "wmo",
+     "km": 45.8,
+     "elev": 8.0,
+     "name": "Miryang"
+    }
+   ]
+  },
+  "jeju": {
+   "lat": 33.49983,
+   "lon": 126.53139,
+   "country": "KR",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00047184",
+     "source": "wmo",
+     "km": 1.6,
+     "elev": 20.0,
+     "name": "Jeju"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00047184",
+     "source": "wmo",
+     "km": 1.6,
+     "elev": 20.0,
+     "name": "Jeju"
+    },
+    {
+     "id": "00047189",
+     "source": "wmo",
+     "km": 28.4,
+     "elev": 51.0,
+     "name": "Seogwipo"
+    },
+    {
+     "id": "00047188",
+     "source": "wmo",
+     "km": 34.7,
+     "elev": 20.0,
+     "name": "Seongsan"
+    }
+   ]
+  },
+  "beijing": {
+   "lat": 39.90571,
+   "lon": 116.3913,
+   "country": "CN",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00054511",
+     "source": "wmo",
+     "km": 9.9,
+     "elev": 32.5,
+     "name": "BEIJING"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00054511",
+     "source": "wmo",
+     "km": 9.9,
+     "elev": 32.5,
+     "name": "BEIJING"
+    }
+   ]
+  },
+  "shanghai": {
+   "lat": 31.23234,
+   "lon": 121.4691,
+   "country": "CN",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00058362",
+     "source": "wmo",
+     "km": 20.9,
+     "elev": 9.0,
+     "name": "SHANGHAI__BAOSHAN"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00058362",
+     "source": "wmo",
+     "km": 20.9,
+     "elev": 9.0,
+     "name": "SHANGHAI__BAOSHAN"
+    },
+    {
+     "id": "00058265",
+     "source": "wmo",
+     "km": 94.4,
+     "elev": 3.8,
+     "name": "LUSI"
+    },
+    {
+     "id": "00058472",
+     "source": "wmo",
+     "km": 108.9,
+     "elev": 81.0,
+     "name": "SHENGSI"
+    }
+   ]
+  },
+  "xian": {
+   "lat": 34.261,
+   "lon": 108.94234,
+   "country": "CN",
+   "staged": false,
+   "direct": [],
+   "calibrate": []
+  },
+  "guangzhou": {
+   "lat": 23.12884,
+   "lon": 113.25896,
+   "country": "CN",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00059287",
+     "source": "wmo",
+     "km": 24.8,
+     "elev": 71.5,
+     "name": "GUANGZHOU"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00059287",
+     "source": "wmo",
+     "km": 24.8,
+     "elev": 71.5,
+     "name": "GUANGZHOU"
+    },
+    {
+     "id": "00045011",
+     "source": "wmo",
+     "km": 112.2,
+     "elev": 110.0,
+     "name": "TaipaGrande"
+    },
+    {
+     "id": "00045005",
+     "source": "wmo",
+     "km": 131.4,
+     "elev": 31.7,
+     "name": "HongKongObservatory"
+    }
+   ]
+  },
+  "hanoi": {
+   "lat": 21.02833,
+   "lon": 105.85404,
+   "country": "VN",
+   "staged": false,
+   "direct": [],
+   "calibrate": []
+  },
+  "ho-chi-minh-city": {
+   "lat": 10.77373,
+   "lon": 106.7166,
+   "country": "VN",
+   "staged": false,
+   "direct": [],
+   "calibrate": []
+  },
+  "da-nang": {
+   "lat": 16.0685,
+   "lon": 108.22402,
+   "country": "VN",
+   "staged": false,
+   "direct": [],
+   "calibrate": []
+  },
+  "hoi-an": {
+   "lat": 15.87959,
+   "lon": 108.33194,
+   "country": "VN",
+   "staged": false,
+   "direct": [],
+   "calibrate": []
+  },
+  "delhi": {
+   "lat": 28.66645,
+   "lon": 77.21698,
+   "country": "IN",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00042182",
+     "source": "wmo",
+     "km": 9.4,
+     "elev": 211.4,
+     "name": "NEW_DELHI_SAFDARJUNG"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00042182",
+     "source": "wmo",
+     "km": 9.4,
+     "elev": 211.4,
+     "name": "NEW_DELHI_SAFDARJUNG"
+    },
+    {
+     "id": "00042138",
+     "source": "wmo",
+     "km": 102.2,
+     "elev": 240.8,
+     "name": "MUZAFFARNAGAR"
+    },
+    {
+     "id": "00042262",
+     "source": "wmo",
+     "km": 120.5,
+     "elev": 186.2,
+     "name": "ALIGARH"
+    }
+   ]
+  },
+  "agra": {
+   "lat": 27.17526,
+   "lon": 78.00982,
+   "country": "IN",
+   "staged": false,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00042262",
+     "source": "wmo",
+     "km": 78.9,
+     "elev": 186.2,
+     "name": "ALIGARH"
+    },
+    {
+     "id": "00042361",
+     "source": "wmo",
+     "km": 107.5,
+     "elev": 207.0,
+     "name": "GWALIOR"
+    },
+    {
+     "id": "00042364",
+     "source": "wmo",
+     "km": 128.4,
+     "elev": 150.6,
+     "name": "ETAWAH"
+    }
+   ]
+  },
+  "jaipur": {
+   "lat": 26.91546,
+   "lon": 75.81898,
+   "country": "IN",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00042348",
+     "source": "wmo",
+     "km": 11.1,
+     "elev": 383.2,
+     "name": "JAIPUR"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00042348",
+     "source": "wmo",
+     "km": 11.1,
+     "elev": 383.2,
+     "name": "JAIPUR"
+    }
+   ]
+  },
+  "mumbai": {
+   "lat": 19.055,
+   "lon": 72.8692,
+   "country": "IN",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00043003",
+     "source": "wmo",
+     "km": 7.2,
+     "elev": 14.2,
+     "name": "MUMBAI_SANTACRUZ"
+    },
+    {
+     "id": "00043057",
+     "source": "wmo",
+     "km": 18.1,
+     "elev": 10.7,
+     "name": "MUMBAI_COLABA"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00043003",
+     "source": "wmo",
+     "km": 7.2,
+     "elev": 14.2,
+     "name": "MUMBAI_SANTACRUZ"
+    },
+    {
+     "id": "00043057",
+     "source": "wmo",
+     "km": 18.1,
+     "elev": 10.7,
+     "name": "MUMBAI_COLABA"
+    },
+    {
+     "id": "00043001",
+     "source": "wmo",
+     "km": 102.7,
+     "elev": 4.6,
+     "name": "DAHANU"
+    }
+   ]
+  },
+  "goa": {
+   "lat": 15.30045,
+   "lon": 74.08551,
+   "country": "IN",
+   "staged": false,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00043198",
+     "source": "wmo",
+     "km": 32.0,
+     "elev": 757.3,
+     "name": "BELGAUM"
+    },
+    {
+     "id": "00043192",
+     "source": "wmo",
+     "km": 35.2,
+     "elev": 59.6,
+     "name": "PANJIM"
+    },
+    {
+     "id": "00043225",
+     "source": "wmo",
+     "km": 100.5,
+     "elev": 4.1,
+     "name": "KARWAR"
+    }
+   ]
+  },
+  "new-york": {
+   "lat": 40.71273,
+   "lon": -74.00602,
+   "country": "US",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00072506",
+     "source": "wmo",
+     "km": 8.0,
+     "elev": 40.0,
+     "name": "NEW_YORK_CNTRL_PK_TWR"
+    },
+    {
+     "id": "00072503",
+     "source": "wmo",
+     "km": 12.9,
+     "elev": 3.0,
+     "name": "NEW_YORK_LAGUARDIA_AP"
+    },
+    {
+     "id": "00072502",
+     "source": "wmo",
+     "km": 14.2,
+     "elev": 2.0,
+     "name": "NEWARK_INTL_AP"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00072506",
+     "source": "wmo",
+     "km": 8.0,
+     "elev": 40.0,
+     "name": "NEW_YORK_CNTRL_PK_TWR"
+    },
+    {
+     "id": "00072503",
+     "source": "wmo",
+     "km": 12.9,
+     "elev": 3.0,
+     "name": "NEW_YORK_LAGUARDIA_AP"
+    },
+    {
+     "id": "00072502",
+     "source": "wmo",
+     "km": 14.2,
+     "elev": 2.0,
+     "name": "NEWARK_INTL_AP"
+    }
+   ]
+  },
+  "los-angeles": {
+   "lat": 34.05369,
+   "lon": -118.24277,
+   "country": "US",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00072295",
+     "source": "wmo",
+     "km": 18.6,
+     "elev": 30.0,
+     "name": "LOS_ANGELES_INTL_AP"
+    },
+    {
+     "id": "00072288",
+     "source": "wmo",
+     "km": 19.5,
+     "elev": 226.0,
+     "name": "BURBANK_GLENDALE_PASADENA_AP"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00072295",
+     "source": "wmo",
+     "km": 18.6,
+     "elev": 30.0,
+     "name": "LOS_ANGELES_INTL_AP"
+    },
+    {
+     "id": "00072288",
+     "source": "wmo",
+     "km": 19.5,
+     "elev": 226.0,
+     "name": "BURBANK_GLENDALE_PASADENA_AP"
+    },
+    {
+     "id": "00072297",
+     "source": "wmo",
+     "km": 28.3,
+     "elev": 9.0,
+     "name": "LONG_BEACH_DAUGHERTY_FLD"
+    }
+   ]
+  },
+  "las-vegas": {
+   "lat": 36.16743,
+   "lon": -115.14841,
+   "country": "US",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00072386",
+     "source": "wmo",
+     "km": 10.7,
+     "elev": 650.0,
+     "name": "LAS_VEGAS_MCCARRAN_AP"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00072386",
+     "source": "wmo",
+     "km": 10.7,
+     "elev": 650.0,
+     "name": "LAS_VEGAS_MCCARRAN_AP"
+    },
+    {
+     "id": "00072387",
+     "source": "wmo",
+     "km": 93.5,
+     "elev": 985.0,
+     "name": "MERCURY_DESERT_ROCK_AP"
+    },
+    {
+     "id": "00072370",
+     "source": "wmo",
+     "km": 149.2,
+     "elev": 1042.0,
+     "name": "KINGMAN_MOHAVE_CO_AP"
+    }
+   ]
+  },
+  "san-francisco": {
+   "lat": 37.78794,
+   "lon": -122.40752,
+   "country": "US",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00072493",
+     "source": "wmo",
+     "km": 18.0,
+     "elev": 2.0,
+     "name": "OAKLAND_METRO_INTL_AP"
+    },
+    {
+     "id": "00072494",
+     "source": "wmo",
+     "km": 19.0,
+     "elev": 2.0,
+     "name": "SAN_FRANCISCO_INTL_AP"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00072493",
+     "source": "wmo",
+     "km": 18.0,
+     "elev": 2.0,
+     "name": "OAKLAND_METRO_INTL_AP"
+    },
+    {
+     "id": "00072494",
+     "source": "wmo",
+     "km": 19.0,
+     "elev": 2.0,
+     "name": "SAN_FRANCISCO_INTL_AP"
+    },
+    {
+     "id": "00072585",
+     "source": "wmo",
+     "km": 29.7,
+     "elev": 13.0,
+     "name": "HAYWARD_AIR_TERMINAL"
+    }
+   ]
+  },
+  "miami": {
+   "lat": 25.77416,
+   "lon": -80.1936,
+   "country": "US",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00072202",
+     "source": "wmo",
+     "km": 12.4,
+     "elev": 9.0,
+     "name": "MIAMI_INTL_AP"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00072202",
+     "source": "wmo",
+     "km": 12.4,
+     "elev": 9.0,
+     "name": "MIAMI_INTL_AP"
+    },
+    {
+     "id": "00074783",
+     "source": "wmo",
+     "km": 33.4,
+     "elev": 3.0,
+     "name": "FT_LAUDERDALE_HOLLYWOOD_AP"
+    },
+    {
+     "id": "00072203",
+     "source": "wmo",
+     "km": 101.7,
+     "elev": 6.0,
+     "name": "WEST_PALM_BEACH_INTL_AP"
+    }
+   ]
+  },
+  "baku": {
+   "lat": 40.37559,
+   "lon": 49.8328,
+   "country": "AZ",
+   "staged": false,
+   "direct": [],
+   "calibrate": []
+  },
+  "gabala": {
+   "lat": 40.97859,
+   "lon": 47.84891,
+   "country": "AZ",
+   "staged": false,
+   "direct": [],
+   "calibrate": []
+  },
+  "guba": {
+   "lat": 41.36155,
+   "lon": 48.51424,
+   "country": "AZ",
+   "staged": false,
+   "direct": [],
+   "calibrate": []
+  },
+  "tbilisi": {
+   "lat": 41.69346,
+   "lon": 44.80145,
+   "country": "GE",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00037445",
+     "source": "wmo",
+     "km": 6.8,
+     "elev": 432.0,
+     "name": "Tbilisi"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00037445",
+     "source": "wmo",
+     "km": 6.8,
+     "elev": 432.0,
+     "name": "Tbilisi"
+    },
+    {
+     "id": "00037621",
+     "source": "wmo",
+     "km": 33.4,
+     "elev": 534.0,
+     "name": "Bolnisi"
+    },
+    {
+     "id": "00037556",
+     "source": "wmo",
+     "km": 43.2,
+     "elev": 806.0,
+     "name": "Sagarejo"
+    }
+   ]
+  },
+  "batumi": {
+   "lat": 41.65095,
+   "lon": 41.63601,
+   "country": "GE",
+   "staged": false,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00037481",
+     "source": "wmo",
+     "km": 26.9,
+     "elev": 5.0,
+     "name": "Qobuleti"
+    },
+    {
+     "id": "00017042",
+     "source": "wmo",
+     "km": 32.1,
+     "elev": 33.0,
+     "name": "Hopa"
+    },
+    {
+     "id": "00037379",
+     "source": "wmo",
+     "km": 41.4,
+     "elev": 1.0,
+     "name": "Poti"
+    }
+   ]
+  },
+  "kazbegi": {
+   "lat": 42.65799,
+   "lon": 44.64081,
+   "country": "GE",
+   "staged": false,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00037432",
+     "source": "wmo",
+     "km": 34.4,
+     "elev": 1080.0,
+     "name": "Pasanauri"
+    },
+    {
+     "id": "00037439",
+     "source": "wmo",
+     "km": 67.6,
+     "elev": 1105.0,
+     "name": "Tianeti"
+    },
+    {
+     "id": "00037531",
+     "source": "wmo",
+     "km": 86.5,
+     "elev": 609.0,
+     "name": "Gori"
+    }
+   ]
+  },
+  "cape-town": {
+   "lat": -33.92883,
+   "lon": 18.41722,
+   "country": "ZA",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00068816",
+     "source": "wmo",
+     "km": 17.5,
+     "elev": 42.0,
+     "name": "CapeTown"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00068816",
+     "source": "wmo",
+     "km": 17.5,
+     "elev": 42.0,
+     "name": "CapeTown"
+    }
+   ]
+  },
+  "johannesburg": {
+   "lat": -26.205,
+   "lon": 28.04972,
+   "country": "ZA",
+   "staged": false,
+   "direct": [],
+   "calibrate": []
+  },
+  "durban": {
+   "lat": -29.86181,
+   "lon": 31.00991,
+   "country": "ZA",
+   "staged": false,
+   "direct": [],
+   "calibrate": []
+  },
+  "nairobi": {
+   "lat": -1.289,
+   "lon": 36.81728,
+   "country": "KE",
+   "staged": false,
+   "direct": [],
+   "calibrate": []
+  },
+  "mombasa": {
+   "lat": -4.05052,
+   "lon": 39.66717,
+   "country": "KE",
+   "staged": false,
+   "direct": [],
+   "calibrate": []
+  },
+  "mexico-city": {
+   "lat": 19.43263,
+   "lon": -99.13318,
+   "country": "MX",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00076680",
+     "source": "wmo",
+     "km": 7.4,
+     "elev": 2309.0,
+     "name": "Tacubaya"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00076680",
+     "source": "wmo",
+     "km": 7.4,
+     "elev": 2309.0,
+     "name": "Tacubaya"
+    },
+    {
+     "id": "00076675",
+     "source": "wmo",
+     "km": 62.9,
+     "elev": 2726.0,
+     "name": "Toluca"
+    },
+    {
+     "id": "00076634",
+     "source": "wmo",
+     "km": 108.8,
+     "elev": 2214.0,
+     "name": "Tulancingo"
+    }
+   ]
+  },
+  "cancun": {
+   "lat": 21.15275,
+   "lon": -86.84258,
+   "country": "MX",
+   "staged": false,
+   "direct": [],
+   "calibrate": []
+  },
+  "guadalajara": {
+   "lat": 20.67204,
+   "lon": -103.3384,
+   "country": "MX",
+   "staged": false,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00076656",
+     "source": "wmo",
+     "km": 106.9,
+     "elev": 1515.0,
+     "name": "CiudadGuizman"
+    }
+   ]
+  },
+  "rio-de-janeiro": {
+   "lat": -22.91101,
+   "lon": -43.20937,
+   "country": "BR",
+   "staged": false,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00083692",
+     "source": "wmo",
+     "km": 127.9,
+     "elev": 936.9,
+     "name": "JUIZ_DE_FORA"
+    },
+    {
+     "id": "00083718",
+     "source": "wmo",
+     "km": 131.6,
+     "elev": 505.9,
+     "name": "CORDEIRO"
+    }
+   ]
+  },
+  "sao-paulo": {
+   "lat": -23.55065,
+   "lon": -46.63338,
+   "country": "BR",
+   "staged": false,
+   "direct": [],
+   "calibrate": []
+  },
+  "salvador": {
+   "lat": -12.98225,
+   "lon": -38.48128,
+   "country": "BR",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00083229",
+     "source": "wmo",
+     "km": 3.8,
+     "elev": 47.3,
+     "name": "SALVADOR_ONDINA"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00083229",
+     "source": "wmo",
+     "km": 3.8,
+     "elev": 47.3,
+     "name": "SALVADOR_ONDINA"
+    }
+   ]
+  },
+  "sydney": {
+   "lat": -33.86984,
+   "lon": 151.20828,
+   "country": "AU",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00094768",
+     "source": "wmo",
+     "km": 1.0,
+     "elev": 39.0,
+     "name": "SydneyObservatoryHill"
+    },
+    {
+     "id": "00094767",
+     "source": "wmo",
+     "km": 9.1,
+     "elev": 6.0,
+     "name": "SydneyAirport"
+    },
+    {
+     "id": "00095765",
+     "source": "wmo",
+     "km": 13.2,
+     "elev": 4.0,
+     "name": "SydneyOlympicPark"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00094768",
+     "source": "wmo",
+     "km": 1.0,
+     "elev": 39.0,
+     "name": "SydneyObservatoryHill"
+    },
+    {
+     "id": "00094767",
+     "source": "wmo",
+     "km": 9.1,
+     "elev": 6.0,
+     "name": "SydneyAirport"
+    },
+    {
+     "id": "00095765",
+     "source": "wmo",
+     "km": 13.2,
+     "elev": 4.0,
+     "name": "SydneyOlympicPark"
+    }
+   ]
+  },
+  "melbourne": {
+   "lat": -37.81425,
+   "lon": 144.96317,
+   "country": "AU",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00095936",
+     "source": "wmo",
+     "km": 2.1,
+     "elev": 7.0,
+     "name": "MelbourneOlympicPark"
+    },
+    {
+     "id": "00094865",
+     "source": "wmo",
+     "km": 18.8,
+     "elev": 20.0,
+     "name": "LavertonRAAF"
+    },
+    {
+     "id": "00094866",
+     "source": "wmo",
+     "km": 20.2,
+     "elev": 113.0,
+     "name": "MelbourneAirport"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00095936",
+     "source": "wmo",
+     "km": 2.1,
+     "elev": 7.0,
+     "name": "MelbourneOlympicPark"
+    },
+    {
+     "id": "00094865",
+     "source": "wmo",
+     "km": 18.8,
+     "elev": 20.0,
+     "name": "LavertonRAAF"
+    },
+    {
+     "id": "00094866",
+     "source": "wmo",
+     "km": 20.2,
+     "elev": 113.0,
+     "name": "MelbourneAirport"
+    }
+   ]
+  },
+  "brisbane": {
+   "lat": -27.46896,
+   "lon": 153.0235,
+   "country": "AU",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00094575",
+     "source": "wmo",
+     "km": 11.6,
+     "elev": 13.0,
+     "name": "ArcherfieldAirport"
+    },
+    {
+     "id": "00094578",
+     "source": "wmo",
+     "km": 13.5,
+     "elev": 5.0,
+     "name": "BrisbaneAero"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00094575",
+     "source": "wmo",
+     "km": 11.6,
+     "elev": 13.0,
+     "name": "ArcherfieldAirport"
+    },
+    {
+     "id": "00094578",
+     "source": "wmo",
+     "km": 13.5,
+     "elev": 5.0,
+     "name": "BrisbaneAero"
+    },
+    {
+     "id": "00095581",
+     "source": "wmo",
+     "km": 29.3,
+     "elev": 14.0,
+     "name": "LoganCity"
+    }
+   ]
+  },
+  "gold-coast": {
+   "lat": -28.00237,
+   "lon": 153.4146,
+   "country": "AU",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00094580",
+     "source": "wmo",
+     "km": 7.2,
+     "elev": 3.0,
+     "name": "GoldCoastSeaway"
+    },
+    {
+     "id": "00094592",
+     "source": "wmo",
+     "km": 20.4,
+     "elev": 4.0,
+     "name": "Coolangatta"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00094580",
+     "source": "wmo",
+     "km": 7.2,
+     "elev": 3.0,
+     "name": "GoldCoastSeaway"
+    },
+    {
+     "id": "00094592",
+     "source": "wmo",
+     "km": 20.4,
+     "elev": 4.0,
+     "name": "Coolangatta"
+    },
+    {
+     "id": "00094582",
+     "source": "wmo",
+     "km": 37.6,
+     "elev": 8.0,
+     "name": "Murwillumbah"
+    }
+   ]
+  },
+  "tunis": {
+   "lat": 36.80021,
+   "lon": 10.18578,
+   "country": "TN",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00060715",
+     "source": "wmo",
+     "km": 5.6,
+     "elev": 3.0,
+     "name": "TunisCarthage"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00060715",
+     "source": "wmo",
+     "km": 5.6,
+     "elev": 3.0,
+     "name": "TunisCarthage"
+    },
+    {
+     "id": "00060714",
+     "source": "wmo",
+     "km": 60.6,
+     "elev": 5.0,
+     "name": "Bizerte"
+    },
+    {
+     "id": "00060728",
+     "source": "wmo",
+     "km": 62.5,
+     "elev": 4.0,
+     "name": "Nabeul"
+    }
+   ]
+  },
+  "sousse": {
+   "lat": 35.82883,
+   "lon": 10.64053,
+   "country": "TN",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00060740",
+     "source": "wmo",
+     "km": 20.5,
+     "elev": 2.0,
+     "name": "Monastir"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00060740",
+     "source": "wmo",
+     "km": 20.5,
+     "elev": 2.0,
+     "name": "Monastir"
+    },
+    {
+     "id": "00060735",
+     "source": "wmo",
+     "km": 52.0,
+     "elev": 67.0,
+     "name": "Kairouan"
+    },
+    {
+     "id": "00060742",
+     "source": "wmo",
+     "km": 63.4,
+     "elev": 11.0,
+     "name": "Mahdia"
+    }
+   ]
+  },
+  "djerba": {
+   "lat": 33.7736,
+   "lon": 10.88619,
+   "country": "TN",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00060769",
+     "source": "wmo",
+     "km": 15.1,
+     "elev": 3.0,
+     "name": "Jerba"
+    },
+    {
+     "id": "00060772",
+     "source": "wmo",
+     "km": 23.9,
+     "elev": 242.0,
+     "name": "Tataouine"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00060769",
+     "source": "wmo",
+     "km": 15.1,
+     "elev": 3.0,
+     "name": "Jerba"
+    },
+    {
+     "id": "00060772",
+     "source": "wmo",
+     "km": 23.9,
+     "elev": 242.0,
+     "name": "Tataouine"
+    },
+    {
+     "id": "00060770",
+     "source": "wmo",
+     "km": 59.2,
+     "elev": 116.0,
+     "name": "Mednine"
+    }
+   ]
+  },
+  "beirut": {
+   "lat": 33.89592,
+   "lon": 35.47843,
+   "country": "LB",
+   "staged": false,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00040153",
+     "source": "wmo",
+     "km": 101.9,
+     "elev": 936.0,
+     "name": "ZEFAT"
+    },
+    {
+     "id": "00040080",
+     "source": "wmo",
+     "km": 109.7,
+     "elev": 610.0,
+     "name": "DamaskusIntAirport"
+    }
+   ]
+  },
+  "byblos": {
+   "lat": 34.1237,
+   "lon": 35.64936,
+   "country": "LB",
+   "staged": false,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00040080",
+     "source": "wmo",
+     "km": 111.7,
+     "elev": 610.0,
+     "name": "DamaskusIntAirport"
+    },
+    {
+     "id": "00040153",
+     "source": "wmo",
+     "km": 127.8,
+     "elev": 936.0,
+     "name": "ZEFAT"
+    },
+    {
+     "id": "00040025",
+     "source": "wmo",
+     "km": 145.3,
+     "elev": 48.0,
+     "name": "BaselAssadIntAirport"
+    }
+   ]
+  },
+  "baalbek": {
+   "lat": 34.00965,
+   "lon": 36.21171,
+   "country": "LB",
+   "staged": false,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00040080",
+     "source": "wmo",
+     "km": 70.7,
+     "elev": 610.0,
+     "name": "DamaskusIntAirport"
+    },
+    {
+     "id": "00040153",
+     "source": "wmo",
+     "km": 131.7,
+     "elev": 936.0,
+     "name": "ZEFAT"
+    },
+    {
+     "id": "00040029",
+     "source": "wmo",
+     "km": 135.5,
+     "elev": 448.0,
+     "name": "SALAMYA"
+    }
+   ]
+  },
+  "moscow": {
+   "lat": 55.75054,
+   "lon": 37.61748,
+   "country": "RU",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00027612",
+     "source": "wmo",
+     "km": 9.2,
+     "elev": 147.0,
+     "name": "Moskva"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00027612",
+     "source": "wmo",
+     "km": 9.2,
+     "elev": 147.0,
+     "name": "Moskva"
+    }
+   ]
+  },
+  "saint-petersburg": {
+   "lat": 59.93873,
+   "lon": 30.31623,
+   "country": "RU",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00026063",
+     "source": "wmo",
+     "km": 3.3,
+     "elev": 3.0,
+     "name": "StPetersburg"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00026063",
+     "source": "wmo",
+     "km": 3.3,
+     "elev": 3.0,
+     "name": "StPetersburg"
+    }
+   ]
+  },
+  "kazan": {
+   "lat": 55.79465,
+   "lon": 49.1115,
+   "country": "RU",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00027595",
+     "source": "wmo",
+     "km": 8.8,
+     "elev": 116.0,
+     "name": "Kazan"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00027595",
+     "source": "wmo",
+     "km": 8.8,
+     "elev": 116.0,
+     "name": "Kazan"
+    }
+   ]
+  },
+  "sochi": {
+   "lat": 43.58548,
+   "lon": 39.72311,
+   "country": "RU",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00037099",
+     "source": "wmo",
+     "km": 3.5,
+     "elev": 142.0,
+     "name": "Sotchi"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00037099",
+     "source": "wmo",
+     "km": 3.5,
+     "elev": 142.0,
+     "name": "Sotchi"
+    },
+    {
+     "id": "00037018",
+     "source": "wmo",
+     "km": 77.7,
+     "elev": 60.0,
+     "name": "Tuapse"
+    }
+   ]
+  },
+  "sarajevo": {
+   "lat": 43.85707,
+   "lon": 18.41261,
+   "country": "BA",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00014654",
+     "source": "wmo",
+     "km": 1.5,
+     "elev": 630.0,
+     "name": "SARAJEVO"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00014654",
+     "source": "wmo",
+     "km": 1.5,
+     "elev": 630.0,
+     "name": "SARAJEVO"
+    },
+    {
+     "id": "00014658",
+     "source": "wmo",
+     "km": 30.2,
+     "elev": 898.0,
+     "name": "Sokolac"
+    },
+    {
+     "id": "00014565",
+     "source": "wmo",
+     "km": 50.0,
+     "elev": 1125.0,
+     "name": "Han_Pijesak"
+    }
+   ]
+  },
+  "mostar": {
+   "lat": 43.34359,
+   "lon": 17.80766,
+   "country": "BA",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00014648",
+     "source": "wmo",
+     "km": 1.3,
+     "elev": 99.0,
+     "name": "MOSTAR"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00014648",
+     "source": "wmo",
+     "km": 1.3,
+     "elev": 99.0,
+     "name": "MOSTAR"
+    },
+    {
+     "id": "00014656",
+     "source": "wmo",
+     "km": 65.6,
+     "elev": 1305.0,
+     "name": "Cemerno"
+    },
+    {
+     "id": "00014667",
+     "source": "wmo",
+     "km": 72.6,
+     "elev": 441.0,
+     "name": "Bileca"
+    }
+   ]
+  },
+  "tirana": {
+   "lat": 41.32815,
+   "lon": 19.81844,
+   "country": "AL",
+   "staged": false,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00013464",
+     "source": "wmo",
+     "km": 83.0,
+     "elev": 29.0,
+     "name": "Ulcinj"
+    },
+    {
+     "id": "00013461",
+     "source": "wmo",
+     "km": 105.9,
+     "elev": 5.7,
+     "name": "Bar"
+    },
+    {
+     "id": "00013463",
+     "source": "wmo",
+     "km": 131.3,
+     "elev": 49.0,
+     "name": "Podgorica"
+    }
+   ]
+  },
+  "durres": {
+   "lat": 41.31325,
+   "lon": 19.44623,
+   "country": "AL",
+   "staged": false,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00013464",
+     "source": "wmo",
+     "km": 70.3,
+     "elev": 29.0,
+     "name": "Ulcinj"
+    },
+    {
+     "id": "00013461",
+     "source": "wmo",
+     "km": 93.1,
+     "elev": 5.7,
+     "name": "Bar"
+    },
+    {
+     "id": "00013463",
+     "source": "wmo",
+     "km": 125.8,
+     "elev": 49.0,
+     "name": "Podgorica"
+    }
+   ]
+  },
+  "saranda": {
+   "lat": 39.87522,
+   "lon": 20.00653,
+   "country": "AL",
+   "staged": false,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00016360",
+     "source": "wmo",
+     "km": 143.1,
+     "elev": 104.0,
+     "name": "Santa_Maria_di_Leuca"
+    }
+   ]
+  },
+  "kotor": {
+   "lat": 42.42492,
+   "lon": 18.77133,
+   "country": "ME",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00013455",
+     "source": "wmo",
+     "km": 18.9,
+     "elev": 10.0,
+     "name": "HercegNovi"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00013455",
+     "source": "wmo",
+     "km": 18.9,
+     "elev": 10.0,
+     "name": "HercegNovi"
+    },
+    {
+     "id": "00013459",
+     "source": "wmo",
+     "km": 41.0,
+     "elev": 647.0,
+     "name": "Niksic"
+    },
+    {
+     "id": "00013463",
+     "source": "wmo",
+     "km": 41.6,
+     "elev": 49.0,
+     "name": "Podgorica"
+    }
+   ]
+  },
+  "budva": {
+   "lat": 42.28857,
+   "lon": 18.84195,
+   "country": "ME",
+   "staged": false,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00013461",
+     "source": "wmo",
+     "km": 28.3,
+     "elev": 5.7,
+     "name": "Bar"
+    },
+    {
+     "id": "00013455",
+     "source": "wmo",
+     "km": 30.6,
+     "elev": 10.0,
+     "name": "HercegNovi"
+    },
+    {
+     "id": "00013463",
+     "source": "wmo",
+     "km": 39.5,
+     "elev": 49.0,
+     "name": "Podgorica"
+    }
+   ]
+  },
+  "podgorica": {
+   "lat": 42.44152,
+   "lon": 19.26211,
+   "country": "ME",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00013463",
+     "source": "wmo",
+     "km": 1.4,
+     "elev": 49.0,
+     "name": "Podgorica"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00013463",
+     "source": "wmo",
+     "km": 1.4,
+     "elev": 49.0,
+     "name": "Podgorica"
+    },
+    {
+     "id": "00013461",
+     "source": "wmo",
+     "km": 40.5,
+     "elev": 5.7,
+     "name": "Bar"
+    },
+    {
+     "id": "00013459",
+     "source": "wmo",
+     "km": 44.9,
+     "elev": 647.0,
+     "name": "Niksic"
+    }
+   ]
+  },
+  "belgrade": {
+   "lat": 44.81781,
+   "lon": 20.4569,
+   "country": "RS",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00013274",
+     "source": "wmo",
+     "km": 2.3,
+     "elev": 132.0,
+     "name": "Beograd"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00013274",
+     "source": "wmo",
+     "km": 2.3,
+     "elev": 132.0,
+     "name": "Beograd"
+    },
+    {
+     "id": "00013168",
+     "source": "wmo",
+     "km": 74.6,
+     "elev": 86.0,
+     "name": "NoviSad"
+    },
+    {
+     "id": "00014562",
+     "source": "wmo",
+     "km": 100.0,
+     "elev": 90.0,
+     "name": "Bijeljina"
+    }
+   ]
+  },
+  "novi-sad": {
+   "lat": 45.25513,
+   "lon": 19.84518,
+   "country": "RS",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00013168",
+     "source": "wmo",
+     "km": 7.5,
+     "elev": 86.0,
+     "name": "NoviSad"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00013168",
+     "source": "wmo",
+     "km": 7.5,
+     "elev": 86.0,
+     "name": "NoviSad"
+    },
+    {
+     "id": "00013274",
+     "source": "wmo",
+     "km": 70.4,
+     "elev": 132.0,
+     "name": "Beograd"
+    },
+    {
+     "id": "00014562",
+     "source": "wmo",
+     "km": 75.7,
+     "elev": 90.0,
+     "name": "Bijeljina"
+    }
+   ]
+  },
+  "zagreb": {
+   "lat": 45.8131,
+   "lon": 15.97728,
+   "country": "HR",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00014240",
+     "source": "wmo",
+     "km": 4.5,
+     "elev": 123.0,
+     "name": "ZagrebMaksimir"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00014240",
+     "source": "wmo",
+     "km": 4.5,
+     "elev": 123.0,
+     "name": "ZagrebMaksimir"
+    },
+    {
+     "id": "00014445",
+     "source": "wmo",
+     "km": 48.7,
+     "elev": 122.0,
+     "name": "Split_Marjan"
+    },
+    {
+     "id": "00014121",
+     "source": "wmo",
+     "km": 61.7,
+     "elev": 220.0,
+     "name": "Novomesto"
+    }
+   ]
+  },
+  "split": {
+   "lat": 43.51164,
+   "lon": 16.43997,
+   "country": "HR",
+   "staged": false,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00014544",
+     "source": "wmo",
+     "km": 101.6,
+     "elev": 562.0,
+     "name": "BUGOJNO"
+    },
+    {
+     "id": "00014648",
+     "source": "wmo",
+     "km": 110.8,
+     "elev": 99.0,
+     "name": "MOSTAR"
+    },
+    {
+     "id": "00014537",
+     "source": "wmo",
+     "km": 140.7,
+     "elev": 158.0,
+     "name": "SANSKI_MOST"
+    }
+   ]
+  },
+  "dubrovnik": {
+   "lat": 42.6491,
+   "lon": 18.09395,
+   "country": "HR",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00014668",
+     "source": "wmo",
+     "km": 21.7,
+     "elev": 300.0,
+     "name": "Trebinje"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00014668",
+     "source": "wmo",
+     "km": 21.7,
+     "elev": 300.0,
+     "name": "Trebinje"
+    },
+    {
+     "id": "00014667",
+     "source": "wmo",
+     "km": 36.1,
+     "elev": 441.0,
+     "name": "Bileca"
+    },
+    {
+     "id": "00013455",
+     "source": "wmo",
+     "km": 42.8,
+     "elev": 10.0,
+     "name": "HercegNovi"
+    }
+   ]
+  },
+  "prague": {
+   "lat": 50.08747,
+   "lon": 14.42125,
+   "country": "CZ",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00011520",
+     "source": "wmo",
+     "km": 9.0,
+     "elev": 302.0,
+     "name": "PrahaLibus"
+    },
+    {
+     "id": "00011567",
+     "source": "wmo",
+     "km": 9.2,
+     "elev": 284.5,
+     "name": "PrahaKbely"
+    },
+    {
+     "id": "00011518",
+     "source": "wmo",
+     "km": 11.9,
+     "elev": 364.0,
+     "name": "PrahaRuzyne"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00011520",
+     "source": "wmo",
+     "km": 9.0,
+     "elev": 302.0,
+     "name": "PrahaLibus"
+    },
+    {
+     "id": "00011567",
+     "source": "wmo",
+     "km": 9.2,
+     "elev": 284.5,
+     "name": "PrahaKbely"
+    },
+    {
+     "id": "00011518",
+     "source": "wmo",
+     "km": 11.9,
+     "elev": 364.0,
+     "name": "PrahaRuzyne"
+    }
+   ]
+  },
+  "karlovy-vary": {
+   "lat": 50.23062,
+   "lon": 12.87014,
+   "country": "CZ",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00011414",
+     "source": "wmo",
+     "km": 4.5,
+     "elev": 603.0,
+     "name": "KarlovyVary"
+    },
+    {
+     "id": "00010578",
+     "source": "wmo",
+     "km": 22.7,
+     "elev": 1213.0,
+     "name": "Fichtelberg"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00011414",
+     "source": "wmo",
+     "km": 4.5,
+     "elev": 603.0,
+     "name": "KarlovyVary"
+    },
+    {
+     "id": "00010578",
+     "source": "wmo",
+     "km": 22.7,
+     "elev": 1213.0,
+     "name": "Fichtelberg"
+    },
+    {
+     "id": "00010574",
+     "source": "wmo",
+     "km": 28.9,
+     "elev": 895.3,
+     "name": "Carlsfeld"
+    }
+   ]
+  },
+  "budapest": {
+   "lat": 47.49788,
+   "lon": 19.04024,
+   "country": "HU",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00012840",
+     "source": "wmo",
+     "km": 1.7,
+     "elev": 153.0,
+     "name": "BudapestBelterulet"
+    },
+    {
+     "id": "00012843",
+     "source": "wmo",
+     "km": 13.1,
+     "elev": 139.0,
+     "name": "BudapestPestszentlorinc"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00012840",
+     "source": "wmo",
+     "km": 1.7,
+     "elev": 153.0,
+     "name": "BudapestBelterulet"
+    },
+    {
+     "id": "00012843",
+     "source": "wmo",
+     "km": 13.1,
+     "elev": 139.0,
+     "name": "BudapestPestszentlorinc"
+    },
+    {
+     "id": "00012847",
+     "source": "wmo",
+     "km": 43.4,
+     "elev": 110.0,
+     "name": "Tat"
+    }
+   ]
+  },
+  "warsaw": {
+   "lat": 52.23196,
+   "lon": 21.00672,
+   "country": "PL",
+   "staged": false,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00012375",
+     "source": "wmo",
+     "km": 33.2,
+     "elev": 106.0,
+     "name": "WarszawaOkecie"
+    },
+    {
+     "id": "00012385",
+     "source": "wmo",
+     "km": 78.8,
+     "elev": 152.0,
+     "name": "Siedlce"
+    },
+    {
+     "id": "00012488",
+     "source": "wmo",
+     "km": 102.1,
+     "elev": 123.0,
+     "name": "Kozienice"
+    }
+   ]
+  },
+  "krakow": {
+   "lat": 50.06195,
+   "lon": 19.93686,
+   "country": "PL",
+   "staged": false,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00012566",
+     "source": "wmo",
+     "km": 32.6,
+     "elev": 237.0,
+     "name": "KrakowBalice"
+    },
+    {
+     "id": "00012575",
+     "source": "wmo",
+     "km": 46.9,
+     "elev": 209.0,
+     "name": "Tarnow"
+    },
+    {
+     "id": "00012570",
+     "source": "wmo",
+     "km": 57.9,
+     "elev": 260.0,
+     "name": "KielceSukow"
+    }
+   ]
+  },
+  "zakopane": {
+   "lat": 49.29691,
+   "lon": 19.95048,
+   "country": "PL",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00011918",
+     "source": "wmo",
+     "km": 21.3,
+     "elev": 692.0,
+     "name": "LIESEK"
+    },
+    {
+     "id": "00011933",
+     "source": "wmo",
+     "km": 21.5,
+     "elev": 1319.0,
+     "name": "STRBSKE_PLESO"
+    },
+    {
+     "id": "00011930",
+     "source": "wmo",
+     "km": 22.2,
+     "elev": 2635.0,
+     "name": "LOMNICKY_STIT"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00011918",
+     "source": "wmo",
+     "km": 21.3,
+     "elev": 692.0,
+     "name": "LIESEK"
+    },
+    {
+     "id": "00011933",
+     "source": "wmo",
+     "km": 21.5,
+     "elev": 1319.0,
+     "name": "STRBSKE_PLESO"
+    },
+    {
+     "id": "00011930",
+     "source": "wmo",
+     "km": 22.2,
+     "elev": 2635.0,
+     "name": "LOMNICKY_STIT"
+    }
+   ]
+  },
+  "dublin": {
+   "lat": 53.34938,
+   "lon": -6.26056,
+   "country": "IE",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00003969",
+     "source": "wmo",
+     "km": 8.8,
+     "elev": 71.0,
+     "name": "DublinAirport"
+    },
+    {
+     "id": "00003967",
+     "source": "wmo",
+     "km": 12.8,
+     "elev": 91.0,
+     "name": "CasementAerodrome"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00003969",
+     "source": "wmo",
+     "km": 8.8,
+     "elev": 71.0,
+     "name": "DublinAirport"
+    },
+    {
+     "id": "00003967",
+     "source": "wmo",
+     "km": 12.8,
+     "elev": 91.0,
+     "name": "CasementAerodrome"
+    },
+    {
+     "id": "00003923",
+     "source": "wmo",
+     "km": 100.0,
+     "elev": 161.0,
+     "name": "GlenanneNo2"
+    }
+   ]
+  },
+  "galway": {
+   "lat": 53.27441,
+   "lon": -9.04906,
+   "country": "IE",
+   "staged": false,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00003962",
+     "source": "wmo",
+     "km": 65.6,
+     "elev": 15.0,
+     "name": "ShannonAirport"
+    },
+    {
+     "id": "00003976",
+     "source": "wmo",
+     "km": 123.3,
+     "elev": 9.0,
+     "name": "Belmullet"
+    }
+   ]
+  },
+  "brussels": {
+   "lat": 50.84674,
+   "lon": 4.35249,
+   "country": "BE",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00006447",
+     "source": "wmo",
+     "km": 5.5,
+     "elev": 99.0,
+     "name": "UCCLE"
+    },
+    {
+     "id": "00006451",
+     "source": "wmo",
+     "km": 13.4,
+     "elev": 56.0,
+     "name": "BRUSSELSNATIONALAIRPORT"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00006447",
+     "source": "wmo",
+     "km": 5.5,
+     "elev": 99.0,
+     "name": "UCCLE"
+    },
+    {
+     "id": "00006451",
+     "source": "wmo",
+     "km": 13.4,
+     "elev": 56.0,
+     "name": "BRUSSELSNATIONALAIRPORT"
+    },
+    {
+     "id": "00006458",
+     "source": "wmo",
+     "km": 31.0,
+     "elev": 113.0,
+     "name": "BEAUVECHAIN"
+    }
+   ]
+  },
+  "bruges": {
+   "lat": 51.20855,
+   "lon": 3.22677,
+   "country": "BE",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00006407",
+     "source": "wmo",
+     "km": 23.7,
+     "elev": 3.0,
+     "name": "OOSTENDEAIRPORT"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00006407",
+     "source": "wmo",
+     "km": 23.7,
+     "elev": 3.0,
+     "name": "OOSTENDEAIRPORT"
+    },
+    {
+     "id": "00006310",
+     "source": "wmo",
+     "km": 36.4,
+     "elev": 8.0,
+     "name": "VlissingenAws"
+    },
+    {
+     "id": "00006400",
+     "source": "wmo",
+     "km": 42.2,
+     "elev": 6.0,
+     "name": "KOKSIJDE"
+    }
+   ]
+  },
+  "stockholm": {
+   "lat": 59.32512,
+   "lon": 18.07109,
+   "country": "SE",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00002485",
+     "source": "wmo",
+     "km": 2.1,
+     "elev": 43.0,
+     "name": "Stockholm_Observatoriekullen"
+    },
+    {
+     "id": "00002484",
+     "source": "wmo",
+     "km": 2.1,
+     "elev": 43.0,
+     "name": "Stockholm_Observatoriekullen_A"
+    },
+    {
+     "id": "00002464",
+     "source": "wmo",
+     "km": 7.5,
+     "elev": 14.0,
+     "name": "Stockholm_Bromma_Flygplats"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00002485",
+     "source": "wmo",
+     "km": 2.1,
+     "elev": 43.0,
+     "name": "Stockholm_Observatoriekullen"
+    },
+    {
+     "id": "00002484",
+     "source": "wmo",
+     "km": 2.1,
+     "elev": 43.0,
+     "name": "Stockholm_Observatoriekullen_A"
+    },
+    {
+     "id": "00002464",
+     "source": "wmo",
+     "km": 7.5,
+     "elev": 14.0,
+     "name": "Stockholm_Bromma_Flygplats"
+    }
+   ]
+  },
+  "oslo": {
+   "lat": 59.91333,
+   "lon": 10.73897,
+   "country": "NO",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00001492",
+     "source": "wmo",
+     "km": 3.4,
+     "elev": 94.0,
+     "name": "OSLO_BLINDERN"
+    },
+    {
+     "id": "00001486",
+     "source": "wmo",
+     "km": 18.1,
+     "elev": 163.0,
+     "name": "ASKER"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00001492",
+     "source": "wmo",
+     "km": 3.4,
+     "elev": 94.0,
+     "name": "OSLO_BLINDERN"
+    },
+    {
+     "id": "00001486",
+     "source": "wmo",
+     "km": 18.1,
+     "elev": 163.0,
+     "name": "ASKER"
+    },
+    {
+     "id": "00001463",
+     "source": "wmo",
+     "km": 28.2,
+     "elev": 92.0,
+     "name": "AS"
+    }
+   ]
+  },
+  "bergen": {
+   "lat": 60.39431,
+   "lon": 5.32592,
+   "country": "NO",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00001317",
+     "source": "wmo",
+     "km": 1.3,
+     "elev": 12.0,
+     "name": "BERGEN_FLORIDA"
+    },
+    {
+     "id": "00001311",
+     "source": "wmo",
+     "km": 12.9,
+     "elev": 48.0,
+     "name": "FLESLAND"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00001317",
+     "source": "wmo",
+     "km": 1.3,
+     "elev": 12.0,
+     "name": "BERGEN_FLORIDA"
+    },
+    {
+     "id": "00001311",
+     "source": "wmo",
+     "km": 12.9,
+     "elev": 48.0,
+     "name": "FLESLAND"
+    },
+    {
+     "id": "00001406",
+     "source": "wmo",
+     "km": 55.9,
+     "elev": 25.0,
+     "name": "SLATTEROY_FYR"
+    }
+   ]
+  },
+  "tromso": {
+   "lat": 69.65163,
+   "lon": 18.95586,
+   "country": "NO",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00001026",
+     "source": "wmo",
+     "km": 0.8,
+     "elev": 100.0,
+     "name": "TROMSO"
+    },
+    {
+     "id": "00001025",
+     "source": "wmo",
+     "km": 3.3,
+     "elev": 8.0,
+     "name": "TROMSO_LANGNES"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00001026",
+     "source": "wmo",
+     "km": 0.8,
+     "elev": 100.0,
+     "name": "TROMSO"
+    },
+    {
+     "id": "00001025",
+     "source": "wmo",
+     "km": 3.3,
+     "elev": 8.0,
+     "name": "TROMSO_LANGNES"
+    },
+    {
+     "id": "00001015",
+     "source": "wmo",
+     "km": 43.9,
+     "elev": 14.0,
+     "name": "HEKKINGEN_FYR"
+    }
+   ]
+  },
+  "copenhagen": {
+   "lat": 55.68672,
+   "lon": 12.57007,
+   "country": "DK",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00002614",
+     "source": "wmo",
+     "km": 20.6,
+     "elev": 1.0,
+     "name": "Oskarsgrundet_Aut"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00002614",
+     "source": "wmo",
+     "km": 20.6,
+     "elev": 1.0,
+     "name": "Oskarsgrundet_Aut"
+    },
+    {
+     "id": "00002610",
+     "source": "wmo",
+     "km": 28.6,
+     "elev": 11.0,
+     "name": "Orja_Aut"
+    },
+    {
+     "id": "00002635",
+     "source": "wmo",
+     "km": 34.0,
+     "elev": 20.0,
+     "name": "Malmo_A"
+    }
+   ]
+  },
+  "helsinki": {
+   "lat": 60.16662,
+   "lon": 24.94354,
+   "country": "FI",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00002978",
+     "source": "wmo",
+     "km": 0.9,
+     "elev": 3.0,
+     "name": "HelsinkiKaisaniemi"
+    },
+    {
+     "id": "00002795",
+     "source": "wmo",
+     "km": 7.1,
+     "elev": 6.0,
+     "name": "HelsinkiHarmaja"
+    },
+    {
+     "id": "00002974",
+     "source": "wmo",
+     "km": 17.8,
+     "elev": 51.0,
+     "name": "VantaaHelsinkiVantaanLentoasem"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00002978",
+     "source": "wmo",
+     "km": 0.9,
+     "elev": 3.0,
+     "name": "HelsinkiKaisaniemi"
+    },
+    {
+     "id": "00002795",
+     "source": "wmo",
+     "km": 7.1,
+     "elev": 6.0,
+     "name": "HelsinkiHarmaja"
+    },
+    {
+     "id": "00002974",
+     "source": "wmo",
+     "km": 17.8,
+     "elev": 51.0,
+     "name": "VantaaHelsinkiVantaanLentoasem"
+    }
+   ]
+  },
+  "rovaniemi": {
+   "lat": 66.50255,
+   "lon": 25.73039,
+   "country": "FI",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00002845",
+     "source": "wmo",
+     "km": 8.1,
+     "elev": 189.0,
+     "name": "RovaniemiLentoasema"
+    },
+    {
+     "id": "00002813",
+     "source": "wmo",
+     "km": 15.1,
+     "elev": 106.0,
+     "name": "RovaniemiApukka"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00002845",
+     "source": "wmo",
+     "km": 8.1,
+     "elev": 189.0,
+     "name": "RovaniemiLentoasema"
+    },
+    {
+     "id": "00002813",
+     "source": "wmo",
+     "km": 15.1,
+     "elev": 106.0,
+     "name": "RovaniemiApukka"
+    },
+    {
+     "id": "00002812",
+     "source": "wmo",
+     "km": 48.0,
+     "elev": 93.0,
+     "name": "Ylitornio_Meltosjarvi"
+    }
+   ]
+  },
+  "ljubljana": {
+   "lat": 46.05003,
+   "lon": 14.50693,
+   "country": "SI",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00014015",
+     "source": "wmo",
+     "km": 1.9,
+     "elev": 299.0,
+     "name": "LjubljanaBezigrad"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00014015",
+     "source": "wmo",
+     "km": 1.9,
+     "elev": 299.0,
+     "name": "LjubljanaBezigrad"
+    },
+    {
+     "id": "00014121",
+     "source": "wmo",
+     "km": 59.0,
+     "elev": 220.0,
+     "name": "Novomesto"
+    },
+    {
+     "id": "00014023",
+     "source": "wmo",
+     "km": 59.5,
+     "elev": 242.0,
+     "name": "Celje"
+    }
+   ]
+  },
+  "bled": {
+   "lat": 46.36842,
+   "lon": 14.11006,
+   "country": "SI",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00014008",
+     "source": "wmo",
+     "km": 19.7,
+     "elev": 2513.0,
+     "name": "Kredarica"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00014008",
+     "source": "wmo",
+     "km": 19.7,
+     "elev": 2513.0,
+     "name": "Kredarica"
+    },
+    {
+     "id": "00014007",
+     "source": "wmo",
+     "km": 33.4,
+     "elev": 864.0,
+     "name": "Ratece"
+    },
+    {
+     "id": "00011231",
+     "source": "wmo",
+     "km": 34.9,
+     "elev": 450.0,
+     "name": "Klagenfurt"
+    }
+   ]
+  },
+  "larnaca": {
+   "lat": 34.92361,
+   "lon": 33.62362,
+   "country": "CY",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00017609",
+     "source": "wmo",
+     "km": 5.5,
+     "elev": 2.0,
+     "name": "LarnakaAirport"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00017609",
+     "source": "wmo",
+     "km": 5.5,
+     "elev": 2.0,
+     "name": "LarnakaAirport"
+    },
+    {
+     "id": "00017607",
+     "source": "wmo",
+     "km": 31.8,
+     "elev": 162.0,
+     "name": "AthalassaRadiosonde"
+    },
+    {
+     "id": "00017600",
+     "source": "wmo",
+     "km": 105.5,
+     "elev": 9.0,
+     "name": "PafosAirport"
+    }
+   ]
+  },
+  "limassol": {
+   "lat": 34.68529,
+   "lon": 33.03327,
+   "country": "CY",
+   "staged": false,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00017600",
+     "source": "wmo",
+     "km": 49.2,
+     "elev": 9.0,
+     "name": "PafosAirport"
+    },
+    {
+     "id": "00017609",
+     "source": "wmo",
+     "km": 57.3,
+     "elev": 2.0,
+     "name": "LarnakaAirport"
+    },
+    {
+     "id": "00017607",
+     "source": "wmo",
+     "km": 60.6,
+     "elev": 162.0,
+     "name": "AthalassaRadiosonde"
+    }
+   ]
+  },
+  "paphos": {
+   "lat": 34.7744,
+   "lon": 32.42316,
+   "country": "CY",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00017600",
+     "source": "wmo",
+     "km": 9.3,
+     "elev": 9.0,
+     "name": "PafosAirport"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00017600",
+     "source": "wmo",
+     "km": 9.3,
+     "elev": 9.0,
+     "name": "PafosAirport"
+    },
+    {
+     "id": "00017607",
+     "source": "wmo",
+     "km": 97.7,
+     "elev": 162.0,
+     "name": "AthalassaRadiosonde"
+    },
+    {
+     "id": "00017609",
+     "source": "wmo",
+     "km": 109.5,
+     "elev": 2.0,
+     "name": "LarnakaAirport"
+    }
+   ]
+  },
+  "valletta": {
+   "lat": 35.899,
+   "lon": 14.51366,
+   "country": "MT",
+   "staged": false,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00016480",
+     "source": "wmo",
+     "km": 103.5,
+     "elev": 46.0,
+     "name": "Cozzo_Spadaro"
+    },
+    {
+     "id": "00016453",
+     "source": "wmo",
+     "km": 133.4,
+     "elev": 58.0,
+     "name": "Gela"
+    }
+   ]
+  },
+  "bucharest": {
+   "lat": 44.43614,
+   "lon": 26.10268,
+   "country": "RO",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00015420",
+     "source": "wmo",
+     "km": 8.4,
+     "elev": 90.0,
+     "name": "BucurestiBaneasa"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00015420",
+     "source": "wmo",
+     "km": 8.4,
+     "elev": 90.0,
+     "name": "BucurestiBaneasa"
+    },
+    {
+     "id": "00015470",
+     "source": "wmo",
+     "km": 96.7,
+     "elev": 102.2,
+     "name": "RosiorideVede"
+    },
+    {
+     "id": "00015350",
+     "source": "wmo",
+     "km": 97.5,
+     "elev": 97.0,
+     "name": "Buzau"
+    }
+   ]
+  },
+  "brasov": {
+   "lat": 45.65251,
+   "lon": 25.61057,
+   "country": "RO",
+   "staged": false,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00015280",
+     "source": "wmo",
+     "km": 25.9,
+     "elev": 2504.0,
+     "name": "VarfuOmu"
+    },
+    {
+     "id": "00015170",
+     "source": "wmo",
+     "km": 80.9,
+     "elev": 661.0,
+     "name": "MiercureaCiuc"
+    },
+    {
+     "id": "00015350",
+     "source": "wmo",
+     "km": 112.8,
+     "elev": 97.0,
+     "name": "Buzau"
+    }
+   ]
+  },
+  "reykjavik": {
+   "lat": 64.14598,
+   "lon": -21.94224,
+   "country": "IS",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00004030",
+     "source": "wmo",
+     "km": 2.8,
+     "elev": 52.0,
+     "name": "Reykjavik"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00004030",
+     "source": "wmo",
+     "km": 2.8,
+     "elev": 52.0,
+     "name": "Reykjavik"
+    },
+    {
+     "id": "00004018",
+     "source": "wmo",
+     "km": 36.7,
+     "elev": 47.0,
+     "name": "Keflavik"
+    },
+    {
+     "id": "00004042",
+     "source": "wmo",
+     "km": 78.8,
+     "elev": 89.0,
+     "name": "Hjardarland"
+    }
+   ]
+  },
+  "yerevan": {
+   "lat": 40.17771,
+   "lon": 44.51262,
+   "country": "AM",
+   "staged": false,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00017100",
+     "source": "wmo",
+     "km": 48.4,
+     "elev": 856.0,
+     "name": "Igdir"
+    },
+    {
+     "id": "00017720",
+     "source": "wmo",
+     "km": 82.5,
+     "elev": 1640.0,
+     "name": "Dogubeyazit"
+    },
+    {
+     "id": "00040701",
+     "source": "wmo",
+     "km": 89.4,
+     "elev": 1411.2,
+     "name": "Maku"
+    }
+   ]
+  },
+  "almaty": {
+   "lat": 43.23639,
+   "lon": 76.94573,
+   "country": "KZ",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00036870",
+     "source": "wmo",
+     "km": 1.1,
+     "elev": 846.9,
+     "name": "ALMATYOGMS"
+    },
+    {
+     "id": "00036879",
+     "source": "wmo",
+     "km": 19.9,
+     "elev": 2500.7,
+     "name": "UlkenAlmatylake"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00036870",
+     "source": "wmo",
+     "km": 1.1,
+     "elev": 846.9,
+     "name": "ALMATYOGMS"
+    },
+    {
+     "id": "00036879",
+     "source": "wmo",
+     "km": 19.9,
+     "elev": 2500.7,
+     "name": "UlkenAlmatylake"
+    },
+    {
+     "id": "00036889",
+     "source": "wmo",
+     "km": 25.5,
+     "elev": 3017.0,
+     "name": "MYNZHILKI"
+    }
+   ]
+  },
+  "astana": {
+   "lat": 51.12828,
+   "lon": 71.43047,
+   "country": "KZ",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00035188",
+     "source": "wmo",
+     "km": 5.3,
+     "elev": 347.2,
+     "name": "Nur-Sultan"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00035188",
+     "source": "wmo",
+     "km": 5.3,
+     "elev": 347.2,
+     "name": "Nur-Sultan"
+    },
+    {
+     "id": "00035283",
+     "source": "wmo",
+     "km": 58.2,
+     "elev": 426.0,
+     "name": "Arshaly"
+    },
+    {
+     "id": "00035085",
+     "source": "wmo",
+     "km": 101.7,
+     "elev": 383.0,
+     "name": "Akkol"
+    }
+   ]
+  },
+  "tashkent": {
+   "lat": 41.31234,
+   "lon": 69.27871,
+   "country": "UZ",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00038457",
+     "source": "wmo",
+     "km": 2.9,
+     "elev": 477.0,
+     "name": "Tashkent"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00038457",
+     "source": "wmo",
+     "km": 2.9,
+     "elev": 477.0,
+     "name": "Tashkent"
+    },
+    {
+     "id": "00038452",
+     "source": "wmo",
+     "km": 49.0,
+     "elev": 597.0,
+     "name": "Kazygurt"
+    },
+    {
+     "id": "00038706",
+     "source": "wmo",
+     "km": 67.0,
+     "elev": 1670.0,
+     "name": "Chimgan"
+    }
+   ]
+  },
+  "samarkand": {
+   "lat": 39.655,
+   "lon": 66.9757,
+   "country": "UZ",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00038696",
+     "source": "wmo",
+     "km": 3.3,
+     "elev": 725.0,
+     "name": "Samarkand"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00038696",
+     "source": "wmo",
+     "km": 3.3,
+     "elev": 725.0,
+     "name": "Samarkand"
+    },
+    {
+     "id": "00038699",
+     "source": "wmo",
+     "km": 45.7,
+     "elev": 625.3,
+     "name": "Shahrisabz"
+    },
+    {
+     "id": "00038563",
+     "source": "wmo",
+     "km": 73.8,
+     "elev": 736.9,
+     "name": "Kushrabad"
+    }
+   ]
+  },
+  "bukhara": {
+   "lat": 39.77598,
+   "lon": 64.41515,
+   "country": "UZ",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00038683",
+     "source": "wmo",
+     "km": 18.5,
+     "elev": 224.0,
+     "name": "Buhara"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00038683",
+     "source": "wmo",
+     "km": 18.5,
+     "elev": 224.0,
+     "name": "Buhara"
+    },
+    {
+     "id": "00038697",
+     "source": "wmo",
+     "km": 86.0,
+     "elev": 284.7,
+     "name": "Mubarek"
+    },
+    {
+     "id": "00038567",
+     "source": "wmo",
+     "km": 89.0,
+     "elev": 340.5,
+     "name": "Navoiy"
+    }
+   ]
+  },
+  "bishkek": {
+   "lat": 42.87614,
+   "lon": 74.60367,
+   "country": "KG",
+   "staged": false,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00038229",
+     "source": "wmo",
+     "km": 56.1,
+     "elev": 1140.0,
+     "name": "Korday"
+    },
+    {
+     "id": "00036865",
+     "source": "wmo",
+     "km": 87.6,
+     "elev": 742.2,
+     "name": "Otar"
+    },
+    {
+     "id": "00038223",
+     "source": "wmo",
+     "km": 106.3,
+     "elev": 768.0,
+     "name": "Shokpar"
+    }
+   ]
+  },
+  "karakol": {
+   "lat": 42.49174,
+   "lon": 78.39686,
+   "country": "KG",
+   "staged": false,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00036899",
+     "source": "wmo",
+     "km": 65.5,
+     "elev": 1698.0,
+     "name": "Zhalanash"
+    },
+    {
+     "id": "00036897",
+     "source": "wmo",
+     "km": 89.5,
+     "elev": 2215.6,
+     "name": "Assy"
+    },
+    {
+     "id": "00036894",
+     "source": "wmo",
+     "km": 124.1,
+     "elev": 606.0,
+     "name": "SHELEK"
+    }
+   ]
+  },
+  "islamabad": {
+   "lat": 33.69381,
+   "lon": 73.06515,
+   "country": "PK",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00041571",
+     "source": "wmo",
+     "km": 9.1,
+     "elev": 507.0,
+     "name": "Islamabad"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00041571",
+     "source": "wmo",
+     "km": 9.1,
+     "elev": 507.0,
+     "name": "Islamabad"
+    },
+    {
+     "id": "00041598",
+     "source": "wmo",
+     "km": 104.0,
+     "elev": 232.0,
+     "name": "Jhelum"
+    },
+    {
+     "id": "00041529",
+     "source": "wmo",
+     "km": 111.1,
+     "elev": 329.0,
+     "name": "Peshawar"
+    }
+   ]
+  },
+  "lahore": {
+   "lat": 31.56568,
+   "lon": 74.31418,
+   "country": "PK",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00041640",
+     "source": "wmo",
+     "km": 2.5,
+     "elev": 214.0,
+     "name": "Lahore"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00041640",
+     "source": "wmo",
+     "km": 2.5,
+     "elev": 214.0,
+     "name": "Lahore"
+    },
+    {
+     "id": "00041600",
+     "source": "wmo",
+     "km": 105.9,
+     "elev": 255.0,
+     "name": "Sialkot"
+    },
+    {
+     "id": "00042056",
+     "source": "wmo",
+     "km": 131.8,
+     "elev": 367.0,
+     "name": "JAMMU"
+    }
+   ]
+  },
+  "kathmandu": {
+   "lat": 27.70832,
+   "lon": 85.32058,
+   "country": "NP",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00044454",
+     "source": "wmo",
+     "km": 3.5,
+     "elev": 1337.0,
+     "name": "Kathmandu"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00044454",
+     "source": "wmo",
+     "km": 3.5,
+     "elev": 1337.0,
+     "name": "Kathmandu"
+    },
+    {
+     "id": "00044449",
+     "source": "wmo",
+     "km": 69.2,
+     "elev": 137.0,
+     "name": "Simara"
+    },
+    {
+     "id": "00044462",
+     "source": "wmo",
+     "km": 124.9,
+     "elev": 1731.0,
+     "name": "Okhaldhunga"
+    }
+   ]
+  },
+  "pokhara": {
+   "lat": 28.20954,
+   "lon": 83.9914,
+   "country": "NP",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00044434",
+     "source": "wmo",
+     "km": 1.6,
+     "elev": 827.0,
+     "name": "Pokhara"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00044434",
+     "source": "wmo",
+     "km": 1.6,
+     "elev": 827.0,
+     "name": "Pokhara"
+    },
+    {
+     "id": "00044438",
+     "source": "wmo",
+     "km": 96.2,
+     "elev": 108.0,
+     "name": "Bhairahawa"
+    },
+    {
+     "id": "00044454",
+     "source": "wmo",
+     "km": 145.3,
+     "elev": 1337.0,
+     "name": "Kathmandu"
+    }
+   ]
+  },
+  "manila": {
+   "lat": 14.59045,
+   "lon": 120.98036,
+   "country": "PH",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00098425",
+     "source": "wmo",
+     "km": 1.7,
+     "elev": 15.0,
+     "name": "PortAreaManila"
+    },
+    {
+     "id": "00098430",
+     "source": "wmo",
+     "km": 7.4,
+     "elev": 42.0,
+     "name": "ScienceGardenQuezonCityMetroMa"
+    },
+    {
+     "id": "00098428",
+     "source": "wmo",
+     "km": 14.8,
+     "elev": -876.5,
+     "name": "SangleyPointCavite"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00098425",
+     "source": "wmo",
+     "km": 1.7,
+     "elev": 15.0,
+     "name": "PortAreaManila"
+    },
+    {
+     "id": "00098430",
+     "source": "wmo",
+     "km": 7.4,
+     "elev": 42.0,
+     "name": "ScienceGardenQuezonCityMetroMa"
+    },
+    {
+     "id": "00098428",
+     "source": "wmo",
+     "km": 14.8,
+     "elev": -876.5,
+     "name": "SangleyPointCavite"
+    }
+   ]
+  },
+  "cebu": {
+   "lat": 10.29349,
+   "lon": 123.90182,
+   "country": "PH",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00098646",
+     "source": "wmo",
+     "km": 5.9,
+     "elev": 24.3,
+     "name": "MactanInternationalAirportCebu"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00098646",
+     "source": "wmo",
+     "km": 5.9,
+     "elev": 24.3,
+     "name": "MactanInternationalAirportCebu"
+    },
+    {
+     "id": "00098648",
+     "source": "wmo",
+     "km": 105.3,
+     "elev": 72.0,
+     "name": "MaasinSouthernLeyte"
+    },
+    {
+     "id": "00098642",
+     "source": "wmo",
+     "km": 125.5,
+     "elev": 8.0,
+     "name": "DumagueteCityNegrosOriental"
+    }
+   ]
+  },
+  "boracay": {
+   "lat": 11.96937,
+   "lon": 121.92273,
+   "country": "PH",
+   "staged": false,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00098536",
+     "source": "wmo",
+     "km": 76.3,
+     "elev": 176.6,
+     "name": "RomblonCityRomblon"
+    },
+    {
+     "id": "00098538",
+     "source": "wmo",
+     "km": 97.3,
+     "elev": 4.0,
+     "name": "RoxasCityCapiz"
+    }
+   ]
+  },
+  "siem-reap": {
+   "lat": 13.36176,
+   "lon": 103.85903,
+   "country": "KH",
+   "staged": false,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00048462",
+     "source": "wmo",
+     "km": 143.0,
+     "elev": 47.0,
+     "name": "AranyaPrathet"
+    }
+   ]
+  },
+  "phnom-penh": {
+   "lat": 11.56827,
+   "lon": 104.92244,
+   "country": "KH",
+   "staged": false,
+   "direct": [],
+   "calibrate": []
+  },
+  "zanzibar": {
+   "lat": -6.16649,
+   "lon": 39.20743,
+   "country": "TZ",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00063870",
+     "source": "wmo",
+     "km": 6.1,
+     "elev": 18.0,
+     "name": "ZANZIBAR"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00063870",
+     "source": "wmo",
+     "km": 6.1,
+     "elev": 18.0,
+     "name": "ZANZIBAR"
+    },
+    {
+     "id": "00063894",
+     "source": "wmo",
+     "km": 78.2,
+     "elev": 53.0,
+     "name": "DAR_ES_SALAAM"
+    }
+   ]
+  },
+  "arusha": {
+   "lat": -3.36968,
+   "lon": 36.68808,
+   "country": "TZ",
+   "staged": false,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00063791",
+     "source": "wmo",
+     "km": 42.8,
+     "elev": 891.0,
+     "name": "KILIMANJARO"
+    }
+   ]
+  },
+  "port-louis": {
+   "lat": -20.16245,
+   "lon": 57.5028,
+   "country": "MU",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00061995",
+     "source": "wmo",
+     "km": 15.1,
+     "elev": 423.0,
+     "name": "Vacoas"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00061995",
+     "source": "wmo",
+     "km": 15.1,
+     "elev": 423.0,
+     "name": "Vacoas"
+    },
+    {
+     "id": "00061990",
+     "source": "wmo",
+     "km": 35.7,
+     "elev": 50.0,
+     "name": "Plaisance"
+    }
+   ]
+  },
+  "grand-baie": {
+   "lat": -20.01302,
+   "lon": 57.58463,
+   "country": "MU",
+   "staged": false,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00061995",
+     "source": "wmo",
+     "km": 33.0,
+     "elev": 423.0,
+     "name": "Vacoas"
+    },
+    {
+     "id": "00061990",
+     "source": "wmo",
+     "km": 48.0,
+     "elev": 50.0,
+     "name": "Plaisance"
+    }
+   ]
+  },
+  "mahe": {
+   "lat": -4.6838,
+   "lon": 55.49264,
+   "country": "SC",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00063980",
+     "source": "wmo",
+     "km": 2.8,
+     "elev": 3.0,
+     "name": "SeychellesIntlAirport"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00063980",
+     "source": "wmo",
+     "km": 2.8,
+     "elev": 3.0,
+     "name": "SeychellesIntlAirport"
+    }
+   ]
+  },
+  "toronto": {
+   "lat": 43.65348,
+   "lon": -79.38393,
+   "country": "CA",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00071508",
+     "source": "wmo",
+     "km": 1.6,
+     "elev": 113.0,
+     "name": "Toronto_City"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00071508",
+     "source": "wmo",
+     "km": 1.6,
+     "elev": 113.0,
+     "name": "Toronto_City"
+    },
+    {
+     "id": "00071296",
+     "source": "wmo",
+     "km": 71.8,
+     "elev": 251.0,
+     "name": "Egbert_Cs"
+    },
+    {
+     "id": "00072528",
+     "source": "wmo",
+     "km": 94.2,
+     "elev": 211.0,
+     "name": "BUFFALO"
+    }
+   ]
+  },
+  "vancouver": {
+   "lat": 49.26087,
+   "lon": -123.11395,
+   "country": "CA",
+   "staged": false,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00071207",
+     "source": "wmo",
+     "km": 58.2,
+     "elev": 54.0,
+     "name": "Squamish_Airport"
+    },
+    {
+     "id": "00071783",
+     "source": "wmo",
+     "km": 90.5,
+     "elev": 60.0,
+     "name": "Victoria_University_Cs"
+    }
+   ]
+  },
+  "montreal": {
+   "lat": 45.50318,
+   "lon": -73.56981,
+   "country": "CA",
+   "staged": false,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00072617",
+     "source": "wmo",
+     "km": 119.7,
+     "elev": 101.0,
+     "name": "BURLINGTON_INTL_AP"
+    }
+   ]
+  },
+  "banff": {
+   "lat": 51.17508,
+   "lon": -115.57208,
+   "country": "CA",
+   "staged": false,
+   "direct": [
+    {
+     "id": "00071122",
+     "source": "wmo",
+     "km": 2.5,
+     "elev": 1397.0,
+     "name": "Banff_Cs"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00071122",
+     "source": "wmo",
+     "km": 2.5,
+     "elev": 1397.0,
+     "name": "Banff_Cs"
+    }
+   ]
+  }
+ },
+ "stationPoints": {
+  "st-00040438": {
+   "lat": 24.711,
+   "lon": 46.738,
+   "elev": 620.0,
+   "name": "RiyadhOld",
+   "source": "wmo"
+  },
+  "st-00040437": {
+   "lat": 24.925,
+   "lon": 46.722,
+   "elev": 614.0,
+   "name": "RiyadhNew",
+   "source": "wmo"
+  },
+  "st-00041024": {
+   "lat": 21.71,
+   "lon": 39.187,
+   "elev": 17.0,
+   "name": "Jeddah_KAIA",
+   "source": "wmo"
+  },
+  "st-00041030": {
+   "lat": 21.438,
+   "lon": 39.769,
+   "elev": 240.0,
+   "name": "Makkah",
+   "source": "wmo"
+  },
+  "st-00041032": {
+   "lat": 21.334,
+   "lon": 39.974,
+   "elev": 308.0,
+   "name": "ARAFAT",
+   "source": "wmo"
+  },
+  "st-00040430": {
+   "lat": 24.548,
+   "lon": 39.699,
+   "elev": 636.0,
+   "name": "Madinah",
+   "source": "wmo"
+  },
+  "st-00041112": {
+   "lat": 18.233,
+   "lon": 42.661,
+   "elev": 2093.0,
+   "name": "Abha",
+   "source": "wmo"
+  },
+  "st-00041114": {
+   "lat": 18.299,
+   "lon": 42.806,
+   "elev": 2056.0,
+   "name": "Khamis-Mushait",
+   "source": "wmo"
+  },
+  "st-00041140": {
+   "lat": 16.897,
+   "lon": 42.585,
+   "elev": 7.0,
+   "name": "Gizan",
+   "source": "wmo"
+  },
+  "st-00017636": {
+   "lat": 40.976,
+   "lon": 28.786,
+   "elev": 37.0,
+   "name": "Florya",
+   "source": "wmo"
+  },
+  "st-00017061": {
+   "lat": 41.146,
+   "lon": 29.05,
+   "elev": 59.0,
+   "name": "Sariyer",
+   "source": "wmo"
+  },
+  "st-00017059": {
+   "lat": 41.251,
+   "lon": 29.038,
+   "elev": 38.0,
+   "name": "SariyerKumkoyKilyos",
+   "source": "wmo"
+  },
+  "st-00017300": {
+   "lat": 36.906,
+   "lon": 30.799,
+   "elev": 64.0,
+   "name": "AntalyaHavalimani",
+   "source": "wmo"
+  },
+  "st-00017926": {
+   "lat": 37.056,
+   "lon": 30.191,
+   "elev": 1017.0,
+   "name": "Korkuteli",
+   "source": "wmo"
+  },
+  "st-00017954": {
+   "lat": 36.789,
+   "lon": 31.441,
+   "elev": 38.0,
+   "name": "Manavgat",
+   "source": "wmo"
+  },
+  "st-00017193": {
+   "lat": 38.616,
+   "lon": 34.702,
+   "elev": 1260.0,
+   "name": "Nevsehir",
+   "source": "wmo"
+  },
+  "st-00017196": {
+   "lat": 38.687,
+   "lon": 35.5,
+   "elev": 1094.0,
+   "name": "Kayseri_Bolge",
+   "source": "wmo"
+  },
+  "st-00017760": {
+   "lat": 39.19,
+   "lon": 35.253,
+   "elev": 1070.0,
+   "name": "Bogazliyan",
+   "source": "wmo"
+  },
+  "st-00017037": {
+   "lat": 40.999,
+   "lon": 39.765,
+   "elev": 25.0,
+   "name": "Trabzon_Bolge",
+   "source": "wmo"
+  },
+  "st-00017088": {
+   "lat": 40.46,
+   "lon": 39.465,
+   "elev": 1216.0,
+   "name": "Gumushane",
+   "source": "wmo"
+  },
+  "st-00017040": {
+   "lat": 41.04,
+   "lon": 40.501,
+   "elev": 3.0,
+   "name": "Rize",
+   "source": "wmo"
+  },
+  "st-00017220": {
+   "lat": 38.395,
+   "lon": 27.082,
+   "elev": 29.0,
+   "name": "Izmir_Bolge",
+   "source": "wmo"
+  },
+  "st-00017186": {
+   "lat": 38.615,
+   "lon": 27.405,
+   "elev": 71.0,
+   "name": "Manisa",
+   "source": "wmo"
+  },
+  "st-00017820": {
+   "lat": 38.199,
+   "lon": 26.835,
+   "elev": 22.0,
+   "name": "Seferihisar",
+   "source": "wmo"
+  },
+  "st-00017116": {
+   "lat": 40.231,
+   "lon": 29.013,
+   "elev": 100.0,
+   "name": "Bursa",
+   "source": "wmo"
+  },
+  "st-00017119": {
+   "lat": 40.659,
+   "lon": 29.28,
+   "elev": 4.0,
+   "name": "Yalova",
+   "source": "wmo"
+  },
+  "st-00017700": {
+   "lat": 39.578,
+   "lon": 28.632,
+   "elev": 637.0,
+   "name": "Dursunbey",
+   "source": "wmo"
+  },
+  "st-00041194": {
+   "lat": 25.25,
+   "lon": 55.333,
+   "elev": 8.0,
+   "name": "DubaiIntlAirport",
+   "source": "wmo"
+  },
+  "st-00041196": {
+   "lat": 25.329,
+   "lon": 55.517,
+   "elev": 34.0,
+   "name": "SharjahIntlAirport",
+   "source": "wmo"
+  },
+  "st-00040890": {
+   "lat": 25.874,
+   "lon": 55.013,
+   "elev": 6.6,
+   "name": "AbumusaIsland",
+   "source": "wmo"
+  },
+  "st-00041217": {
+   "lat": 24.433,
+   "lon": 54.65,
+   "elev": 27.0,
+   "name": "AbuDhabiIntlAirport",
+   "source": "wmo"
+  },
+  "st-00041218": {
+   "lat": 24.262,
+   "lon": 55.609,
+   "elev": 264.0,
+   "name": "AlAinIntlAirport",
+   "source": "wmo"
+  },
+  "st-00041184": {
+   "lat": 25.614,
+   "lon": 55.939,
+   "elev": 31.0,
+   "name": "RasAlKhaimahIntlAirport",
+   "source": "wmo"
+  },
+  "st-00041198": {
+   "lat": 25.112,
+   "lon": 56.324,
+   "elev": 46.0,
+   "name": "AlFujairahIntlAirport",
+   "source": "wmo"
+  },
+  "st-00041150": {
+   "lat": 26.267,
+   "lon": 50.65,
+   "elev": 2.0,
+   "name": "BahrainInternationalAirport",
+   "source": "wmo"
+  },
+  "st-00040831": {
+   "lat": 30.377,
+   "lon": 48.215,
+   "elev": 6.6,
+   "name": "Abadan",
+   "source": "wmo"
+  },
+  "st-00040690": {
+   "lat": 30.517,
+   "lon": 47.783,
+   "elev": -9999.0,
+   "name": "BASRA",
+   "source": "wmo"
+  },
+  "st-00040416": {
+   "lat": 26.259,
+   "lon": 50.161,
+   "elev": 17.0,
+   "name": "Dhahran",
+   "source": "wmo"
+  },
+  "st-00040417": {
+   "lat": 26.45,
+   "lon": 49.817,
+   "elev": 12.0,
+   "name": "KFIA",
+   "source": "wmo"
+  },
+  "st-00062366": {
+   "lat": 30.133,
+   "lon": 31.4,
+   "elev": 64.1,
+   "name": "CairoAP",
+   "source": "wmo"
+  },
+  "st-00062405": {
+   "lat": 25.667,
+   "lon": 32.7,
+   "elev": 81.6,
+   "name": "Luxor",
+   "source": "wmo"
+  },
+  "st-00062414": {
+   "lat": 23.967,
+   "lon": 32.783,
+   "elev": 191.7,
+   "name": "Asswan",
+   "source": "wmo"
+  },
+  "st-00062318": {
+   "lat": 31.2,
+   "lon": 29.95,
+   "elev": 1.8,
+   "name": "AlexandriaNouzha",
+   "source": "wmo"
+  },
+  "st-00062460": {
+   "lat": 27.967,
+   "lon": 34.383,
+   "elev": -876.5,
+   "name": "SharmElSheikhAP",
+   "source": "wmo"
+  },
+  "st-00062463": {
+   "lat": 27.15,
+   "lon": 33.717,
+   "elev": 8.4,
+   "name": "HurghadaAP",
+   "source": "wmo"
+  },
+  "st-00060230": {
+   "lat": 31.611,
+   "lon": -8.029,
+   "elev": 464.0,
+   "name": "MARRAKECH",
+   "source": "wmo"
+  },
+  "st-00060265": {
+   "lat": 30.936,
+   "lon": -6.91,
+   "elev": 1136.0,
+   "name": "OUARZAZATE",
+   "source": "wmo"
+  },
+  "st-00060185": {
+   "lat": 32.276,
+   "lon": -9.238,
+   "elev": 43.0,
+   "name": "SAFI",
+   "source": "wmo"
+  },
+  "st-00060155": {
+   "lat": 33.559,
+   "lon": -7.667,
+   "elev": 56.0,
+   "name": "CASABLANCAANFA",
+   "source": "wmo"
+  },
+  "st-00060135": {
+   "lat": 34.05,
+   "lon": -6.767,
+   "elev": 75.0,
+   "name": "RABATSALE",
+   "source": "wmo"
+  },
+  "st-00060120": {
+   "lat": 34.3,
+   "lon": -6.6,
+   "elev": 5.0,
+   "name": "KENITRA",
+   "source": "wmo"
+  },
+  "st-00060141": {
+   "lat": 33.967,
+   "lon": -4.983,
+   "elev": 571.0,
+   "name": "FESSAIS",
+   "source": "wmo"
+  },
+  "st-00060150": {
+   "lat": 33.879,
+   "lon": -5.521,
+   "elev": 548.0,
+   "name": "MEKNES",
+   "source": "wmo"
+  },
+  "st-00060160": {
+   "lat": 33.501,
+   "lon": -5.161,
+   "elev": 1663.0,
+   "name": "IFRANE",
+   "source": "wmo"
+  },
+  "st-00060318": {
+   "lat": 35.593,
+   "lon": -5.332,
+   "elev": 5.0,
+   "name": "TETOUAN",
+   "source": "wmo"
+  },
+  "st-00060105": {
+   "lat": 35.163,
+   "lon": -6.117,
+   "elev": 47.0,
+   "name": "LARACHE",
+   "source": "wmo"
+  },
+  "st-00060107": {
+   "lat": 35.179,
+   "lon": -3.84,
+   "elev": 12.0,
+   "name": "ALHOUCEIMA",
+   "source": "wmo"
+  },
+  "st-00008452": {
+   "lat": 36.5,
+   "lon": -6.258,
+   "elev": 2.0,
+   "name": "CADIZOBS",
+   "source": "wmo"
+  },
+  "st-00040183": {
+   "lat": 31.781,
+   "lon": 35.222,
+   "elev": 810.0,
+   "name": "JERUSALEM",
+   "source": "wmo"
+  },
+  "st-00040179": {
+   "lat": 32.01,
+   "lon": 34.81,
+   "elev": 31.0,
+   "name": "BETDAGAN",
+   "source": "wmo"
+  },
+  "st-00040193": {
+   "lat": 31.03,
+   "lon": 35.39,
+   "elev": -388.0,
+   "name": "SEDOM",
+   "source": "wmo"
+  },
+  "st-00040199": {
+   "lat": 29.55,
+   "lon": 34.95,
+   "elev": 22.0,
+   "name": "ELAT",
+   "source": "wmo"
+  },
+  "st-00040190": {
+   "lat": 31.25,
+   "lon": 34.8,
+   "elev": 279.0,
+   "name": "BEERSHEVA",
+   "source": "wmo"
+  },
+  "st-00003770": {
+   "lat": 51.505,
+   "lon": -0.131,
+   "elev": 5.0,
+   "name": "London",
+   "source": "wmo"
+  },
+  "st-00003672": {
+   "lat": 51.549,
+   "lon": -0.417,
+   "elev": 33.0,
+   "name": "Northolt",
+   "source": "wmo"
+  },
+  "st-00003772": {
+   "lat": 51.479,
+   "lon": -0.451,
+   "elev": 25.0,
+   "name": "Heathrow",
+   "source": "wmo"
+  },
+  "st-00003155": {
+   "lat": 55.627,
+   "lon": -3.736,
+   "elev": 245.0,
+   "name": "Drumalbin",
+   "source": "wmo"
+  },
+  "st-00003171": {
+   "lat": 56.377,
+   "lon": -2.862,
+   "elev": 10.0,
+   "name": "Leuchars",
+   "source": "wmo"
+  },
+  "st-00003144": {
+   "lat": 56.326,
+   "lon": -3.729,
+   "elev": 35.0,
+   "name": "StrathallanAirfield",
+   "source": "wmo"
+  },
+  "st-00003344": {
+   "lat": 53.811,
+   "lon": -1.867,
+   "elev": 262.0,
+   "name": "Bingley",
+   "source": "wmo"
+  },
+  "st-00003316": {
+   "lat": 53.497,
+   "lon": -3.058,
+   "elev": 9.0,
+   "name": "Crosby",
+   "source": "wmo"
+  },
+  "st-00003321": {
+   "lat": 53.176,
+   "lon": -2.986,
+   "elev": 11.0,
+   "name": "HawardenAirport",
+   "source": "wmo"
+  },
+  "st-00003658": {
+   "lat": 51.62,
+   "lon": -1.099,
+   "elev": 57.0,
+   "name": "Benson",
+   "source": "wmo"
+  },
+  "st-00003649": {
+   "lat": 51.759,
+   "lon": -1.578,
+   "elev": 82.0,
+   "name": "BrizeNorton",
+   "source": "wmo"
+  },
+  "st-00003740": {
+   "lat": 51.503,
+   "lon": -1.992,
+   "elev": 145.0,
+   "name": "Lyneham",
+   "source": "wmo"
+  },
+  "st-00007156": {
+   "lat": 48.822,
+   "lon": 2.338,
+   "elev": 75.0,
+   "name": "PARIS_MONTSOURIS",
+   "source": "wmo"
+  },
+  "st-00007150": {
+   "lat": 48.967,
+   "lon": 2.428,
+   "elev": 49.0,
+   "name": "LE_BOURGET",
+   "source": "wmo"
+  },
+  "st-00007149": {
+   "lat": 48.718,
+   "lon": 2.397,
+   "elev": 86.0,
+   "name": "ORLY",
+   "source": "wmo"
+  },
+  "st-00007690": {
+   "lat": 43.649,
+   "lon": 7.209,
+   "elev": 2.0,
+   "name": "NICE",
+   "source": "wmo"
+  },
+  "st-00007684": {
+   "lat": 43.556,
+   "lon": 6.951,
+   "elev": 2.0,
+   "name": "CANNES",
+   "source": "wmo"
+  },
+  "st-00016153": {
+   "lat": 43.957,
+   "lon": 8.17,
+   "elev": 220.0,
+   "name": "Capo_Mele",
+   "source": "wmo"
+  },
+  "st-00007480": {
+   "lat": 45.721,
+   "lon": 4.949,
+   "elev": 202.0,
+   "name": "LYON_BRON",
+   "source": "wmo"
+  },
+  "st-00007481": {
+   "lat": 45.726,
+   "lon": 5.078,
+   "elev": 235.0,
+   "name": "LYON_ST_EXUPERY",
+   "source": "wmo"
+  },
+  "st-00007482": {
+   "lat": 45.976,
+   "lon": 5.329,
+   "elev": 250.0,
+   "name": "AMBERIEU",
+   "source": "wmo"
+  },
+  "st-00007650": {
+   "lat": 43.438,
+   "lon": 5.216,
+   "elev": 9.0,
+   "name": "MARIGNANE",
+   "source": "wmo"
+  },
+  "st-00007648": {
+   "lat": 43.604,
+   "lon": 5.104,
+   "elev": 58.0,
+   "name": "SALON_DE_PROVENCE",
+   "source": "wmo"
+  },
+  "st-00007647": {
+   "lat": 43.523,
+   "lon": 4.927,
+   "elev": 23.0,
+   "name": "ISTRES",
+   "source": "wmo"
+  },
+  "st-00008181": {
+   "lat": 41.293,
+   "lon": 2.07,
+   "elev": 4.0,
+   "name": "BARCELONAAEROPUERTO",
+   "source": "wmo"
+  },
+  "st-00008184": {
+   "lat": 41.912,
+   "lon": 2.763,
+   "elev": 143.0,
+   "name": "GIRONACOSTABRAVA",
+   "source": "wmo"
+  },
+  "st-00008175": {
+   "lat": 41.145,
+   "lon": 1.164,
+   "elev": 71.0,
+   "name": "REUSAEROPUERTO",
+   "source": "wmo"
+  },
+  "st-00008222": {
+   "lat": 40.412,
+   "lon": -3.678,
+   "elev": 667.0,
+   "name": "MADRIDRETIRO",
+   "source": "wmo"
+  },
+  "st-00008223": {
+   "lat": 40.376,
+   "lon": -3.786,
+   "elev": 690.0,
+   "name": "MADRIDCUATROVIENTOS",
+   "source": "wmo"
+  },
+  "st-00008224": {
+   "lat": 40.299,
+   "lon": -3.722,
+   "elev": 620.0,
+   "name": "MADRIDGETAFE",
+   "source": "wmo"
+  },
+  "st-00008420": {
+   "lat": 37.137,
+   "lon": -3.631,
+   "elev": 687.0,
+   "name": "GRANADABASEAEREA",
+   "source": "wmo"
+  },
+  "st-00008419": {
+   "lat": 37.19,
+   "lon": -3.789,
+   "elev": 567.0,
+   "name": "GRANADAAEROPUERTO",
+   "source": "wmo"
+  },
+  "st-00008417": {
+   "lat": 37.778,
+   "lon": -3.809,
+   "elev": 580.0,
+   "name": "JAEN",
+   "source": "wmo"
+  },
+  "st-00008391": {
+   "lat": 37.417,
+   "lon": -5.879,
+   "elev": 34.0,
+   "name": "SEVILLASANPABLO",
+   "source": "wmo"
+  },
+  "st-00008397": {
+   "lat": 37.164,
+   "lon": -5.611,
+   "elev": 87.0,
+   "name": "MORONDELAFRONTERA",
+   "source": "wmo"
+  },
+  "st-00008451": {
+   "lat": 36.751,
+   "lon": -6.056,
+   "elev": 27.0,
+   "name": "JEREZDELAFRONTERAAEROPUERTO",
+   "source": "wmo"
+  },
+  "st-00008410": {
+   "lat": 37.849,
+   "lon": -4.847,
+   "elev": 90.0,
+   "name": "CORDOBAAEROPUERTO",
+   "source": "wmo"
+  },
+  "st-00008430": {
+   "lat": 38.002,
+   "lon": -3.631,
+   "elev": 61.0,
+   "name": "MURCIA",
+   "source": "wmo"
+  },
+  "st-00016239": {
+   "lat": 41.8,
+   "lon": 12.595,
+   "elev": 129.0,
+   "name": "Roma_Ciampino",
+   "source": "wmo"
+  },
+  "st-00016242": {
+   "lat": 41.81,
+   "lon": 12.252,
+   "elev": 5.0,
+   "name": "Roma_Fiumicino",
+   "source": "wmo"
+  },
+  "st-00016234": {
+   "lat": 41.989,
+   "lon": 12.738,
+   "elev": 89.0,
+   "name": "Guidonia",
+   "source": "wmo"
+  },
+  "st-00016099": {
+   "lat": 45.65,
+   "lon": 12.183,
+   "elev": 18.0,
+   "name": "Treviso_Sant_Angelo",
+   "source": "wmo"
+  },
+  "st-00016098": {
+   "lat": 45.684,
+   "lon": 12.107,
+   "elev": 42.0,
+   "name": "Treviso_Istrana",
+   "source": "wmo"
+  },
+  "st-00016045": {
+   "lat": 45.976,
+   "lon": 13.049,
+   "elev": 51.0,
+   "name": "Udine_Rivolto",
+   "source": "wmo"
+  },
+  "st-00016170": {
+   "lat": 43.809,
+   "lon": 11.203,
+   "elev": 44.0,
+   "name": "Firenze_Peretola",
+   "source": "wmo"
+  },
+  "st-00016172": {
+   "lat": 43.46,
+   "lon": 11.846,
+   "elev": 248.0,
+   "name": "Arezzo",
+   "source": "wmo"
+  },
+  "st-00016134": {
+   "lat": 44.194,
+   "lon": 10.7,
+   "elev": 2165.0,
+   "name": "Monte_Cimone",
+   "source": "wmo"
+  },
+  "st-00016080": {
+   "lat": 45.449,
+   "lon": 9.278,
+   "elev": 108.0,
+   "name": "Milano_Linate",
+   "source": "wmo"
+  },
+  "st-00016066": {
+   "lat": 45.63,
+   "lon": 8.723,
+   "elev": 234.0,
+   "name": "Milano_Malpensa",
+   "source": "wmo"
+  },
+  "st-00016064": {
+   "lat": 45.53,
+   "lon": 8.667,
+   "elev": 178.0,
+   "name": "Novara_Cameri",
+   "source": "wmo"
+  },
+  "st-00016253": {
+   "lat": 41.061,
+   "lon": 14.079,
+   "elev": 10.0,
+   "name": "Grazzanise",
+   "source": "wmo"
+  },
+  "st-00016294": {
+   "lat": 40.558,
+   "lon": 14.202,
+   "elev": 160.0,
+   "name": "Capri",
+   "source": "wmo"
+  },
+  "st-00016263": {
+   "lat": 41.047,
+   "lon": 15.233,
+   "elev": 1085.0,
+   "name": "Trevico",
+   "source": "wmo"
+  },
+  "st-00017221": {
+   "lat": 38.304,
+   "lon": 26.372,
+   "elev": 5.0,
+   "name": "Cesme",
+   "source": "wmo"
+  },
+  "st-00015712": {
+   "lat": 41.55,
+   "lon": 23.267,
+   "elev": 206.0,
+   "name": "Sandanski",
+   "source": "wmo"
+  },
+  "st-00006660": {
+   "lat": 47.378,
+   "lon": 8.566,
+   "elev": 556.0,
+   "name": "ZuerichFluntern",
+   "source": "wmo"
+  },
+  "st-00006664": {
+   "lat": 47.428,
+   "lon": 8.518,
+   "elev": 444.0,
+   "name": "ZuerichAffoltern",
+   "source": "wmo"
+  },
+  "st-00006670": {
+   "lat": 47.48,
+   "lon": 8.536,
+   "elev": 426.0,
+   "name": "ZuerichKloten",
+   "source": "wmo"
+  },
+  "st-00006700": {
+   "lat": 46.248,
+   "lon": 6.128,
+   "elev": 411.0,
+   "name": "GeneveCointrin",
+   "source": "wmo"
+  },
+  "st-00006705": {
+   "lat": 46.401,
+   "lon": 6.228,
+   "elev": 458.0,
+   "name": "NyonChangins",
+   "source": "wmo"
+  },
+  "st-00006702": {
+   "lat": 46.425,
+   "lon": 6.099,
+   "elev": 1670.0,
+   "name": "LaDole",
+   "source": "wmo"
+  },
+  "st-00006734": {
+   "lat": 46.672,
+   "lon": 7.87,
+   "elev": 577.0,
+   "name": "Interlaken",
+   "source": "wmo"
+  },
+  "st-00006730": {
+   "lat": 46.548,
+   "lon": 7.986,
+   "elev": 3571.0,
+   "name": "Jungfraujoch",
+   "source": "wmo"
+  },
+  "st-00006637": {
+   "lat": 46.732,
+   "lon": 8.169,
+   "elev": 589.0,
+   "name": "Meiringen",
+   "source": "wmo"
+  },
+  "st-00006650": {
+   "lat": 47.036,
+   "lon": 8.301,
+   "elev": 454.0,
+   "name": "Luzern",
+   "source": "wmo"
+  },
+  "st-00006659": {
+   "lat": 46.979,
+   "lon": 8.252,
+   "elev": 2105.0,
+   "name": "Pilatus",
+   "source": "wmo"
+  },
+  "st-00006655": {
+   "lat": 46.822,
+   "lon": 8.411,
+   "elev": 1036.0,
+   "name": "Engelberg",
+   "source": "wmo"
+  },
+  "st-00011035": {
+   "lat": 48.249,
+   "lon": 16.356,
+   "elev": 198.0,
+   "name": "Wien_Hohe_Warte",
+   "source": "wmo"
+  },
+  "st-00011813": {
+   "lat": 48.168,
+   "lon": 17.106,
+   "elev": 286.0,
+   "name": "BRATISLAVA_KOLIBA",
+   "source": "wmo"
+  },
+  "st-00011816": {
+   "lat": 48.17,
+   "lon": 17.208,
+   "elev": 133.0,
+   "name": "BRATISLAVA_AIRPORT",
+   "source": "wmo"
+  },
+  "st-00011150": {
+   "lat": 47.789,
+   "lon": 13.008,
+   "elev": 430.0,
+   "name": "Salzburg_Flughafen",
+   "source": "wmo"
+  },
+  "st-00011155": {
+   "lat": 47.817,
+   "lon": 13.718,
+   "elev": 1618.0,
+   "name": "Feuerkogel",
+   "source": "wmo"
+  },
+  "st-00010875": {
+   "lat": 48.279,
+   "lon": 12.502,
+   "elev": 405.6,
+   "name": "Muehldorf",
+   "source": "wmo"
+  },
+  "st-00011120": {
+   "lat": 47.26,
+   "lon": 11.357,
+   "elev": 578.0,
+   "name": "Innsbruck_Flugplatz",
+   "source": "wmo"
+  },
+  "st-00010963": {
+   "lat": 47.483,
+   "lon": 11.062,
+   "elev": 719.3,
+   "name": "Garmisch-Partenkirchen",
+   "source": "wmo"
+  },
+  "st-00010961": {
+   "lat": 47.421,
+   "lon": 10.985,
+   "elev": 2956.0,
+   "name": "Zugspitze",
+   "source": "wmo"
+  },
+  "st-00006240": {
+   "lat": 52.317,
+   "lon": 4.79,
+   "elev": -3.9,
+   "name": "AmsterdamSchipholAp",
+   "source": "wmo"
+  },
+  "st-00006260": {
+   "lat": 52.099,
+   "lon": 5.18,
+   "elev": 1.9,
+   "name": "DeBiltAws",
+   "source": "wmo"
+  },
+  "st-00006215": {
+   "lat": 52.14,
+   "lon": 4.436,
+   "elev": -1.1,
+   "name": "VoorschotenAws",
+   "source": "wmo"
+  },
+  "st-00006344": {
+   "lat": 51.961,
+   "lon": 4.447,
+   "elev": -5.1,
+   "name": "RotterdamTheHagueAp",
+   "source": "wmo"
+  },
+  "st-00006348": {
+   "lat": 51.969,
+   "lon": 4.926,
+   "elev": -0.7,
+   "name": "CabauwTowerAws",
+   "source": "wmo"
+  },
+  "st-00010384": {
+   "lat": 52.467,
+   "lon": 13.402,
+   "elev": 47.7,
+   "name": "Berlin-Tempelhof",
+   "source": "wmo"
+  },
+  "st-00010382": {
+   "lat": 52.564,
+   "lon": 13.309,
+   "elev": 35.5,
+   "name": "Berlin-Tegel",
+   "source": "wmo"
+  },
+  "st-00010381": {
+   "lat": 52.454,
+   "lon": 13.302,
+   "elev": 51.0,
+   "name": "Berlin-Dahlem-FU",
+   "source": "wmo"
+  },
+  "st-00010865": {
+   "lat": 48.163,
+   "lon": 11.543,
+   "elev": 515.4,
+   "name": "Muenchen-Stadt",
+   "source": "wmo"
+  },
+  "st-00010870": {
+   "lat": 48.348,
+   "lon": 11.813,
+   "elev": 445.5,
+   "name": "Muenchen-Flughafen",
+   "source": "wmo"
+  },
+  "st-00010863": {
+   "lat": 48.403,
+   "lon": 11.694,
+   "elev": 477.1,
+   "name": "Weihenstephan-Duernast",
+   "source": "wmo"
+  },
+  "st-00010147": {
+   "lat": 53.633,
+   "lon": 9.988,
+   "elev": 10.7,
+   "name": "Hamburg-Fuhlsbuettel",
+   "source": "wmo"
+  },
+  "st-00010249": {
+   "lat": 53.391,
+   "lon": 10.688,
+   "elev": 44.7,
+   "name": "Boizenburg",
+   "source": "wmo"
+  },
+  "st-00010156": {
+   "lat": 53.803,
+   "lon": 10.699,
+   "elev": 14.7,
+   "name": "Luebeck-Blankensee",
+   "source": "wmo"
+  },
+  "st-00010637": {
+   "lat": 50.026,
+   "lon": 8.521,
+   "elev": 99.7,
+   "name": "FrankfurtMain",
+   "source": "wmo"
+  },
+  "st-00010635": {
+   "lat": 50.222,
+   "lon": 8.447,
+   "elev": 822.1,
+   "name": "Kleiner-FeldbergTaunus",
+   "source": "wmo"
+  },
+  "st-00010648": {
+   "lat": 49.718,
+   "lon": 9.1,
+   "elev": 452.8,
+   "name": "Michelstadt-Vielbrunn",
+   "source": "wmo"
+  },
+  "st-00008045": {
+   "lat": 42.239,
+   "lon": -8.624,
+   "elev": 261.0,
+   "name": "VIGOPEINADOR",
+   "source": "wmo"
+  },
+  "st-00008044": {
+   "lat": 42.438,
+   "lon": -8.616,
+   "elev": 108.0,
+   "name": "PONTEVEDRA",
+   "source": "wmo"
+  },
+  "st-00008048": {
+   "lat": 42.325,
+   "lon": -7.86,
+   "elev": 143.0,
+   "name": "OURENSE",
+   "source": "wmo"
+  },
+  "st-00043555": {
+   "lat": 4.194,
+   "lon": 73.531,
+   "elev": 1.7,
+   "name": "Hulhule",
+   "source": "wmo"
+  },
+  "st-00043466": {
+   "lat": 6.9,
+   "lon": 79.867,
+   "elev": 7.0,
+   "name": "Colombo",
+   "source": "wmo"
+  },
+  "st-00043467": {
+   "lat": 6.817,
+   "lon": 79.883,
+   "elev": 5.0,
+   "name": "Rathmalana",
+   "source": "wmo"
+  },
+  "st-00043450": {
+   "lat": 7.167,
+   "lon": 79.883,
+   "elev": 8.0,
+   "name": "Katunayaka",
+   "source": "wmo"
+  },
+  "st-00043444": {
+   "lat": 7.333,
+   "lon": 80.633,
+   "elev": 477.0,
+   "name": "Katugastota",
+   "source": "wmo"
+  },
+  "st-00043441": {
+   "lat": 7.467,
+   "lon": 80.367,
+   "elev": 116.0,
+   "name": "Kurunegala",
+   "source": "wmo"
+  },
+  "st-00043473": {
+   "lat": 6.967,
+   "lon": 80.767,
+   "elev": 1894.0,
+   "name": "NuwaraEliya",
+   "source": "wmo"
+  },
+  "st-00043495": {
+   "lat": 6.033,
+   "lon": 80.217,
+   "elev": 13.0,
+   "name": "Galle",
+   "source": "wmo"
+  },
+  "st-00043486": {
+   "lat": 6.683,
+   "lon": 80.4,
+   "elev": 86.0,
+   "name": "Ratnapura",
+   "source": "wmo"
+  },
+  "st-00043476": {
+   "lat": 6.833,
+   "lon": 80.983,
+   "elev": 1226.0,
+   "name": "Bandarawela",
+   "source": "wmo"
+  },
+  "st-00043479": {
+   "lat": 6.983,
+   "lon": 81.05,
+   "elev": 670.0,
+   "name": "Badulla",
+   "source": "wmo"
+  },
+  "st-00096745": {
+   "lat": -6.156,
+   "lon": 106.84,
+   "elev": 4.0,
+   "name": "StasiunMeteorologiKemayoran",
+   "source": "wmo"
+  },
+  "st-00096741": {
+   "lat": -6.108,
+   "lon": 106.881,
+   "elev": 3.0,
+   "name": "StasiunMeteorologiMaritimTanju",
+   "source": "wmo"
+  },
+  "st-00048455": {
+   "lat": 13.726,
+   "lon": 100.56,
+   "elev": 3.0,
+   "name": "BangkokMetropolis",
+   "source": "wmo"
+  },
+  "st-00048454": {
+   "lat": 13.707,
+   "lon": 100.568,
+   "elev": 2.8,
+   "name": "BangkokPortKlongToei",
+   "source": "wmo"
+  },
+  "st-00048456": {
+   "lat": 13.919,
+   "lon": 100.605,
+   "elev": 12.0,
+   "name": "DonMuangAirport",
+   "source": "wmo"
+  },
+  "st-00048564": {
+   "lat": 7.883,
+   "lon": 98.4,
+   "elev": 1.8,
+   "name": "Phuket",
+   "source": "wmo"
+  },
+  "st-00048565": {
+   "lat": 8.145,
+   "lon": 98.314,
+   "elev": 5.9,
+   "name": "PhuketAirport",
+   "source": "wmo"
+  },
+  "st-00048566": {
+   "lat": 7.533,
+   "lon": 99.05,
+   "elev": 2.0,
+   "name": "KoLanta",
+   "source": "wmo"
+  },
+  "st-00048327": {
+   "lat": 18.771,
+   "lon": 98.973,
+   "elev": 304.6,
+   "name": "ChiangMai",
+   "source": "wmo"
+  },
+  "st-00048329": {
+   "lat": 18.567,
+   "lon": 99.033,
+   "elev": 296.4,
+   "name": "Lamphun",
+   "source": "wmo"
+  },
+  "st-00048328": {
+   "lat": 18.283,
+   "lon": 99.517,
+   "elev": 242.0,
+   "name": "Lampang",
+   "source": "wmo"
+  },
+  "st-00048461": {
+   "lat": 12.92,
+   "lon": 100.869,
+   "elev": 58.9,
+   "name": "Phatthaya",
+   "source": "wmo"
+  },
+  "st-00048460": {
+   "lat": 13.162,
+   "lon": 100.802,
+   "elev": 24.9,
+   "name": "KoSichang",
+   "source": "wmo"
+  },
+  "st-00048477": {
+   "lat": 12.683,
+   "lon": 100.983,
+   "elev": 16.0,
+   "name": "Sattahip",
+   "source": "wmo"
+  },
+  "st-00048647": {
+   "lat": 3.131,
+   "lon": 101.553,
+   "elev": 17.0,
+   "name": "Subang",
+   "source": "wmo"
+  },
+  "st-00048665": {
+   "lat": 2.267,
+   "lon": 102.25,
+   "elev": 9.0,
+   "name": "Melaka",
+   "source": "wmo"
+  },
+  "st-00048601": {
+   "lat": 5.297,
+   "lon": 100.272,
+   "elev": 3.0,
+   "name": "BayanLepas",
+   "source": "wmo"
+  },
+  "st-00048570": {
+   "lat": 6.65,
+   "lon": 100.083,
+   "elev": 4.1,
+   "name": "Satun",
+   "source": "wmo"
+  },
+  "st-00048620": {
+   "lat": 4.221,
+   "lon": 100.701,
+   "elev": 7.0,
+   "name": "Sitiawan",
+   "source": "wmo"
+  },
+  "st-00048569": {
+   "lat": 6.917,
+   "lon": 100.433,
+   "elev": 27.4,
+   "name": "HatYaiAirport",
+   "source": "wmo"
+  },
+  "st-00048568": {
+   "lat": 7.182,
+   "lon": 100.607,
+   "elev": 4.6,
+   "name": "Songkhla",
+   "source": "wmo"
+  },
+  "st-00048698": {
+   "lat": 1.368,
+   "lon": 103.982,
+   "elev": 14.0,
+   "name": "ChangiAirport",
+   "source": "wmo"
+  },
+  "st-00048674": {
+   "lat": 2.45,
+   "lon": 103.833,
+   "elev": 44.0,
+   "name": "Mersing",
+   "source": "wmo"
+  },
+  "st-00047662": {
+   "lat": 35.692,
+   "lon": 139.75,
+   "elev": 25.2,
+   "name": "Tokyo",
+   "source": "wmo"
+  },
+  "st-00047648": {
+   "lat": 35.738,
+   "lon": 140.857,
+   "elev": 20.1,
+   "name": "Choshi",
+   "source": "wmo"
+  },
+  "st-00047629": {
+   "lat": 36.38,
+   "lon": 140.467,
+   "elev": 29.0,
+   "name": "Mito",
+   "source": "wmo"
+  },
+  "st-00047772": {
+   "lat": 34.682,
+   "lon": 135.518,
+   "elev": 23.0,
+   "name": "Osaka",
+   "source": "wmo"
+  },
+  "st-00047750": {
+   "lat": 35.45,
+   "lon": 135.317,
+   "elev": 2.4,
+   "name": "Maizuru",
+   "source": "wmo"
+  },
+  "st-00047651": {
+   "lat": 34.733,
+   "lon": 136.518,
+   "elev": 2.7,
+   "name": "Tsu",
+   "source": "wmo"
+  },
+  "st-00047765": {
+   "lat": 34.398,
+   "lon": 132.462,
+   "elev": 3.6,
+   "name": "Hiroshima",
+   "source": "wmo"
+  },
+  "st-00047887": {
+   "lat": 33.843,
+   "lon": 132.777,
+   "elev": 32.2,
+   "name": "Matsuyama",
+   "source": "wmo"
+  },
+  "st-00047741": {
+   "lat": 35.457,
+   "lon": 133.065,
+   "elev": 16.9,
+   "name": "Matsue",
+   "source": "wmo"
+  },
+  "st-00047108": {
+   "lat": 37.571,
+   "lon": 126.966,
+   "elev": 85.0,
+   "name": "Seoul",
+   "source": "wmo"
+  },
+  "st-00047112": {
+   "lat": 37.478,
+   "lon": 126.625,
+   "elev": 68.0,
+   "name": "Incheon",
+   "source": "wmo"
+  },
+  "st-00047119": {
+   "lat": 37.257,
+   "lon": 126.983,
+   "elev": 39.0,
+   "name": "Suwon",
+   "source": "wmo"
+  },
+  "st-00047159": {
+   "lat": 35.104,
+   "lon": 129.032,
+   "elev": 69.0,
+   "name": "Busan",
+   "source": "wmo"
+  },
+  "st-00047155": {
+   "lat": 35.17,
+   "lon": 128.573,
+   "elev": 34.0,
+   "name": "Changwon",
+   "source": "wmo"
+  },
+  "st-00047288": {
+   "lat": 35.491,
+   "lon": 128.744,
+   "elev": 8.0,
+   "name": "Miryang",
+   "source": "wmo"
+  },
+  "st-00047184": {
+   "lat": 33.514,
+   "lon": 126.529,
+   "elev": 20.0,
+   "name": "Jeju",
+   "source": "wmo"
+  },
+  "st-00047189": {
+   "lat": 33.246,
+   "lon": 126.565,
+   "elev": 51.0,
+   "name": "Seogwipo",
+   "source": "wmo"
+  },
+  "st-00047188": {
+   "lat": 33.387,
+   "lon": 126.88,
+   "elev": 20.0,
+   "name": "Seongsan",
+   "source": "wmo"
+  },
+  "st-00054511": {
+   "lat": 39.93,
+   "lon": 116.28,
+   "elev": 32.5,
+   "name": "BEIJING",
+   "source": "wmo"
+  },
+  "st-00058362": {
+   "lat": 31.42,
+   "lon": 121.45,
+   "elev": 9.0,
+   "name": "SHANGHAI__BAOSHAN",
+   "source": "wmo"
+  },
+  "st-00058265": {
+   "lat": 32.08,
+   "lon": 121.53,
+   "elev": 3.8,
+   "name": "LUSI",
+   "source": "wmo"
+  },
+  "st-00058472": {
+   "lat": 30.73,
+   "lon": 122.45,
+   "elev": 81.0,
+   "name": "SHENGSI",
+   "source": "wmo"
+  },
+  "st-00059287": {
+   "lat": 23.22,
+   "lon": 113.48,
+   "elev": 71.5,
+   "name": "GUANGZHOU",
+   "source": "wmo"
+  },
+  "st-00045011": {
+   "lat": 22.16,
+   "lon": 113.565,
+   "elev": 110.0,
+   "name": "TaipaGrande",
+   "source": "wmo"
+  },
+  "st-00045005": {
+   "lat": 22.302,
+   "lon": 114.174,
+   "elev": 31.7,
+   "name": "HongKongObservatory",
+   "source": "wmo"
+  },
+  "st-00042182": {
+   "lat": 28.583,
+   "lon": 77.2,
+   "elev": 211.4,
+   "name": "NEW_DELHI_SAFDARJUNG",
+   "source": "wmo"
+  },
+  "st-00042138": {
+   "lat": 29.467,
+   "lon": 77.733,
+   "elev": 240.8,
+   "name": "MUZAFFARNAGAR",
+   "source": "wmo"
+  },
+  "st-00042262": {
+   "lat": 27.883,
+   "lon": 78.067,
+   "elev": 186.2,
+   "name": "ALIGARH",
+   "source": "wmo"
+  },
+  "st-00042361": {
+   "lat": 26.233,
+   "lon": 78.25,
+   "elev": 207.0,
+   "name": "GWALIOR",
+   "source": "wmo"
+  },
+  "st-00042364": {
+   "lat": 26.45,
+   "lon": 79.017,
+   "elev": 150.6,
+   "name": "ETAWAH",
+   "source": "wmo"
+  },
+  "st-00042348": {
+   "lat": 26.817,
+   "lon": 75.8,
+   "elev": 383.2,
+   "name": "JAIPUR",
+   "source": "wmo"
+  },
+  "st-00043003": {
+   "lat": 19.117,
+   "lon": 72.85,
+   "elev": 14.2,
+   "name": "MUMBAI_SANTACRUZ",
+   "source": "wmo"
+  },
+  "st-00043057": {
+   "lat": 18.9,
+   "lon": 72.817,
+   "elev": 10.7,
+   "name": "MUMBAI_COLABA",
+   "source": "wmo"
+  },
+  "st-00043001": {
+   "lat": 19.967,
+   "lon": 72.717,
+   "elev": 4.6,
+   "name": "DAHANU",
+   "source": "wmo"
+  },
+  "st-00043198": {
+   "lat": 15.5,
+   "lon": 74.3,
+   "elev": 757.3,
+   "name": "BELGAUM",
+   "source": "wmo"
+  },
+  "st-00043192": {
+   "lat": 15.483,
+   "lon": 73.817,
+   "elev": 59.6,
+   "name": "PANJIM",
+   "source": "wmo"
+  },
+  "st-00043225": {
+   "lat": 14.4,
+   "lon": 74.0,
+   "elev": 4.1,
+   "name": "KARWAR",
+   "source": "wmo"
+  },
+  "st-00072506": {
+   "lat": 40.779,
+   "lon": -73.969,
+   "elev": 40.0,
+   "name": "NEW_YORK_CNTRL_PK_TWR",
+   "source": "wmo"
+  },
+  "st-00072503": {
+   "lat": 40.779,
+   "lon": -73.88,
+   "elev": 3.0,
+   "name": "NEW_YORK_LAGUARDIA_AP",
+   "source": "wmo"
+  },
+  "st-00072502": {
+   "lat": 40.682,
+   "lon": -74.169,
+   "elev": 2.0,
+   "name": "NEWARK_INTL_AP",
+   "source": "wmo"
+  },
+  "st-00072295": {
+   "lat": 33.938,
+   "lon": -118.389,
+   "elev": 30.0,
+   "name": "LOS_ANGELES_INTL_AP",
+   "source": "wmo"
+  },
+  "st-00072288": {
+   "lat": 34.201,
+   "lon": -118.357,
+   "elev": 226.0,
+   "name": "BURBANK_GLENDALE_PASADENA_AP",
+   "source": "wmo"
+  },
+  "st-00072297": {
+   "lat": 33.812,
+   "lon": -118.146,
+   "elev": 9.0,
+   "name": "LONG_BEACH_DAUGHERTY_FLD",
+   "source": "wmo"
+  },
+  "st-00072386": {
+   "lat": 36.072,
+   "lon": -115.163,
+   "elev": 650.0,
+   "name": "LAS_VEGAS_MCCARRAN_AP",
+   "source": "wmo"
+  },
+  "st-00072387": {
+   "lat": 36.621,
+   "lon": -116.028,
+   "elev": 985.0,
+   "name": "MERCURY_DESERT_ROCK_AP",
+   "source": "wmo"
+  },
+  "st-00072370": {
+   "lat": 35.258,
+   "lon": -113.933,
+   "elev": 1042.0,
+   "name": "KINGMAN_MOHAVE_CO_AP",
+   "source": "wmo"
+  },
+  "st-00072493": {
+   "lat": 37.721,
+   "lon": -122.221,
+   "elev": 2.0,
+   "name": "OAKLAND_METRO_INTL_AP",
+   "source": "wmo"
+  },
+  "st-00072494": {
+   "lat": 37.62,
+   "lon": -122.365,
+   "elev": 2.0,
+   "name": "SAN_FRANCISCO_INTL_AP",
+   "source": "wmo"
+  },
+  "st-00072585": {
+   "lat": 37.654,
+   "lon": -122.115,
+   "elev": 13.0,
+   "name": "HAYWARD_AIR_TERMINAL",
+   "source": "wmo"
+  },
+  "st-00072202": {
+   "lat": 25.791,
+   "lon": -80.316,
+   "elev": 9.0,
+   "name": "MIAMI_INTL_AP",
+   "source": "wmo"
+  },
+  "st-00074783": {
+   "lat": 26.072,
+   "lon": -80.154,
+   "elev": 3.0,
+   "name": "FT_LAUDERDALE_HOLLYWOOD_AP",
+   "source": "wmo"
+  },
+  "st-00072203": {
+   "lat": 26.685,
+   "lon": -80.099,
+   "elev": 6.0,
+   "name": "WEST_PALM_BEACH_INTL_AP",
+   "source": "wmo"
+  },
+  "st-00037445": {
+   "lat": 41.75,
+   "lon": 44.769,
+   "elev": 432.0,
+   "name": "Tbilisi",
+   "source": "wmo"
+  },
+  "st-00037621": {
+   "lat": 41.45,
+   "lon": 44.567,
+   "elev": 534.0,
+   "name": "Bolnisi",
+   "source": "wmo"
+  },
+  "st-00037556": {
+   "lat": 41.75,
+   "lon": 45.317,
+   "elev": 806.0,
+   "name": "Sagarejo",
+   "source": "wmo"
+  },
+  "st-00037481": {
+   "lat": 41.867,
+   "lon": 41.783,
+   "elev": 5.0,
+   "name": "Qobuleti",
+   "source": "wmo"
+  },
+  "st-00017042": {
+   "lat": 41.406,
+   "lon": 41.433,
+   "elev": 33.0,
+   "name": "Hopa",
+   "source": "wmo"
+  },
+  "st-00037379": {
+   "lat": 41.683,
+   "lon": 42.133,
+   "elev": 1.0,
+   "name": "Poti",
+   "source": "wmo"
+  },
+  "st-00037432": {
+   "lat": 42.35,
+   "lon": 44.683,
+   "elev": 1080.0,
+   "name": "Pasanauri",
+   "source": "wmo"
+  },
+  "st-00037439": {
+   "lat": 42.1,
+   "lon": 44.967,
+   "elev": 1105.0,
+   "name": "Tianeti",
+   "source": "wmo"
+  },
+  "st-00037531": {
+   "lat": 41.983,
+   "lon": 44.117,
+   "elev": 609.0,
+   "name": "Gori",
+   "source": "wmo"
+  },
+  "st-00068816": {
+   "lat": -33.963,
+   "lon": 18.602,
+   "elev": 42.0,
+   "name": "CapeTown",
+   "source": "wmo"
+  },
+  "st-00076680": {
+   "lat": 19.404,
+   "lon": -99.197,
+   "elev": 2309.0,
+   "name": "Tacubaya",
+   "source": "wmo"
+  },
+  "st-00076675": {
+   "lat": 19.291,
+   "lon": -99.714,
+   "elev": 2726.0,
+   "name": "Toluca",
+   "source": "wmo"
+  },
+  "st-00076634": {
+   "lat": 20.084,
+   "lon": -98.357,
+   "elev": 2214.0,
+   "name": "Tulancingo",
+   "source": "wmo"
+  },
+  "st-00076656": {
+   "lat": 19.718,
+   "lon": -103.464,
+   "elev": 1515.0,
+   "name": "CiudadGuizman",
+   "source": "wmo"
+  },
+  "st-00083692": {
+   "lat": -21.77,
+   "lon": -43.364,
+   "elev": 936.9,
+   "name": "JUIZ_DE_FORA",
+   "source": "wmo"
+  },
+  "st-00083718": {
+   "lat": -22.022,
+   "lon": -42.364,
+   "elev": 505.9,
+   "name": "CORDEIRO",
+   "source": "wmo"
+  },
+  "st-00083229": {
+   "lat": -13.006,
+   "lon": -38.506,
+   "elev": 47.3,
+   "name": "SALVADOR_ONDINA",
+   "source": "wmo"
+  },
+  "st-00094768": {
+   "lat": -33.861,
+   "lon": 151.205,
+   "elev": 39.0,
+   "name": "SydneyObservatoryHill",
+   "source": "wmo"
+  },
+  "st-00094767": {
+   "lat": -33.946,
+   "lon": 151.173,
+   "elev": 6.0,
+   "name": "SydneyAirport",
+   "source": "wmo"
+  },
+  "st-00095765": {
+   "lat": -33.834,
+   "lon": 151.072,
+   "elev": 4.0,
+   "name": "SydneyOlympicPark",
+   "source": "wmo"
+  },
+  "st-00095936": {
+   "lat": -37.826,
+   "lon": 144.982,
+   "elev": 7.0,
+   "name": "MelbourneOlympicPark",
+   "source": "wmo"
+  },
+  "st-00094865": {
+   "lat": -37.856,
+   "lon": 144.756,
+   "elev": 20.0,
+   "name": "LavertonRAAF",
+   "source": "wmo"
+  },
+  "st-00094866": {
+   "lat": -37.665,
+   "lon": 144.832,
+   "elev": 113.0,
+   "name": "MelbourneAirport",
+   "source": "wmo"
+  },
+  "st-00094575": {
+   "lat": -27.572,
+   "lon": 153.007,
+   "elev": 13.0,
+   "name": "ArcherfieldAirport",
+   "source": "wmo"
+  },
+  "st-00094578": {
+   "lat": -27.392,
+   "lon": 153.129,
+   "elev": 5.0,
+   "name": "BrisbaneAero",
+   "source": "wmo"
+  },
+  "st-00095581": {
+   "lat": -27.684,
+   "lon": 153.195,
+   "elev": 14.0,
+   "name": "LoganCity",
+   "source": "wmo"
+  },
+  "st-00094580": {
+   "lat": -27.939,
+   "lon": 153.428,
+   "elev": 3.0,
+   "name": "GoldCoastSeaway",
+   "source": "wmo"
+  },
+  "st-00094592": {
+   "lat": -28.168,
+   "lon": 153.505,
+   "elev": 4.0,
+   "name": "Coolangatta",
+   "source": "wmo"
+  },
+  "st-00094582": {
+   "lat": -28.339,
+   "lon": 153.381,
+   "elev": 8.0,
+   "name": "Murwillumbah",
+   "source": "wmo"
+  },
+  "st-00060715": {
+   "lat": 36.833,
+   "lon": 10.233,
+   "elev": 3.0,
+   "name": "TunisCarthage",
+   "source": "wmo"
+  },
+  "st-00060714": {
+   "lat": 37.25,
+   "lon": 9.8,
+   "elev": 5.0,
+   "name": "Bizerte",
+   "source": "wmo"
+  },
+  "st-00060728": {
+   "lat": 36.45,
+   "lon": 10.733,
+   "elev": 4.0,
+   "name": "Nabeul",
+   "source": "wmo"
+  },
+  "st-00060740": {
+   "lat": 35.667,
+   "lon": 10.75,
+   "elev": 2.0,
+   "name": "Monastir",
+   "source": "wmo"
+  },
+  "st-00060735": {
+   "lat": 35.667,
+   "lon": 10.1,
+   "elev": 67.0,
+   "name": "Kairouan",
+   "source": "wmo"
+  },
+  "st-00060742": {
+   "lat": 35.5,
+   "lon": 10.067,
+   "elev": 11.0,
+   "name": "Mahdia",
+   "source": "wmo"
+  },
+  "st-00060769": {
+   "lat": 33.867,
+   "lon": 10.767,
+   "elev": 3.0,
+   "name": "Jerba",
+   "source": "wmo"
+  },
+  "st-00060772": {
+   "lat": 33.583,
+   "lon": 10.767,
+   "elev": 242.0,
+   "name": "Tataouine",
+   "source": "wmo"
+  },
+  "st-00060770": {
+   "lat": 33.35,
+   "lon": 10.5,
+   "elev": 116.0,
+   "name": "Mednine",
+   "source": "wmo"
+  },
+  "st-00040153": {
+   "lat": 32.98,
+   "lon": 35.51,
+   "elev": 936.0,
+   "name": "ZEFAT",
+   "source": "wmo"
+  },
+  "st-00040080": {
+   "lat": 33.429,
+   "lon": 36.522,
+   "elev": 610.0,
+   "name": "DamaskusIntAirport",
+   "source": "wmo"
+  },
+  "st-00040025": {
+   "lat": 35.408,
+   "lon": 35.943,
+   "elev": 48.0,
+   "name": "BaselAssadIntAirport",
+   "source": "wmo"
+  },
+  "st-00040029": {
+   "lat": 35.01,
+   "lon": 37.056,
+   "elev": 448.0,
+   "name": "SALAMYA",
+   "source": "wmo"
+  },
+  "st-00027612": {
+   "lat": 55.833,
+   "lon": 37.617,
+   "elev": 147.0,
+   "name": "Moskva",
+   "source": "wmo"
+  },
+  "st-00026063": {
+   "lat": 59.967,
+   "lon": 30.3,
+   "elev": 3.0,
+   "name": "StPetersburg",
+   "source": "wmo"
+  },
+  "st-00027595": {
+   "lat": 55.733,
+   "lon": 49.2,
+   "elev": 116.0,
+   "name": "Kazan",
+   "source": "wmo"
+  },
+  "st-00037099": {
+   "lat": 43.583,
+   "lon": 39.767,
+   "elev": 142.0,
+   "name": "Sotchi",
+   "source": "wmo"
+  },
+  "st-00037018": {
+   "lat": 44.1,
+   "lon": 39.067,
+   "elev": 60.0,
+   "name": "Tuapse",
+   "source": "wmo"
+  },
+  "st-00014654": {
+   "lat": 43.868,
+   "lon": 18.423,
+   "elev": 630.0,
+   "name": "SARAJEVO",
+   "source": "wmo"
+  },
+  "st-00014658": {
+   "lat": 43.922,
+   "lon": 18.779,
+   "elev": 898.0,
+   "name": "Sokolac",
+   "source": "wmo"
+  },
+  "st-00014565": {
+   "lat": 44.086,
+   "lon": 18.951,
+   "elev": 1125.0,
+   "name": "Han_Pijesak",
+   "source": "wmo"
+  },
+  "st-00014648": {
+   "lat": 43.35,
+   "lon": 17.794,
+   "elev": 99.0,
+   "name": "MOSTAR",
+   "source": "wmo"
+  },
+  "st-00014656": {
+   "lat": 43.246,
+   "lon": 18.607,
+   "elev": 1305.0,
+   "name": "Cemerno",
+   "source": "wmo"
+  },
+  "st-00014667": {
+   "lat": 42.868,
+   "lon": 18.421,
+   "elev": 441.0,
+   "name": "Bileca",
+   "source": "wmo"
+  },
+  "st-00013464": {
+   "lat": 41.921,
+   "lon": 19.212,
+   "elev": 29.0,
+   "name": "Ulcinj",
+   "source": "wmo"
+  },
+  "st-00013461": {
+   "lat": 42.104,
+   "lon": 19.078,
+   "elev": 5.7,
+   "name": "Bar",
+   "source": "wmo"
+  },
+  "st-00013463": {
+   "lat": 42.438,
+   "lon": 19.278,
+   "elev": 49.0,
+   "name": "Podgorica",
+   "source": "wmo"
+  },
+  "st-00016360": {
+   "lat": 39.8,
+   "lon": 18.333,
+   "elev": 104.0,
+   "name": "Santa_Maria_di_Leuca",
+   "source": "wmo"
+  },
+  "st-00013455": {
+   "lat": 42.454,
+   "lon": 18.545,
+   "elev": 10.0,
+   "name": "HercegNovi",
+   "source": "wmo"
+  },
+  "st-00013459": {
+   "lat": 42.771,
+   "lon": 18.945,
+   "elev": 647.0,
+   "name": "Niksic",
+   "source": "wmo"
+  },
+  "st-00013274": {
+   "lat": 44.798,
+   "lon": 20.465,
+   "elev": 132.0,
+   "name": "Beograd",
+   "source": "wmo"
+  },
+  "st-00013168": {
+   "lat": 45.322,
+   "lon": 19.83,
+   "elev": 86.0,
+   "name": "NoviSad",
+   "source": "wmo"
+  },
+  "st-00014562": {
+   "lat": 44.754,
+   "lon": 19.193,
+   "elev": 90.0,
+   "name": "Bijeljina",
+   "source": "wmo"
+  },
+  "st-00014240": {
+   "lat": 45.822,
+   "lon": 16.034,
+   "elev": 123.0,
+   "name": "ZagrebMaksimir",
+   "source": "wmo"
+  },
+  "st-00014445": {
+   "lat": 45.508,
+   "lon": 16.426,
+   "elev": 122.0,
+   "name": "Split_Marjan",
+   "source": "wmo"
+  },
+  "st-00014121": {
+   "lat": 45.802,
+   "lon": 15.182,
+   "elev": 220.0,
+   "name": "Novomesto",
+   "source": "wmo"
+  },
+  "st-00014544": {
+   "lat": 44.062,
+   "lon": 17.451,
+   "elev": 562.0,
+   "name": "BUGOJNO",
+   "source": "wmo"
+  },
+  "st-00014537": {
+   "lat": 44.766,
+   "lon": 16.668,
+   "elev": 158.0,
+   "name": "SANSKI_MOST",
+   "source": "wmo"
+  },
+  "st-00014668": {
+   "lat": 42.714,
+   "lon": 18.344,
+   "elev": 300.0,
+   "name": "Trebinje",
+   "source": "wmo"
+  },
+  "st-00011520": {
+   "lat": 50.008,
+   "lon": 14.447,
+   "elev": 302.0,
+   "name": "PrahaLibus",
+   "source": "wmo"
+  },
+  "st-00011567": {
+   "lat": 50.123,
+   "lon": 14.538,
+   "elev": 284.5,
+   "name": "PrahaKbely",
+   "source": "wmo"
+  },
+  "st-00011518": {
+   "lat": 50.1,
+   "lon": 14.256,
+   "elev": 364.0,
+   "name": "PrahaRuzyne",
+   "source": "wmo"
+  },
+  "st-00011414": {
+   "lat": 50.202,
+   "lon": 12.914,
+   "elev": 603.0,
+   "name": "KarlovyVary",
+   "source": "wmo"
+  },
+  "st-00010578": {
+   "lat": 50.428,
+   "lon": 12.954,
+   "elev": 1213.0,
+   "name": "Fichtelberg",
+   "source": "wmo"
+  },
+  "st-00010574": {
+   "lat": 50.431,
+   "lon": 12.611,
+   "elev": 895.3,
+   "name": "Carlsfeld",
+   "source": "wmo"
+  },
+  "st-00012840": {
+   "lat": 47.511,
+   "lon": 19.028,
+   "elev": 153.0,
+   "name": "BudapestBelterulet",
+   "source": "wmo"
+  },
+  "st-00012843": {
+   "lat": 47.429,
+   "lon": 19.182,
+   "elev": 139.0,
+   "name": "BudapestPestszentlorinc",
+   "source": "wmo"
+  },
+  "st-00012847": {
+   "lat": 47.756,
+   "lon": 18.606,
+   "elev": 110.0,
+   "name": "Tat",
+   "source": "wmo"
+  },
+  "st-00012375": {
+   "lat": 52.095,
+   "lon": 20.574,
+   "elev": 106.0,
+   "name": "WarszawaOkecie",
+   "source": "wmo"
+  },
+  "st-00012385": {
+   "lat": 52.105,
+   "lon": 22.144,
+   "elev": 152.0,
+   "name": "Siedlce",
+   "source": "wmo"
+  },
+  "st-00012488": {
+   "lat": 51.335,
+   "lon": 21.323,
+   "elev": 123.0,
+   "name": "Kozienice",
+   "source": "wmo"
+  },
+  "st-00012566": {
+   "lat": 50.045,
+   "lon": 19.481,
+   "elev": 237.0,
+   "name": "KrakowBalice",
+   "source": "wmo"
+  },
+  "st-00012575": {
+   "lat": 50.015,
+   "lon": 20.59,
+   "elev": 209.0,
+   "name": "Tarnow",
+   "source": "wmo"
+  },
+  "st-00012570": {
+   "lat": 50.484,
+   "lon": 20.413,
+   "elev": 260.0,
+   "name": "KielceSukow",
+   "source": "wmo"
+  },
+  "st-00011918": {
+   "lat": 49.369,
+   "lon": 19.678,
+   "elev": 692.0,
+   "name": "LIESEK",
+   "source": "wmo"
+  },
+  "st-00011933": {
+   "lat": 49.118,
+   "lon": 20.062,
+   "elev": 1319.0,
+   "name": "STRBSKE_PLESO",
+   "source": "wmo"
+  },
+  "st-00011930": {
+   "lat": 49.195,
+   "lon": 20.213,
+   "elev": 2635.0,
+   "name": "LOMNICKY_STIT",
+   "source": "wmo"
+  },
+  "st-00003969": {
+   "lat": 53.428,
+   "lon": -6.241,
+   "elev": 71.0,
+   "name": "DublinAirport",
+   "source": "wmo"
+  },
+  "st-00003967": {
+   "lat": 53.306,
+   "lon": -6.439,
+   "elev": 91.0,
+   "name": "CasementAerodrome",
+   "source": "wmo"
+  },
+  "st-00003923": {
+   "lat": 54.237,
+   "lon": -6.504,
+   "elev": 161.0,
+   "name": "GlenanneNo2",
+   "source": "wmo"
+  },
+  "st-00003962": {
+   "lat": 52.69,
+   "lon": -8.918,
+   "elev": 15.0,
+   "name": "ShannonAirport",
+   "source": "wmo"
+  },
+  "st-00003976": {
+   "lat": 54.228,
+   "lon": -10.007,
+   "elev": 9.0,
+   "name": "Belmullet",
+   "source": "wmo"
+  },
+  "st-00006447": {
+   "lat": 50.797,
+   "lon": 4.358,
+   "elev": 99.0,
+   "name": "UCCLE",
+   "source": "wmo"
+  },
+  "st-00006451": {
+   "lat": 50.896,
+   "lon": 4.527,
+   "elev": 56.0,
+   "name": "BRUSSELSNATIONALAIRPORT",
+   "source": "wmo"
+  },
+  "st-00006458": {
+   "lat": 50.746,
+   "lon": 4.763,
+   "elev": 113.0,
+   "name": "BEAUVECHAIN",
+   "source": "wmo"
+  },
+  "st-00006407": {
+   "lat": 51.2,
+   "lon": 2.887,
+   "elev": 3.0,
+   "name": "OOSTENDEAIRPORT",
+   "source": "wmo"
+  },
+  "st-00006310": {
+   "lat": 51.441,
+   "lon": 3.596,
+   "elev": 8.0,
+   "name": "VlissingenAws",
+   "source": "wmo"
+  },
+  "st-00006400": {
+   "lat": 51.088,
+   "lon": 2.653,
+   "elev": 6.0,
+   "name": "KOKSIJDE",
+   "source": "wmo"
+  },
+  "st-00002485": {
+   "lat": 59.342,
+   "lon": 18.055,
+   "elev": 43.0,
+   "name": "Stockholm_Observatoriekullen",
+   "source": "wmo"
+  },
+  "st-00002484": {
+   "lat": 59.342,
+   "lon": 18.055,
+   "elev": 43.0,
+   "name": "Stockholm_Observatoriekullen_A",
+   "source": "wmo"
+  },
+  "st-00002464": {
+   "lat": 59.354,
+   "lon": 17.951,
+   "elev": 14.0,
+   "name": "Stockholm_Bromma_Flygplats",
+   "source": "wmo"
+  },
+  "st-00001492": {
+   "lat": 59.942,
+   "lon": 10.72,
+   "elev": 94.0,
+   "name": "OSLO_BLINDERN",
+   "source": "wmo"
+  },
+  "st-00001486": {
+   "lat": 59.856,
+   "lon": 10.436,
+   "elev": 163.0,
+   "name": "ASKER",
+   "source": "wmo"
+  },
+  "st-00001463": {
+   "lat": 59.661,
+   "lon": 10.782,
+   "elev": 92.0,
+   "name": "AS",
+   "source": "wmo"
+  },
+  "st-00001317": {
+   "lat": 60.383,
+   "lon": 5.333,
+   "elev": 12.0,
+   "name": "BERGEN_FLORIDA",
+   "source": "wmo"
+  },
+  "st-00001311": {
+   "lat": 60.289,
+   "lon": 5.226,
+   "elev": 48.0,
+   "name": "FLESLAND",
+   "source": "wmo"
+  },
+  "st-00001406": {
+   "lat": 59.908,
+   "lon": 5.068,
+   "elev": 25.0,
+   "name": "SLATTEROY_FYR",
+   "source": "wmo"
+  },
+  "st-00001026": {
+   "lat": 69.654,
+   "lon": 18.937,
+   "elev": 100.0,
+   "name": "TROMSO",
+   "source": "wmo"
+  },
+  "st-00001025": {
+   "lat": 69.677,
+   "lon": 18.913,
+   "elev": 8.0,
+   "name": "TROMSO_LANGNES",
+   "source": "wmo"
+  },
+  "st-00001015": {
+   "lat": 69.601,
+   "lon": 17.83,
+   "elev": 14.0,
+   "name": "HEKKINGEN_FYR",
+   "source": "wmo"
+  },
+  "st-00002614": {
+   "lat": 55.597,
+   "lon": 12.858,
+   "elev": 1.0,
+   "name": "Oskarsgrundet_Aut",
+   "source": "wmo"
+  },
+  "st-00002610": {
+   "lat": 55.88,
+   "lon": 12.871,
+   "elev": 11.0,
+   "name": "Orja_Aut",
+   "source": "wmo"
+  },
+  "st-00002635": {
+   "lat": 55.571,
+   "lon": 13.071,
+   "elev": 20.0,
+   "name": "Malmo_A",
+   "source": "wmo"
+  },
+  "st-00002978": {
+   "lat": 60.175,
+   "lon": 24.945,
+   "elev": 3.0,
+   "name": "HelsinkiKaisaniemi",
+   "source": "wmo"
+  },
+  "st-00002795": {
+   "lat": 60.105,
+   "lon": 24.975,
+   "elev": 6.0,
+   "name": "HelsinkiHarmaja",
+   "source": "wmo"
+  },
+  "st-00002974": {
+   "lat": 60.327,
+   "lon": 24.957,
+   "elev": 51.0,
+   "name": "VantaaHelsinkiVantaanLentoasem",
+   "source": "wmo"
+  },
+  "st-00002845": {
+   "lat": 66.562,
+   "lon": 25.838,
+   "elev": 189.0,
+   "name": "RovaniemiLentoasema",
+   "source": "wmo"
+  },
+  "st-00002813": {
+   "lat": 66.579,
+   "lon": 26.011,
+   "elev": 106.0,
+   "name": "RovaniemiApukka",
+   "source": "wmo"
+  },
+  "st-00002812": {
+   "lat": 66.529,
+   "lon": 24.65,
+   "elev": 93.0,
+   "name": "Ylitornio_Meltosjarvi",
+   "source": "wmo"
+  },
+  "st-00014015": {
+   "lat": 46.066,
+   "lon": 14.517,
+   "elev": 299.0,
+   "name": "LjubljanaBezigrad",
+   "source": "wmo"
+  },
+  "st-00014023": {
+   "lat": 46.237,
+   "lon": 15.231,
+   "elev": 242.0,
+   "name": "Celje",
+   "source": "wmo"
+  },
+  "st-00014008": {
+   "lat": 46.379,
+   "lon": 13.854,
+   "elev": 2513.0,
+   "name": "Kredarica",
+   "source": "wmo"
+  },
+  "st-00014007": {
+   "lat": 46.498,
+   "lon": 13.717,
+   "elev": 864.0,
+   "name": "Ratece",
+   "source": "wmo"
+  },
+  "st-00011231": {
+   "lat": 46.648,
+   "lon": 14.318,
+   "elev": 450.0,
+   "name": "Klagenfurt",
+   "source": "wmo"
+  },
+  "st-00017609": {
+   "lat": 34.874,
+   "lon": 33.617,
+   "elev": 2.0,
+   "name": "LarnakaAirport",
+   "source": "wmo"
+  },
+  "st-00017607": {
+   "lat": 35.141,
+   "lon": 33.397,
+   "elev": 162.0,
+   "name": "AthalassaRadiosonde",
+   "source": "wmo"
+  },
+  "st-00017600": {
+   "lat": 34.716,
+   "lon": 32.496,
+   "elev": 9.0,
+   "name": "PafosAirport",
+   "source": "wmo"
+  },
+  "st-00016480": {
+   "lat": 36.686,
+   "lon": 15.131,
+   "elev": 46.0,
+   "name": "Cozzo_Spadaro",
+   "source": "wmo"
+  },
+  "st-00016453": {
+   "lat": 37.076,
+   "lon": 14.225,
+   "elev": 58.0,
+   "name": "Gela",
+   "source": "wmo"
+  },
+  "st-00015420": {
+   "lat": 44.51,
+   "lon": 26.078,
+   "elev": 90.0,
+   "name": "BucurestiBaneasa",
+   "source": "wmo"
+  },
+  "st-00015470": {
+   "lat": 44.107,
+   "lon": 24.979,
+   "elev": 102.2,
+   "name": "RosiorideVede",
+   "source": "wmo"
+  },
+  "st-00015350": {
+   "lat": 45.133,
+   "lon": 26.852,
+   "elev": 97.0,
+   "name": "Buzau",
+   "source": "wmo"
+  },
+  "st-00015280": {
+   "lat": 45.446,
+   "lon": 25.457,
+   "elev": 2504.0,
+   "name": "VarfuOmu",
+   "source": "wmo"
+  },
+  "st-00015170": {
+   "lat": 46.371,
+   "lon": 25.772,
+   "elev": 661.0,
+   "name": "MiercureaCiuc",
+   "source": "wmo"
+  },
+  "st-00004030": {
+   "lat": 64.128,
+   "lon": -21.903,
+   "elev": 52.0,
+   "name": "Reykjavik",
+   "source": "wmo"
+  },
+  "st-00004018": {
+   "lat": 63.975,
+   "lon": -22.588,
+   "elev": 47.0,
+   "name": "Keflavik",
+   "source": "wmo"
+  },
+  "st-00004042": {
+   "lat": 64.251,
+   "lon": -20.331,
+   "elev": 89.0,
+   "name": "Hjardarland",
+   "source": "wmo"
+  },
+  "st-00017100": {
+   "lat": 39.923,
+   "lon": 44.052,
+   "elev": 856.0,
+   "name": "Igdir",
+   "source": "wmo"
+  },
+  "st-00017720": {
+   "lat": 39.54,
+   "lon": 44.018,
+   "elev": 1640.0,
+   "name": "Dogubeyazit",
+   "source": "wmo"
+  },
+  "st-00040701": {
+   "lat": 39.379,
+   "lon": 44.392,
+   "elev": 1411.2,
+   "name": "Maku",
+   "source": "wmo"
+  },
+  "st-00036870": {
+   "lat": 43.239,
+   "lon": 76.933,
+   "elev": 846.9,
+   "name": "ALMATYOGMS",
+   "source": "wmo"
+  },
+  "st-00036879": {
+   "lat": 43.059,
+   "lon": 76.982,
+   "elev": 2500.7,
+   "name": "UlkenAlmatylake",
+   "source": "wmo"
+  },
+  "st-00036889": {
+   "lat": 43.019,
+   "lon": 77.044,
+   "elev": 3017.0,
+   "name": "MYNZHILKI",
+   "source": "wmo"
+  },
+  "st-00035188": {
+   "lat": 51.17,
+   "lon": 71.394,
+   "elev": 347.2,
+   "name": "Nur-Sultan",
+   "source": "wmo"
+  },
+  "st-00035283": {
+   "lat": 50.863,
+   "lon": 72.148,
+   "elev": 426.0,
+   "name": "Arshaly",
+   "source": "wmo"
+  },
+  "st-00035085": {
+   "lat": 51.991,
+   "lon": 70.944,
+   "elev": 383.0,
+   "name": "Akkol",
+   "source": "wmo"
+  },
+  "st-00038457": {
+   "lat": 41.333,
+   "lon": 69.3,
+   "elev": 477.0,
+   "name": "Tashkent",
+   "source": "wmo"
+  },
+  "st-00038452": {
+   "lat": 41.747,
+   "lon": 69.375,
+   "elev": 597.0,
+   "name": "Kazygurt",
+   "source": "wmo"
+  },
+  "st-00038706": {
+   "lat": 41.55,
+   "lon": 70.017,
+   "elev": 1670.0,
+   "name": "Chimgan",
+   "source": "wmo"
+  },
+  "st-00038696": {
+   "lat": 39.633,
+   "lon": 66.95,
+   "elev": 725.0,
+   "name": "Samarkand",
+   "source": "wmo"
+  },
+  "st-00038699": {
+   "lat": 39.25,
+   "lon": 67.067,
+   "elev": 625.3,
+   "name": "Shahrisabz",
+   "source": "wmo"
+  },
+  "st-00038563": {
+   "lat": 40.233,
+   "lon": 66.55,
+   "elev": 736.9,
+   "name": "Kushrabad",
+   "source": "wmo"
+  },
+  "st-00038683": {
+   "lat": 39.717,
+   "lon": 64.617,
+   "elev": 224.0,
+   "name": "Buhara",
+   "source": "wmo"
+  },
+  "st-00038697": {
+   "lat": 39.25,
+   "lon": 65.15,
+   "elev": 284.7,
+   "name": "Mubarek",
+   "source": "wmo"
+  },
+  "st-00038567": {
+   "lat": 40.133,
+   "lon": 65.35,
+   "elev": 340.5,
+   "name": "Navoiy",
+   "source": "wmo"
+  },
+  "st-00038229": {
+   "lat": 43.321,
+   "lon": 74.93,
+   "elev": 1140.0,
+   "name": "Korday",
+   "source": "wmo"
+  },
+  "st-00036865": {
+   "lat": 43.534,
+   "lon": 75.199,
+   "elev": 742.2,
+   "name": "Otar",
+   "source": "wmo"
+  },
+  "st-00038223": {
+   "lat": 43.817,
+   "lon": 74.371,
+   "elev": 768.0,
+   "name": "Shokpar",
+   "source": "wmo"
+  },
+  "st-00036899": {
+   "lat": 43.051,
+   "lon": 78.647,
+   "elev": 1698.0,
+   "name": "Zhalanash",
+   "source": "wmo"
+  },
+  "st-00036897": {
+   "lat": 43.267,
+   "lon": 78.1,
+   "elev": 2215.6,
+   "name": "Assy",
+   "source": "wmo"
+  },
+  "st-00036894": {
+   "lat": 43.604,
+   "lon": 78.267,
+   "elev": 606.0,
+   "name": "SHELEK",
+   "source": "wmo"
+  },
+  "st-00041571": {
+   "lat": 33.617,
+   "lon": 73.1,
+   "elev": 507.0,
+   "name": "Islamabad",
+   "source": "wmo"
+  },
+  "st-00041598": {
+   "lat": 32.933,
+   "lon": 73.717,
+   "elev": 232.0,
+   "name": "Jhelum",
+   "source": "wmo"
+  },
+  "st-00041529": {
+   "lat": 34.033,
+   "lon": 71.933,
+   "elev": 329.0,
+   "name": "Peshawar",
+   "source": "wmo"
+  },
+  "st-00041640": {
+   "lat": 31.55,
+   "lon": 74.333,
+   "elev": 214.0,
+   "name": "Lahore",
+   "source": "wmo"
+  },
+  "st-00041600": {
+   "lat": 32.5,
+   "lon": 74.533,
+   "elev": 255.0,
+   "name": "Sialkot",
+   "source": "wmo"
+  },
+  "st-00042056": {
+   "lat": 32.667,
+   "lon": 74.833,
+   "elev": 367.0,
+   "name": "JAMMU",
+   "source": "wmo"
+  },
+  "st-00044454": {
+   "lat": 27.704,
+   "lon": 85.356,
+   "elev": 1337.0,
+   "name": "Kathmandu",
+   "source": "wmo"
+  },
+  "st-00044449": {
+   "lat": 27.164,
+   "lon": 84.98,
+   "elev": 137.0,
+   "name": "Simara",
+   "source": "wmo"
+  },
+  "st-00044462": {
+   "lat": 27.308,
+   "lon": 86.504,
+   "elev": 1731.0,
+   "name": "Okhaldhunga",
+   "source": "wmo"
+  },
+  "st-00044434": {
+   "lat": 28.2,
+   "lon": 83.979,
+   "elev": 827.0,
+   "name": "Pokhara",
+   "source": "wmo"
+  },
+  "st-00044438": {
+   "lat": 27.507,
+   "lon": 83.42,
+   "elev": 108.0,
+   "name": "Bhairahawa",
+   "source": "wmo"
+  },
+  "st-00098425": {
+   "lat": 14.583,
+   "lon": 120.967,
+   "elev": 15.0,
+   "name": "PortAreaManila",
+   "source": "wmo"
+  },
+  "st-00098430": {
+   "lat": 14.633,
+   "lon": 121.033,
+   "elev": 42.0,
+   "name": "ScienceGardenQuezonCityMetroMa",
+   "source": "wmo"
+  },
+  "st-00098428": {
+   "lat": 14.483,
+   "lon": 120.9,
+   "elev": -876.5,
+   "name": "SangleyPointCavite",
+   "source": "wmo"
+  },
+  "st-00098646": {
+   "lat": 10.317,
+   "lon": 123.95,
+   "elev": 24.3,
+   "name": "MactanInternationalAirportCebu",
+   "source": "wmo"
+  },
+  "st-00098648": {
+   "lat": 10.133,
+   "lon": 124.85,
+   "elev": 72.0,
+   "name": "MaasinSouthernLeyte",
+   "source": "wmo"
+  },
+  "st-00098642": {
+   "lat": 9.333,
+   "lon": 123.3,
+   "elev": 8.0,
+   "name": "DumagueteCityNegrosOriental",
+   "source": "wmo"
+  },
+  "st-00098536": {
+   "lat": 12.567,
+   "lon": 122.267,
+   "elev": 176.6,
+   "name": "RomblonCityRomblon",
+   "source": "wmo"
+  },
+  "st-00098538": {
+   "lat": 11.6,
+   "lon": 122.733,
+   "elev": 4.0,
+   "name": "RoxasCityCapiz",
+   "source": "wmo"
+  },
+  "st-00048462": {
+   "lat": 13.7,
+   "lon": 102.583,
+   "elev": 47.0,
+   "name": "AranyaPrathet",
+   "source": "wmo"
+  },
+  "st-00063870": {
+   "lat": -6.22,
+   "lon": 39.22,
+   "elev": 18.0,
+   "name": "ZANZIBAR",
+   "source": "wmo"
+  },
+  "st-00063894": {
+   "lat": -6.87,
+   "lon": 39.2,
+   "elev": 53.0,
+   "name": "DAR_ES_SALAAM",
+   "source": "wmo"
+  },
+  "st-00063791": {
+   "lat": -3.42,
+   "lon": 37.07,
+   "elev": 891.0,
+   "name": "KILIMANJARO",
+   "source": "wmo"
+  },
+  "st-00061995": {
+   "lat": -20.298,
+   "lon": 57.495,
+   "elev": 423.0,
+   "name": "Vacoas",
+   "source": "wmo"
+  },
+  "st-00061990": {
+   "lat": -20.435,
+   "lon": 57.683,
+   "elev": 50.0,
+   "name": "Plaisance",
+   "source": "wmo"
+  },
+  "st-00063980": {
+   "lat": -4.671,
+   "lon": 55.514,
+   "elev": 3.0,
+   "name": "SeychellesIntlAirport",
+   "source": "wmo"
+  },
+  "st-00071508": {
+   "lat": 43.665,
+   "lon": -79.395,
+   "elev": 113.0,
+   "name": "Toronto_City",
+   "source": "wmo"
+  },
+  "st-00071296": {
+   "lat": 44.233,
+   "lon": -79.78,
+   "elev": 251.0,
+   "name": "Egbert_Cs",
+   "source": "wmo"
+  },
+  "st-00072528": {
+   "lat": 42.949,
+   "lon": -78.737,
+   "elev": 211.0,
+   "name": "BUFFALO",
+   "source": "wmo"
+  },
+  "st-00071207": {
+   "lat": 49.783,
+   "lon": -123.161,
+   "elev": 54.0,
+   "name": "Squamish_Airport",
+   "source": "wmo"
+  },
+  "st-00071783": {
+   "lat": 48.457,
+   "lon": -123.305,
+   "elev": 60.0,
+   "name": "Victoria_University_Cs",
+   "source": "wmo"
+  },
+  "st-00072617": {
+   "lat": 44.468,
+   "lon": -73.15,
+   "elev": 101.0,
+   "name": "BURLINGTON_INTL_AP",
+   "source": "wmo"
+  },
+  "st-00071122": {
+   "lat": 51.194,
+   "lon": -115.553,
+   "elev": 1397.0,
+   "name": "Banff_Cs",
+   "source": "wmo"
+  }
+ }
+}

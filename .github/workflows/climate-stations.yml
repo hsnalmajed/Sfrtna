@@ -1,7 +1,8 @@
 # Downloads the official WMO 1991–2020 station normals (NOAA NCEI, no key)
 # and keeps them as one compact file (scripts/climate/data/wmo_normals.json),
 # so station matching and the accuracy checks of the climate data can run
-# anywhere. Runs here because the cloud workspace cannot reach NOAA.
+# anywhere; plus NOAA GHCN-Daily station records where no WMO normal is
+# near a city (fetch_ghcn.py). Runs here because the cloud workspace cannot reach NOAA.
 name: Climate stations
 
 on:
@@ -10,6 +11,9 @@ on:
     paths:
       - "scripts/climate/fetch_wmo_normals.py"
       - "scripts/climate/compact_wmo.py"
+      - "scripts/climate/fetch_ghcn.py"
+      - "scripts/climate/station_plan.py"
+      - "scripts/geo/out/*.staged.json"
       - ".github/workflows/climate-stations.yml"
   workflow_dispatch:
 
@@ -23,7 +27,7 @@ concurrency:
 jobs:
   stations:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 300
     steps:
       - uses: actions/checkout@v4
 
@@ -37,10 +41,12 @@ jobs:
           cd scripts/climate
           python3 fetch_wmo_normals.py
           python3 compact_wmo.py
+          python3 fetch_ghcn.py
+          python3 station_plan.py
 
       - name: Commit
         run: |
-          git add scripts/climate/data/wmo_normals.json
+          git add scripts/climate/data/
           if git diff --cached --quiet; then
             echo "Nothing new."
             exit 0

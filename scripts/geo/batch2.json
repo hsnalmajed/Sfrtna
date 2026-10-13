@@ -650,7 +650,7 @@
     "sal",
     "سال",
     "Sal",
-    "Sal, Cape Verde"
+    "Santa Maria, Cape Verde"
    ]
   ],
   "US": [
@@ -1169,7 +1169,7 @@
   "strasbourg": "SXB",
   "pisa": "PSA",
   "bologna": "BLQ",
-  "palermo": "DPS",
+  "palermo": "PMO",
   "malaga": "AGP",
   "valencia": "VLC",
   "ibiza": "IBZ",
@@ -1267,7 +1267,7 @@
   "medellin": "MDE",
   "cartagena": "CTG",
   "quito": "UIO",
-  "guayaquil": "GOI",
+  "guayaquil": "GYE",
   "galapagos": "GPS",
   "montevideo": "MVD",
   "punta-del-este": "PDP",
@@ -1292,5 +1292,36 @@
   "honiara": "HIR",
   "koror": "ROR",
   "pohnpei": "PNI"
+ },
+ "geocodeNote": "Queries that the first run placed wrongly (13 Oct): the stage report showed the town in another province or island. [query, country code for Nominatim].",
+ "geocodeQueries": {
+  "hong-kong": [
+   "Central, Hong Kong",
+   "cn"
+  ],
+  "macau": [
+   "Macau Peninsula",
+   "cn"
+  ],
+  "labuan-bajo": [
+   "Labuan Bajo, Komodo, Manggarai Barat",
+   "id"
+  ],
+  "punta-cana": [
+   "Punta Cana, La Altagracia",
+   "do"
+  ],
+  "sal": [
+   "Santa Maria, Sal",
+   "cv"
+  ],
+  "victoria-falls": [
+   "Victoria Falls, Hwange District",
+   "zw"
+  ],
+  "luxembourg": [
+   "Luxembourg, Canton Luxembourg",
+   "lu"
+  ]
  }
 }

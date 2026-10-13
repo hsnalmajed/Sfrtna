@@ -44,7 +44,11 @@ def plain_name(q: str) -> str:
 
 
 def nominatim(q: str, cc: str, feature: str | None):
-    params = {"q": plain_name(q), "countrycodes": cc.lower(), "format": "jsonv2", "limit": 1, "accept-language": "en"}
+    return nominatim_raw(plain_name(q), cc, feature)
+
+
+def nominatim_raw(q: str, cc: str, feature: str | None):
+    params = {"q": q, "countrycodes": cc.lower(), "format": "jsonv2", "limit": 1, "accept-language": "en"}
     if feature:
         params["featureType"] = feature
     url = "https://nominatim.openstreetmap.org/search?" + urllib.parse.urlencode(params)
@@ -69,10 +73,18 @@ def main():
     batch = json.loads(batch_path.read_text(encoding="utf-8"))["countries"]
     OUT.mkdir(exist_ok=True)
     out = {"source": "OpenStreetMap Nominatim", "retrievedAt": datetime.now(timezone.utc).isoformat(timespec="seconds"), "cities": {}}
+    overrides = json.loads(batch_path.read_text(encoding="utf-8")).get("geocodeQueries", {})
     for cc, cities in batch.items():
         for slug, _ar, en, query in cities:
-            plain = nominatim(query, cc, None)
-            city = nominatim(query, cc, "city")
+            # A query a reviewer corrected (see the batch's geocodeNote) is
+            # sent as written, with the country code given beside it.
+            q, qcc = overrides.get(slug, (query, cc))
+            if slug in overrides:
+                plain = nominatim_raw(q, qcc, None)
+                city = nominatim_raw(q, qcc, "city")
+            else:
+                plain = nominatim(q, qcc, None)
+                city = nominatim(q, qcc, "city")
             chosen = city or plain
             out["cities"][slug] = {"country": cc, "query": query, "plain": plain, "city": city, "chosen": "city" if city else "plain" if plain else None}
             print(slug, (chosen or {}).get("lat"), (chosen or {}).get("lon"), (chosen or {}).get("display_name", "NOT FOUND")[:80], flush=True)

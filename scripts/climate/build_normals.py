@@ -112,7 +112,9 @@ def read_complete(path: Path, full_period: bool = True):
     raise SystemExit(f"{path.name}: incomplete after 5 reads ({len(data):,} of {path.stat().st_size:,} bytes) — re-download it")
 
 
-def normals_for(path: Path, tz: str, full_period: bool = True):
+def daily_for(path: Path, tz: str, full_period: bool = True):
+    """One row per local calendar day with ≥ 23 hourly values, 1991–2020:
+    high, low, mean, rain, dew, rh, wind, snowc, year, month, wet."""
     df = read_complete(path, full_period)
     t = pd.to_datetime(df[col(df, "time")], utc=True).dt.tz_convert(tz)
     h = pd.DataFrame({"t": df[col(df, "t2m")] - 273.15})
@@ -148,7 +150,11 @@ def normals_for(path: Path, tz: str, full_period: bool = True):
     daily["year"] = daily.index.year
     daily["month"] = daily.index.month
     daily["wet"] = (daily["rain"] >= 1.0).astype(float)
+    return daily
 
+
+def normals_for(path: Path, tz: str, full_period: bool = True):
+    daily = daily_for(path, tz, full_period)
     rows = []
     for (y, m), grp in daily.groupby(["year", "month"]):
         days_in_month = pd.Period(f"{y}-{m:02d}").days_in_month

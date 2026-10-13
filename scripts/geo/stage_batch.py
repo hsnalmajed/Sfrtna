@@ -66,7 +66,9 @@ def main():
             entry.update(lat=pt["lat"], lon=pt["lon"], geocode=pt.get("display_name"))
             named = batch.get("gateways", {}).get(slug)
             a = by_iata.get(named or "")
-            ok = a and a["scheduled_service"] == "yes" and a["type"] in ("large_airport", "medium_airport")
+            # A named gateway needs scheduled flights; its size may be small
+            # (Komodo for Labuan Bajo is a "small_airport" with daily flights).
+            ok = a and a["scheduled_service"] == "yes"
             if ok:
                 km = hav(pt["lat"], pt["lon"], float(a["latitude_deg"]), float(a["longitude_deg"]))
                 entry["airport"] = {
@@ -76,7 +78,7 @@ def main():
                 if km > 150:
                     entry["flags"].append(f"gateway {round(km)} km away")
             else:
-                entry["flags"].append(f"named gateway {named!r} not a scheduled large/medium airport in OurAirports")
+                entry["flags"].append(f"named gateway {named!r} has no scheduled service in OurAirports")
                 best = None
                 for kind, limit in (("large_airport", 60), ("medium_airport", 60), ("large_airport", 150), ("medium_airport", 150)):
                     cands = [(hav(pt["lat"], pt["lon"], float(x["latitude_deg"]), float(x["longitude_deg"])), x) for x in usable if x["type"] == kind]
