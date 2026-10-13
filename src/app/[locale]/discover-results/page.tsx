@@ -219,6 +219,7 @@ function DiscoverResultsContent() {
           directOnly={directOnly}
           baggageIncluded={baggageIncluded}
           photo={s.place ? photos[`${s.place.countryCode}/${s.place.citySlug}`] : undefined}
+          hotelFirst={tripType === "hotel"}
         />
       ))}
     </div>
@@ -252,7 +253,7 @@ function DiscoverResultsContent() {
           dict.discoverResults.searchLine.split(" · ")[0].replace("{origin}", originLabel),
           returnDate ? `${pretty(departDate)} ${locale === "ar" ? "←" : "→"} ${pretty(returnDate)}` : pretty(departDate),
           countLabel(travellers, { one: dict.results.travelersOne, two: dict.results.travelersTwo, few: dict.results.travelersFew, many: dict.results.travelersMany }),
-          d.budgetFact.replace("{budget}", money(Number(budget))),
+          (tripType === "hotel" ? d.budgetFactHotel : tripType === "both" ? d.budgetFactBoth : d.budgetFact).replace("{budget}", money(Number(budget))),
         ]}
         backHref={`/${locale}?${editSearchParams}#plan`}
         backLabel={d.backToSearch}

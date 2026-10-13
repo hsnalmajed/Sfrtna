@@ -44,6 +44,7 @@ export default function DestinationCard({
   directOnly,
   baggageIncluded = false,
   photo,
+  hotelFirst = false,
 }: {
   suggestion: DestinationSuggestion;
   locale: Locale;
@@ -55,6 +56,8 @@ export default function DestinationCard({
   directOnly: boolean;
   baggageIncluded?: boolean;
   photo?: string;
+  /** "Hotel only" search: the hotel search is the card's main button. */
+  hotelFirst?: boolean;
 }) {
   const dict = getDictionary(locale);
   const d = dict.discoverResults;
@@ -86,16 +89,16 @@ export default function DestinationCard({
     directOnly: String(directOnly),
     baggageIncluded: String(baggageIncluded),
   });
-  // The hotel search opens on the homepage with the city and dates filled
-  // in; the traveller adds a hotel budget and extras there.
-  const hotelParams = new URLSearchParams({
-    product: "hotels",
+  // Straight to the city's hotels for these dates and this party (it used
+  // to open the home form, one more step for nothing).
+  const hotelHref = `/${locale}/hotel-results?${new URLSearchParams({
     hmode: "discover",
     city: place?.cityNameEn ?? suggestion.destinationNameEn,
+    label: name,
     checkIn: departDate,
     checkOut: stayEnd,
     ...party,
-  });
+  })}`;
 
   const visaLabels = {
     free: dict.visa.statusFree,
@@ -183,20 +186,25 @@ export default function DestinationCard({
         </div>
 
         <div className="mt-auto space-y-2 pt-3 sm:pt-4">
-          <Link
-            href={`/${locale}/results?${flightParams.toString()}`}
-            className="block w-full rounded-xl bg-sun-400 px-2 py-2.5 text-center text-xs font-extrabold text-navy-950 shadow-[var(--shadow-sun)] transition hover:bg-sun-300 sm:px-4 sm:py-3 sm:text-sm"
-          >
-            ✈️ <span className="sm:hidden">{d.bookFlightShort}</span>
-            <span className="hidden sm:inline">{d.bookFlight}</span>
-          </Link>
-          <a
-            href={`/${locale}?${hotelParams.toString()}#plan`}
-            className="block w-full rounded-xl bg-white px-2 py-2 text-center text-xs font-bold text-navy-900 ring-1 ring-navy-900/15 transition hover:bg-mist-50 sm:bg-navy-900 sm:px-4 sm:py-2.5 sm:text-sm sm:text-white sm:ring-0 sm:hover:bg-navy-800"
-          >
-            🏨 <span className="sm:hidden">{d.hotelsTiny}</span>
-            <span className="hidden sm:inline">{d.hotelIn.replace("{city}", name)}</span>
-          </a>
+          {(() => {
+            const main =
+              "block w-full rounded-xl bg-sun-400 px-2 py-2.5 text-center text-xs font-extrabold text-navy-950 shadow-[var(--shadow-sun)] transition hover:bg-sun-300 sm:px-4 sm:py-3 sm:text-sm";
+            const second =
+              "block w-full rounded-xl bg-white px-2 py-2 text-center text-xs font-bold text-navy-900 ring-1 ring-navy-900/15 transition hover:bg-mist-50 sm:bg-navy-900 sm:px-4 sm:py-2.5 sm:text-sm sm:text-white sm:ring-0 sm:hover:bg-navy-800";
+            const flight = (cls: string) => (
+              <Link key="f" href={`/${locale}/results?${flightParams.toString()}`} className={cls}>
+                ✈️ <span className="sm:hidden">{d.bookFlightShort}</span>
+                <span className="hidden sm:inline">{d.bookFlight}</span>
+              </Link>
+            );
+            const hotel = (cls: string) => (
+              <Link key="h" href={hotelHref} className={cls}>
+                🏨 <span className="sm:hidden">{d.hotelsTiny}</span>
+                <span className="hidden sm:inline">{d.hotelIn.replace("{city}", name)}</span>
+              </Link>
+            );
+            return hotelFirst ? [hotel(main), flight(second)] : [flight(main), hotel(second)];
+          })()}
           {place && (
             <Link
               href={`/${locale}/attractions/${place.countryCode}/${place.citySlug}`}
