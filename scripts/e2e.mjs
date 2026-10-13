@@ -163,8 +163,11 @@ await check("multi-city form: flight 2 cannot be dated before flight 1", async (
   // The calendar opens on flight 1's month: every day before D1 is disabled,
   // D1 itself and later are not.
   const day = new Date(`${D1}T00:00:00Z`).getUTCDate();
-  // Only the first month's grid (the calendar shows two months).
-  const states = await box.locator("button[aria-pressed]").evaluateAll((btns) => {
+  // The calendar opens as a dialog (the site's shared date picker), not
+  // inside the form box. Only the first month's grid (it shows two months).
+  const cal = p.locator('[role="dialog"]').filter({ has: p.locator("button[aria-pressed]") }).first();
+  await cal.waitFor({ timeout: 10_000 }).catch(() => {});
+  const states = await cal.locator("button[aria-pressed]").evaluateAll((btns) => {
     const first = btns[0]?.parentElement;
     return btns
       .filter((b) => b.parentElement === first)
