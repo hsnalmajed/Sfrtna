@@ -775,9 +775,23 @@ partners' full list always), section 5 (one row of city tabs), section 6
 (/services with city/country search), section 3 (travel-tools plan opens the
 city planner; site calendar; «بدون تفضيل»; meals from stored OSM restaurants,
 workflow `restaurants.yml`), section 7 rain line + cached fares removed.
-Results in TEST_PLAN sections 2, 3, 5, 6. Still open: accounts + «save
-plan» (needs a store: Cloudflare D1 is the natural choice — ask the owner),
-sign-in in «المزيد», visa for the remaining countries (needs a visible
+Results in TEST_PLAN sections 2, 3, 5, 6. Accounts (13 Oct evening, live, switched off until settings exist):
+`accounts.js` SQLite Durable Object `ACCOUNTS` (users, sessions = token hash,
+codes, plans by place key; delete account removes all), `src/lib/accounts.ts`,
+routes /api/auth/{me,email-code,email-verify,google,signout,delete},
+/api/plans (+/delete), page /[locale]/account (`AccountPanel`), `AccountLink`
+in header, phone drawer and «المزيد», `SavePlanButton` in the plan view
+(signed out → plan kept in sessionStorage, sign in, saved, back with
+`?saved=<id>`; planner rebuilds the plan from its places). Google button via
+Google Identity Services — hidden inside the app (Google refuses WebView
+sign-in; app uses email). **Owner settings to switch on:** `GOOGLE_CLIENT_ID`
+(Runtime variable; OAuth web client, origin https://sfrtna.com) and
+`RESEND_API_KEY` (Secret; domain sfrtna.com verified in Resend). Each method
+appears only when its setting exists. Tested: DO logic in local workerd
+(code, wrong/reused code, Google link to same email, plans, rate limit,
+delete), Google token checks (good/aud/exp/tampered/unverified email), live
+/api/auth/me + 401 on /api/plans + page shows "not available yet".
+Still open: visa for the remaining countries (needs a visible
 Chrome), climate v2 after the owner's download, publishing staged cities.
 
 ## Next, in order
