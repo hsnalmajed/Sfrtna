@@ -1,6 +1,6 @@
 # Sfrtna — project notes for a new session
 
-Read this first. It replaces re-explaining the project. Last updated 9 Oct 2026.
+Read this first. It replaces re-explaining the project. Last updated 13 Oct 2026.
 
 ## Owner's standing rules (must follow)
 
@@ -471,10 +471,9 @@ Travelpayouts.
 - Checker now also Radical Storage (126 cities) and Go City (`/en/<city>`,
   rerun pending). Ticket chips also on place_of_worship with fame ≥ 40.
 
-## Next, in order
-
-**▶ Start here (new conversation, 9 Oct): finish the HERE hotel-name section.**
-State: the code is done and waiting for the key. `src/lib/providers/googlePlaces.ts`
+### Hotel names (stored + HERE) — closed 9–10 Oct ✅
+History of the section (file is now `src/lib/providers/hotelNames.ts`; Google
+removed 10 Oct). Original plan: `src/lib/providers/googlePlaces.ts`
 → `hereHotels()` (HERE Discover, `at` = visitor's rough location else Riyadh,
 `limit` 20, keeps categories `500-*` = accommodation, edge-cached 7 days per
 query), used by `hotelSuggestions()` in the order Google → HERE → OpenStreetMap;
@@ -545,7 +544,54 @@ yet. Steps for the section:
    Arabic and English: «هيلتون إسطنبول», «سماء», «ابها فندق», «Hilton
    Istanbul», a Riyadh/Jeddah hotel; Arabic spelling variants must match
    (أ/ا, ة/ه). Then pick one → named-hotel page loads prices (SerpApi).
-6. Update the Partners table row for HERE and this note; commit; report.
+6. ✅ Partners table and this note updated.
+
+## Owner's design principles (13 Oct, apply to the WHOLE site and app)
+
+- Phone layout is different from the website — design each on its own; same
+  features on both, each reaching 100% of the goal, presented differently.
+- A smooth, connected flow between every service we offer (flight → hotel →
+  activities → eSIM/transfer/car …): the traveller always sees the next step.
+  This is also how we earn.
+- Simple delivery of information, elegant design. Lots of information is fine
+  only when organised and sequenced; never a tall pile of cards (owner
+  rejected the first services cards as "too much of the page").
+- Fix any bug found anywhere in the site or app; test before saying "ready".
+
+## Partner rule (owner, 10–13 Oct)
+
+- **Offer every partner for a need, never one pick.**
+- A partner counts as linked only when (1) its link is tracked — tested live,
+  the landing URL carries the click id / marker — and (2) the payout to us is
+  set up in that partner's dashboard (bank / PayPal / via Travelpayouts).
+  Report both for every new partner.
+- No travel insurance (EKTA rejected). Viator last.
+
+## Next, in order
+
+**▶ Start here (new conversation, 13 Oct): the owner has a list of notes.**
+Read them all first, group them into one ordered list (by section), ask only
+business decisions, then fix one section at a time per the standing rules.
+State at hand-off:
+- Hotel-name search done (stored names → HERE capped → OSM). UI dropdown not
+  yet seen on a phone.
+- Trip services panel `TripServices.tsx` live on city pages and flight results
+  (activities, eSIM, transfer, car, luggage, + AirHelp on results). Phone look
+  of the compact version not yet confirmed by the owner.
+- **Go City:** checker still finds 0 cities with `https://gocity.com/en/<city>`
+  (`scripts/partners/check-pages.ts`) — find the real city URL/title pattern;
+  until then Go City is not shown.
+- Partners still to add: Headout (owner signs up at
+  partner.headout.com/affiliate), BikesBooking, Viator (owner re-submits ID
+  verification; account name «iTravel» → change via Viator support), Agoda
+  when approved. Confirm payout setup for each.
+- Activities phase 2 (needs Viator API): own activity page = description
+  (ar/en via our own translation, stored) + live price + book button.
+  Wikidata for descriptions/coordinates: owner not yet decided.
+- Itinerary: days grouped by proximity, mixing landmarks, activities,
+  restaurants.
+- Owner actions still open: Android phone test; one «احجز الرحلة» click seen
+  in Travelpayouts.
 
 
 0. Owner decision pending: which countries to add next (site has 73 with
