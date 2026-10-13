@@ -6,8 +6,9 @@ import { usePathname, useRouter } from "next/navigation";
 import { getDictionary } from "@/lib/dictionaries";
 import type { Locale } from "@/lib/types";
 import { COUNTRY_CITIES } from "@/lib/cities";
-import { findCountry, flagEmoji } from "@/lib/countries";
+import { findCountry } from "@/lib/countries";
 import { searchMatches } from "@/lib/search";
+import Flag from "@/components/ui/Flag";
 
 /**
  * A wrong link should still be a Sfrtna page.
@@ -107,7 +108,7 @@ export default function LocaleNotFound() {
                       href={`/${locale}/attractions/${c.code}`}
                       className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-navy-800 transition hover:bg-mist-100"
                     >
-                      <span aria-hidden="true">{flagEmoji(c.code)}</span>
+                      <Flag code={c.code} size={14} />
                       {isAr ? c.nameAr : c.nameEn}
                     </Link>
                   </li>
@@ -125,9 +126,7 @@ export default function LocaleNotFound() {
               href={`/${locale}/attractions/${c.code}`}
               className="card card-hover flex items-center gap-3 px-4 py-3.5 text-sm font-bold text-navy-800"
             >
-              <span className="text-lg" aria-hidden="true">
-                {flagEmoji(c.code)}
-              </span>
+<Flag code={c.code} size={18} />
               {isAr ? c.nameAr : c.nameEn}
             </Link>
           ))}

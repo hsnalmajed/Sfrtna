@@ -3,10 +3,10 @@
 import Link from "next/link";
 import type { Locale } from "@/lib/types";
 import type { Continent } from "@/lib/countries";
-import { flagEmoji } from "@/lib/countries";
 import Photo from "@/components/Photo";
 import { CONTINENT_ORDER } from "@/components/DestinationFilters";
 import { searchMatches, searchEquals } from "@/lib/search";
+import Flag from "@/components/ui/Flag";
 
 export interface DestinationCountry {
   code: string;
@@ -117,7 +117,7 @@ export default function CountryCardGrid({
                     className="absolute inset-0 -z-10 h-full w-full object-cover transition duration-500 group-hover:scale-[1.06]"
                     fallback={
                       <div className="absolute inset-0 -z-10 flex items-center justify-center bg-gradient-to-br from-navy-700 to-navy-990 text-4xl">
-                        {flagEmoji(c.code)}
+                        <Flag code={c.code} size={36} />
                       </div>
                     }
                   />

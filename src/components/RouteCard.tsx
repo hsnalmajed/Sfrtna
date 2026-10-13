@@ -7,6 +7,7 @@ import { countLabel } from "@/lib/format";
 import { monthName } from "@/lib/seasons";
 import Photo from "@/components/Photo";
 import VisaBadge from "@/components/VisaBadge";
+import Flag from "@/components/ui/Flag";
 
 function addDays(iso: string, days: number): string {
   const d = new Date(`${iso}T00:00:00Z`);
@@ -108,7 +109,7 @@ export default function RouteCard({
                   className="absolute inset-0 h-full w-full object-cover"
                   fallback={
                     <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-navy-700 to-navy-990 text-4xl">
-                      {s.emoji}
+                      {s.place?.countryCode ? <Flag code={s.place.countryCode} size={32} /> : s.emoji}
                     </div>
                   }
                 />

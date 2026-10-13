@@ -498,10 +498,12 @@ export default function FlightResultsGuide({
   const found = [...state.fits, ...state.over];
   // Flights found, none of them meeting the preferences (yet).
   const prefsNone = strict && state.filtering && found.length > 0 && !found.some(meets);
-  // Still none: asked on the page once enough flights are in (no waiting
-  // the 2–3 minutes a full search takes), and over the page when every
-  // agency has answered.
-  const prefsAsk = prefsNone && (state.settled || found.length >= 20);
+  // Still none: asked on the page once a wide set of flights is in, and
+  // over the page when every agency has answered. Not from the first
+  // batches: those are the cheapest low-cost fares, and the direct flight
+  // with a bag usually arrives with the next load (live test 13 Oct: none
+  // in the first 20 at 6 s, matches at 18 s once 200 were in).
+  const prefsAsk = prefsNone && (state.settled || found.length >= 100);
   const fits = strict ? state.fits.filter(meets) : state.fits;
   const over = strict ? state.over.filter(meets) : state.over;
   const prefsLabel = [directOnly ? t.chipDirect : "", bagIncluded ? t.chipBag : ""].filter(Boolean).join(" · ");
@@ -701,8 +703,12 @@ export default function FlightResultsGuide({
                     {f ? <bdi dir="ltr">{money(f.price)}</bdi> : "—"}
                   </span>
                   {f && f.avgMinutes > 0 && (
-                    <span className={`block text-xs ${on ? "text-white/70" : "text-navy-500"}`}>
-                      {t.tabAvg.replace("{d}", dur(f.avgMinutes))}
+                    <span
+                      className={`flex items-center gap-1 whitespace-nowrap text-xs ${on ? "text-white/70" : "text-navy-500"}`}
+                      title={t.tabAvg.replace("{d}", dur(f.avgMinutes))}
+                    >
+                      <Icon name="clock" className="h-3.5 w-3.5 shrink-0" />
+                      {dur(f.avgMinutes)}
                     </span>
                   )}
                 </button>

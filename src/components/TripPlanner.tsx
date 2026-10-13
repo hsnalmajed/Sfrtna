@@ -638,6 +638,7 @@ export default function TripPlanner({
                         required
                         tone={tone}
                         minDate={prevDate || undefined}
+                        title={`${dict.multicity.legFlight.replace("{n}", String(i + 1))} · ${dict.multicity.legDate}`}
                         onChange={({ departDate: d }) => {
                           if (i === 0) {
                             setDepartDate(d);

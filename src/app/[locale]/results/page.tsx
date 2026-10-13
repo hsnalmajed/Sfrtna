@@ -21,7 +21,8 @@ import { parseChildrenAges, serializeChildrenAges } from "@/lib/searchParamsUtil
 import { findAirport } from "@/lib/airports";
 import { flightSearchCode, parseFlightSearchCode } from "@/lib/flightSearchCode";
 import { findCityByName } from "@/lib/cities";
-import { findCountryByEnglishName, flagEmoji } from "@/lib/countries";
+import { findCountryByEnglishName } from "@/lib/countries";
+import Flag from "@/components/ui/Flag";
 
 function nightsBetween(a: string, b: string) {
   const t1 = new Date(a).getTime();
@@ -191,6 +192,14 @@ function ResultsContent() {
         })
       : "";
 
+  // "17 – 24 نوفمبر", or "28 نوفمبر – 3 ديسمبر": short enough for a phone
+  // line, so the return date is never cut off.
+  const dateRange = (a: string, b?: string) => {
+    if (!a) return "";
+    if (!b) return shortDate(a);
+    const sameMonth = a.slice(0, 7) === b.slice(0, 7);
+    return sameMonth ? `${Number(a.slice(8))} – ${shortDate(b)}` : `${shortDate(a)} – ${shortDate(b)}`;
+  };
   // "25 أكتوبر" — the header's one line has no room for the weekday.
   const shortDate = (iso: string) =>
     iso
@@ -412,34 +421,27 @@ function ResultsContent() {
                 way to change them, the visa, its requirements, and what a
                 riyal is worth there. Owner, 13 Oct: each on its own line made
                 the header tall for nothing. */}
-            <div className="mt-4 flex flex-wrap items-stretch gap-2">
+            {/* Phone: the trip card full width, then visa · requirements ·
+                currency as one swipeable line. Wider: all in one row. */}
+            <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-stretch">
               <Link
                 href={`/${locale}?${editSearchParams}#plan`}
-                className="group inline-flex max-w-full items-center gap-2.5 rounded-xl bg-white py-1.5 pe-1.5 ps-3 text-[13px] font-bold text-navy-950 shadow-sm transition hover:ring-2 hover:ring-sun-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400"
+                className="group flex w-full items-center gap-2.5 rounded-xl bg-white py-1.5 pe-1.5 ps-3 text-[13px] font-bold text-navy-950 shadow-sm transition hover:ring-2 hover:ring-sun-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400 sm:inline-flex sm:w-auto"
               >
                 <Icon name="calendar" className="h-4 w-4 shrink-0 text-navy-500" />
-                <span className="truncate">
-                  {shortDate(search.departDate)}
-                  {search.returnDate && (
-                    <>
-                      <span className="mx-1 text-navy-400" aria-hidden="true">
-                        {locale === "ar" ? "←" : "→"}
-                      </span>
-                      {shortDate(search.returnDate)}
-                    </>
-                  )}
-                </span>
+                <span className="whitespace-nowrap">{dateRange(search.departDate, search.returnDate)}</span>
                 <span className="h-4 w-px shrink-0 bg-mist-300" aria-hidden="true" />
                 <Icon name="users" className="h-4 w-4 shrink-0 text-navy-500" />
-                <span className="whitespace-nowrap">
+                <span className="min-w-0 truncate">
                   {countLabel(travelers, { one: dict.results.travelersOne, two: dict.results.travelersTwo, few: dict.results.travelersFew, many: dict.results.travelersMany })}
                 </span>
-                <span className="inline-flex shrink-0 items-center gap-1 rounded-lg bg-sun-400 px-2.5 py-1 text-xs font-extrabold text-navy-950 transition group-hover:bg-sun-300">
+                <span className="ms-auto inline-flex shrink-0 items-center gap-1 rounded-lg bg-sun-400 px-2.5 py-1 text-xs font-extrabold text-navy-950 transition group-hover:bg-sun-300 sm:ms-0">
                   <span aria-hidden="true">✎</span>
                   {dict.results.editSearch}
                 </span>
               </Link>
 
+              <div className="-mx-4 flex gap-2 overflow-x-auto px-4 [scrollbar-width:none] sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0 [&>*]:shrink-0 [&>*]:whitespace-nowrap">
               {destinationCountry && !sameCountry && (
                 <>
                   {visa ? (
@@ -466,6 +468,7 @@ function ResultsContent() {
               {showCurrencyStrip && homeCurrency && tripCurrency && (
                 <TripCurrencyInline from={homeCurrency} to={tripCurrency} locale={locale} />
               )}
+              </div>
             </div>
           </div>
 
@@ -607,7 +610,7 @@ function ResultsContent() {
               className="flex flex-wrap items-center justify-between gap-4 rounded-2xl bg-white p-5 sm:p-6 shadow-sm ring-1 ring-black/5 transition hover:ring-brand-200 hover:shadow-md"
             >
               <div className="flex items-center gap-3">
-                <span className="text-3xl leading-none">{flagEmoji(destinationCountry.code)}</span>
+                <Flag code={destinationCountry.code} size={24} />
                 <div>
                   {/* Named, when we know the name. "Explore your destination"
                       is a slogan; "Attractions in Istanbul" is a promise the

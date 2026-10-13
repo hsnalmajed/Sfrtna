@@ -1055,7 +1055,7 @@ export const dictionaries = {
     },
     footer: {
       disclaimer:
-        "سفرتنا أداة مقارنة ومساعدة في التخطيط. الأسعار النهائية والحجز يتمّان عبر شركاء الحجز الموثوقين. الأسعار تقديرية وقد تختلف عند إتمام الحجز.",
+        "سفرتنا أداة مقارنة ومساعدة في التخطيط. الحجز والدفع يتمّان عند شركاء الحجز، والأسعار المعروضة هي أسعارهم الحية وقد تتغير حتى إتمام الحجز.",
       rights: "جميع الحقوق محفوظة",
       exploreHeading: "اكتشف",
       toolsHeading: "أدوات المسافر",
@@ -2097,7 +2097,7 @@ export const dictionaries = {
     },
     footer: {
       disclaimer:
-        "Sfrtna is a comparison and planning assistant. Final pricing and booking happen through trusted booking partners. Prices are estimates and may vary at checkout.",
+        "Sfrtna is a comparison and planning assistant. Booking and payment happen with our booking partners; the prices shown are their live prices and can change until you book.",
       rights: "All rights reserved",
       exploreHeading: "Explore",
       toolsHeading: "Traveller tools",

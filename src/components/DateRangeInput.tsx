@@ -120,6 +120,7 @@ export default function DateRangeInput({
   tone = "light",
   fareRoute,
   minDate,
+  title,
 }: {
   locale: Locale;
   departDate: string;
@@ -141,6 +142,8 @@ export default function DateRangeInput({
    * a multi-city flight cannot leave before the one before it.
    */
   minDate?: string;
+  /** The calendar's heading for a one-date pick, e.g. "Flight 2". */
+  title?: string;
 }) {
   const dict = getDictionary(locale);
   const isAr = locale === "ar";
@@ -371,7 +374,7 @@ export default function DateRangeInput({
                   </span>
                 </>
               ) : (
-                dict.form.departDate
+                (title ?? dict.form.departDate)
               )}
             </p>
             <button

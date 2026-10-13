@@ -4,11 +4,12 @@ import { CLASS_DOT } from "@/lib/travelSeason/labels";
 import type { DestinationSuggestion, Locale, TravelerCounts } from "@/lib/types";
 import { getDictionary } from "@/lib/dictionaries";
 import { serializeChildrenAges } from "@/lib/searchParamsUtil";
-import { flagEmoji, findCountry } from "@/lib/countries";
+import { findCountry } from "@/lib/countries";
 import { monthName } from "@/lib/seasons";
 import { countLabel } from "@/lib/format";
 import Photo from "@/components/Photo";
 import VisaBadge from "@/components/VisaBadge";
+import Flag from "@/components/ui/Flag";
 
 /** The stay's last night, when discover priced it in nights rather than dates. */
 function addDaysIso(dateStr: string, days: number): string {
@@ -119,7 +120,7 @@ export default function DestinationCard({
           className="absolute inset-0 h-full w-full object-cover"
           fallback={
             <div className="absolute inset-0 flex items-end justify-end bg-gradient-to-br from-sea-50 to-mist-100 p-2.5 text-4xl leading-none">
-              {place ? flagEmoji(place.countryCode) : suggestion.emoji}
+              {place ? <Flag code={place.countryCode} size={28} /> : null}
             </div>
           }
         />
