@@ -168,5 +168,9 @@ export const SECTION_HEROES: Record<HeroSection, HeroPhoto> = {
 /** The hero's image URLs and srcset, ready for <Photo>. */
 export function heroImage(photo: HeroPhoto): { url: string; srcSet: string } {
   const s = pexelsSizes(photo.src);
-  return { url: s.url, srcSet: `${s.url} 1920w, ${s.url4k} 3840w` };
+  // Phone sizes too (13 Oct 2026): with only 1920w a phone downloaded the
+  // full desktop picture, 200–360 KB, and it was the slowest thing on the
+  // first screen. A 390 px phone now takes 828w or 1280w.
+  const at = (w: number) => `${photo.src}?auto=compress&cs=tinysrgb&w=${w}`;
+  return { url: s.url, srcSet: `${at(828)} 828w, ${at(1280)} 1280w, ${s.url} 1920w, ${s.url4k} 3840w` };
 }
