@@ -16,7 +16,7 @@ import VisaBadge from "@/components/VisaBadge";
 import VisaRequirementsDialog from "@/components/VisaRequirementsDialog";
 import { visaStatusFor } from "@/data/visaStatus";
 import Icon from "@/components/ui/Icon";
-import { currencyForCountry } from "@/lib/currencies";
+import { currencyForCountry, findCurrency } from "@/lib/currencies";
 import { parseChildrenAges, serializeChildrenAges } from "@/lib/searchParamsUtil";
 import { findAirport } from "@/lib/airports";
 import { flightSearchCode, parseFlightSearchCode } from "@/lib/flightSearchCode";
@@ -252,7 +252,10 @@ function ResultsContent() {
   // say — a Riyadh-to-Dammam trip doesn't need an exchange rate.
   const originAirport = findAirport(search.origin);
   const originCityName = originAirport ? (locale === "ar" ? originAirport.cityAr : originAirport.cityEn) : search.origin;
-  const homeCurrency = currencyForCountry(originCountry?.code);
+  // The traveller's own money: the currency they searched in (their budget's),
+  // not the currency of the city this flight leaves from — on a multi-city
+  // trip's second flight that was "1 Turkish lira = …" (13 Oct).
+  const homeCurrency = findCurrency(search.currency) ?? currencyForCountry(originCountry?.code);
   // A trip inside the traveller's own country needs no visa line at all
   // (it was hidden only for Saudi Arabia, so Dubai → Abu Dhabi showed one).
   const sameCountry = Boolean(destinationCountry && (destinationCountry.code === "SA" || destinationCountry.code === originCountry?.code));
@@ -539,7 +542,7 @@ function ResultsContent() {
           booked — that happens at the agency — so this is offered, not
           assumed: the same city, the same dates, the same party, carried to
           the hotels page so nothing is typed twice. */}
-      {hotelNextHref && (
+      {hotelNextHref && !searchProblem && (
         <Link
           href={hotelNextHref}
           className="mt-10 flex flex-wrap items-center justify-between gap-4 rounded-2xl bg-gradient-to-l from-sea-600 to-navy-900 p-5 shadow-sm ring-1 ring-sea-400/40 transition hover:ring-sun-400/60 sm:p-6"

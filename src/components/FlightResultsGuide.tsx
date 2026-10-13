@@ -720,7 +720,7 @@ export default function FlightResultsGuide({
             {...card}
             flight={shown}
             featured
-            badge={tab === "cheapest" ? t.badgeCheapest : tab === "fastest" ? t.badgeFastest : t.pickBadge}
+            badge={tab === "cheapest" ? (hasBudget ? t.badgeCheapest : t.tabCheapest) : tab === "fastest" ? (hasBudget ? t.badgeFastest : t.tabFastest) : t.pickBadge}
             aside={overToggle || null}
             foot={
               others.length > 0 && (
@@ -735,7 +735,7 @@ export default function FlightResultsGuide({
                   </span>
                   <span className="min-w-0 flex-1">
                     <span className="flex items-center gap-2 text-base font-extrabold text-navy-950">
-                      {showWithin ? t.allWithinHide : t.withinBarTitle}
+                      {showWithin ? t.allWithinHide : hasBudget ? t.withinBarTitle : t.othersBarTitle}
                       <span className="rounded-full bg-navy-900 px-2 py-0.5 text-xs font-black text-white">{others.length}</span>
                     </span>
                     <span className="mt-0.5 block text-xs font-semibold text-navy-500">{t.withinBarSub}</span>

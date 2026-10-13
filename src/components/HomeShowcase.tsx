@@ -216,7 +216,9 @@ export default function HomeShowcase({
       if (window.location.hash === "#plan") show();
     }
     // Deferred, not called here: no synchronous setState in an effect body.
-    const arrived = initialPlan ? undefined : window.setTimeout(onHash, 0);
+    // Arriving from «تعديل البحث» (initialPlan) also lands on the form, not
+    // on the hero above it (owner had to scroll to find it, 13 Oct).
+    const arrived = window.setTimeout(() => (initialPlan ? show() : onHash()), 0);
     window.addEventListener(PLAN_EVENT, onOpen);
     window.addEventListener("hashchange", onHash);
     return () => {
