@@ -584,7 +584,7 @@ export default function HomeShowcase({
               on the height is what stops the page jumping under the strip
               when a shorter panel replaces a taller one — a jump reads as a
               glitch, and is worse than the blank inch it saves. */}
-          <div key={active} className="tab-fade min-h-[16rem] sm:min-h-[15rem]">
+          <div key={active} className="tab-fade">
             {active === "season" && (
               <>
                 {allCities || seasonCities.length <= 6 ? (

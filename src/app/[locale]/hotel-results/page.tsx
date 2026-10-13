@@ -241,7 +241,7 @@ function HotelResultsContent() {
       </section>
 
       <div
-        className="mx-auto max-w-6xl px-4 pb-14 pt-8 sm:px-6"
+        className="mx-auto max-w-6xl px-4 pb-10 pt-8 sm:px-6"
         onClickCapture={(e) => {
           // A booking site opened from here: the hotel step is taken.
           if (tripCity && (e.target as HTMLElement).closest("a[data-partner]")) markStep(tripCity.slug, "hotel");
