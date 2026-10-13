@@ -954,11 +954,11 @@
      "name": "LARACHE"
     },
     {
-     "id": "00060107",
-     "source": "wmo",
-     "km": 129.8,
-     "elev": 12.0,
-     "name": "ALHOUCEIMA"
+     "id": "ghcn:SPE00119963",
+     "source": "ghcn",
+     "km": 98.7,
+     "elev": 32.0,
+     "name": "TARIFA"
     }
    ]
   },
@@ -969,6 +969,13 @@
    "staged": false,
    "direct": [],
    "calibrate": [
+    {
+     "id": "ghcn:SPE00119963",
+     "source": "ghcn",
+     "km": 33.0,
+     "elev": 32.0,
+     "name": "TARIFA"
+    },
     {
      "id": "00060318",
      "source": "wmo",
@@ -982,13 +989,6 @@
      "km": 73.2,
      "elev": 47.0,
      "name": "LARACHE"
-    },
-    {
-     "id": "00008452",
-     "source": "wmo",
-     "km": 90.9,
-     "elev": 2.0,
-     "name": "CADIZOBS"
     }
    ]
   },
@@ -1133,28 +1133,43 @@
    "lon": -3.18837,
    "country": "GB",
    "staged": false,
-   "direct": [],
+   "direct": [
+    {
+     "id": "ghcn:UKE00105888",
+     "source": "ghcn",
+     "km": 2.0,
+     "elev": 26.0,
+     "name": "EDINBURGH: ROYAL BOTANIC GARDE"
+    },
+    {
+     "id": "ghcn:UKE00105887",
+     "source": "ghcn",
+     "km": 14.6,
+     "elev": 185.0,
+     "name": "PENICUIK"
+    }
+   ],
    "calibrate": [
     {
-     "id": "00003155",
-     "source": "wmo",
-     "km": 49.9,
-     "elev": 245.0,
-     "name": "Drumalbin"
+     "id": "ghcn:UKE00105888",
+     "source": "ghcn",
+     "km": 2.0,
+     "elev": 26.0,
+     "name": "EDINBURGH: ROYAL BOTANIC GARDE"
     },
     {
-     "id": "00003171",
-     "source": "wmo",
-     "km": 51.3,
-     "elev": 10.0,
-     "name": "Leuchars"
+     "id": "ghcn:UKE00105887",
+     "source": "ghcn",
+     "km": 14.6,
+     "elev": 185.0,
+     "name": "PENICUIK"
     },
     {
-     "id": "00003144",
-     "source": "wmo",
-     "km": 53.3,
-     "elev": 35.0,
-     "name": "StrathallanAirfield"
+     "id": "ghcn:UKE00105889",
+     "source": "ghcn",
+     "km": 41.6,
+     "elev": 23.0,
+     "name": "DUNBAR"
     }
    ]
   },
@@ -1166,6 +1181,13 @@
    "direct": [],
    "calibrate": [
     {
+     "id": "ghcn:UKE00105905",
+     "source": "ghcn",
+     "km": 29.6,
+     "elev": 307.0,
+     "name": "BUXTON"
+    },
+    {
      "id": "00003344",
      "source": "wmo",
      "km": 47.5,
@@ -1173,18 +1195,11 @@
      "name": "Bingley"
     },
     {
-     "id": "00003316",
-     "source": "wmo",
-     "km": 55.0,
-     "elev": 9.0,
-     "name": "Crosby"
-    },
-    {
-     "id": "00003321",
-     "source": "wmo",
-     "km": 58.2,
-     "elev": 11.0,
-     "name": "HawardenAirport"
+     "id": "ghcn:UKE00105910",
+     "source": "ghcn",
+     "km": 49.5,
+     "elev": 179.0,
+     "name": "KEELE"
     }
    ]
   },
@@ -1194,6 +1209,13 @@
    "country": "GB",
    "staged": false,
    "direct": [
+    {
+     "id": "ghcn:UK000056225",
+     "source": "ghcn",
+     "km": 1.7,
+     "elev": 63.0,
+     "name": "OXFORD"
+    },
     {
      "id": "00003658",
      "source": "wmo",
@@ -1211,6 +1233,13 @@
    ],
    "calibrate": [
     {
+     "id": "ghcn:UK000056225",
+     "source": "ghcn",
+     "km": 1.7,
+     "elev": 63.0,
+     "name": "OXFORD"
+    },
+    {
      "id": "00003658",
      "source": "wmo",
      "km": 18.3,
@@ -1223,13 +1252,6 @@
      "km": 22.1,
      "elev": 82.0,
      "name": "BrizeNorton"
-    },
-    {
-     "id": "00003740",
-     "source": "wmo",
-     "km": 57.7,
-     "elev": 145.0,
-     "name": "Lyneham"
     }
    ]
   },
@@ -1571,11 +1593,11 @@
      "name": "MORONDELAFRONTERA"
     },
     {
-     "id": "00008451",
-     "source": "wmo",
-     "km": 71.1,
-     "elev": 27.0,
-     "name": "JEREZDELAFRONTERAAEROPUERTO"
+     "id": "ghcn:SPE00120503",
+     "source": "ghcn",
+     "km": 42.3,
+     "elev": 87.0,
+     "name": "MORON DE LA FRONTERA"
     }
    ]
   },
@@ -2108,18 +2130,18 @@
      "name": "Salzburg_Flughafen"
     },
     {
-     "id": "00011155",
-     "source": "wmo",
-     "km": 50.2,
-     "elev": 1618.0,
-     "name": "Feuerkogel"
+     "id": "ghcn:GME00130918",
+     "source": "ghcn",
+     "km": 45.1,
+     "elev": 685.0,
+     "name": "REIT IM WINKL"
     },
     {
-     "id": "00010875",
-     "source": "wmo",
-     "km": 67.1,
-     "elev": 405.6,
-     "name": "Muehldorf"
+     "id": "ghcn:GME00129478",
+     "source": "ghcn",
+     "km": 45.8,
+     "elev": 559.0,
+     "name": "TROSTBERG"
     }
    ]
   },
@@ -2146,18 +2168,18 @@
      "name": "Innsbruck_Flugplatz"
     },
     {
+     "id": "ghcn:GME00126106",
+     "source": "ghcn",
+     "km": 25.5,
+     "elev": 981.0,
+     "name": "MITTENWALD-BUCKELWIESEN"
+    },
+    {
      "id": "00010963",
      "source": "wmo",
      "km": 34.7,
      "elev": 719.3,
      "name": "Garmisch-Partenkirchen"
-    },
-    {
-     "id": "00010961",
-     "source": "wmo",
-     "km": 35.3,
-     "elev": 2956.0,
-     "name": "Zugspitze"
     }
    ]
   },
@@ -2173,6 +2195,13 @@
      "km": 9.3,
      "elev": -3.9,
      "name": "AmsterdamSchipholAp"
+    },
+    {
+     "id": "ghcn:NLE00152485",
+     "source": "ghcn",
+     "km": 9.4,
+     "elev": -3.0,
+     "name": "SCHIPHOL"
     }
    ],
    "calibrate": [
@@ -2184,18 +2213,18 @@
      "name": "AmsterdamSchipholAp"
     },
     {
+     "id": "ghcn:NLE00152485",
+     "source": "ghcn",
+     "km": 9.4,
+     "elev": -3.0,
+     "name": "SCHIPHOL"
+    },
+    {
      "id": "00006260",
      "source": "wmo",
      "km": 36.2,
      "elev": 1.9,
      "name": "DeBiltAws"
-    },
-    {
-     "id": "00006215",
-     "source": "wmo",
-     "km": 40.5,
-     "elev": -1.1,
-     "name": "VoorschotenAws"
     }
    ]
   },
@@ -2205,6 +2234,13 @@
    "country": "NL",
    "staged": false,
    "direct": [
+    {
+     "id": "ghcn:NLE00152490",
+     "source": "ghcn",
+     "km": 4.5,
+     "elev": -4.0,
+     "name": "ROTTERDAM"
+    },
     {
      "id": "00006344",
      "source": "wmo",
@@ -2222,6 +2258,13 @@
    ],
    "calibrate": [
     {
+     "id": "ghcn:NLE00152490",
+     "source": "ghcn",
+     "km": 4.5,
+     "elev": -4.0,
+     "name": "ROTTERDAM"
+    },
+    {
      "id": "00006344",
      "source": "wmo",
      "km": 4.6,
@@ -2234,13 +2277,6 @@
      "km": 24.1,
      "elev": -1.1,
      "name": "VoorschotenAws"
-    },
-    {
-     "id": "00006348",
-     "source": "wmo",
-     "km": 31.1,
-     "elev": -0.7,
-     "name": "CabauwTowerAws"
     }
    ]
   },
@@ -2263,6 +2299,13 @@
      "km": 16.2,
      "elev": -5.1,
      "name": "RotterdamTheHagueAp"
+    },
+    {
+     "id": "ghcn:NLE00152490",
+     "source": "ghcn",
+     "km": 16.2,
+     "elev": -4.0,
+     "name": "ROTTERDAM"
     }
    ],
    "calibrate": [
@@ -2281,11 +2324,11 @@
      "name": "RotterdamTheHagueAp"
     },
     {
-     "id": "00006240",
-     "source": "wmo",
-     "km": 41.9,
-     "elev": -3.9,
-     "name": "AmsterdamSchipholAp"
+     "id": "ghcn:NLE00152490",
+     "source": "ghcn",
+     "km": 16.2,
+     "elev": -4.0,
+     "name": "ROTTERDAM"
     }
    ]
   },
@@ -2371,11 +2414,11 @@
      "name": "Muenchen-Flughafen"
     },
     {
-     "id": "00010863",
-     "source": "wmo",
-     "km": 30.8,
-     "elev": 477.1,
-     "name": "Weihenstephan-Duernast"
+     "id": "ghcn:GME00123970",
+     "source": "ghcn",
+     "km": 29.7,
+     "elev": 685.0,
+     "name": "HOLZKIRCHEN"
     }
    ]
   },
@@ -2391,6 +2434,20 @@
      "km": 9.3,
      "elev": 10.7,
      "name": "Hamburg-Fuhlsbuettel"
+    },
+    {
+     "id": "ghcn:GME00123274",
+     "source": "ghcn",
+     "km": 10.4,
+     "elev": 3.0,
+     "name": "HAMBURG-NEUWIEDENTHAL"
+    },
+    {
+     "id": "ghcn:GME00127534",
+     "source": "ghcn",
+     "km": 22.0,
+     "elev": 13.0,
+     "name": "QUICKBORN"
     }
    ],
    "calibrate": [
@@ -2402,18 +2459,18 @@
      "name": "Hamburg-Fuhlsbuettel"
     },
     {
-     "id": "00010249",
-     "source": "wmo",
-     "km": 48.8,
-     "elev": 44.7,
-     "name": "Boizenburg"
+     "id": "ghcn:GME00123274",
+     "source": "ghcn",
+     "km": 10.4,
+     "elev": 3.0,
+     "name": "HAMBURG-NEUWIEDENTHAL"
     },
     {
-     "id": "00010156",
-     "source": "wmo",
-     "km": 53.9,
-     "elev": 14.7,
-     "name": "Luebeck-Blankensee"
+     "id": "ghcn:GME00127534",
+     "source": "ghcn",
+     "km": 22.0,
+     "elev": 13.0,
+     "name": "QUICKBORN"
     }
    ]
   },
@@ -2424,6 +2481,13 @@
    "staged": false,
    "direct": [
     {
+     "id": "ghcn:GME00122362",
+     "source": "ghcn",
+     "km": 2.1,
+     "elev": 124.0,
+     "name": "FRANKFURT/MAIN-WESTEND"
+    },
+    {
      "id": "00010637",
      "source": "wmo",
      "km": 14.9,
@@ -2431,15 +2495,22 @@
      "name": "FrankfurtMain"
     },
     {
-     "id": "00010635",
-     "source": "wmo",
+     "id": "ghcn:GME00124546",
+     "source": "ghcn",
      "km": 20.8,
-     "elev": 822.1,
-     "name": "Kleiner-FeldbergTaunus"
+     "elev": 826.0,
+     "name": "KLEINER FELDBERG/TAUNUS"
     }
    ],
    "calibrate": [
     {
+     "id": "ghcn:GME00122362",
+     "source": "ghcn",
+     "km": 2.1,
+     "elev": 124.0,
+     "name": "FRANKFURT/MAIN-WESTEND"
+    },
+    {
      "id": "00010637",
      "source": "wmo",
      "km": 14.9,
@@ -2447,18 +2518,11 @@
      "name": "FrankfurtMain"
     },
     {
-     "id": "00010635",
-     "source": "wmo",
+     "id": "ghcn:GME00124546",
+     "source": "ghcn",
      "km": 20.8,
-     "elev": 822.1,
-     "name": "Kleiner-FeldbergTaunus"
-    },
-    {
-     "id": "00010648",
-     "source": "wmo",
-     "km": 52.9,
-     "elev": 452.8,
-     "name": "Michelstadt-Vielbrunn"
+     "elev": 826.0,
+     "name": "KLEINER FELDBERG/TAUNUS"
     }
    ]
   },
@@ -2467,8 +2531,24 @@
    "lon": -9.13659,
    "country": "PT",
    "staged": false,
-   "direct": [],
-   "calibrate": []
+   "direct": [
+    {
+     "id": "ghcn:PO000008535",
+     "source": "ghcn",
+     "km": 1.5,
+     "elev": 77.0,
+     "name": "LISBOA GEOFISICA"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "ghcn:PO000008535",
+     "source": "ghcn",
+     "km": 1.5,
+     "elev": 77.0,
+     "name": "LISBOA GEOFISICA"
+    }
+   ]
   },
   "porto": {
    "lat": 41.15022,
@@ -3711,41 +3791,48 @@
    "staged": false,
    "direct": [
     {
-     "id": "00072295",
-     "source": "wmo",
-     "km": 18.6,
-     "elev": 30.0,
-     "name": "LOS_ANGELES_INTL_AP"
+     "id": "ghcn:USW00093134",
+     "source": "ghcn",
+     "km": 5.6,
+     "elev": 54.6,
+     "name": "LOS ANGELES DOWNTOWN/USC"
     },
     {
-     "id": "00072288",
-     "source": "wmo",
-     "km": 19.5,
-     "elev": 226.0,
-     "name": "BURBANK_GLENDALE_PASADENA_AP"
+     "id": "ghcn:USC00046719",
+     "source": "ghcn",
+     "km": 13.9,
+     "elev": 263.3,
+     "name": "PASADENA"
+    },
+    {
+     "id": "ghcn:USC00042214",
+     "source": "ghcn",
+     "km": 16.7,
+     "elev": 28.0,
+     "name": "CULVER CITY"
     }
    ],
    "calibrate": [
     {
-     "id": "00072295",
-     "source": "wmo",
-     "km": 18.6,
-     "elev": 30.0,
-     "name": "LOS_ANGELES_INTL_AP"
+     "id": "ghcn:USW00093134",
+     "source": "ghcn",
+     "km": 5.6,
+     "elev": 54.6,
+     "name": "LOS ANGELES DOWNTOWN/USC"
     },
     {
-     "id": "00072288",
-     "source": "wmo",
-     "km": 19.5,
-     "elev": 226.0,
-     "name": "BURBANK_GLENDALE_PASADENA_AP"
+     "id": "ghcn:USC00046719",
+     "source": "ghcn",
+     "km": 13.9,
+     "elev": 263.3,
+     "name": "PASADENA"
     },
     {
-     "id": "00072297",
-     "source": "wmo",
-     "km": 28.3,
-     "elev": 9.0,
-     "name": "LONG_BEACH_DAUGHERTY_FLD"
+     "id": "ghcn:USC00042214",
+     "source": "ghcn",
+     "km": 16.7,
+     "elev": 28.0,
+     "name": "CULVER CITY"
     }
    ]
   },
@@ -3772,18 +3859,18 @@
      "name": "LAS_VEGAS_MCCARRAN_AP"
     },
     {
-     "id": "00072387",
-     "source": "wmo",
-     "km": 93.5,
-     "elev": 985.0,
-     "name": "MERCURY_DESERT_ROCK_AP"
+     "id": "ghcn:USR0000NRER",
+     "source": "ghcn",
+     "km": 25.3,
+     "elev": 1146.0,
+     "name": "RED ROCK NEVADA"
     },
     {
-     "id": "00072370",
-     "source": "wmo",
-     "km": 149.2,
-     "elev": 1042.0,
-     "name": "KINGMAN_MOHAVE_CO_AP"
+     "id": "ghcn:USC00262243",
+     "source": "ghcn",
+     "km": 35.6,
+     "elev": 888.2,
+     "name": "DESERT NWR"
     }
    ]
   },
@@ -3794,41 +3881,48 @@
    "staged": false,
    "direct": [
     {
-     "id": "00072493",
-     "source": "wmo",
-     "km": 18.0,
-     "elev": 2.0,
-     "name": "OAKLAND_METRO_INTL_AP"
+     "id": "ghcn:USW00023272",
+     "source": "ghcn",
+     "km": 2.6,
+     "elev": 45.7,
+     "name": "SAN FRANCISCO DWTN"
     },
     {
-     "id": "00072494",
-     "source": "wmo",
-     "km": 19.0,
-     "elev": 2.0,
-     "name": "SAN_FRANCISCO_INTL_AP"
+     "id": "ghcn:USC00047767",
+     "source": "ghcn",
+     "km": 10.9,
+     "elev": 2.4,
+     "name": "SAN FRANCISCO OCEANSIDE"
+    },
+    {
+     "id": "ghcn:USC00046336",
+     "source": "ghcn",
+     "km": 12.6,
+     "elev": 9.1,
+     "name": "OAKLAND MUSEUM"
     }
    ],
    "calibrate": [
     {
-     "id": "00072493",
-     "source": "wmo",
-     "km": 18.0,
-     "elev": 2.0,
-     "name": "OAKLAND_METRO_INTL_AP"
+     "id": "ghcn:USW00023272",
+     "source": "ghcn",
+     "km": 2.6,
+     "elev": 45.7,
+     "name": "SAN FRANCISCO DWTN"
     },
     {
-     "id": "00072494",
-     "source": "wmo",
-     "km": 19.0,
-     "elev": 2.0,
-     "name": "SAN_FRANCISCO_INTL_AP"
+     "id": "ghcn:USC00047767",
+     "source": "ghcn",
+     "km": 10.9,
+     "elev": 2.4,
+     "name": "SAN FRANCISCO OCEANSIDE"
     },
     {
-     "id": "00072585",
-     "source": "wmo",
-     "km": 29.7,
-     "elev": 13.0,
-     "name": "HAYWARD_AIR_TERMINAL"
+     "id": "ghcn:USC00046336",
+     "source": "ghcn",
+     "km": 12.6,
+     "elev": 9.1,
+     "name": "OAKLAND MUSEUM"
     }
    ]
   },
@@ -3839,6 +3933,20 @@
    "staged": false,
    "direct": [
     {
+     "id": "ghcn:USW00092811",
+     "source": "ghcn",
+     "km": 7.0,
+     "elev": 2.4,
+     "name": "MIAMI BEACH"
+    },
+    {
+     "id": "ghcn:USC00083909",
+     "source": "ghcn",
+     "km": 11.0,
+     "elev": 3.7,
+     "name": "HIALEAH"
+    },
+    {
      "id": "00072202",
      "source": "wmo",
      "km": 12.4,
@@ -3848,25 +3956,25 @@
    ],
    "calibrate": [
     {
+     "id": "ghcn:USW00092811",
+     "source": "ghcn",
+     "km": 7.0,
+     "elev": 2.4,
+     "name": "MIAMI BEACH"
+    },
+    {
+     "id": "ghcn:USC00083909",
+     "source": "ghcn",
+     "km": 11.0,
+     "elev": 3.7,
+     "name": "HIALEAH"
+    },
+    {
      "id": "00072202",
      "source": "wmo",
      "km": 12.4,
      "elev": 9.0,
      "name": "MIAMI_INTL_AP"
-    },
-    {
-     "id": "00074783",
-     "source": "wmo",
-     "km": 33.4,
-     "elev": 3.0,
-     "name": "FT_LAUDERDALE_HOLLYWOOD_AP"
-    },
-    {
-     "id": "00072203",
-     "source": "wmo",
-     "km": 101.7,
-     "elev": 6.0,
-     "name": "WEST_PALM_BEACH_INTL_AP"
     }
    ]
   },
@@ -3884,7 +3992,22 @@
    "country": "AZ",
    "staged": false,
    "direct": [],
-   "calibrate": []
+   "calibrate": [
+    {
+     "id": "ghcn:RSM00037663",
+     "source": "ghcn",
+     "km": 55.5,
+     "elev": 1047.0,
+     "name": "AKHTY"
+    },
+    {
+     "id": "ghcn:RSM00037470",
+     "source": "ghcn",
+     "km": 127.0,
+     "elev": -19.0,
+     "name": "DERBENT"
+    }
+   ]
   },
   "guba": {
    "lat": 41.36155,
@@ -3892,7 +4015,22 @@
    "country": "AZ",
    "staged": false,
    "direct": [],
-   "calibrate": []
+   "calibrate": [
+    {
+     "id": "ghcn:RSM00037663",
+     "source": "ghcn",
+     "km": 66.5,
+     "elev": 1047.0,
+     "name": "AKHTY"
+    },
+    {
+     "id": "ghcn:RSM00037470",
+     "source": "ghcn",
+     "km": 80.8,
+     "elev": -19.0,
+     "name": "DERBENT"
+    }
+   ]
   },
   "tbilisi": {
    "lat": 41.69346,
@@ -4608,6 +4746,13 @@
      "km": 3.3,
      "elev": 3.0,
      "name": "StPetersburg"
+    },
+    {
+     "id": "ghcn:RSM00026069",
+     "source": "ghcn",
+     "km": 61.1,
+     "elev": 90.0,
+     "name": "BELOGORKA"
     }
    ]
   },
@@ -4632,6 +4777,13 @@
      "km": 8.8,
      "elev": 116.0,
      "name": "Kazan"
+    },
+    {
+     "id": "ghcn:RSM00027485",
+     "source": "ghcn",
+     "km": 116.8,
+     "elev": 106.0,
+     "name": "JOSKAR-OLA"
     }
    ]
   },
@@ -4656,6 +4808,13 @@
      "km": 3.5,
      "elev": 142.0,
      "name": "Sotchi"
+    },
+    {
+     "id": "ghcn:RSM00037107",
+     "source": "ghcn",
+     "km": 38.4,
+     "elev": 566.0,
+     "name": "KRASNAJA POLJANA"
     },
     {
      "id": "00037018",
@@ -5007,6 +5166,13 @@
    "staged": false,
    "direct": [
     {
+     "id": "ghcn:HR000142360",
+     "source": "ghcn",
+     "km": 0.4,
+     "elev": 157.0,
+     "name": "ZAGREB-GRIC"
+    },
+    {
      "id": "00014240",
      "source": "wmo",
      "km": 4.5,
@@ -5015,6 +5181,13 @@
     }
    ],
    "calibrate": [
+    {
+     "id": "ghcn:HR000142360",
+     "source": "ghcn",
+     "km": 0.4,
+     "elev": 157.0,
+     "name": "ZAGREB-GRIC"
+    },
     {
      "id": "00014240",
      "source": "wmo",
@@ -5028,13 +5201,6 @@
      "km": 48.7,
      "elev": 122.0,
      "name": "Split_Marjan"
-    },
-    {
-     "id": "00014121",
-     "source": "wmo",
-     "km": 61.7,
-     "elev": 220.0,
-     "name": "Novomesto"
     }
    ]
   },
@@ -5046,25 +5212,25 @@
    "direct": [],
    "calibrate": [
     {
-     "id": "00014544",
-     "source": "wmo",
-     "km": 101.6,
-     "elev": 562.0,
-     "name": "BUGOJNO"
+     "id": "ghcn:HRE00105189",
+     "source": "ghcn",
+     "km": 38.4,
+     "elev": 20.0,
+     "name": "HVAR"
     },
     {
-     "id": "00014648",
-     "source": "wmo",
-     "km": 110.8,
-     "elev": 99.0,
-     "name": "MOSTAR"
+     "id": "ghcn:HRE00155167",
+     "source": "ghcn",
+     "km": 61.7,
+     "elev": 255.0,
+     "name": "KNIN"
     },
     {
-     "id": "00014537",
-     "source": "wmo",
-     "km": 140.7,
-     "elev": 158.0,
-     "name": "SANSKI_MOST"
+     "id": "ghcn:HRE00105196",
+     "source": "ghcn",
+     "km": 90.8,
+     "elev": 186.0,
+     "name": "LASTOVO"
     }
    ]
   },
@@ -5075,6 +5241,13 @@
    "staged": false,
    "direct": [
     {
+     "id": "ghcn:HRE00155411",
+     "source": "ghcn",
+     "km": 17.5,
+     "elev": 165.0,
+     "name": "DUBROVNIK"
+    },
+    {
      "id": "00014668",
      "source": "wmo",
      "km": 21.7,
@@ -5083,6 +5256,13 @@
     }
    ],
    "calibrate": [
+    {
+     "id": "ghcn:HRE00155411",
+     "source": "ghcn",
+     "km": 17.5,
+     "elev": 165.0,
+     "name": "DUBROVNIK"
+    },
     {
      "id": "00014668",
      "source": "wmo",
@@ -5096,13 +5276,6 @@
      "km": 36.1,
      "elev": 441.0,
      "name": "Bileca"
-    },
-    {
-     "id": "00013455",
-     "source": "wmo",
-     "km": 42.8,
-     "elev": 10.0,
-     "name": "HercegNovi"
     }
    ]
   },
@@ -5195,11 +5368,11 @@
      "name": "Fichtelberg"
     },
     {
-     "id": "00010574",
-     "source": "wmo",
+     "id": "ghcn:GME00132490",
+     "source": "ghcn",
      "km": 28.9,
-     "elev": 895.3,
-     "name": "Carlsfeld"
+     "elev": 897.0,
+     "name": "CARLSFELD"
     }
    ]
   },
@@ -5215,6 +5388,13 @@
      "km": 1.7,
      "elev": 153.0,
      "name": "BudapestBelterulet"
+    },
+    {
+     "id": "ghcn:HUE00100247",
+     "source": "ghcn",
+     "km": 2.1,
+     "elev": 153.0,
+     "name": "BUDAPEST"
     },
     {
      "id": "00012843",
@@ -5233,18 +5413,18 @@
      "name": "BudapestBelterulet"
     },
     {
+     "id": "ghcn:HUE00100247",
+     "source": "ghcn",
+     "km": 2.1,
+     "elev": 153.0,
+     "name": "BUDAPEST"
+    },
+    {
      "id": "00012843",
      "source": "wmo",
      "km": 13.1,
      "elev": 139.0,
      "name": "BudapestPestszentlorinc"
-    },
-    {
-     "id": "00012847",
-     "source": "wmo",
-     "km": 43.4,
-     "elev": 110.0,
-     "name": "Tat"
     }
    ]
   },
@@ -5425,6 +5605,13 @@
      "km": 123.3,
      "elev": 9.0,
      "name": "Belmullet"
+    },
+    {
+     "id": "ghcn:EIE00107808",
+     "source": "ghcn",
+     "km": 147.7,
+     "elev": 38.0,
+     "name": "BALLYSHANNON (CATHLEENS FALL)"
     }
    ]
   },
@@ -5532,11 +5719,11 @@
      "name": "Stockholm_Observatoriekullen_A"
     },
     {
-     "id": "00002464",
-     "source": "wmo",
+     "id": "ghcn:SWE00138894",
+     "source": "ghcn",
      "km": 7.5,
      "elev": 14.0,
-     "name": "Stockholm_Bromma_Flygplats"
+     "name": "STOCKHOLM-BROMMA"
     }
    ],
    "calibrate": [
@@ -5555,11 +5742,11 @@
      "name": "Stockholm_Observatoriekullen_A"
     },
     {
-     "id": "00002464",
-     "source": "wmo",
+     "id": "ghcn:SWE00138894",
+     "source": "ghcn",
      "km": 7.5,
      "elev": 14.0,
-     "name": "Stockholm_Bromma_Flygplats"
+     "name": "STOCKHOLM-BROMMA"
     }
    ]
   },
@@ -5577,6 +5764,13 @@
      "name": "OSLO_BLINDERN"
     },
     {
+     "id": "ghcn:NOE00109885",
+     "source": "ghcn",
+     "km": 18.0,
+     "elev": 163.0,
+     "name": "ASKER"
+    },
+    {
      "id": "00001486",
      "source": "wmo",
      "km": 18.1,
@@ -5593,18 +5787,18 @@
      "name": "OSLO_BLINDERN"
     },
     {
+     "id": "ghcn:NOE00109885",
+     "source": "ghcn",
+     "km": 18.0,
+     "elev": 163.0,
+     "name": "ASKER"
+    },
+    {
      "id": "00001486",
      "source": "wmo",
      "km": 18.1,
      "elev": 163.0,
      "name": "ASKER"
-    },
-    {
-     "id": "00001463",
-     "source": "wmo",
-     "km": 28.2,
-     "elev": 92.0,
-     "name": "AS"
     }
    ]
   },
@@ -5622,6 +5816,13 @@
      "name": "BERGEN_FLORIDA"
     },
     {
+     "id": "ghcn:NOE00110653",
+     "source": "ghcn",
+     "km": 12.9,
+     "elev": 48.0,
+     "name": "BERGEN/FLESLAND"
+    },
+    {
      "id": "00001311",
      "source": "wmo",
      "km": 12.9,
@@ -5638,18 +5839,18 @@
      "name": "BERGEN_FLORIDA"
     },
     {
+     "id": "ghcn:NOE00110653",
+     "source": "ghcn",
+     "km": 12.9,
+     "elev": 48.0,
+     "name": "BERGEN/FLESLAND"
+    },
+    {
      "id": "00001311",
      "source": "wmo",
      "km": 12.9,
      "elev": 48.0,
      "name": "FLESLAND"
-    },
-    {
-     "id": "00001406",
-     "source": "wmo",
-     "km": 55.9,
-     "elev": 25.0,
-     "name": "SLATTEROY_FYR"
     }
    ]
   },
@@ -5743,6 +5944,13 @@
    "staged": false,
    "direct": [
     {
+     "id": "ghcn:FI000000304",
+     "source": "ghcn",
+     "km": 0.4,
+     "elev": 4.0,
+     "name": "HELSINKI KAISANIEMI AWS"
+    },
+    {
      "id": "00002978",
      "source": "wmo",
      "km": 0.9,
@@ -5755,17 +5963,17 @@
      "km": 7.1,
      "elev": 6.0,
      "name": "HelsinkiHarmaja"
-    },
-    {
-     "id": "00002974",
-     "source": "wmo",
-     "km": 17.8,
-     "elev": 51.0,
-     "name": "VantaaHelsinkiVantaanLentoasem"
     }
    ],
    "calibrate": [
     {
+     "id": "ghcn:FI000000304",
+     "source": "ghcn",
+     "km": 0.4,
+     "elev": 4.0,
+     "name": "HELSINKI KAISANIEMI AWS"
+    },
+    {
      "id": "00002978",
      "source": "wmo",
      "km": 0.9,
@@ -5778,13 +5986,6 @@
      "km": 7.1,
      "elev": 6.0,
      "name": "HelsinkiHarmaja"
-    },
-    {
-     "id": "00002974",
-     "source": "wmo",
-     "km": 17.8,
-     "elev": 51.0,
-     "name": "VantaaHelsinkiVantaanLentoasem"
     }
    ]
   },
@@ -5807,6 +6008,13 @@
      "km": 15.1,
      "elev": 106.0,
      "name": "RovaniemiApukka"
+    },
+    {
+     "id": "ghcn:FIE00146258",
+     "source": "ghcn",
+     "km": 15.2,
+     "elev": 106.0,
+     "name": "ROVANIEMI APUKKA"
     }
    ],
    "calibrate": [
@@ -5825,11 +6033,11 @@
      "name": "RovaniemiApukka"
     },
     {
-     "id": "00002812",
-     "source": "wmo",
-     "km": 48.0,
-     "elev": 93.0,
-     "name": "Ylitornio_Meltosjarvi"
+     "id": "ghcn:FIE00146258",
+     "source": "ghcn",
+     "km": 15.2,
+     "elev": 106.0,
+     "name": "ROVANIEMI APUKKA"
     }
    ]
   },
@@ -5845,6 +6053,20 @@
      "km": 1.9,
      "elev": 299.0,
      "name": "LjubljanaBezigrad"
+    },
+    {
+     "id": "ghcn:SIE00115006",
+     "source": "ghcn",
+     "km": 10.9,
+     "elev": 680.0,
+     "name": "TOPOL PRI MEDVODAH"
+    },
+    {
+     "id": "ghcn:SIE00115146",
+     "source": "ghcn",
+     "km": 16.7,
+     "elev": 364.0,
+     "name": "LETALISCE JOZETA PUCNIKA LJUBL"
     }
    ],
    "calibrate": [
@@ -5856,18 +6078,18 @@
      "name": "LjubljanaBezigrad"
     },
     {
-     "id": "00014121",
-     "source": "wmo",
-     "km": 59.0,
-     "elev": 220.0,
-     "name": "Novomesto"
+     "id": "ghcn:SIE00115006",
+     "source": "ghcn",
+     "km": 10.9,
+     "elev": 680.0,
+     "name": "TOPOL PRI MEDVODAH"
     },
     {
-     "id": "00014023",
-     "source": "wmo",
-     "km": 59.5,
-     "elev": 242.0,
-     "name": "Celje"
+     "id": "ghcn:SIE00115146",
+     "source": "ghcn",
+     "km": 16.7,
+     "elev": 364.0,
+     "name": "LETALISCE JOZETA PUCNIKA LJUBL"
     }
    ]
   },
@@ -5901,11 +6123,11 @@
      "name": "Ratece"
     },
     {
-     "id": "00011231",
-     "source": "wmo",
-     "km": 34.9,
-     "elev": 450.0,
-     "name": "Klagenfurt"
+     "id": "ghcn:SIE00115206",
+     "source": "ghcn",
+     "km": 34.7,
+     "elev": 864.0,
+     "name": "RATECE-PLANICA"
     }
    ]
   },
@@ -6068,11 +6290,11 @@
      "name": "RosiorideVede"
     },
     {
-     "id": "00015350",
-     "source": "wmo",
-     "km": 97.5,
-     "elev": 97.0,
-     "name": "Buzau"
+     "id": "ghcn:ROE00108900",
+     "source": "ghcn",
+     "km": 96.7,
+     "elev": 102.0,
+     "name": "ROSIORI DE VEDE"
     }
    ]
   },
@@ -6091,18 +6313,18 @@
      "name": "VarfuOmu"
     },
     {
+     "id": "ghcn:ROE00108897",
+     "source": "ghcn",
+     "km": 80.0,
+     "elev": 661.0,
+     "name": "MIERCUREA CIUC"
+    },
+    {
      "id": "00015170",
      "source": "wmo",
      "km": 80.9,
      "elev": 661.0,
      "name": "MiercureaCiuc"
-    },
-    {
-     "id": "00015350",
-     "source": "wmo",
-     "km": 112.8,
-     "elev": 97.0,
-     "name": "Buzau"
     }
    ]
   },
@@ -6868,18 +7090,18 @@
      "name": "Toronto_City"
     },
     {
-     "id": "00071296",
-     "source": "wmo",
-     "km": 71.8,
-     "elev": 251.0,
-     "name": "Egbert_Cs"
+     "id": "ghcn:CAN06155878",
+     "source": "ghcn",
+     "km": 50.2,
+     "elev": 83.8,
+     "name": "OSHAWA WPCP"
     },
     {
-     "id": "00072528",
-     "source": "wmo",
-     "km": 94.2,
-     "elev": 211.0,
-     "name": "BUFFALO"
+     "id": "ghcn:CAN06119055",
+     "source": "ghcn",
+     "km": 70.0,
+     "elev": 262.0,
+     "name": "UDORA"
     }
    ]
   },
@@ -6888,21 +7110,43 @@
    "lon": -123.11395,
    "country": "CA",
    "staged": false,
-   "direct": [],
+   "direct": [
+    {
+     "id": "ghcn:CAN01108446",
+     "source": "ghcn",
+     "km": 3.9,
+     "elev": 2.5,
+     "name": "VANCOUVER HARBOUR CS"
+    },
+    {
+     "id": "ghcn:CAN01106PF7",
+     "source": "ghcn",
+     "km": 10.1,
+     "elev": 3.0,
+     "name": "RICHMOND NATURE PARK"
+    }
+   ],
    "calibrate": [
+    {
+     "id": "ghcn:CAN01108446",
+     "source": "ghcn",
+     "km": 3.9,
+     "elev": 2.5,
+     "name": "VANCOUVER HARBOUR CS"
+    },
+    {
+     "id": "ghcn:CAN01106PF7",
+     "source": "ghcn",
+     "km": 10.1,
+     "elev": 3.0,
+     "name": "RICHMOND NATURE PARK"
+    },
     {
      "id": "00071207",
      "source": "wmo",
      "km": 58.2,
      "elev": 54.0,
      "name": "Squamish_Airport"
-    },
-    {
-     "id": "00071783",
-     "source": "wmo",
-     "km": 90.5,
-     "elev": 60.0,
-     "name": "Victoria_University_Cs"
     }
    ]
   },
@@ -6913,6 +7157,20 @@
    "staged": false,
    "direct": [],
    "calibrate": [
+    {
+     "id": "ghcn:CAN07028700",
+     "source": "ghcn",
+     "km": 33.3,
+     "elev": 21.0,
+     "name": "VERCHERES"
+    },
+    {
+     "id": "ghcn:CAN07014160",
+     "source": "ghcn",
+     "km": 35.6,
+     "elev": 21.0,
+     "name": "L'ASSOMPTION"
+    },
     {
      "id": "00072617",
      "source": "wmo",
@@ -6943,6 +7201,4762 @@
      "km": 2.5,
      "elev": 1397.0,
      "name": "Banff_Cs"
+    },
+    {
+     "id": "ghcn:CAN03053600",
+     "source": "ghcn",
+     "km": 41.0,
+     "elev": 1391.1,
+     "name": "KANANASKIS"
+    },
+    {
+     "id": "ghcn:CAN01154410",
+     "source": "ghcn",
+     "km": 69.6,
+     "elev": 935.0,
+     "name": "KOOTENAY NP WEST GATE"
+    }
+   ]
+  },
+  "dammam": {
+   "lat": 26.43678,
+   "lon": 50.104,
+   "country": "SA",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00040416",
+     "source": "wmo",
+     "km": 20.6,
+     "elev": 17.0,
+     "name": "Dhahran"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00040416",
+     "source": "wmo",
+     "km": 20.6,
+     "elev": 17.0,
+     "name": "Dhahran"
+    },
+    {
+     "id": "00040417",
+     "source": "wmo",
+     "km": 28.6,
+     "elev": 12.0,
+     "name": "KFIA"
+    },
+    {
+     "id": "00041150",
+     "source": "wmo",
+     "km": 57.6,
+     "elev": 2.0,
+     "name": "BahrainInternationalAirport"
+    }
+   ]
+  },
+  "taif": {
+   "lat": 21.27028,
+   "lon": 40.41583,
+   "country": "SA",
+   "staged": true,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00041036",
+     "source": "wmo",
+     "km": 27.0,
+     "elev": 1453.0,
+     "name": "Taif"
+    },
+    {
+     "id": "00041032",
+     "source": "wmo",
+     "km": 46.3,
+     "elev": 308.0,
+     "name": "ARAFAT"
+    },
+    {
+     "id": "00041030",
+     "source": "wmo",
+     "km": 69.5,
+     "elev": 240.0,
+     "name": "Makkah"
+    }
+   ]
+  },
+  "bodrum": {
+   "lat": 37.0344,
+   "lon": 27.43065,
+   "country": "TR",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00017290",
+     "source": "wmo",
+     "km": 0.8,
+     "elev": 26.0,
+     "name": "Bodrum"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00017290",
+     "source": "wmo",
+     "km": 0.8,
+     "elev": 26.0,
+     "name": "Bodrum"
+    },
+    {
+     "id": "00017884",
+     "source": "wmo",
+     "km": 43.0,
+     "elev": 57.0,
+     "name": "Milas"
+    },
+    {
+     "id": "00017297",
+     "source": "wmo",
+     "km": 43.1,
+     "elev": 28.0,
+     "name": "Datca"
+    }
+   ]
+  },
+  "kutaisi": {
+   "lat": 42.25968,
+   "lon": 42.66337,
+   "country": "GE",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00037395",
+     "source": "wmo",
+     "km": 4.0,
+     "elev": 109.0,
+     "name": "Qutaisi"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00037395",
+     "source": "wmo",
+     "km": 4.0,
+     "elev": 109.0,
+     "name": "Qutaisi"
+    },
+    {
+     "id": "00037404",
+     "source": "wmo",
+     "km": 33.2,
+     "elev": 150.0,
+     "name": "Zestaphoni"
+    },
+    {
+     "id": "00037308",
+     "source": "wmo",
+     "km": 49.5,
+     "elev": 544.0,
+     "name": "Ambrolauri"
+    }
+   ]
+  },
+  "osh": {
+   "lat": 40.51727,
+   "lon": 72.80499,
+   "country": "KG",
+   "staged": true,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00038475",
+     "source": "wmo",
+     "km": 47.7,
+     "elev": 475.0,
+     "name": "Andizan"
+    },
+    {
+     "id": "00038618",
+     "source": "wmo",
+     "km": 90.5,
+     "elev": 577.0,
+     "name": "Fergana"
+    },
+    {
+     "id": "00038611",
+     "source": "wmo",
+     "km": 116.1,
+     "elev": 474.0,
+     "name": "Namangan"
+    }
+   ]
+  },
+  "kochi": {
+   "lat": 9.9679,
+   "lon": 76.24444,
+   "country": "IN",
+   "staged": true,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00043352",
+     "source": "wmo",
+     "km": 50.2,
+     "elev": 4.0,
+     "name": "ALAPPUZHA"
+    },
+    {
+     "id": "00043355",
+     "source": "wmo",
+     "km": 62.1,
+     "elev": 76.4,
+     "name": "KOTTAYAM"
+    },
+    {
+     "id": "00043354",
+     "source": "wmo",
+     "km": 130.5,
+     "elev": 33.8,
+     "name": "PUNALUR"
+    }
+   ]
+  },
+  "bengaluru": {
+   "lat": 12.97679,
+   "lon": 77.59008,
+   "country": "IN",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00043295",
+     "source": "wmo",
+     "km": 1.3,
+     "elev": 923.0,
+     "name": "BENGALURU"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00043295",
+     "source": "wmo",
+     "km": 1.3,
+     "elev": 923.0,
+     "name": "BENGALURU"
+    },
+    {
+     "id": "00043296",
+     "source": "wmo",
+     "km": 93.5,
+     "elev": 901.1,
+     "name": "BENGALURU_HAL"
+    },
+    {
+     "id": "00043271",
+     "source": "wmo",
+     "km": 116.3,
+     "elev": 701.0,
+     "name": "AROGYAVARAM"
+    }
+   ]
+  },
+  "maafushi": {
+   "lat": 3.94116,
+   "lon": 73.49001,
+   "country": "MV",
+   "staged": true,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00043555",
+     "source": "wmo",
+     "km": 28.5,
+     "elev": 1.7,
+     "name": "Hulhule"
+    }
+   ]
+  },
+  "paro": {
+   "lat": 27.43077,
+   "lon": 89.41299,
+   "country": "BT",
+   "staged": true,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00055773",
+     "source": "wmo",
+     "km": 46.7,
+     "elev": 4300.0,
+     "name": "PAGRI"
+    }
+   ]
+  },
+  "dhaka": {
+   "lat": 23.76439,
+   "lon": 90.38901,
+   "country": "BD",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00041923",
+     "source": "wmo",
+     "km": 0.7,
+     "elev": 8.4,
+     "name": "Dhaka"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00041923",
+     "source": "wmo",
+     "km": 0.7,
+     "elev": 8.4,
+     "name": "Dhaka"
+    },
+    {
+     "id": "00041929",
+     "source": "wmo",
+     "km": 57.9,
+     "elev": 8.1,
+     "name": "Faridpur"
+    },
+    {
+     "id": "00041941",
+     "source": "wmo",
+     "km": 63.8,
+     "elev": 4.9,
+     "name": "Chandpur"
+    }
+   ]
+  },
+  "shenzhen": {
+   "lat": 22.54457,
+   "lon": 114.05454,
+   "country": "CN",
+   "staged": true,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00045005",
+     "source": "wmo",
+     "km": 29.6,
+     "elev": 31.7,
+     "name": "HongKongObservatory"
+    },
+    {
+     "id": "00045011",
+     "source": "wmo",
+     "km": 66.1,
+     "elev": 110.0,
+     "name": "TaipaGrande"
+    },
+    {
+     "id": "00059287",
+     "source": "wmo",
+     "km": 95.4,
+     "elev": 71.5,
+     "name": "GUANGZHOU"
+    }
+   ]
+  },
+  "chengdu": {
+   "lat": 30.65987,
+   "lon": 104.06332,
+   "country": "CN",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00056187",
+     "source": "wmo",
+     "km": 21.0,
+     "elev": 555.0,
+     "name": "WENJIANG"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00056187",
+     "source": "wmo",
+     "km": 21.0,
+     "elev": 555.0,
+     "name": "WENJIANG"
+    }
+   ]
+  },
+  "sapporo": {
+   "lat": 43.06194,
+   "lon": 141.35429,
+   "country": "JP",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00047412",
+     "source": "wmo",
+     "km": 2.1,
+     "elev": 17.4,
+     "name": "Sapporo"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00047412",
+     "source": "wmo",
+     "km": 2.1,
+     "elev": 17.4,
+     "name": "Sapporo"
+    },
+    {
+     "id": "00047421",
+     "source": "wmo",
+     "km": 96.8,
+     "elev": 33.4,
+     "name": "Suttsu"
+    },
+    {
+     "id": "00047407",
+     "source": "wmo",
+     "km": 112.8,
+     "elev": 119.8,
+     "name": "Asahikawa"
+    }
+   ]
+  },
+  "fukuoka": {
+   "lat": 33.5899,
+   "lon": 130.40175,
+   "country": "JP",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00047807",
+     "source": "wmo",
+     "km": 2.6,
+     "elev": 2.5,
+     "name": "Fukuoka"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00047807",
+     "source": "wmo",
+     "km": 2.6,
+     "elev": 2.5,
+     "name": "Fukuoka"
+    },
+    {
+     "id": "00047817",
+     "source": "wmo",
+     "km": 107.5,
+     "elev": 26.9,
+     "name": "Nagasaki"
+    },
+    {
+     "id": "00047815",
+     "source": "wmo",
+     "km": 119.6,
+     "elev": 4.6,
+     "name": "Oita"
+    }
+   ]
+  },
+  "okinawa": {
+   "lat": 26.21223,
+   "lon": 127.67915,
+   "country": "JP",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00047936",
+     "source": "wmo",
+     "km": 1.0,
+     "elev": 28.1,
+     "name": "Naha"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00047936",
+     "source": "wmo",
+     "km": 1.0,
+     "elev": 28.1,
+     "name": "Naha"
+    }
+   ]
+  },
+  "taipei": {
+   "lat": 25.03752,
+   "lon": 121.56368,
+   "country": "TW",
+   "staged": true,
+   "direct": [],
+   "calibrate": []
+  },
+  "krabi": {
+   "lat": 8.05924,
+   "lon": 98.91243,
+   "country": "TH",
+   "staged": true,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00048564",
+     "source": "wmo",
+     "km": 59.7,
+     "elev": 1.8,
+     "name": "Phuket"
+    },
+    {
+     "id": "00048566",
+     "source": "wmo",
+     "km": 60.4,
+     "elev": 2.0,
+     "name": "KoLanta"
+    },
+    {
+     "id": "00048565",
+     "source": "wmo",
+     "km": 66.6,
+     "elev": 5.9,
+     "name": "PhuketAirport"
+    }
+   ]
+  },
+  "koh-samui": {
+   "lat": 9.50715,
+   "lon": 99.99576,
+   "country": "TH",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00048550",
+     "source": "wmo",
+     "km": 7.4,
+     "elev": 4.0,
+     "name": "KoSamui"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00048550",
+     "source": "wmo",
+     "km": 7.4,
+     "elev": 4.0,
+     "name": "KoSamui"
+    },
+    {
+     "id": "00048552",
+     "source": "wmo",
+     "km": 107.9,
+     "elev": 4.1,
+     "name": "NakhonsiThammarat"
+    },
+    {
+     "id": "00048517",
+     "source": "wmo",
+     "km": 141.4,
+     "elev": 4.4,
+     "name": "Chumphon"
+    }
+   ]
+  },
+  "kota-kinabalu": {
+   "lat": 5.97801,
+   "lon": 116.0729,
+   "country": "MY",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00096471",
+     "source": "wmo",
+     "km": 5.8,
+     "elev": 2.0,
+     "name": "KotaKinabalu"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00096471",
+     "source": "wmo",
+     "km": 5.8,
+     "elev": 2.0,
+     "name": "KotaKinabalu"
+    },
+    {
+     "id": "00096465",
+     "source": "wmo",
+     "km": 118.4,
+     "elev": 28.0,
+     "name": "Labuan"
+    }
+   ]
+  },
+  "lombok": {
+   "lat": -8.58377,
+   "lon": 116.10685,
+   "country": "ID",
+   "staged": true,
+   "direct": [],
+   "calibrate": []
+  },
+  "labuan-bajo": {
+   "lat": -0.66104,
+   "lon": 119.73259,
+   "country": "ID",
+   "staged": true,
+   "direct": [],
+   "calibrate": []
+  },
+  "nha-trang": {
+   "lat": 12.23488,
+   "lon": 109.19414,
+   "country": "VN",
+   "staged": true,
+   "direct": [],
+   "calibrate": []
+  },
+  "phu-quoc": {
+   "lat": 10.21635,
+   "lon": 103.95879,
+   "country": "VN",
+   "staged": true,
+   "direct": [],
+   "calibrate": []
+  },
+  "puerto-princesa": {
+   "lat": 9.73986,
+   "lon": 118.74382,
+   "country": "PH",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00098618",
+     "source": "wmo",
+     "km": 1.0,
+     "elev": 14.9,
+     "name": "PuertoPrincesaCityPalawan"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00098618",
+     "source": "wmo",
+     "km": 1.0,
+     "elev": 14.9,
+     "name": "PuertoPrincesaCityPalawan"
+    }
+   ]
+  },
+  "luang-prabang": {
+   "lat": 19.88874,
+   "lon": 102.1359,
+   "country": "LA",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00048930",
+     "source": "wmo",
+     "km": 3.2,
+     "elev": 304.0,
+     "name": "Luangprabang"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00048930",
+     "source": "wmo",
+     "km": 3.2,
+     "elev": 304.0,
+     "name": "Luangprabang"
+    },
+    {
+     "id": "00048938",
+     "source": "wmo",
+     "km": 84.4,
+     "elev": 300.0,
+     "name": "Xayabouly"
+    }
+   ]
+  },
+  "vientiane": {
+   "lat": 17.9641,
+   "lon": 102.61337,
+   "country": "LA",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00048940",
+     "source": "wmo",
+     "km": 4.5,
+     "elev": 171.0,
+     "name": "VientianeCapital"
+    },
+    {
+     "id": "00048352",
+     "source": "wmo",
+     "km": 17.9,
+     "elev": 173.2,
+     "name": "NongKhai"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00048940",
+     "source": "wmo",
+     "km": 4.5,
+     "elev": 171.0,
+     "name": "VientianeCapital"
+    },
+    {
+     "id": "00048352",
+     "source": "wmo",
+     "km": 17.9,
+     "elev": 173.2,
+     "name": "NongKhai"
+    },
+    {
+     "id": "00048354",
+     "source": "wmo",
+     "km": 67.6,
+     "elev": 177.0,
+     "name": "UdonThani"
+    }
+   ]
+  },
+  "bandar-seri-begawan": {
+   "lat": 4.88955,
+   "lon": 114.94176,
+   "country": "BN",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00096315",
+     "source": "wmo",
+     "km": 6.8,
+     "elev": -876.5,
+     "name": "BRUNEI"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00096315",
+     "source": "wmo",
+     "km": 6.8,
+     "elev": -876.5,
+     "name": "BRUNEI"
+    },
+    {
+     "id": "00096465",
+     "source": "wmo",
+     "km": 57.1,
+     "elev": 28.0,
+     "name": "Labuan"
+    },
+    {
+     "id": "00096449",
+     "source": "wmo",
+     "km": 123.0,
+     "elev": 17.0,
+     "name": "Miri"
+    }
+   ]
+  },
+  "bordeaux": {
+   "lat": 44.84123,
+   "lon": -0.58004,
+   "country": "FR",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00007510",
+     "source": "wmo",
+     "km": 8.8,
+     "elev": 47.0,
+     "name": "BORDEAUX_MERIGNAC"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00007510",
+     "source": "wmo",
+     "km": 8.8,
+     "elev": 47.0,
+     "name": "BORDEAUX_MERIGNAC"
+    },
+    {
+     "id": "00007502",
+     "source": "wmo",
+     "km": 55.3,
+     "elev": 23.0,
+     "name": "CAZAUX"
+    },
+    {
+     "id": "00007503",
+     "source": "wmo",
+     "km": 69.7,
+     "elev": 35.0,
+     "name": "BISCARROSSE"
+    }
+   ]
+  },
+  "strasbourg": {
+   "lat": 48.58461,
+   "lon": 7.75071,
+   "country": "FR",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00007190",
+     "source": "wmo",
+     "km": 9.1,
+     "elev": 150.0,
+     "name": "STRASBOURG_ENTZHEIM"
+    },
+    {
+     "id": "ghcn:GME00127750",
+     "source": "ghcn",
+     "km": 20.4,
+     "elev": 131.0,
+     "name": "RHEINAU-MEMPRECHTSHOFEN"
+    },
+    {
+     "id": "ghcn:GME00122770",
+     "source": "ghcn",
+     "km": 24.5,
+     "elev": 176.0,
+     "name": "OHLSBACH"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00007190",
+     "source": "wmo",
+     "km": 9.1,
+     "elev": 150.0,
+     "name": "STRASBOURG_ENTZHEIM"
+    },
+    {
+     "id": "ghcn:GME00127750",
+     "source": "ghcn",
+     "km": 20.4,
+     "elev": 131.0,
+     "name": "RHEINAU-MEMPRECHTSHOFEN"
+    },
+    {
+     "id": "ghcn:GME00122770",
+     "source": "ghcn",
+     "km": 24.5,
+     "elev": 176.0,
+     "name": "OHLSBACH"
+    }
+   ]
+  },
+  "pisa": {
+   "lat": 43.71594,
+   "lon": 10.40186,
+   "country": "IT",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00016158",
+     "source": "wmo",
+     "km": 3.8,
+     "elev": 2.0,
+     "name": "Pisa"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00016158",
+     "source": "wmo",
+     "km": 3.8,
+     "elev": 2.0,
+     "name": "Pisa"
+    },
+    {
+     "id": "00016125",
+     "source": "wmo",
+     "km": 53.1,
+     "elev": 10.0,
+     "name": "Sarzana_Luni"
+    },
+    {
+     "id": "00016134",
+     "source": "wmo",
+     "km": 58.3,
+     "elev": 2165.0,
+     "name": "Monte_Cimone"
+    }
+   ]
+  },
+  "bologna": {
+   "lat": 44.49382,
+   "lon": 11.34263,
+   "country": "IT",
+   "staged": true,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00016134",
+     "source": "wmo",
+     "km": 61.0,
+     "elev": 2165.0,
+     "name": "Monte_Cimone"
+    },
+    {
+     "id": "00016146",
+     "source": "wmo",
+     "km": 75.9,
+     "elev": 2.0,
+     "name": "Punta_Marina"
+    },
+    {
+     "id": "00016170",
+     "source": "wmo",
+     "km": 77.0,
+     "elev": 44.0,
+     "name": "Firenze_Peretola"
+    }
+   ]
+  },
+  "palermo": {
+   "lat": 38.11123,
+   "lon": 13.35244,
+   "country": "IT",
+   "staged": true,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00016434",
+     "source": "wmo",
+     "km": 43.7,
+     "elev": 1034.0,
+     "name": "Prizzi"
+    },
+    {
+     "id": "00016400",
+     "source": "wmo",
+     "km": 68.0,
+     "elev": 242.0,
+     "name": "Ustica"
+    },
+    {
+     "id": "00016429",
+     "source": "wmo",
+     "km": 78.6,
+     "elev": 7.3,
+     "name": "Trapani_Birgi"
+    }
+   ]
+  },
+  "malaga": {
+   "lat": 36.76479,
+   "lon": -4.4422,
+   "country": "ES",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00008482",
+     "source": "wmo",
+     "km": 11.5,
+     "elev": 5.0,
+     "name": "MALAGAAEROPUERTO"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00008482",
+     "source": "wmo",
+     "km": 11.5,
+     "elev": 5.0,
+     "name": "MALAGAAEROPUERTO"
+    },
+    {
+     "id": "00008419",
+     "source": "wmo",
+     "km": 74.8,
+     "elev": 567.0,
+     "name": "GRANADAAEROPUERTO"
+    },
+    {
+     "id": "00008420",
+     "source": "wmo",
+     "km": 83.1,
+     "elev": 687.0,
+     "name": "GRANADABASEAEREA"
+    }
+   ]
+  },
+  "valencia": {
+   "lat": 39.46971,
+   "lon": -0.37634,
+   "country": "ES",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00008285",
+     "source": "wmo",
+     "km": 1.5,
+     "elev": 11.0,
+     "name": "VALENCIA"
+    },
+    {
+     "id": "00008284",
+     "source": "wmo",
+     "km": 8.6,
+     "elev": 56.0,
+     "name": "VALENCIAAEROPUERTO"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00008285",
+     "source": "wmo",
+     "km": 1.5,
+     "elev": 11.0,
+     "name": "VALENCIA"
+    },
+    {
+     "id": "00008284",
+     "source": "wmo",
+     "km": 8.6,
+     "elev": 56.0,
+     "name": "VALENCIAAEROPUERTO"
+    },
+    {
+     "id": "00008286",
+     "source": "wmo",
+     "km": 60.1,
+     "elev": 48.0,
+     "name": "CASTELLONALMASSORA"
+    }
+   ]
+  },
+  "ibiza": {
+   "lat": 38.91007,
+   "lon": 1.43045,
+   "country": "ES",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00008373",
+     "source": "wmo",
+     "km": 5.5,
+     "elev": 6.0,
+     "name": "IBIZAESCODOLA"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00008373",
+     "source": "wmo",
+     "km": 5.5,
+     "elev": 6.0,
+     "name": "IBIZAESCODOLA"
+    },
+    {
+     "id": "ghcn:SPE00101043",
+     "source": "ghcn",
+     "km": 100.9,
+     "elev": 81.0,
+     "name": "ALICANTE"
+    },
+    {
+     "id": "ghcn:SPE00101035",
+     "source": "ghcn",
+     "km": 102.2,
+     "elev": 43.0,
+     "name": "ALICANTE EL ALTET"
+    }
+   ]
+  },
+  "palma": {
+   "lat": 39.56958,
+   "lon": 2.65007,
+   "country": "ES",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00008301",
+     "source": "wmo",
+     "km": 2.7,
+     "elev": 3.0,
+     "name": "PALMAPUERTO"
+    },
+    {
+     "id": "00008306",
+     "source": "wmo",
+     "km": 7.5,
+     "elev": 8.0,
+     "name": "PALMADEMALLORCASONSANJUAN"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00008301",
+     "source": "wmo",
+     "km": 2.7,
+     "elev": 3.0,
+     "name": "PALMAPUERTO"
+    },
+    {
+     "id": "00008306",
+     "source": "wmo",
+     "km": 7.5,
+     "elev": 8.0,
+     "name": "PALMADEMALLORCASONSANJUAN"
+    },
+    {
+     "id": "00008373",
+     "source": "wmo",
+     "km": 133.6,
+     "elev": 6.0,
+     "name": "IBIZAESCODOLA"
+    }
+   ]
+  },
+  "faro": {
+   "lat": 37.01629,
+   "lon": -7.93518,
+   "country": "PT",
+   "staged": true,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00008383",
+     "source": "wmo",
+     "km": 95.2,
+     "elev": 19.0,
+     "name": "HUELVARONDAESTE"
+    },
+    {
+     "id": "ghcn:SPE00120143",
+     "source": "ghcn",
+     "km": 95.5,
+     "elev": 19.0,
+     "name": "HUELVA (RONDA DEL ESTE)"
+    },
+    {
+     "id": "00008449",
+     "source": "wmo",
+     "km": 148.7,
+     "elev": 21.0,
+     "name": "ROTABNOBSERVATORIO"
+    }
+   ]
+  },
+  "glasgow": {
+   "lat": 55.86115,
+   "lon": -4.25017,
+   "country": "GB",
+   "staged": true,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00003155",
+     "source": "wmo",
+     "km": 41.4,
+     "elev": 245.0,
+     "name": "Drumalbin"
+    },
+    {
+     "id": "00003136",
+     "source": "wmo",
+     "km": 43.8,
+     "elev": 27.0,
+     "name": "Prestwick"
+    },
+    {
+     "id": "ghcn:UKE00105856",
+     "source": "ghcn",
+     "km": 47.1,
+     "elev": 48.0,
+     "name": "AUCHINCRUIVE"
+    }
+   ]
+  },
+  "birmingham": {
+   "lat": 52.4949,
+   "lon": -1.85184,
+   "country": "GB",
+   "staged": true,
+   "direct": [
+    {
+     "id": "ghcn:UK000000000",
+     "source": "ghcn",
+     "km": 8.5,
+     "elev": 78.0,
+     "name": "CET CENTRAL ENGLAND"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "ghcn:UK000000000",
+     "source": "ghcn",
+     "km": 8.5,
+     "elev": 78.0,
+     "name": "CET CENTRAL ENGLAND"
+    },
+    {
+     "id": "ghcn:UKE00105909",
+     "source": "ghcn",
+     "km": 36.3,
+     "elev": 47.0,
+     "name": "WELLESBOURNE"
+    },
+    {
+     "id": "00003544",
+     "source": "wmo",
+     "km": 38.4,
+     "elev": 107.0,
+     "name": "ChurchLawford"
+    }
+   ]
+  },
+  "belfast": {
+   "lat": 54.59639,
+   "lon": -5.93018,
+   "country": "GB",
+   "staged": true,
+   "direct": [
+    {
+     "id": "ghcn:UKE00105877",
+     "source": "ghcn",
+     "km": 6.6,
+     "elev": 56.0,
+     "name": "STORMONT CASTLE"
+    },
+    {
+     "id": "00003917",
+     "source": "wmo",
+     "km": 20.4,
+     "elev": 63.0,
+     "name": "Aldergrove"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "ghcn:UKE00105877",
+     "source": "ghcn",
+     "km": 6.6,
+     "elev": 56.0,
+     "name": "STORMONT CASTLE"
+    },
+    {
+     "id": "00003917",
+     "source": "wmo",
+     "km": 20.4,
+     "elev": 63.0,
+     "name": "Aldergrove"
+    },
+    {
+     "id": "00003915",
+     "source": "wmo",
+     "km": 45.2,
+     "elev": 64.0,
+     "name": "Portglenone"
+    }
+   ]
+  },
+  "cork": {
+   "lat": 51.89851,
+   "lon": -8.47264,
+   "country": "IE",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00003955",
+     "source": "wmo",
+     "km": 5.8,
+     "elev": 155.0,
+     "name": "CorkAirport"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00003955",
+     "source": "wmo",
+     "km": 5.8,
+     "elev": 155.0,
+     "name": "CorkAirport"
+    },
+    {
+     "id": "00003962",
+     "source": "wmo",
+     "km": 93.1,
+     "elev": 15.0,
+     "name": "ShannonAirport"
+    },
+    {
+     "id": "00003953",
+     "source": "wmo",
+     "km": 121.4,
+     "elev": 24.0,
+     "name": "ValentiaObservatory"
+    }
+   ]
+  },
+  "dusseldorf": {
+   "lat": 51.2254,
+   "lon": 6.77631,
+   "country": "DE",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00010400",
+     "source": "wmo",
+     "km": 7.9,
+     "elev": 36.6,
+     "name": "Duesseldorf"
+    },
+    {
+     "id": "ghcn:GME00130582",
+     "source": "ghcn",
+     "km": 22.9,
+     "elev": 130.0,
+     "name": "WUPPERTAL-BUCHENHOFEN"
+    },
+    {
+     "id": "00010410",
+     "source": "wmo",
+     "km": 23.9,
+     "elev": 150.0,
+     "name": "Essen-Bredeney"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00010400",
+     "source": "wmo",
+     "km": 7.9,
+     "elev": 36.6,
+     "name": "Duesseldorf"
+    },
+    {
+     "id": "ghcn:GME00130582",
+     "source": "ghcn",
+     "km": 22.9,
+     "elev": 130.0,
+     "name": "WUPPERTAL-BUCHENHOFEN"
+    },
+    {
+     "id": "00010410",
+     "source": "wmo",
+     "km": 23.9,
+     "elev": 150.0,
+     "name": "Essen-Bredeney"
+    }
+   ]
+  },
+  "cologne": {
+   "lat": 50.93836,
+   "lon": 6.95997,
+   "country": "DE",
+   "staged": true,
+   "direct": [
+    {
+     "id": "ghcn:GME00125302",
+     "source": "ghcn",
+     "km": 5.9,
+     "elev": 43.0,
+     "name": "KOLN-STAMMHEIM"
+    },
+    {
+     "id": "00010513",
+     "source": "wmo",
+     "km": 16.2,
+     "elev": 90.9,
+     "name": "KoelnBonn"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "ghcn:GME00125302",
+     "source": "ghcn",
+     "km": 5.9,
+     "elev": 43.0,
+     "name": "KOLN-STAMMHEIM"
+    },
+    {
+     "id": "00010513",
+     "source": "wmo",
+     "km": 16.2,
+     "elev": 90.9,
+     "name": "KoelnBonn"
+    },
+    {
+     "id": "ghcn:GME00122002",
+     "source": "ghcn",
+     "km": 27.7,
+     "elev": 146.0,
+     "name": "WEILERSWIST-LOMMERSUM"
+    }
+   ]
+  },
+  "lausanne": {
+   "lat": 46.52183,
+   "lon": 6.6327,
+   "country": "CH",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00006711",
+     "source": "wmo",
+     "km": 2.9,
+     "elev": 456.0,
+     "name": "Pully"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00006711",
+     "source": "wmo",
+     "km": 2.9,
+     "elev": 456.0,
+     "name": "Pully"
+    },
+    {
+     "id": "00006609",
+     "source": "wmo",
+     "km": 29.6,
+     "elev": 1974.0,
+     "name": "LeMoleson"
+    },
+    {
+     "id": "00006712",
+     "source": "wmo",
+     "km": 31.1,
+     "elev": 381.0,
+     "name": "Aigle"
+    }
+   ]
+  },
+  "zermatt": {
+   "lat": 46.02121,
+   "lon": 7.74925,
+   "country": "CH",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00006748",
+     "source": "wmo",
+     "km": 0.9,
+     "elev": 1638.0,
+     "name": "Zermatt"
+    },
+    {
+     "id": "00006728",
+     "source": "wmo",
+     "km": 20.5,
+     "elev": 1605.0,
+     "name": "Graechen"
+    },
+    {
+     "id": "00006722",
+     "source": "wmo",
+     "km": 21.1,
+     "elev": 1825.0,
+     "name": "EvoleneVilla"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00006748",
+     "source": "wmo",
+     "km": 0.9,
+     "elev": 1638.0,
+     "name": "Zermatt"
+    },
+    {
+     "id": "00006728",
+     "source": "wmo",
+     "km": 20.5,
+     "elev": 1605.0,
+     "name": "Graechen"
+    },
+    {
+     "id": "00006722",
+     "source": "wmo",
+     "km": 21.1,
+     "elev": 1825.0,
+     "name": "EvoleneVilla"
+    }
+   ]
+  },
+  "brno": {
+   "lat": 49.19224,
+   "lon": 16.61134,
+   "country": "CZ",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00011723",
+     "source": "wmo",
+     "km": 7.1,
+     "elev": 241.0,
+     "name": "BrnoTurany"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00011723",
+     "source": "wmo",
+     "km": 7.1,
+     "elev": 241.0,
+     "name": "BrnoTurany"
+    },
+    {
+     "id": "00011692",
+     "source": "wmo",
+     "km": 35.7,
+     "elev": 474.0,
+     "name": "NamestNadOslavou"
+    },
+    {
+     "id": "00011693",
+     "source": "wmo",
+     "km": 36.3,
+     "elev": 400.1,
+     "name": "Dukovany"
+    }
+   ]
+  },
+  "gdansk": {
+   "lat": 54.34829,
+   "lon": 18.65402,
+   "country": "PL",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00012135",
+     "source": "wmo",
+     "km": 11.1,
+     "elev": 1.0,
+     "name": "Hel"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00012135",
+     "source": "wmo",
+     "km": 11.1,
+     "elev": 1.0,
+     "name": "Hel"
+    },
+    {
+     "id": "00012125",
+     "source": "wmo",
+     "km": 79.2,
+     "elev": 38.0,
+     "name": "Lebork"
+    },
+    {
+     "id": "00012120",
+     "source": "wmo",
+     "km": 87.0,
+     "elev": 2.0,
+     "name": "Leba"
+    }
+   ]
+  },
+  "bratislava": {
+   "lat": 48.1435,
+   "lon": 17.10829,
+   "country": "SK",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00011813",
+     "source": "wmo",
+     "km": 2.7,
+     "elev": 286.0,
+     "name": "BRATISLAVA_KOLIBA"
+    },
+    {
+     "id": "00011816",
+     "source": "wmo",
+     "km": 8.0,
+     "elev": 133.0,
+     "name": "BRATISLAVA_AIRPORT"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00011813",
+     "source": "wmo",
+     "km": 2.7,
+     "elev": 286.0,
+     "name": "BRATISLAVA_KOLIBA"
+    },
+    {
+     "id": "00011816",
+     "source": "wmo",
+     "km": 8.0,
+     "elev": 133.0,
+     "name": "BRATISLAVA_AIRPORT"
+    },
+    {
+     "id": "00012815",
+     "source": "wmo",
+     "km": 30.6,
+     "elev": 121.0,
+     "name": "Mosonmagyarovar"
+    }
+   ]
+  },
+  "heraklion": {
+   "lat": 35.33908,
+   "lon": 25.13328,
+   "country": "GR",
+   "staged": true,
+   "direct": [],
+   "calibrate": []
+  },
+  "rhodes": {
+   "lat": 36.44372,
+   "lon": 28.22737,
+   "country": "GR",
+   "staged": true,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00017298",
+     "source": "wmo",
+     "km": 44.0,
+     "elev": 16.0,
+     "name": "Marmaris"
+    },
+    {
+     "id": "00017297",
+     "source": "wmo",
+     "km": 56.1,
+     "elev": 28.0,
+     "name": "Datca"
+    },
+    {
+     "id": "00017294",
+     "source": "wmo",
+     "km": 62.7,
+     "elev": 12.0,
+     "name": "Dalaman"
+    }
+   ]
+  },
+  "corfu": {
+   "lat": 39.62173,
+   "lon": 19.91809,
+   "country": "GR",
+   "staged": true,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00016360",
+     "source": "wmo",
+     "km": 137.0,
+     "elev": 104.0,
+     "name": "Santa_Maria_di_Leuca"
+    }
+   ]
+  },
+  "gothenburg": {
+   "lat": 57.70723,
+   "lon": 11.96702,
+   "country": "SE",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00002513",
+     "source": "wmo",
+     "km": 1.8,
+     "elev": 3.0,
+     "name": "Goteborg_A"
+    },
+    {
+     "id": "ghcn:SWE00138198",
+     "source": "ghcn",
+     "km": 1.9,
+     "elev": 5.0,
+     "name": "GOTEBORG A"
+    },
+    {
+     "id": "00002512",
+     "source": "wmo",
+     "km": 9.4,
+     "elev": 20.0,
+     "name": "Save"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00002513",
+     "source": "wmo",
+     "km": 1.8,
+     "elev": 3.0,
+     "name": "Goteborg_A"
+    },
+    {
+     "id": "ghcn:SWE00138198",
+     "source": "ghcn",
+     "km": 1.9,
+     "elev": 5.0,
+     "name": "GOTEBORG A"
+    },
+    {
+     "id": "00002512",
+     "source": "wmo",
+     "km": 9.4,
+     "elev": 20.0,
+     "name": "Save"
+    }
+   ]
+  },
+  "tallinn": {
+   "lat": 59.43724,
+   "lon": 24.75727,
+   "country": "EE",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00026038",
+     "source": "wmo",
+     "km": 9.8,
+     "elev": 33.0,
+     "name": "Tallinn-Harku"
+    },
+    {
+     "id": "ghcn:ENE00175051",
+     "source": "ghcn",
+     "km": 9.8,
+     "elev": 33.0,
+     "name": "TALLINN"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00026038",
+     "source": "wmo",
+     "km": 9.8,
+     "elev": 33.0,
+     "name": "Tallinn-Harku"
+    },
+    {
+     "id": "ghcn:ENE00175051",
+     "source": "ghcn",
+     "km": 9.8,
+     "elev": 33.0,
+     "name": "TALLINN"
+    },
+    {
+     "id": "00026029",
+     "source": "wmo",
+     "km": 40.9,
+     "elev": 23.0,
+     "name": "Pakri"
+    }
+   ]
+  },
+  "riga": {
+   "lat": 56.9494,
+   "lon": 24.10518,
+   "country": "LV",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00026422",
+     "source": "wmo",
+     "km": 0.6,
+     "elev": 3.0,
+     "name": "RigaLu"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00026422",
+     "source": "wmo",
+     "km": 0.6,
+     "elev": 3.0,
+     "name": "RigaLu"
+    },
+    {
+     "id": "00026326",
+     "source": "wmo",
+     "km": 43.3,
+     "elev": 8.0,
+     "name": "Skulte"
+    },
+    {
+     "id": "00026425",
+     "source": "wmo",
+     "km": 44.5,
+     "elev": 7.0,
+     "name": "Jelgava"
+    }
+   ]
+  },
+  "vilnius": {
+   "lat": 54.68705,
+   "lon": 25.28291,
+   "country": "LT",
+   "staged": true,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00026736",
+     "source": "wmo",
+     "km": 50.3,
+     "elev": 211.0,
+     "name": "OSHMYANY"
+    },
+    {
+     "id": "00026645",
+     "source": "wmo",
+     "km": 76.9,
+     "elev": 208.0,
+     "name": "LYNTUPY"
+    },
+    {
+     "id": "00026832",
+     "source": "wmo",
+     "km": 87.3,
+     "elev": 154.0,
+     "name": "LIDA"
+    }
+   ]
+  },
+  "sofia": {
+   "lat": 42.6977,
+   "lon": 23.32174,
+   "country": "BG",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00015614",
+     "source": "wmo",
+     "km": 7.0,
+     "elev": 586.0,
+     "name": "Sofia"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00015614",
+     "source": "wmo",
+     "km": 7.0,
+     "elev": 586.0,
+     "name": "Sofia"
+    },
+    {
+     "id": "00015600",
+     "source": "wmo",
+     "km": 32.1,
+     "elev": 1687.0,
+     "name": "MurgashPeak"
+    },
+    {
+     "id": "00064215",
+     "source": "wmo",
+     "km": 61.6,
+     "elev": 2925.0,
+     "name": "MusalaPeak"
+    }
+   ]
+  },
+  "varna": {
+   "lat": 43.20739,
+   "lon": 27.91667,
+   "country": "BG",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00015552",
+     "source": "wmo",
+     "km": 3.0,
+     "elev": 39.0,
+     "name": "Varna"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00015552",
+     "source": "wmo",
+     "km": 3.0,
+     "elev": 39.0,
+     "name": "Varna"
+    },
+    {
+     "id": "00015655",
+     "source": "wmo",
+     "km": 86.4,
+     "elev": 21.0,
+     "name": "Burgas"
+    },
+    {
+     "id": "ghcn:ROE00100901",
+     "source": "ghcn",
+     "km": 119.9,
+     "elev": 19.0,
+     "name": "CALARASI"
+    }
+   ]
+  },
+  "skopje": {
+   "lat": 41.99621,
+   "lon": 21.43189,
+   "country": "MK",
+   "staged": true,
+   "direct": [],
+   "calibrate": []
+  },
+  "luxembourg": {
+   "lat": 49.60105,
+   "lon": 6.06399,
+   "country": "LU",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00006590",
+     "source": "wmo",
+     "km": 10.4,
+     "elev": 376.0,
+     "name": "Luxembourg"
+    },
+    {
+     "id": "99999999",
+     "source": "wmo",
+     "km": 21.9,
+     "elev": 207.0,
+     "name": "Remich"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00006590",
+     "source": "wmo",
+     "km": 10.4,
+     "elev": 376.0,
+     "name": "Luxembourg"
+    },
+    {
+     "id": "99999999",
+     "source": "wmo",
+     "km": 21.9,
+     "elev": 207.0,
+     "name": "Remich"
+    },
+    {
+     "id": "ghcn:GME00123226",
+     "source": "ghcn",
+     "km": 43.1,
+     "elev": 305.0,
+     "name": "OLSDORF"
+    }
+   ]
+  },
+  "monte-carlo": {
+   "lat": 43.7403,
+   "lon": 7.42656,
+   "country": "MC",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00007690",
+     "source": "wmo",
+     "km": 20.2,
+     "elev": 2.0,
+     "name": "NICE"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00007690",
+     "source": "wmo",
+     "km": 20.2,
+     "elev": 2.0,
+     "name": "NICE"
+    },
+    {
+     "id": "00007684",
+     "source": "wmo",
+     "km": 43.4,
+     "elev": 2.0,
+     "name": "CANNES"
+    },
+    {
+     "id": "00016153",
+     "source": "wmo",
+     "km": 64.3,
+     "elev": 220.0,
+     "name": "Capo_Mele"
+    }
+   ]
+  },
+  "san-marino": {
+   "lat": 43.9364,
+   "lon": 12.4467,
+   "country": "SM",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00016149",
+     "source": "wmo",
+     "km": 16.5,
+     "elev": 12.0,
+     "name": "Rimini_Miramare"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00016149",
+     "source": "wmo",
+     "km": 16.5,
+     "elev": 12.0,
+     "name": "Rimini_Miramare"
+    },
+    {
+     "id": "00016148",
+     "source": "wmo",
+     "km": 34.8,
+     "elev": 6.0,
+     "name": "Cervia"
+    },
+    {
+     "id": "00016179",
+     "source": "wmo",
+     "km": 51.8,
+     "elev": 570.0,
+     "name": "Frontone"
+    }
+   ]
+  },
+  "vatican-city": {
+   "lat": 41.90341,
+   "lon": 12.45285,
+   "country": "VA",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00016239",
+     "source": "wmo",
+     "km": 16.5,
+     "elev": 129.0,
+     "name": "Roma_Ciampino"
+    },
+    {
+     "id": "00016242",
+     "source": "wmo",
+     "km": 19.6,
+     "elev": 5.0,
+     "name": "Roma_Fiumicino"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00016239",
+     "source": "wmo",
+     "km": 16.5,
+     "elev": 129.0,
+     "name": "Roma_Ciampino"
+    },
+    {
+     "id": "00016242",
+     "source": "wmo",
+     "km": 19.6,
+     "elev": 5.0,
+     "name": "Roma_Fiumicino"
+    },
+    {
+     "id": "00016234",
+     "source": "wmo",
+     "km": 25.4,
+     "elev": 89.0,
+     "name": "Guidonia"
+    }
+   ]
+  },
+  "andorra-la-vella": {
+   "lat": 42.49792,
+   "lon": 1.50323,
+   "country": "AD",
+   "staged": true,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00007627",
+     "source": "wmo",
+     "km": 65.0,
+     "elev": 414.0,
+     "name": "ST_GIRONS"
+    },
+    {
+     "id": "00007635",
+     "source": "wmo",
+     "km": 102.6,
+     "elev": 128.0,
+     "name": "CARCASSONNE"
+    },
+    {
+     "id": "ghcn:SPE00120161",
+     "source": "ghcn",
+     "km": 107.2,
+     "elev": 541.0,
+     "name": "HUESCA"
+    }
+   ]
+  },
+  "giza": {
+   "lat": 29.98708,
+   "lon": 31.21181,
+   "country": "EG",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00062366",
+     "source": "wmo",
+     "km": 24.3,
+     "elev": 64.1,
+     "name": "CairoAP"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00062366",
+     "source": "wmo",
+     "km": 24.3,
+     "elev": 64.1,
+     "name": "CairoAP"
+    }
+   ]
+  },
+  "hurghada": {
+   "lat": 27.22256,
+   "lon": 33.83071,
+   "country": "EG",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00062463",
+     "source": "wmo",
+     "km": 13.8,
+     "elev": 8.4,
+     "name": "HurghadaAP"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00062463",
+     "source": "wmo",
+     "km": 13.8,
+     "elev": 8.4,
+     "name": "HurghadaAP"
+    },
+    {
+     "id": "00062460",
+     "source": "wmo",
+     "km": 99.1,
+     "elev": -876.5,
+     "name": "SharmElSheikhAP"
+    }
+   ]
+  },
+  "agadir": {
+   "lat": 30.42052,
+   "lon": -9.58385,
+   "country": "MA",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00060250",
+     "source": "wmo",
+     "km": 5.2,
+     "elev": 23.0,
+     "name": "AGADIRINEZGANNE"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00060250",
+     "source": "wmo",
+     "km": 5.2,
+     "elev": 23.0,
+     "name": "AGADIRINEZGANNE"
+    },
+    {
+     "id": "00060220",
+     "source": "wmo",
+     "km": 122.5,
+     "elev": 7.0,
+     "name": "ESSAOUIRA"
+    }
+   ]
+  },
+  "rabat": {
+   "lat": 34.02185,
+   "lon": -6.84089,
+   "country": "MA",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00060135",
+     "source": "wmo",
+     "km": 7.5,
+     "elev": 75.0,
+     "name": "RABATSALE"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00060135",
+     "source": "wmo",
+     "km": 7.5,
+     "elev": 75.0,
+     "name": "RABATSALE"
+    },
+    {
+     "id": "00060120",
+     "source": "wmo",
+     "km": 38.1,
+     "elev": 5.0,
+     "name": "KENITRA"
+    },
+    {
+     "id": "00060155",
+     "source": "wmo",
+     "km": 92.1,
+     "elev": 56.0,
+     "name": "CASABLANCAANFA"
+    }
+   ]
+  },
+  "hammamet": {
+   "lat": 36.40066,
+   "lon": 10.61906,
+   "country": "TN",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00060728",
+     "source": "wmo",
+     "km": 11.6,
+     "elev": 4.0,
+     "name": "Nabeul"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00060728",
+     "source": "wmo",
+     "km": 11.6,
+     "elev": 4.0,
+     "name": "Nabeul"
+    },
+    {
+     "id": "00060715",
+     "source": "wmo",
+     "km": 59.1,
+     "elev": 3.0,
+     "name": "TunisCarthage"
+    },
+    {
+     "id": "00060720",
+     "source": "wmo",
+     "km": 64.9,
+     "elev": 29.0,
+     "name": "Kelibia"
+    }
+   ]
+  },
+  "algiers": {
+   "lat": 36.77293,
+   "lon": 3.05884,
+   "country": "DZ",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00060390",
+     "source": "wmo",
+     "km": 16.8,
+     "elev": 25.0,
+     "name": "AlgerDarElBeida"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00060390",
+     "source": "wmo",
+     "km": 16.8,
+     "elev": 25.0,
+     "name": "AlgerDarElBeida"
+    },
+    {
+     "id": "00060437",
+     "source": "wmo",
+     "km": 62.0,
+     "elev": 1030.0,
+     "name": "Medea"
+    },
+    {
+     "id": "00060395",
+     "source": "wmo",
+     "km": 85.7,
+     "elev": 153.4,
+     "name": "TiziOuzou"
+    }
+   ]
+  },
+  "oran": {
+   "lat": 35.70444,
+   "lon": -0.6503,
+   "country": "DZ",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00060490",
+     "source": "wmo",
+     "km": 9.2,
+     "elev": 90.0,
+     "name": "OranSennia"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00060490",
+     "source": "wmo",
+     "km": 9.2,
+     "elev": 90.0,
+     "name": "OranSennia"
+    },
+    {
+     "id": "00060520",
+     "source": "wmo",
+     "km": 59.2,
+     "elev": 482.0,
+     "name": "SidiBelAbbes"
+    },
+    {
+     "id": "00060531",
+     "source": "wmo",
+     "km": 104.9,
+     "elev": 246.1,
+     "name": "TlemcenZenata"
+    }
+   ]
+  },
+  "dar-es-salaam": {
+   "lat": -6.81608,
+   "lon": 39.28036,
+   "country": "TZ",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00063894",
+     "source": "wmo",
+     "km": 10.7,
+     "elev": 53.0,
+     "name": "DAR_ES_SALAAM"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00063894",
+     "source": "wmo",
+     "km": 10.7,
+     "elev": 53.0,
+     "name": "DAR_ES_SALAAM"
+    },
+    {
+     "id": "00063870",
+     "source": "wmo",
+     "km": 66.6,
+     "elev": 18.0,
+     "name": "ZANZIBAR"
+    }
+   ]
+  },
+  "addis-ababa": {
+   "lat": 9.03581,
+   "lon": 38.75243,
+   "country": "ET",
+   "staged": true,
+   "direct": [],
+   "calibrate": []
+  },
+  "entebbe": {
+   "lat": 0.06117,
+   "lon": 32.46986,
+   "country": "UG",
+   "staged": true,
+   "direct": [],
+   "calibrate": []
+  },
+  "kigali": {
+   "lat": -1.95344,
+   "lon": 30.11401,
+   "country": "RW",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00064387",
+     "source": "wmo",
+     "km": 2.5,
+     "elev": 1490.0,
+     "name": "KIGALI_AERO"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00064387",
+     "source": "wmo",
+     "km": 2.5,
+     "elev": 1490.0,
+     "name": "KIGALI_AERO"
+    },
+    {
+     "id": "00064381",
+     "source": "wmo",
+     "km": 101.1,
+     "elev": 1554.0,
+     "name": "GISENYI_AERO"
+    },
+    {
+     "id": "00064380",
+     "source": "wmo",
+     "km": 144.6,
+     "elev": 1591.0,
+     "name": "KAMEMBE_AERO"
+    }
+   ]
+  },
+  "praslin": {
+   "lat": -4.32507,
+   "lon": 55.73561,
+   "country": "SC",
+   "staged": true,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00063980",
+     "source": "wmo",
+     "km": 45.6,
+     "elev": 3.0,
+     "name": "SeychellesIntlAirport"
+    }
+   ]
+  },
+  "antananarivo": {
+   "lat": -18.91001,
+   "lon": 47.52558,
+   "country": "MG",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00067085",
+     "source": "wmo",
+     "km": 5.5,
+     "elev": 1310.0,
+     "name": "ANTANANARIVO"
+    },
+    {
+     "id": "00067083",
+     "source": "wmo",
+     "km": 13.0,
+     "elev": 1279.0,
+     "name": "IVATO"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00067085",
+     "source": "wmo",
+     "km": 5.5,
+     "elev": 1310.0,
+     "name": "ANTANANARIVO"
+    },
+    {
+     "id": "00067083",
+     "source": "wmo",
+     "km": 13.0,
+     "elev": 1279.0,
+     "name": "IVATO"
+    },
+    {
+     "id": "00067107",
+     "source": "wmo",
+     "km": 111.7,
+     "elev": 1523.0,
+     "name": "ANTSIRABE"
+    }
+   ]
+  },
+  "nosy-be": {
+   "lat": -13.31195,
+   "lon": 48.2534,
+   "country": "MG",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00067012",
+     "source": "wmo",
+     "km": 6.9,
+     "elev": 10.0,
+     "name": "NOSYBE"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00067012",
+     "source": "wmo",
+     "km": 6.9,
+     "elev": 10.0,
+     "name": "NOSYBE"
+    }
+   ]
+  },
+  "dakar": {
+   "lat": 14.69342,
+   "lon": -17.44794,
+   "country": "SN",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00061641",
+     "source": "wmo",
+     "km": 6.9,
+     "elev": 24.5,
+     "name": "Dakar"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00061641",
+     "source": "wmo",
+     "km": 6.9,
+     "elev": 24.5,
+     "name": "Dakar"
+    },
+    {
+     "id": "00380090",
+     "source": "wmo",
+     "km": 59.8,
+     "elev": 10.0,
+     "name": "Mbour"
+    },
+    {
+     "id": "00380084",
+     "source": "wmo",
+     "km": 106.3,
+     "elev": 25.0,
+     "name": "Bambey"
+    }
+   ]
+  },
+  "accra": {
+   "lat": 5.55711,
+   "lon": -0.20124,
+   "country": "GH",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00065472",
+     "source": "wmo",
+     "km": 6.1,
+     "elev": 62.0,
+     "name": "Accra"
+    },
+    {
+     "id": "00065473",
+     "source": "wmo",
+     "km": 23.2,
+     "elev": 14.0,
+     "name": "Tema"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00065472",
+     "source": "wmo",
+     "km": 6.1,
+     "elev": 62.0,
+     "name": "Accra"
+    },
+    {
+     "id": "00065473",
+     "source": "wmo",
+     "km": 23.2,
+     "elev": 14.0,
+     "name": "Tema"
+    },
+    {
+     "id": "00065459",
+     "source": "wmo",
+     "km": 58.7,
+     "elev": 166.5,
+     "name": "Koforidua"
+    }
+   ]
+  },
+  "lagos": {
+   "lat": 6.45506,
+   "lon": 3.39418,
+   "country": "NG",
+   "staged": true,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00065203",
+     "source": "wmo",
+     "km": 39.4,
+     "elev": 140.0,
+     "name": "LagosRoof"
+    },
+    {
+     "id": "00065210",
+     "source": "wmo",
+     "km": 59.5,
+     "elev": 84.0,
+     "name": "IjebuOde"
+    },
+    {
+     "id": "00065213",
+     "source": "wmo",
+     "km": 93.6,
+     "elev": 61.0,
+     "name": "Abeokuta"
+    }
+   ]
+  },
+  "windhoek": {
+   "lat": -22.57761,
+   "lon": 17.07727,
+   "country": "NA",
+   "staged": true,
+   "direct": [],
+   "calibrate": []
+  },
+  "gaborone": {
+   "lat": -24.65814,
+   "lon": 25.90885,
+   "country": "BW",
+   "staged": true,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00068242",
+     "source": "wmo",
+     "km": 132.6,
+     "elev": 1281.0,
+     "name": "MafikengWO"
+    }
+   ]
+  },
+  "livingstone": {
+   "lat": -17.85314,
+   "lon": 25.86143,
+   "country": "ZM",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00067743",
+     "source": "wmo",
+     "km": 6.2,
+     "elev": 986.0,
+     "name": "Livingstone"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00067743",
+     "source": "wmo",
+     "km": 6.2,
+     "elev": 986.0,
+     "name": "Livingstone"
+    }
+   ]
+  },
+  "victoria-falls": {
+   "lat": -17.9229,
+   "lon": 25.84768,
+   "country": "ZW",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00067743",
+     "source": "wmo",
+     "km": 12.2,
+     "elev": 986.0,
+     "name": "Livingstone"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00067743",
+     "source": "wmo",
+     "km": 12.2,
+     "elev": 986.0,
+     "name": "Livingstone"
+    }
+   ]
+  },
+  "maputo": {
+   "lat": -25.96621,
+   "lon": 32.56745,
+   "country": "MZ",
+   "staged": true,
+   "direct": [],
+   "calibrate": []
+  },
+  "sal": {
+   "lat": 16.17597,
+   "lon": -22.91698,
+   "country": "CV",
+   "staged": true,
+   "direct": [],
+   "calibrate": []
+  },
+  "orlando": {
+   "lat": 28.54212,
+   "lon": -81.37905,
+   "country": "US",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00072205",
+     "source": "wmo",
+     "km": 13.1,
+     "elev": 27.0,
+     "name": "ORLANDO_INTL_AP"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00072205",
+     "source": "wmo",
+     "km": 13.1,
+     "elev": 27.0,
+     "name": "ORLANDO_INTL_AP"
+    },
+    {
+     "id": "ghcn:USC00084625",
+     "source": "ghcn",
+     "km": 29.9,
+     "elev": 18.3,
+     "name": "KISSIMMEE 2"
+    },
+    {
+     "id": "00074787",
+     "source": "wmo",
+     "km": 78.2,
+     "elev": 9.0,
+     "name": "DAYTONA_BEACH_INTL_AP"
+    }
+   ]
+  },
+  "chicago": {
+   "lat": 41.87556,
+   "lon": -87.62442,
+   "country": "US",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00072534",
+     "source": "wmo",
+     "km": 14.5,
+     "elev": 187.0,
+     "name": "CHICAGO_MIDWAY_AP"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00072534",
+     "source": "wmo",
+     "km": 14.5,
+     "elev": 187.0,
+     "name": "CHICAGO_MIDWAY_AP"
+    },
+    {
+     "id": "00072530",
+     "source": "wmo",
+     "km": 28.8,
+     "elev": 201.0,
+     "name": "CHICAGO_OHARE_INTL_AP"
+    },
+    {
+     "id": "ghcn:USC00116616",
+     "source": "ghcn",
+     "km": 42.6,
+     "elev": 216.4,
+     "name": "PARK FOREST WATER"
+    }
+   ]
+  },
+  "washington-dc": {
+   "lat": 38.8951,
+   "lon": -77.03638,
+   "country": "US",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00072405",
+     "source": "wmo",
+     "km": 5.2,
+     "elev": 3.0,
+     "name": "WASHINGTON_REAGAN_AP"
+    },
+    {
+     "id": "ghcn:USC00186350",
+     "source": "ghcn",
+     "km": 6.1,
+     "elev": 15.2,
+     "name": "NATL ARBORETUM DC"
+    },
+    {
+     "id": "ghcn:USC00182325",
+     "source": "ghcn",
+     "km": 8.2,
+     "elev": 45.7,
+     "name": "DALECARLIA RSVR"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00072405",
+     "source": "wmo",
+     "km": 5.2,
+     "elev": 3.0,
+     "name": "WASHINGTON_REAGAN_AP"
+    },
+    {
+     "id": "ghcn:USC00186350",
+     "source": "ghcn",
+     "km": 6.1,
+     "elev": 15.2,
+     "name": "NATL ARBORETUM DC"
+    },
+    {
+     "id": "ghcn:USC00182325",
+     "source": "ghcn",
+     "km": 8.2,
+     "elev": 45.7,
+     "name": "DALECARLIA RSVR"
+    }
+   ]
+  },
+  "seattle": {
+   "lat": 47.60383,
+   "lon": -122.33006,
+   "country": "US",
+   "staged": true,
+   "direct": [
+    {
+     "id": "ghcn:USW00094290",
+     "source": "ghcn",
+     "km": 10.8,
+     "elev": 18.3,
+     "name": "SEATTLE SAND PT WFO"
+    },
+    {
+     "id": "00072793",
+     "source": "wmo",
+     "km": 17.8,
+     "elev": 113.0,
+     "name": "SEATTLE_TACOMA_INTL_AP"
+    },
+    {
+     "id": "ghcn:USC00454169",
+     "source": "ghcn",
+     "km": 21.8,
+     "elev": 8.8,
+     "name": "KENT"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "ghcn:USW00094290",
+     "source": "ghcn",
+     "km": 10.8,
+     "elev": 18.3,
+     "name": "SEATTLE SAND PT WFO"
+    },
+    {
+     "id": "00072793",
+     "source": "wmo",
+     "km": 17.8,
+     "elev": 113.0,
+     "name": "SEATTLE_TACOMA_INTL_AP"
+    },
+    {
+     "id": "ghcn:USC00454169",
+     "source": "ghcn",
+     "km": 21.8,
+     "elev": 8.8,
+     "name": "KENT"
+    }
+   ]
+  },
+  "honolulu": {
+   "lat": 21.30455,
+   "lon": -157.85568,
+   "country": "US",
+   "staged": true,
+   "direct": [
+    {
+     "id": "ghcn:USC00519397",
+     "source": "ghcn",
+     "km": 5.4,
+     "elev": 3.0,
+     "name": "WAIKIKI 717.2"
+    },
+    {
+     "id": "ghcn:USC00516128",
+     "source": "ghcn",
+     "km": 6.4,
+     "elev": 152.4,
+     "name": "MANOA LYON ARBO 785.2"
+    },
+    {
+     "id": "00091182",
+     "source": "wmo",
+     "km": 7.9,
+     "elev": 2.0,
+     "name": "HONOLULU_INTL_AP"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "ghcn:USC00519397",
+     "source": "ghcn",
+     "km": 5.4,
+     "elev": 3.0,
+     "name": "WAIKIKI 717.2"
+    },
+    {
+     "id": "ghcn:USC00516128",
+     "source": "ghcn",
+     "km": 6.4,
+     "elev": 152.4,
+     "name": "MANOA LYON ARBO 785.2"
+    },
+    {
+     "id": "00091182",
+     "source": "wmo",
+     "km": 7.9,
+     "elev": 2.0,
+     "name": "HONOLULU_INTL_AP"
+    }
+   ]
+  },
+  "boston": {
+   "lat": 42.35883,
+   "lon": -71.05783,
+   "country": "US",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00072509",
+     "source": "wmo",
+     "km": 3.9,
+     "elev": 4.0,
+     "name": "BOSTON_LOGAN_INTL_AP"
+    },
+    {
+     "id": "ghcn:USC00193890",
+     "source": "ghcn",
+     "km": 8.3,
+     "elev": 29.0,
+     "name": "JAMAICA PLAIN"
+    },
+    {
+     "id": "ghcn:USC00190736",
+     "source": "ghcn",
+     "km": 16.9,
+     "elev": 190.5,
+     "name": "BLUE HILL COOP"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00072509",
+     "source": "wmo",
+     "km": 3.9,
+     "elev": 4.0,
+     "name": "BOSTON_LOGAN_INTL_AP"
+    },
+    {
+     "id": "ghcn:USC00193890",
+     "source": "ghcn",
+     "km": 8.3,
+     "elev": 29.0,
+     "name": "JAMAICA PLAIN"
+    },
+    {
+     "id": "ghcn:USC00190736",
+     "source": "ghcn",
+     "km": 16.9,
+     "elev": 190.5,
+     "name": "BLUE HILL COOP"
+    }
+   ]
+  },
+  "calgary": {
+   "lat": 51.04561,
+   "lon": -114.05754,
+   "country": "CA",
+   "staged": true,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "ghcn:CAN0303M9JM",
+     "source": "ghcn",
+     "km": 35.8,
+     "elev": 1081.0,
+     "name": "OKOTOKS"
+    },
+    {
+     "id": "ghcn:CAN03053600",
+     "source": "ghcn",
+     "km": 68.4,
+     "elev": 1391.1,
+     "name": "KANANASKIS"
+    },
+    {
+     "id": "ghcn:CAN03035340",
+     "source": "ghcn",
+     "km": 89.9,
+     "elev": 940.0,
+     "name": "QUEENSTOWN"
+    }
+   ]
+  },
+  "quebec-city": {
+   "lat": 46.81374,
+   "lon": -71.20841,
+   "country": "CA",
+   "staged": true,
+   "direct": [
+    {
+     "id": "ghcn:CAN07024254",
+     "source": "ghcn",
+     "km": 8.3,
+     "elev": 69.0,
+     "name": "LAUZON"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "ghcn:CAN07024254",
+     "source": "ghcn",
+     "km": 8.3,
+     "elev": 69.0,
+     "name": "LAUZON"
+    },
+    {
+     "id": "ghcn:CAN07057567",
+     "source": "ghcn",
+     "km": 25.4,
+     "elev": 69.0,
+     "name": "SAINT MICHEL"
+    },
+    {
+     "id": "ghcn:CAN07027840",
+     "source": "ghcn",
+     "km": 36.2,
+     "elev": 144.8,
+     "name": "SCOTT"
+    }
+   ]
+  },
+  "ottawa": {
+   "lat": 45.42088,
+   "lon": -75.69011,
+   "country": "CA",
+   "staged": true,
+   "direct": [
+    {
+     "id": "ghcn:CAN06105976",
+     "source": "ghcn",
+     "km": 4.7,
+     "elev": 79.2,
+     "name": "OTTAWA CDA"
+    },
+    {
+     "id": "00071063",
+     "source": "wmo",
+     "km": 4.7,
+     "elev": 79.0,
+     "name": "Ottawa_Cda_Rcs"
+    },
+    {
+     "id": "ghcn:CAN07030170",
+     "source": "ghcn",
+     "km": 18.0,
+     "elev": 91.0,
+     "name": "ANGERS"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "ghcn:CAN06105976",
+     "source": "ghcn",
+     "km": 4.7,
+     "elev": 79.2,
+     "name": "OTTAWA CDA"
+    },
+    {
+     "id": "00071063",
+     "source": "wmo",
+     "km": 4.7,
+     "elev": 79.0,
+     "name": "Ottawa_Cda_Rcs"
+    },
+    {
+     "id": "ghcn:CAN07030170",
+     "source": "ghcn",
+     "km": 18.0,
+     "elev": 91.0,
+     "name": "ANGERS"
+    }
+   ]
+  },
+  "los-cabos": {
+   "lat": 22.89389,
+   "lon": -109.92006,
+   "country": "MX",
+   "staged": true,
+   "direct": [],
+   "calibrate": []
+  },
+  "puerto-vallarta": {
+   "lat": 20.64072,
+   "lon": -105.22031,
+   "country": "MX",
+   "staged": true,
+   "direct": [],
+   "calibrate": []
+  },
+  "havana": {
+   "lat": 23.1353,
+   "lon": -82.35896,
+   "country": "CU",
+   "staged": true,
+   "direct": [],
+   "calibrate": []
+  },
+  "varadero": {
+   "lat": 23.14958,
+   "lon": -81.26002,
+   "country": "CU",
+   "staged": true,
+   "direct": [],
+   "calibrate": []
+  },
+  "punta-cana": {
+   "lat": 18.87818,
+   "lon": -71.3461,
+   "country": "DO",
+   "staged": true,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00078480",
+     "source": "wmo",
+     "km": 68.4,
+     "elev": 45.0,
+     "name": "Jimani"
+    },
+    {
+     "id": "00078482",
+     "source": "wmo",
+     "km": 73.8,
+     "elev": 8.0,
+     "name": "Barahona"
+    },
+    {
+     "id": "00078467",
+     "source": "wmo",
+     "km": 73.8,
+     "elev": 8.0,
+     "name": "SDeLaMar"
+    }
+   ]
+  },
+  "santo-domingo": {
+   "lat": 18.47139,
+   "lon": -69.89184,
+   "country": "DO",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00078486",
+     "source": "wmo",
+     "km": 2.2,
+     "elev": 14.0,
+     "name": "SantoDomingo"
+    },
+    {
+     "id": "00078485",
+     "source": "wmo",
+     "km": 22.7,
+     "elev": 7.0,
+     "name": "LasAmericas"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00078486",
+     "source": "wmo",
+     "km": 2.2,
+     "elev": 14.0,
+     "name": "SantoDomingo"
+    },
+    {
+     "id": "00078485",
+     "source": "wmo",
+     "km": 22.7,
+     "elev": 7.0,
+     "name": "LasAmericas"
+    },
+    {
+     "id": "00078473",
+     "source": "wmo",
+     "km": 40.8,
+     "elev": 53.0,
+     "name": "Bayaguana"
+    }
+   ]
+  },
+  "montego-bay": {
+   "lat": 18.47246,
+   "lon": -77.92174,
+   "country": "JM",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00078388",
+     "source": "wmo",
+     "km": 3.1,
+     "elev": 1.0,
+     "name": "MontegoBaySangster"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00078388",
+     "source": "wmo",
+     "km": 3.1,
+     "elev": 1.0,
+     "name": "MontegoBaySangster"
+    },
+    {
+     "id": "00078397",
+     "source": "wmo",
+     "km": 134.4,
+     "elev": 3.0,
+     "name": "KingstonNormanManley"
+    }
+   ]
+  },
+  "kingston": {
+   "lat": 17.97121,
+   "lon": -76.79281,
+   "country": "JM",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00078397",
+     "source": "wmo",
+     "km": 4.4,
+     "elev": 3.0,
+     "name": "KingstonNormanManley"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00078397",
+     "source": "wmo",
+     "km": 4.4,
+     "elev": 3.0,
+     "name": "KingstonNormanManley"
+    },
+    {
+     "id": "00078388",
+     "source": "wmo",
+     "km": 132.5,
+     "elev": 1.0,
+     "name": "MontegoBaySangster"
+    }
+   ]
+  },
+  "san-jose": {
+   "lat": 9.93274,
+   "lon": -84.07967,
+   "country": "CR",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00078764",
+     "source": "wmo",
+     "km": 6.1,
+     "elev": 997.0,
+     "name": "TobiasBolanosPalmaAirport"
+    },
+    {
+     "id": "00078762",
+     "source": "wmo",
+     "km": 11.1,
+     "elev": 913.0,
+     "name": "JuanSantamariaInternationalAir"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00078764",
+     "source": "wmo",
+     "km": 6.1,
+     "elev": 997.0,
+     "name": "TobiasBolanosPalmaAirport"
+    },
+    {
+     "id": "00078762",
+     "source": "wmo",
+     "km": 11.1,
+     "elev": 913.0,
+     "name": "JuanSantamariaInternationalAir"
+    },
+    {
+     "id": "00078767",
+     "source": "wmo",
+     "km": 116.4,
+     "elev": 5.0,
+     "name": "PuertoLimon"
+    }
+   ]
+  },
+  "liberia": {
+   "lat": 10.63198,
+   "lon": -85.43932,
+   "country": "CR",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00078774",
+     "source": "wmo",
+     "km": 11.6,
+     "elev": 70.0,
+     "name": "DanielOduberInternationalAirpo"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00078774",
+     "source": "wmo",
+     "km": 11.6,
+     "elev": 70.0,
+     "name": "DanielOduberInternationalAirpo"
+    }
+   ]
+  },
+  "panama-city": {
+   "lat": 8.97145,
+   "lon": -79.53418,
+   "country": "PA",
+   "staged": true,
+   "direct": [],
+   "calibrate": []
+  },
+  "guatemala-city": {
+   "lat": 14.64161,
+   "lon": -90.51328,
+   "country": "GT",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00078641",
+     "source": "wmo",
+     "km": 6.4,
+     "elev": 1491.0,
+     "name": "La_Aurora"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00078641",
+     "source": "wmo",
+     "km": 6.4,
+     "elev": 1491.0,
+     "name": "La_Aurora"
+    },
+    {
+     "id": "00078649",
+     "source": "wmo",
+     "km": 106.2,
+     "elev": 227.0,
+     "name": "La_Fragua"
+    },
+    {
+     "id": "00078655",
+     "source": "wmo",
+     "km": 127.2,
+     "elev": 665.0,
+     "name": "SantaAna"
+    }
+   ]
+  },
+  "san-salvador": {
+   "lat": 13.69763,
+   "lon": -89.19116,
+   "country": "SV",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00078663",
+     "source": "wmo",
+     "km": 7.9,
+     "elev": 624.0,
+     "name": "ILOPANGO"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00078663",
+     "source": "wmo",
+     "km": 7.9,
+     "elev": 624.0,
+     "name": "ILOPANGO"
+    },
+    {
+     "id": "00078655",
+     "source": "wmo",
+     "km": 49.9,
+     "elev": 665.0,
+     "name": "SantaAna"
+    },
+    {
+     "id": "00078650",
+     "source": "wmo",
+     "km": 70.7,
+     "elev": 15.0,
+     "name": "ACAJUTLA"
+    }
+   ]
+  },
+  "roatan": {
+   "lat": 16.31674,
+   "lon": -86.53748,
+   "country": "HN",
+   "staged": true,
+   "direct": [],
+   "calibrate": []
+  },
+  "belize-city": {
+   "lat": 17.50028,
+   "lon": -88.19887,
+   "country": "BZ",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00078583",
+     "source": "wmo",
+     "km": 11.3,
+     "elev": 5.0,
+     "name": "PhillipGoldsonAirport"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00078583",
+     "source": "wmo",
+     "km": 11.3,
+     "elev": 5.0,
+     "name": "PhillipGoldsonAirport"
+    },
+    {
+     "id": "78583002",
+     "source": "wmo",
+     "km": 57.4,
+     "elev": 25.0,
+     "name": "Melinda"
+    },
+    {
+     "id": "78583001",
+     "source": "wmo",
+     "km": 91.8,
+     "elev": 57.0,
+     "name": "CentralFarm"
+    }
+   ]
+  },
+  "nassau": {
+   "lat": 25.07823,
+   "lon": -77.33834,
+   "country": "BS",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00078073",
+     "source": "wmo",
+     "km": 13.3,
+     "elev": 8.0,
+     "name": "LyndenPindlingIntlAirport"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00078073",
+     "source": "wmo",
+     "km": 13.3,
+     "elev": 8.0,
+     "name": "LyndenPindlingIntlAirport"
+    }
+   ]
+  },
+  "bridgetown": {
+   "lat": 13.09778,
+   "lon": -59.61842,
+   "country": "BB",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00078954",
+     "source": "wmo",
+     "km": 14.3,
+     "elev": 56.0,
+     "name": "Charnocks"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00078954",
+     "source": "wmo",
+     "km": 14.3,
+     "elev": 56.0,
+     "name": "Charnocks"
+    }
+   ]
+  },
+  "port-of-spain": {
+   "lat": 10.65727,
+   "lon": -61.51802,
+   "country": "TT",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00078970",
+     "source": "wmo",
+     "km": 20.4,
+     "elev": 5.0,
+     "name": "Piarco"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00078970",
+     "source": "wmo",
+     "km": 20.4,
+     "elev": 5.0,
+     "name": "Piarco"
+    },
+    {
+     "id": "00080423",
+     "source": "wmo",
+     "km": 86.2,
+     "elev": 18.0,
+     "name": "Guiria"
+    }
+   ]
+  },
+  "foz-do-iguacu": {
+   "lat": -25.5304,
+   "lon": -54.58307,
+   "country": "BR",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00087097",
+     "source": "wmo",
+     "km": 24.6,
+     "elev": 270.0,
+     "name": "IGUAZU_AERO"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00087097",
+     "source": "wmo",
+     "km": 24.6,
+     "elev": 270.0,
+     "name": "IGUAZU_AERO"
+    },
+    {
+     "id": "00086246",
+     "source": "wmo",
+     "km": 27.0,
+     "elev": 247.0,
+     "name": "Aerop_Guarani"
+    },
+    {
+     "id": "00087163",
+     "source": "wmo",
+     "km": 123.4,
+     "elev": 815.0,
+     "name": "BERNARDO_DE_IRIGOYEN_AERO"
+    }
+   ]
+  },
+  "florianopolis": {
+   "lat": -27.5973,
+   "lon": -48.54961,
+   "country": "BR",
+   "staged": true,
+   "direct": [],
+   "calibrate": []
+  },
+  "buenos-aires": {
+   "lat": -34.60956,
+   "lon": -58.38879,
+   "country": "AR",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00087582",
+     "source": "wmo",
+     "km": 6.3,
+     "elev": 6.0,
+     "name": "AEROPARQUE_AERO"
+    },
+    {
+     "id": "00087585",
+     "source": "wmo",
+     "km": 9.0,
+     "elev": 25.0,
+     "name": "BUENOS_AIRES_OBSERVATORIO"
+    },
+    {
+     "id": "00087553",
+     "source": "wmo",
+     "km": 24.8,
+     "elev": 3.0,
+     "name": "SAN_FERNANDO_AERO"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00087582",
+     "source": "wmo",
+     "km": 6.3,
+     "elev": 6.0,
+     "name": "AEROPARQUE_AERO"
+    },
+    {
+     "id": "00087585",
+     "source": "wmo",
+     "km": 9.0,
+     "elev": 25.0,
+     "name": "BUENOS_AIRES_OBSERVATORIO"
+    },
+    {
+     "id": "00087553",
+     "source": "wmo",
+     "km": 24.8,
+     "elev": 3.0,
+     "name": "SAN_FERNANDO_AERO"
+    }
+   ]
+  },
+  "mendoza": {
+   "lat": -32.88942,
+   "lon": -68.84462,
+   "country": "AR",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00087420",
+     "source": "wmo",
+     "km": 2.7,
+     "elev": 827.0,
+     "name": "MENDOZA_OBSERVATORIO"
+    },
+    {
+     "id": "00087418",
+     "source": "wmo",
+     "km": 6.8,
+     "elev": 704.0,
+     "name": "MENDOZA_AERO"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00087420",
+     "source": "wmo",
+     "km": 2.7,
+     "elev": 827.0,
+     "name": "MENDOZA_OBSERVATORIO"
+    },
+    {
+     "id": "00087418",
+     "source": "wmo",
+     "km": 6.8,
+     "elev": 704.0,
+     "name": "MENDOZA_AERO"
+    },
+    {
+     "id": "00087416",
+     "source": "wmo",
+     "km": 40.9,
+     "elev": 653.0,
+     "name": "SAN_MARTIN"
+    }
+   ]
+  },
+  "bariloche": {
+   "lat": -41.13348,
+   "lon": -71.31015,
+   "country": "AR",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00087765",
+     "source": "wmo",
+     "km": 12.3,
+     "elev": 840.0,
+     "name": "BARILOCHE_AERO"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00087765",
+     "source": "wmo",
+     "km": 12.3,
+     "elev": 840.0,
+     "name": "BARILOCHE_AERO"
+    }
+   ]
+  },
+  "el-calafate": {
+   "lat": -50.33874,
+   "lon": -72.27372,
+   "country": "AR",
+   "staged": true,
+   "direct": [],
+   "calibrate": []
+  },
+  "santiago": {
+   "lat": -33.4377,
+   "lon": -70.65107,
+   "country": "CL",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00085577",
+     "source": "wmo",
+     "km": 3.1,
+     "elev": 520.0,
+     "name": "Quintanormalsantiago"
+    },
+    {
+     "id": "00085580",
+     "source": "wmo",
+     "km": 9.7,
+     "elev": 650.0,
+     "name": "Eulogiosancheztobalabaad"
+    },
+    {
+     "id": "00085574",
+     "source": "wmo",
+     "km": 14.3,
+     "elev": 482.0,
+     "name": "Pudahuelaeropuertosantiago"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00085577",
+     "source": "wmo",
+     "km": 3.1,
+     "elev": 520.0,
+     "name": "Quintanormalsantiago"
+    },
+    {
+     "id": "00085580",
+     "source": "wmo",
+     "km": 9.7,
+     "elev": 650.0,
+     "name": "Eulogiosancheztobalabaad"
+    },
+    {
+     "id": "00085574",
+     "source": "wmo",
+     "km": 14.3,
+     "elev": 482.0,
+     "name": "Pudahuelaeropuertosantiago"
+    }
+   ]
+  },
+  "punta-arenas": {
+   "lat": -53.16257,
+   "lon": -70.90782,
+   "country": "CL",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00085934",
+     "source": "wmo",
+     "km": 18.4,
+     "elev": 36.0,
+     "name": "Carlosibanezaeropuertopuntaare"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00085934",
+     "source": "wmo",
+     "km": 18.4,
+     "elev": 36.0,
+     "name": "Carlosibanezaeropuertopuntaare"
+    }
+   ]
+  },
+  "easter-island": {
+   "lat": -27.14812,
+   "lon": -109.42734,
+   "country": "CL",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00085469",
+     "source": "wmo",
+     "km": 1.3,
+     "elev": 44.0,
+     "name": "Isladepascuaad"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00085469",
+     "source": "wmo",
+     "km": 1.3,
+     "elev": 44.0,
+     "name": "Isladepascuaad"
+    }
+   ]
+  },
+  "lima": {
+   "lat": -12.04598,
+   "lon": -77.03059,
+   "country": "PE",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00074501",
+     "source": "wmo",
+     "km": 21.5,
+     "elev": 543.0,
+     "name": "Nana"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00074501",
+     "source": "wmo",
+     "km": 21.5,
+     "elev": 543.0,
+     "name": "Nana"
+    },
+    {
+     "id": "00072001",
+     "source": "wmo",
+     "km": 62.5,
+     "elev": 127.0,
+     "name": "Donoso"
+    },
+    {
+     "id": "00081501",
+     "source": "wmo",
+     "km": 66.7,
+     "elev": 346.0,
+     "name": "Huayan"
+    }
+   ]
+  },
+  "cusco": {
+   "lat": -13.51709,
+   "lon": -71.97854,
+   "country": "PE",
+   "staged": true,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00022301",
+     "source": "wmo",
+     "km": 113.2,
+     "elev": 3534.0,
+     "name": "Sicuani"
+    }
+   ]
+  },
+  "arequipa": {
+   "lat": -16.39887,
+   "lon": -71.53696,
+   "country": "PE",
+   "staged": true,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00084401",
+     "source": "wmo",
+     "km": 72.9,
+     "elev": 3381.0,
+     "name": "Ubinas"
+    },
+    {
+     "id": "00062001",
+     "source": "wmo",
+     "km": 77.5,
+     "elev": 108.0,
+     "name": "PampaBlanca"
+    },
+    {
+     "id": "00091402",
+     "source": "wmo",
+     "km": 78.0,
+     "elev": 4475.0,
+     "name": "Imata"
+    }
+   ]
+  },
+  "bogota": {
+   "lat": 4.65338,
+   "lon": -74.08363,
+   "country": "CO",
+   "staged": true,
+   "direct": [
+    {
+     "id": "21205791",
+     "source": "wmo",
+     "km": 9.5,
+     "elev": 2547.0,
+     "name": "El_Dorado_Catam__AUT_"
+    },
+    {
+     "id": "21205420",
+     "source": "wmo",
+     "km": 14.5,
+     "elev": 2543.0,
+     "name": "Tibaitata"
+    },
+    {
+     "id": "35025050",
+     "source": "wmo",
+     "km": 19.9,
+     "elev": 2980.0,
+     "name": "Llano_Largo"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "21205791",
+     "source": "wmo",
+     "km": 9.5,
+     "elev": 2547.0,
+     "name": "El_Dorado_Catam__AUT_"
+    },
+    {
+     "id": "21205420",
+     "source": "wmo",
+     "km": 14.5,
+     "elev": 2543.0,
+     "name": "Tibaitata"
+    },
+    {
+     "id": "35025050",
+     "source": "wmo",
+     "km": 19.9,
+     "elev": 2980.0,
+     "name": "Llano_Largo"
+    }
+   ]
+  },
+  "medellin": {
+   "lat": 6.26973,
+   "lon": -75.60256,
+   "country": "CO",
+   "staged": true,
+   "direct": [
+    {
+     "id": "27015330",
+     "source": "wmo",
+     "km": 5.7,
+     "elev": 1490.0,
+     "name": "Olaya_Herrera__AUT_"
+    },
+    {
+     "id": "23085270",
+     "source": "wmo",
+     "km": 22.1,
+     "elev": 2157.0,
+     "name": "Aeropuerto_Jose_Maria_Cordova_"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "27015330",
+     "source": "wmo",
+     "km": 5.7,
+     "elev": 1490.0,
+     "name": "Olaya_Herrera__AUT_"
+    },
+    {
+     "id": "23085270",
+     "source": "wmo",
+     "km": 22.1,
+     "elev": 2157.0,
+     "name": "Aeropuerto_Jose_Maria_Cordova_"
+    },
+    {
+     "id": "26225030",
+     "source": "wmo",
+     "km": 38.5,
+     "elev": 534.0,
+     "name": "Hacienda_Cotove_"
+    }
+   ]
+  },
+  "cartagena": {
+   "lat": 10.42656,
+   "lon": -75.54417,
+   "country": "CO",
+   "staged": true,
+   "direct": [
+    {
+     "id": "14015080",
+     "source": "wmo",
+     "km": 3.8,
+     "elev": 2.0,
+     "name": "Aeropuerto_Rafael_Nunez"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "14015080",
+     "source": "wmo",
+     "km": 3.8,
+     "elev": 2.0,
+     "name": "Aeropuerto_Rafael_Nunez"
+    },
+    {
+     "id": "29035080",
+     "source": "wmo",
+     "km": 64.5,
+     "elev": 10.0,
+     "name": "Normal_Manati"
+    },
+    {
+     "id": "29045190",
+     "source": "wmo",
+     "km": 99.8,
+     "elev": 14.0,
+     "name": "Aeropuerto_E_Cortissoz__AUT_"
+    }
+   ]
+  },
+  "quito": {
+   "lat": -0.22016,
+   "lon": -78.51233,
+   "country": "EC",
+   "staged": true,
+   "direct": [],
+   "calibrate": []
+  },
+  "guayaquil": {
+   "lat": -2.19006,
+   "lon": -79.88687,
+   "country": "EC",
+   "staged": true,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00043501",
+     "source": "wmo",
+     "km": 147.0,
+     "elev": 4.0,
+     "name": "ElSalto"
+    }
+   ]
+  },
+  "galapagos": {
+   "lat": -0.74717,
+   "lon": -90.31342,
+   "country": "EC",
+   "staged": true,
+   "direct": [],
+   "calibrate": []
+  },
+  "montevideo": {
+   "lat": -34.90589,
+   "lon": -56.19131,
+   "country": "UY",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00086585",
+     "source": "wmo",
+     "km": 5.2,
+     "elev": 14.4,
+     "name": "Prado"
+    },
+    {
+     "id": "00086575",
+     "source": "wmo",
+     "km": 14.6,
+     "elev": 49.7,
+     "name": "Melilla"
+    },
+    {
+     "id": "00086580",
+     "source": "wmo",
+     "km": 18.2,
+     "elev": 32.9,
+     "name": "Carrasco"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00086585",
+     "source": "wmo",
+     "km": 5.2,
+     "elev": 14.4,
+     "name": "Prado"
+    },
+    {
+     "id": "00086575",
+     "source": "wmo",
+     "km": 14.6,
+     "elev": 49.7,
+     "name": "Melilla"
+    },
+    {
+     "id": "00086580",
+     "source": "wmo",
+     "km": 18.2,
+     "elev": 32.9,
+     "name": "Carrasco"
+    }
+   ]
+  },
+  "punta-del-este": {
+   "lat": -34.96323,
+   "lon": -54.944,
+   "country": "UY",
+   "staged": true,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00086565",
+     "source": "wmo",
+     "km": 77.9,
+     "elev": 18.2,
+     "name": "Rocha"
+    },
+    {
+     "id": "00086580",
+     "source": "wmo",
+     "km": 98.6,
+     "elev": 32.9,
+     "name": "Carrasco"
+    },
+    {
+     "id": "00086585",
+     "source": "wmo",
+     "km": 115.8,
+     "elev": 14.4,
+     "name": "Prado"
+    }
+   ]
+  },
+  "la-paz": {
+   "lat": -16.49555,
+   "lon": -68.13362,
+   "country": "BO",
+   "staged": true,
+   "direct": [],
+   "calibrate": []
+  },
+  "santa-cruz": {
+   "lat": -17.78342,
+   "lon": -63.18209,
+   "country": "BO",
+   "staged": true,
+   "direct": [],
+   "calibrate": []
+  },
+  "asuncion": {
+   "lat": -25.28005,
+   "lon": -57.63438,
+   "country": "PY",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00086218",
+     "source": "wmo",
+     "km": 13.0,
+     "elev": 83.0,
+     "name": "Asuncion"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00086218",
+     "source": "wmo",
+     "km": 13.0,
+     "elev": 83.0,
+     "name": "Asuncion"
+    },
+    {
+     "id": "00086221",
+     "source": "wmo",
+     "km": 62.4,
+     "elev": 116.0,
+     "name": "Paraguari"
+    },
+    {
+     "id": "00087162",
+     "source": "wmo",
+     "km": 119.5,
+     "elev": 60.0,
+     "name": "FORMOSA_AERO"
+    }
+   ]
+  },
+  "georgetown": {
+   "lat": 6.80326,
+   "lon": -58.14554,
+   "country": "GY",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00081001",
+     "source": "wmo",
+     "km": 0.6,
+     "elev": 1.2,
+     "name": "GTBotanicalGardens"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00081001",
+     "source": "wmo",
+     "km": 0.6,
+     "elev": 1.2,
+     "name": "GTBotanicalGardens"
+    },
+    {
+     "id": "00081002",
+     "source": "wmo",
+     "km": 36.8,
+     "elev": 28.0,
+     "name": "Cheddijaganairport"
+    },
+    {
+     "id": "00081058",
+     "source": "wmo",
+     "km": 93.2,
+     "elev": 1.0,
+     "name": "Newamsterdam"
+    }
+   ]
+  },
+  "paramaribo": {
+   "lat": 5.82476,
+   "lon": -55.17039,
+   "country": "SR",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00081200",
+     "source": "wmo",
+     "km": 2.4,
+     "elev": 3.0,
+     "name": "ZorgEnHoop"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00081200",
+     "source": "wmo",
+     "km": 2.4,
+     "elev": 3.0,
+     "name": "ZorgEnHoop"
+    },
+    {
+     "id": "00081225",
+     "source": "wmo",
+     "km": 41.9,
+     "elev": 18.0,
+     "name": "JAPengelInt"
+    }
+   ]
+  },
+  "perth": {
+   "lat": -31.9559,
+   "lon": 115.86058,
+   "country": "AU",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00094608",
+     "source": "wmo",
+     "km": 4.3,
+     "elev": 25.0,
+     "name": "PerthMetro"
+    },
+    {
+     "id": "00094614",
+     "source": "wmo",
+     "km": 9.3,
+     "elev": 41.0,
+     "name": "Swanbourne"
+    },
+    {
+     "id": "00094610",
+     "source": "wmo",
+     "km": 11.4,
+     "elev": 15.0,
+     "name": "PerthAirport"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00094608",
+     "source": "wmo",
+     "km": 4.3,
+     "elev": 25.0,
+     "name": "PerthMetro"
+    },
+    {
+     "id": "00094614",
+     "source": "wmo",
+     "km": 9.3,
+     "elev": 41.0,
+     "name": "Swanbourne"
+    },
+    {
+     "id": "00094610",
+     "source": "wmo",
+     "km": 11.4,
+     "elev": 15.0,
+     "name": "PerthAirport"
+    }
+   ]
+  },
+  "adelaide": {
+   "lat": -34.92818,
+   "lon": 138.59993,
+   "country": "AU",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00094648",
+     "source": "wmo",
+     "km": 1.6,
+     "elev": 29.0,
+     "name": "AdelaideWestTerrace"
+    },
+    {
+     "id": "ghcn:ASN00023090",
+     "source": "ghcn",
+     "km": 2.1,
+     "elev": 48.0,
+     "name": "ADELAIDE (KENT TOWN)"
+    },
+    {
+     "id": "00094672",
+     "source": "wmo",
+     "km": 7.8,
+     "elev": 2.0,
+     "name": "AdelaideAirport"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00094648",
+     "source": "wmo",
+     "km": 1.6,
+     "elev": 29.0,
+     "name": "AdelaideWestTerrace"
+    },
+    {
+     "id": "ghcn:ASN00023090",
+     "source": "ghcn",
+     "km": 2.1,
+     "elev": 48.0,
+     "name": "ADELAIDE (KENT TOWN)"
+    },
+    {
+     "id": "00094672",
+     "source": "wmo",
+     "km": 7.8,
+     "elev": 2.0,
+     "name": "AdelaideAirport"
+    }
+   ]
+  },
+  "cairns": {
+   "lat": -16.92067,
+   "lon": 145.77219,
+   "country": "AU",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00094287",
+     "source": "wmo",
+     "km": 5.9,
+     "elev": 2.0,
+     "name": "CairnsAero"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00094287",
+     "source": "wmo",
+     "km": 5.9,
+     "elev": 2.0,
+     "name": "CairnsAero"
+    },
+    {
+     "id": "00095286",
+     "source": "wmo",
+     "km": 40.1,
+     "elev": 472.0,
+     "name": "MareebaAirport"
+    },
+    {
+     "id": "00095284",
+     "source": "wmo",
+     "km": 43.7,
+     "elev": 594.0,
+     "name": "WalkaminResearchStation"
+    }
+   ]
+  },
+  "auckland": {
+   "lat": -36.85209,
+   "lon": 174.76318,
+   "country": "NZ",
+   "staged": true,
+   "direct": [],
+   "calibrate": []
+  },
+  "wellington": {
+   "lat": -41.2888,
+   "lon": 174.77721,
+   "country": "NZ",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00093439",
+     "source": "wmo",
+     "km": 5.3,
+     "elev": 4.0,
+     "name": "Wellington_Aero_AWS"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00093439",
+     "source": "wmo",
+     "km": 5.3,
+     "elev": 4.0,
+     "name": "Wellington_Aero_AWS"
+    },
+    {
+     "id": "00093420",
+     "source": "wmo",
+     "km": 46.2,
+     "elev": 6.0,
+     "name": "Paraparaumu_Aero_AWS"
+    }
+   ]
+  },
+  "christchurch": {
+   "lat": -43.53095,
+   "lon": 172.63643,
+   "country": "NZ",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00093781",
+     "source": "wmo",
+     "km": 10.0,
+     "elev": 37.0,
+     "name": "Christchurch_Aero_AWS"
+    },
+    {
+     "id": "00093791",
+     "source": "wmo",
+     "km": 17.1,
+     "elev": 18.0,
+     "name": "Lincoln_Broadfield"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00093781",
+     "source": "wmo",
+     "km": 10.0,
+     "elev": 37.0,
+     "name": "Christchurch_Aero_AWS"
+    },
+    {
+     "id": "00093791",
+     "source": "wmo",
+     "km": 17.1,
+     "elev": 18.0,
+     "name": "Lincoln_Broadfield"
+    }
+   ]
+  },
+  "queenstown": {
+   "lat": -45.03219,
+   "lon": 168.661,
+   "country": "NZ",
+   "staged": true,
+   "direct": [],
+   "calibrate": [
+    {
+     "id": "00093817",
+     "source": "wmo",
+     "km": 80.4,
+     "elev": 370.0,
+     "name": "Lauder_Observatory"
+    },
+    {
+     "id": "00093747",
+     "source": "wmo",
+     "km": 112.1,
+     "elev": 484.0,
+     "name": "Tara_Hills_AWS"
+    }
+   ]
+  },
+  "nadi": {
+   "lat": -17.79927,
+   "lon": 177.41785,
+   "country": "FJ",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00091680",
+     "source": "wmo",
+     "km": 5.2,
+     "elev": 22.0,
+     "name": "NadiAirport"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00091680",
+     "source": "wmo",
+     "km": 5.2,
+     "elev": 22.0,
+     "name": "NadiAirport"
+    },
+    {
+     "id": "00091690",
+     "source": "wmo",
+     "km": 116.2,
+     "elev": 6.0,
+     "name": "LaucalaBay"
+    },
+    {
+     "id": "00091683",
+     "source": "wmo",
+     "km": 123.8,
+     "elev": 3.0,
+     "name": "NausoriAirport"
+    }
+   ]
+  },
+  "suva": {
+   "lat": -18.14159,
+   "lon": 178.44217,
+   "country": "FJ",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00091690",
+     "source": "wmo",
+     "km": 1.4,
+     "elev": 6.0,
+     "name": "LaucalaBay"
+    },
+    {
+     "id": "00091683",
+     "source": "wmo",
+     "km": 16.2,
+     "elev": 3.0,
+     "name": "NausoriAirport"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00091690",
+     "source": "wmo",
+     "km": 1.4,
+     "elev": 6.0,
+     "name": "LaucalaBay"
+    },
+    {
+     "id": "00091683",
+     "source": "wmo",
+     "km": 16.2,
+     "elev": 3.0,
+     "name": "NausoriAirport"
+    },
+    {
+     "id": "00091680",
+     "source": "wmo",
+     "km": 113.7,
+     "elev": 22.0,
+     "name": "NadiAirport"
+    }
+   ]
+  },
+  "port-moresby": {
+   "lat": -9.47433,
+   "lon": 147.15995,
+   "country": "PG",
+   "staged": true,
+   "direct": [],
+   "calibrate": []
+  },
+  "apia": {
+   "lat": -13.83452,
+   "lon": -171.7631,
+   "country": "WS",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00091762",
+     "source": "wmo",
+     "km": 2.8,
+     "elev": 2.0,
+     "name": "Samoa_Apia"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00091762",
+     "source": "wmo",
+     "km": 2.8,
+     "elev": 2.0,
+     "name": "Samoa_Apia"
+    },
+    {
+     "id": "00091765",
+     "source": "wmo",
+     "km": 125.9,
+     "elev": 4.0,
+     "name": "PAGO_PAGO_WSO_AP"
+    }
+   ]
+  },
+  "nukualofa": {
+   "lat": -21.13434,
+   "lon": -175.20181,
+   "country": "TO",
+   "staged": true,
+   "direct": [],
+   "calibrate": []
+  },
+  "port-vila": {
+   "lat": -17.7415,
+   "lon": 168.31502,
+   "country": "VU",
+   "staged": true,
+   "direct": [],
+   "calibrate": []
+  },
+  "honiara": {
+   "lat": -9.43108,
+   "lon": 159.95526,
+   "country": "SB",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00091517",
+     "source": "wmo",
+     "km": 2.0,
+     "elev": 55.0,
+     "name": "Honiara"
+    },
+    {
+     "id": "00091520",
+     "source": "wmo",
+     "km": 10.5,
+     "elev": 8.0,
+     "name": "Henderson"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00091517",
+     "source": "wmo",
+     "km": 2.0,
+     "elev": 55.0,
+     "name": "Honiara"
+    },
+    {
+     "id": "00091520",
+     "source": "wmo",
+     "km": 10.5,
+     "elev": 8.0,
+     "name": "Henderson"
+    }
+   ]
+  },
+  "koror": {
+   "lat": 7.34328,
+   "lon": 134.47668,
+   "country": "PW",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00091408",
+     "source": "wmo",
+     "km": 1.3,
+     "elev": 29.0,
+     "name": "KOROR_WSO"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00091408",
+     "source": "wmo",
+     "km": 1.3,
+     "elev": 29.0,
+     "name": "KOROR_WSO"
+    }
+   ]
+  },
+  "pohnpei": {
+   "lat": 6.88705,
+   "lon": 158.24061,
+   "country": "FM",
+   "staged": true,
+   "direct": [
+    {
+     "id": "00091348",
+     "source": "wmo",
+     "km": 9.3,
+     "elev": 37.0,
+     "name": "POHNPEI_WSO"
+    }
+   ],
+   "calibrate": [
+    {
+     "id": "00091348",
+     "source": "wmo",
+     "km": 9.3,
+     "elev": 37.0,
+     "name": "POHNPEI_WSO"
     }
    ]
   }
@@ -7340,19 +12354,12 @@
    "name": "LARACHE",
    "source": "wmo"
   },
-  "st-00060107": {
-   "lat": 35.179,
-   "lon": -3.84,
-   "elev": 12.0,
-   "name": "ALHOUCEIMA",
-   "source": "wmo"
-  },
-  "st-00008452": {
-   "lat": 36.5,
-   "lon": -6.258,
-   "elev": 2.0,
-   "name": "CADIZOBS",
-   "source": "wmo"
+  "st-ghcn-SPE00119963": {
+   "lat": 36.0153,
+   "lon": -5.5975,
+   "elev": 32.0,
+   "name": "TARIFA",
+   "source": "ghcn"
   },
   "st-00040183": {
    "lat": 31.781,
@@ -7410,26 +12417,33 @@
    "name": "Heathrow",
    "source": "wmo"
   },
-  "st-00003155": {
-   "lat": 55.627,
-   "lon": -3.736,
-   "elev": 245.0,
-   "name": "Drumalbin",
-   "source": "wmo"
+  "st-ghcn-UKE00105888": {
+   "lat": 55.9667,
+   "lon": -3.21,
+   "elev": 26.0,
+   "name": "EDINBURGH: ROYAL BOTANIC GARDE",
+   "source": "ghcn"
   },
-  "st-00003171": {
-   "lat": 56.377,
-   "lon": -2.862,
-   "elev": 10.0,
-   "name": "Leuchars",
-   "source": "wmo"
+  "st-ghcn-UKE00105887": {
+   "lat": 55.8239,
+   "lon": -3.2258,
+   "elev": 185.0,
+   "name": "PENICUIK",
+   "source": "ghcn"
   },
-  "st-00003144": {
-   "lat": 56.326,
-   "lon": -3.729,
-   "elev": 35.0,
-   "name": "StrathallanAirfield",
-   "source": "wmo"
+  "st-ghcn-UKE00105889": {
+   "lat": 56.0039,
+   "lon": -2.5258,
+   "elev": 23.0,
+   "name": "DUNBAR",
+   "source": "ghcn"
+  },
+  "st-ghcn-UKE00105905": {
+   "lat": 53.2567,
+   "lon": -1.9131,
+   "elev": 307.0,
+   "name": "BUXTON",
+   "source": "ghcn"
   },
   "st-00003344": {
    "lat": 53.811,
@@ -7438,19 +12452,19 @@
    "name": "Bingley",
    "source": "wmo"
   },
-  "st-00003316": {
-   "lat": 53.497,
-   "lon": -3.058,
-   "elev": 9.0,
-   "name": "Crosby",
-   "source": "wmo"
+  "st-ghcn-UKE00105910": {
+   "lat": 52.9981,
+   "lon": -2.27,
+   "elev": 179.0,
+   "name": "KEELE",
+   "source": "ghcn"
   },
-  "st-00003321": {
-   "lat": 53.176,
-   "lon": -2.986,
-   "elev": 11.0,
-   "name": "HawardenAirport",
-   "source": "wmo"
+  "st-ghcn-UK000056225": {
+   "lat": 51.7667,
+   "lon": -1.2667,
+   "elev": 63.0,
+   "name": "OXFORD",
+   "source": "ghcn"
   },
   "st-00003658": {
    "lat": 51.62,
@@ -7464,13 +12478,6 @@
    "lon": -1.578,
    "elev": 82.0,
    "name": "BrizeNorton",
-   "source": "wmo"
-  },
-  "st-00003740": {
-   "lat": 51.503,
-   "lon": -1.992,
-   "elev": 145.0,
-   "name": "Lyneham",
    "source": "wmo"
   },
   "st-00007156": {
@@ -7634,12 +12641,12 @@
    "name": "MORONDELAFRONTERA",
    "source": "wmo"
   },
-  "st-00008451": {
-   "lat": 36.751,
-   "lon": -6.056,
-   "elev": 27.0,
-   "name": "JEREZDELAFRONTERAAEROPUERTO",
-   "source": "wmo"
+  "st-ghcn-SPE00120503": {
+   "lat": 37.1581,
+   "lon": -5.6156,
+   "elev": 87.0,
+   "name": "MORON DE LA FRONTERA",
+   "source": "ghcn"
   },
   "st-00008410": {
    "lat": 37.849,
@@ -7886,19 +12893,19 @@
    "name": "Salzburg_Flughafen",
    "source": "wmo"
   },
-  "st-00011155": {
-   "lat": 47.817,
-   "lon": 13.718,
-   "elev": 1618.0,
-   "name": "Feuerkogel",
-   "source": "wmo"
+  "st-ghcn-GME00130918": {
+   "lat": 47.6758,
+   "lon": 12.4708,
+   "elev": 685.0,
+   "name": "REIT IM WINKL",
+   "source": "ghcn"
   },
-  "st-00010875": {
-   "lat": 48.279,
-   "lon": 12.502,
-   "elev": 405.6,
-   "name": "Muehldorf",
-   "source": "wmo"
+  "st-ghcn-GME00129478": {
+   "lat": 48.0317,
+   "lon": 12.5408,
+   "elev": 559.0,
+   "name": "TROSTBERG",
+   "source": "ghcn"
   },
   "st-00011120": {
    "lat": 47.26,
@@ -7907,18 +12914,18 @@
    "name": "Innsbruck_Flugplatz",
    "source": "wmo"
   },
+  "st-ghcn-GME00126106": {
+   "lat": 47.4783,
+   "lon": 11.2667,
+   "elev": 981.0,
+   "name": "MITTENWALD-BUCKELWIESEN",
+   "source": "ghcn"
+  },
   "st-00010963": {
    "lat": 47.483,
    "lon": 11.062,
    "elev": 719.3,
    "name": "Garmisch-Partenkirchen",
-   "source": "wmo"
-  },
-  "st-00010961": {
-   "lat": 47.421,
-   "lon": 10.985,
-   "elev": 2956.0,
-   "name": "Zugspitze",
    "source": "wmo"
   },
   "st-00006240": {
@@ -7928,6 +12935,13 @@
    "name": "AmsterdamSchipholAp",
    "source": "wmo"
   },
+  "st-ghcn-NLE00152485": {
+   "lat": 52.3156,
+   "lon": 4.7903,
+   "elev": -3.0,
+   "name": "SCHIPHOL",
+   "source": "ghcn"
+  },
   "st-00006260": {
    "lat": 52.099,
    "lon": 5.18,
@@ -7935,12 +12949,12 @@
    "name": "DeBiltAws",
    "source": "wmo"
   },
-  "st-00006215": {
-   "lat": 52.14,
-   "lon": 4.436,
-   "elev": -1.1,
-   "name": "VoorschotenAws",
-   "source": "wmo"
+  "st-ghcn-NLE00152490": {
+   "lat": 51.9606,
+   "lon": 4.4467,
+   "elev": -4.0,
+   "name": "ROTTERDAM",
+   "source": "ghcn"
   },
   "st-00006344": {
    "lat": 51.961,
@@ -7949,11 +12963,11 @@
    "name": "RotterdamTheHagueAp",
    "source": "wmo"
   },
-  "st-00006348": {
-   "lat": 51.969,
-   "lon": 4.926,
-   "elev": -0.7,
-   "name": "CabauwTowerAws",
+  "st-00006215": {
+   "lat": 52.14,
+   "lon": 4.436,
+   "elev": -1.1,
+   "name": "VoorschotenAws",
    "source": "wmo"
   },
   "st-00010384": {
@@ -7991,12 +13005,12 @@
    "name": "Muenchen-Flughafen",
    "source": "wmo"
   },
-  "st-00010863": {
-   "lat": 48.403,
-   "lon": 11.694,
-   "elev": 477.1,
-   "name": "Weihenstephan-Duernast",
-   "source": "wmo"
+  "st-ghcn-GME00123970": {
+   "lat": 47.8831,
+   "lon": 11.6975,
+   "elev": 685.0,
+   "name": "HOLZKIRCHEN",
+   "source": "ghcn"
   },
   "st-00010147": {
    "lat": 53.633,
@@ -8005,19 +13019,26 @@
    "name": "Hamburg-Fuhlsbuettel",
    "source": "wmo"
   },
-  "st-00010249": {
-   "lat": 53.391,
-   "lon": 10.688,
-   "elev": 44.7,
-   "name": "Boizenburg",
-   "source": "wmo"
+  "st-ghcn-GME00123274": {
+   "lat": 53.4792,
+   "lon": 9.8983,
+   "elev": 3.0,
+   "name": "HAMBURG-NEUWIEDENTHAL",
+   "source": "ghcn"
   },
-  "st-00010156": {
-   "lat": 53.803,
-   "lon": 10.699,
-   "elev": 14.7,
-   "name": "Luebeck-Blankensee",
-   "source": "wmo"
+  "st-ghcn-GME00127534": {
+   "lat": 53.7344,
+   "lon": 9.8783,
+   "elev": 13.0,
+   "name": "QUICKBORN",
+   "source": "ghcn"
+  },
+  "st-ghcn-GME00122362": {
+   "lat": 50.1281,
+   "lon": 8.6703,
+   "elev": 124.0,
+   "name": "FRANKFURT/MAIN-WESTEND",
+   "source": "ghcn"
   },
   "st-00010637": {
    "lat": 50.026,
@@ -8026,19 +13047,19 @@
    "name": "FrankfurtMain",
    "source": "wmo"
   },
-  "st-00010635": {
-   "lat": 50.222,
-   "lon": 8.447,
-   "elev": 822.1,
-   "name": "Kleiner-FeldbergTaunus",
-   "source": "wmo"
+  "st-ghcn-GME00124546": {
+   "lat": 50.2225,
+   "lon": 8.4481,
+   "elev": 826.0,
+   "name": "KLEINER FELDBERG/TAUNUS",
+   "source": "ghcn"
   },
-  "st-00010648": {
-   "lat": 49.718,
-   "lon": 9.1,
-   "elev": 452.8,
-   "name": "Michelstadt-Vielbrunn",
-   "source": "wmo"
+  "st-ghcn-PO000008535": {
+   "lat": 38.7167,
+   "lon": -9.15,
+   "elev": 77.0,
+   "name": "LISBOA GEOFISICA",
+   "source": "ghcn"
   },
   "st-00008045": {
    "lat": 42.239,
@@ -8579,26 +13600,26 @@
    "name": "NEWARK_INTL_AP",
    "source": "wmo"
   },
-  "st-00072295": {
-   "lat": 33.938,
-   "lon": -118.389,
-   "elev": 30.0,
-   "name": "LOS_ANGELES_INTL_AP",
-   "source": "wmo"
+  "st-ghcn-USW00093134": {
+   "lat": 34.0236,
+   "lon": -118.2911,
+   "elev": 54.6,
+   "name": "LOS ANGELES DOWNTOWN/USC",
+   "source": "ghcn"
   },
-  "st-00072288": {
-   "lat": 34.201,
-   "lon": -118.357,
-   "elev": 226.0,
-   "name": "BURBANK_GLENDALE_PASADENA_AP",
-   "source": "wmo"
+  "st-ghcn-USC00046719": {
+   "lat": 34.1483,
+   "lon": -118.1447,
+   "elev": 263.3,
+   "name": "PASADENA",
+   "source": "ghcn"
   },
-  "st-00072297": {
-   "lat": 33.812,
-   "lon": -118.146,
-   "elev": 9.0,
-   "name": "LONG_BEACH_DAUGHERTY_FLD",
-   "source": "wmo"
+  "st-ghcn-USC00042214": {
+   "lat": 34.005,
+   "lon": -118.4139,
+   "elev": 28.0,
+   "name": "CULVER CITY",
+   "source": "ghcn"
   },
   "st-00072386": {
    "lat": 36.072,
@@ -8607,40 +13628,54 @@
    "name": "LAS_VEGAS_MCCARRAN_AP",
    "source": "wmo"
   },
-  "st-00072387": {
-   "lat": 36.621,
-   "lon": -116.028,
-   "elev": 985.0,
-   "name": "MERCURY_DESERT_ROCK_AP",
-   "source": "wmo"
+  "st-ghcn-USR0000NRER": {
+   "lat": 36.1353,
+   "lon": -115.4272,
+   "elev": 1146.0,
+   "name": "RED ROCK NEVADA",
+   "source": "ghcn"
   },
-  "st-00072370": {
-   "lat": 35.258,
-   "lon": -113.933,
-   "elev": 1042.0,
-   "name": "KINGMAN_MOHAVE_CO_AP",
-   "source": "wmo"
+  "st-ghcn-USC00262243": {
+   "lat": 36.4381,
+   "lon": -115.36,
+   "elev": 888.2,
+   "name": "DESERT NWR",
+   "source": "ghcn"
   },
-  "st-00072493": {
-   "lat": 37.721,
-   "lon": -122.221,
-   "elev": 2.0,
-   "name": "OAKLAND_METRO_INTL_AP",
-   "source": "wmo"
+  "st-ghcn-USW00023272": {
+   "lat": 37.7706,
+   "lon": -122.4269,
+   "elev": 45.7,
+   "name": "SAN FRANCISCO DWTN",
+   "source": "ghcn"
   },
-  "st-00072494": {
-   "lat": 37.62,
-   "lon": -122.365,
-   "elev": 2.0,
-   "name": "SAN_FRANCISCO_INTL_AP",
-   "source": "wmo"
+  "st-ghcn-USC00047767": {
+   "lat": 37.7281,
+   "lon": -122.5053,
+   "elev": 2.4,
+   "name": "SAN FRANCISCO OCEANSIDE",
+   "source": "ghcn"
   },
-  "st-00072585": {
-   "lat": 37.654,
-   "lon": -122.115,
-   "elev": 13.0,
-   "name": "HAYWARD_AIR_TERMINAL",
-   "source": "wmo"
+  "st-ghcn-USC00046336": {
+   "lat": 37.7983,
+   "lon": -122.2642,
+   "elev": 9.1,
+   "name": "OAKLAND MUSEUM",
+   "source": "ghcn"
+  },
+  "st-ghcn-USW00092811": {
+   "lat": 25.8064,
+   "lon": -80.1333,
+   "elev": 2.4,
+   "name": "MIAMI BEACH",
+   "source": "ghcn"
+  },
+  "st-ghcn-USC00083909": {
+   "lat": 25.8272,
+   "lon": -80.2858,
+   "elev": 3.7,
+   "name": "HIALEAH",
+   "source": "ghcn"
   },
   "st-00072202": {
    "lat": 25.791,
@@ -8649,19 +13684,19 @@
    "name": "MIAMI_INTL_AP",
    "source": "wmo"
   },
-  "st-00074783": {
-   "lat": 26.072,
-   "lon": -80.154,
-   "elev": 3.0,
-   "name": "FT_LAUDERDALE_HOLLYWOOD_AP",
-   "source": "wmo"
+  "st-ghcn-RSM00037663": {
+   "lat": 41.47,
+   "lon": 47.7294,
+   "elev": 1047.0,
+   "name": "AKHTY",
+   "source": "ghcn"
   },
-  "st-00072203": {
-   "lat": 26.685,
-   "lon": -80.099,
-   "elev": 6.0,
-   "name": "WEST_PALM_BEACH_INTL_AP",
-   "source": "wmo"
+  "st-ghcn-RSM00037470": {
+   "lat": 42.07,
+   "lon": 48.3,
+   "elev": -19.0,
+   "name": "DERBENT",
+   "source": "ghcn"
   },
   "st-00037445": {
    "lat": 41.75,
@@ -8971,6 +14006,13 @@
    "name": "StPetersburg",
    "source": "wmo"
   },
+  "st-ghcn-RSM00026069": {
+   "lat": 59.4,
+   "lon": 30.1,
+   "elev": 90.0,
+   "name": "BELOGORKA",
+   "source": "ghcn"
+  },
   "st-00027595": {
    "lat": 55.733,
    "lon": 49.2,
@@ -8978,12 +14020,26 @@
    "name": "Kazan",
    "source": "wmo"
   },
+  "st-ghcn-RSM00027485": {
+   "lat": 56.6,
+   "lon": 47.9,
+   "elev": 106.0,
+   "name": "JOSKAR-OLA",
+   "source": "ghcn"
+  },
   "st-00037099": {
    "lat": 43.583,
    "lon": 39.767,
    "elev": 142.0,
    "name": "Sotchi",
    "source": "wmo"
+  },
+  "st-ghcn-RSM00037107": {
+   "lat": 43.6,
+   "lon": 40.2,
+   "elev": 566.0,
+   "name": "KRASNAJA POLJANA",
+   "source": "ghcn"
   },
   "st-00037018": {
    "lat": 44.1,
@@ -9097,6 +14153,13 @@
    "name": "Bijeljina",
    "source": "wmo"
   },
+  "st-ghcn-HR000142360": {
+   "lat": 45.8167,
+   "lon": 15.9781,
+   "elev": 157.0,
+   "name": "ZAGREB-GRIC",
+   "source": "ghcn"
+  },
   "st-00014240": {
    "lat": 45.822,
    "lon": 16.034,
@@ -9111,26 +14174,33 @@
    "name": "Split_Marjan",
    "source": "wmo"
   },
-  "st-00014121": {
-   "lat": 45.802,
-   "lon": 15.182,
-   "elev": 220.0,
-   "name": "Novomesto",
-   "source": "wmo"
+  "st-ghcn-HRE00105189": {
+   "lat": 43.1667,
+   "lon": 16.45,
+   "elev": 20.0,
+   "name": "HVAR",
+   "source": "ghcn"
   },
-  "st-00014544": {
-   "lat": 44.062,
-   "lon": 17.451,
-   "elev": 562.0,
-   "name": "BUGOJNO",
-   "source": "wmo"
+  "st-ghcn-HRE00155167": {
+   "lat": 44.0406,
+   "lon": 16.2067,
+   "elev": 255.0,
+   "name": "KNIN",
+   "source": "ghcn"
   },
-  "st-00014537": {
-   "lat": 44.766,
-   "lon": 16.668,
-   "elev": 158.0,
-   "name": "SANSKI_MOST",
-   "source": "wmo"
+  "st-ghcn-HRE00105196": {
+   "lat": 42.7667,
+   "lon": 16.8994,
+   "elev": 186.0,
+   "name": "LASTOVO",
+   "source": "ghcn"
+  },
+  "st-ghcn-HRE00155411": {
+   "lat": 42.56,
+   "lon": 18.27,
+   "elev": 165.0,
+   "name": "DUBROVNIK",
+   "source": "ghcn"
   },
   "st-00014668": {
    "lat": 42.714,
@@ -9174,12 +14244,12 @@
    "name": "Fichtelberg",
    "source": "wmo"
   },
-  "st-00010574": {
-   "lat": 50.431,
-   "lon": 12.611,
-   "elev": 895.3,
-   "name": "Carlsfeld",
-   "source": "wmo"
+  "st-ghcn-GME00132490": {
+   "lat": 50.4319,
+   "lon": 12.6128,
+   "elev": 897.0,
+   "name": "CARLSFELD",
+   "source": "ghcn"
   },
   "st-00012840": {
    "lat": 47.511,
@@ -9188,18 +14258,18 @@
    "name": "BudapestBelterulet",
    "source": "wmo"
   },
+  "st-ghcn-HUE00100247": {
+   "lat": 47.5108,
+   "lon": 19.0206,
+   "elev": 153.0,
+   "name": "BUDAPEST",
+   "source": "ghcn"
+  },
   "st-00012843": {
    "lat": 47.429,
    "lon": 19.182,
    "elev": 139.0,
    "name": "BudapestPestszentlorinc",
-   "source": "wmo"
-  },
-  "st-00012847": {
-   "lat": 47.756,
-   "lon": 18.606,
-   "elev": 110.0,
-   "name": "Tat",
    "source": "wmo"
   },
   "st-00012375": {
@@ -9300,6 +14370,13 @@
    "name": "Belmullet",
    "source": "wmo"
   },
+  "st-ghcn-EIE00107808": {
+   "lat": 54.5,
+   "lon": -8.1789,
+   "elev": 38.0,
+   "name": "BALLYSHANNON (CATHLEENS FALL)",
+   "source": "ghcn"
+  },
   "st-00006447": {
    "lat": 50.797,
    "lon": 4.358,
@@ -9356,12 +14433,12 @@
    "name": "Stockholm_Observatoriekullen_A",
    "source": "wmo"
   },
-  "st-00002464": {
-   "lat": 59.354,
-   "lon": 17.951,
+  "st-ghcn-SWE00138894": {
+   "lat": 59.3533,
+   "lon": 17.9514,
    "elev": 14.0,
-   "name": "Stockholm_Bromma_Flygplats",
-   "source": "wmo"
+   "name": "STOCKHOLM-BROMMA",
+   "source": "ghcn"
   },
   "st-00001492": {
    "lat": 59.942,
@@ -9370,18 +14447,18 @@
    "name": "OSLO_BLINDERN",
    "source": "wmo"
   },
+  "st-ghcn-NOE00109885": {
+   "lat": 59.8558,
+   "lon": 10.4367,
+   "elev": 163.0,
+   "name": "ASKER",
+   "source": "ghcn"
+  },
   "st-00001486": {
    "lat": 59.856,
    "lon": 10.436,
    "elev": 163.0,
    "name": "ASKER",
-   "source": "wmo"
-  },
-  "st-00001463": {
-   "lat": 59.661,
-   "lon": 10.782,
-   "elev": 92.0,
-   "name": "AS",
    "source": "wmo"
   },
   "st-00001317": {
@@ -9391,18 +14468,18 @@
    "name": "BERGEN_FLORIDA",
    "source": "wmo"
   },
+  "st-ghcn-NOE00110653": {
+   "lat": 60.2892,
+   "lon": 5.2264,
+   "elev": 48.0,
+   "name": "BERGEN/FLESLAND",
+   "source": "ghcn"
+  },
   "st-00001311": {
    "lat": 60.289,
    "lon": 5.226,
    "elev": 48.0,
    "name": "FLESLAND",
-   "source": "wmo"
-  },
-  "st-00001406": {
-   "lat": 59.908,
-   "lon": 5.068,
-   "elev": 25.0,
-   "name": "SLATTEROY_FYR",
    "source": "wmo"
   },
   "st-00001026": {
@@ -9447,6 +14524,13 @@
    "name": "Malmo_A",
    "source": "wmo"
   },
+  "st-ghcn-FI000000304": {
+   "lat": 60.1667,
+   "lon": 24.95,
+   "elev": 4.0,
+   "name": "HELSINKI KAISANIEMI AWS",
+   "source": "ghcn"
+  },
   "st-00002978": {
    "lat": 60.175,
    "lon": 24.945,
@@ -9459,13 +14543,6 @@
    "lon": 24.975,
    "elev": 6.0,
    "name": "HelsinkiHarmaja",
-   "source": "wmo"
-  },
-  "st-00002974": {
-   "lat": 60.327,
-   "lon": 24.957,
-   "elev": 51.0,
-   "name": "VantaaHelsinkiVantaanLentoasem",
    "source": "wmo"
   },
   "st-00002845": {
@@ -9482,12 +14559,12 @@
    "name": "RovaniemiApukka",
    "source": "wmo"
   },
-  "st-00002812": {
-   "lat": 66.529,
-   "lon": 24.65,
-   "elev": 93.0,
-   "name": "Ylitornio_Meltosjarvi",
-   "source": "wmo"
+  "st-ghcn-FIE00146258": {
+   "lat": 66.5789,
+   "lon": 26.015,
+   "elev": 106.0,
+   "name": "ROVANIEMI APUKKA",
+   "source": "ghcn"
   },
   "st-00014015": {
    "lat": 46.066,
@@ -9496,12 +14573,19 @@
    "name": "LjubljanaBezigrad",
    "source": "wmo"
   },
-  "st-00014023": {
-   "lat": 46.237,
-   "lon": 15.231,
-   "elev": 242.0,
-   "name": "Celje",
-   "source": "wmo"
+  "st-ghcn-SIE00115006": {
+   "lat": 46.1,
+   "lon": 14.3858,
+   "elev": 680.0,
+   "name": "TOPOL PRI MEDVODAH",
+   "source": "ghcn"
+  },
+  "st-ghcn-SIE00115146": {
+   "lat": 46.2,
+   "lon": 14.5,
+   "elev": 364.0,
+   "name": "LETALISCE JOZETA PUCNIKA LJUBL",
+   "source": "ghcn"
   },
   "st-00014008": {
    "lat": 46.379,
@@ -9517,12 +14601,12 @@
    "name": "Ratece",
    "source": "wmo"
   },
-  "st-00011231": {
-   "lat": 46.648,
-   "lon": 14.318,
-   "elev": 450.0,
-   "name": "Klagenfurt",
-   "source": "wmo"
+  "st-ghcn-SIE00115206": {
+   "lat": 46.5,
+   "lon": 13.7,
+   "elev": 864.0,
+   "name": "RATECE-PLANICA",
+   "source": "ghcn"
   },
   "st-00017609": {
    "lat": 34.874,
@@ -9573,12 +14657,12 @@
    "name": "RosiorideVede",
    "source": "wmo"
   },
-  "st-00015350": {
-   "lat": 45.133,
-   "lon": 26.852,
-   "elev": 97.0,
-   "name": "Buzau",
-   "source": "wmo"
+  "st-ghcn-ROE00108900": {
+   "lat": 44.1,
+   "lon": 24.9831,
+   "elev": 102.0,
+   "name": "ROSIORI DE VEDE",
+   "source": "ghcn"
   },
   "st-00015280": {
    "lat": 45.446,
@@ -9586,6 +14670,13 @@
    "elev": 2504.0,
    "name": "VarfuOmu",
    "source": "wmo"
+  },
+  "st-ghcn-ROE00108897": {
+   "lat": 46.3667,
+   "lon": 25.7331,
+   "elev": 661.0,
+   "name": "MIERCUREA CIUC",
+   "source": "ghcn"
   },
   "st-00015170": {
    "lat": 46.371,
@@ -9972,19 +15063,33 @@
    "name": "Toronto_City",
    "source": "wmo"
   },
-  "st-00071296": {
-   "lat": 44.233,
-   "lon": -79.78,
-   "elev": 251.0,
-   "name": "Egbert_Cs",
-   "source": "wmo"
+  "st-ghcn-CAN06155878": {
+   "lat": 43.8667,
+   "lon": -78.8333,
+   "elev": 83.8,
+   "name": "OSHAWA WPCP",
+   "source": "ghcn"
   },
-  "st-00072528": {
-   "lat": 42.949,
-   "lon": -78.737,
-   "elev": 211.0,
-   "name": "BUFFALO",
-   "source": "wmo"
+  "st-ghcn-CAN06119055": {
+   "lat": 44.2625,
+   "lon": -79.1614,
+   "elev": 262.0,
+   "name": "UDORA",
+   "source": "ghcn"
+  },
+  "st-ghcn-CAN01108446": {
+   "lat": 49.2954,
+   "lon": -123.1219,
+   "elev": 2.5,
+   "name": "VANCOUVER HARBOUR CS",
+   "source": "ghcn"
+  },
+  "st-ghcn-CAN01106PF7": {
+   "lat": 49.1708,
+   "lon": -123.0931,
+   "elev": 3.0,
+   "name": "RICHMOND NATURE PARK",
+   "source": "ghcn"
   },
   "st-00071207": {
    "lat": 49.783,
@@ -9993,12 +15098,19 @@
    "name": "Squamish_Airport",
    "source": "wmo"
   },
-  "st-00071783": {
-   "lat": 48.457,
-   "lon": -123.305,
-   "elev": 60.0,
-   "name": "Victoria_University_Cs",
-   "source": "wmo"
+  "st-ghcn-CAN07028700": {
+   "lat": 45.7667,
+   "lon": -73.3667,
+   "elev": 21.0,
+   "name": "VERCHERES",
+   "source": "ghcn"
+  },
+  "st-ghcn-CAN07014160": {
+   "lat": 45.8094,
+   "lon": -73.4347,
+   "elev": 21.0,
+   "name": "L'ASSOMPTION",
+   "source": "ghcn"
   },
   "st-00072617": {
    "lat": 44.468,
@@ -10012,6 +15124,1903 @@
    "lon": -115.553,
    "elev": 1397.0,
    "name": "Banff_Cs",
+   "source": "wmo"
+  },
+  "st-ghcn-CAN03053600": {
+   "lat": 51.0275,
+   "lon": -115.0347,
+   "elev": 1391.1,
+   "name": "KANANASKIS",
+   "source": "ghcn"
+  },
+  "st-ghcn-CAN01154410": {
+   "lat": 50.6308,
+   "lon": -116.0614,
+   "elev": 935.0,
+   "name": "KOOTENAY NP WEST GATE",
+   "source": "ghcn"
+  },
+  "st-00041036": {
+   "lat": 21.479,
+   "lon": 40.549,
+   "elev": 1453.0,
+   "name": "Taif",
+   "source": "wmo"
+  },
+  "st-00017290": {
+   "lat": 37.033,
+   "lon": 27.44,
+   "elev": 26.0,
+   "name": "Bodrum",
+   "source": "wmo"
+  },
+  "st-00017884": {
+   "lat": 37.303,
+   "lon": 27.78,
+   "elev": 57.0,
+   "name": "Milas",
+   "source": "wmo"
+  },
+  "st-00017297": {
+   "lat": 36.708,
+   "lon": 27.692,
+   "elev": 28.0,
+   "name": "Datca",
+   "source": "wmo"
+  },
+  "st-00037395": {
+   "lat": 42.25,
+   "lon": 42.617,
+   "elev": 109.0,
+   "name": "Qutaisi",
+   "source": "wmo"
+  },
+  "st-00037404": {
+   "lat": 42.117,
+   "lon": 43.017,
+   "elev": 150.0,
+   "name": "Zestaphoni",
+   "source": "wmo"
+  },
+  "st-00037308": {
+   "lat": 42.533,
+   "lon": 43.139,
+   "elev": 544.0,
+   "name": "Ambrolauri",
+   "source": "wmo"
+  },
+  "st-00038475": {
+   "lat": 40.733,
+   "lon": 72.317,
+   "elev": 475.0,
+   "name": "Andizan",
+   "source": "wmo"
+  },
+  "st-00038618": {
+   "lat": 40.383,
+   "lon": 71.75,
+   "elev": 577.0,
+   "name": "Fergana",
+   "source": "wmo"
+  },
+  "st-00038611": {
+   "lat": 41.0,
+   "lon": 71.583,
+   "elev": 474.0,
+   "name": "Namangan",
+   "source": "wmo"
+  },
+  "st-00043352": {
+   "lat": 9.55,
+   "lon": 76.417,
+   "elev": 4.0,
+   "name": "ALAPPUZHA",
+   "source": "wmo"
+  },
+  "st-00043355": {
+   "lat": 9.533,
+   "lon": 76.6,
+   "elev": 76.4,
+   "name": "KOTTAYAM",
+   "source": "wmo"
+  },
+  "st-00043354": {
+   "lat": 9.0,
+   "lon": 76.917,
+   "elev": 33.8,
+   "name": "PUNALUR",
+   "source": "wmo"
+  },
+  "st-00043295": {
+   "lat": 12.967,
+   "lon": 77.583,
+   "elev": 923.0,
+   "name": "BENGALURU",
+   "source": "wmo"
+  },
+  "st-00043296": {
+   "lat": 12.5,
+   "lon": 78.3,
+   "elev": 901.1,
+   "name": "BENGALURU_HAL",
+   "source": "wmo"
+  },
+  "st-00043271": {
+   "lat": 13.533,
+   "lon": 78.5,
+   "elev": 701.0,
+   "name": "AROGYAVARAM",
+   "source": "wmo"
+  },
+  "st-00055773": {
+   "lat": 27.73,
+   "lon": 89.08,
+   "elev": 4300.0,
+   "name": "PAGRI",
+   "source": "wmo"
+  },
+  "st-00041923": {
+   "lat": 23.767,
+   "lon": 90.383,
+   "elev": 8.4,
+   "name": "Dhaka",
+   "source": "wmo"
+  },
+  "st-00041929": {
+   "lat": 23.6,
+   "lon": 89.85,
+   "elev": 8.1,
+   "name": "Faridpur",
+   "source": "wmo"
+  },
+  "st-00041941": {
+   "lat": 23.267,
+   "lon": 90.7,
+   "elev": 4.9,
+   "name": "Chandpur",
+   "source": "wmo"
+  },
+  "st-00056187": {
+   "lat": 30.75,
+   "lon": 103.87,
+   "elev": 555.0,
+   "name": "WENJIANG",
+   "source": "wmo"
+  },
+  "st-00047412": {
+   "lat": 43.06,
+   "lon": 141.328,
+   "elev": 17.4,
+   "name": "Sapporo",
+   "source": "wmo"
+  },
+  "st-00047421": {
+   "lat": 42.795,
+   "lon": 140.223,
+   "elev": 33.4,
+   "name": "Suttsu",
+   "source": "wmo"
+  },
+  "st-00047407": {
+   "lat": 43.757,
+   "lon": 142.372,
+   "elev": 119.8,
+   "name": "Asahikawa",
+   "source": "wmo"
+  },
+  "st-00047807": {
+   "lat": 33.582,
+   "lon": 130.375,
+   "elev": 2.5,
+   "name": "Fukuoka",
+   "source": "wmo"
+  },
+  "st-00047817": {
+   "lat": 32.733,
+   "lon": 129.867,
+   "elev": 26.9,
+   "name": "Nagasaki",
+   "source": "wmo"
+  },
+  "st-00047815": {
+   "lat": 33.235,
+   "lon": 131.618,
+   "elev": 4.6,
+   "name": "Oita",
+   "source": "wmo"
+  },
+  "st-00047936": {
+   "lat": 26.207,
+   "lon": 127.687,
+   "elev": 28.1,
+   "name": "Naha",
+   "source": "wmo"
+  },
+  "st-00048550": {
+   "lat": 9.467,
+   "lon": 100.05,
+   "elev": 4.0,
+   "name": "KoSamui",
+   "source": "wmo"
+  },
+  "st-00048552": {
+   "lat": 8.538,
+   "lon": 99.947,
+   "elev": 4.1,
+   "name": "NakhonsiThammarat",
+   "source": "wmo"
+  },
+  "st-00048517": {
+   "lat": 10.499,
+   "lon": 99.188,
+   "elev": 4.4,
+   "name": "Chumphon",
+   "source": "wmo"
+  },
+  "st-00096471": {
+   "lat": 5.932,
+   "lon": 116.048,
+   "elev": 2.0,
+   "name": "KotaKinabalu",
+   "source": "wmo"
+  },
+  "st-00096465": {
+   "lat": 5.307,
+   "lon": 115.242,
+   "elev": 28.0,
+   "name": "Labuan",
+   "source": "wmo"
+  },
+  "st-00098618": {
+   "lat": 9.733,
+   "lon": 118.75,
+   "elev": 14.9,
+   "name": "PuertoPrincesaCityPalawan",
+   "source": "wmo"
+  },
+  "st-00048930": {
+   "lat": 19.898,
+   "lon": 102.165,
+   "elev": 304.0,
+   "name": "Luangprabang",
+   "source": "wmo"
+  },
+  "st-00048938": {
+   "lat": 19.244,
+   "lon": 101.71,
+   "elev": 300.0,
+   "name": "Xayabouly",
+   "source": "wmo"
+  },
+  "st-00048940": {
+   "lat": 17.97,
+   "lon": 102.571,
+   "elev": 171.0,
+   "name": "VientianeCapital",
+   "source": "wmo"
+  },
+  "st-00048352": {
+   "lat": 17.865,
+   "lon": 102.747,
+   "elev": 173.2,
+   "name": "NongKhai",
+   "source": "wmo"
+  },
+  "st-00048354": {
+   "lat": 17.383,
+   "lon": 102.8,
+   "elev": 177.0,
+   "name": "UdonThani",
+   "source": "wmo"
+  },
+  "st-00096315": {
+   "lat": 4.95,
+   "lon": 114.933,
+   "elev": -876.5,
+   "name": "BRUNEI",
+   "source": "wmo"
+  },
+  "st-00096449": {
+   "lat": 4.333,
+   "lon": 113.983,
+   "elev": 17.0,
+   "name": "Miri",
+   "source": "wmo"
+  },
+  "st-00007510": {
+   "lat": 44.831,
+   "lon": -0.691,
+   "elev": 47.0,
+   "name": "BORDEAUX_MERIGNAC",
+   "source": "wmo"
+  },
+  "st-00007502": {
+   "lat": 44.535,
+   "lon": -1.132,
+   "elev": 23.0,
+   "name": "CAZAUX",
+   "source": "wmo"
+  },
+  "st-00007503": {
+   "lat": 44.432,
+   "lon": -1.248,
+   "elev": 35.0,
+   "name": "BISCARROSSE",
+   "source": "wmo"
+  },
+  "st-00007190": {
+   "lat": 48.549,
+   "lon": 7.64,
+   "elev": 150.0,
+   "name": "STRASBOURG_ENTZHEIM",
+   "source": "wmo"
+  },
+  "st-ghcn-GME00127750": {
+   "lat": 48.6708,
+   "lon": 7.9956,
+   "elev": 131.0,
+   "name": "RHEINAU-MEMPRECHTSHOFEN",
+   "source": "ghcn"
+  },
+  "st-ghcn-GME00122770": {
+   "lat": 48.4339,
+   "lon": 7.9933,
+   "elev": 176.0,
+   "name": "OHLSBACH",
+   "source": "ghcn"
+  },
+  "st-00016158": {
+   "lat": 43.682,
+   "lon": 10.396,
+   "elev": 2.0,
+   "name": "Pisa",
+   "source": "wmo"
+  },
+  "st-00016125": {
+   "lat": 44.087,
+   "lon": 9.985,
+   "elev": 10.0,
+   "name": "Sarzana_Luni",
+   "source": "wmo"
+  },
+  "st-00016146": {
+   "lat": 44.441,
+   "lon": 12.296,
+   "elev": 2.0,
+   "name": "Punta_Marina",
+   "source": "wmo"
+  },
+  "st-00016434": {
+   "lat": 37.723,
+   "lon": 13.428,
+   "elev": 1034.0,
+   "name": "Prizzi",
+   "source": "wmo"
+  },
+  "st-00016400": {
+   "lat": 38.707,
+   "lon": 13.177,
+   "elev": 242.0,
+   "name": "Ustica",
+   "source": "wmo"
+  },
+  "st-00016429": {
+   "lat": 37.914,
+   "lon": 12.491,
+   "elev": 7.3,
+   "name": "Trapani_Birgi",
+   "source": "wmo"
+  },
+  "st-00008482": {
+   "lat": 36.666,
+   "lon": -4.482,
+   "elev": 5.0,
+   "name": "MALAGAAEROPUERTO",
+   "source": "wmo"
+  },
+  "st-00008285": {
+   "lat": 39.481,
+   "lon": -0.366,
+   "elev": 11.0,
+   "name": "VALENCIA",
+   "source": "wmo"
+  },
+  "st-00008284": {
+   "lat": 39.485,
+   "lon": -0.475,
+   "elev": 56.0,
+   "name": "VALENCIAAEROPUERTO",
+   "source": "wmo"
+  },
+  "st-00008286": {
+   "lat": 39.957,
+   "lon": -0.072,
+   "elev": 48.0,
+   "name": "CASTELLONALMASSORA",
+   "source": "wmo"
+  },
+  "st-00008373": {
+   "lat": 38.876,
+   "lon": 1.384,
+   "elev": 6.0,
+   "name": "IBIZAESCODOLA",
+   "source": "wmo"
+  },
+  "st-ghcn-SPE00101043": {
+   "lat": 38.3725,
+   "lon": 0.4942,
+   "elev": 81.0,
+   "name": "ALICANTE",
+   "source": "ghcn"
+  },
+  "st-ghcn-SPE00101035": {
+   "lat": 38.2828,
+   "lon": 0.5706,
+   "elev": 43.0,
+   "name": "ALICANTE EL ALTET",
+   "source": "ghcn"
+  },
+  "st-00008301": {
+   "lat": 39.555,
+   "lon": 2.625,
+   "elev": 3.0,
+   "name": "PALMAPUERTO",
+   "source": "wmo"
+  },
+  "st-00008306": {
+   "lat": 39.561,
+   "lon": 2.737,
+   "elev": 8.0,
+   "name": "PALMADEMALLORCASONSANJUAN",
+   "source": "wmo"
+  },
+  "st-00008383": {
+   "lat": 37.278,
+   "lon": -6.912,
+   "elev": 19.0,
+   "name": "HUELVARONDAESTE",
+   "source": "wmo"
+  },
+  "st-ghcn-SPE00120143": {
+   "lat": 37.28,
+   "lon": -6.9094,
+   "elev": 19.0,
+   "name": "HUELVA (RONDA DEL ESTE)",
+   "source": "ghcn"
+  },
+  "st-00008449": {
+   "lat": 36.639,
+   "lon": -6.332,
+   "elev": 21.0,
+   "name": "ROTABNOBSERVATORIO",
+   "source": "wmo"
+  },
+  "st-00003155": {
+   "lat": 55.627,
+   "lon": -3.736,
+   "elev": 245.0,
+   "name": "Drumalbin",
+   "source": "wmo"
+  },
+  "st-00003136": {
+   "lat": 55.515,
+   "lon": -4.585,
+   "elev": 27.0,
+   "name": "Prestwick",
+   "source": "wmo"
+  },
+  "st-ghcn-UKE00105856": {
+   "lat": 55.4767,
+   "lon": -4.5658,
+   "elev": 48.0,
+   "name": "AUCHINCRUIVE",
+   "source": "ghcn"
+  },
+  "st-ghcn-UK000000000": {
+   "lat": 52.42,
+   "lon": -1.83,
+   "elev": 78.0,
+   "name": "CET CENTRAL ENGLAND",
+   "source": "ghcn"
+  },
+  "st-ghcn-UKE00105909": {
+   "lat": 52.2058,
+   "lon": -1.6031,
+   "elev": 47.0,
+   "name": "WELLESBOURNE",
+   "source": "ghcn"
+  },
+  "st-00003544": {
+   "lat": 52.359,
+   "lon": -1.331,
+   "elev": 107.0,
+   "name": "ChurchLawford",
+   "source": "wmo"
+  },
+  "st-ghcn-UKE00105877": {
+   "lat": 54.6031,
+   "lon": -5.8289,
+   "elev": 56.0,
+   "name": "STORMONT CASTLE",
+   "source": "ghcn"
+  },
+  "st-00003917": {
+   "lat": 54.664,
+   "lon": -6.225,
+   "elev": 63.0,
+   "name": "Aldergrove",
+   "source": "wmo"
+  },
+  "st-00003915": {
+   "lat": 54.865,
+   "lon": -6.458,
+   "elev": 64.0,
+   "name": "Portglenone",
+   "source": "wmo"
+  },
+  "st-00003955": {
+   "lat": 51.847,
+   "lon": -8.486,
+   "elev": 155.0,
+   "name": "CorkAirport",
+   "source": "wmo"
+  },
+  "st-00003953": {
+   "lat": 51.938,
+   "lon": -10.241,
+   "elev": 24.0,
+   "name": "ValentiaObservatory",
+   "source": "wmo"
+  },
+  "st-00010400": {
+   "lat": 51.296,
+   "lon": 6.769,
+   "elev": 36.6,
+   "name": "Duesseldorf",
+   "source": "wmo"
+  },
+  "st-ghcn-GME00130582": {
+   "lat": 51.2258,
+   "lon": 7.1058,
+   "elev": 130.0,
+   "name": "WUPPERTAL-BUCHENHOFEN",
+   "source": "ghcn"
+  },
+  "st-00010410": {
+   "lat": 51.404,
+   "lon": 6.968,
+   "elev": 150.0,
+   "name": "Essen-Bredeney",
+   "source": "wmo"
+  },
+  "st-ghcn-GME00125302": {
+   "lat": 50.9906,
+   "lon": 6.9783,
+   "elev": 43.0,
+   "name": "KOLN-STAMMHEIM",
+   "source": "ghcn"
+  },
+  "st-00010513": {
+   "lat": 50.864,
+   "lon": 7.158,
+   "elev": 90.9,
+   "name": "KoelnBonn",
+   "source": "wmo"
+  },
+  "st-ghcn-GME00122002": {
+   "lat": 50.7131,
+   "lon": 6.7917,
+   "elev": 146.0,
+   "name": "WEILERSWIST-LOMMERSUM",
+   "source": "ghcn"
+  },
+  "st-00006711": {
+   "lat": 46.512,
+   "lon": 6.668,
+   "elev": 456.0,
+   "name": "Pully",
+   "source": "wmo"
+  },
+  "st-00006609": {
+   "lat": 46.546,
+   "lon": 7.018,
+   "elev": 1974.0,
+   "name": "LeMoleson",
+   "source": "wmo"
+  },
+  "st-00006712": {
+   "lat": 46.327,
+   "lon": 6.924,
+   "elev": 381.0,
+   "name": "Aigle",
+   "source": "wmo"
+  },
+  "st-00006748": {
+   "lat": 46.029,
+   "lon": 7.753,
+   "elev": 1638.0,
+   "name": "Zermatt",
+   "source": "wmo"
+  },
+  "st-00006728": {
+   "lat": 46.195,
+   "lon": 7.837,
+   "elev": 1605.0,
+   "name": "Graechen",
+   "source": "wmo"
+  },
+  "st-00006722": {
+   "lat": 46.112,
+   "lon": 7.509,
+   "elev": 1825.0,
+   "name": "EvoleneVilla",
+   "source": "wmo"
+  },
+  "st-00011723": {
+   "lat": 49.153,
+   "lon": 16.689,
+   "elev": 241.0,
+   "name": "BrnoTurany",
+   "source": "wmo"
+  },
+  "st-00011692": {
+   "lat": 49.171,
+   "lon": 16.121,
+   "elev": 474.0,
+   "name": "NamestNadOslavou",
+   "source": "wmo"
+  },
+  "st-00011693": {
+   "lat": 49.096,
+   "lon": 16.134,
+   "elev": 400.1,
+   "name": "Dukovany",
+   "source": "wmo"
+  },
+  "st-00012135": {
+   "lat": 54.361,
+   "lon": 18.484,
+   "elev": 1.0,
+   "name": "Hel",
+   "source": "wmo"
+  },
+  "st-00012125": {
+   "lat": 54.331,
+   "lon": 17.432,
+   "elev": 38.0,
+   "name": "Lebork",
+   "source": "wmo"
+  },
+  "st-00012120": {
+   "lat": 54.451,
+   "lon": 17.321,
+   "elev": 2.0,
+   "name": "Leba",
+   "source": "wmo"
+  },
+  "st-00012815": {
+   "lat": 47.89,
+   "lon": 17.267,
+   "elev": 121.0,
+   "name": "Mosonmagyarovar",
+   "source": "wmo"
+  },
+  "st-00017298": {
+   "lat": 36.839,
+   "lon": 28.245,
+   "elev": 16.0,
+   "name": "Marmaris",
+   "source": "wmo"
+  },
+  "st-00017294": {
+   "lat": 36.772,
+   "lon": 28.799,
+   "elev": 12.0,
+   "name": "Dalaman",
+   "source": "wmo"
+  },
+  "st-00002513": {
+   "lat": 57.716,
+   "lon": 11.993,
+   "elev": 3.0,
+   "name": "Goteborg_A",
+   "source": "wmo"
+  },
+  "st-ghcn-SWE00138198": {
+   "lat": 57.7158,
+   "lon": 11.9942,
+   "elev": 5.0,
+   "name": "GOTEBORG A",
+   "source": "ghcn"
+  },
+  "st-00002512": {
+   "lat": 57.779,
+   "lon": 11.882,
+   "elev": 20.0,
+   "name": "Save",
+   "source": "wmo"
+  },
+  "st-00026038": {
+   "lat": 59.398,
+   "lon": 24.603,
+   "elev": 33.0,
+   "name": "Tallinn-Harku",
+   "source": "wmo"
+  },
+  "st-ghcn-ENE00175051": {
+   "lat": 59.3981,
+   "lon": 24.6028,
+   "elev": 33.0,
+   "name": "TALLINN",
+   "source": "ghcn"
+  },
+  "st-00026029": {
+   "lat": 59.389,
+   "lon": 24.04,
+   "elev": 23.0,
+   "name": "Pakri",
+   "source": "wmo"
+  },
+  "st-00026422": {
+   "lat": 56.955,
+   "lon": 24.105,
+   "elev": 3.0,
+   "name": "RigaLu",
+   "source": "wmo"
+  },
+  "st-00026326": {
+   "lat": 57.301,
+   "lon": 24.412,
+   "elev": 8.0,
+   "name": "Skulte",
+   "source": "wmo"
+  },
+  "st-00026425": {
+   "lat": 56.557,
+   "lon": 23.964,
+   "elev": 7.0,
+   "name": "Jelgava",
+   "source": "wmo"
+  },
+  "st-00026736": {
+   "lat": 54.429,
+   "lon": 25.924,
+   "elev": 211.0,
+   "name": "OSHMYANY",
+   "source": "wmo"
+  },
+  "st-00026645": {
+   "lat": 55.049,
+   "lon": 26.307,
+   "elev": 208.0,
+   "name": "LYNTUPY",
+   "source": "wmo"
+  },
+  "st-00026832": {
+   "lat": 53.902,
+   "lon": 25.323,
+   "elev": 154.0,
+   "name": "LIDA",
+   "source": "wmo"
+  },
+  "st-00015614": {
+   "lat": 42.654,
+   "lon": 23.383,
+   "elev": 586.0,
+   "name": "Sofia",
+   "source": "wmo"
+  },
+  "st-00015600": {
+   "lat": 42.833,
+   "lon": 23.669,
+   "elev": 1687.0,
+   "name": "MurgashPeak",
+   "source": "wmo"
+  },
+  "st-00064215": {
+   "lat": 42.179,
+   "lon": 23.585,
+   "elev": 2925.0,
+   "name": "MusalaPeak",
+   "source": "wmo"
+  },
+  "st-00015552": {
+   "lat": 43.213,
+   "lon": 27.953,
+   "elev": 39.0,
+   "name": "Varna",
+   "source": "wmo"
+  },
+  "st-00015655": {
+   "lat": 42.498,
+   "lon": 27.483,
+   "elev": 21.0,
+   "name": "Burgas",
+   "source": "wmo"
+  },
+  "st-ghcn-ROE00100901": {
+   "lat": 44.2,
+   "lon": 27.3331,
+   "elev": 19.0,
+   "name": "CALARASI",
+   "source": "ghcn"
+  },
+  "st-00006590": {
+   "lat": 49.626,
+   "lon": 6.203,
+   "elev": 376.0,
+   "name": "Luxembourg",
+   "source": "wmo"
+  },
+  "st-99999999": {
+   "lat": 49.545,
+   "lon": 6.355,
+   "elev": 207.0,
+   "name": "Remich",
+   "source": "wmo"
+  },
+  "st-ghcn-GME00123226": {
+   "lat": 49.9325,
+   "lon": 6.3756,
+   "elev": 305.0,
+   "name": "OLSDORF",
+   "source": "ghcn"
+  },
+  "st-00016149": {
+   "lat": 44.024,
+   "lon": 12.613,
+   "elev": 12.0,
+   "name": "Rimini_Miramare",
+   "source": "wmo"
+  },
+  "st-00016148": {
+   "lat": 44.229,
+   "lon": 12.292,
+   "elev": 6.0,
+   "name": "Cervia",
+   "source": "wmo"
+  },
+  "st-00016179": {
+   "lat": 43.517,
+   "lon": 12.728,
+   "elev": 570.0,
+   "name": "Frontone",
+   "source": "wmo"
+  },
+  "st-00007627": {
+   "lat": 43.005,
+   "lon": 1.107,
+   "elev": 414.0,
+   "name": "ST_GIRONS",
+   "source": "wmo"
+  },
+  "st-00007635": {
+   "lat": 43.215,
+   "lon": 2.296,
+   "elev": 128.0,
+   "name": "CARCASSONNE",
+   "source": "wmo"
+  },
+  "st-ghcn-SPE00120161": {
+   "lat": 42.0831,
+   "lon": 0.3264,
+   "elev": 541.0,
+   "name": "HUESCA",
+   "source": "ghcn"
+  },
+  "st-00060250": {
+   "lat": 30.379,
+   "lon": -9.559,
+   "elev": 23.0,
+   "name": "AGADIRINEZGANNE",
+   "source": "wmo"
+  },
+  "st-00060220": {
+   "lat": 31.51,
+   "lon": -9.773,
+   "elev": 7.0,
+   "name": "ESSAOUIRA",
+   "source": "wmo"
+  },
+  "st-00060720": {
+   "lat": 36.85,
+   "lon": 11.083,
+   "elev": 29.0,
+   "name": "Kelibia",
+   "source": "wmo"
+  },
+  "st-00060390": {
+   "lat": 36.69,
+   "lon": 3.217,
+   "elev": 25.0,
+   "name": "AlgerDarElBeida",
+   "source": "wmo"
+  },
+  "st-00060437": {
+   "lat": 36.281,
+   "lon": 2.732,
+   "elev": 1030.0,
+   "name": "Medea",
+   "source": "wmo"
+  },
+  "st-00060395": {
+   "lat": 36.724,
+   "lon": 4.019,
+   "elev": 153.4,
+   "name": "TiziOuzou",
+   "source": "wmo"
+  },
+  "st-00060490": {
+   "lat": 35.631,
+   "lon": -0.604,
+   "elev": 90.0,
+   "name": "OranSennia",
+   "source": "wmo"
+  },
+  "st-00060520": {
+   "lat": 35.174,
+   "lon": -0.595,
+   "elev": 482.0,
+   "name": "SidiBelAbbes",
+   "source": "wmo"
+  },
+  "st-00060531": {
+   "lat": 35.019,
+   "lon": -1.445,
+   "elev": 246.1,
+   "name": "TlemcenZenata",
+   "source": "wmo"
+  },
+  "st-00064387": {
+   "lat": -1.965,
+   "lon": 30.133,
+   "elev": 1490.0,
+   "name": "KIGALI_AERO",
+   "source": "wmo"
+  },
+  "st-00064381": {
+   "lat": -1.67,
+   "lon": 29.25,
+   "elev": 1554.0,
+   "name": "GISENYI_AERO",
+   "source": "wmo"
+  },
+  "st-00064380": {
+   "lat": -2.47,
+   "lon": 28.92,
+   "elev": 1591.0,
+   "name": "KAMEMBE_AERO",
+   "source": "wmo"
+  },
+  "st-00067085": {
+   "lat": -18.867,
+   "lon": 47.5,
+   "elev": 1310.0,
+   "name": "ANTANANARIVO",
+   "source": "wmo"
+  },
+  "st-00067083": {
+   "lat": -18.8,
+   "lon": 47.483,
+   "elev": 1279.0,
+   "name": "IVATO",
+   "source": "wmo"
+  },
+  "st-00067107": {
+   "lat": -19.817,
+   "lon": 47.067,
+   "elev": 1523.0,
+   "name": "ANTSIRABE",
+   "source": "wmo"
+  },
+  "st-00067012": {
+   "lat": -13.317,
+   "lon": 48.317,
+   "elev": 10.0,
+   "name": "NOSYBE",
+   "source": "wmo"
+  },
+  "st-00061641": {
+   "lat": 14.73,
+   "lon": -17.5,
+   "elev": 24.5,
+   "name": "Dakar",
+   "source": "wmo"
+  },
+  "st-00380090": {
+   "lat": 14.42,
+   "lon": -16.97,
+   "elev": 10.0,
+   "name": "Mbour",
+   "source": "wmo"
+  },
+  "st-00380084": {
+   "lat": 14.7,
+   "lon": -16.46,
+   "elev": 25.0,
+   "name": "Bambey",
+   "source": "wmo"
+  },
+  "st-00065472": {
+   "lat": 5.6,
+   "lon": -0.167,
+   "elev": 62.0,
+   "name": "Accra",
+   "source": "wmo"
+  },
+  "st-00065473": {
+   "lat": 5.617,
+   "lon": 0.0,
+   "elev": 14.0,
+   "name": "Tema",
+   "source": "wmo"
+  },
+  "st-00065459": {
+   "lat": 6.083,
+   "lon": -0.25,
+   "elev": 166.5,
+   "name": "Koforidua",
+   "source": "wmo"
+  },
+  "st-00065203": {
+   "lat": 6.58,
+   "lon": 3.06,
+   "elev": 140.0,
+   "name": "LagosRoof",
+   "source": "wmo"
+  },
+  "st-00065210": {
+   "lat": 6.4,
+   "lon": 3.93,
+   "elev": 84.0,
+   "name": "IjebuOde",
+   "source": "wmo"
+  },
+  "st-00065213": {
+   "lat": 7.2,
+   "lon": 3.0,
+   "elev": 61.0,
+   "name": "Abeokuta",
+   "source": "wmo"
+  },
+  "st-00068242": {
+   "lat": -25.804,
+   "lon": 25.543,
+   "elev": 1281.0,
+   "name": "MafikengWO",
+   "source": "wmo"
+  },
+  "st-00067743": {
+   "lat": -17.817,
+   "lon": 25.817,
+   "elev": 986.0,
+   "name": "Livingstone",
+   "source": "wmo"
+  },
+  "st-00072205": {
+   "lat": 28.434,
+   "lon": -81.325,
+   "elev": 27.0,
+   "name": "ORLANDO_INTL_AP",
+   "source": "wmo"
+  },
+  "st-ghcn-USC00084625": {
+   "lat": 28.2764,
+   "lon": -81.4239,
+   "elev": 18.3,
+   "name": "KISSIMMEE 2",
+   "source": "ghcn"
+  },
+  "st-00074787": {
+   "lat": 29.183,
+   "lon": -81.048,
+   "elev": 9.0,
+   "name": "DAYTONA_BEACH_INTL_AP",
+   "source": "wmo"
+  },
+  "st-00072534": {
+   "lat": 41.786,
+   "lon": -87.752,
+   "elev": 187.0,
+   "name": "CHICAGO_MIDWAY_AP",
+   "source": "wmo"
+  },
+  "st-00072530": {
+   "lat": 41.995,
+   "lon": -87.934,
+   "elev": 201.0,
+   "name": "CHICAGO_OHARE_INTL_AP",
+   "source": "wmo"
+  },
+  "st-ghcn-USC00116616": {
+   "lat": 41.4944,
+   "lon": -87.6794,
+   "elev": 216.4,
+   "name": "PARK FOREST WATER",
+   "source": "ghcn"
+  },
+  "st-00072405": {
+   "lat": 38.848,
+   "lon": -77.034,
+   "elev": 3.0,
+   "name": "WASHINGTON_REAGAN_AP",
+   "source": "wmo"
+  },
+  "st-ghcn-USC00186350": {
+   "lat": 38.9133,
+   "lon": -76.97,
+   "elev": 15.2,
+   "name": "NATL ARBORETUM DC",
+   "source": "ghcn"
+  },
+  "st-ghcn-USC00182325": {
+   "lat": 38.9386,
+   "lon": -77.1133,
+   "elev": 45.7,
+   "name": "DALECARLIA RSVR",
+   "source": "ghcn"
+  },
+  "st-ghcn-USW00094290": {
+   "lat": 47.6872,
+   "lon": -122.2553,
+   "elev": 18.3,
+   "name": "SEATTLE SAND PT WFO",
+   "source": "ghcn"
+  },
+  "st-00072793": {
+   "lat": 47.444,
+   "lon": -122.314,
+   "elev": 113.0,
+   "name": "SEATTLE_TACOMA_INTL_AP",
+   "source": "wmo"
+  },
+  "st-ghcn-USC00454169": {
+   "lat": 47.4172,
+   "lon": -122.2433,
+   "elev": 8.8,
+   "name": "KENT",
+   "source": "ghcn"
+  },
+  "st-ghcn-USC00519397": {
+   "lat": 21.2717,
+   "lon": -157.8167,
+   "elev": 3.0,
+   "name": "WAIKIKI 717.2",
+   "source": "ghcn"
+  },
+  "st-ghcn-USC00516128": {
+   "lat": 21.3331,
+   "lon": -157.8025,
+   "elev": 152.4,
+   "name": "MANOA LYON ARBO 785.2",
+   "source": "ghcn"
+  },
+  "st-00091182": {
+   "lat": 21.324,
+   "lon": -157.929,
+   "elev": 2.0,
+   "name": "HONOLULU_INTL_AP",
+   "source": "wmo"
+  },
+  "st-00072509": {
+   "lat": 42.361,
+   "lon": -71.011,
+   "elev": 4.0,
+   "name": "BOSTON_LOGAN_INTL_AP",
+   "source": "wmo"
+  },
+  "st-ghcn-USC00193890": {
+   "lat": 42.3031,
+   "lon": -71.1242,
+   "elev": 29.0,
+   "name": "JAMAICA PLAIN",
+   "source": "ghcn"
+  },
+  "st-ghcn-USC00190736": {
+   "lat": 42.2122,
+   "lon": -71.1136,
+   "elev": 190.5,
+   "name": "BLUE HILL COOP",
+   "source": "ghcn"
+  },
+  "st-ghcn-CAN0303M9JM": {
+   "lat": 50.7292,
+   "lon": -113.9609,
+   "elev": 1081.0,
+   "name": "OKOTOKS",
+   "source": "ghcn"
+  },
+  "st-ghcn-CAN03035340": {
+   "lat": 50.6064,
+   "lon": -112.9833,
+   "elev": 940.0,
+   "name": "QUEENSTOWN",
+   "source": "ghcn"
+  },
+  "st-ghcn-CAN07024254": {
+   "lat": 46.8167,
+   "lon": -71.1,
+   "elev": 69.0,
+   "name": "LAUZON",
+   "source": "ghcn"
+  },
+  "st-ghcn-CAN07057567": {
+   "lat": 46.8667,
+   "lon": -70.8833,
+   "elev": 69.0,
+   "name": "SAINT MICHEL",
+   "source": "ghcn"
+  },
+  "st-ghcn-CAN07027840": {
+   "lat": 46.5,
+   "lon": -71.0833,
+   "elev": 144.8,
+   "name": "SCOTT",
+   "source": "ghcn"
+  },
+  "st-ghcn-CAN06105976": {
+   "lat": 45.3833,
+   "lon": -75.7167,
+   "elev": 79.2,
+   "name": "OTTAWA CDA",
+   "source": "ghcn"
+  },
+  "st-00071063": {
+   "lat": 45.382,
+   "lon": -75.714,
+   "elev": 79.0,
+   "name": "Ottawa_Cda_Rcs",
+   "source": "wmo"
+  },
+  "st-ghcn-CAN07030170": {
+   "lat": 45.55,
+   "lon": -75.55,
+   "elev": 91.0,
+   "name": "ANGERS",
+   "source": "ghcn"
+  },
+  "st-00078480": {
+   "lat": 18.493,
+   "lon": -71.853,
+   "elev": 45.0,
+   "name": "Jimani",
+   "source": "wmo"
+  },
+  "st-00078482": {
+   "lat": 18.249,
+   "lon": -71.123,
+   "elev": 8.0,
+   "name": "Barahona",
+   "source": "wmo"
+  },
+  "st-00078467": {
+   "lat": 18.249,
+   "lon": -71.123,
+   "elev": 8.0,
+   "name": "SDeLaMar",
+   "source": "wmo"
+  },
+  "st-00078486": {
+   "lat": 18.473,
+   "lon": -69.871,
+   "elev": 14.0,
+   "name": "SantoDomingo",
+   "source": "wmo"
+  },
+  "st-00078485": {
+   "lat": 18.433,
+   "lon": -69.68,
+   "elev": 7.0,
+   "name": "LasAmericas",
+   "source": "wmo"
+  },
+  "st-00078473": {
+   "lat": 18.742,
+   "lon": -69.631,
+   "elev": 53.0,
+   "name": "Bayaguana",
+   "source": "wmo"
+  },
+  "st-00078388": {
+   "lat": 18.5,
+   "lon": -77.917,
+   "elev": 1.0,
+   "name": "MontegoBaySangster",
+   "source": "wmo"
+  },
+  "st-00078397": {
+   "lat": 17.933,
+   "lon": -76.783,
+   "elev": 3.0,
+   "name": "KingstonNormanManley",
+   "source": "wmo"
+  },
+  "st-00078764": {
+   "lat": 9.95,
+   "lon": -84.133,
+   "elev": 997.0,
+   "name": "TobiasBolanosPalmaAirport",
+   "source": "wmo"
+  },
+  "st-00078762": {
+   "lat": 9.983,
+   "lon": -84.167,
+   "elev": 913.0,
+   "name": "JuanSantamariaInternationalAir",
+   "source": "wmo"
+  },
+  "st-00078767": {
+   "lat": 9.95,
+   "lon": -83.017,
+   "elev": 5.0,
+   "name": "PuertoLimon",
+   "source": "wmo"
+  },
+  "st-00078774": {
+   "lat": 10.583,
+   "lon": -85.533,
+   "elev": 70.0,
+   "name": "DanielOduberInternationalAirpo",
+   "source": "wmo"
+  },
+  "st-00078641": {
+   "lat": 14.586,
+   "lon": -90.528,
+   "elev": 1491.0,
+   "name": "La_Aurora",
+   "source": "wmo"
+  },
+  "st-00078649": {
+   "lat": 14.966,
+   "lon": -89.584,
+   "elev": 227.0,
+   "name": "La_Fragua",
+   "source": "wmo"
+  },
+  "st-00078655": {
+   "lat": 13.983,
+   "lon": -89.548,
+   "elev": 665.0,
+   "name": "SantaAna",
+   "source": "wmo"
+  },
+  "st-00078663": {
+   "lat": 13.699,
+   "lon": -89.118,
+   "elev": 624.0,
+   "name": "ILOPANGO",
+   "source": "wmo"
+  },
+  "st-00078650": {
+   "lat": 13.574,
+   "lon": -89.833,
+   "elev": 15.0,
+   "name": "ACAJUTLA",
+   "source": "wmo"
+  },
+  "st-00078583": {
+   "lat": 17.533,
+   "lon": -88.3,
+   "elev": 5.0,
+   "name": "PhillipGoldsonAirport",
+   "source": "wmo"
+  },
+  "st-78583002": {
+   "lat": 16.996,
+   "lon": -88.316,
+   "elev": 25.0,
+   "name": "Melinda",
+   "source": "wmo"
+  },
+  "st-78583001": {
+   "lat": 17.189,
+   "lon": -89.0,
+   "elev": 57.0,
+   "name": "CentralFarm",
+   "source": "wmo"
+  },
+  "st-00078073": {
+   "lat": 25.05,
+   "lon": -77.467,
+   "elev": 8.0,
+   "name": "LyndenPindlingIntlAirport",
+   "source": "wmo"
+  },
+  "st-00078954": {
+   "lat": 13.085,
+   "lon": -59.487,
+   "elev": 56.0,
+   "name": "Charnocks",
+   "source": "wmo"
+  },
+  "st-00078970": {
+   "lat": 10.589,
+   "lon": -61.345,
+   "elev": 5.0,
+   "name": "Piarco",
+   "source": "wmo"
+  },
+  "st-00080423": {
+   "lat": 10.583,
+   "lon": -62.303,
+   "elev": 18.0,
+   "name": "Guiria",
+   "source": "wmo"
+  },
+  "st-00087097": {
+   "lat": -25.731,
+   "lon": -54.479,
+   "elev": 270.0,
+   "name": "IGUAZU_AERO",
+   "source": "wmo"
+  },
+  "st-00086246": {
+   "lat": -25.456,
+   "lon": -54.839,
+   "elev": 247.0,
+   "name": "Aerop_Guarani",
+   "source": "wmo"
+  },
+  "st-00087163": {
+   "lat": -26.278,
+   "lon": -53.671,
+   "elev": 815.0,
+   "name": "BERNARDO_DE_IRIGOYEN_AERO",
+   "source": "wmo"
+  },
+  "st-00087582": {
+   "lat": -34.559,
+   "lon": -58.42,
+   "elev": 6.0,
+   "name": "AEROPARQUE_AERO",
+   "source": "wmo"
+  },
+  "st-00087585": {
+   "lat": -34.59,
+   "lon": -58.484,
+   "elev": 25.0,
+   "name": "BUENOS_AIRES_OBSERVATORIO",
+   "source": "wmo"
+  },
+  "st-00087553": {
+   "lat": -34.455,
+   "lon": -58.584,
+   "elev": 3.0,
+   "name": "SAN_FERNANDO_AERO",
+   "source": "wmo"
+  },
+  "st-00087420": {
+   "lat": -32.895,
+   "lon": -68.873,
+   "elev": 827.0,
+   "name": "MENDOZA_OBSERVATORIO",
+   "source": "wmo"
+  },
+  "st-00087418": {
+   "lat": -32.844,
+   "lon": -68.796,
+   "elev": 704.0,
+   "name": "MENDOZA_AERO",
+   "source": "wmo"
+  },
+  "st-00087416": {
+   "lat": -33.073,
+   "lon": -68.465,
+   "elev": 653.0,
+   "name": "SAN_MARTIN",
+   "source": "wmo"
+  },
+  "st-00087765": {
+   "lat": -41.147,
+   "lon": -71.164,
+   "elev": 840.0,
+   "name": "BARILOCHE_AERO",
+   "source": "wmo"
+  },
+  "st-00085577": {
+   "lat": -33.445,
+   "lon": -70.683,
+   "elev": 520.0,
+   "name": "Quintanormalsantiago",
+   "source": "wmo"
+  },
+  "st-00085580": {
+   "lat": -33.455,
+   "lon": -70.549,
+   "elev": 650.0,
+   "name": "Eulogiosancheztobalabaad",
+   "source": "wmo"
+  },
+  "st-00085574": {
+   "lat": -33.378,
+   "lon": -70.788,
+   "elev": 482.0,
+   "name": "Pudahuelaeropuertosantiago",
+   "source": "wmo"
+  },
+  "st-00085934": {
+   "lat": -53.002,
+   "lon": -70.839,
+   "elev": 36.0,
+   "name": "Carlosibanezaeropuertopuntaare",
+   "source": "wmo"
+  },
+  "st-00085469": {
+   "lat": -27.159,
+   "lon": -109.432,
+   "elev": 44.0,
+   "name": "Isladepascuaad",
+   "source": "wmo"
+  },
+  "st-00074501": {
+   "lat": -11.988,
+   "lon": -76.842,
+   "elev": 543.0,
+   "name": "Nana",
+   "source": "wmo"
+  },
+  "st-00072001": {
+   "lat": -11.521,
+   "lon": -77.236,
+   "elev": 127.0,
+   "name": "Donoso",
+   "source": "wmo"
+  },
+  "st-00081501": {
+   "lat": -11.453,
+   "lon": -77.122,
+   "elev": 346.0,
+   "name": "Huayan",
+   "source": "wmo"
+  },
+  "st-00022301": {
+   "lat": -14.237,
+   "lon": -71.237,
+   "elev": 3534.0,
+   "name": "Sicuani",
+   "source": "wmo"
+  },
+  "st-00084401": {
+   "lat": -16.389,
+   "lon": -70.854,
+   "elev": 3381.0,
+   "name": "Ubinas",
+   "source": "wmo"
+  },
+  "st-00062001": {
+   "lat": -17.072,
+   "lon": -71.724,
+   "elev": 108.0,
+   "name": "PampaBlanca",
+   "source": "wmo"
+  },
+  "st-00091402": {
+   "lat": -15.843,
+   "lon": -71.091,
+   "elev": 4475.0,
+   "name": "Imata",
+   "source": "wmo"
+  },
+  "st-21205791": {
+   "lat": 4.706,
+   "lon": -74.151,
+   "elev": 2547.0,
+   "name": "El_Dorado_Catam__AUT_",
+   "source": "wmo"
+  },
+  "st-21205420": {
+   "lat": 4.691,
+   "lon": -74.209,
+   "elev": 2543.0,
+   "name": "Tibaitata",
+   "source": "wmo"
+  },
+  "st-35025050": {
+   "lat": 4.483,
+   "lon": -74.03,
+   "elev": 2980.0,
+   "name": "Llano_Largo",
+   "source": "wmo"
+  },
+  "st-27015330": {
+   "lat": 6.22,
+   "lon": -75.59,
+   "elev": 1490.0,
+   "name": "Olaya_Herrera__AUT_",
+   "source": "wmo"
+  },
+  "st-23085270": {
+   "lat": 6.17,
+   "lon": -75.43,
+   "elev": 2157.0,
+   "name": "Aeropuerto_Jose_Maria_Cordova_",
+   "source": "wmo"
+  },
+  "st-26225030": {
+   "lat": 6.534,
+   "lon": -75.827,
+   "elev": 534.0,
+   "name": "Hacienda_Cotove_",
+   "source": "wmo"
+  },
+  "st-14015080": {
+   "lat": 10.447,
+   "lon": -75.516,
+   "elev": 2.0,
+   "name": "Aeropuerto_Rafael_Nunez",
+   "source": "wmo"
+  },
+  "st-29035080": {
+   "lat": 10.454,
+   "lon": -74.955,
+   "elev": 10.0,
+   "name": "Normal_Manati",
+   "source": "wmo"
+  },
+  "st-29045190": {
+   "lat": 10.918,
+   "lon": -74.78,
+   "elev": 14.0,
+   "name": "Aeropuerto_E_Cortissoz__AUT_",
+   "source": "wmo"
+  },
+  "st-00043501": {
+   "lat": -3.452,
+   "lon": -80.28,
+   "elev": 4.0,
+   "name": "ElSalto",
+   "source": "wmo"
+  },
+  "st-00086585": {
+   "lat": -34.861,
+   "lon": -56.208,
+   "elev": 14.4,
+   "name": "Prado",
+   "source": "wmo"
+  },
+  "st-00086575": {
+   "lat": -34.789,
+   "lon": -56.263,
+   "elev": 49.7,
+   "name": "Melilla",
+   "source": "wmo"
+  },
+  "st-00086580": {
+   "lat": -34.833,
+   "lon": -56.013,
+   "elev": 32.9,
+   "name": "Carrasco",
+   "source": "wmo"
+  },
+  "st-00086565": {
+   "lat": -34.493,
+   "lon": -54.312,
+   "elev": 18.2,
+   "name": "Rocha",
+   "source": "wmo"
+  },
+  "st-00086218": {
+   "lat": -25.236,
+   "lon": -57.515,
+   "elev": 83.0,
+   "name": "Asuncion",
+   "source": "wmo"
+  },
+  "st-00086221": {
+   "lat": -25.627,
+   "lon": -57.146,
+   "elev": 116.0,
+   "name": "Paraguari",
+   "source": "wmo"
+  },
+  "st-00087162": {
+   "lat": -26.212,
+   "lon": -58.229,
+   "elev": 60.0,
+   "name": "FORMOSA_AERO",
+   "source": "wmo"
+  },
+  "st-00081001": {
+   "lat": 6.809,
+   "lon": -58.146,
+   "elev": 1.2,
+   "name": "GTBotanicalGardens",
+   "source": "wmo"
+  },
+  "st-00081002": {
+   "lat": 6.489,
+   "lon": -58.25,
+   "elev": 28.0,
+   "name": "Cheddijaganairport",
+   "source": "wmo"
+  },
+  "st-00081058": {
+   "lat": 6.247,
+   "lon": -57.515,
+   "elev": 1.0,
+   "name": "Newamsterdam",
+   "source": "wmo"
+  },
+  "st-00081200": {
+   "lat": 5.811,
+   "lon": -55.187,
+   "elev": 3.0,
+   "name": "ZorgEnHoop",
+   "source": "wmo"
+  },
+  "st-00081225": {
+   "lat": 5.449,
+   "lon": -55.204,
+   "elev": 18.0,
+   "name": "JAPengelInt",
+   "source": "wmo"
+  },
+  "st-00094608": {
+   "lat": -31.919,
+   "lon": 115.873,
+   "elev": 25.0,
+   "name": "PerthMetro",
+   "source": "wmo"
+  },
+  "st-00094614": {
+   "lat": -31.956,
+   "lon": 115.762,
+   "elev": 41.0,
+   "name": "Swanbourne",
+   "source": "wmo"
+  },
+  "st-00094610": {
+   "lat": -31.927,
+   "lon": 115.976,
+   "elev": 15.0,
+   "name": "PerthAirport",
+   "source": "wmo"
+  },
+  "st-00094648": {
+   "lat": -34.926,
+   "lon": 138.583,
+   "elev": 29.0,
+   "name": "AdelaideWestTerrace",
+   "source": "wmo"
+  },
+  "st-ghcn-ASN00023090": {
+   "lat": -34.9211,
+   "lon": 138.6216,
+   "elev": 48.0,
+   "name": "ADELAIDE (KENT TOWN)",
+   "source": "ghcn"
+  },
+  "st-00094672": {
+   "lat": -34.952,
+   "lon": 138.52,
+   "elev": 2.0,
+   "name": "AdelaideAirport",
+   "source": "wmo"
+  },
+  "st-00094287": {
+   "lat": -16.874,
+   "lon": 145.746,
+   "elev": 2.0,
+   "name": "CairnsAero",
+   "source": "wmo"
+  },
+  "st-00095286": {
+   "lat": -17.07,
+   "lon": 145.429,
+   "elev": 472.0,
+   "name": "MareebaAirport",
+   "source": "wmo"
+  },
+  "st-00095284": {
+   "lat": -17.135,
+   "lon": 145.428,
+   "elev": 594.0,
+   "name": "WalkaminResearchStation",
+   "source": "wmo"
+  },
+  "st-00093439": {
+   "lat": -41.331,
+   "lon": 174.806,
+   "elev": 4.0,
+   "name": "Wellington_Aero_AWS",
+   "source": "wmo"
+  },
+  "st-00093420": {
+   "lat": -40.904,
+   "lon": 174.985,
+   "elev": 6.0,
+   "name": "Paraparaumu_Aero_AWS",
+   "source": "wmo"
+  },
+  "st-00093781": {
+   "lat": -43.489,
+   "lon": 172.527,
+   "elev": 37.0,
+   "name": "Christchurch_Aero_AWS",
+   "source": "wmo"
+  },
+  "st-00093791": {
+   "lat": -43.626,
+   "lon": 172.47,
+   "elev": 18.0,
+   "name": "Lincoln_Broadfield",
+   "source": "wmo"
+  },
+  "st-00093817": {
+   "lat": -45.037,
+   "lon": 169.684,
+   "elev": 370.0,
+   "name": "Lauder_Observatory",
+   "source": "wmo"
+  },
+  "st-00093747": {
+   "lat": -44.526,
+   "lon": 169.889,
+   "elev": 484.0,
+   "name": "Tara_Hills_AWS",
+   "source": "wmo"
+  },
+  "st-00091680": {
+   "lat": -17.76,
+   "lon": 177.445,
+   "elev": 22.0,
+   "name": "NadiAirport",
+   "source": "wmo"
+  },
+  "st-00091690": {
+   "lat": -18.147,
+   "lon": 178.454,
+   "elev": 6.0,
+   "name": "LaucalaBay",
+   "source": "wmo"
+  },
+  "st-00091683": {
+   "lat": -18.047,
+   "lon": 178.559,
+   "elev": 3.0,
+   "name": "NausoriAirport",
+   "source": "wmo"
+  },
+  "st-00091762": {
+   "lat": -13.816,
+   "lon": -171.78,
+   "elev": 2.0,
+   "name": "Samoa_Apia",
+   "source": "wmo"
+  },
+  "st-00091765": {
+   "lat": -14.331,
+   "lon": -170.714,
+   "elev": 4.0,
+   "name": "PAGO_PAGO_WSO_AP",
+   "source": "wmo"
+  },
+  "st-00091517": {
+   "lat": -9.417,
+   "lon": 159.967,
+   "elev": 55.0,
+   "name": "Honiara",
+   "source": "wmo"
+  },
+  "st-00091520": {
+   "lat": -9.417,
+   "lon": 160.05,
+   "elev": 8.0,
+   "name": "Henderson",
+   "source": "wmo"
+  },
+  "st-00091408": {
+   "lat": 7.333,
+   "lon": 134.483,
+   "elev": 29.0,
+   "name": "KOROR_WSO",
+   "source": "wmo"
+  },
+  "st-00091348": {
+   "lat": 6.967,
+   "lon": 158.217,
+   "elev": 37.0,
+   "name": "POHNPEI_WSO",
    "source": "wmo"
   }
  }
