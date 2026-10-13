@@ -615,8 +615,13 @@ Root causes found in the code (13 Oct):
 - Hotels first (Google Hotels via SerpApi has every site); flights from other
   sources only via Google Flights (SerpApi, costs extra searches, measured
   25 % above Aviasales on 6 Oct) — measure before adding. Never scrape a
-  site against its terms. SerpApi plan: Starter $25 proposed, owner to
-  confirm/subscribe.
+  site against its terms.
+- **No paid SerpApi for now** (owner, 13 Oct 13:08): stay on the free 250
+  searches/month until visitor demand is seen. Both together: partner
+  prices/links (income) + every other site (no income, for traffic). Where
+  the free allowance is paced out, show partners only — no number without a
+  live price. Watch GA4 searches + how often the pace guard says no
+  (`/api/serp-status`) and propose the paid plan with that evidence.
 
 **Owner's decisions (13 Oct):**
 - Hotel list prices: **paid data plan now** (Google Hotels via SerpApi —
