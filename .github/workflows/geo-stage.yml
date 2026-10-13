@@ -1,0 +1,59 @@
+# Geocodes and stages a batch of new cities (scripts/geo/batchN.json):
+# Nominatim centres + gateway airports checked in OurAirports, written to
+# scripts/geo/out/<batch>.geocoded.json and <batch>.staged.json. Nothing on
+# the site changes: a staged city is published only once every data item it
+# needs is complete. Runs here because the cloud workspace cannot reach
+# Nominatim or OurAirports.
+name: Geo stage
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/geo/batch*.json"
+      - "scripts/geo/geocode_cities.py"
+      - "scripts/geo/stage_batch.py"
+      - ".github/workflows/geo-stage.yml"
+  workflow_dispatch:
+    inputs:
+      batch:
+        description: "Batch file"
+        default: "scripts/geo/batch2.json"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: geo-stage
+  cancel-in-progress: false
+
+jobs:
+  stage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Geocode and stage
+        run: |
+          BATCH="${{ inputs.batch }}"
+          if [ -z "$BATCH" ]; then BATCH=scripts/geo/batch2.json; fi
+          python3 scripts/geo/geocode_cities.py "$BATCH"
+          python3 scripts/geo/stage_batch.py "$BATCH"
+
+      - name: Commit
+        run: |
+          git add scripts/geo/out/*.geocoded.json scripts/geo/out/*.staged.json
+          if git diff --cached --quiet; then
+            echo "Nothing new."
+            exit 0
+          fi
+          git config user.name "Claude"
+          git config user.email "noreply@anthropic.com"
+          git commit -m "Geo: stage new cities (Nominatim + OurAirports)"
+          git pull --rebase origin main
+          git push

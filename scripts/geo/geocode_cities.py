@@ -14,6 +14,7 @@ Nominatim's usage policy: at most one request per second, a real User-Agent.
 from __future__ import annotations
 
 import json
+import re
 import sys
 import time
 import urllib.parse
@@ -32,8 +33,18 @@ def get(url: str) -> bytes:
         return r.read()
 
 
+def plain_name(q: str) -> str:
+    """A Wikipedia title as a place name: "Krabi (town)" → "Krabi",
+    "Livingstone, Zambia" → "Livingstone" (the country is already the
+    countrycodes filter)."""
+    q = re.sub(r"\s*\(.*?\)", "", q).strip()
+    if q.endswith(", D.C."):
+        return q
+    return q.split(",")[0].strip()
+
+
 def nominatim(q: str, cc: str, feature: str | None):
-    params = {"q": q, "countrycodes": cc.lower(), "format": "jsonv2", "limit": 1, "accept-language": "en"}
+    params = {"q": plain_name(q), "countrycodes": cc.lower(), "format": "jsonv2", "limit": 1, "accept-language": "en"}
     if feature:
         params["featureType"] = feature
     url = "https://nominatim.openstreetmap.org/search?" + urllib.parse.urlencode(params)

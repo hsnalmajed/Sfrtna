@@ -1,0 +1,1296 @@
+{
+ "about": "Batch 2 of the country expansion (13 Oct 2026, owner's list of tourist cities): 68 cities in countries the site already covers and 88 cities in 63 new countries. Staged only: a city goes live when every data item it needs is complete (scripts/coverage/check.ts). Coordinates come from geocode_cities.py.",
+ "countries": {
+  "SA": [
+   [
+    "dammam",
+    "الدمام",
+    "Dammam",
+    "Dammam"
+   ],
+   [
+    "taif",
+    "الطائف",
+    "Taif",
+    "Taif"
+   ]
+  ],
+  "TR": [
+   [
+    "bodrum",
+    "بودروم",
+    "Bodrum",
+    "Bodrum"
+   ]
+  ],
+  "GE": [
+   [
+    "kutaisi",
+    "كوتايسي",
+    "Kutaisi",
+    "Kutaisi"
+   ]
+  ],
+  "KG": [
+   [
+    "osh",
+    "أوش",
+    "Osh",
+    "Osh"
+   ]
+  ],
+  "IN": [
+   [
+    "kochi",
+    "كوتشي",
+    "Kochi",
+    "Kochi"
+   ],
+   [
+    "bengaluru",
+    "بنغالورو",
+    "Bengaluru",
+    "Bengaluru"
+   ]
+  ],
+  "MV": [
+   [
+    "maafushi",
+    "مافوشي",
+    "Maafushi",
+    "Maafushi"
+   ]
+  ],
+  "BT": [
+   [
+    "paro",
+    "بارو",
+    "Paro",
+    "Paro, Bhutan"
+   ]
+  ],
+  "BD": [
+   [
+    "dhaka",
+    "دكا",
+    "Dhaka",
+    "Dhaka"
+   ]
+  ],
+  "CN": [
+   [
+    "shenzhen",
+    "شينزن",
+    "Shenzhen",
+    "Shenzhen"
+   ],
+   [
+    "chengdu",
+    "تشنغدو",
+    "Chengdu",
+    "Chengdu"
+   ]
+  ],
+  "JP": [
+   [
+    "sapporo",
+    "سابورو",
+    "Sapporo",
+    "Sapporo"
+   ],
+   [
+    "fukuoka",
+    "فوكوكا",
+    "Fukuoka",
+    "Fukuoka"
+   ],
+   [
+    "okinawa",
+    "أوكيناوا",
+    "Okinawa",
+    "Naha"
+   ]
+  ],
+  "TW": [
+   [
+    "taipei",
+    "تايبيه",
+    "Taipei",
+    "Taipei"
+   ]
+  ],
+  "HK": [
+   [
+    "hong-kong",
+    "هونغ كونغ",
+    "Hong Kong",
+    "Hong Kong"
+   ]
+  ],
+  "MO": [
+   [
+    "macau",
+    "ماكاو",
+    "Macau",
+    "Macau"
+   ]
+  ],
+  "TH": [
+   [
+    "krabi",
+    "كرابي",
+    "Krabi",
+    "Krabi (town)"
+   ],
+   [
+    "koh-samui",
+    "كوه ساموي",
+    "Ko Samui",
+    "Ko Samui"
+   ]
+  ],
+  "MY": [
+   [
+    "kota-kinabalu",
+    "كوتا كينابالو",
+    "Kota Kinabalu",
+    "Kota Kinabalu"
+   ]
+  ],
+  "ID": [
+   [
+    "lombok",
+    "لومبوك",
+    "Lombok",
+    "Mataram (city)"
+   ],
+   [
+    "labuan-bajo",
+    "لابوان باجو",
+    "Labuan Bajo",
+    "Labuan Bajo"
+   ]
+  ],
+  "VN": [
+   [
+    "nha-trang",
+    "نها ترانغ",
+    "Nha Trang",
+    "Nha Trang"
+   ],
+   [
+    "phu-quoc",
+    "فو كوك",
+    "Phu Quoc",
+    "Phú Quốc"
+   ]
+  ],
+  "PH": [
+   [
+    "puerto-princesa",
+    "بويرتو برنسيسا",
+    "Puerto Princesa",
+    "Puerto Princesa"
+   ]
+  ],
+  "LA": [
+   [
+    "luang-prabang",
+    "لوانغ برابانغ",
+    "Luang Prabang",
+    "Luang Prabang"
+   ],
+   [
+    "vientiane",
+    "فينتيان",
+    "Vientiane",
+    "Vientiane"
+   ]
+  ],
+  "BN": [
+   [
+    "bandar-seri-begawan",
+    "بندر سري بيغاوان",
+    "Bandar Seri Begawan",
+    "Bandar Seri Begawan"
+   ]
+  ],
+  "FR": [
+   [
+    "bordeaux",
+    "بوردو",
+    "Bordeaux",
+    "Bordeaux"
+   ],
+   [
+    "strasbourg",
+    "ستراسبورغ",
+    "Strasbourg",
+    "Strasbourg"
+   ]
+  ],
+  "IT": [
+   [
+    "pisa",
+    "بيزا",
+    "Pisa",
+    "Pisa"
+   ],
+   [
+    "bologna",
+    "بولونيا",
+    "Bologna",
+    "Bologna"
+   ],
+   [
+    "palermo",
+    "باليرمو",
+    "Palermo",
+    "Palermo"
+   ]
+  ],
+  "ES": [
+   [
+    "malaga",
+    "ملقة",
+    "Málaga",
+    "Málaga"
+   ],
+   [
+    "valencia",
+    "فالنسيا",
+    "Valencia",
+    "Valencia"
+   ],
+   [
+    "ibiza",
+    "إيبيزا",
+    "Ibiza",
+    "Ibiza (town)"
+   ],
+   [
+    "palma",
+    "بالما دي مايوركا",
+    "Palma de Mallorca",
+    "Palma de Mallorca"
+   ]
+  ],
+  "PT": [
+   [
+    "faro",
+    "فارو",
+    "Faro",
+    "Faro, Portugal"
+   ]
+  ],
+  "GB": [
+   [
+    "glasgow",
+    "غلاسكو",
+    "Glasgow",
+    "Glasgow"
+   ],
+   [
+    "birmingham",
+    "برمنغهام",
+    "Birmingham",
+    "Birmingham"
+   ],
+   [
+    "belfast",
+    "بلفاست",
+    "Belfast",
+    "Belfast"
+   ]
+  ],
+  "IE": [
+   [
+    "cork",
+    "كورك",
+    "Cork",
+    "Cork (city)"
+   ]
+  ],
+  "DE": [
+   [
+    "dusseldorf",
+    "دوسلدورف",
+    "Düsseldorf",
+    "Düsseldorf"
+   ],
+   [
+    "cologne",
+    "كولونيا",
+    "Cologne",
+    "Cologne"
+   ]
+  ],
+  "CH": [
+   [
+    "lausanne",
+    "لوزان",
+    "Lausanne",
+    "Lausanne"
+   ],
+   [
+    "zermatt",
+    "زيرمات",
+    "Zermatt",
+    "Zermatt"
+   ]
+  ],
+  "CZ": [
+   [
+    "brno",
+    "برنو",
+    "Brno",
+    "Brno"
+   ]
+  ],
+  "PL": [
+   [
+    "gdansk",
+    "غدانسك",
+    "Gdańsk",
+    "Gdańsk"
+   ]
+  ],
+  "SK": [
+   [
+    "bratislava",
+    "براتيسلافا",
+    "Bratislava",
+    "Bratislava"
+   ]
+  ],
+  "GR": [
+   [
+    "heraklion",
+    "هيراكليون (كريت)",
+    "Heraklion (Crete)",
+    "Heraklion"
+   ],
+   [
+    "rhodes",
+    "رودس",
+    "Rhodes",
+    "Rhodes (city)"
+   ],
+   [
+    "corfu",
+    "كورفو",
+    "Corfu",
+    "Corfu (city)"
+   ]
+  ],
+  "SE": [
+   [
+    "gothenburg",
+    "غوتنبرغ",
+    "Gothenburg",
+    "Gothenburg"
+   ]
+  ],
+  "EE": [
+   [
+    "tallinn",
+    "تالين",
+    "Tallinn",
+    "Tallinn"
+   ]
+  ],
+  "LV": [
+   [
+    "riga",
+    "ريغا",
+    "Riga",
+    "Riga"
+   ]
+  ],
+  "LT": [
+   [
+    "vilnius",
+    "فيلنيوس",
+    "Vilnius",
+    "Vilnius"
+   ]
+  ],
+  "BG": [
+   [
+    "sofia",
+    "صوفيا",
+    "Sofia",
+    "Sofia"
+   ],
+   [
+    "varna",
+    "فارنا",
+    "Varna",
+    "Varna, Bulgaria"
+   ]
+  ],
+  "MK": [
+   [
+    "skopje",
+    "سكوبيه",
+    "Skopje",
+    "Skopje"
+   ]
+  ],
+  "LU": [
+   [
+    "luxembourg",
+    "لوكسمبورغ",
+    "Luxembourg",
+    "Luxembourg City"
+   ]
+  ],
+  "MC": [
+   [
+    "monte-carlo",
+    "مونت كارلو",
+    "Monte Carlo",
+    "Monte Carlo"
+   ]
+  ],
+  "SM": [
+   [
+    "san-marino",
+    "سان مارينو",
+    "San Marino",
+    "City of San Marino"
+   ]
+  ],
+  "VA": [
+   [
+    "vatican-city",
+    "الفاتيكان",
+    "Vatican City",
+    "Vatican City"
+   ]
+  ],
+  "AD": [
+   [
+    "andorra-la-vella",
+    "أندورا لا فيلا",
+    "Andorra la Vella",
+    "Andorra la Vella"
+   ]
+  ],
+  "EG": [
+   [
+    "giza",
+    "الجيزة",
+    "Giza",
+    "Giza"
+   ],
+   [
+    "hurghada",
+    "الغردقة",
+    "Hurghada",
+    "Hurghada"
+   ]
+  ],
+  "MA": [
+   [
+    "agadir",
+    "أغادير",
+    "Agadir",
+    "Agadir"
+   ],
+   [
+    "rabat",
+    "الرباط",
+    "Rabat",
+    "Rabat"
+   ]
+  ],
+  "TN": [
+   [
+    "hammamet",
+    "الحمامات",
+    "Hammamet",
+    "Hammamet"
+   ]
+  ],
+  "DZ": [
+   [
+    "algiers",
+    "الجزائر العاصمة",
+    "Algiers",
+    "Algiers"
+   ],
+   [
+    "oran",
+    "وهران",
+    "Oran",
+    "Oran"
+   ]
+  ],
+  "TZ": [
+   [
+    "dar-es-salaam",
+    "دار السلام",
+    "Dar es Salaam",
+    "Dar es Salaam"
+   ]
+  ],
+  "ET": [
+   [
+    "addis-ababa",
+    "أديس أبابا",
+    "Addis Ababa",
+    "Addis Ababa"
+   ]
+  ],
+  "UG": [
+   [
+    "entebbe",
+    "عنتيبي",
+    "Entebbe",
+    "Entebbe"
+   ]
+  ],
+  "RW": [
+   [
+    "kigali",
+    "كيغالي",
+    "Kigali",
+    "Kigali"
+   ]
+  ],
+  "SC": [
+   [
+    "praslin",
+    "براسلين",
+    "Praslin",
+    "Praslin"
+   ]
+  ],
+  "MG": [
+   [
+    "antananarivo",
+    "أنتاناناريفو",
+    "Antananarivo",
+    "Antananarivo"
+   ],
+   [
+    "nosy-be",
+    "نوسي بي",
+    "Nosy Be",
+    "Nosy Be"
+   ]
+  ],
+  "SN": [
+   [
+    "dakar",
+    "داكار",
+    "Dakar",
+    "Dakar"
+   ]
+  ],
+  "GH": [
+   [
+    "accra",
+    "أكرا",
+    "Accra",
+    "Accra"
+   ]
+  ],
+  "NG": [
+   [
+    "lagos",
+    "لاغوس",
+    "Lagos",
+    "Lagos"
+   ]
+  ],
+  "NA": [
+   [
+    "windhoek",
+    "ويندهوك",
+    "Windhoek",
+    "Windhoek"
+   ]
+  ],
+  "BW": [
+   [
+    "gaborone",
+    "غابورون",
+    "Gaborone",
+    "Gaborone"
+   ]
+  ],
+  "ZM": [
+   [
+    "livingstone",
+    "ليفينغستون",
+    "Livingstone",
+    "Livingstone, Zambia"
+   ]
+  ],
+  "ZW": [
+   [
+    "victoria-falls",
+    "شلالات فيكتوريا",
+    "Victoria Falls",
+    "Victoria Falls (city)"
+   ]
+  ],
+  "MZ": [
+   [
+    "maputo",
+    "مابوتو",
+    "Maputo",
+    "Maputo"
+   ]
+  ],
+  "CV": [
+   [
+    "sal",
+    "سال",
+    "Sal",
+    "Sal, Cape Verde"
+   ]
+  ],
+  "US": [
+   [
+    "orlando",
+    "أورلاندو",
+    "Orlando",
+    "Orlando, Florida"
+   ],
+   [
+    "chicago",
+    "شيكاغو",
+    "Chicago",
+    "Chicago"
+   ],
+   [
+    "washington-dc",
+    "واشنطن العاصمة",
+    "Washington, D.C.",
+    "Washington, D.C."
+   ],
+   [
+    "seattle",
+    "سياتل",
+    "Seattle",
+    "Seattle"
+   ],
+   [
+    "honolulu",
+    "هونولولو",
+    "Honolulu",
+    "Honolulu"
+   ],
+   [
+    "boston",
+    "بوسطن",
+    "Boston",
+    "Boston"
+   ]
+  ],
+  "CA": [
+   [
+    "calgary",
+    "كالغاري",
+    "Calgary",
+    "Calgary"
+   ],
+   [
+    "quebec-city",
+    "كيبيك",
+    "Quebec City",
+    "Quebec City"
+   ],
+   [
+    "ottawa",
+    "أوتاوا",
+    "Ottawa",
+    "Ottawa"
+   ]
+  ],
+  "MX": [
+   [
+    "los-cabos",
+    "لوس كابوس",
+    "Los Cabos",
+    "Cabo San Lucas"
+   ],
+   [
+    "puerto-vallarta",
+    "بويرتو فالارتا",
+    "Puerto Vallarta",
+    "Puerto Vallarta"
+   ]
+  ],
+  "CU": [
+   [
+    "havana",
+    "هافانا",
+    "Havana",
+    "Havana"
+   ],
+   [
+    "varadero",
+    "فاراديرو",
+    "Varadero",
+    "Varadero"
+   ]
+  ],
+  "DO": [
+   [
+    "punta-cana",
+    "بونتا كانا",
+    "Punta Cana",
+    "Punta Cana"
+   ],
+   [
+    "santo-domingo",
+    "سانتو دومينغو",
+    "Santo Domingo",
+    "Santo Domingo"
+   ]
+  ],
+  "JM": [
+   [
+    "montego-bay",
+    "مونتيغو باي",
+    "Montego Bay",
+    "Montego Bay"
+   ],
+   [
+    "kingston",
+    "كينغستون",
+    "Kingston",
+    "Kingston, Jamaica"
+   ]
+  ],
+  "CR": [
+   [
+    "san-jose",
+    "سان خوسيه",
+    "San José",
+    "San José, Costa Rica"
+   ],
+   [
+    "liberia",
+    "ليبيريا",
+    "Liberia",
+    "Liberia, Costa Rica"
+   ]
+  ],
+  "PA": [
+   [
+    "panama-city",
+    "مدينة بنما",
+    "Panama City",
+    "Panama City"
+   ]
+  ],
+  "GT": [
+   [
+    "guatemala-city",
+    "مدينة غواتيمالا",
+    "Guatemala City",
+    "Guatemala City"
+   ]
+  ],
+  "SV": [
+   [
+    "san-salvador",
+    "سان سلفادور",
+    "San Salvador",
+    "San Salvador"
+   ]
+  ],
+  "HN": [
+   [
+    "roatan",
+    "رواتان",
+    "Roatán",
+    "Roatán"
+   ]
+  ],
+  "BZ": [
+   [
+    "belize-city",
+    "مدينة بليز",
+    "Belize City",
+    "Belize City"
+   ]
+  ],
+  "BS": [
+   [
+    "nassau",
+    "ناساو",
+    "Nassau",
+    "Nassau, Bahamas"
+   ]
+  ],
+  "BB": [
+   [
+    "bridgetown",
+    "بريدجتاون",
+    "Bridgetown",
+    "Bridgetown"
+   ]
+  ],
+  "TT": [
+   [
+    "port-of-spain",
+    "بورت أوف سبين",
+    "Port of Spain",
+    "Port of Spain"
+   ]
+  ],
+  "BR": [
+   [
+    "foz-do-iguacu",
+    "فوز دو إيغواسو",
+    "Foz do Iguaçu",
+    "Foz do Iguaçu"
+   ],
+   [
+    "florianopolis",
+    "فلوريانوبوليس",
+    "Florianópolis",
+    "Florianópolis"
+   ]
+  ],
+  "AR": [
+   [
+    "buenos-aires",
+    "بوينس آيرس",
+    "Buenos Aires",
+    "Buenos Aires"
+   ],
+   [
+    "mendoza",
+    "مندوزا",
+    "Mendoza",
+    "Mendoza, Argentina"
+   ],
+   [
+    "bariloche",
+    "باريلوتشي",
+    "Bariloche",
+    "San Carlos de Bariloche"
+   ],
+   [
+    "el-calafate",
+    "إل كالافاتي",
+    "El Calafate",
+    "El Calafate"
+   ]
+  ],
+  "CL": [
+   [
+    "santiago",
+    "سانتياغو",
+    "Santiago",
+    "Santiago"
+   ],
+   [
+    "punta-arenas",
+    "بونتا أريناس",
+    "Punta Arenas",
+    "Punta Arenas"
+   ],
+   [
+    "easter-island",
+    "جزيرة القيامة",
+    "Easter Island",
+    "Hanga Roa"
+   ]
+  ],
+  "PE": [
+   [
+    "lima",
+    "ليما",
+    "Lima",
+    "Lima"
+   ],
+   [
+    "cusco",
+    "كوسكو",
+    "Cusco",
+    "Cusco"
+   ],
+   [
+    "arequipa",
+    "أريكيبا",
+    "Arequipa",
+    "Arequipa"
+   ]
+  ],
+  "CO": [
+   [
+    "bogota",
+    "بوغوتا",
+    "Bogotá",
+    "Bogotá"
+   ],
+   [
+    "medellin",
+    "ميديلين",
+    "Medellín",
+    "Medellín"
+   ],
+   [
+    "cartagena",
+    "قرطاجنة",
+    "Cartagena",
+    "Cartagena, Colombia"
+   ]
+  ],
+  "EC": [
+   [
+    "quito",
+    "كيتو",
+    "Quito",
+    "Quito"
+   ],
+   [
+    "guayaquil",
+    "غواياكيل",
+    "Guayaquil",
+    "Guayaquil"
+   ],
+   [
+    "galapagos",
+    "غالاباغوس",
+    "Galápagos",
+    "Puerto Ayora"
+   ]
+  ],
+  "UY": [
+   [
+    "montevideo",
+    "مونتيفيديو",
+    "Montevideo",
+    "Montevideo"
+   ],
+   [
+    "punta-del-este",
+    "بونتا دل إستي",
+    "Punta del Este",
+    "Punta del Este"
+   ]
+  ],
+  "BO": [
+   [
+    "la-paz",
+    "لاباز",
+    "La Paz",
+    "La Paz"
+   ],
+   [
+    "santa-cruz",
+    "سانتا كروز",
+    "Santa Cruz de la Sierra",
+    "Santa Cruz de la Sierra"
+   ]
+  ],
+  "PY": [
+   [
+    "asuncion",
+    "أسونسيون",
+    "Asunción",
+    "Asunción"
+   ]
+  ],
+  "GY": [
+   [
+    "georgetown",
+    "جورج تاون",
+    "Georgetown",
+    "Georgetown, Guyana"
+   ]
+  ],
+  "SR": [
+   [
+    "paramaribo",
+    "باراماريبو",
+    "Paramaribo",
+    "Paramaribo"
+   ]
+  ],
+  "AU": [
+   [
+    "perth",
+    "بيرث",
+    "Perth",
+    "Perth"
+   ],
+   [
+    "adelaide",
+    "أديلايد",
+    "Adelaide",
+    "Adelaide"
+   ],
+   [
+    "cairns",
+    "كيرنز",
+    "Cairns",
+    "Cairns"
+   ]
+  ],
+  "NZ": [
+   [
+    "auckland",
+    "أوكلاند",
+    "Auckland",
+    "Auckland"
+   ],
+   [
+    "wellington",
+    "ويلينغتون",
+    "Wellington",
+    "Wellington"
+   ],
+   [
+    "christchurch",
+    "كرايستشيرش",
+    "Christchurch",
+    "Christchurch"
+   ],
+   [
+    "queenstown",
+    "كوينزتاون",
+    "Queenstown",
+    "Queenstown, New Zealand"
+   ]
+  ],
+  "FJ": [
+   [
+    "nadi",
+    "نادي",
+    "Nadi",
+    "Nadi"
+   ],
+   [
+    "suva",
+    "سوفا",
+    "Suva",
+    "Suva"
+   ]
+  ],
+  "PG": [
+   [
+    "port-moresby",
+    "بورت مورسبي",
+    "Port Moresby",
+    "Port Moresby"
+   ]
+  ],
+  "WS": [
+   [
+    "apia",
+    "أبيا",
+    "Apia",
+    "Apia"
+   ]
+  ],
+  "TO": [
+   [
+    "nukualofa",
+    "نوكوالوفا",
+    "Nukuʻalofa",
+    "Nukuʻalofa"
+   ]
+  ],
+  "VU": [
+   [
+    "port-vila",
+    "بورت فيلا",
+    "Port Vila",
+    "Port Vila"
+   ]
+  ],
+  "SB": [
+   [
+    "honiara",
+    "هونيارا",
+    "Honiara",
+    "Honiara"
+   ]
+  ],
+  "PW": [
+   [
+    "koror",
+    "كورور",
+    "Koror",
+    "Koror"
+   ]
+  ],
+  "FM": [
+   [
+    "pohnpei",
+    "بونبي",
+    "Pohnpei",
+    "Pohnpei"
+   ]
+  ]
+ },
+ "gatewayNote": "Gateway airport per city from the owner's list (13 Oct 2026); stage_batch.py checks each against OurAirports (scheduled service) before use.",
+ "gateways": {
+  "dammam": "DMM",
+  "taif": "TIF",
+  "bodrum": "BJV",
+  "kutaisi": "KUT",
+  "osh": "OSS",
+  "kochi": "COK",
+  "bengaluru": "BLR",
+  "maafushi": "MLE",
+  "paro": "PBH",
+  "dhaka": "DAC",
+  "shenzhen": "SZX",
+  "chengdu": "TFU",
+  "sapporo": "CTS",
+  "fukuoka": "FUK",
+  "okinawa": "OKA",
+  "taipei": "TPE",
+  "hong-kong": "HKG",
+  "macau": "MFM",
+  "krabi": "KBV",
+  "koh-samui": "USM",
+  "kota-kinabalu": "BKI",
+  "lombok": "LOP",
+  "labuan-bajo": "LBJ",
+  "nha-trang": "CXR",
+  "phu-quoc": "PQC",
+  "puerto-princesa": "PPS",
+  "luang-prabang": "LPQ",
+  "vientiane": "VTE",
+  "bandar-seri-begawan": "BWN",
+  "bordeaux": "BOD",
+  "strasbourg": "SXB",
+  "pisa": "PSA",
+  "bologna": "BLQ",
+  "palermo": "DPS",
+  "malaga": "AGP",
+  "valencia": "VLC",
+  "ibiza": "IBZ",
+  "palma": "PMI",
+  "faro": "FAO",
+  "glasgow": "GLA",
+  "birmingham": "BHX",
+  "belfast": "BFS",
+  "cork": "ORK",
+  "dusseldorf": "DUS",
+  "cologne": "CGN",
+  "lausanne": "GVA",
+  "zermatt": "GVA",
+  "brno": "BRQ",
+  "gdansk": "GDN",
+  "bratislava": "BTS",
+  "heraklion": "HER",
+  "rhodes": "RHO",
+  "corfu": "CFU",
+  "gothenburg": "GOT",
+  "tallinn": "TLL",
+  "riga": "RIX",
+  "vilnius": "VNO",
+  "sofia": "SOF",
+  "varna": "VAR",
+  "skopje": "SKP",
+  "luxembourg": "LUX",
+  "monte-carlo": "NCE",
+  "san-marino": "RMI",
+  "vatican-city": "FCO",
+  "andorra-la-vella": "BCN",
+  "giza": "SPX",
+  "hurghada": "HRG",
+  "agadir": "AGA",
+  "rabat": "RBA",
+  "hammamet": "NBE",
+  "algiers": "ALG",
+  "oran": "ORN",
+  "dar-es-salaam": "DAR",
+  "addis-ababa": "ADD",
+  "entebbe": "EBB",
+  "kigali": "KGL",
+  "praslin": "SEZ",
+  "antananarivo": "TNR",
+  "nosy-be": "NOS",
+  "dakar": "DSS",
+  "accra": "ACC",
+  "lagos": "LOS",
+  "windhoek": "WDH",
+  "gaborone": "GBE",
+  "livingstone": "LVI",
+  "victoria-falls": "VFA",
+  "maputo": "MPM",
+  "sal": "SID",
+  "orlando": "MCO",
+  "chicago": "ORD",
+  "washington-dc": "IAD",
+  "seattle": "SEA",
+  "honolulu": "HNL",
+  "boston": "BOS",
+  "calgary": "YYC",
+  "quebec-city": "YQB",
+  "ottawa": "YOW",
+  "los-cabos": "SJD",
+  "puerto-vallarta": "PVR",
+  "havana": "HAV",
+  "varadero": "VRA",
+  "punta-cana": "PUJ",
+  "santo-domingo": "SDQ",
+  "montego-bay": "MBJ",
+  "kingston": "KIN",
+  "san-jose": "SJO",
+  "liberia": "LIR",
+  "panama-city": "PTY",
+  "guatemala-city": "GUA",
+  "san-salvador": "SAL",
+  "roatan": "RTB",
+  "belize-city": "BZE",
+  "nassau": "NAS",
+  "bridgetown": "BGI",
+  "port-of-spain": "POS",
+  "foz-do-iguacu": "IGU",
+  "florianopolis": "FLN",
+  "buenos-aires": "EZE",
+  "mendoza": "MDZ",
+  "bariloche": "BRC",
+  "el-calafate": "FTE",
+  "santiago": "SCL",
+  "punta-arenas": "PUQ",
+  "easter-island": "IPC",
+  "lima": "LIM",
+  "cusco": "CUZ",
+  "arequipa": "AQP",
+  "bogota": "BOG",
+  "medellin": "MDE",
+  "cartagena": "CTG",
+  "quito": "UIO",
+  "guayaquil": "GOI",
+  "galapagos": "GPS",
+  "montevideo": "MVD",
+  "punta-del-este": "PDP",
+  "la-paz": "LPB",
+  "santa-cruz": "VVI",
+  "asuncion": "ASU",
+  "georgetown": "GEO",
+  "paramaribo": "PBM",
+  "perth": "PER",
+  "adelaide": "ADL",
+  "cairns": "CNS",
+  "auckland": "AKL",
+  "wellington": "WLG",
+  "christchurch": "CHC",
+  "queenstown": "ZQN",
+  "nadi": "NAN",
+  "suva": "SUV",
+  "port-moresby": "POM",
+  "apia": "APW",
+  "nukualofa": "TBU",
+  "port-vila": "VLI",
+  "honiara": "HIR",
+  "koror": "ROR",
+  "pohnpei": "PNI"
+ }
+}

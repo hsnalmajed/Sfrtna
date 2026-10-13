@@ -97,7 +97,8 @@ export function findCurrency(code: string): Currency | undefined {
 }
 
 /**
- * The 20 states that spend the euro.
+ * The 21 states that spend the euro (Bulgaria from 1 Jan 2026, European
+ * Commission).
  *
  * Listed explicitly because the euro breaks the one-country-one-currency
  * assumption the table above is built on: France, Italy and Spain have no row
@@ -106,7 +107,7 @@ export function findCurrency(code: string): Currency | undefined {
  * Montenegro) are included — what matters here is what you pay with.
  */
 const EURO_COUNTRIES = new Set([
-  "AT", "BE", "HR", "CY", "EE", "FI", "FR", "DE", "GR", "IE", "IT", "LV", "LT",
+  "AT", "BE", "BG", "HR", "CY", "EE", "FI", "FR", "DE", "GR", "IE", "IT", "LV", "LT",
   "LU", "MT", "NL", "PT", "SK", "SI", "ES",
   "AD", "MC", "SM", "VA", "ME", "XK",
 ]);

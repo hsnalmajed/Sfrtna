@@ -57,7 +57,7 @@ export const AIRPORTS: Airport[] = [
   { iata: "HRG", nameAr: "مطار الغردقة الدولي", nameEn: "Hurghada International Airport", cityAr: "الغردقة", cityEn: "Hurghada", countryAr: "مصر", countryEn: "Egypt" },
   { iata: "SSH", nameAr: "مطار شرم الشيخ الدولي", nameEn: "Sharm El Sheikh International Airport", cityAr: "شرم الشيخ", cityEn: "Sharm El Sheikh", countryAr: "مصر", countryEn: "Egypt" },
   { iata: "LXR", nameAr: "مطار الأقصر الدولي", nameEn: "Luxor International Airport", cityAr: "الأقصر", cityEn: "Luxor", countryAr: "مصر", countryEn: "Egypt" },
-  { iata: "ALY", nameAr: "مطار برج العرب الدولي", nameEn: "Borg El Arab Airport", cityAr: "الإسكندرية", cityEn: "Alexandria", countryAr: "مصر", countryEn: "Egypt" },
+  { iata: "HBE", nameAr: "مطار برج العرب الدولي", nameEn: "Borg El Arab Airport", cityAr: "الإسكندرية", cityEn: "Alexandria", countryAr: "مصر", countryEn: "Egypt" },
   { iata: "CMN", nameAr: "مطار محمد الخامس الدولي", nameEn: "Mohammed V International Airport", cityAr: "الدار البيضاء", cityEn: "Casablanca", countryAr: "المغرب", countryEn: "Morocco" },
   { iata: "RAK", nameAr: "مطار مراكش المنارة", nameEn: "Marrakesh Menara Airport", cityAr: "مراكش", cityEn: "Marrakesh", countryAr: "المغرب", countryEn: "Morocco" },
   { iata: "RBA", nameAr: "مطار الرباط سلا", nameEn: "Rabat–Salé Airport", cityAr: "الرباط", cityEn: "Rabat", countryAr: "المغرب", countryEn: "Morocco" },

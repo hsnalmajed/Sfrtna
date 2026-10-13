@@ -16,10 +16,19 @@
 //
 // `km` is the straight-line distance from the city centre (CITY_COORDS).
 
+// Gateway corrections (13 Oct 2026): the nearest-airport rule picked
+// airports a traveller from the Gulf does not fly into — Taif for Makkah
+// (Jeddah is the gateway), Itami for Kyoto (domestic only; Kansai is the
+// international one), LaGuardia for New York, Bern for Interlaken, Ostend for
+// Bruges, Agra's domestic airport, Bursa Yenişehir; and Alexandria was on
+// El Nouzha (ALY), closed to scheduled flights — Borg El Arab is HBE. Those
+// eight now name the international gateway, with its straight-line distance.
+// Checked against the owner's city list of 13 Oct and OurAirports.
+
 export const CITY_AIRPORTS: Record<string, { iata: string; km: number | null }> = {
   "riyadh": { iata: "RUH", km: 35 },
   "jeddah": { iata: "JED", km: 15 },
-  "makkah": { iata: "TIF", km: 75 },
+  "makkah": { iata: "JED", km: 75 },
   "madinah": { iata: "MED", km: 13 },
   "alula": { iata: "ULH", km: 18 },
   "abha": { iata: "AHB", km: 16 },
@@ -28,7 +37,7 @@ export const CITY_AIRPORTS: Record<string, { iata: string; km: number | null }> 
   "cappadocia": { iata: "NAV", km: 31 },
   "trabzon": { iata: "TZX", km: 5 },
   "izmir": { iata: "ADB", km: 14 },
-  "bursa": { iata: "YEI", km: 43 },
+  "bursa": { iata: "SAW", km: 82 },
   "dubai": { iata: "DXB", km: 8 },
   "abu-dhabi": { iata: "AUH", km: 28 },
   "sharjah": { iata: "SHJ", km: 10 },
@@ -43,7 +52,7 @@ export const CITY_AIRPORTS: Record<string, { iata: string; km: number | null }> 
   "cairo": { iata: "CAI", km: 17 },
   "luxor": { iata: "LXR", km: 7 },
   "aswan": { iata: "ASW", km: 16 },
-  "alexandria": { iata: "ALY", km: null },
+  "alexandria": { iata: "HBE", km: 37 },
   "sharm-el-sheikh": { iata: "SSH", km: 16 },
   "marrakesh": { iata: "RAK", km: 5 },
   "casablanca": { iata: "CMN", km: 25 },
@@ -77,7 +86,7 @@ export const CITY_AIRPORTS: Record<string, { iata: string; km: number | null }> 
   "thessaloniki": { iata: "SKG", km: 14 },
   "zurich": { iata: "ZRH", km: 9 },
   "geneva": { iata: "GVA", km: 5 },
-  "interlaken": { iata: "BRN", km: 37 },
+  "interlaken": { iata: "ZRH", km: 101 },
   "lucerne": { iata: "ZRH", km: 49 },
   "vienna": { iata: "VIE", km: 18 },
   "salzburg": { iata: "SZG", km: 3 },
@@ -111,7 +120,7 @@ export const CITY_AIRPORTS: Record<string, { iata: string; km: number | null }> 
   "malacca": { iata: "MKZ", km: 8 },
   "singapore": { iata: "SIN", km: 17 },
   "tokyo": { iata: "NRT", km: 57 },
-  "kyoto": { iata: "ITM", km: 39 },
+  "kyoto": { iata: "KIX", km: 81 },
   "osaka": { iata: "KIX", km: 38 },
   "hiroshima": { iata: "HIJ", km: 43 },
   "seoul": { iata: "ICN", km: 48 },
@@ -126,11 +135,11 @@ export const CITY_AIRPORTS: Record<string, { iata: string; km: number | null }> 
   "da-nang": { iata: "DAD", km: 4 },
   "hoi-an": { iata: "DAD", km: 23 },
   "delhi": { iata: "DEL", km: 17 },
-  "agra": { iata: "AGR", km: 5 },
+  "agra": { iata: "DEL", km: 178 },
   "jaipur": { iata: "JAI", km: 10 },
   "mumbai": { iata: "BOM", km: 4 },
   "goa": { iata: "GOI", km: 28 },
-  "new-york": { iata: "LGA", km: 13 },
+  "new-york": { iata: "JFK", km: 21 },
   "los-angeles": { iata: "LAX", km: 20 },
   "las-vegas": { iata: "LAS", km: 9 },
   "san-francisco": { iata: "SFO", km: 19 },
@@ -188,7 +197,7 @@ export const CITY_AIRPORTS: Record<string, { iata: string; km: number | null }> 
   "dublin": { iata: "DUB", km: 9 },
   "galway": { iata: "SNN", km: 64 },
   "brussels": { iata: "BRU", km: 11 },
-  "bruges": { iata: "OST", km: 25 },
+  "bruges": { iata: "BRU", km: 94 },
   "stockholm": { iata: "ARN", km: 37 },
   "oslo": { iata: "OSL", km: 37 },
   "bergen": { iata: "BGO", km: 13 },
