@@ -15,6 +15,9 @@ export default function TripServices({
   cityName,
   cityNameEn,
   withCompensation = false,
+  only,
+  except,
+  bare = false,
   t,
 }: {
   locale: Locale;
@@ -24,6 +27,12 @@ export default function TripServices({
   cityNameEn: string;
   /** Flight results: a row for claiming compensation on a late flight. */
   withCompensation?: boolean;
+  /** Only these needs (the city page's «الأنشطة» tab: activity). */
+  only?: ServiceKind[];
+  /** Every need but these (its «خدمات رحلتك» tab: all but activity). */
+  except?: ServiceKind[];
+  /** Inside a tab: no heading of its own. */
+  bare?: boolean;
   t: {
     servicesTitle: string;
     servicesSub: string;
@@ -35,18 +44,24 @@ export default function TripServices({
     serviceCompensation: string;
   };
 }) {
-  const groups = servicesFor(countryCode, citySlug, cityNameEn);
+  const groups = servicesFor(countryCode, citySlug, cityNameEn).filter(
+    (g) => (!only || only.includes(g.kind)) && (!except || !except.includes(g.kind))
+  );
   const rows: { key: string; icon: string; title: string; links: { partner: string; name: string; href: string }[] }[] =
     groups.map((g) => ({ key: g.kind, ...LABEL(g.kind, t), links: g.links }));
   if (withCompensation) rows.push({ key: "compensation", icon: "🛬", title: t.serviceCompensation, links: [COMPENSATION_LINK] });
   if (!rows.length) return null;
 
   return (
-    <section className="mb-8" aria-labelledby="trip-services">
-      <h2 id="trip-services" className="font-display text-lg font-extrabold text-navy-950 sm:text-xl">
-        {t.servicesTitle.replace("{city}", cityName)}
-      </h2>
-      <p className="mt-1 text-xs leading-relaxed text-navy-500 sm:text-sm">{t.servicesSub}</p>
+    <section className={bare ? "" : "mb-8"} aria-labelledby={bare ? undefined : "trip-services"}>
+      {!bare && (
+        <>
+          <h2 id="trip-services" className="font-display text-lg font-extrabold text-navy-950 sm:text-xl">
+            {t.servicesTitle.replace("{city}", cityName)}
+          </h2>
+          <p className="mt-1 text-xs leading-relaxed text-navy-500 sm:text-sm">{t.servicesSub}</p>
+        </>
+      )}
       <div className="mt-3 divide-y divide-mist-100 overflow-hidden rounded-2xl bg-white ring-1 ring-black/5 shadow-sm">
         {rows.map((r) => (
           <div key={r.key} className="flex items-center gap-2 px-3 py-2.5 sm:gap-3 sm:px-4">

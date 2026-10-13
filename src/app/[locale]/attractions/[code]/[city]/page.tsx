@@ -39,6 +39,6 @@ export default async function CityPlacesPage({
   const loc = (locale === "en" ? "en" : "ar") as Locale;
   const sp = await searchParams;
   return (
-    <CityPlacesPageBody loc={loc} code={code} city={city} back={sp.back} initialView={sp.view === "map" ? "map" : "list"} />
+    <CityPlacesPageBody loc={loc} code={code} city={city} back={sp.back} initialView={sp.view === "map" || sp.view === "activities" || sp.view === "services" ? sp.view : "list"} />
   );
 }

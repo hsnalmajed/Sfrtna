@@ -22,7 +22,6 @@ import { TICKETED_KINDS } from "@/lib/activityLinks";
 import CityPlacesView, { type CityView } from "@/components/CityPlacesView";
 import TourCard from "@/components/TourCard";
 import PageHero from "@/components/ui/PageHero";
-import SectionHeading from "@/components/ui/SectionHeading";
 import BackLink from "@/components/BackLink";
 
 /**
@@ -227,25 +226,16 @@ export default async function CityPlacesPageBody({
 
       <div className="mx-auto max-w-6xl px-4 sm:px-6 py-10">
         <CountryQuickFacts locale={loc} facts={facts} heading={dict.attractions.quickFactsHeading} />
-        <TripServices
-          locale={loc}
-          countryCode={country.code}
-          citySlug={cityEntry.slug}
-          cityName={cityName}
-          cityNameEn={cityEntry.nameEn}
-          t={dict.attractions}
-        />
-        {tours.length > 0 && (
-          <section className="mb-10">
-            <SectionHeading title={dict.attractions.toursHeading} />
-            <div className="flex flex-col gap-4">
-              {tours.map((tour) => (
-                <TourCard key={tour.code} tour={tour} locale={loc} dict={dict.attractions} />
-              ))}
-            </div>
-          </section>
+        {items.length === 0 && (
+          <TripServices
+            locale={loc}
+            countryCode={country.code}
+            citySlug={cityEntry.slug}
+            cityName={cityName}
+            cityNameEn={cityEntry.nameEn}
+            t={dict.attractions}
+          />
         )}
-
         {items.length === 0 ? (
           <p className="rounded-xl bg-amber-50 border border-amber-200 px-4 py-5 text-sm text-amber-800 leading-relaxed">
             {dict.attractions.noPlacesInCity}
@@ -317,7 +307,43 @@ export default async function CityPlacesPageBody({
                 viewMap: dict.attractions.viewMap,
                 showOnMap: dict.attractions.showOnMap,
                 downloadAll: dict.attractions.downloadAll,
+                plan: dict.attractions.tabPlan,
+                activities: dict.attractions.tabActivities,
+                services: dict.attractions.tabServices,
               }}
+              activities={
+                <div>
+                  {tours.length > 0 && (
+                    <div className="mb-6 flex flex-col gap-4">
+                      {tours.map((tour) => (
+                        <TourCard key={tour.code} tour={tour} locale={loc} dict={dict.attractions} />
+                      ))}
+                    </div>
+                  )}
+                  <TripServices
+                    locale={loc}
+                    countryCode={country.code}
+                    citySlug={cityEntry.slug}
+                    cityName={cityName}
+                    cityNameEn={cityEntry.nameEn}
+                    only={["activity"]}
+                    bare
+                    t={dict.attractions}
+                  />
+                </div>
+              }
+              services={
+                <TripServices
+                  locale={loc}
+                  countryCode={country.code}
+                  citySlug={cityEntry.slug}
+                  cityName={cityName}
+                  cityNameEn={cityEntry.nameEn}
+                  except={["activity"]}
+                  bare
+                  t={dict.attractions}
+                />
+              }
             />
           </>
         )}
