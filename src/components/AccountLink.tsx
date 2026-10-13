@@ -28,14 +28,14 @@ export default function AccountLink({
 
   if (variant === "header")
     return (
-      <Link href={href} className="hidden items-center gap-1.5 rounded-full px-3 py-2 text-sm font-semibold text-white/85 ring-1 ring-white/25 transition hover:bg-white/10 hover:text-white sm:inline-flex">
-        <span aria-hidden="true">👤</span> {label}
+      <Link href={href} className="hidden items-center gap-1.5 rounded-full bg-white px-3.5 py-2 text-sm font-bold text-navy-900 shadow-sm transition hover:bg-mist-100 sm:inline-flex">
+        <PersonIcon /> {label}
       </Link>
     );
   if (variant === "drawer")
     return (
       <Link href={href} className="mt-2 block rounded-xl px-3 py-3 text-sm font-semibold text-white/85 ring-1 ring-white/15 hover:bg-white/5">
-        👤 {label}
+        <span className="inline-flex items-center gap-1.5"><PersonIcon /> {label}</span>
       </Link>
     );
   return (
@@ -45,10 +45,19 @@ export default function AccountLink({
       className="mb-4 flex items-center justify-between rounded-2xl bg-navy-900 px-4 py-3.5 text-sm font-extrabold text-white active:bg-navy-800"
     >
       <span className="flex min-w-0 items-center gap-2">
-        <span aria-hidden="true">👤</span>
+        <PersonIcon />
         <span className="truncate">{user ? `${label}${user.email ? ` · ${user.email}` : ""}` : label}</span>
       </span>
       <span aria-hidden="true" className="text-white/50 rtl:rotate-180">›</span>
     </Link>
+  );
+}
+
+function PersonIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+      <circle cx="12" cy="8" r="4" />
+      <path strokeLinecap="round" d="M4 21c0-4 3.6-7 8-7s8 3 8 7" />
+    </svg>
   );
 }
