@@ -43,7 +43,14 @@ def download():
     import cdsapi
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
-    c = cdsapi.Client()
+    # Same key lookup as fetch_era5land.py (it also finds Notepad's
+    # ".cdsapirc.txt"); the plain cdsapi.Client() only looks for .cdsapirc.
+    from fetch_era5land import credentials_file
+
+    cfg = credentials_file()
+    if not cfg:
+        raise SystemExit("credentials missing - put url and key in %USERPROFILE%\\.cdsapirc")
+    c = cdsapi.Client(url=cfg["url"], key=cfg["key"])
     for a, b in DECADES:
         target = OUT_DIR / f"era5_tcc_{a}_{b}.nc"
         if target.exists() and target.stat().st_size > 1_000_000:
