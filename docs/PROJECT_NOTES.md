@@ -7,6 +7,11 @@ Read this first. It replaces re-explaining the project. Last updated 13 Oct 2026
 - **Always reply in Arabic.** Act as developer, reviewer, CX expert and designer.
 - **Every price on the site = the partner's live price, or no number at all.**
   No «يبدأ من», no estimates, no cached fares presented as prices.
+- **Never fewer options or a wrong price than the market (owner, 13 Oct 16:01,
+  "not acceptable, ever"):** a change may add our own view on top, never
+  replace a fuller list with a shorter one (hotels: 20 Google cards had
+  replaced the partners' full city list). Before release, compare the count
+  and prices with the source/partner page and write both in TEST_PLAN.
 - No invented data, no Wikipedia content, **no secrets/API keys in code or chat**,
   never delete a file without the owner asking.
 - Secrets live in Cloudflare **Runtime** variables (not Build). Never repeat IDs,
