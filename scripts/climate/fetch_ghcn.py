@@ -118,9 +118,13 @@ def main():
         p = line.split()
         if len(p) >= 6 and p[3] in ("TMAX", "TMIN", "PRCP"):
             inv[p[0]][p[3]] = (int(p[4]), int(p[5]))
+    # A station whose record overlaps 1991–2020 by at least 24 years can meet
+    # the WMO rule (month_normals checks the actual years); requiring the
+    # whole span would drop stations whose reports to NOAA stop before 2020.
+    overlap = lambda a, b: min(b, 2020) - max(a, 1991) + 1
     usable = [sid for sid, e in inv.items()
-              if all(k in e and e[k][0] <= 1991 and e[k][1] >= 2020 for k in ("TMAX", "TMIN")) and sid in stations]
-    print(f"{len(stations):,} GHCN stations, {len(usable):,} with TMAX+TMIN through 1991–2020", flush=True)
+              if all(k in e and overlap(*e[k]) >= 24 for k in ("TMAX", "TMIN")) and sid in stations]
+    print(f"{len(stations):,} GHCN stations, {len(usable):,} with TMAX+TMIN overlapping 1991–2020 by ≥ 24 years", flush=True)
 
     wanted = {}
     for slug, c in cities().items():
