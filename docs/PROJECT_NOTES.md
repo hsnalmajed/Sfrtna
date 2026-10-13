@@ -685,9 +685,58 @@ tabs, sheet, plan dates prefilled, back link, hotel page swaps in flight,
 phone row 138 px. e2e check added. Flight tab from the hotel page opens the
 home form (filled in); its way back is the browser's back.
 
+## Coverage section (13 Oct, owner: "cover every tourist country and city, accurate, ≥ 90 %") — IN PROGRESS, before section 2
+
+Owner sent a list of 335 tourist cities / 135 countries (6 continents); the
+site had 214 / 73. Decisions (mine, owner said "do the best and accurate"):
+- **Gate:** `scripts/coverage/check.py` → `scripts/coverage/report.md`: per
+  city, required = centre, gateway airport, trip type, climate + season,
+  places, hotels, country visa + currency; expected = tourism months, guide,
+  photo. New cities are **staged** (`scripts/geo/batch2.json` → workflow
+  `geo-stage.yml` → `scripts/geo/out/batch2.staged.json`: Nominatim centre +
+  owner's gateway airport checked in OurAirports) and go live only when
+  complete. 156 staged (68 in covered countries, 88 in 63 new; Gabala was
+  a duplicate). The stage report caught wrong gateways/centres — always
+  read its `review` list. TW, HK, MO are not in `countries.ts` yet.
+- **Fixed live:** 8 gateway airports (Makkah TIF→JED, Kyoto ITM→KIX, New
+  York LGA→JFK, Interlaken→ZRH, Bruges→BRU, Agra→DEL, Bursa→SAW,
+  Alexandria ALY (closed) → HBE); Bulgaria = euro; 55 currencies added
+  (11 live countries had none); visa +26 countries (176/214 live cities).
+  Visa still to confirm: AM, AU, BR, IE, JO, KH, KW, KZ, LB, MA, ME (free
+  until 31 Oct 2026, then visa — Official Gazette 108/2026, not yet read
+  on gov.me), MU, PK, TN, TZ + new countries. Many official visa pages are
+  JS-only: the owner's Chrome window must be **visible**.
+- **Climate accuracy (measured):** ERA5-Land daily highs read 1.7 °C cold vs
+  94 official stations (46 % of city-months within ±1.5 °C). New pipeline:
+  official station within 25 km (WMO normals `data/wmo_normals.json`, else
+  NOAA GHCN-Daily `data/ghcn_normals.json`, both from workflow
+  `climate-stations.yml`); else ERA5-Land calibrated by up to 3 stations
+  within 150 km (ERA5-Land downloaded at the stations too); else regional
+  median correction (±10° latitude). `validate_climate.py` = leave-own-
+  station-out test, target 90 % within ±2 °C. Plan: 249 cities direct,
+  69 calibrated, 52 regional (Athens, Hanoi, São Paulo, Auckland, Muscat…
+  — official national normals for these would be better: station_overrides).
+- **Season rating:** to be rebuilt on the Holiday Climate Index (published:
+  HCI:Urban Scott et al. 2016, HCI:Beach Rutty et al. 2020; `hci.py`,
+  daily, `build_hci.py` → `src/data/climate/hci.json`), keeping our safety
+  caps (HCI alone rates 42 °C dry as "good"). Validate against tourism
+  months before replacing v1 (v1 today: 83 % of board months rated good,
+  62 % of our top months in the board's list; wrong in humid tropics and
+  Salalah khareef). Engine v2 not written yet — needs hci.json.
+- **Owner runs (his Copernicus key never leaves his PC):**
+  `scripts/climate/run_coverage.bat` (fetch_static, 6 ERA5-Land workers,
+  fetch_cloud — hours), then `run_build.bat` (check_cells, build_normals,
+  merge_sources, validate_climate, build_hci). Then Claude collects
+  era5land.json, normals.json, hci.json, reports via the device bridge
+  (owner adds his Sfrtna folder), tunes engine v2, validates, publishes.
+- Tourism months: many cities genuinely have none (Tokyo, Singapore,
+  Prague, Budapest: Lonely Planet names no single best period) — "expected",
+  not required.
+
 ## Next, in order
 
-**▶ Start here (new conversation after 13 Oct): section 2 — hotel results.**
+**▶ Start here: finish the coverage section above (owner's ERA5 run →
+climate v2 → publish staged cities complete), then section 2 — hotel results.**
 Done so far: section 1 (flight search, 22/22 in `docs/TEST_PLAN.md`),
 section 4 (next-step tabs), section 7 item "home photo full-bleed" (+ app
 logo on the photo, 40 px gap to the footer). Remaining order: 2 → 3 → 5 → 6
