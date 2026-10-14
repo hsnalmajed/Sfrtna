@@ -1,0 +1,13 @@
+{
+ "id": "nukualofa",
+ "countryCode": "TO",
+ "name": "Nukuʻalofa",
+ "requestedLatitude": -21.13434,
+ "requestedLongitude": -175.20181,
+ "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
+ "source": "NASA POWER (Prediction Of Worldwide Energy Resources), MERRA-2 based",
+ "sourceUrl": "https://power.larc.nasa.gov",
+ "request": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M_MAX%2CT2M_MIN%2CT2M%2CPRECTOTCORR%2CT2MDEW%2CWS10M%2CRH2M&community=AG&latitude=-21.13434&longitude=-175.20181&start=19910101&end=20201231&format=JSON&time-standard=LST",
+ "timeStandard": "LST",
+ "retrievedAt": "2026-10-14T07:03:13+00:00"
+}
