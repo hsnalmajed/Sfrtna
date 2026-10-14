@@ -38,10 +38,10 @@
   buttons 3, tapped 3
   NO EFFECT: عربي
 
-## Pixel 7 /ar/results?tripType=flight&tripRoute=oneway&origin=RUH&destination=IST&departDate=2026-11-22&returnDate=&adults=1&childrenAges=&infants=0&budget=0&currency=SAR&directOnly=false&baggageIncluded=false&nights=0
-  buttons 11, tapped 9
+## Pixel 7 /ar/results?tripType=flight&tripRoute=oneway&origin=RUH&destination=IST&departDate=2026-11-23&returnDate=&adults=1&childrenAges=&infants=0&budget=0&currency=SAR&directOnly=false&baggageIncluded=false&nights=0
+  buttons 6, tapped 6
 
-## Pixel 7 /ar/hotel-results?hmode=discover&checkIn=2026-11-22&checkOut=2026-11-26&adults=2&childrenAges=&infants=0&city=Istanbul&label=%D8%A5%D8%B3%D8%B7%D9%86%D8%A8%D9%88%D9%84&budget=0&currency=SAR
+## Pixel 7 /ar/hotel-results?hmode=discover&checkIn=2026-11-23&checkOut=2026-11-27&adults=2&childrenAges=&infants=0&city=Istanbul&label=%D8%A5%D8%B3%D8%B7%D9%86%D8%A8%D9%88%D9%84&budget=0&currency=SAR
   buttons 6, tapped 6
 
 ## iPhone 13 /ar
@@ -83,8 +83,8 @@
   buttons 3, tapped 3
   NO EFFECT: عربي
 
-## iPhone 13 /ar/results?tripType=flight&tripRoute=oneway&origin=RUH&destination=IST&departDate=2026-11-22&returnDate=&adults=1&childrenAges=&infants=0&budget=0&currency=SAR&directOnly=false&baggageIncluded=false&nights=0
-  buttons 11, tapped 3
+## iPhone 13 /ar/results?tripType=flight&tripRoute=oneway&origin=RUH&destination=IST&departDate=2026-11-23&returnDate=&adults=1&childrenAges=&infants=0&budget=0&currency=SAR&directOnly=false&baggageIncluded=false&nights=0
+  buttons 11, tapped 6
 
-## iPhone 13 /ar/hotel-results?hmode=discover&checkIn=2026-11-22&checkOut=2026-11-26&adults=2&childrenAges=&infants=0&city=Istanbul&label=%D8%A5%D8%B3%D8%B7%D9%86%D8%A8%D9%88%D9%84&budget=0&currency=SAR
-  buttons 27, tapped 16
+## iPhone 13 /ar/hotel-results?hmode=discover&checkIn=2026-11-23&checkOut=2026-11-27&adults=2&childrenAges=&infants=0&city=Istanbul&label=%D8%A5%D8%B3%D8%B7%D9%86%D8%A8%D9%88%D9%84&budget=0&currency=SAR
+  buttons 27, tapped 17
