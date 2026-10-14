@@ -1,6 +1,6 @@
 {
  "about": "Decisions about which ERA5-Land cell represents a destination, from check_cells.py (town height from OpenTopoData SRTM/ASTER vs. cell height = ERA5-Land geopotential / 9.80665). An entry with latitude/longitude makes fetch_era5land.py download exactly that cell. An entry with accept=true keeps the cell and records why its height difference does not count against confidence. Temperatures are never shifted by a lapse rate. An entry with withhold keeps the destination off the site, with the reason, until a station override is added.",
- "decidedAt": "2026-09-30",
+ "decidedAt": "2026-10-14",
  "overrides": {
   "batumi": {
    "triedCell": {
@@ -65,6 +65,386 @@
   "mahe": {
    "referenceGeocode": "Victoria, Seychelles",
    "reason": "The stored coordinate is the middle of Mahé island (its mountainous interior). Visitors stay on the coast; Victoria, the capital on the north-east coast, is used."
+  },
+  "almaty": {
+   "latitude": 43.3,
+   "longitude": 77.1,
+   "reason": "check_cells 14 Oct 2026: own cell averages 1176 m against the town's 891 m; the land cell 14.4 km away averages 962 m."
+  },
+  "andorra-la-vella": {
+   "latitude": 42.4,
+   "longitude": 1.4,
+   "reason": "check_cells 14 Oct 2026: own cell averages 1893 m against the town's 992 m; the land cell 13.8 km away averages 1276 m."
+  },
+  "arequipa": {
+   "latitude": -16.4,
+   "longitude": -71.6,
+   "reason": "check_cells 14 Oct 2026: own cell averages 2562 m against the town's 2348 m; the land cell 6.7 km away averages 2312 m."
+  },
+  "bled": {
+   "latitude": 46.3,
+   "longitude": 14.2,
+   "reason": "check_cells 14 Oct 2026: own cell averages 976 m against the town's 496 m; the land cell 10.3 km away averages 711 m."
+  },
+  "cusco": {
+   "latitude": -13.4,
+   "longitude": -72.0,
+   "reason": "check_cells 14 Oct 2026: own cell averages 3794 m against the town's 3402 m; the land cell 13.2 km away averages 3617 m."
+  },
+  "kathmandu": {
+   "latitude": 27.8,
+   "longitude": 85.3,
+   "reason": "check_cells 14 Oct 2026: own cell averages 1614 m against the town's 1304 m; the land cell 10.4 km away averages 1266 m."
+  },
+  "kingston": {
+   "latitude": 18.0,
+   "longitude": -76.9,
+   "reason": "check_cells 14 Oct 2026: own cell averages 525 m against the town's 14 m; the land cell 11.8 km away averages 48 m."
+  },
+  "kotor": {
+   "latitude": 42.4,
+   "longitude": 18.7,
+   "reason": "check_cells 14 Oct 2026: own cell averages 573 m against the town's 13 m; the land cell 6.5 km away averages 255 m."
+  },
+  "la-paz": {
+   "latitude": -16.6,
+   "longitude": -68.1,
+   "reason": "check_cells 14 Oct 2026: own cell averages 3972 m against the town's 3653 m; the land cell 12.2 km away averages 3582 m."
+  },
+  "medellin": {
+   "latitude": 6.3,
+   "longitude": -75.7,
+   "reason": "check_cells 14 Oct 2026: own cell averages 2188 m against the town's 1598 m; the land cell 11.3 km away averages 1833 m."
+  },
+  "montego-bay": {
+   "latitude": 18.5,
+   "longitude": -77.8,
+   "reason": "check_cells 14 Oct 2026: own cell averages 271 m against the town's 8 m; the land cell 13.2 km away averages 84 m."
+  },
+  "puerto-vallarta": {
+   "latitude": 20.7,
+   "longitude": -105.2,
+   "reason": "check_cells 14 Oct 2026: own cell averages 314 m against the town's 12 m; the land cell 6.9 km away averages 84 m."
+  },
+  "sarajevo": {
+   "latitude": 43.9,
+   "longitude": 18.3,
+   "reason": "check_cells 14 Oct 2026: own cell averages 817 m against the town's 542 m; the land cell 10.2 km away averages 631 m."
+  },
+  "st-00006609": {
+   "latitude": 46.5,
+   "longitude": 7.2,
+   "reason": "check_cells 14 Oct 2026: own cell averages 1086 m against the town's 1944 m; the land cell 14.8 km away averages 1538 m."
+  },
+  "st-00006637": {
+   "latitude": 46.8,
+   "longitude": 8.0,
+   "reason": "check_cells 14 Oct 2026: own cell averages 1788 m against the town's 587 m; the land cell 14.9 km away averages 1261 m."
+  },
+  "st-00006650": {
+   "latitude": 47.1,
+   "longitude": 8.4,
+   "reason": "check_cells 14 Oct 2026: own cell averages 768 m against the town's 456 m; the land cell 10.3 km away averages 542 m."
+  },
+  "st-00006655": {
+   "latitude": 46.9,
+   "longitude": 8.3,
+   "reason": "check_cells 14 Oct 2026: own cell averages 1886 m against the town's 1047 m; the land cell 12.1 km away averages 1220 m."
+  },
+  "st-00006659": {
+   "latitude": 46.9,
+   "longitude": 8.4,
+   "reason": "check_cells 14 Oct 2026: own cell averages 768 m against the town's 2050 m; the land cell 14.3 km away averages 1286 m."
+  },
+  "st-00006702": {
+   "latitude": 46.5,
+   "longitude": 6.1,
+   "reason": "check_cells 14 Oct 2026: own cell averages 888 m against the town's 1663 m; the land cell 8.3 km away averages 1151 m."
+  },
+  "st-00006705": {
+   "latitude": 46.3,
+   "longitude": 6.3,
+   "reason": "check_cells 14 Oct 2026: own cell averages 663 m against the town's 452 m; the land cell 12.5 km away averages 460 m."
+  },
+  "st-00006712": {
+   "latitude": 46.4,
+   "longitude": 6.8,
+   "reason": "check_cells 14 Oct 2026: own cell averages 1132 m against the town's 381 m; the land cell 12.5 km away averages 748 m."
+  },
+  "st-00006722": {
+   "latitude": 46.2,
+   "longitude": 7.5,
+   "reason": "check_cells 14 Oct 2026: own cell averages 2494 m against the town's 1825 m; the land cell 9.8 km away averages 1791 m."
+  },
+  "st-00006728": {
+   "latitude": 46.3,
+   "longitude": 7.8,
+   "reason": "check_cells 14 Oct 2026: own cell averages 2215 m against the town's 1610 m; the land cell 12.0 km away averages 1760 m."
+  },
+  "st-00006734": {
+   "latitude": 46.7,
+   "longitude": 7.7,
+   "reason": "check_cells 14 Oct 2026: own cell averages 1314 m against the town's 576 m; the land cell 13.3 km away averages 839 m."
+  },
+  "st-00006748": {
+   "latitude": 45.9,
+   "longitude": 7.7,
+   "reason": "check_cells 14 Oct 2026: own cell averages 2981 m against the town's 1613 m; the land cell 14.9 km away averages 2516 m."
+  },
+  "st-00008420": {
+   "latitude": 37.1,
+   "longitude": -3.7,
+   "reason": "check_cells 14 Oct 2026: own cell averages 991 m against the town's 685 m; the land cell 7.4 km away averages 748 m."
+  },
+  "st-00010963": {
+   "latitude": 47.6,
+   "longitude": 11.1,
+   "reason": "check_cells 14 Oct 2026: own cell averages 1323 m against the town's 720 m; the land cell 13.3 km away averages 998 m."
+  },
+  "st-00011930": {
+   "latitude": 49.2,
+   "longitude": 20.1,
+   "reason": "check_cells 14 Oct 2026: own cell averages 1275 m against the town's 2446 m; the land cell 8.2 km away averages 1441 m."
+  },
+  "st-00013455": {
+   "latitude": 42.4,
+   "longitude": 18.7,
+   "reason": "check_cells 14 Oct 2026: own cell averages 491 m against the town's 62 m; the land cell 14.1 km away averages 255 m."
+  },
+  "st-00014007": {
+   "latitude": 46.6,
+   "longitude": 13.7,
+   "reason": "check_cells 14 Oct 2026: own cell averages 1163 m against the town's 874 m; the land cell 11.4 km away averages 908 m."
+  },
+  "st-00014648": {
+   "latitude": 43.3,
+   "longitude": 17.7,
+   "reason": "check_cells 14 Oct 2026: own cell averages 585 m against the town's 85 m; the land cell 9.4 km away averages 250 m."
+  },
+  "st-00014667": {
+   "latitude": 42.8,
+   "longitude": 18.4,
+   "reason": "check_cells 14 Oct 2026: own cell averages 754 m against the town's 440 m; the land cell 7.8 km away averages 587 m."
+  },
+  "st-00017037": {
+   "latitude": 41.0,
+   "longitude": 39.6,
+   "reason": "check_cells 14 Oct 2026: own cell averages 541 m against the town's 32 m; the land cell 13.8 km away averages 342 m."
+  },
+  "st-00017088": {
+   "latitude": 40.5,
+   "longitude": 39.3,
+   "reason": "check_cells 14 Oct 2026: own cell averages 1757 m against the town's 1215 m; the land cell 14.6 km away averages 1508 m."
+  },
+  "st-00017116": {
+   "latitude": 40.3,
+   "longitude": 29.1,
+   "reason": "check_cells 14 Oct 2026: own cell averages 396 m against the town's 101 m; the land cell 10.6 km away averages 114 m."
+  },
+  "st-00017186": {
+   "latitude": 38.7,
+   "longitude": 27.5,
+   "reason": "check_cells 14 Oct 2026: own cell averages 371 m against the town's 72 m; the land cell 12.5 km away averages 76 m."
+  },
+  "st-00017196": {
+   "latitude": 38.8,
+   "longitude": 35.5,
+   "reason": "check_cells 14 Oct 2026: own cell averages 1330 m against the town's 1101 m; the land cell 12.6 km away averages 1089 m."
+  },
+  "st-00017220": {
+   "latitude": 38.5,
+   "longitude": 27.0,
+   "reason": "check_cells 14 Oct 2026: own cell averages 225 m against the town's 20 m; the land cell 13.7 km away averages 29 m."
+  },
+  "st-00017720": {
+   "latitude": 39.6,
+   "longitude": 44.0,
+   "reason": "check_cells 14 Oct 2026: own cell averages 1921 m against the town's 1637 m; the land cell 6.8 km away averages 1634 m."
+  },
+  "st-00017884": {
+   "latitude": 37.2,
+   "longitude": 27.7,
+   "reason": "check_cells 14 Oct 2026: own cell averages 281 m against the town's 60 m; the land cell 13.5 km away averages 77 m."
+  },
+  "st-00036870": {
+   "latitude": 43.3,
+   "longitude": 77.0,
+   "reason": "check_cells 14 Oct 2026: own cell averages 1176 m against the town's 848 m; the land cell 8.7 km away averages 738 m."
+  },
+  "st-00036889": {
+   "latitude": 42.9,
+   "longitude": 77.1,
+   "reason": "check_cells 14 Oct 2026: own cell averages 3505 m against the town's 3798 m; the land cell 14.0 km away averages 3834 m."
+  },
+  "st-00036897": {
+   "latitude": 43.2,
+   "longitude": 78.2,
+   "reason": "check_cells 14 Oct 2026: own cell averages 2642 m against the town's 2233 m; the land cell 11.0 km away averages 2284 m."
+  },
+  "st-00037432": {
+   "latitude": 42.3,
+   "longitude": 44.7,
+   "reason": "check_cells 14 Oct 2026: own cell averages 1848 m against the town's 1237 m; the land cell 5.7 km away averages 1574 m."
+  },
+  "st-00037445": {
+   "latitude": 41.7,
+   "longitude": 44.9,
+   "reason": "check_cells 14 Oct 2026: own cell averages 735 m against the town's 435 m; the land cell 12.2 km away averages 583 m."
+  },
+  "st-00037556": {
+   "latitude": 41.7,
+   "longitude": 45.4,
+   "reason": "check_cells 14 Oct 2026: own cell averages 1178 m against the town's 883 m; the land cell 8.9 km away averages 787 m."
+  },
+  "st-00038563": {
+   "latitude": 40.3,
+   "longitude": 66.4,
+   "reason": "check_cells 14 Oct 2026: own cell averages 849 m against the town's 1114 m; the land cell 14.7 km away averages 1047 m."
+  },
+  "st-00038699": {
+   "latitude": 39.2,
+   "longitude": 67.0,
+   "reason": "check_cells 14 Oct 2026: own cell averages 1320 m against the town's 1054 m; the land cell 8.0 km away averages 1075 m."
+  },
+  "st-00038706": {
+   "latitude": 41.6,
+   "longitude": 70.1,
+   "reason": "check_cells 14 Oct 2026: own cell averages 1639 m against the town's 1439 m; the land cell 8.9 km away averages 1476 m."
+  },
+  "st-00040153": {
+   "latitude": 33.0,
+   "longitude": 35.4,
+   "reason": "check_cells 14 Oct 2026: own cell averages 459 m against the town's 916 m; the land cell 10.5 km away averages 648 m."
+  },
+  "st-00043476": {
+   "latitude": 6.8,
+   "longitude": 80.9,
+   "reason": "check_cells 14 Oct 2026: own cell averages 943 m against the town's 1208 m; the land cell 9.9 km away averages 1182 m."
+  },
+  "st-00043479": {
+   "latitude": 7.1,
+   "longitude": 81.1,
+   "reason": "check_cells 14 Oct 2026: own cell averages 963 m against the town's 695 m; the land cell 14.1 km away averages 655 m."
+  },
+  "st-00044454": {
+   "latitude": 27.8,
+   "longitude": 85.3,
+   "reason": "check_cells 14 Oct 2026: own cell averages 1613 m against the town's 1345 m; the land cell 12.0 km away averages 1266 m."
+  },
+  "st-00047189": {
+   "latitude": 33.3,
+   "longitude": 126.7,
+   "reason": "check_cells 14 Oct 2026: own cell averages 397 m against the town's 46 m; the land cell 13.9 km away averages 183 m."
+  },
+  "st-00060437": {
+   "latitude": 36.3,
+   "longitude": 2.8,
+   "reason": "check_cells 14 Oct 2026: own cell averages 727 m against the town's 1048 m; the land cell 6.5 km away averages 912 m."
+  },
+  "st-00062001": {
+   "latitude": -17.2,
+   "longitude": -71.7,
+   "reason": "check_cells 14 Oct 2026: own cell averages 357 m against the town's 108 m; the land cell 14.5 km away averages 145 m."
+  },
+  "st-00072387": {
+   "latitude": 36.5,
+   "longitude": -116.1,
+   "reason": "check_cells 14 Oct 2026: own cell averages 1196 m against the town's 992 m; the land cell 14.9 km away averages 1021 m."
+  },
+  "st-00074501": {
+   "latitude": -12.0,
+   "longitude": -76.9,
+   "reason": "check_cells 14 Oct 2026: own cell averages 874 m against the town's 552 m; the land cell 6.4 km away averages 599 m."
+  },
+  "st-00076656": {
+   "latitude": 19.7,
+   "longitude": -103.4,
+   "reason": "check_cells 14 Oct 2026: own cell averages 1815 m against the town's 1518 m; the land cell 7.0 km away averages 1435 m."
+  },
+  "st-00078388": {
+   "latitude": 18.5,
+   "longitude": -77.8,
+   "reason": "check_cells 14 Oct 2026: own cell averages 271 m against the town's 3 m; the land cell 12.3 km away averages 84 m."
+  },
+  "st-00078397": {
+   "latitude": 18.0,
+   "longitude": -76.9,
+   "reason": "check_cells 14 Oct 2026: own cell averages 525 m against the town's 4 m; the land cell 14.4 km away averages 48 m."
+  },
+  "st-00078764": {
+   "latitude": 9.9,
+   "longitude": -84.2,
+   "reason": "check_cells 14 Oct 2026: own cell averages 1273 m against the town's 1032 m; the land cell 9.2 km away averages 1002 m."
+  },
+  "st-00084401": {
+   "latitude": -16.5,
+   "longitude": -70.8,
+   "reason": "check_cells 14 Oct 2026: own cell averages 4349 m against the town's 3378 m; the land cell 13.6 km away averages 3788 m."
+  },
+  "st-00085580": {
+   "latitude": -33.4,
+   "longitude": -70.6,
+   "reason": "check_cells 14 Oct 2026: own cell averages 1227 m against the town's 651 m; the land cell 7.7 km away averages 751 m."
+  },
+  "st-00087420": {
+   "latitude": -33.0,
+   "longitude": -68.8,
+   "reason": "check_cells 14 Oct 2026: own cell averages 1071 m against the town's 838 m; the land cell 13.5 km away averages 759 m."
+  },
+  "st-00098646": {
+   "latitude": 10.4,
+   "longitude": 124.0,
+   "reason": "check_cells 14 Oct 2026: own cell averages 280 m against the town's 0 m; the land cell 10.7 km away averages 44 m."
+  },
+  "st-27015330": {
+   "latitude": 6.2,
+   "longitude": -75.7,
+   "reason": "check_cells 14 Oct 2026: own cell averages 2178 m against the town's 1495 m; the land cell 12.4 km away averages 1853 m."
+  },
+  "st-35025050": {
+   "latitude": 4.5,
+   "longitude": -74.1,
+   "reason": "check_cells 14 Oct 2026: own cell averages 2511 m against the town's 2984 m; the land cell 8.0 km away averages 2995 m."
+  },
+  "st-ghcn-CAN03053600": {
+   "latitude": 51.1,
+   "longitude": -114.9,
+   "reason": "check_cells 14 Oct 2026: own cell averages 1755 m against the town's 1387 m; the land cell 12.4 km away averages 1423 m."
+  },
+  "st-ghcn-GME00126106": {
+   "latitude": 47.6,
+   "longitude": 11.2,
+   "reason": "check_cells 14 Oct 2026: own cell averages 1353 m against the town's 983 m; the land cell 14.4 km away averages 928 m."
+  },
+  "st-ghcn-GME00130918": {
+   "latitude": 47.8,
+   "longitude": 12.4,
+   "reason": "check_cells 14 Oct 2026: own cell averages 969 m against the town's 686 m; the land cell 14.8 km away averages 745 m."
+  },
+  "st-ghcn-HRE00155411": {
+   "latitude": 42.6,
+   "longitude": 18.2,
+   "reason": "check_cells 14 Oct 2026: own cell averages 358 m against the town's 157 m; the land cell 7.3 km away averages 112 m."
+  },
+  "st-ghcn-RSM00037107": {
+   "latitude": 43.5,
+   "longitude": 40.3,
+   "reason": "check_cells 14 Oct 2026: own cell averages 1112 m against the town's 1633 m; the land cell 13.7 km away averages 1615 m."
+  },
+  "st-ghcn-RSM00037663": {
+   "latitude": 41.5,
+   "longitude": 47.9,
+   "reason": "check_cells 14 Oct 2026: own cell averages 1701 m against the town's 1029 m; the land cell 14.6 km away averages 1416 m."
+  },
+  "st-ghcn-SIE00115006": {
+   "latitude": 46.1,
+   "longitude": 14.2,
+   "reason": "check_cells 14 Oct 2026: own cell averages 382 m against the town's 667 m; the land cell 14.3 km away averages 652 m."
+  },
+  "zakopane": {
+   "latitude": 49.4,
+   "longitude": 20.0,
+   "reason": "check_cells 14 Oct 2026: own cell averages 1236 m against the town's 829 m; the land cell 12.0 km away averages 717 m."
   }
  }
 }
