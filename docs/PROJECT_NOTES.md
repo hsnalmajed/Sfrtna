@@ -861,7 +861,8 @@ Chrome), climate v2 after the owner's download, publishing staged cities.
 ## Next, in order
 
 **▶ Start here (hand-off 14 Oct):**
-1. **Phone speed, remaining (low value):** /ar/itinerary 3.0 s and /ar/visa
+1. ✅ **Phone speed closed 14 Oct:** re-run on 33c8fac, applied throttling
+   1.9–2.1 s on all 8 pages (TEST_PLAN). History: /ar/itinerary 3.0 s and /ar/visa
    2.7 s (applied throttling) are just over 2.5 s (their HTML is small:
    itinerary 82 KB raw, visa 165 KB — the time is not page data).
    ✅ /ar/seasons (14 Oct): months now sent packed (`src/lib/seasonPack.ts`:
@@ -901,7 +902,9 @@ Chrome), climate v2 after the owner's download, publishing staged cities.
    e-Visa (evisa.gov.kh) has no nationality limit (application behind a
    CAPTCHA — not passed). JO free — Royal Jordanian (national carrier):
    "GCC Countries do not require entry visas"; Jordan MOI/MFA/visitjordan
-   pages list no exempt nationalities (checked). **TN still open:**
+   pages list no exempt nationalities (checked). Each entry now carries its
+   own `checked` date (shown on /visa/<code> and the requirements dialog;
+   they all said 26 Sep before). **TN still open:**
    diplomatie.gov.tn has no list, Saudi embassy portal (saudiembassy.sa →
    tn.saudiembassy.sa) has no host-country entry page, IATA Travel Centre
    freezes the test browser at the results step. Next for TN: the owner (or a

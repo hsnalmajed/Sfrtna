@@ -1,5 +1,5 @@
 import VisaBadge from "@/components/VisaBadge";
-import { VISA_CHECKED_AT, visaStatusFor } from "@/data/visaStatus";
+import { visaCheckedAt, visaStatusFor } from "@/data/visaStatus";
 import { notFound } from "next/navigation";
 import { getDictionary } from "@/lib/dictionaries";
 import type { Locale } from "@/lib/types";
@@ -102,7 +102,7 @@ export default async function VisaCountryPage({ params }: PageProps<"/[locale]/v
                 {dict.visa.statusSource} ↗
               </a>
               {" · "}
-              {dict.visa.statusChecked.replace("{date}", VISA_CHECKED_AT)}
+              {dict.visa.statusChecked.replace("{date}", visaCheckedAt(status))}
             </p>
           </section>
         )}

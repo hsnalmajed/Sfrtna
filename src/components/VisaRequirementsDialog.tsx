@@ -6,7 +6,7 @@ import Link from "next/link";
 import type { Locale } from "@/lib/types";
 import { useDictionary } from "@/lib/dict/context";
 import { findCountry } from "@/lib/countries";
-import { VISA_CHECKED_AT, visaStatusFor } from "@/data/visaStatus";
+import { visaCheckedAt, visaStatusFor } from "@/data/visaStatus";
 import { checklistFor } from "@/lib/visaDocuments";
 import {
   IATA_TRAVEL_CENTRE_URL,
@@ -142,7 +142,7 @@ export default function VisaRequirementsDialog({
                 <a href={status.source} target="_blank" rel="noopener noreferrer" className="font-bold text-sea-300 underline-offset-2 hover:underline">
                   {v.statusSource} ↗
                 </a>{" "}
-                · {v.statusChecked.replace("{date}", day(VISA_CHECKED_AT))}
+                · {v.statusChecked.replace("{date}", day(visaCheckedAt(status)))}
               </p>
             )}
           </div>

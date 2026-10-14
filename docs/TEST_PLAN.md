@@ -119,8 +119,11 @@ the median of three. Before = old report (13 Oct), after = 14 Oct 01:00.
 
 /ar/seasons, 14 Oct (packed months): HTML 725 → 217 KB raw, 64 → 51 KB gz
 (local build). Same text before/after in month view, 6 month windows and the
-Istanbul year view (ar + en, 390 px), no page errors. Lighthouse re-run: see
-below once `mobile-speed.yml` has run on the deploy.
+Istanbul year view (ar + en, 390 px), no page errors. Lighthouse re-run on the
+deploy (33c8fac, 14 Oct), applied throttling: /ar 2.1 s, attractions 1.9 s,
+Istanbul 1.9 s, seasons 2.0 s (was 2.2), services 1.9 s, itinerary 2.0 s
+(was 3.0), /ar/visa 1.9 s (was 2.7), /en/visa 1.9 s — every page under 2.5 s.
+`mobile-taps.yml` on the same deploy: passed.
 
 Also checked: local build — 11 pages hydrate at 390 px with no errors, only
 the page's language in its HTML, no dictionary text in any JS chunk; home
