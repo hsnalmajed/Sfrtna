@@ -867,14 +867,31 @@ Chrome), climate v2 after the owner's download, publishing staged cities.
    server or send only what the first view shows. Biggest JS chunk
    (`3svhqtx…`, 72 KB gz) is the framework. Re-run both speed + taps
    workflows after each change.
-2. **Climate:** owner runs `C:\Sfrtna-climate\Sfrtna-climate\1b_FINISH_DOWNLOAD.bat`
-   (39 places + cloud were refused when 7 ran at once), then `2_BUILD.bat`.
-   Folder is reachable through the device bridge (request access to
-   `C:\Sfrtna-climate`). Then validate (≥90 % within ±2 °C), season engine v2
-   on hci.json, publish the 156 staged cities (places/hotels/restaurants
-   collected with `staged=true`; partner pages at publish).
-3. **Visa:** MA ✅ 14 Oct (consulat.ma exempt list names Arabie Saoudite).
-   Still JO, KH, KW, TN, TZ. Tried 14 Oct: KW — kuwaitvisa.moi.gov.kw
+2. **Climate (14 Oct):** download finished; build run by Claude on the
+   owner's PC through the bridge (`C:\Sfrtna-climate` granted; the PC's Linux
+   workspace runs the Python steps — `pip install --user numpy pandas xarray
+   netCDF4 timezonefinder`; each call ≤ 3 min, so run build_normals /
+   build_hci repeatedly — both cache per place; background jobs die between
+   calls). Results: 363/363 places (8 islands via NASA POWER from workflow
+   `climate-power.yml` → branch `climate-power`, copied to raw/power/ — the
+   PC cannot reach NASA). Accuracy (validate, cities treated as if they had
+   no station): highs 90 % calibrated / 87 % regional, lows 84 / 83 %;
+   236 of 363 places publish their own official station → site-wide est.
+   ≈95 % highs, ≈93 % lows within ±2 °C. New rule: one station alone
+   calibrates only within 60 km (`CAL_SINGLE_MAX_KM`; Doha from Bahrain
+   140 km was +4 °C). **Season engine v2 (HCI) evaluated and NOT adopted**
+   (`scripts/climate/reports/engine-v2-evaluation.md`: no better than v1.1
+   vs tourism months, worse in the tropics) — v1.1 stays, fed the new
+   normals. **Waiting for the owner:** `1d_BETTER_CELLS.bat` re-downloads
+   76 elevation-matched cells (`cell_overrides.json`; Medellín, Kathmandu,
+   Almaty, Cusco… read 3–4 °C cold). Then: build (normals → merge →
+   validate → hci), stage normals.json into the repo, `node
+   scripts/climate/generate_seasons.mts`, review class changes for the 144
+   live cities, tests, publish; then the 156 staged cities.
+3. **Visa:** MA ✅, TZ ✅ 14 Oct (consulat.ma exempt list; visa.immigration.go.tz
+   eVisa/on-arrival list). Still JO, KH, KW, TN — JO: Royal Jordanian says
+   GCC need no visa (airline, not government; visitjordan.com needs a
+   WebFetch approval from the owner). Tried 14 Oct: KW — kuwaitvisa.moi.gov.kw
    tourist list omits all GCC nationals but also Egypt/Iraq, so absence is
    not proof; Saudi embassy in Kuwait and gcc-sg.org pages have no explicit
    line (GCC-SG movement page now 404). TN — diplomatie.gov.tn/visa 404,
