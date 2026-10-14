@@ -5,272 +5,196 @@
 - centre: 214/214
 - airport: 214/214
 - type: 214/214
-- climate: 144/214
+- climate: 211/214
 - places: 214/214
 - hotels: 214/214
-- visa: 198/214
+- visa: 211/214
 - currency: 214/214
 - country: 214/214
 - tourism (expected): 113/214
 - guide (expected): 145/214
 - photo (expected): 0/214
 
-Missing a required item (82):
+Missing a required item (6):
 
-- KW kuwait-city: visa
-- MA marrakesh: visa
-- MA casablanca: visa
-- MA fes: visa
-- MA chefchaouen: visa
-- MA tangier: visa
-- JO amman: visa
-- JO petra: visa
-- JO aqaba: visa
 - PT madeira: climate
 - GE kazbegi: climate
 - TN tunis: visa
 - TN sousse: visa
 - TN djerba: visa
-- RU moscow: climate
-- RU saint-petersburg: climate
-- RU kazan: climate
-- RU sochi: climate
-- BA sarajevo: climate
-- BA mostar: climate
-- AL tirana: climate
-- AL durres: climate
-- AL saranda: climate
-- ME kotor: climate
-- ME budva: climate
-- ME podgorica: climate
-- RS belgrade: climate
-- RS novi-sad: climate
-- HR zagreb: climate
-- HR split: climate
-- HR dubrovnik: climate
-- CZ prague: climate
-- CZ karlovy-vary: climate
-- HU budapest: climate
-- PL warsaw: climate
-- PL krakow: climate
-- PL zakopane: climate
-- IE dublin: climate
-- IE galway: climate
-- BE brussels: climate
-- BE bruges: climate
-- SE stockholm: climate
-- NO oslo: climate
-- NO bergen: climate
-- NO tromso: climate
-- DK copenhagen: climate
-- FI helsinki: climate
-- FI rovaniemi: climate
-- SI ljubljana: climate
-- SI bled: climate
-- CY larnaca: climate
-- CY limassol: climate
-- CY paphos: climate
 - MT valletta: climate
-- RO bucharest: climate
-- RO brasov: climate
-- AM yerevan: climate
-- KZ almaty: climate
-- KZ astana: climate
-- UZ tashkent: climate
-- UZ samarkand: climate
-- UZ bukhara: climate
-- KG bishkek: climate
-- KG karakol: climate
-- PK islamabad: climate
-- PK lahore: climate
-- NP kathmandu: climate
-- NP pokhara: climate
-- PH manila: climate
-- PH cebu: climate
-- PH boracay: climate
-- KH siem-reap: climate, visa
-- KH phnom-penh: climate, visa
-- TZ zanzibar: climate, visa
-- TZ arusha: climate, visa
-- MU port-louis: climate
-- MU grand-baie: climate
-- SC mahe: climate
-- CA toronto: climate
-- CA vancouver: climate
-- CA montreal: climate
-- CA banff: climate
 
 ## Staged (not on the site yet): 156 cities in 98 countries
 
 - centre: 0/156
 - airport: 0/156
-- type: 3/156
-- climate: 0/156
+- type: 156/156
+- climate: 154/156
 - places: 0/156
 - hotels: 0/156
-- visa: 75/156
+- visa: 126/156
 - currency: 156/156
-- country: 153/156
+- country: 156/156
 - tourism (expected): 0/156
 - guide (expected): 57/156
 - photo (expected): 0/156
 
 Missing a required item (156):
 
-- SA dammam: centre, airport, type, climate, places, hotels
-- SA taif: centre, airport, type, climate, places, hotels
-- TR bodrum: centre, airport, type, climate, places, hotels
-- GE kutaisi: centre, airport, type, climate, places, hotels
-- KG osh: centre, airport, type, climate, places, hotels
-- IN kochi: centre, airport, type, climate, places, hotels
-- IN bengaluru: centre, airport, type, climate, places, hotels
-- MV maafushi: centre, airport, type, climate, places, hotels
-- BT paro: centre, airport, type, climate, places, hotels, visa
-- BD dhaka: centre, airport, type, climate, places, hotels, visa
-- CN shenzhen: centre, airport, type, climate, places, hotels
-- CN chengdu: centre, airport, type, climate, places, hotels
-- JP sapporo: centre, airport, climate, places, hotels
-- JP fukuoka: centre, airport, type, climate, places, hotels
-- JP okinawa: centre, airport, type, climate, places, hotels
-- TW taipei: centre, airport, type, climate, places, hotels, visa, country
-- HK hong-kong: centre, airport, type, climate, places, hotels, visa, country
-- MO macau: centre, airport, type, climate, places, hotels, visa, country
-- TH krabi: centre, airport, type, climate, places, hotels
-- TH koh-samui: centre, airport, type, climate, places, hotels
-- MY kota-kinabalu: centre, airport, type, climate, places, hotels
-- ID lombok: centre, airport, type, climate, places, hotels
-- ID labuan-bajo: centre, airport, type, climate, places, hotels
-- VN nha-trang: centre, airport, type, climate, places, hotels
-- VN phu-quoc: centre, airport, type, climate, places, hotels
-- PH puerto-princesa: centre, airport, type, climate, places, hotels
-- LA luang-prabang: centre, airport, type, climate, places, hotels, visa
-- LA vientiane: centre, airport, type, climate, places, hotels, visa
-- BN bandar-seri-begawan: centre, airport, type, climate, places, hotels, visa
-- FR bordeaux: centre, airport, type, climate, places, hotels
-- FR strasbourg: centre, airport, type, climate, places, hotels
-- IT pisa: centre, airport, type, climate, places, hotels
-- IT bologna: centre, airport, type, climate, places, hotels
-- IT palermo: centre, airport, type, climate, places, hotels
-- ES malaga: centre, airport, type, climate, places, hotels
-- ES valencia: centre, airport, type, climate, places, hotels
-- ES ibiza: centre, airport, type, climate, places, hotels
-- ES palma: centre, airport, type, climate, places, hotels
-- PT faro: centre, airport, type, climate, places, hotels
-- GB glasgow: centre, airport, type, climate, places, hotels
-- GB birmingham: centre, airport, type, climate, places, hotels
-- GB belfast: centre, airport, type, climate, places, hotels
-- IE cork: centre, airport, type, climate, places, hotels
-- DE dusseldorf: centre, airport, type, climate, places, hotels
-- DE cologne: centre, airport, type, climate, places, hotels
-- CH lausanne: centre, airport, type, climate, places, hotels
-- CH zermatt: centre, airport, climate, places, hotels
-- CZ brno: centre, airport, type, climate, places, hotels
-- PL gdansk: centre, airport, type, climate, places, hotels
-- SK bratislava: centre, airport, type, climate, places, hotels
-- GR heraklion: centre, airport, type, climate, places, hotels
-- GR rhodes: centre, airport, type, climate, places, hotels
-- GR corfu: centre, airport, type, climate, places, hotels
-- SE gothenburg: centre, airport, type, climate, places, hotels
-- EE tallinn: centre, airport, type, climate, places, hotels
-- LV riga: centre, airport, type, climate, places, hotels
-- LT vilnius: centre, airport, type, climate, places, hotels
-- BG sofia: centre, airport, type, climate, places, hotels
-- BG varna: centre, airport, type, climate, places, hotels
-- MK skopje: centre, airport, type, climate, places, hotels, visa
-- LU luxembourg: centre, airport, type, climate, places, hotels
-- MC monte-carlo: centre, airport, type, climate, places, hotels, visa
-- SM san-marino: centre, airport, type, climate, places, hotels, visa
-- VA vatican-city: centre, airport, type, climate, places, hotels, visa
-- AD andorra-la-vella: centre, airport, type, climate, places, hotels, visa
-- EG giza: centre, airport, type, climate, places, hotels
-- EG hurghada: centre, airport, type, climate, places, hotels
-- MA agadir: centre, airport, type, climate, places, hotels, visa
-- MA rabat: centre, airport, type, climate, places, hotels, visa
-- TN hammamet: centre, airport, type, climate, places, hotels, visa
-- DZ algiers: centre, airport, type, climate, places, hotels, visa
-- DZ oran: centre, airport, type, climate, places, hotels, visa
-- TZ dar-es-salaam: centre, airport, type, climate, places, hotels, visa
-- ET addis-ababa: centre, airport, type, climate, places, hotels, visa
-- UG entebbe: centre, airport, type, climate, places, hotels, visa
-- RW kigali: centre, airport, type, climate, places, hotels, visa
-- SC praslin: centre, airport, type, climate, places, hotels
-- MG antananarivo: centre, airport, type, climate, places, hotels, visa
-- MG nosy-be: centre, airport, type, climate, places, hotels, visa
-- SN dakar: centre, airport, type, climate, places, hotels, visa
-- GH accra: centre, airport, type, climate, places, hotels, visa
-- NG lagos: centre, airport, type, climate, places, hotels, visa
-- NA windhoek: centre, airport, type, climate, places, hotels, visa
-- BW gaborone: centre, airport, type, climate, places, hotels, visa
-- ZM livingstone: centre, airport, type, climate, places, hotels, visa
-- ZW victoria-falls: centre, airport, type, climate, places, hotels, visa
-- MZ maputo: centre, airport, type, climate, places, hotels, visa
-- CV sal: centre, airport, type, climate, places, hotels, visa
-- US orlando: centre, airport, type, climate, places, hotels
-- US chicago: centre, airport, type, climate, places, hotels
-- US washington-dc: centre, airport, type, climate, places, hotels
-- US seattle: centre, airport, type, climate, places, hotels
-- US honolulu: centre, airport, type, climate, places, hotels
-- US boston: centre, airport, type, climate, places, hotels
-- CA calgary: centre, airport, type, climate, places, hotels
-- CA quebec-city: centre, airport, type, climate, places, hotels
-- CA ottawa: centre, airport, type, climate, places, hotels
-- MX los-cabos: centre, airport, type, climate, places, hotels
-- MX puerto-vallarta: centre, airport, type, climate, places, hotels
-- CU havana: centre, airport, type, climate, places, hotels, visa
-- CU varadero: centre, airport, type, climate, places, hotels, visa
-- DO punta-cana: centre, airport, type, climate, places, hotels, visa
-- DO santo-domingo: centre, airport, type, climate, places, hotels, visa
-- JM montego-bay: centre, airport, type, climate, places, hotels, visa
-- JM kingston: centre, airport, type, climate, places, hotels, visa
-- CR san-jose: centre, airport, type, climate, places, hotels, visa
-- CR liberia: centre, airport, type, climate, places, hotels, visa
-- PA panama-city: centre, airport, type, climate, places, hotels, visa
-- GT guatemala-city: centre, airport, type, climate, places, hotels, visa
-- SV san-salvador: centre, airport, type, climate, places, hotels, visa
-- HN roatan: centre, airport, type, climate, places, hotels, visa
-- BZ belize-city: centre, airport, type, climate, places, hotels, visa
-- BS nassau: centre, airport, type, climate, places, hotels, visa
-- BB bridgetown: centre, airport, type, climate, places, hotels, visa
-- TT port-of-spain: centre, airport, type, climate, places, hotels, visa
-- BR foz-do-iguacu: centre, airport, type, climate, places, hotels
-- BR florianopolis: centre, airport, type, climate, places, hotels
-- AR buenos-aires: centre, airport, type, climate, places, hotels, visa
-- AR mendoza: centre, airport, type, climate, places, hotels, visa
-- AR bariloche: centre, airport, type, climate, places, hotels, visa
-- AR el-calafate: centre, airport, type, climate, places, hotels, visa
-- CL santiago: centre, airport, type, climate, places, hotels, visa
-- CL punta-arenas: centre, airport, type, climate, places, hotels, visa
-- CL easter-island: centre, airport, type, climate, places, hotels, visa
-- PE lima: centre, airport, type, climate, places, hotels, visa
-- PE cusco: centre, airport, type, climate, places, hotels, visa
-- PE arequipa: centre, airport, type, climate, places, hotels, visa
-- CO bogota: centre, airport, type, climate, places, hotels, visa
-- CO medellin: centre, airport, type, climate, places, hotels, visa
-- CO cartagena: centre, airport, type, climate, places, hotels, visa
-- EC quito: centre, airport, type, climate, places, hotels, visa
-- EC guayaquil: centre, airport, type, climate, places, hotels, visa
-- EC galapagos: centre, airport, type, climate, places, hotels, visa
-- UY montevideo: centre, airport, type, climate, places, hotels, visa
-- UY punta-del-este: centre, airport, type, climate, places, hotels, visa
-- BO la-paz: centre, airport, type, climate, places, hotels, visa
-- BO santa-cruz: centre, airport, type, climate, places, hotels, visa
-- PY asuncion: centre, airport, type, climate, places, hotels, visa
-- GY georgetown: centre, airport, type, climate, places, hotels, visa
-- SR paramaribo: centre, airport, type, climate, places, hotels, visa
-- AU perth: centre, airport, type, climate, places, hotels
-- AU adelaide: centre, airport, type, climate, places, hotels
-- AU cairns: centre, airport, type, climate, places, hotels
-- NZ auckland: centre, airport, type, climate, places, hotels
-- NZ wellington: centre, airport, type, climate, places, hotels
-- NZ christchurch: centre, airport, type, climate, places, hotels
-- NZ queenstown: centre, airport, climate, places, hotels
-- FJ nadi: centre, airport, type, climate, places, hotels, visa
-- FJ suva: centre, airport, type, climate, places, hotels, visa
-- PG port-moresby: centre, airport, type, climate, places, hotels, visa
-- WS apia: centre, airport, type, climate, places, hotels, visa
-- TO nukualofa: centre, airport, type, climate, places, hotels, visa
-- VU port-vila: centre, airport, type, climate, places, hotels, visa
-- SB honiara: centre, airport, type, climate, places, hotels, visa
-- PW koror: centre, airport, type, climate, places, hotels, visa
-- FM pohnpei: centre, airport, type, climate, places, hotels, visa
+- SA dammam: centre, airport, places, hotels
+- SA taif: centre, airport, places, hotels
+- TR bodrum: centre, airport, places, hotels
+- GE kutaisi: centre, airport, places, hotels
+- KG osh: centre, airport, places, hotels
+- IN kochi: centre, airport, places, hotels
+- IN bengaluru: centre, airport, places, hotels
+- MV maafushi: centre, airport, places, hotels
+- BT paro: centre, airport, climate, places, hotels
+- BD dhaka: centre, airport, places, hotels
+- CN shenzhen: centre, airport, places, hotels
+- CN chengdu: centre, airport, places, hotels
+- JP sapporo: centre, airport, places, hotels
+- JP fukuoka: centre, airport, places, hotels
+- JP okinawa: centre, airport, places, hotels
+- TW taipei: centre, airport, places, hotels
+- HK hong-kong: centre, airport, places, hotels
+- MO macau: centre, airport, places, hotels
+- TH krabi: centre, airport, places, hotels
+- TH koh-samui: centre, airport, places, hotels
+- MY kota-kinabalu: centre, airport, places, hotels
+- ID lombok: centre, airport, places, hotels
+- ID labuan-bajo: centre, airport, places, hotels
+- VN nha-trang: centre, airport, places, hotels
+- VN phu-quoc: centre, airport, places, hotels
+- PH puerto-princesa: centre, airport, places, hotels
+- LA luang-prabang: centre, airport, places, hotels
+- LA vientiane: centre, airport, places, hotels
+- BN bandar-seri-begawan: centre, airport, places, hotels
+- FR bordeaux: centre, airport, places, hotels
+- FR strasbourg: centre, airport, places, hotels
+- IT pisa: centre, airport, places, hotels
+- IT bologna: centre, airport, places, hotels
+- IT palermo: centre, airport, places, hotels
+- ES malaga: centre, airport, places, hotels
+- ES valencia: centre, airport, places, hotels
+- ES ibiza: centre, airport, places, hotels
+- ES palma: centre, airport, places, hotels
+- PT faro: centre, airport, places, hotels
+- GB glasgow: centre, airport, places, hotels
+- GB birmingham: centre, airport, places, hotels
+- GB belfast: centre, airport, places, hotels
+- IE cork: centre, airport, places, hotels
+- DE dusseldorf: centre, airport, places, hotels
+- DE cologne: centre, airport, places, hotels
+- CH lausanne: centre, airport, places, hotels
+- CH zermatt: centre, airport, places, hotels
+- CZ brno: centre, airport, places, hotels
+- PL gdansk: centre, airport, places, hotels
+- SK bratislava: centre, airport, places, hotels
+- GR heraklion: centre, airport, places, hotels
+- GR rhodes: centre, airport, places, hotels
+- GR corfu: centre, airport, places, hotels
+- SE gothenburg: centre, airport, places, hotels
+- EE tallinn: centre, airport, places, hotels
+- LV riga: centre, airport, places, hotels
+- LT vilnius: centre, airport, places, hotels
+- BG sofia: centre, airport, places, hotels
+- BG varna: centre, airport, places, hotels
+- MK skopje: centre, airport, places, hotels, visa
+- LU luxembourg: centre, airport, places, hotels
+- MC monte-carlo: centre, airport, places, hotels
+- SM san-marino: centre, airport, places, hotels, visa
+- VA vatican-city: centre, airport, places, hotels, visa
+- AD andorra-la-vella: centre, airport, places, hotels, visa
+- EG giza: centre, airport, places, hotels
+- EG hurghada: centre, airport, places, hotels
+- MA agadir: centre, airport, places, hotels
+- MA rabat: centre, airport, places, hotels
+- TN hammamet: centre, airport, places, hotels, visa
+- DZ algiers: centre, airport, places, hotels, visa
+- DZ oran: centre, airport, places, hotels, visa
+- TZ dar-es-salaam: centre, airport, places, hotels
+- ET addis-ababa: centre, airport, places, hotels
+- UG entebbe: centre, airport, places, hotels
+- RW kigali: centre, airport, places, hotels
+- SC praslin: centre, airport, places, hotels
+- MG antananarivo: centre, airport, places, hotels, visa
+- MG nosy-be: centre, airport, places, hotels, visa
+- SN dakar: centre, airport, places, hotels
+- GH accra: centre, airport, places, hotels, visa
+- NG lagos: centre, airport, places, hotels, visa
+- NA windhoek: centre, airport, places, hotels
+- BW gaborone: centre, airport, places, hotels
+- ZM livingstone: centre, airport, places, hotels
+- ZW victoria-falls: centre, airport, places, hotels
+- MZ maputo: centre, airport, places, hotels
+- CV sal: centre, airport, places, hotels, visa
+- US orlando: centre, airport, places, hotels
+- US chicago: centre, airport, places, hotels
+- US washington-dc: centre, airport, places, hotels
+- US seattle: centre, airport, places, hotels
+- US honolulu: centre, airport, places, hotels
+- US boston: centre, airport, places, hotels
+- CA calgary: centre, airport, places, hotels
+- CA quebec-city: centre, airport, places, hotels
+- CA ottawa: centre, airport, places, hotels
+- MX los-cabos: centre, airport, places, hotels
+- MX puerto-vallarta: centre, airport, places, hotels
+- CU havana: centre, airport, places, hotels, visa
+- CU varadero: centre, airport, places, hotels, visa
+- DO punta-cana: centre, airport, places, hotels
+- DO santo-domingo: centre, airport, places, hotels
+- JM montego-bay: centre, airport, places, hotels
+- JM kingston: centre, airport, places, hotels
+- CR san-jose: centre, airport, places, hotels, visa
+- CR liberia: centre, airport, places, hotels, visa
+- PA panama-city: centre, airport, places, hotels, visa
+- GT guatemala-city: centre, airport, places, hotels, visa
+- SV san-salvador: centre, airport, places, hotels
+- HN roatan: centre, airport, places, hotels, visa
+- BZ belize-city: centre, airport, places, hotels
+- BS nassau: centre, airport, places, hotels
+- BB bridgetown: centre, airport, places, hotels, visa
+- TT port-of-spain: centre, airport, places, hotels, visa
+- BR foz-do-iguacu: centre, airport, places, hotels
+- BR florianopolis: centre, airport, places, hotels
+- AR buenos-aires: centre, airport, places, hotels
+- AR mendoza: centre, airport, places, hotels
+- AR bariloche: centre, airport, places, hotels
+- AR el-calafate: centre, airport, places, hotels
+- CL santiago: centre, airport, places, hotels
+- CL punta-arenas: centre, airport, places, hotels
+- CL easter-island: centre, airport, places, hotels
+- PE lima: centre, airport, places, hotels
+- PE cusco: centre, airport, places, hotels
+- PE arequipa: centre, airport, places, hotels
+- CO bogota: centre, airport, places, hotels
+- CO medellin: centre, airport, places, hotels
+- CO cartagena: centre, airport, places, hotels
+- EC quito: centre, airport, places, hotels
+- EC guayaquil: centre, airport, places, hotels
+- EC galapagos: centre, airport, places, hotels
+- UY montevideo: centre, airport, places, hotels
+- UY punta-del-este: centre, airport, places, hotels
+- BO la-paz: centre, airport, places, hotels
+- BO santa-cruz: centre, airport, places, hotels
+- PY asuncion: centre, airport, places, hotels, visa
+- GY georgetown: centre, airport, places, hotels, visa
+- SR paramaribo: centre, airport, places, hotels, visa
+- AU perth: centre, airport, places, hotels
+- AU adelaide: centre, airport, places, hotels
+- AU cairns: centre, airport, places, hotels
+- NZ auckland: centre, airport, places, hotels
+- NZ wellington: centre, airport, places, hotels
+- NZ christchurch: centre, airport, places, hotels
+- NZ queenstown: centre, airport, places, hotels
+- FJ nadi: centre, airport, places, hotels
+- FJ suva: centre, airport, places, hotels
+- PG port-moresby: centre, airport, places, hotels, visa
+- WS apia: centre, airport, places, hotels, visa
+- TO nukualofa: centre, airport, places, hotels, visa
+- VU port-vila: centre, airport, places, hotels, visa
+- SB honiara: centre, airport, places, hotels
+- PW koror: centre, airport, places, hotels, visa
+- FM pohnpei: centre, airport, climate, places, hotels, visa
 
