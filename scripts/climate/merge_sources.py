@@ -179,6 +179,12 @@ def power_normals(did):
 CAL_KM = 150.0
 CAL_N = 3
 CAL_MAX_ELEV_DIFF_M = 300.0
+# One station alone corrects a city only when it is this close. Farther, a
+# single station often sits in different terrain (Doha from Bahrain airport,
+# 140 km: July highs +4 °C too hot; Guadalajara from Ciudad Guzmán, 107 km;
+# Gabala from Akhty, 55 km) and the regional correction is used instead.
+# Leave-own-station-out test, 14 Oct 2026: 60 km was the best of 25/40/60/∞.
+CAL_SINGLE_MAX_KM = 60.0
 PARAMS = ["highC", "lowC", "meanC", "precipMm", "precipDays", "dewPointC", "relativeHumidity", "windMs", "snowCoverPct"]
 
 
@@ -193,7 +199,7 @@ def calibration(did, rec, pool, era5, town):
     CAL_KM (and within CAL_MAX_ELEV_DIFF_M of the town's height when known)
     whose position ERA5-Land was also downloaded at, the difference station −
     ERA5-Land, weighted by inverse distance. Returns None when no station
-    qualifies."""
+    qualifies, or when the only one is farther than CAL_SINGLE_MAX_KM."""
     lat, lon = rec["latitude"], rec["longitude"]
     near = []
     for sid, s in pool.items():
@@ -211,6 +217,8 @@ def calibration(did, rec, pool, era5, town):
     near.sort(key=lambda x: x[0])
     near = near[:CAL_N]
     if not near:
+        return None
+    if len(near) == 1 and near[0][0] > CAL_SINGLE_MAX_KM:
         return None
     w = [1.0 / max(d, 5.0) for d, *_ in near]
     tw = sum(w)

@@ -1,0 +1,34 @@
+# NASA POWER daily series for destinations ERA5-Land cannot serve (small
+# islands with no land cell): scripts/climate/fetch_power.py. By hand. The
+# files come back as a run artifact ("power"), to be placed in
+# scripts/climate/raw/power/ next to the ERA5-Land downloads (owner's PC),
+# where merge_sources.py reads them. No key needed.
+name: Climate NASA POWER
+
+on:
+  workflow_dispatch:
+    inputs:
+      ids:
+        description: "Destination ids, space-separated"
+        required: true
+        default: "male mahe maafushi praslin sal roatan easter-island nukualofa"
+
+permissions:
+  contents: read
+
+jobs:
+  power:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Fetch
+        run: python3 scripts/climate/fetch_power.py ${{ inputs.ids }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: power
+          path: scripts/climate/raw/power/
+          retention-days: 7
