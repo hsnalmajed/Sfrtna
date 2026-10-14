@@ -86,7 +86,16 @@ async function main() {
   console.log(`cities to fetch: ${slugs.length}`);
   const failed: string[] = [];
 
+  // Stop starting new cities before the job's time limit, so the commit step
+  // still runs and keeps what was fetched; the next run with --missing
+  // continues from there. STOP_AFTER_MIN (minutes since start), default 300.
+  const started = Date.now();
+  const stopAfterMs = Number(process.env.STOP_AFTER_MIN ?? 300) * 60_000;
   for (const [n, slug] of slugs.entries()) {
+    if (Date.now() - started > stopAfterMs) {
+      console.log(`time budget reached after ${n} of ${slugs.length} cities — stopping; run again with --missing`);
+      break;
+    }
     const point = cityPoint(slug);
     if (!point) continue;
     const elements = await ask(point.lat, point.lon);
