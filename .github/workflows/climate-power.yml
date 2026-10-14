@@ -1,8 +1,8 @@
 # NASA POWER daily series for destinations ERA5-Land cannot serve (small
 # islands with no land cell): scripts/climate/fetch_power.py. By hand. The
-# files come back as a run artifact ("power"), to be placed in
-# scripts/climate/raw/power/ next to the ERA5-Land downloads (owner's PC),
-# where merge_sources.py reads them. No key needed.
+# files are pushed to the branch "climate-power" (not main: raw data stays
+# out of the site), to be placed in scripts/climate/raw/power/ next to the
+# ERA5-Land downloads (owner's PC), where merge_sources.py reads them.
 name: Climate NASA POWER
 
 on:
@@ -14,7 +14,7 @@ on:
         default: "male mahe maafushi praslin sal roatan easter-island nukualofa"
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   power:
@@ -27,8 +27,13 @@ jobs:
           python-version: "3.12"
       - name: Fetch
         run: python3 scripts/climate/fetch_power.py ${{ inputs.ids }}
-      - uses: actions/upload-artifact@v4
-        with:
-          name: power
-          path: scripts/climate/raw/power/
-          retention-days: 7
+      - name: Push to branch climate-power
+        run: |
+          mkdir -p /tmp/power && cp scripts/climate/raw/power/* /tmp/power/
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout --orphan climate-power
+          git rm -rq --cached . && find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+          cp /tmp/power/* .
+          git add -A && git commit -qm "NASA POWER: ${{ inputs.ids }}"
+          git push -f origin climate-power
