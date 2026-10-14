@@ -507,6 +507,9 @@ export const DESTINATION_TYPES: Record<string, DestinationType[]> = {
  * the QA report, never published.
  */
 export const QA_DESTINATION_TYPES: Record<string, DestinationType[]> = {
+  sapporo: ["city"],
+  queenstown: ["mountain", "nature"],
   // Ski fields, to test the ski profile on real data.
   "coronet-peak": ["ski"],
+  zermatt: ["ski", "mountain"],
 };

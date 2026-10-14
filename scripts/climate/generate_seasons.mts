@@ -115,8 +115,13 @@ writeFileSync(
   ) + "\n"
 );
 
-// The slim copy the site imports (see src/lib/travelSeason/siteFields.ts).
+// The slim copy the site imports (see src/lib/travelSeason/siteFields.ts):
+// only the cities on the site (src/lib/cities.ts) — staged cities are rated in
+// the full file and the reports, but stay out of the Worker until published.
 const pick = (r: SeasonRecord) => Object.fromEntries(SITE_FIELDS.map((f) => [f, r[f]]));
+const liveSlugs = new Set(
+  [...readFileSync(join(root, "src/lib/cities.ts"), "utf8").matchAll(/slug: "([^"]+)"/g)].map((m) => m[1])
+);
 writeFileSync(
   sitePath,
   JSON.stringify({
@@ -127,7 +132,7 @@ writeFileSync(
       climatePeriod: normals.meta.period,
       generatedAt,
     },
-    records: Object.fromEntries(Object.entries(records).map(([k, recs]) => [k, recs.map(pick)])),
+    records: Object.fromEntries(Object.entries(records).filter(([k]) => liveSlugs.has(k)).map(([k, recs]) => [k, recs.map(pick)])),
   }) + "\n"
 );
 

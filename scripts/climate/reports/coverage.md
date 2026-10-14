@@ -1,174 +1,18 @@
-# Coverage — scoring v1.1, 2026-10-14T12:29:37.775Z
+# Coverage — scoring v1.1, 2026-10-14T14:01:41.184Z
 
 - Total destinations: 1090
 - With coordinates: 1090
 - Missing coordinates: 0
-- With climate data: 211
+- With climate data: 365
 - With tourism source: 113
-- Climate-only: 99
+- Climate-only: 253
 - With official station normals (WMO 1991–2020) for at least one parameter: 243; for temperatures: 238
-- On ERA5-Land only: 59
+- On ERA5-Land only: 114
 - On the NASA POWER fallback: 8 (male, mahe, maafushi, praslin, sal, roatan, easter-island, nukualofa)
 - Low-confidence: 0
 - Temperatures from a grid point more than 5 km away: 61 (alula 6.08 km, abu-dhabi 5.62 km, al-wakrah 6.3 km, kuwait-city 9.22 km, salalah 9.18 km, tangier 7.75 km, amman 5.84 km, petra 9.19 km, manchester 5.19 km, venice 7.49 km, naples 8.23 km, mykonos 5.75 km, thessaloniki 7.07 km, porto 5.6 km, madeira 5.66 km, ella 6.15 km, ubud 5.29 km, xian 5.83 km, hanoi 5.72 km, da-nang 8.04 km, batumi 7.77 km, kazbegi 7.26 km, mombasa 6.69 km, cancun 7.94 km, guadalajara 5.06 km, rio-de-janeiro 9.36 km, sao-paulo 6.46 km, beirut 10.85 km, byblos 9.68 km, saranda 8.44 km, split 10.34 km, brasov 5.34 km, boracay 11.41 km, siem-reap 6.14 km, grand-baie 9.8 km, kochi 7.05 km, shenzhen 6.81 km, taipei 5.55 km, malaga 5.43 km, glasgow 5.32 km, heraklion 5.29 km, rhodes 5.44 km, san-marino 5.51 km, andorra-la-vella 13.79 km, addis-ababa 6.57 km, entebbe 5.47 km, lagos 5.04 km, calgary 5.88 km, los-cabos 11.98 km, puerto-vallarta 6.92 km, havana 5.75 km, varadero 6.86 km, panama-city 7.9 km, lima 6.1 km, cusco 13.23 km, arequipa 6.73 km, galapagos 5.45 km, punta-del-este 8.09 km, la-paz 12.15 km, auckland 6.25 km, port-moresby 9.36 km)
-- Withheld from the site (cell height too far from the town's; needs a station override): 3 (madeira: Funchal's nearest ERA5-Land land cell (5.7 km) averages 548 m — the mountainside above the town — while the town centre is near sea level, so its temperatures would read too cold. Needs a station override (Funchal observatory normals).; kazbegi: ERA5-Land cell +908 m from the town's height; valletta: Malta's own station (Luqa) is in neither the WMO nor the GHCN normals used here; the correction comes from Sicilian stations 103–133 km away and leaves July highs near 27.5 °C, about 4 °C below Malta's summer. Needs a station override (Malta Meteorological Office normals). Withheld 14 Oct 2026.)
-- Errors: 876
-  - dammam: no destination type
-  - taif: no destination type
-  - bodrum: no destination type
-  - kutaisi: no destination type
-  - osh: no destination type
-  - kochi: no destination type
-  - bengaluru: no destination type
-  - maafushi: no destination type
-  - paro: no destination type
-  - dhaka: no destination type
-  - shenzhen: no destination type
-  - chengdu: no destination type
-  - sapporo: no destination type
-  - fukuoka: no destination type
-  - okinawa: no destination type
-  - taipei: no destination type
-  - hong-kong: no destination type
-  - macau: no destination type
-  - krabi: no destination type
-  - koh-samui: no destination type
-  - kota-kinabalu: no destination type
-  - lombok: no destination type
-  - labuan-bajo: no destination type
-  - nha-trang: no destination type
-  - phu-quoc: no destination type
-  - puerto-princesa: no destination type
-  - luang-prabang: no destination type
-  - vientiane: no destination type
-  - bandar-seri-begawan: no destination type
-  - bordeaux: no destination type
-  - strasbourg: no destination type
-  - pisa: no destination type
-  - bologna: no destination type
-  - palermo: no destination type
-  - malaga: no destination type
-  - valencia: no destination type
-  - ibiza: no destination type
-  - palma: no destination type
-  - faro: no destination type
-  - glasgow: no destination type
-  - birmingham: no destination type
-  - belfast: no destination type
-  - cork: no destination type
-  - dusseldorf: no destination type
-  - cologne: no destination type
-  - lausanne: no destination type
-  - zermatt: no destination type
-  - brno: no destination type
-  - gdansk: no destination type
-  - bratislava: no destination type
-  - heraklion: no destination type
-  - rhodes: no destination type
-  - corfu: no destination type
-  - gothenburg: no destination type
-  - tallinn: no destination type
-  - riga: no destination type
-  - vilnius: no destination type
-  - sofia: no destination type
-  - varna: no destination type
-  - skopje: no destination type
-  - luxembourg: no destination type
-  - monte-carlo: no destination type
-  - san-marino: no destination type
-  - vatican-city: no destination type
-  - andorra-la-vella: no destination type
-  - giza: no destination type
-  - hurghada: no destination type
-  - agadir: no destination type
-  - rabat: no destination type
-  - hammamet: no destination type
-  - algiers: no destination type
-  - oran: no destination type
-  - dar-es-salaam: no destination type
-  - addis-ababa: no destination type
-  - entebbe: no destination type
-  - kigali: no destination type
-  - praslin: no destination type
-  - antananarivo: no destination type
-  - nosy-be: no destination type
-  - dakar: no destination type
-  - accra: no destination type
-  - lagos: no destination type
-  - windhoek: no destination type
-  - gaborone: no destination type
-  - livingstone: no destination type
-  - victoria-falls: no destination type
-  - maputo: no destination type
-  - sal: no destination type
-  - orlando: no destination type
-  - chicago: no destination type
-  - washington-dc: no destination type
-  - seattle: no destination type
-  - honolulu: no destination type
-  - boston: no destination type
-  - calgary: no destination type
-  - quebec-city: no destination type
-  - ottawa: no destination type
-  - los-cabos: no destination type
-  - puerto-vallarta: no destination type
-  - havana: no destination type
-  - varadero: no destination type
-  - punta-cana: no destination type
-  - santo-domingo: no destination type
-  - montego-bay: no destination type
-  - kingston: no destination type
-  - san-jose: no destination type
-  - liberia: no destination type
-  - panama-city: no destination type
-  - guatemala-city: no destination type
-  - san-salvador: no destination type
-  - roatan: no destination type
-  - belize-city: no destination type
-  - nassau: no destination type
-  - bridgetown: no destination type
-  - port-of-spain: no destination type
-  - foz-do-iguacu: no destination type
-  - florianopolis: no destination type
-  - buenos-aires: no destination type
-  - mendoza: no destination type
-  - bariloche: no destination type
-  - el-calafate: no destination type
-  - santiago: no destination type
-  - punta-arenas: no destination type
-  - easter-island: no destination type
-  - lima: no destination type
-  - cusco: no destination type
-  - arequipa: no destination type
-  - bogota: no destination type
-  - medellin: no destination type
-  - cartagena: no destination type
-  - quito: no destination type
-  - guayaquil: no destination type
-  - galapagos: no destination type
-  - montevideo: no destination type
-  - punta-del-este: no destination type
-  - la-paz: no destination type
-  - santa-cruz: no destination type
-  - asuncion: no destination type
-  - georgetown: no destination type
-  - paramaribo: no destination type
-  - perth: no destination type
-  - adelaide: no destination type
-  - cairns: no destination type
-  - auckland: no destination type
-  - wellington: no destination type
-  - christchurch: no destination type
-  - queenstown: no destination type
-  - nadi: no destination type
-  - suva: no destination type
-  - port-moresby: no destination type
-  - apia: no destination type
-  - nukualofa: no destination type
-  - port-vila: no destination type
-  - honiara: no destination type
-  - koror: no destination type
-  - pohnpei: no destination type
+- Withheld from the site (cell height too far from the town's; needs a station override): 5 (madeira: Funchal's nearest ERA5-Land land cell (5.7 km) averages 548 m — the mountainside above the town — while the town centre is near sea level, so its temperatures would read too cold. Needs a station override (Funchal observatory normals).; kazbegi: ERA5-Land cell +908 m from the town's height; valletta: Malta's own station (Luqa) is in neither the WMO nor the GHCN normals used here; the correction comes from Sicilian stations 103–133 km away and leaves July highs near 27.5 °C, about 4 °C below Malta's summer. Needs a station override (Malta Meteorological Office normals). Withheld 14 Oct 2026.; paro: ERA5-Land cell +525 m from the town's height; pohnpei: ERA5-Land cell -522 m from the town's height)
+- Errors: 720
   - st-00040438: no climate normals (not fetched)
   - st-00040437: no climate normals (not fetched)
   - st-00041024: no climate normals (not fetched)
@@ -906,6 +750,18 @@
 - karlovy-vary: town 384 m, cell 559 m (medium confidence)
 - karakol: town 1750 m, cell 1920 m (medium confidence)
 - port-louis: town 18 m, cell 258 m (medium confidence)
+- osh: town 1003 m, cell 1188 m (medium confidence)
+- taipei: town 22 m, cell 207 m (medium confidence)
+- koh-samui: town 409 m, cell 71 m (medium confidence)
+- palermo: town 43 m, cell 237 m (medium confidence)
+- heraklion: town 30 m, cell 199 m (medium confidence)
+- san-marino: town 678 m, cell 414 m (medium confidence)
+- andorra-la-vella: town 992 m, cell 1276 m (medium confidence)
+- los-cabos: town 29 m, cell 297 m (medium confidence)
+- cusco: town 3402 m, cell 3617 m (medium confidence)
+- quito: town 2826 m, cell 2982 m (medium confidence)
+- galapagos: town 8 m, cell 170 m (medium confidence)
+- queenstown: town 320 m, cell 716 m (medium confidence)
 
 ### Possible model drizzle (15+ rain days a month averaging under 6 mm per rain day)
 
@@ -935,6 +791,34 @@ ERA5-Land tends to count more light-rain days than rain gauges. These months are
 - grand-baie: Mar 21.8 d / 121 mm, Apr 16.0 d / 60 mm, Dec 16.5 d / 73 mm
 - mahe: Mar 19.6 d / 109 mm, Jun 15.1 d / 77 mm, Sep 16.7 d / 100 mm
 - banff: Jul 17.3 d / 92 mm
+- kochi: Mar 15.3 d / 61 mm
+- bengaluru: Jun 19.7 d / 110 mm, Jul 21.6 d / 116 mm
+- maafushi: Apr 17.7 d / 94 mm
+- sapporo: Jan 18.3 d / 108 mm, Feb 16.0 d / 92 mm
+- koh-samui: May 23.4 d / 127 mm, Jun 20.4 d / 98 mm, Jul 20.2 d / 94 mm, Aug 19.9 d / 100 mm
+- labuan-bajo: Nov 22.2 d / 127 mm
+- nha-trang: Jun 19.2 d / 113 mm, Jul 22.5 d / 123 mm, Aug 22.3 d / 132 mm
+- phu-quoc: Mar 15.4 d / 69 mm
+- glasgow: Apr 15.1 d / 84 mm, May 15.3 d / 87 mm, Jun 15.8 d / 94 mm
+- belfast: Nov 15.5 d / 88 mm, Dec 15.2 d / 84 mm
+- entebbe: Jan 21.5 d / 124 mm, Feb 20.0 d / 118 mm, Jun 21.4 d / 103 mm, Jul 17.1 d / 78 mm, Aug 21.1 d / 99 mm, Sep 24.1 d / 111 mm, Oct 26.9 d / 143 mm, Dec 25.7 d / 145 mm
+- praslin: Mar 19.6 d / 109 mm, Jun 15.1 d / 77 mm, Sep 16.7 d / 100 mm
+- lagos: Mar 21.5 d / 88 mm, Apr 22.8 d / 127 mm, Nov 22.4 d / 83 mm
+- havana: Jul 18.3 d / 86 mm, Aug 19.9 d / 109 mm, Oct 17.0 d / 99 mm
+- varadero: Jul 17.4 d / 81 mm, Aug 19.6 d / 107 mm
+- punta-cana: Jan 18.6 d / 85 mm, Feb 15.9 d / 63 mm, Mar 15.5 d / 50 mm, Apr 17.1 d / 65 mm, Jun 20.2 d / 94 mm, Jul 23.9 d / 85 mm, Aug 24.1 d / 107 mm, Sep 22.7 d / 135 mm, Oct 24.7 d / 124 mm, Nov 23.1 d / 131 mm, Dec 20.3 d / 91 mm
+- santo-domingo: Jan 16.2 d / 68 mm, Mar 15.5 d / 54 mm, Apr 19.6 d / 86 mm, May 25.2 d / 151 mm, Jun 25.6 d / 119 mm, Dec 16.0 d / 76 mm
+- montego-bay: Jan 17.4 d / 77 mm, Feb 16.1 d / 42 mm, Mar 18.0 d / 59 mm, Apr 24.4 d / 64 mm, Jun 20.0 d / 86 mm, Jul 19.3 d / 66 mm, Aug 19.5 d / 94 mm, Nov 18.7 d / 107 mm, Dec 18.0 d / 81 mm
+- kingston: Mar 15.8 d / 25 mm, May 18.0 d / 99 mm, Jun 16.8 d / 65 mm, Jul 15.6 d / 56 mm, Aug 18.7 d / 102 mm
+- san-jose: Apr 19.0 d / 113 mm
+- panama-city: Apr 17.1 d / 101 mm, Dec 21.2 d / 126 mm
+- el-calafate: Mar 15.1 d / 82 mm, Dec 15.7 d / 74 mm
+- cusco: Apr 22.7 d / 94 mm, Sep 19.7 d / 55 mm, Oct 25.3 d / 101 mm, Nov 26.0 d / 131 mm
+- arequipa: Apr 15.8 d / 67 mm
+- quito: Jun 29.5 d / 166 mm, Jul 29.6 d / 126 mm, Aug 29.8 d / 129 mm
+- guayaquil: Oct 15.8 d / 94 mm
+- galapagos: Jan 15.0 d / 67 mm
+- la-paz: Jan 29.1 d / 158 mm, Feb 26.0 d / 139 mm, Mar 26.9 d / 114 mm, Apr 19.2 d / 70 mm, Sep 18.3 d / 71 mm, Oct 21.8 d / 92 mm, Nov 21.9 d / 88 mm, Dec 27.5 d / 137 mm
 
 ### No tourism source (climate-only rating)
 
