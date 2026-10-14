@@ -15,7 +15,7 @@
 
 import type { DestinationType } from "../lib/travelSeason/config.ts";
 
-export const DESTINATION_TYPES_VERSION = "1.2";
+export const DESTINATION_TYPES_VERSION = "1.3";
 
 export const DESTINATION_TYPES: Record<string, DestinationType[]> = {
   // Saudi Arabia
@@ -244,6 +244,262 @@ export const DESTINATION_TYPES: Record<string, DestinationType[]> = {
   vancouver: ["city", "nature"],
   montreal: ["city"],
   banff: ["mountain", "nature"],
+  // ── Coverage batch 2 (14 Oct 2026): staged cities, same rules as above.
+  // Not on the site until each city passes scripts/coverage/check.py.
+  // Saudi Arabia
+  dammam: ["city", "beach"],
+  taif: ["mountain", "city"],
+  // Turkey
+  bodrum: ["beach"],
+  // Georgia
+  kutaisi: ["city", "nature"],
+  // Kyrgyzstan
+  osh: ["city", "mountain"],
+  // India
+  kochi: ["city", "beach", "tropical"],
+  bengaluru: ["city"],
+  // Maldives
+  maafushi: ["beach", "tropical"],
+  // Bhutan
+  paro: ["mountain", "nature"],
+  // Bangladesh
+  dhaka: ["city"],
+  // China
+  shenzhen: ["city"],
+  chengdu: ["city"],
+  // Japan
+  sapporo: ["city"],
+  fukuoka: ["city"],
+  okinawa: ["beach"],
+  // Taiwan
+  taipei: ["city"],
+  // Hong Kong
+  "hong-kong": ["city"],
+  // Macau
+  macau: ["city"],
+  // Thailand
+  krabi: ["beach", "tropical"],
+  "koh-samui": ["beach", "tropical"],
+  // Malaysia
+  "kota-kinabalu": ["city", "beach", "tropical"],
+  // Indonesia
+  lombok: ["beach", "tropical"],
+  "labuan-bajo": ["beach", "nature", "tropical"],
+  // Vietnam
+  "nha-trang": ["beach", "tropical"],
+  "phu-quoc": ["beach", "tropical"],
+  // Philippines
+  "puerto-princesa": ["nature", "beach", "tropical"],
+  // Laos
+  "luang-prabang": ["city", "nature", "tropical"],
+  vientiane: ["city", "tropical"],
+  // Brunei
+  "bandar-seri-begawan": ["city", "tropical"],
+  // France
+  bordeaux: ["city"],
+  strasbourg: ["city"],
+  // Italy
+  pisa: ["city"],
+  bologna: ["city"],
+  palermo: ["city", "beach"],
+  // Spain
+  malaga: ["city", "beach"],
+  valencia: ["city", "beach"],
+  ibiza: ["beach"],
+  palma: ["beach", "city"],
+  // Portugal
+  faro: ["beach", "city"],
+  // United Kingdom
+  glasgow: ["city"],
+  birmingham: ["city"],
+  belfast: ["city"],
+  // Ireland
+  cork: ["city"],
+  // Germany
+  dusseldorf: ["city"],
+  cologne: ["city"],
+  // Switzerland
+  lausanne: ["city"],
+  zermatt: ["mountain", "ski"],
+  // Czechia
+  brno: ["city"],
+  // Poland
+  gdansk: ["city", "beach"],
+  // Slovakia
+  bratislava: ["city"],
+  // Greece
+  heraklion: ["beach", "city"],
+  rhodes: ["beach", "city"],
+  corfu: ["beach"],
+  // Sweden
+  gothenburg: ["city"],
+  // Estonia
+  tallinn: ["city"],
+  // Latvia
+  riga: ["city"],
+  // Lithuania
+  vilnius: ["city"],
+  // Bulgaria
+  sofia: ["city"],
+  varna: ["beach", "city"],
+  // North Macedonia
+  skopje: ["city"],
+  // Luxembourg
+  luxembourg: ["city"],
+  // Monaco
+  "monte-carlo": ["city", "beach"],
+  // San Marino
+  "san-marino": ["city"],
+  // Vatican City
+  "vatican-city": ["city"],
+  // Andorra
+  "andorra-la-vella": ["mountain", "city"],
+  // Egypt
+  giza: ["city", "desert"],
+  hurghada: ["beach", "desert"],
+  // Morocco
+  agadir: ["beach"],
+  rabat: ["city"],
+  // Tunisia
+  hammamet: ["beach"],
+  // Algeria
+  algiers: ["city"],
+  oran: ["city"],
+  // Tanzania
+  "dar-es-salaam": ["city", "beach", "tropical"],
+  // Ethiopia
+  "addis-ababa": ["city"],
+  // Uganda
+  entebbe: ["nature", "tropical"],
+  // Rwanda
+  kigali: ["city", "nature"],
+  // Seychelles
+  praslin: ["beach", "tropical"],
+  // Madagascar
+  antananarivo: ["city"],
+  "nosy-be": ["beach", "tropical"],
+  // Senegal
+  dakar: ["city", "beach", "tropical"],
+  // Ghana
+  accra: ["city", "tropical"],
+  // Nigeria
+  lagos: ["city", "tropical"],
+  // Namibia
+  windhoek: ["city", "desert"],
+  // Botswana
+  gaborone: ["city"],
+  // Zambia
+  livingstone: ["nature", "tropical"],
+  // Zimbabwe
+  "victoria-falls": ["nature", "tropical"],
+  // Mozambique
+  maputo: ["city", "beach"],
+  // Cabo Verde
+  sal: ["beach", "tropical"],
+  // United States
+  orlando: ["city"],
+  chicago: ["city"],
+  "washington-dc": ["city"],
+  seattle: ["city"],
+  honolulu: ["beach", "city", "tropical"],
+  boston: ["city"],
+  // Canada
+  calgary: ["city"],
+  "quebec-city": ["city"],
+  ottawa: ["city"],
+  // Mexico
+  "los-cabos": ["beach", "desert"],
+  "puerto-vallarta": ["beach", "tropical"],
+  // Cuba
+  havana: ["city", "tropical"],
+  varadero: ["beach", "tropical"],
+  // Dominican Republic
+  "punta-cana": ["beach", "tropical"],
+  "santo-domingo": ["city", "tropical"],
+  // Jamaica
+  "montego-bay": ["beach", "tropical"],
+  kingston: ["city", "tropical"],
+  // Costa Rica
+  "san-jose": ["city", "tropical"],
+  liberia: ["nature", "beach", "tropical"],
+  // Panama
+  "panama-city": ["city", "tropical"],
+  // Guatemala
+  "guatemala-city": ["city"],
+  // El Salvador
+  "san-salvador": ["city", "tropical"],
+  // Honduras
+  roatan: ["beach", "tropical"],
+  // Belize
+  "belize-city": ["city", "beach", "tropical"],
+  // Bahamas
+  nassau: ["beach"],
+  // Barbados
+  bridgetown: ["beach", "tropical"],
+  // Trinidad and Tobago
+  "port-of-spain": ["city", "tropical"],
+  // Brazil
+  "foz-do-iguacu": ["nature"],
+  florianopolis: ["beach", "city"],
+  // Argentina
+  "buenos-aires": ["city"],
+  mendoza: ["city", "nature"],
+  bariloche: ["mountain", "nature"],
+  "el-calafate": ["nature"],
+  // Chile
+  santiago: ["city"],
+  "punta-arenas": ["nature"],
+  "easter-island": ["nature"],
+  // Peru
+  lima: ["city"],
+  cusco: ["city", "mountain"],
+  arequipa: ["city", "mountain"],
+  // Colombia
+  bogota: ["city"],
+  medellin: ["city"],
+  cartagena: ["city", "beach", "tropical"],
+  // Ecuador
+  quito: ["city", "mountain"],
+  guayaquil: ["city", "tropical"],
+  galapagos: ["nature", "tropical"],
+  // Uruguay
+  montevideo: ["city"],
+  "punta-del-este": ["beach"],
+  // Bolivia
+  "la-paz": ["city", "mountain"],
+  "santa-cruz": ["city", "tropical"],
+  // Paraguay
+  asuncion: ["city"],
+  // Guyana
+  georgetown: ["city", "tropical"],
+  // Suriname
+  paramaribo: ["city", "tropical"],
+  // Australia
+  perth: ["city", "beach"],
+  adelaide: ["city"],
+  cairns: ["nature", "beach", "tropical"],
+  // New Zealand
+  auckland: ["city"],
+  wellington: ["city"],
+  christchurch: ["city"],
+  queenstown: ["mountain", "nature"],
+  // Fiji
+  nadi: ["beach", "tropical"],
+  suva: ["city", "tropical"],
+  // Papua New Guinea
+  "port-moresby": ["city", "tropical"],
+  // Samoa
+  apia: ["beach", "tropical"],
+  // Tonga
+  nukualofa: ["beach", "tropical"],
+  // Vanuatu
+  "port-vila": ["beach", "tropical"],
+  // Solomon Islands
+  honiara: ["city", "tropical"],
+  // Palau
+  koror: ["beach", "tropical"],
+  // Micronesia
+  pohnpei: ["nature", "tropical"],
 };
 
 /**
@@ -251,9 +507,6 @@ export const DESTINATION_TYPES: Record<string, DestinationType[]> = {
  * the QA report, never published.
  */
 export const QA_DESTINATION_TYPES: Record<string, DestinationType[]> = {
-  sapporo: ["city"],
-  queenstown: ["mountain", "nature"],
   // Ski fields, to test the ski profile on real data.
   "coronet-peak": ["ski"],
-  zermatt: ["ski", "mountain"],
 };
