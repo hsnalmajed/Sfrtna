@@ -12,7 +12,7 @@
 // and the visa directory leaves it out rather than show a status we cannot
 // back. Still to confirm (their official pages blocked automated reading or
 // did not name Saudi Arabia on 26 Sep 2026; list updated 13 Oct 2026):
-// JO, KH, KW, TN, TZ (JS-only or bot-walled pages; MA confirmed 14 Oct), and the
+// JO, KH, KW, TN (JS-only or bot-walled pages; MA, TZ confirmed 14 Oct), and the
 // countries being added (scripts/coverage/report.md lists them).
 //
 // The four categories, easiest first — what a traveller has to do before
@@ -122,6 +122,7 @@ export const VISA_STATUS: Record<string, VisaStatus> = {
   ME: { category: "free", source: "https://www.slobodnaevropa.org/a/vize-crna-gora-rusija-kina-turska-/33816126.html", quote: "Government of Montenegro decree (reported by RFE/RL, 27 Jul 2026): Saudi citizens enter visa-free until 31 October 2026; a visa is required from 1 November 2026", until: "2026-10-31",
     then: { from: "2026-11-01", category: "required", source: "https://europeanwesternbalkans.com/2026/07/28/montenegro-introduces-visas-for-citizens-of-belarus-china-russia-saudi-arabia-and-turkiye/", quote: "Government of Montenegro decree aligning with EU visa policy: nationals of Saudi Arabia \"will require a visa to enter Montenegro as of 1 November 2026\"" } },
   MA: { category: "free", source: "https://www.consulat.ma/fr/liste-des-pays-dont-les-ressortissants-sont-dispenses-du-visa-dentree-au-maroc", quote: "Moroccan MFA (consulat.ma), list of countries whose nationals are exempt from an entry visa: \"Arabie Saoudite\" (read 14 Oct 2026)" },
+  TZ: { category: "arrival", source: "https://visa.immigration.go.tz/guidelines", quote: "Tanzania Immigration Services, eVisa guidelines: \"Nationals from the listed countries below are eligible for both Online as well as on arrival Visa facility\" — the list includes Saudi Arabia (spelt \"Saud Arabia\" on the page; read 14 Oct 2026)" },
 };
 
 export function visaStatusFor(code: string): VisaStatus | undefined {
