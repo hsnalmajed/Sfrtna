@@ -861,8 +861,9 @@ Chrome), climate v2 after the owner's download, publishing staged cities.
 ## Next, in order
 
 **▶ Start here (hand-off 14 Oct):**
-1. **Phone speed, remaining:** /ar/itinerary 3.0 s and /ar/visa 2.7 s
-   (applied throttling) are just over 2.5 s. /ar/seasons sends ~700 KB raw of page data
+1. **Phone speed, remaining (low value):** /ar/itinerary 3.0 s and /ar/visa
+   2.7 s (applied throttling) are just over 2.5 s. /ar/seasons: 59 KB gz on
+   the wire, 2.2 s applied — measured 14 Oct, left as is. It sends ~700 KB raw of page data
    (all cities' climate as props to a client list) — render the list on the
    server or send only what the first view shows. Biggest JS chunk
    (`3svhqtx…`, 72 KB gz) is the framework. Re-run both speed + taps
