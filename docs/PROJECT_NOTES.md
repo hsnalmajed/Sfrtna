@@ -919,6 +919,24 @@ Chrome), climate v2 after the owner's download, publishing staged cities.
    `SeasonRecord` in site.ts is a Pick, so reading another field fails tsc).
    The full file stays for scripts/tests only. **Rule: never import a large
    data file into Worker code — slim it or serve it via ASSETS.**
+2b. **Coverage batch 2 — publishing (14 Oct, afternoon):** trip types for
+   all 156 staged cities (destinationTypes v1.3; Dhaka not "tropical", 23.8°N);
+   HK, MO, TW added to countries.ts; generate_seasons now rates staged cities in
+   the full travelSeasons.json (9.9 MB, scripts only) while the site file stays
+   live-only (`liveSlugs` from cities.ts). Visa +31 countries (official pages,
+   each `checked: 2026-10-14`): HK MO free; EC SV ZM BW free; RW ET BN arrival;
+   MZ BT UG LA eta; AR CO PE UY CL BO DO JM BS BZ ZW NA TW BD MC SN FJ SB
+   required. **Still no official status (their cities stay staged):** AD BB CR
+   CU CV DZ FM GH GT GY HN MG MK NG PA PG PW PY SM SR TO TN TT VA VU WS (+TN
+   live). Paraguay's migraciones.gov.py unreachable; Guatemala's IGM site moved
+   (404); Costa Rica's directive is a scanned gazette.
+   `scripts/geo/publish_staged.py` (dry run / `--apply`) moves complete staged
+   cities into cities.ts, cityCoords.ts, cityAirports.ts, airports.ts; HOLD:
+   cusco, paro (climate several °C cold). Places + hotels for staged cities:
+   workflows started 13:32 UTC with `staged=true` (13 Oct runs had been
+   cancelled). Dry run before they finish: 124 ready except places/hotels,
+   32 waiting on visa. After publish: partner-pages.yml, mobile-taps.yml,
+   live check.
 3. **Visa:** MA ✅, TZ ✅, KW ✅, KH ✅, JO ✅ 14 Oct. KW free — Saudi Jawazat
    via SPA (spa.gov.sa/2349663): GCC travel with the national ID. KH eta —
    MFA exemption list (image on mfaic.gov.kh) has no Saudi Arabia; official
