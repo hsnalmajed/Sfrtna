@@ -13,6 +13,7 @@ import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { scoreDestination } from "../../src/lib/travelSeason/engine.ts";
 import { SCORING } from "../../src/lib/travelSeason/config.ts";
+import { SITE_FIELDS } from "../../src/lib/travelSeason/siteFields.ts";
 import type { DestinationClimate, SeasonRecord, TourismSignalInput } from "../../src/lib/travelSeason/types.ts";
 import { DESTINATION_TYPES, DESTINATION_TYPES_VERSION, QA_DESTINATION_TYPES } from "../../src/data/destinationTypes.ts";
 import { CITY_SEASON_SOURCES, SEASON_SOURCES, TOURISM_LAST_VERIFIED } from "../../src/data/citySeasonSources.ts";
@@ -21,6 +22,7 @@ const here = dirname(fileURLToPath(import.meta.url));
 const root = join(here, "..", "..");
 const normalsPath = join(root, "src/data/climate/normals.json");
 const outPath = join(root, "src/data/climate/travelSeasons.json");
+const sitePath = join(root, "src/data/climate/travelSeasons.site.json");
 const reportDir = join(here, "reports");
 
 if (!existsSync(normalsPath)) {
@@ -111,6 +113,22 @@ writeFileSync(
     null,
     0
   ) + "\n"
+);
+
+// The slim copy the site imports (see src/lib/travelSeason/siteFields.ts).
+const pick = (r: SeasonRecord) => Object.fromEntries(SITE_FIELDS.map((f) => [f, r[f]]));
+writeFileSync(
+  sitePath,
+  JSON.stringify({
+    meta: {
+      scoringVersion: SCORING.version,
+      tourismLastVerified: TOURISM_LAST_VERIFIED,
+      climateDataset: normals.meta.dataset,
+      climatePeriod: normals.meta.period,
+      generatedAt,
+    },
+    records: Object.fromEntries(Object.entries(records).map(([k, recs]) => [k, recs.map(pick)])),
+  }) + "\n"
 );
 
 // ── Reports ────────────────────────────────────────────────────────────────

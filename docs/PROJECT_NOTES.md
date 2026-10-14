@@ -910,6 +910,15 @@ Chrome), climate v2 after the owner's download, publishing staged cities.
    Praslin, Maafushi ~2 °C cold); staged high-altitude cities on regional
    correction (Cusco ~3 °C cold, Paro ~5 °C cold — fix with national
    normals before they go live). Next: the 156 staged cities.
+   **Outage 14 Oct 15:15–15:25 and fix:** the new travelSeasons.json (5.8 MB,
+   all engine fields) is bundled into the Worker — 4 copies, one per route
+   chunk — and every /api route returned Cloudflare 1102 (resource limit);
+   the site check caught it. Restored the old file (70f25b6), then: the site
+   now imports `travelSeasons.site.json` (1.37 MB, only the 18 fields in
+   `src/lib/travelSeason/siteFields.ts`; written by generate_seasons.mts;
+   `SeasonRecord` in site.ts is a Pick, so reading another field fails tsc).
+   The full file stays for scripts/tests only. **Rule: never import a large
+   data file into Worker code — slim it or serve it via ASSETS.**
 3. **Visa:** MA ✅, TZ ✅, KW ✅, KH ✅, JO ✅ 14 Oct. KW free — Saudi Jawazat
    via SPA (spa.gov.sa/2349663): GCC travel with the national ID. KH eta —
    MFA exemption list (image on mfaic.gov.kh) has no Saudi Arabia; official

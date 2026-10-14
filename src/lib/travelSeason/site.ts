@@ -2,24 +2,27 @@
 //
 // Every page that says anything about when to go — the home page's "best in
 // <month>", the "When to travel?" page, the discover and route cards — reads
-// src/data/climate/travelSeasons.json through these functions and nothing
+// src/data/climate/travelSeasons.site.json (the slim copy of
+// travelSeasons.json, fields in siteFields.ts) through these functions and nothing
 // else. The file is generated offline (scripts/climate/) from 1991–2020
 // ERA5-Land normals and the versioned engine, so no page computes a season of
 // its own and no page calls a climate service at request time.
 
-import data from "@/data/climate/travelSeasons.json";
+import data from "@/data/climate/travelSeasons.site.json";
 import { COUNTRY_CITIES } from "@/lib/cities";
 import { SCORING } from "@/lib/travelSeason/config";
-import type { SeasonRecord } from "@/lib/travelSeason/types";
+import type { SeasonRecord as FullSeasonRecord } from "@/lib/travelSeason/types";
+import type { SiteField } from "@/lib/travelSeason/siteFields";
+
+/** A month as the site sees it: only the fields in SITE_FIELDS. */
+export type SeasonRecord = Pick<FullSeasonRecord, SiteField>;
 
 interface SeasonsFile {
   meta: {
     scoringVersion: string;
-    destinationTypesVersion: string;
     tourismLastVerified: string;
     climateDataset: string;
     climatePeriod: string;
-    normalsGeneratedAt: string;
     generatedAt: string;
   };
   records: Record<string, SeasonRecord[]>;
