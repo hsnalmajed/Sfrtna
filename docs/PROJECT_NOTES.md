@@ -862,10 +862,14 @@ Chrome), climate v2 after the owner's download, publishing staged cities.
 
 **▶ Start here (hand-off 14 Oct):**
 1. **Phone speed, remaining (low value):** /ar/itinerary 3.0 s and /ar/visa
-   2.7 s (applied throttling) are just over 2.5 s. /ar/seasons: 59 KB gz on
-   the wire, 2.2 s applied — measured 14 Oct, left as is. It sends ~700 KB raw of page data
-   (all cities' climate as props to a client list) — render the list on the
-   server or send only what the first view shows. Biggest JS chunk
+   2.7 s (applied throttling) are just over 2.5 s (their HTML is small:
+   itinerary 82 KB raw, visa 165 KB — the time is not page data).
+   ✅ /ar/seasons (14 Oct): months now sent packed (`src/lib/seasonPack.ts`:
+   each month a row of numbers into one table of 113 distinct strings,
+   rebuilt once in `CitySeasons`). HTML 725 → 217 KB raw (−70 %), 64 → 51 KB
+   gz; en 643 → 196 KB. Local before/after at 390 px: month view (78 cards),
+   six month windows, Istanbul year view — identical text, no errors; all
+   3,456 city-months round-trip exactly. Biggest JS chunk
    (`3svhqtx…`, 72 KB gz) is the framework. Re-run both speed + taps
    workflows after each change.
 2. **Climate (14 Oct):** download finished; build run by Claude on the

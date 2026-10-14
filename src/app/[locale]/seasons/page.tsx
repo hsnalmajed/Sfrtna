@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { getDictionary } from "@/lib/dictionaries";
 import { pageMetadata } from "@/lib/seo";
 import type { Locale } from "@/lib/types";
-import CitySeasons, { type SeasonCity } from "@/components/CitySeasons";
+import CitySeasons, { type PackedSeasonCity } from "@/components/CitySeasons";
+import { SeasonPacker } from "@/lib/seasonPack";
 import PageHero from "@/components/ui/PageHero";
 import { sectionHero } from "@/lib/sectionHero";
 import { monthName } from "@/lib/seasons";
@@ -59,7 +60,8 @@ export default async function SeasonsPage({ params, searchParams }: PageProps<"/
     required: dict.home.cardVisaRequired,
   };
 
-  const cities: SeasonCity[] = list.flatMap((c) => {
+  const packer = new SeasonPacker();
+  const cities: PackedSeasonCity[] = list.flatMap((c) => {
     const country = findCountry(c.code);
     const recs = seasonRecords(c.slug);
     if (!country || !recs) return [];
@@ -78,7 +80,7 @@ export default async function SeasonsPage({ params, searchParams }: PageProps<"/
           const v = visaStatusFor(c.code);
           return v ? { category: v.category, short: visaShort[v.category] } : undefined;
         })(),
-        months: recs.map((r) => ({
+        months: recs.map((r) => packer.month({
           classification: r.classification,
           finalScore: r.finalScore,
           season: r.season,
@@ -108,6 +110,7 @@ export default async function SeasonsPage({ params, searchParams }: PageProps<"/
         <CitySeasons
           locale={loc}
           cities={cities}
+          table={packer.table}
           currentMonth={month}
           initialCity={typeof cityParam === "string" ? cityParam : undefined}
           dict={{

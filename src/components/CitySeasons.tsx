@@ -13,6 +13,7 @@ import FilterPill, { FilterToggle } from "@/components/ui/FilterPill";
 import { useDictionary } from "@/lib/dict/context";
 import { VISA_STYLES } from "@/components/VisaBadge";
 import type { VisaCategory } from "@/data/visaStatus";
+import { unpackMonth, type PackedMonth } from "@/lib/seasonPack";
 
 /**
  * "When to travel?", city by city — a view onto the travel-season records
@@ -61,6 +62,9 @@ export interface SeasonCity {
   /** January first. */
   months: SeasonMonth[];
 }
+
+/** As the server sends it: months packed against one string table (src/lib/seasonPack.ts). */
+export type PackedSeasonCity = Omit<SeasonCity, "months"> & { months: PackedMonth[] };
 
 interface Dict {
   modeMonthTitle: string;
@@ -123,18 +127,26 @@ const GOOD_CLASSES: Cls[] = ["EXCELLENT", "VERY_GOOD"];
 
 export default function CitySeasons({
   locale,
-  cities,
+  cities: packed,
+  table,
   currentMonth,
   dict,
   initialCity,
 }: {
   locale: Locale;
-  cities: SeasonCity[];
+  cities: PackedSeasonCity[];
+  /** The distinct strings the packed months point into. */
+  table: string[];
   currentMonth: number;
   dict: Dict;
   /** Opens "by city" on this city (`?city=<slug>`, from a city page). */
   initialCity?: string;
 }) {
+  // Rebuilt once per page; the props themselves never change.
+  const cities = useMemo<SeasonCity[]>(
+    () => packed.map((c) => ({ ...c, months: c.months.map((m) => unpackMonth(m, table) as SeasonMonth) })),
+    [packed, table]
+  );
   const startCity = initialCity && cities.some((c) => c.slug === initialCity) ? initialCity : "";
   // Nothing chosen on arrival: the visitor picks "by month" or "by city".
   const [mode, setMode] = useState<"month" | "city" | null>(startCity ? "city" : null);

@@ -117,6 +117,11 @@ the median of three. Before = old report (13 Oct), after = 14 Oct 01:00.
 | /ar/visa | 5.9 s | 2.7 s | 5.1 s (2.5 / 5.1 / 5.4) |
 | /en/visa | — | 2.5 s | 4.7 s (2.2 / 4.7 / 4.8) |
 
+/ar/seasons, 14 Oct (packed months): HTML 725 → 217 KB raw, 64 → 51 KB gz
+(local build). Same text before/after in month view, 6 month windows and the
+Istanbul year view (ar + en, 390 px), no page errors. Lighthouse re-run: see
+below once `mobile-speed.yml` has run on the deploy.
+
 Also checked: local build — 11 pages hydrate at 390 px with no errors, only
 the page's language in its HTML, no dictionary text in any JS chunk; home
 «تصفّح كل وجهات أكتوبر (78)» opens all 78; e2e 7/8 locally (route
