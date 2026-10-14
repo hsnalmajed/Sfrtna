@@ -886,7 +886,9 @@ Chrome), climate v2 after the owner's download, publishing staged cities.
    normals. **Waiting for the owner:** `1d_BETTER_CELLS.bat` re-downloads
    76 elevation-matched cells (`cell_overrides.json`; Medellín, Kathmandu,
    Almaty, Cusco… read 3–4 °C cold). Then: build (normals → merge →
-   validate → hci), stage normals.json into the repo, `node
+   validate → hci), stage normals.json into the repo (first build's
+   era5land/normals/hci + accuracy.md already committed 55cd5a4 — not read
+   by the site yet), `node
    scripts/climate/generate_seasons.mts`, review class changes for the 144
    live cities, tests, publish; then the 156 staged cities.
 3. **Visa:** MA ✅, TZ ✅ 14 Oct (consulat.ma exempt list; visa.immigration.go.tz
