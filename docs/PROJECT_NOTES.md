@@ -888,14 +888,28 @@ Chrome), climate v2 after the owner's download, publishing staged cities.
    140 km was +4 °C). **Season engine v2 (HCI) evaluated and NOT adopted**
    (`scripts/climate/reports/engine-v2-evaluation.md`: no better than v1.1
    vs tourism months, worse in the tropics) — v1.1 stays, fed the new
-   normals. **Waiting for the owner:** `1d_BETTER_CELLS.bat` re-downloads
-   76 elevation-matched cells (`cell_overrides.json`; Medellín, Kathmandu,
-   Almaty, Cusco… read 3–4 °C cold). Then: build (normals → merge →
-   validate → hci), stage normals.json into the repo (first build's
-   era5land/normals/hci + accuracy.md already committed 55cd5a4 — not read
-   by the site yet), `node
-   scripts/climate/generate_seasons.mts`, review class changes for the 144
-   live cities, tests, publish; then the 156 staged cities.
+   normals. ✅ **Published 14 Oct (afternoon):** owner ran `1d_BETTER_CELLS.bat`
+   (75 of 84 moved cells re-downloaded today, 6 were already right; Kotor,
+   Herceg Novi, Seogwipo: the better cell has no ERA5-Land data → old cell
+   kept). Build (check_cells → normals → merge → validate → hci) on the PC.
+   Accuracy: highs 91 % calibrated / 88 % regional, lows 85 / 84 % (was
+   90/87, 84/83). **Bug fixed in merge_sources.py:** the comment said Gabala
+   from Akhty (55 km, across the Caucasus) is refused, but the 60 km rule let
+   it in (+6.9 °C; Gabala July 32.7 °C) → new `CAL_SINGLE_MAX_OFFSET_C` = 4:
+   a lone station correcting any month by > 4 °C is refused → regional
+   (Gabala now Jan 4.2 / Jul 28.5). **Valletta withheld** (cell_overrides):
+   Malta's Luqa station is in neither WMO nor GHCN normals; Sicilian
+   stations 103–133 km give July 27.5 °C (~4 °C cold) → needs Malta Met
+   Office normals. Withheld now: madeira, kazbegi, valletta.
+   travelSeasons.json now from these normals: **211 of 214 live cities
+   rated (was 144)**; of the 144 old ones 92.2 % of months keep their class,
+   1 month jumps two classes (Al Wakrah Oct, high 35.1 → 37 °C), 30 cities'
+   best months shift by about a month (Doha drops Apr, Lisbon adds Feb…).
+   Home/seasons "best in October": 78 → 110 cities. Season tests 25/25.
+   Known weak spots (not withheld, within ~2 °C): NASA POWER islands (Mahé,
+   Praslin, Maafushi ~2 °C cold); staged high-altitude cities on regional
+   correction (Cusco ~3 °C cold, Paro ~5 °C cold — fix with national
+   normals before they go live). Next: the 156 staged cities.
 3. **Visa:** MA ✅, TZ ✅, KW ✅, KH ✅, JO ✅ 14 Oct. KW free — Saudi Jawazat
    via SPA (spa.gov.sa/2349663): GCC travel with the national ID. KH eta —
    MFA exemption list (image on mfaic.gov.kh) has no Saudi Arabia; official

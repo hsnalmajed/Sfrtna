@@ -1,86 +1,894 @@
-# Coverage — scoring v1.1, 2026-10-01T07:22:39.093Z
+# Coverage — scoring v1.1, 2026-10-14T12:11:52.416Z
 
-- Total destinations: 214
-- With coordinates: 214
+- Total destinations: 1090
+- With coordinates: 1090
 - Missing coordinates: 0
-- With climate data: 144
+- With climate data: 211
 - With tourism source: 113
-- Climate-only: 32
-- With official station normals (WMO 1991–2020) for at least one parameter: 96; for temperatures: 93
-- On ERA5-Land only: 47
-- On the NASA POWER fallback: 1 (male)
+- Climate-only: 99
+- With official station normals (WMO 1991–2020) for at least one parameter: 243; for temperatures: 238
+- On ERA5-Land only: 59
+- On the NASA POWER fallback: 8 (male, mahe, maafushi, praslin, sal, roatan, easter-island, nukualofa)
 - Low-confidence: 0
-- Temperatures from a grid point more than 5 km away: 30 (alula 6.08 km, abu-dhabi 5.62 km, al-wakrah 6.3 km, kuwait-city 9.22 km, salalah 9.18 km, tangier 7.75 km, amman 5.84 km, petra 9.19 km, edinburgh 5.98 km, manchester 5.19 km, venice 7.49 km, naples 8.23 km, mykonos 5.75 km, thessaloniki 7.07 km, porto 5.6 km, madeira 5.66 km, ella 6.15 km, ubud 5.29 km, xian 5.83 km, hanoi 5.72 km, da-nang 8.04 km, batumi 7.77 km, kazbegi 7.26 km, mombasa 6.69 km, cancun 7.94 km, guadalajara 5.06 km, rio-de-janeiro 9.36 km, sao-paulo 6.46 km, beirut 10.85 km, byblos 9.68 km)
-- Withheld from the site (cell height too far from the town's; needs a station override): 2 (madeira: Funchal's nearest ERA5-Land land cell (5.7 km) averages 548 m — the mountainside above the town — while the town centre is near sea level, so its temperatures would read too cold. Needs a station override (Funchal observatory normals).; kazbegi: ERA5-Land cell +908 m from the town's height)
-- Errors: 68
-  - moscow: no climate normals (not fetched)
-  - saint-petersburg: no climate normals (not fetched)
-  - kazan: no climate normals (not fetched)
-  - sochi: no climate normals (not fetched)
-  - sarajevo: no climate normals (not fetched)
-  - mostar: no climate normals (not fetched)
-  - tirana: no climate normals (not fetched)
-  - durres: no climate normals (not fetched)
-  - saranda: no climate normals (not fetched)
-  - kotor: no climate normals (not fetched)
-  - budva: no climate normals (not fetched)
-  - podgorica: no climate normals (not fetched)
-  - belgrade: no climate normals (not fetched)
-  - novi-sad: no climate normals (not fetched)
-  - zagreb: no climate normals (not fetched)
-  - split: no climate normals (not fetched)
-  - dubrovnik: no climate normals (not fetched)
-  - prague: no climate normals (not fetched)
-  - karlovy-vary: no climate normals (not fetched)
-  - budapest: no climate normals (not fetched)
-  - warsaw: no climate normals (not fetched)
-  - krakow: no climate normals (not fetched)
-  - zakopane: no climate normals (not fetched)
-  - dublin: no climate normals (not fetched)
-  - galway: no climate normals (not fetched)
-  - brussels: no climate normals (not fetched)
-  - bruges: no climate normals (not fetched)
-  - stockholm: no climate normals (not fetched)
-  - oslo: no climate normals (not fetched)
-  - bergen: no climate normals (not fetched)
-  - tromso: no climate normals (not fetched)
-  - copenhagen: no climate normals (not fetched)
-  - helsinki: no climate normals (not fetched)
-  - rovaniemi: no climate normals (not fetched)
-  - ljubljana: no climate normals (not fetched)
-  - bled: no climate normals (not fetched)
-  - larnaca: no climate normals (not fetched)
-  - limassol: no climate normals (not fetched)
-  - paphos: no climate normals (not fetched)
-  - valletta: no climate normals (not fetched)
-  - bucharest: no climate normals (not fetched)
-  - brasov: no climate normals (not fetched)
-  - yerevan: no climate normals (not fetched)
-  - almaty: no climate normals (not fetched)
-  - astana: no climate normals (not fetched)
-  - tashkent: no climate normals (not fetched)
-  - samarkand: no climate normals (not fetched)
-  - bukhara: no climate normals (not fetched)
-  - bishkek: no climate normals (not fetched)
-  - karakol: no climate normals (not fetched)
-  - islamabad: no climate normals (not fetched)
-  - lahore: no climate normals (not fetched)
-  - kathmandu: no climate normals (not fetched)
-  - pokhara: no climate normals (not fetched)
-  - manila: no climate normals (not fetched)
-  - cebu: no climate normals (not fetched)
-  - boracay: no climate normals (not fetched)
-  - siem-reap: no climate normals (not fetched)
-  - phnom-penh: no climate normals (not fetched)
-  - zanzibar: no climate normals (not fetched)
-  - arusha: no climate normals (not fetched)
-  - port-louis: no climate normals (not fetched)
-  - grand-baie: no climate normals (not fetched)
-  - mahe: no climate normals (not fetched)
-  - toronto: no climate normals (not fetched)
-  - vancouver: no climate normals (not fetched)
-  - montreal: no climate normals (not fetched)
-  - banff: no climate normals (not fetched)
+- Temperatures from a grid point more than 5 km away: 61 (alula 6.08 km, abu-dhabi 5.62 km, al-wakrah 6.3 km, kuwait-city 9.22 km, salalah 9.18 km, tangier 7.75 km, amman 5.84 km, petra 9.19 km, manchester 5.19 km, venice 7.49 km, naples 8.23 km, mykonos 5.75 km, thessaloniki 7.07 km, porto 5.6 km, madeira 5.66 km, ella 6.15 km, ubud 5.29 km, xian 5.83 km, hanoi 5.72 km, da-nang 8.04 km, batumi 7.77 km, kazbegi 7.26 km, mombasa 6.69 km, cancun 7.94 km, guadalajara 5.06 km, rio-de-janeiro 9.36 km, sao-paulo 6.46 km, beirut 10.85 km, byblos 9.68 km, saranda 8.44 km, split 10.34 km, brasov 5.34 km, boracay 11.41 km, siem-reap 6.14 km, grand-baie 9.8 km, kochi 7.05 km, shenzhen 6.81 km, taipei 5.55 km, malaga 5.43 km, glasgow 5.32 km, heraklion 5.29 km, rhodes 5.44 km, san-marino 5.51 km, andorra-la-vella 13.79 km, addis-ababa 6.57 km, entebbe 5.47 km, lagos 5.04 km, calgary 5.88 km, los-cabos 11.98 km, puerto-vallarta 6.92 km, havana 5.75 km, varadero 6.86 km, panama-city 7.9 km, lima 6.1 km, cusco 13.23 km, arequipa 6.73 km, galapagos 5.45 km, punta-del-este 8.09 km, la-paz 12.15 km, auckland 6.25 km, port-moresby 9.36 km)
+- Withheld from the site (cell height too far from the town's; needs a station override): 3 (madeira: Funchal's nearest ERA5-Land land cell (5.7 km) averages 548 m — the mountainside above the town — while the town centre is near sea level, so its temperatures would read too cold. Needs a station override (Funchal observatory normals).; kazbegi: ERA5-Land cell +908 m from the town's height; valletta: Malta's own station (Luqa) is in neither the WMO nor the GHCN normals used here; the correction comes from Sicilian stations 103–133 km away and leaves July highs near 27.5 °C, about 4 °C below Malta's summer. Needs a station override (Malta Meteorological Office normals). Withheld 14 Oct 2026.)
+- Errors: 876
+  - dammam: no destination type
+  - taif: no destination type
+  - bodrum: no destination type
+  - kutaisi: no destination type
+  - osh: no destination type
+  - kochi: no destination type
+  - bengaluru: no destination type
+  - maafushi: no destination type
+  - paro: no destination type
+  - dhaka: no destination type
+  - shenzhen: no destination type
+  - chengdu: no destination type
+  - sapporo: no destination type
+  - fukuoka: no destination type
+  - okinawa: no destination type
+  - taipei: no destination type
+  - hong-kong: no destination type
+  - macau: no destination type
+  - krabi: no destination type
+  - koh-samui: no destination type
+  - kota-kinabalu: no destination type
+  - lombok: no destination type
+  - labuan-bajo: no destination type
+  - nha-trang: no destination type
+  - phu-quoc: no destination type
+  - puerto-princesa: no destination type
+  - luang-prabang: no destination type
+  - vientiane: no destination type
+  - bandar-seri-begawan: no destination type
+  - bordeaux: no destination type
+  - strasbourg: no destination type
+  - pisa: no destination type
+  - bologna: no destination type
+  - palermo: no destination type
+  - malaga: no destination type
+  - valencia: no destination type
+  - ibiza: no destination type
+  - palma: no destination type
+  - faro: no destination type
+  - glasgow: no destination type
+  - birmingham: no destination type
+  - belfast: no destination type
+  - cork: no destination type
+  - dusseldorf: no destination type
+  - cologne: no destination type
+  - lausanne: no destination type
+  - zermatt: no destination type
+  - brno: no destination type
+  - gdansk: no destination type
+  - bratislava: no destination type
+  - heraklion: no destination type
+  - rhodes: no destination type
+  - corfu: no destination type
+  - gothenburg: no destination type
+  - tallinn: no destination type
+  - riga: no destination type
+  - vilnius: no destination type
+  - sofia: no destination type
+  - varna: no destination type
+  - skopje: no destination type
+  - luxembourg: no destination type
+  - monte-carlo: no destination type
+  - san-marino: no destination type
+  - vatican-city: no destination type
+  - andorra-la-vella: no destination type
+  - giza: no destination type
+  - hurghada: no destination type
+  - agadir: no destination type
+  - rabat: no destination type
+  - hammamet: no destination type
+  - algiers: no destination type
+  - oran: no destination type
+  - dar-es-salaam: no destination type
+  - addis-ababa: no destination type
+  - entebbe: no destination type
+  - kigali: no destination type
+  - praslin: no destination type
+  - antananarivo: no destination type
+  - nosy-be: no destination type
+  - dakar: no destination type
+  - accra: no destination type
+  - lagos: no destination type
+  - windhoek: no destination type
+  - gaborone: no destination type
+  - livingstone: no destination type
+  - victoria-falls: no destination type
+  - maputo: no destination type
+  - sal: no destination type
+  - orlando: no destination type
+  - chicago: no destination type
+  - washington-dc: no destination type
+  - seattle: no destination type
+  - honolulu: no destination type
+  - boston: no destination type
+  - calgary: no destination type
+  - quebec-city: no destination type
+  - ottawa: no destination type
+  - los-cabos: no destination type
+  - puerto-vallarta: no destination type
+  - havana: no destination type
+  - varadero: no destination type
+  - punta-cana: no destination type
+  - santo-domingo: no destination type
+  - montego-bay: no destination type
+  - kingston: no destination type
+  - san-jose: no destination type
+  - liberia: no destination type
+  - panama-city: no destination type
+  - guatemala-city: no destination type
+  - san-salvador: no destination type
+  - roatan: no destination type
+  - belize-city: no destination type
+  - nassau: no destination type
+  - bridgetown: no destination type
+  - port-of-spain: no destination type
+  - foz-do-iguacu: no destination type
+  - florianopolis: no destination type
+  - buenos-aires: no destination type
+  - mendoza: no destination type
+  - bariloche: no destination type
+  - el-calafate: no destination type
+  - santiago: no destination type
+  - punta-arenas: no destination type
+  - easter-island: no destination type
+  - lima: no destination type
+  - cusco: no destination type
+  - arequipa: no destination type
+  - bogota: no destination type
+  - medellin: no destination type
+  - cartagena: no destination type
+  - quito: no destination type
+  - guayaquil: no destination type
+  - galapagos: no destination type
+  - montevideo: no destination type
+  - punta-del-este: no destination type
+  - la-paz: no destination type
+  - santa-cruz: no destination type
+  - asuncion: no destination type
+  - georgetown: no destination type
+  - paramaribo: no destination type
+  - perth: no destination type
+  - adelaide: no destination type
+  - cairns: no destination type
+  - auckland: no destination type
+  - wellington: no destination type
+  - christchurch: no destination type
+  - queenstown: no destination type
+  - nadi: no destination type
+  - suva: no destination type
+  - port-moresby: no destination type
+  - apia: no destination type
+  - nukualofa: no destination type
+  - port-vila: no destination type
+  - honiara: no destination type
+  - koror: no destination type
+  - pohnpei: no destination type
+  - st-00040438: no climate normals (not fetched)
+  - st-00040437: no climate normals (not fetched)
+  - st-00041024: no climate normals (not fetched)
+  - st-00041030: no climate normals (not fetched)
+  - st-00041032: no climate normals (not fetched)
+  - st-00040430: no climate normals (not fetched)
+  - st-00041112: no climate normals (not fetched)
+  - st-00041114: no climate normals (not fetched)
+  - st-00041140: no climate normals (not fetched)
+  - st-00017636: no climate normals (not fetched)
+  - st-00017061: no climate normals (not fetched)
+  - st-00017059: no climate normals (not fetched)
+  - st-00017300: no climate normals (not fetched)
+  - st-00017926: no climate normals (not fetched)
+  - st-00017954: no climate normals (not fetched)
+  - st-00017193: no climate normals (not fetched)
+  - st-00017196: no climate normals (not fetched)
+  - st-00017760: no climate normals (not fetched)
+  - st-00017037: no climate normals (not fetched)
+  - st-00017088: no climate normals (not fetched)
+  - st-00017040: no climate normals (not fetched)
+  - st-00017220: no climate normals (not fetched)
+  - st-00017186: no climate normals (not fetched)
+  - st-00017820: no climate normals (not fetched)
+  - st-00017116: no climate normals (not fetched)
+  - st-00017119: no climate normals (not fetched)
+  - st-00017700: no climate normals (not fetched)
+  - st-00041194: no climate normals (not fetched)
+  - st-00041196: no climate normals (not fetched)
+  - st-00040890: no climate normals (not fetched)
+  - st-00041217: no climate normals (not fetched)
+  - st-00041218: no climate normals (not fetched)
+  - st-00041184: no climate normals (not fetched)
+  - st-00041198: no climate normals (not fetched)
+  - st-00041150: no climate normals (not fetched)
+  - st-00040831: no climate normals (not fetched)
+  - st-00040690: no climate normals (not fetched)
+  - st-00040416: no climate normals (not fetched)
+  - st-00040417: no climate normals (not fetched)
+  - st-00062366: no climate normals (not fetched)
+  - st-00062405: no climate normals (not fetched)
+  - st-00062414: no climate normals (not fetched)
+  - st-00062318: no climate normals (not fetched)
+  - st-00062460: no climate normals (not fetched)
+  - st-00062463: no climate normals (not fetched)
+  - st-00060230: no climate normals (not fetched)
+  - st-00060265: no climate normals (not fetched)
+  - st-00060185: no climate normals (not fetched)
+  - st-00060155: no climate normals (not fetched)
+  - st-00060135: no climate normals (not fetched)
+  - st-00060120: no climate normals (not fetched)
+  - st-00060141: no climate normals (not fetched)
+  - st-00060150: no climate normals (not fetched)
+  - st-00060160: no climate normals (not fetched)
+  - st-00060318: no climate normals (not fetched)
+  - st-00060105: no climate normals (not fetched)
+  - st-ghcn-SPE00119963: no climate normals (not fetched)
+  - st-00040183: no climate normals (not fetched)
+  - st-00040179: no climate normals (not fetched)
+  - st-00040193: no climate normals (not fetched)
+  - st-00040199: no climate normals (not fetched)
+  - st-ghcn-IS000051690: no climate normals (not fetched)
+  - st-00003770: no climate normals (not fetched)
+  - st-00003672: no climate normals (not fetched)
+  - st-ghcn-UKE00105915: no climate normals (not fetched)
+  - st-ghcn-UKE00105888: no climate normals (not fetched)
+  - st-ghcn-UKE00105887: no climate normals (not fetched)
+  - st-ghcn-UKE00105889: no climate normals (not fetched)
+  - st-ghcn-UKE00105905: no climate normals (not fetched)
+  - st-00003344: no climate normals (not fetched)
+  - st-ghcn-UKE00105910: no climate normals (not fetched)
+  - st-ghcn-UK000056225: no climate normals (not fetched)
+  - st-00003658: no climate normals (not fetched)
+  - st-00003649: no climate normals (not fetched)
+  - st-00007156: no climate normals (not fetched)
+  - st-00007150: no climate normals (not fetched)
+  - st-00007149: no climate normals (not fetched)
+  - st-00007690: no climate normals (not fetched)
+  - st-00007684: no climate normals (not fetched)
+  - st-00016153: no climate normals (not fetched)
+  - st-00007480: no climate normals (not fetched)
+  - st-00007481: no climate normals (not fetched)
+  - st-00007482: no climate normals (not fetched)
+  - st-00007650: no climate normals (not fetched)
+  - st-00007648: no climate normals (not fetched)
+  - st-00007647: no climate normals (not fetched)
+  - st-00008181: no climate normals (not fetched)
+  - st-00008184: no climate normals (not fetched)
+  - st-00008175: no climate normals (not fetched)
+  - st-00008222: no climate normals (not fetched)
+  - st-00008223: no climate normals (not fetched)
+  - st-00008224: no climate normals (not fetched)
+  - st-00008420: no climate normals (not fetched)
+  - st-00008419: no climate normals (not fetched)
+  - st-00008417: no climate normals (not fetched)
+  - st-00008391: no climate normals (not fetched)
+  - st-00008397: no climate normals (not fetched)
+  - st-ghcn-SPE00120503: no climate normals (not fetched)
+  - st-00008410: no climate normals (not fetched)
+  - st-00008430: no climate normals (not fetched)
+  - st-00016239: no climate normals (not fetched)
+  - st-00016242: no climate normals (not fetched)
+  - st-00016234: no climate normals (not fetched)
+  - st-00016099: no climate normals (not fetched)
+  - st-00016098: no climate normals (not fetched)
+  - st-00016045: no climate normals (not fetched)
+  - st-00016170: no climate normals (not fetched)
+  - st-00016172: no climate normals (not fetched)
+  - st-00016134: no climate normals (not fetched)
+  - st-00016080: no climate normals (not fetched)
+  - st-00016066: no climate normals (not fetched)
+  - st-00016064: no climate normals (not fetched)
+  - st-00016253: no climate normals (not fetched)
+  - st-00016294: no climate normals (not fetched)
+  - st-00016263: no climate normals (not fetched)
+  - st-00017221: no climate normals (not fetched)
+  - st-00015712: no climate normals (not fetched)
+  - st-00006660: no climate normals (not fetched)
+  - st-00006664: no climate normals (not fetched)
+  - st-00006670: no climate normals (not fetched)
+  - st-00006700: no climate normals (not fetched)
+  - st-00006705: no climate normals (not fetched)
+  - st-00006702: no climate normals (not fetched)
+  - st-00006734: no climate normals (not fetched)
+  - st-00006730: no climate normals (not fetched)
+  - st-00006637: no climate normals (not fetched)
+  - st-00006650: no climate normals (not fetched)
+  - st-00006659: no climate normals (not fetched)
+  - st-00006655: no climate normals (not fetched)
+  - st-00011035: no climate normals (not fetched)
+  - st-00011813: no climate normals (not fetched)
+  - st-00011816: no climate normals (not fetched)
+  - st-00011150: no climate normals (not fetched)
+  - st-ghcn-GME00130918: no climate normals (not fetched)
+  - st-ghcn-GME00129478: no climate normals (not fetched)
+  - st-00011120: no climate normals (not fetched)
+  - st-ghcn-GME00126106: no climate normals (not fetched)
+  - st-00010963: no climate normals (not fetched)
+  - st-00006240: no climate normals (not fetched)
+  - st-ghcn-NLE00152485: no climate normals (not fetched)
+  - st-00006260: no climate normals (not fetched)
+  - st-ghcn-NLE00152490: no climate normals (not fetched)
+  - st-00006344: no climate normals (not fetched)
+  - st-00006215: no climate normals (not fetched)
+  - st-ghcn-NLE00101982: no climate normals (not fetched)
+  - st-00010384: no climate normals (not fetched)
+  - st-00010382: no climate normals (not fetched)
+  - st-00010381: no climate normals (not fetched)
+  - st-00010865: no climate normals (not fetched)
+  - st-00010870: no climate normals (not fetched)
+  - st-ghcn-GME00123970: no climate normals (not fetched)
+  - st-00010147: no climate normals (not fetched)
+  - st-ghcn-GME00123274: no climate normals (not fetched)
+  - st-ghcn-GME00127534: no climate normals (not fetched)
+  - st-ghcn-GME00122362: no climate normals (not fetched)
+  - st-00010637: no climate normals (not fetched)
+  - st-ghcn-GME00124546: no climate normals (not fetched)
+  - st-ghcn-PO000008535: no climate normals (not fetched)
+  - st-00008045: no climate normals (not fetched)
+  - st-00008044: no climate normals (not fetched)
+  - st-00008048: no climate normals (not fetched)
+  - st-00043555: no climate normals (not fetched)
+  - st-00043466: no climate normals (not fetched)
+  - st-00043467: no climate normals (not fetched)
+  - st-00043450: no climate normals (not fetched)
+  - st-00043444: no climate normals (not fetched)
+  - st-00043441: no climate normals (not fetched)
+  - st-00043473: no climate normals (not fetched)
+  - st-00043495: no climate normals (not fetched)
+  - st-00043486: no climate normals (not fetched)
+  - st-00043476: no climate normals (not fetched)
+  - st-00043479: no climate normals (not fetched)
+  - st-00096745: no climate normals (not fetched)
+  - st-00096741: no climate normals (not fetched)
+  - st-00048455: no climate normals (not fetched)
+  - st-00048454: no climate normals (not fetched)
+  - st-00048456: no climate normals (not fetched)
+  - st-00048564: no climate normals (not fetched)
+  - st-00048565: no climate normals (not fetched)
+  - st-00048566: no climate normals (not fetched)
+  - st-00048327: no climate normals (not fetched)
+  - st-00048329: no climate normals (not fetched)
+  - st-00048328: no climate normals (not fetched)
+  - st-00048461: no climate normals (not fetched)
+  - st-00048460: no climate normals (not fetched)
+  - st-00048477: no climate normals (not fetched)
+  - st-00048647: no climate normals (not fetched)
+  - st-00048665: no climate normals (not fetched)
+  - st-00048601: no climate normals (not fetched)
+  - st-00048570: no climate normals (not fetched)
+  - st-00048620: no climate normals (not fetched)
+  - st-00048569: no climate normals (not fetched)
+  - st-00048568: no climate normals (not fetched)
+  - st-00048698: no climate normals (not fetched)
+  - st-00048674: no climate normals (not fetched)
+  - st-00047662: no climate normals (not fetched)
+  - st-00047648: no climate normals (not fetched)
+  - st-00047629: no climate normals (not fetched)
+  - st-00047772: no climate normals (not fetched)
+  - st-00047750: no climate normals (not fetched)
+  - st-00047651: no climate normals (not fetched)
+  - st-00047765: no climate normals (not fetched)
+  - st-00047887: no climate normals (not fetched)
+  - st-00047741: no climate normals (not fetched)
+  - st-00047108: no climate normals (not fetched)
+  - st-00047112: no climate normals (not fetched)
+  - st-00047119: no climate normals (not fetched)
+  - st-00047159: no climate normals (not fetched)
+  - st-00047155: no climate normals (not fetched)
+  - st-00047288: no climate normals (not fetched)
+  - st-00047184: no climate normals (not fetched)
+  - st-00047189: no climate normals (not fetched)
+  - st-00047188: no climate normals (not fetched)
+  - st-00054511: no climate normals (not fetched)
+  - st-00058362: no climate normals (not fetched)
+  - st-00058265: no climate normals (not fetched)
+  - st-00058472: no climate normals (not fetched)
+  - st-00059287: no climate normals (not fetched)
+  - st-00045011: no climate normals (not fetched)
+  - st-00045005: no climate normals (not fetched)
+  - st-00042182: no climate normals (not fetched)
+  - st-00042138: no climate normals (not fetched)
+  - st-00042262: no climate normals (not fetched)
+  - st-00042361: no climate normals (not fetched)
+  - st-00042364: no climate normals (not fetched)
+  - st-00042348: no climate normals (not fetched)
+  - st-00043003: no climate normals (not fetched)
+  - st-00043057: no climate normals (not fetched)
+  - st-00043001: no climate normals (not fetched)
+  - st-00043198: no climate normals (not fetched)
+  - st-00043192: no climate normals (not fetched)
+  - st-00043225: no climate normals (not fetched)
+  - st-00072506: no climate normals (not fetched)
+  - st-00072503: no climate normals (not fetched)
+  - st-00072502: no climate normals (not fetched)
+  - st-ghcn-USW00093134: no climate normals (not fetched)
+  - st-ghcn-USC00046719: no climate normals (not fetched)
+  - st-ghcn-USC00042214: no climate normals (not fetched)
+  - st-00072386: no climate normals (not fetched)
+  - st-ghcn-USC00264439: no climate normals (not fetched)
+  - st-00072387: no climate normals (not fetched)
+  - st-ghcn-USW00023272: no climate normals (not fetched)
+  - st-ghcn-USC00047767: no climate normals (not fetched)
+  - st-ghcn-USC00046336: no climate normals (not fetched)
+  - st-ghcn-USW00092811: no climate normals (not fetched)
+  - st-ghcn-USC00083909: no climate normals (not fetched)
+  - st-00072202: no climate normals (not fetched)
+  - st-ghcn-RSM00037663: no climate normals (not fetched)
+  - st-ghcn-RSM00037470: no climate normals (not fetched)
+  - st-00037445: no climate normals (not fetched)
+  - st-00037621: no climate normals (not fetched)
+  - st-00037556: no climate normals (not fetched)
+  - st-00037481: no climate normals (not fetched)
+  - st-00017042: no climate normals (not fetched)
+  - st-00037379: no climate normals (not fetched)
+  - st-00037432: no climate normals (not fetched)
+  - st-ghcn-RSM00037228: no climate normals (not fetched)
+  - st-00037439: no climate normals (not fetched)
+  - st-00068816: no climate normals (not fetched)
+  - st-00076680: no climate normals (not fetched)
+  - st-00076675: no climate normals (not fetched)
+  - st-00076634: no climate normals (not fetched)
+  - st-00076656: no climate normals (not fetched)
+  - st-00083692: no climate normals (not fetched)
+  - st-00083718: no climate normals (not fetched)
+  - st-00083229: no climate normals (not fetched)
+  - st-00094768: no climate normals (not fetched)
+  - st-00094767: no climate normals (not fetched)
+  - st-00095765: no climate normals (not fetched)
+  - st-ghcn-ASN00086071: no climate normals (not fetched)
+  - st-00095936: no climate normals (not fetched)
+  - st-ghcn-ASN00086351: no climate normals (not fetched)
+  - st-00094575: no climate normals (not fetched)
+  - st-00094578: no climate normals (not fetched)
+  - st-00095581: no climate normals (not fetched)
+  - st-00094580: no climate normals (not fetched)
+  - st-00094592: no climate normals (not fetched)
+  - st-00094582: no climate normals (not fetched)
+  - st-00060715: no climate normals (not fetched)
+  - st-00060714: no climate normals (not fetched)
+  - st-00060728: no climate normals (not fetched)
+  - st-00060740: no climate normals (not fetched)
+  - st-00060735: no climate normals (not fetched)
+  - st-00060742: no climate normals (not fetched)
+  - st-00060769: no climate normals (not fetched)
+  - st-00060772: no climate normals (not fetched)
+  - st-00060770: no climate normals (not fetched)
+  - st-00040153: no climate normals (not fetched)
+  - st-00040080: no climate normals (not fetched)
+  - st-00040025: no climate normals (not fetched)
+  - st-00040029: no climate normals (not fetched)
+  - st-00027612: no climate normals (not fetched)
+  - st-ghcn-RSM00027625: no climate normals (not fetched)
+  - st-00026063: no climate normals (not fetched)
+  - st-ghcn-RSM00026069: no climate normals (not fetched)
+  - st-00027595: no climate normals (not fetched)
+  - st-ghcn-RSM00027485: no climate normals (not fetched)
+  - st-00037099: no climate normals (not fetched)
+  - st-ghcn-RSM00037107: no climate normals (not fetched)
+  - st-00037018: no climate normals (not fetched)
+  - st-00014654: no climate normals (not fetched)
+  - st-00014658: no climate normals (not fetched)
+  - st-00014565: no climate normals (not fetched)
+  - st-00014648: no climate normals (not fetched)
+  - st-00014656: no climate normals (not fetched)
+  - st-00014667: no climate normals (not fetched)
+  - st-00013464: no climate normals (not fetched)
+  - st-00013461: no climate normals (not fetched)
+  - st-00013463: no climate normals (not fetched)
+  - st-00016360: no climate normals (not fetched)
+  - st-00013455: no climate normals (not fetched)
+  - st-00013459: no climate normals (not fetched)
+  - st-00013274: no climate normals (not fetched)
+  - st-00013168: no climate normals (not fetched)
+  - st-00014562: no climate normals (not fetched)
+  - st-ghcn-HR000142360: no climate normals (not fetched)
+  - st-00014240: no climate normals (not fetched)
+  - st-00014445: no climate normals (not fetched)
+  - st-ghcn-HRE00105189: no climate normals (not fetched)
+  - st-ghcn-HRE00155167: no climate normals (not fetched)
+  - st-ghcn-HRE00105196: no climate normals (not fetched)
+  - st-ghcn-HRE00155411: no climate normals (not fetched)
+  - st-00014668: no climate normals (not fetched)
+  - st-00011520: no climate normals (not fetched)
+  - st-00011567: no climate normals (not fetched)
+  - st-00011518: no climate normals (not fetched)
+  - st-00011414: no climate normals (not fetched)
+  - st-00010578: no climate normals (not fetched)
+  - st-ghcn-GME00132490: no climate normals (not fetched)
+  - st-00012840: no climate normals (not fetched)
+  - st-ghcn-HUE00100247: no climate normals (not fetched)
+  - st-00012843: no climate normals (not fetched)
+  - st-00012375: no climate normals (not fetched)
+  - st-00012385: no climate normals (not fetched)
+  - st-00012488: no climate normals (not fetched)
+  - st-00012566: no climate normals (not fetched)
+  - st-00012575: no climate normals (not fetched)
+  - st-00012570: no climate normals (not fetched)
+  - st-00011918: no climate normals (not fetched)
+  - st-00011933: no climate normals (not fetched)
+  - st-00011930: no climate normals (not fetched)
+  - st-00003969: no climate normals (not fetched)
+  - st-00003967: no climate normals (not fetched)
+  - st-00003923: no climate normals (not fetched)
+  - st-00003962: no climate normals (not fetched)
+  - st-00003976: no climate normals (not fetched)
+  - st-ghcn-EIE00107808: no climate normals (not fetched)
+  - st-00006447: no climate normals (not fetched)
+  - st-00006451: no climate normals (not fetched)
+  - st-00006458: no climate normals (not fetched)
+  - st-00006407: no climate normals (not fetched)
+  - st-00006310: no climate normals (not fetched)
+  - st-00006400: no climate normals (not fetched)
+  - st-00002485: no climate normals (not fetched)
+  - st-00002484: no climate normals (not fetched)
+  - st-ghcn-SWE00138894: no climate normals (not fetched)
+  - st-00001492: no climate normals (not fetched)
+  - st-ghcn-NOE00109885: no climate normals (not fetched)
+  - st-00001486: no climate normals (not fetched)
+  - st-00001317: no climate normals (not fetched)
+  - st-ghcn-NOE00110653: no climate normals (not fetched)
+  - st-00001311: no climate normals (not fetched)
+  - st-00001026: no climate normals (not fetched)
+  - st-00001025: no climate normals (not fetched)
+  - st-00001015: no climate normals (not fetched)
+  - st-00002614: no climate normals (not fetched)
+  - st-00002610: no climate normals (not fetched)
+  - st-00002635: no climate normals (not fetched)
+  - st-ghcn-FI000000304: no climate normals (not fetched)
+  - st-00002978: no climate normals (not fetched)
+  - st-00002795: no climate normals (not fetched)
+  - st-00002845: no climate normals (not fetched)
+  - st-00002813: no climate normals (not fetched)
+  - st-ghcn-FIE00146258: no climate normals (not fetched)
+  - st-00014015: no climate normals (not fetched)
+  - st-ghcn-SIE00115006: no climate normals (not fetched)
+  - st-ghcn-SIE00115146: no climate normals (not fetched)
+  - st-ghcn-SIE00114966: no climate normals (not fetched)
+  - st-00014008: no climate normals (not fetched)
+  - st-00014007: no climate normals (not fetched)
+  - st-00017609: no climate normals (not fetched)
+  - st-00017607: no climate normals (not fetched)
+  - st-00017600: no climate normals (not fetched)
+  - st-00016480: no climate normals (not fetched)
+  - st-00016453: no climate normals (not fetched)
+  - st-00015420: no climate normals (not fetched)
+  - st-00015470: no climate normals (not fetched)
+  - st-ghcn-ROE00108900: no climate normals (not fetched)
+  - st-00015280: no climate normals (not fetched)
+  - st-ghcn-ROE00108897: no climate normals (not fetched)
+  - st-00015170: no climate normals (not fetched)
+  - st-00004030: no climate normals (not fetched)
+  - st-00004018: no climate normals (not fetched)
+  - st-00004042: no climate normals (not fetched)
+  - st-00017100: no climate normals (not fetched)
+  - st-00017720: no climate normals (not fetched)
+  - st-00040701: no climate normals (not fetched)
+  - st-00036870: no climate normals (not fetched)
+  - st-00036879: no climate normals (not fetched)
+  - st-00036889: no climate normals (not fetched)
+  - st-00035188: no climate normals (not fetched)
+  - st-00035283: no climate normals (not fetched)
+  - st-00035085: no climate normals (not fetched)
+  - st-00038457: no climate normals (not fetched)
+  - st-00038452: no climate normals (not fetched)
+  - st-00038706: no climate normals (not fetched)
+  - st-00038696: no climate normals (not fetched)
+  - st-00038699: no climate normals (not fetched)
+  - st-00038563: no climate normals (not fetched)
+  - st-00038683: no climate normals (not fetched)
+  - st-00038697: no climate normals (not fetched)
+  - st-00038567: no climate normals (not fetched)
+  - st-00038229: no climate normals (not fetched)
+  - st-00036865: no climate normals (not fetched)
+  - st-00038223: no climate normals (not fetched)
+  - st-00036899: no climate normals (not fetched)
+  - st-00036897: no climate normals (not fetched)
+  - st-00036894: no climate normals (not fetched)
+  - st-00041571: no climate normals (not fetched)
+  - st-00041598: no climate normals (not fetched)
+  - st-00041529: no climate normals (not fetched)
+  - st-00041640: no climate normals (not fetched)
+  - st-00041600: no climate normals (not fetched)
+  - st-00042056: no climate normals (not fetched)
+  - st-00044454: no climate normals (not fetched)
+  - st-00044449: no climate normals (not fetched)
+  - st-00044462: no climate normals (not fetched)
+  - st-00044434: no climate normals (not fetched)
+  - st-00044438: no climate normals (not fetched)
+  - st-00098425: no climate normals (not fetched)
+  - st-00098430: no climate normals (not fetched)
+  - st-00098428: no climate normals (not fetched)
+  - st-00098646: no climate normals (not fetched)
+  - st-00098648: no climate normals (not fetched)
+  - st-00098642: no climate normals (not fetched)
+  - st-00098536: no climate normals (not fetched)
+  - st-00098538: no climate normals (not fetched)
+  - st-00048462: no climate normals (not fetched)
+  - st-00063870: no climate normals (not fetched)
+  - st-00063894: no climate normals (not fetched)
+  - st-00063791: no climate normals (not fetched)
+  - st-00061995: no climate normals (not fetched)
+  - st-00061990: no climate normals (not fetched)
+  - st-00063980: no climate normals (not fetched)
+  - st-00071508: no climate normals (not fetched)
+  - st-ghcn-CAN0615S001: no climate normals (not fetched)
+  - st-ghcn-CAN0615HMAK: no climate normals (not fetched)
+  - st-ghcn-CAN01108446: no climate normals (not fetched)
+  - st-ghcn-CAN01106PF7: no climate normals (not fetched)
+  - st-ghcn-CAN01108824: no climate normals (not fetched)
+  - st-00072617: no climate normals (not fetched)
+  - st-00071122: no climate normals (not fetched)
+  - st-ghcn-CAN03053600: no climate normals (not fetched)
+  - st-ghcn-CAN0303M9JM: no climate normals (not fetched)
+  - st-00041036: no climate normals (not fetched)
+  - st-00017290: no climate normals (not fetched)
+  - st-00017884: no climate normals (not fetched)
+  - st-00017297: no climate normals (not fetched)
+  - st-00037395: no climate normals (not fetched)
+  - st-00037404: no climate normals (not fetched)
+  - st-00037308: no climate normals (not fetched)
+  - st-00038475: no climate normals (not fetched)
+  - st-00038618: no climate normals (not fetched)
+  - st-00038611: no climate normals (not fetched)
+  - st-00043352: no climate normals (not fetched)
+  - st-00043355: no climate normals (not fetched)
+  - st-00043354: no climate normals (not fetched)
+  - st-00043295: no climate normals (not fetched)
+  - st-00043296: no climate normals (not fetched)
+  - st-00043271: no climate normals (not fetched)
+  - st-00055773: no climate normals (not fetched)
+  - st-00041923: no climate normals (not fetched)
+  - st-00041929: no climate normals (not fetched)
+  - st-00041941: no climate normals (not fetched)
+  - st-00056187: no climate normals (not fetched)
+  - st-00047412: no climate normals (not fetched)
+  - st-00047421: no climate normals (not fetched)
+  - st-00047407: no climate normals (not fetched)
+  - st-00047807: no climate normals (not fetched)
+  - st-00047817: no climate normals (not fetched)
+  - st-00047815: no climate normals (not fetched)
+  - st-00047936: no climate normals (not fetched)
+  - st-00048550: no climate normals (not fetched)
+  - st-00048552: no climate normals (not fetched)
+  - st-00048517: no climate normals (not fetched)
+  - st-00096471: no climate normals (not fetched)
+  - st-00096465: no climate normals (not fetched)
+  - st-00098618: no climate normals (not fetched)
+  - st-00048930: no climate normals (not fetched)
+  - st-00048938: no climate normals (not fetched)
+  - st-00048940: no climate normals (not fetched)
+  - st-00048352: no climate normals (not fetched)
+  - st-00048354: no climate normals (not fetched)
+  - st-00096315: no climate normals (not fetched)
+  - st-00096449: no climate normals (not fetched)
+  - st-00007510: no climate normals (not fetched)
+  - st-00007502: no climate normals (not fetched)
+  - st-00007503: no climate normals (not fetched)
+  - st-00007190: no climate normals (not fetched)
+  - st-ghcn-GME00127750: no climate normals (not fetched)
+  - st-ghcn-GME00122770: no climate normals (not fetched)
+  - st-00016158: no climate normals (not fetched)
+  - st-00016125: no climate normals (not fetched)
+  - st-00016146: no climate normals (not fetched)
+  - st-00016434: no climate normals (not fetched)
+  - st-00016400: no climate normals (not fetched)
+  - st-00016429: no climate normals (not fetched)
+  - st-00008482: no climate normals (not fetched)
+  - st-00008285: no climate normals (not fetched)
+  - st-00008284: no climate normals (not fetched)
+  - st-00008286: no climate normals (not fetched)
+  - st-00008373: no climate normals (not fetched)
+  - st-ghcn-SPE00101043: no climate normals (not fetched)
+  - st-ghcn-SPE00101035: no climate normals (not fetched)
+  - st-00008301: no climate normals (not fetched)
+  - st-00008306: no climate normals (not fetched)
+  - st-00008383: no climate normals (not fetched)
+  - st-ghcn-SPE00120143: no climate normals (not fetched)
+  - st-00008449: no climate normals (not fetched)
+  - st-00003155: no climate normals (not fetched)
+  - st-00003136: no climate normals (not fetched)
+  - st-ghcn-UKE00105856: no climate normals (not fetched)
+  - st-ghcn-UK000000000: no climate normals (not fetched)
+  - st-ghcn-UKE00105909: no climate normals (not fetched)
+  - st-00003544: no climate normals (not fetched)
+  - st-ghcn-UKE00105877: no climate normals (not fetched)
+  - st-00003917: no climate normals (not fetched)
+  - st-00003915: no climate normals (not fetched)
+  - st-00003955: no climate normals (not fetched)
+  - st-ghcn-EIE00107762: no climate normals (not fetched)
+  - st-00010400: no climate normals (not fetched)
+  - st-ghcn-GME00130582: no climate normals (not fetched)
+  - st-00010410: no climate normals (not fetched)
+  - st-ghcn-GME00125302: no climate normals (not fetched)
+  - st-00010513: no climate normals (not fetched)
+  - st-ghcn-GME00122002: no climate normals (not fetched)
+  - st-00006711: no climate normals (not fetched)
+  - st-00006609: no climate normals (not fetched)
+  - st-00006712: no climate normals (not fetched)
+  - st-00006748: no climate normals (not fetched)
+  - st-00006728: no climate normals (not fetched)
+  - st-00006722: no climate normals (not fetched)
+  - st-00011723: no climate normals (not fetched)
+  - st-00011692: no climate normals (not fetched)
+  - st-00011693: no climate normals (not fetched)
+  - st-00012135: no climate normals (not fetched)
+  - st-00012125: no climate normals (not fetched)
+  - st-00012120: no climate normals (not fetched)
+  - st-00012815: no climate normals (not fetched)
+  - st-00017298: no climate normals (not fetched)
+  - st-00017294: no climate normals (not fetched)
+  - st-00002513: no climate normals (not fetched)
+  - st-ghcn-SWE00138198: no climate normals (not fetched)
+  - st-00002512: no climate normals (not fetched)
+  - st-00026038: no climate normals (not fetched)
+  - st-ghcn-ENE00175051: no climate normals (not fetched)
+  - st-00026029: no climate normals (not fetched)
+  - st-00026422: no climate normals (not fetched)
+  - st-00026326: no climate normals (not fetched)
+  - st-00026425: no climate normals (not fetched)
+  - st-00026736: no climate normals (not fetched)
+  - st-00026645: no climate normals (not fetched)
+  - st-00026832: no climate normals (not fetched)
+  - st-00015614: no climate normals (not fetched)
+  - st-00015600: no climate normals (not fetched)
+  - st-00064215: no climate normals (not fetched)
+  - st-00015552: no climate normals (not fetched)
+  - st-00015655: no climate normals (not fetched)
+  - st-ghcn-ROE00100901: no climate normals (not fetched)
+  - st-00006590: no climate normals (not fetched)
+  - st-99999999: no climate normals (not fetched)
+  - st-ghcn-GME00123226: no climate normals (not fetched)
+  - st-00016149: no climate normals (not fetched)
+  - st-00016148: no climate normals (not fetched)
+  - st-00016179: no climate normals (not fetched)
+  - st-00007627: no climate normals (not fetched)
+  - st-00007635: no climate normals (not fetched)
+  - st-ghcn-SPE00120161: no climate normals (not fetched)
+  - st-00060250: no climate normals (not fetched)
+  - st-00060220: no climate normals (not fetched)
+  - st-00060720: no climate normals (not fetched)
+  - st-00060390: no climate normals (not fetched)
+  - st-00060437: no climate normals (not fetched)
+  - st-00060395: no climate normals (not fetched)
+  - st-00060490: no climate normals (not fetched)
+  - st-00060520: no climate normals (not fetched)
+  - st-00060531: no climate normals (not fetched)
+  - st-00064387: no climate normals (not fetched)
+  - st-00064381: no climate normals (not fetched)
+  - st-00064380: no climate normals (not fetched)
+  - st-00067085: no climate normals (not fetched)
+  - st-00067083: no climate normals (not fetched)
+  - st-00067107: no climate normals (not fetched)
+  - st-00067012: no climate normals (not fetched)
+  - st-00061641: no climate normals (not fetched)
+  - st-00380090: no climate normals (not fetched)
+  - st-00380084: no climate normals (not fetched)
+  - st-00065472: no climate normals (not fetched)
+  - st-00065473: no climate normals (not fetched)
+  - st-00065459: no climate normals (not fetched)
+  - st-00065203: no climate normals (not fetched)
+  - st-00065210: no climate normals (not fetched)
+  - st-00065213: no climate normals (not fetched)
+  - st-00068242: no climate normals (not fetched)
+  - st-00067743: no climate normals (not fetched)
+  - st-00072205: no climate normals (not fetched)
+  - st-ghcn-USC00084625: no climate normals (not fetched)
+  - st-00074787: no climate normals (not fetched)
+  - st-00072534: no climate normals (not fetched)
+  - st-00072530: no climate normals (not fetched)
+  - st-ghcn-USC00111497: no climate normals (not fetched)
+  - st-00072405: no climate normals (not fetched)
+  - st-ghcn-USC00186350: no climate normals (not fetched)
+  - st-ghcn-USC00182325: no climate normals (not fetched)
+  - st-ghcn-USW00094290: no climate normals (not fetched)
+  - st-00072793: no climate normals (not fetched)
+  - st-ghcn-USC00454169: no climate normals (not fetched)
+  - st-ghcn-USC00519397: no climate normals (not fetched)
+  - st-ghcn-USC00516128: no climate normals (not fetched)
+  - st-00091182: no climate normals (not fetched)
+  - st-00072509: no climate normals (not fetched)
+  - st-ghcn-USC00193890: no climate normals (not fetched)
+  - st-ghcn-USC00190736: no climate normals (not fetched)
+  - st-ghcn-CAN07024254: no climate normals (not fetched)
+  - st-ghcn-CAN0701S001: no climate normals (not fetched)
+  - st-ghcn-CAN07020567: no climate normals (not fetched)
+  - st-ghcn-CAN06105976: no climate normals (not fetched)
+  - st-00071063: no climate normals (not fetched)
+  - st-ghcn-CAN07030170: no climate normals (not fetched)
+  - st-00078479: no climate normals (not fetched)
+  - st-00078466: no climate normals (not fetched)
+  - st-00078473: no climate normals (not fetched)
+  - st-00078486: no climate normals (not fetched)
+  - st-00078485: no climate normals (not fetched)
+  - st-00078388: no climate normals (not fetched)
+  - st-00078397: no climate normals (not fetched)
+  - st-00078764: no climate normals (not fetched)
+  - st-00078762: no climate normals (not fetched)
+  - st-00078767: no climate normals (not fetched)
+  - st-00078774: no climate normals (not fetched)
+  - st-00078641: no climate normals (not fetched)
+  - st-00078649: no climate normals (not fetched)
+  - st-00078655: no climate normals (not fetched)
+  - st-00078663: no climate normals (not fetched)
+  - st-00078650: no climate normals (not fetched)
+  - st-00078583: no climate normals (not fetched)
+  - st-78583002: no climate normals (not fetched)
+  - st-78583001: no climate normals (not fetched)
+  - st-00078073: no climate normals (not fetched)
+  - st-00078954: no climate normals (not fetched)
+  - st-00078970: no climate normals (not fetched)
+  - st-00080423: no climate normals (not fetched)
+  - st-00087097: no climate normals (not fetched)
+  - st-00086246: no climate normals (not fetched)
+  - st-00087163: no climate normals (not fetched)
+  - st-00087582: no climate normals (not fetched)
+  - st-00087585: no climate normals (not fetched)
+  - st-00087553: no climate normals (not fetched)
+  - st-00087420: no climate normals (not fetched)
+  - st-00087418: no climate normals (not fetched)
+  - st-00087416: no climate normals (not fetched)
+  - st-00087765: no climate normals (not fetched)
+  - st-00085577: no climate normals (not fetched)
+  - st-00085580: no climate normals (not fetched)
+  - st-00085574: no climate normals (not fetched)
+  - st-00085934: no climate normals (not fetched)
+  - st-00085469: no climate normals (not fetched)
+  - st-00074501: no climate normals (not fetched)
+  - st-00072001: no climate normals (not fetched)
+  - st-00081501: no climate normals (not fetched)
+  - st-00022301: no climate normals (not fetched)
+  - st-00084401: no climate normals (not fetched)
+  - st-00062001: no climate normals (not fetched)
+  - st-00091402: no climate normals (not fetched)
+  - st-21205791: no climate normals (not fetched)
+  - st-21205420: no climate normals (not fetched)
+  - st-35025050: no climate normals (not fetched)
+  - st-27015330: no climate normals (not fetched)
+  - st-23085270: no climate normals (not fetched)
+  - st-26225030: no climate normals (not fetched)
+  - st-14015080: no climate normals (not fetched)
+  - st-29035080: no climate normals (not fetched)
+  - st-29045190: no climate normals (not fetched)
+  - st-00043501: no climate normals (not fetched)
+  - st-00086585: no climate normals (not fetched)
+  - st-00086575: no climate normals (not fetched)
+  - st-00086580: no climate normals (not fetched)
+  - st-00086565: no climate normals (not fetched)
+  - st-00086218: no climate normals (not fetched)
+  - st-00086221: no climate normals (not fetched)
+  - st-00087162: no climate normals (not fetched)
+  - st-00081001: no climate normals (not fetched)
+  - st-00081002: no climate normals (not fetched)
+  - st-00081058: no climate normals (not fetched)
+  - st-00081200: no climate normals (not fetched)
+  - st-00081225: no climate normals (not fetched)
+  - st-00094608: no climate normals (not fetched)
+  - st-00094614: no climate normals (not fetched)
+  - st-00094610: no climate normals (not fetched)
+  - st-00094648: no climate normals (not fetched)
+  - st-ghcn-ASN00023090: no climate normals (not fetched)
+  - st-00094672: no climate normals (not fetched)
+  - st-00094287: no climate normals (not fetched)
+  - st-00095286: no climate normals (not fetched)
+  - st-00095284: no climate normals (not fetched)
+  - st-00093439: no climate normals (not fetched)
+  - st-00093420: no climate normals (not fetched)
+  - st-00093781: no climate normals (not fetched)
+  - st-00093791: no climate normals (not fetched)
+  - st-00093817: no climate normals (not fetched)
+  - st-00093747: no climate normals (not fetched)
+  - st-00091680: no climate normals (not fetched)
+  - st-00091690: no climate normals (not fetched)
+  - st-00091683: no climate normals (not fetched)
+  - st-00091762: no climate normals (not fetched)
+  - st-00091765: no climate normals (not fetched)
+  - st-00091517: no climate normals (not fetched)
+  - st-00091520: no climate normals (not fetched)
+  - st-00091408: no climate normals (not fetched)
+  - st-00091348: no climate normals (not fetched)
 
 ## Needs manual review
 
@@ -92,12 +900,17 @@
 - thessaloniki: town 15 m, cell 193 m (medium confidence)
 - batumi: town 10 m, cell 353 m (high confidence)
 - byblos: town 42 m, cell 365 m (medium confidence)
+- saranda: town 19 m, cell 242 m (medium confidence)
+- budva: town 10 m, cell 272 m (medium confidence)
+- split: town 17 m, cell 318 m (medium confidence)
+- karlovy-vary: town 384 m, cell 559 m (medium confidence)
+- karakol: town 1750 m, cell 1920 m (medium confidence)
+- port-louis: town 18 m, cell 258 m (medium confidence)
 
 ### Possible model drizzle (15+ rain days a month averaging under 6 mm per rain day)
 
 ERA5-Land tends to count more light-rain days than rain gauges. These months are worth checking against a station before a rain-day figure is quoted.
 
-- edinburgh: Jan 16.1 d / 87 mm, Mar 15.2 d / 72 mm, May 15.1 d / 71 mm, Jun 15.8 d / 84 mm, Jul 16.4 d / 88 mm, Aug 16.1 d / 93 mm, Oct 15.4 d / 92 mm, Nov 15.8 d / 84 mm, Dec 15.2 d / 89 mm
 - manchester: Jan 16.0 d / 89 mm, Jun 15.7 d / 92 mm, Jul 17.1 d / 94 mm, Aug 16.7 d / 96 mm, Oct 15.6 d / 93 mm, Nov 15.8 d / 90 mm
 - innsbruck: Jan 17.0 d / 64 mm, May 15.0 d / 64 mm, Jun 16.0 d / 74 mm, Jul 18.0 d / 80 mm, Aug 19.0 d / 97 mm, Sep 16.0 d / 79 mm, Oct 19.0 d / 91 mm, Nov 19.0 d / 86 mm, Dec 18.0 d / 64 mm
 - the-hague: Oct 15.4 d / 91 mm, Nov 16.3 d / 86 mm, Dec 15.5 d / 87 mm
@@ -109,8 +922,20 @@ ERA5-Land tends to count more light-rain days than rain gauges. These months are
 - nairobi: Apr 22.1 d / 117 mm, May 17.8 d / 94 mm, Nov 20.1 d / 91 mm
 - mombasa: Mar 16.6 d / 64 mm, Apr 26.7 d / 134 mm, Jun 22.6 d / 92 mm, Jul 23.1 d / 74 mm, Aug 21.3 d / 60 mm, Sep 18.0 d / 53 mm, Oct 18.6 d / 85 mm, Nov 22.3 d / 83 mm, Dec 18.6 d / 64 mm
 - cancun: Jul 17.2 d / 96 mm, Aug 21.2 d / 124 mm
+- krakow: May 15.2 d / 91 mm
+- galway: Apr 15.2 d / 82 mm, May 15.3 d / 86 mm, Jun 15.0 d / 86 mm, Jul 16.7 d / 92 mm
+- larnaca: Jan 26.5 d / 83 mm, Feb 20.5 d / 47 mm, Dec 25.8 d / 95 mm
 - reykjavik: Jan 15.3 d / 87 mm, Sep 15.0 d / 87 mm
+- samarkand: Mar 15.0 d / 73 mm
+- karakol: Jun 19.6 d / 105 mm, Jul 19.8 d / 107 mm, Aug 18.9 d / 106 mm, Sep 17.4 d / 87 mm
+- boracay: Feb 17.3 d / 100 mm, Mar 17.6 d / 102 mm, Apr 15.9 d / 69 mm
+- phnom-penh: Apr 15.6 d / 86 mm, Jul 25.4 d / 148 mm
+- arusha: Apr 26.3 d / 157 mm, May 18.0 d / 82 mm, Nov 18.5 d / 88 mm, Dec 17.6 d / 96 mm
+- port-louis: Mar 22.9 d / 130 mm, Apr 17.4 d / 64 mm, Dec 17.8 d / 88 mm
+- grand-baie: Mar 21.8 d / 121 mm, Apr 16.0 d / 60 mm, Dec 16.5 d / 73 mm
+- mahe: Mar 19.6 d / 109 mm, Jun 15.1 d / 77 mm, Sep 16.7 d / 100 mm
+- banff: Jul 17.3 d / 92 mm
 
 ### No tourism source (climate-only rating)
 
-makkah, madinah, trabzon, bursa, sharjah, kuwait-city, manama, nizwa, alexandria, fes, chefchaouen, lyon, marseille, granada, cordoba, thessaloniki, salzburg, innsbruck, madeira, singapore, tokyo, kyoto, osaka, hiroshima, guangzhou, guba, tbilisi, johannesburg, durban, beirut, byblos, baalbek, moscow, saint-petersburg, kazan, sochi, sarajevo, mostar, tirana, durres, saranda, kotor, budva, podgorica, belgrade, novi-sad, zagreb, split, dubrovnik, prague, karlovy-vary, budapest, warsaw, krakow, zakopane, dublin, galway, brussels, bruges, stockholm, oslo, bergen, tromso, copenhagen, helsinki, rovaniemi, ljubljana, bled, larnaca, limassol, paphos, valletta, bucharest, brasov, reykjavik, yerevan, almaty, astana, tashkent, samarkand, bukhara, bishkek, karakol, islamabad, lahore, kathmandu, pokhara, manila, cebu, boracay, siem-reap, phnom-penh, zanzibar, arusha, port-louis, grand-baie, mahe, toronto, vancouver, montreal, banff
+makkah, madinah, trabzon, bursa, sharjah, kuwait-city, manama, nizwa, alexandria, fes, chefchaouen, lyon, marseille, granada, cordoba, thessaloniki, salzburg, innsbruck, madeira, singapore, tokyo, kyoto, osaka, hiroshima, guangzhou, guba, tbilisi, johannesburg, durban, beirut, byblos, baalbek, moscow, saint-petersburg, kazan, sochi, sarajevo, mostar, tirana, durres, saranda, kotor, budva, podgorica, belgrade, novi-sad, zagreb, split, dubrovnik, prague, karlovy-vary, budapest, warsaw, krakow, zakopane, dublin, galway, brussels, bruges, stockholm, oslo, bergen, tromso, copenhagen, helsinki, rovaniemi, ljubljana, bled, larnaca, limassol, paphos, valletta, bucharest, brasov, reykjavik, yerevan, almaty, astana, tashkent, samarkand, bukhara, bishkek, karakol, islamabad, lahore, kathmandu, pokhara, manila, cebu, boracay, siem-reap, phnom-penh, zanzibar, arusha, port-louis, grand-baie, mahe, toronto, vancouver, montreal, banff, dammam, taif, bodrum, kutaisi, osh, kochi, bengaluru, maafushi, paro, dhaka, shenzhen, chengdu, sapporo, fukuoka, okinawa, taipei, hong-kong, macau, krabi, koh-samui, kota-kinabalu, lombok, labuan-bajo, nha-trang, phu-quoc, puerto-princesa, luang-prabang, vientiane, bandar-seri-begawan, bordeaux, strasbourg, pisa, bologna, palermo, malaga, valencia, ibiza, palma, faro, glasgow, birmingham, belfast, cork, dusseldorf, cologne, lausanne, zermatt, brno, gdansk, bratislava, heraklion, rhodes, corfu, gothenburg, tallinn, riga, vilnius, sofia, varna, skopje, luxembourg, monte-carlo, san-marino, vatican-city, andorra-la-vella, giza, hurghada, agadir, rabat, hammamet, algiers, oran, dar-es-salaam, addis-ababa, entebbe, kigali, praslin, antananarivo, nosy-be, dakar, accra, lagos, windhoek, gaborone, livingstone, victoria-falls, maputo, sal, orlando, chicago, washington-dc, seattle, honolulu, boston, calgary, quebec-city, ottawa, los-cabos, puerto-vallarta, havana, varadero, punta-cana, santo-domingo, montego-bay, kingston, san-jose, liberia, panama-city, guatemala-city, san-salvador, roatan, belize-city, nassau, bridgetown, port-of-spain, foz-do-iguacu, florianopolis, buenos-aires, mendoza, bariloche, el-calafate, santiago, punta-arenas, easter-island, lima, cusco, arequipa, bogota, medellin, cartagena, quito, guayaquil, galapagos, montevideo, punta-del-este, la-paz, santa-cruz, asuncion, georgetown, paramaribo, perth, adelaide, cairns, auckland, wellington, christchurch, queenstown, nadi, suva, port-moresby, apia, nukualofa, port-vila, honiara, koror, pohnpei, st-00040438, st-00040437, st-00041024, st-00041030, st-00041032, st-00040430, st-00041112, st-00041114, st-00041140, st-00017636, st-00017061, st-00017059, st-00017300, st-00017926, st-00017954, st-00017193, st-00017196, st-00017760, st-00017037, st-00017088, st-00017040, st-00017220, st-00017186, st-00017820, st-00017116, st-00017119, st-00017700, st-00041194, st-00041196, st-00040890, st-00041217, st-00041218, st-00041184, st-00041198, st-00041150, st-00040831, st-00040690, st-00040416, st-00040417, st-00062366, st-00062405, st-00062414, st-00062318, st-00062460, st-00062463, st-00060230, st-00060265, st-00060185, st-00060155, st-00060135, st-00060120, st-00060141, st-00060150, st-00060160, st-00060318, st-00060105, st-ghcn-SPE00119963, st-00040183, st-00040179, st-00040193, st-00040199, st-ghcn-IS000051690, st-00003770, st-00003672, st-ghcn-UKE00105915, st-ghcn-UKE00105888, st-ghcn-UKE00105887, st-ghcn-UKE00105889, st-ghcn-UKE00105905, st-00003344, st-ghcn-UKE00105910, st-ghcn-UK000056225, st-00003658, st-00003649, st-00007156, st-00007150, st-00007149, st-00007690, st-00007684, st-00016153, st-00007480, st-00007481, st-00007482, st-00007650, st-00007648, st-00007647, st-00008181, st-00008184, st-00008175, st-00008222, st-00008223, st-00008224, st-00008420, st-00008419, st-00008417, st-00008391, st-00008397, st-ghcn-SPE00120503, st-00008410, st-00008430, st-00016239, st-00016242, st-00016234, st-00016099, st-00016098, st-00016045, st-00016170, st-00016172, st-00016134, st-00016080, st-00016066, st-00016064, st-00016253, st-00016294, st-00016263, st-00017221, st-00015712, st-00006660, st-00006664, st-00006670, st-00006700, st-00006705, st-00006702, st-00006734, st-00006730, st-00006637, st-00006650, st-00006659, st-00006655, st-00011035, st-00011813, st-00011816, st-00011150, st-ghcn-GME00130918, st-ghcn-GME00129478, st-00011120, st-ghcn-GME00126106, st-00010963, st-00006240, st-ghcn-NLE00152485, st-00006260, st-ghcn-NLE00152490, st-00006344, st-00006215, st-ghcn-NLE00101982, st-00010384, st-00010382, st-00010381, st-00010865, st-00010870, st-ghcn-GME00123970, st-00010147, st-ghcn-GME00123274, st-ghcn-GME00127534, st-ghcn-GME00122362, st-00010637, st-ghcn-GME00124546, st-ghcn-PO000008535, st-00008045, st-00008044, st-00008048, st-00043555, st-00043466, st-00043467, st-00043450, st-00043444, st-00043441, st-00043473, st-00043495, st-00043486, st-00043476, st-00043479, st-00096745, st-00096741, st-00048455, st-00048454, st-00048456, st-00048564, st-00048565, st-00048566, st-00048327, st-00048329, st-00048328, st-00048461, st-00048460, st-00048477, st-00048647, st-00048665, st-00048601, st-00048570, st-00048620, st-00048569, st-00048568, st-00048698, st-00048674, st-00047662, st-00047648, st-00047629, st-00047772, st-00047750, st-00047651, st-00047765, st-00047887, st-00047741, st-00047108, st-00047112, st-00047119, st-00047159, st-00047155, st-00047288, st-00047184, st-00047189, st-00047188, st-00054511, st-00058362, st-00058265, st-00058472, st-00059287, st-00045011, st-00045005, st-00042182, st-00042138, st-00042262, st-00042361, st-00042364, st-00042348, st-00043003, st-00043057, st-00043001, st-00043198, st-00043192, st-00043225, st-00072506, st-00072503, st-00072502, st-ghcn-USW00093134, st-ghcn-USC00046719, st-ghcn-USC00042214, st-00072386, st-ghcn-USC00264439, st-00072387, st-ghcn-USW00023272, st-ghcn-USC00047767, st-ghcn-USC00046336, st-ghcn-USW00092811, st-ghcn-USC00083909, st-00072202, st-ghcn-RSM00037663, st-ghcn-RSM00037470, st-00037445, st-00037621, st-00037556, st-00037481, st-00017042, st-00037379, st-00037432, st-ghcn-RSM00037228, st-00037439, st-00068816, st-00076680, st-00076675, st-00076634, st-00076656, st-00083692, st-00083718, st-00083229, st-00094768, st-00094767, st-00095765, st-ghcn-ASN00086071, st-00095936, st-ghcn-ASN00086351, st-00094575, st-00094578, st-00095581, st-00094580, st-00094592, st-00094582, st-00060715, st-00060714, st-00060728, st-00060740, st-00060735, st-00060742, st-00060769, st-00060772, st-00060770, st-00040153, st-00040080, st-00040025, st-00040029, st-00027612, st-ghcn-RSM00027625, st-00026063, st-ghcn-RSM00026069, st-00027595, st-ghcn-RSM00027485, st-00037099, st-ghcn-RSM00037107, st-00037018, st-00014654, st-00014658, st-00014565, st-00014648, st-00014656, st-00014667, st-00013464, st-00013461, st-00013463, st-00016360, st-00013455, st-00013459, st-00013274, st-00013168, st-00014562, st-ghcn-HR000142360, st-00014240, st-00014445, st-ghcn-HRE00105189, st-ghcn-HRE00155167, st-ghcn-HRE00105196, st-ghcn-HRE00155411, st-00014668, st-00011520, st-00011567, st-00011518, st-00011414, st-00010578, st-ghcn-GME00132490, st-00012840, st-ghcn-HUE00100247, st-00012843, st-00012375, st-00012385, st-00012488, st-00012566, st-00012575, st-00012570, st-00011918, st-00011933, st-00011930, st-00003969, st-00003967, st-00003923, st-00003962, st-00003976, st-ghcn-EIE00107808, st-00006447, st-00006451, st-00006458, st-00006407, st-00006310, st-00006400, st-00002485, st-00002484, st-ghcn-SWE00138894, st-00001492, st-ghcn-NOE00109885, st-00001486, st-00001317, st-ghcn-NOE00110653, st-00001311, st-00001026, st-00001025, st-00001015, st-00002614, st-00002610, st-00002635, st-ghcn-FI000000304, st-00002978, st-00002795, st-00002845, st-00002813, st-ghcn-FIE00146258, st-00014015, st-ghcn-SIE00115006, st-ghcn-SIE00115146, st-ghcn-SIE00114966, st-00014008, st-00014007, st-00017609, st-00017607, st-00017600, st-00016480, st-00016453, st-00015420, st-00015470, st-ghcn-ROE00108900, st-00015280, st-ghcn-ROE00108897, st-00015170, st-00004030, st-00004018, st-00004042, st-00017100, st-00017720, st-00040701, st-00036870, st-00036879, st-00036889, st-00035188, st-00035283, st-00035085, st-00038457, st-00038452, st-00038706, st-00038696, st-00038699, st-00038563, st-00038683, st-00038697, st-00038567, st-00038229, st-00036865, st-00038223, st-00036899, st-00036897, st-00036894, st-00041571, st-00041598, st-00041529, st-00041640, st-00041600, st-00042056, st-00044454, st-00044449, st-00044462, st-00044434, st-00044438, st-00098425, st-00098430, st-00098428, st-00098646, st-00098648, st-00098642, st-00098536, st-00098538, st-00048462, st-00063870, st-00063894, st-00063791, st-00061995, st-00061990, st-00063980, st-00071508, st-ghcn-CAN0615S001, st-ghcn-CAN0615HMAK, st-ghcn-CAN01108446, st-ghcn-CAN01106PF7, st-ghcn-CAN01108824, st-00072617, st-00071122, st-ghcn-CAN03053600, st-ghcn-CAN0303M9JM, st-00041036, st-00017290, st-00017884, st-00017297, st-00037395, st-00037404, st-00037308, st-00038475, st-00038618, st-00038611, st-00043352, st-00043355, st-00043354, st-00043295, st-00043296, st-00043271, st-00055773, st-00041923, st-00041929, st-00041941, st-00056187, st-00047412, st-00047421, st-00047407, st-00047807, st-00047817, st-00047815, st-00047936, st-00048550, st-00048552, st-00048517, st-00096471, st-00096465, st-00098618, st-00048930, st-00048938, st-00048940, st-00048352, st-00048354, st-00096315, st-00096449, st-00007510, st-00007502, st-00007503, st-00007190, st-ghcn-GME00127750, st-ghcn-GME00122770, st-00016158, st-00016125, st-00016146, st-00016434, st-00016400, st-00016429, st-00008482, st-00008285, st-00008284, st-00008286, st-00008373, st-ghcn-SPE00101043, st-ghcn-SPE00101035, st-00008301, st-00008306, st-00008383, st-ghcn-SPE00120143, st-00008449, st-00003155, st-00003136, st-ghcn-UKE00105856, st-ghcn-UK000000000, st-ghcn-UKE00105909, st-00003544, st-ghcn-UKE00105877, st-00003917, st-00003915, st-00003955, st-ghcn-EIE00107762, st-00010400, st-ghcn-GME00130582, st-00010410, st-ghcn-GME00125302, st-00010513, st-ghcn-GME00122002, st-00006711, st-00006609, st-00006712, st-00006748, st-00006728, st-00006722, st-00011723, st-00011692, st-00011693, st-00012135, st-00012125, st-00012120, st-00012815, st-00017298, st-00017294, st-00002513, st-ghcn-SWE00138198, st-00002512, st-00026038, st-ghcn-ENE00175051, st-00026029, st-00026422, st-00026326, st-00026425, st-00026736, st-00026645, st-00026832, st-00015614, st-00015600, st-00064215, st-00015552, st-00015655, st-ghcn-ROE00100901, st-00006590, st-99999999, st-ghcn-GME00123226, st-00016149, st-00016148, st-00016179, st-00007627, st-00007635, st-ghcn-SPE00120161, st-00060250, st-00060220, st-00060720, st-00060390, st-00060437, st-00060395, st-00060490, st-00060520, st-00060531, st-00064387, st-00064381, st-00064380, st-00067085, st-00067083, st-00067107, st-00067012, st-00061641, st-00380090, st-00380084, st-00065472, st-00065473, st-00065459, st-00065203, st-00065210, st-00065213, st-00068242, st-00067743, st-00072205, st-ghcn-USC00084625, st-00074787, st-00072534, st-00072530, st-ghcn-USC00111497, st-00072405, st-ghcn-USC00186350, st-ghcn-USC00182325, st-ghcn-USW00094290, st-00072793, st-ghcn-USC00454169, st-ghcn-USC00519397, st-ghcn-USC00516128, st-00091182, st-00072509, st-ghcn-USC00193890, st-ghcn-USC00190736, st-ghcn-CAN07024254, st-ghcn-CAN0701S001, st-ghcn-CAN07020567, st-ghcn-CAN06105976, st-00071063, st-ghcn-CAN07030170, st-00078479, st-00078466, st-00078473, st-00078486, st-00078485, st-00078388, st-00078397, st-00078764, st-00078762, st-00078767, st-00078774, st-00078641, st-00078649, st-00078655, st-00078663, st-00078650, st-00078583, st-78583002, st-78583001, st-00078073, st-00078954, st-00078970, st-00080423, st-00087097, st-00086246, st-00087163, st-00087582, st-00087585, st-00087553, st-00087420, st-00087418, st-00087416, st-00087765, st-00085577, st-00085580, st-00085574, st-00085934, st-00085469, st-00074501, st-00072001, st-00081501, st-00022301, st-00084401, st-00062001, st-00091402, st-21205791, st-21205420, st-35025050, st-27015330, st-23085270, st-26225030, st-14015080, st-29035080, st-29045190, st-00043501, st-00086585, st-00086575, st-00086580, st-00086565, st-00086218, st-00086221, st-00087162, st-00081001, st-00081002, st-00081058, st-00081200, st-00081225, st-00094608, st-00094614, st-00094610, st-00094648, st-ghcn-ASN00023090, st-00094672, st-00094287, st-00095286, st-00095284, st-00093439, st-00093420, st-00093781, st-00093791, st-00093817, st-00093747, st-00091680, st-00091690, st-00091683, st-00091762, st-00091765, st-00091517, st-00091520, st-00091408, st-00091348

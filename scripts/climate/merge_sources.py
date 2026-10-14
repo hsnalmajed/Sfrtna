@@ -185,6 +185,11 @@ CAL_MAX_ELEV_DIFF_M = 300.0
 # Gabala from Akhty, 55 km) and the regional correction is used instead.
 # Leave-own-station-out test, 14 Oct 2026: 60 km was the best of 25/40/60/∞.
 CAL_SINGLE_MAX_KM = 60.0
+# A lone station is also refused when its correction is larger than this in any
+# month: one station alone cannot show that a 4 °C+ gap is the town's and not
+# the station's own setting (Gabala from Akhty, 55 km but across the main
+# Caucasus ridge: +6.9 °C; fixed 14 Oct 2026 — the km rule alone let it in).
+CAL_SINGLE_MAX_OFFSET_C = 4.0
 PARAMS = ["highC", "lowC", "meanC", "precipMm", "precipDays", "dewPointC", "relativeHumidity", "windMs", "snowCoverPct"]
 
 
@@ -199,7 +204,8 @@ def calibration(did, rec, pool, era5, town):
     CAL_KM (and within CAL_MAX_ELEV_DIFF_M of the town's height when known)
     whose position ERA5-Land was also downloaded at, the difference station −
     ERA5-Land, weighted by inverse distance. Returns None when no station
-    qualifies, or when the only one is farther than CAL_SINGLE_MAX_KM."""
+    qualifies, or when the only one is farther than CAL_SINGLE_MAX_KM or would
+    shift any month by more than CAL_SINGLE_MAX_OFFSET_C."""
     lat, lon = rec["latitude"], rec["longitude"]
     near = []
     for sid, s in pool.items():
@@ -224,6 +230,8 @@ def calibration(did, rec, pool, era5, town):
     tw = sum(w)
     off_hi = [round(sum(wi * (station_months(s, "TMAX")[m] - pt["months"][m]["highC"]) for wi, (d, sid, s, pt) in zip(w, near)) / tw, 2) for m in range(12)]
     off_lo = [round(sum(wi * (station_months(s, "TMIN")[m] - pt["months"][m]["lowC"]) for wi, (d, sid, s, pt) in zip(w, near)) / tw, 2) for m in range(12)]
+    if len(near) == 1 and max(abs(x) for x in off_hi + off_lo) > CAL_SINGLE_MAX_OFFSET_C:
+        return None
     return {
         "highOffsetC": off_hi,
         "lowOffsetC": off_lo,

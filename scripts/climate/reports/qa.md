@@ -1,6 +1,6 @@
 # Quality test — scoring v1.1
 
-Climate: ERA5-Land hourly time-series (reanalysis-era5-land-timeseries), 1991–2020. Generated 2026-10-01T07:22:39.093Z.
+Climate: ERA5-Land hourly time-series (reanalysis-era5-land-timeseries), 1991–2020. Generated 2026-10-14T12:11:52.416Z.
 
 ## riyadh — city + desert — station RiyadhOld (WMO 40438), 8.3 km; destination's own grid cell: 24.60, 46.70 (4.6 km) — confidence high (100)
 
@@ -74,18 +74,18 @@ Climate: ERA5-Land hourly time-series (reanalysis-era5-land-timeseries), 1991–
 
 | Month | High | Low | Rain mm | Rain days | RH % | Heat index | Climate | Tourism | Final | Class | Reason |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| Jan | 23 | 17 | 10 | 2.6 | 66 | — | 100 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain. |
-| Feb | 24 | 18 | 5 | 1.6 | 64 | — | 100 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain. |
-| Mar | 27 | 20 | 6 | 1.8 | 61 | — | 100 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain. |
-| Apr | 31 | 24 | 6 | 0.9 | 53 | 31 | 91 | unlisted | 87 | VERY_GOOD (end) | Comfortable temperatures, with little rain. |
-| May | 34 | 28 | 1 | 0.1 | 49 | 36 | 68 | unlisted | 64 | GOOD | Fair temperatures, with little rain. |
-| Jun | 35 | 30 | 8 | 0.3 | 56 | 40 | 50 | unlisted | 46 | ACCEPTABLE | Heat with oppressive humidity (feels like about 40°). |
-| Jul | 34 | 30 | 0 | 0.2 | 62 | 41 | 47 | unlisted | 43 | ACCEPTABLE | Heat with oppressive humidity (feels like about 41°). |
-| Aug | 33 | 28 | 0 | 0.2 | 65 | 39 | 51 | unlisted | 47 | ACCEPTABLE | Comfortable temperatures, with high humidity. |
-| Sep | 33 | 27 | 1 | 0.1 | 63 | 36 | 61 | unlisted | 57 | ACCEPTABLE | Comfortable temperatures, with high humidity. |
-| Oct | 31 | 25 | 1 | 0.3 | 58 | 33 | 83 | unlisted | 79 | VERY_GOOD (start) | Comfortable temperatures, with little rain. |
-| Nov | 28 | 22 | 9 | 1.1 | 62 | 28 | 98 | listed | 100 | EXCELLENT (peak) | Comfortable temperatures, with little rain. |
-| Dec | 24 | 19 | 6 | 2.3 | 65 | — | 100 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain. |
+| Jan | 24 | 17 | 10 | 2.6 | 66 | — | 100 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain. |
+| Feb | 26 | 18 | 5 | 1.6 | 64 | — | 100 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain. |
+| Mar | 28 | 20 | 6 | 1.8 | 61 | 28 | 100 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain. |
+| Apr | 32 | 24 | 6 | 0.9 | 53 | 32 | 86 | unlisted | 82 | VERY_GOOD (end) | Comfortable temperatures, with little rain. |
+| May | 36 | 28 | 1 | 0.1 | 49 | 38 | 60 | unlisted | 56 | ACCEPTABLE | High temperatures, with little rain. |
+| Jun | 37 | 30 | 8 | 0.3 | 56 | 42 | 47 | unlisted | 43 | ACCEPTABLE | Very hot (average high 37°). |
+| Jul | 36 | 30 | 0 | 0.2 | 62 | 43 | 43 | unlisted | 39 | NOT_RECOMMENDED | Heat with oppressive humidity (feels like about 43°). |
+| Aug | 35 | 29 | 0 | 0.2 | 65 | 41 | 47 | unlisted | 43 | ACCEPTABLE | Heat with oppressive humidity (feels like about 41°). |
+| Sep | 35 | 27 | 1 | 0.1 | 63 | 39 | 56 | unlisted | 52 | ACCEPTABLE | Fair temperatures, with high humidity. |
+| Oct | 34 | 25 | 1 | 0.3 | 58 | 35 | 75 | unlisted | 71 | GOOD | Comfortable temperatures, with little rain. |
+| Nov | 29 | 21 | 9 | 1.1 | 62 | 30 | 95 | listed | 100 | EXCELLENT (start) | Comfortable temperatures, with little rain. |
+| Dec | 26 | 18 | 6 | 2.3 | 65 | — | 100 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain. |
 
 ## trabzon — city + nature — station Trabzon_Bolge (WMO 17037), 3.0 km; nearest ERA5-Land land cell: 41.00, 39.60 (10.9 km) — confidence high (75)
 
@@ -244,18 +244,18 @@ Climate: ERA5-Land hourly time-series (reanalysis-era5-land-timeseries), 1991–
 
 | Month | High | Low | Rain mm | Rain days | RH % | Heat index | Climate | Tourism | Final | Class | Reason |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| Jan | 27 | 24 | 296 | 28.9 | 86 | 30 | 47 | unlisted | 43 | ACCEPTABLE | Rain on most days of the month. |
-| Feb | 27 | 24 | 256 | 26.4 | 86 | 30 | 50 | unlisted | 46 | ACCEPTABLE | Rain on most days of the month. |
-| Mar | 27 | 24 | 228 | 27.2 | 85 | 30 | 53 | unlisted | 49 | ACCEPTABLE | Comfortable temperatures, with high humidity. |
-| Apr | 28 | 25 | 149 | 23.8 | 85 | 31 | 57 | listed | 65 | GOOD | Comfortable temperatures, with high humidity. |
-| May | 27 | 25 | 87 | 19.0 | 83 | 30 | 65 | listed | 73 | GOOD | Comfortable temperatures. |
-| Jun | 27 | 24 | 64 | 17.3 | 82 | — | 72 | listed | 80 | VERY_GOOD (start) | Comfortable temperatures. |
-| Jul | 26 | 23 | 56 | 16.5 | 81 | — | 78 | listed | 90 | VERY_GOOD | Comfortable temperatures. |
-| Aug | 26 | 23 | 43 | 15.4 | 81 | — | 80 | listed | 92 | VERY_GOOD (peak) | Comfortable temperatures. |
-| Sep | 26 | 23 | 58 | 16.3 | 83 | — | 76 | listed | 88 | VERY_GOOD (end) | Comfortable temperatures. |
-| Oct | 27 | 24 | 79 | 19.5 | 85 | 30 | 66 | listed | 74 | GOOD | Comfortable temperatures. |
-| Nov | 27 | 24 | 178 | 24.2 | 85 | 30 | 56 | unlisted | 52 | ACCEPTABLE | Comfortable temperatures, with high humidity. |
-| Dec | 27 | 24 | 272 | 27.8 | 85 | 30 | 49 | unlisted | 45 | ACCEPTABLE | Rain on most days of the month. |
+| Jan | 30 | 24 | 296 | 28.9 | 86 | 34 | 47 | unlisted | 43 | ACCEPTABLE | Rain on most days of the month. |
+| Feb | 30 | 24 | 256 | 26.4 | 86 | 34 | 50 | unlisted | 46 | ACCEPTABLE | Rain on most days of the month. |
+| Mar | 30 | 24 | 228 | 27.2 | 85 | 35 | 53 | unlisted | 49 | ACCEPTABLE | Comfortable temperatures, with high humidity. |
+| Apr | 30 | 24 | 149 | 23.8 | 85 | 35 | 57 | listed | 65 | GOOD | Comfortable temperatures, with high humidity. |
+| May | 30 | 24 | 87 | 19.0 | 83 | 33 | 65 | listed | 73 | GOOD | Comfortable temperatures. |
+| Jun | 29 | 23 | 64 | 17.3 | 82 | 32 | 72 | listed | 80 | VERY_GOOD (start) | Comfortable temperatures. |
+| Jul | 28 | 23 | 56 | 16.5 | 81 | 30 | 78 | listed | 90 | VERY_GOOD | Comfortable temperatures. |
+| Aug | 28 | 23 | 43 | 15.4 | 81 | 30 | 80 | listed | 92 | VERY_GOOD (peak) | Comfortable temperatures. |
+| Sep | 28 | 23 | 58 | 16.3 | 83 | 31 | 76 | listed | 88 | VERY_GOOD (end) | Comfortable temperatures. |
+| Oct | 29 | 23 | 79 | 19.5 | 85 | 33 | 66 | listed | 74 | GOOD | Comfortable temperatures. |
+| Nov | 30 | 24 | 178 | 24.2 | 85 | 34 | 56 | unlisted | 52 | ACCEPTABLE | Comfortable temperatures, with high humidity. |
+| Dec | 30 | 24 | 272 | 27.8 | 85 | 34 | 49 | unlisted | 45 | ACCEPTABLE | Rain on most days of the month. |
 
 ## male — beach + tropical — station Hulhule (WMO 43555), 2.9 km; NASA POWER grid cell at the destination's coordinates (fallback: no ERA5-Land land cell): 4.18, 73.51 (0.0 km) — confidence high (93)
 
@@ -291,22 +291,9 @@ Climate: ERA5-Land hourly time-series (reanalysis-era5-land-timeseries), 1991–
 | Nov | 17 | 9 | 96 | 7.4 | 66 | — | 82 | unavailable | 86 | VERY_GOOD (end) | Fair temperatures, with little rain. |
 | Dec | 12 | 4 | 58 | 5.2 | 56 | — | 63 | unavailable | 63 | GOOD | Cold weather, with little rain. |
 
-## sapporo — city — station Sapporo (WMO 47412), 2.1 km; destination's own grid cell: 43.10, 141.40 (5.6 km) — confidence high (75)
+## sapporo
 
-| Month | High | Low | Rain mm | Rain days | RH % | Heat index | Climate | Tourism | Final | Class | Reason |
-|---|---|---|---|---|---|---|---|---|---|---|---|
-| Jan | -0 | -6 | 108 | 18.3 | 70 | — | 22 | unavailable | 22 | NOT_RECOMMENDED | Extreme cold. |
-| Feb | 0 | -6 | 92 | 16.0 | 70 | — | 24 | unavailable | 24 | NOT_RECOMMENDED | Very cold. |
-| Mar | 5 | -2 | 78 | 13.9 | 66 | — | 30 | unavailable | 30 | NOT_RECOMMENDED | Very cold. |
-| Apr | 12 | 3 | 55 | 9.6 | 61 | — | 60 | unavailable | 60 | GOOD | Cold weather, with little rain. |
-| May | 18 | 9 | 56 | 8.5 | 64 | — | 89 | unavailable | 93 | VERY_GOOD (start) | Comfortable temperatures, with little rain. |
-| Jun | 22 | 13 | 60 | 7.5 | 72 | — | 100 | unavailable | 100 | EXCELLENT (peak) | Comfortable temperatures, with little rain. |
-| Jul | 25 | 18 | 91 | 7.7 | 76 | — | 95 | unavailable | 99 | EXCELLENT | Comfortable temperatures, with little rain. |
-| Aug | 26 | 19 | 127 | 9.5 | 75 | — | 85 | unavailable | 85 | VERY_GOOD | Comfortable temperatures. |
-| Sep | 23 | 15 | 142 | 10.2 | 72 | — | 86 | unavailable | 86 | VERY_GOOD | Comfortable temperatures. |
-| Oct | 16 | 8 | 110 | 11.6 | 69 | — | 76 | unavailable | 76 | VERY_GOOD (end) | Fair temperatures. |
-| Nov | 9 | 2 | 114 | 14.6 | 70 | — | 42 | unavailable | 42 | ACCEPTABLE | Cold weather. |
-| Dec | 2 | -4 | 114 | 16.0 | 72 | — | 24 | unavailable | 24 | NOT_RECOMMENDED | Very cold. |
+No data: sapporo: no destination type
 
 ## new-york — city — station NEW_YORK_CNTRL_PK_TWR (WMO 72506), 8.0 km; destination's own grid cell: 40.70, -74.00 (1.5 km) — confidence high (93)
 
@@ -376,22 +363,9 @@ Climate: ERA5-Land hourly time-series (reanalysis-era5-land-timeseries), 1991–
 | Nov | 25 | 17 | 91 | 8.7 | 63 | — | 95 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain. |
 | Dec | 27 | 18 | 73 | 7.9 | 64 | — | 99 | unlisted | 99 | EXCELLENT | Comfortable temperatures, with little rain. |
 
-## queenstown — mountain + nature — destination's own grid cell: -45.00, 168.70 (4.7 km) — confidence medium (60) — cell +396 m vs town
+## queenstown
 
-| Month | High | Low | Rain mm | Rain days | RH % | Heat index | Climate | Tourism | Final | Class | Reason |
-|---|---|---|---|---|---|---|---|---|---|---|---|
-| Jan | 17 | 8 | 137 | 13.7 | 72 | — | 77 | unavailable | 81 | VERY_GOOD (start) | Comfortable temperatures. |
-| Feb | 16 | 8 | 106 | 12.0 | 73 | — | 84 | unavailable | 88 | VERY_GOOD (peak) | Comfortable temperatures. |
-| Mar | 14 | 6 | 115 | 12.8 | 76 | — | 74 | unavailable | 78 | VERY_GOOD (end) | Fair temperatures. |
-| Apr | 10 | 4 | 110 | 12.7 | 81 | — | 54 | unavailable | 54 | ACCEPTABLE | Cold weather. |
-| May | 7 | 1 | 135 | 15.8 | 89 | — | 33 | unavailable | 33 | ACCEPTABLE | Cold weather. |
-| Jun | 2 | -2 | 112 | 14.4 | 93 | — | 27 | unavailable | 27 | NOT_RECOMMENDED | Very cold. |
-| Jul | 1 | -3 | 104 | 14.0 | 92 | — | 27 | unavailable | 27 | NOT_RECOMMENDED | Very cold. |
-| Aug | 2 | -2 | 110 | 14.4 | 91 | — | 27 | unavailable | 27 | NOT_RECOMMENDED | Very cold. |
-| Sep | 5 | -1 | 132 | 15.0 | 86 | — | 28 | unavailable | 28 | ACCEPTABLE | Cold weather. |
-| Oct | 8 | 1 | 148 | 16.7 | 81 | — | 39 | unavailable | 39 | ACCEPTABLE | Cold weather. |
-| Nov | 12 | 4 | 139 | 16.1 | 75 | — | 57 | unavailable | 57 | ACCEPTABLE | Cold weather. |
-| Dec | 15 | 7 | 146 | 16.7 | 72 | — | 65 | unavailable | 65 | GOOD | Fair temperatures. |
+No data: queenstown: no destination type
 
 ## cairo — city + desert — station CairoAP (WMO 62366), 18.6 km; destination's own grid cell: 30.00, 31.20 (6.0 km) — confidence high (93)
 
@@ -431,33 +405,20 @@ Climate: ERA5-Land hourly time-series (reanalysis-era5-land-timeseries), 1991–
 
 | Month | High | Low | Rain mm | Rain days | RH % | Heat index | Climate | Tourism | Final | Class | Reason |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| Jan | 16 | 7 | 144 | 13.5 | 72 | — | 17 | unavailable | 17 | ACCEPTABLE | Limited snow cover. |
-| Feb | 16 | 8 | 110 | 12.0 | 73 | — | 18 | unavailable | 18 | ACCEPTABLE | Limited snow cover. |
-| Mar | 14 | 6 | 121 | 12.6 | 76 | — | 18 | unavailable | 18 | ACCEPTABLE | Limited snow cover. |
-| Apr | 10 | 3 | 117 | 12.5 | 81 | — | 27 | unavailable | 27 | ACCEPTABLE | Limited snow cover. |
-| May | 6 | 0 | 144 | 15.1 | 88 | — | 46 | unavailable | 46 | ACCEPTABLE | Limited snow cover. |
-| Jun | 2 | -3 | 119 | 14.1 | 91 | — | 92 | unavailable | 96 | EXCELLENT (start) | Good snow cover. |
-| Jul | 0 | -4 | 113 | 13.3 | 90 | — | 98 | unavailable | 100 | EXCELLENT (peak) | Good snow cover. |
-| Aug | 2 | -3 | 120 | 14.2 | 90 | — | 97 | unavailable | 100 | EXCELLENT | Good snow cover. |
-| Sep | 4 | -2 | 145 | 15.1 | 86 | — | 88 | unavailable | 88 | VERY_GOOD (end) | Good snow cover. |
-| Oct | 8 | 0 | 158 | 16.5 | 81 | — | 47 | unavailable | 47 | ACCEPTABLE | Limited snow cover. |
-| Nov | 11 | 3 | 147 | 16.0 | 75 | — | 21 | unavailable | 21 | ACCEPTABLE | Limited snow cover. |
-| Dec | 14 | 6 | 155 | 16.5 | 72 | — | 16 | unavailable | 16 | ACCEPTABLE | Limited snow cover. |
+| Jan | 21 | 8 | 144 | 13.5 | 72 | — | 17 | unavailable | 17 | ACCEPTABLE | Limited snow cover. |
+| Feb | 21 | 7 | 110 | 12.0 | 73 | — | 18 | unavailable | 18 | ACCEPTABLE | Limited snow cover. |
+| Mar | 18 | 5 | 121 | 12.6 | 76 | — | 18 | unavailable | 18 | ACCEPTABLE | Limited snow cover. |
+| Apr | 14 | 2 | 117 | 12.5 | 81 | — | 18 | unavailable | 18 | ACCEPTABLE | Limited snow cover. |
+| May | 10 | 0 | 144 | 15.1 | 88 | — | 31 | unavailable | 31 | ACCEPTABLE | Limited snow cover. |
+| Jun | 6 | -3 | 119 | 14.1 | 91 | — | 85 | unavailable | 89 | VERY_GOOD (start) | Good snow cover. |
+| Jul | 5 | -3 | 113 | 13.3 | 90 | — | 93 | unavailable | 97 | VERY_GOOD (end) | Good snow cover. |
+| Aug | 7 | -2 | 120 | 14.2 | 90 | — | 86 | unavailable | 90 | GOOD | Good snow cover. |
+| Sep | 9 | 0 | 145 | 15.1 | 86 | — | 70 | unavailable | 70 | GOOD | Good snow cover. |
+| Oct | 13 | 2 | 158 | 16.5 | 81 | — | 29 | unavailable | 29 | ACCEPTABLE | Limited snow cover. |
+| Nov | 16 | 4 | 147 | 16.0 | 75 | — | 16 | unavailable | 16 | ACCEPTABLE | Limited snow cover. |
+| Dec | 19 | 7 | 155 | 16.5 | 72 | — | 16 | unavailable | 16 | ACCEPTABLE | Limited snow cover. |
 
-## zermatt — ski + mountain — station Zermatt (WMO 06748), 0.9 km; elevation-matched ERA5-Land cell (cell_overrides.json): 45.90, 7.70 (14.0 km) — confidence high (75)
+## zermatt
 
-| Month | High | Low | Rain mm | Rain days | RH % | Heat index | Climate | Tourism | Final | Class | Reason |
-|---|---|---|---|---|---|---|---|---|---|---|---|
-| Jan | 1 | -7 | 42 | 6.3 | 65 | — | 100 | unavailable | 100 | EXCELLENT | Good snow cover, with little rain. |
-| Feb | 2 | -7 | 30 | 5.5 | 63 | — | 100 | unavailable | 100 | EXCELLENT | Good snow cover, with little rain. |
-| Mar | 6 | -4 | 33 | 5.3 | 60 | — | 94 | unavailable | 94 | VERY_GOOD (end) | Good snow cover, with little rain. |
-| Apr | 10 | -1 | 40 | 6.3 | 57 | — | 79 | unavailable | 79 | GOOD | Good snow cover, with little rain. |
-| May | 14 | 3 | 77 | 9.5 | 61 | — | 74 | unavailable | 74 | VERY_GOOD (start) | Fair temperatures, with little rain. |
-| Jun | 18 | 7 | 70 | 9.7 | 63 | — | 79 | unavailable | 79 | VERY_GOOD (end) | Comfortable temperatures, with little rain. |
-| Jul | 20 | 8 | 59 | 9.0 | 62 | — | 59 | unavailable | 59 | GOOD | Comfortable temperatures, with little rain. |
-| Aug | 20 | 8 | 68 | 9.8 | 64 | — | 57 | unavailable | 57 | ACCEPTABLE | Comfortable temperatures, with little rain. |
-| Sep | 15 | 5 | 51 | 7.3 | 68 | — | 55 | unavailable | 55 | ACCEPTABLE | Comfortable temperatures, with little rain. |
-| Oct | 11 | 1 | 57 | 7.0 | 68 | — | 58 | unavailable | 58 | GOOD | Cold weather, with little rain. |
-| Nov | 5 | -3 | 65 | 7.1 | 69 | — | 96 | unavailable | 96 | EXCELLENT (start) | Good snow cover, with little rain. |
-| Dec | 2 | -6 | 47 | 6.9 | 67 | — | 100 | unavailable | 100 | EXCELLENT (peak) | Good snow cover, with little rain. |
+No data: zermatt: no destination type
 

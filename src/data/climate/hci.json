@@ -4,7 +4,7 @@
   "computedFrom": "daily ERA5-Land 1991–2020 (highs, lows, dew point brought to the published monthly figures), ERA5 monthly cloud cover",
   "cloudSource": "Copernicus Climate Change Service (C3S), ERA5 monthly averaged reanalysis on single levels",
   "version": "1.0",
-  "generatedAt": "2026-10-14T06:56:54+00:00"
+  "generatedAt": "2026-10-14T12:06:13+00:00"
  },
  "destinations": {
   "abha": {
@@ -1164,7 +1164,7 @@
      "days": 929
     },
     {
-     "mean": 88.4,
+     "mean": 88.5,
      "goodShare": 0.987,
      "poorShare": 0.0,
      "days": 848
@@ -1218,8 +1218,8 @@
      "days": 930
     },
     {
-     "mean": 71.2,
-     "goodShare": 0.563,
+     "mean": 71.4,
+     "goodShare": 0.568,
      "poorShare": 0.001,
      "days": 900
     },
@@ -1238,7 +1238,7 @@
      "days": 929
     },
     {
-     "mean": 90.4,
+     "mean": 90.3,
      "goodShare": 0.987,
      "poorShare": 0.0,
      "days": 848
@@ -1292,7 +1292,7 @@
      "days": 930
     },
     {
-     "mean": 86.1,
+     "mean": 86.2,
      "goodShare": 0.989,
      "poorShare": 0.0,
      "days": 900
@@ -1650,149 +1650,149 @@
   "almaty": {
    "urban": [
     {
-     "mean": 57.4,
+     "mean": 57.1,
      "goodShare": 0.005,
-     "poorShare": 0.009,
+     "poorShare": 0.015,
      "days": 929
     },
     {
-     "mean": 57.5,
+     "mean": 57.0,
      "goodShare": 0.011,
-     "poorShare": 0.027,
+     "poorShare": 0.028,
      "days": 848
     },
     {
-     "mean": 61.4,
-     "goodShare": 0.202,
-     "poorShare": 0.034,
+     "mean": 61.1,
+     "goodShare": 0.2,
+     "poorShare": 0.048,
      "days": 930
     },
     {
-     "mean": 68.5,
-     "goodShare": 0.514,
-     "poorShare": 0.036,
+     "mean": 68.6,
+     "goodShare": 0.523,
+     "poorShare": 0.037,
      "days": 900
     },
     {
-     "mean": 74.6,
-     "goodShare": 0.714,
-     "poorShare": 0.003,
+     "mean": 75.5,
+     "goodShare": 0.751,
+     "poorShare": 0.008,
      "days": 930
     },
     {
-     "mean": 73.8,
-     "goodShare": 0.719,
+     "mean": 74.8,
+     "goodShare": 0.746,
      "poorShare": 0.001,
      "days": 900
     },
     {
-     "mean": 71.3,
-     "goodShare": 0.656,
-     "poorShare": 0.005,
+     "mean": 71.4,
+     "goodShare": 0.648,
+     "poorShare": 0.008,
      "days": 930
     },
     {
-     "mean": 76.4,
-     "goodShare": 0.795,
-     "poorShare": 0.002,
+     "mean": 76.3,
+     "goodShare": 0.798,
+     "poorShare": 0.003,
      "days": 930
     },
     {
-     "mean": 82.0,
-     "goodShare": 0.893,
-     "poorShare": 0.0,
+     "mean": 81.9,
+     "goodShare": 0.897,
+     "poorShare": 0.001,
      "days": 900
     },
     {
-     "mean": 74.0,
-     "goodShare": 0.688,
+     "mean": 73.8,
+     "goodShare": 0.69,
      "poorShare": 0.006,
      "days": 930
     },
     {
-     "mean": 62.6,
-     "goodShare": 0.199,
-     "poorShare": 0.028,
+     "mean": 62.2,
+     "goodShare": 0.201,
+     "poorShare": 0.033,
      "days": 900
     },
     {
-     "mean": 58.5,
-     "goodShare": 0.004,
-     "poorShare": 0.012,
+     "mean": 58.1,
+     "goodShare": 0.005,
+     "poorShare": 0.02,
      "days": 930
     }
    ],
    "beach": [
     {
-     "mean": 43.3,
+     "mean": 42.8,
      "goodShare": 0.0,
-     "poorShare": 0.155,
+     "poorShare": 0.187,
      "days": 929
     },
     {
-     "mean": 41.1,
+     "mean": 40.6,
      "goodShare": 0.001,
-     "poorShare": 0.281,
+     "poorShare": 0.322,
      "days": 848
     },
     {
-     "mean": 44.4,
-     "goodShare": 0.015,
-     "poorShare": 0.329,
+     "mean": 44.2,
+     "goodShare": 0.02,
+     "poorShare": 0.331,
      "days": 930
     },
     {
-     "mean": 56.6,
-     "goodShare": 0.264,
-     "poorShare": 0.142,
+     "mean": 56.4,
+     "goodShare": 0.276,
+     "poorShare": 0.156,
      "days": 900
     },
     {
-     "mean": 66.8,
-     "goodShare": 0.545,
-     "poorShare": 0.062,
+     "mean": 67.8,
+     "goodShare": 0.578,
+     "poorShare": 0.057,
      "days": 930
     },
     {
-     "mean": 76.2,
-     "goodShare": 0.839,
+     "mean": 76.9,
+     "goodShare": 0.874,
      "poorShare": 0.002,
      "days": 900
     },
     {
-     "mean": 80.9,
-     "goodShare": 0.9,
+     "mean": 81.0,
+     "goodShare": 0.913,
      "poorShare": 0.0,
      "days": 930
     },
     {
-     "mean": 84.8,
-     "goodShare": 0.933,
+     "mean": 84.7,
+     "goodShare": 0.953,
      "poorShare": 0.0,
      "days": 930
     },
     {
      "mean": 80.1,
-     "goodShare": 0.851,
-     "poorShare": 0.006,
+     "goodShare": 0.862,
+     "poorShare": 0.008,
      "days": 900
     },
     {
-     "mean": 63.3,
-     "goodShare": 0.397,
-     "poorShare": 0.062,
+     "mean": 63.0,
+     "goodShare": 0.39,
+     "poorShare": 0.066,
      "days": 930
     },
     {
-     "mean": 46.8,
-     "goodShare": 0.046,
-     "poorShare": 0.197,
+     "mean": 46.4,
+     "goodShare": 0.039,
+     "poorShare": 0.217,
      "days": 900
     },
     {
-     "mean": 43.0,
+     "mean": 42.6,
      "goodShare": 0.0,
-     "poorShare": 0.197,
+     "poorShare": 0.217,
      "days": 930
     }
    ],
@@ -1814,7 +1814,7 @@
   "alula": {
    "urban": [
     {
-     "mean": 85.5,
+     "mean": 85.4,
      "goodShare": 0.994,
      "poorShare": 0.0,
      "days": 929
@@ -1832,8 +1832,8 @@
      "days": 930
     },
     {
-     "mean": 85.2,
-     "goodShare": 0.987,
+     "mean": 85.5,
+     "goodShare": 0.988,
      "poorShare": 0.0,
      "days": 900
     },
@@ -1874,7 +1874,7 @@
      "days": 930
     },
     {
-     "mean": 92.0,
+     "mean": 92.1,
      "goodShare": 0.998,
      "poorShare": 0.0,
      "days": 900
@@ -1888,8 +1888,8 @@
    ],
    "beach": [
     {
-     "mean": 79.9,
-     "goodShare": 0.836,
+     "mean": 79.6,
+     "goodShare": 0.829,
      "poorShare": 0.0,
      "days": 929
     },
@@ -1906,7 +1906,7 @@
      "days": 930
     },
     {
-     "mean": 93.9,
+     "mean": 94.0,
      "goodShare": 1.0,
      "poorShare": 0.0,
      "days": 900
@@ -1948,7 +1948,7 @@
      "days": 930
     },
     {
-     "mean": 93.5,
+     "mean": 93.4,
      "goodShare": 0.997,
      "poorShare": 0.0,
      "days": 900
@@ -1978,148 +1978,148 @@
   "amman": {
    "urban": [
     {
-     "mean": 66.9,
-     "goodShare": 0.441,
-     "poorShare": 0.02,
+     "mean": 67.4,
+     "goodShare": 0.467,
+     "poorShare": 0.019,
      "days": 929
     },
     {
-     "mean": 68.4,
-     "goodShare": 0.553,
-     "poorShare": 0.025,
+     "mean": 69.0,
+     "goodShare": 0.575,
+     "poorShare": 0.024,
      "days": 848
     },
     {
-     "mean": 76.1,
-     "goodShare": 0.802,
+     "mean": 76.7,
+     "goodShare": 0.817,
      "poorShare": 0.005,
      "days": 930
     },
     {
+     "mean": 86.4,
+     "goodShare": 0.971,
+     "poorShare": 0.0,
+     "days": 900
+    },
+    {
+     "mean": 90.6,
+     "goodShare": 0.997,
+     "poorShare": 0.0,
+     "days": 930
+    },
+    {
      "mean": 85.8,
-     "goodShare": 0.968,
+     "goodShare": 0.994,
      "poorShare": 0.0,
      "days": 900
     },
     {
-     "mean": 91.0,
-     "goodShare": 0.997,
+     "mean": 80.3,
+     "goodShare": 0.96,
      "poorShare": 0.0,
      "days": 930
     },
     {
-     "mean": 86.7,
-     "goodShare": 0.997,
+     "mean": 79.1,
+     "goodShare": 0.942,
+     "poorShare": 0.0,
+     "days": 930
+    },
+    {
+     "mean": 84.6,
+     "goodShare": 0.969,
      "poorShare": 0.0,
      "days": 900
     },
     {
-     "mean": 81.0,
-     "goodShare": 0.965,
+     "mean": 91.8,
+     "goodShare": 0.995,
      "poorShare": 0.0,
      "days": 930
     },
     {
-     "mean": 79.7,
-     "goodShare": 0.952,
-     "poorShare": 0.0,
-     "days": 930
-    },
-    {
-     "mean": 85.6,
-     "goodShare": 0.974,
-     "poorShare": 0.0,
-     "days": 900
-    },
-    {
-     "mean": 92.0,
-     "goodShare": 0.996,
-     "poorShare": 0.0,
-     "days": 930
-    },
-    {
-     "mean": 81.0,
-     "goodShare": 0.95,
+     "mean": 81.9,
+     "goodShare": 0.957,
      "poorShare": 0.002,
      "days": 900
     },
     {
-     "mean": 71.2,
-     "goodShare": 0.716,
+     "mean": 71.8,
+     "goodShare": 0.746,
      "poorShare": 0.008,
      "days": 930
     }
    ],
    "beach": [
     {
-     "mean": 52.0,
-     "goodShare": 0.027,
+     "mean": 52.6,
+     "goodShare": 0.038,
      "poorShare": 0.078,
      "days": 929
     },
     {
-     "mean": 54.8,
-     "goodShare": 0.11,
+     "mean": 55.7,
+     "goodShare": 0.133,
      "poorShare": 0.075,
      "days": 848
     },
     {
-     "mean": 66.6,
-     "goodShare": 0.423,
-     "poorShare": 0.031,
+     "mean": 67.5,
+     "goodShare": 0.455,
+     "poorShare": 0.026,
      "days": 930
     },
     {
-     "mean": 80.9,
-     "goodShare": 0.817,
+     "mean": 82.0,
+     "goodShare": 0.851,
      "poorShare": 0.003,
      "days": 900
     },
     {
-     "mean": 91.2,
-     "goodShare": 0.988,
+     "mean": 91.7,
+     "goodShare": 0.992,
      "poorShare": 0.0,
      "days": 930
     },
     {
-     "mean": 93.4,
+     "mean": 93.3,
      "goodShare": 1.0,
      "poorShare": 0.0,
      "days": 900
     },
     {
-     "mean": 92.4,
+     "mean": 92.0,
      "goodShare": 1.0,
      "poorShare": 0.0,
      "days": 930
     },
     {
-     "mean": 91.8,
+     "mean": 91.4,
      "goodShare": 1.0,
      "poorShare": 0.0,
      "days": 930
     },
     {
-     "mean": 93.2,
+     "mean": 93.0,
      "goodShare": 1.0,
      "poorShare": 0.0,
      "days": 900
     },
     {
-     "mean": 90.7,
-     "goodShare": 0.986,
+     "mean": 91.3,
+     "goodShare": 0.99,
      "poorShare": 0.0,
      "days": 930
     },
     {
-     "mean": 73.5,
-     "goodShare": 0.669,
+     "mean": 74.6,
+     "goodShare": 0.716,
      "poorShare": 0.007,
      "days": 900
     },
     {
-     "mean": 57.9,
-     "goodShare": 0.115,
+     "mean": 58.9,
+     "goodShare": 0.142,
      "poorShare": 0.034,
      "days": 930
     }
@@ -2306,149 +2306,149 @@
   "andorra-la-vella": {
    "urban": [
     {
-     "mean": 54.7,
-     "goodShare": 0.001,
-     "poorShare": 0.089,
+     "mean": 58.0,
+     "goodShare": 0.024,
+     "poorShare": 0.06,
      "days": 930
     },
     {
-     "mean": 56.0,
-     "goodShare": 0.013,
-     "poorShare": 0.066,
+     "mean": 59.4,
+     "goodShare": 0.074,
+     "poorShare": 0.037,
      "days": 848
     },
     {
-     "mean": 57.6,
-     "goodShare": 0.039,
-     "poorShare": 0.054,
+     "mean": 61.9,
+     "goodShare": 0.206,
+     "poorShare": 0.046,
      "days": 930
-    },
-    {
-     "mean": 57.5,
-     "goodShare": 0.089,
-     "poorShare": 0.102,
-     "days": 900
     },
     {
      "mean": 62.6,
-     "goodShare": 0.299,
-     "poorShare": 0.062,
-     "days": 930
-    },
-    {
-     "mean": 73.0,
-     "goodShare": 0.652,
-     "poorShare": 0.014,
+     "goodShare": 0.272,
+     "poorShare": 0.06,
      "days": 900
     },
     {
-     "mean": 82.4,
-     "goodShare": 0.869,
-     "poorShare": 0.001,
+     "mean": 69.4,
+     "goodShare": 0.542,
+     "poorShare": 0.033,
      "days": 930
     },
     {
-     "mean": 81.9,
-     "goodShare": 0.883,
-     "poorShare": 0.001,
-     "days": 930
-    },
-    {
-     "mean": 72.3,
-     "goodShare": 0.669,
-     "poorShare": 0.016,
+     "mean": 77.7,
+     "goodShare": 0.794,
+     "poorShare": 0.008,
      "days": 900
     },
     {
-     "mean": 64.4,
-     "goodShare": 0.354,
-     "poorShare": 0.058,
+     "mean": 81.2,
+     "goodShare": 0.912,
+     "poorShare": 0.0,
      "days": 930
     },
     {
-     "mean": 57.1,
-     "goodShare": 0.052,
-     "poorShare": 0.092,
+     "mean": 80.7,
+     "goodShare": 0.912,
+     "poorShare": 0.0,
+     "days": 930
+    },
+    {
+     "mean": 79.1,
+     "goodShare": 0.824,
+     "poorShare": 0.002,
      "days": 900
     },
     {
-     "mean": 55.6,
-     "goodShare": 0.006,
-     "poorShare": 0.07,
+     "mean": 69.4,
+     "goodShare": 0.568,
+     "poorShare": 0.032,
+     "days": 930
+    },
+    {
+     "mean": 60.5,
+     "goodShare": 0.143,
+     "poorShare": 0.068,
+     "days": 900
+    },
+    {
+     "mean": 58.7,
+     "goodShare": 0.047,
+     "poorShare": 0.045,
      "days": 930
     }
    ],
    "beach": [
     {
-     "mean": 39.3,
+     "mean": 40.1,
      "goodShare": 0.0,
-     "poorShare": 0.357,
+     "poorShare": 0.324,
      "days": 930
     },
     {
-     "mean": 40.4,
-     "goodShare": 0.0,
-     "poorShare": 0.403,
+     "mean": 41.8,
+     "goodShare": 0.001,
+     "poorShare": 0.38,
      "days": 848
     },
     {
-     "mean": 40.0,
+     "mean": 44.1,
+     "goodShare": 0.009,
+     "poorShare": 0.339,
+     "days": 930
+    },
+    {
+     "mean": 45.2,
+     "goodShare": 0.036,
+     "poorShare": 0.356,
+     "days": 900
+    },
+    {
+     "mean": 55.4,
+     "goodShare": 0.184,
+     "poorShare": 0.163,
+     "days": 930
+    },
+    {
+     "mean": 69.8,
+     "goodShare": 0.621,
+     "poorShare": 0.039,
+     "days": 900
+    },
+    {
+     "mean": 80.6,
+     "goodShare": 0.889,
+     "poorShare": 0.003,
+     "days": 930
+    },
+    {
+     "mean": 79.7,
+     "goodShare": 0.869,
+     "poorShare": 0.002,
+     "days": 930
+    },
+    {
+     "mean": 69.0,
+     "goodShare": 0.583,
+     "poorShare": 0.026,
+     "days": 900
+    },
+    {
+     "mean": 54.4,
+     "goodShare": 0.152,
+     "poorShare": 0.167,
+     "days": 930
+    },
+    {
+     "mean": 42.0,
+     "goodShare": 0.009,
+     "poorShare": 0.337,
+     "days": 900
+    },
+    {
+     "mean": 40.3,
      "goodShare": 0.0,
-     "poorShare": 0.42,
-     "days": 930
-    },
-    {
-     "mean": 38.2,
-     "goodShare": 0.003,
-     "poorShare": 0.568,
-     "days": 900
-    },
-    {
-     "mean": 46.1,
-     "goodShare": 0.033,
-     "poorShare": 0.309,
-     "days": 930
-    },
-    {
-     "mean": 60.9,
-     "goodShare": 0.373,
-     "poorShare": 0.111,
-     "days": 900
-    },
-    {
-     "mean": 73.5,
-     "goodShare": 0.747,
-     "poorShare": 0.017,
-     "days": 930
-    },
-    {
-     "mean": 73.3,
-     "goodShare": 0.72,
-     "poorShare": 0.016,
-     "days": 930
-    },
-    {
-     "mean": 60.2,
-     "goodShare": 0.28,
-     "poorShare": 0.084,
-     "days": 900
-    },
-    {
-     "mean": 47.1,
-     "goodShare": 0.044,
-     "poorShare": 0.247,
-     "days": 930
-    },
-    {
-     "mean": 39.1,
-     "goodShare": 0.001,
-     "poorShare": 0.398,
-     "days": 900
-    },
-    {
-     "mean": 39.3,
-     "goodShare": 0.0,
-     "poorShare": 0.454,
+     "poorShare": 0.416,
      "days": 930
     }
    ],
@@ -3126,149 +3126,149 @@
   "arequipa": {
    "urban": [
     {
-     "mean": 65.6,
-     "goodShare": 0.397,
-     "poorShare": 0.004,
+     "mean": 69.3,
+     "goodShare": 0.539,
+     "poorShare": 0.001,
      "days": 930
     },
     {
-     "mean": 62.7,
-     "goodShare": 0.288,
-     "poorShare": 0.007,
+     "mean": 65.8,
+     "goodShare": 0.416,
+     "poorShare": 0.001,
      "days": 848
     },
     {
-     "mean": 67.7,
-     "goodShare": 0.43,
+     "mean": 71.0,
+     "goodShare": 0.589,
      "poorShare": 0.0,
      "days": 930
     },
     {
-     "mean": 81.0,
-     "goodShare": 0.898,
+     "mean": 83.5,
+     "goodShare": 0.944,
      "poorShare": 0.0,
      "days": 900
     },
     {
-     "mean": 90.4,
-     "goodShare": 0.999,
-     "poorShare": 0.0,
-     "days": 930
-    },
-    {
-     "mean": 89.1,
-     "goodShare": 1.0,
-     "poorShare": 0.0,
-     "days": 900
-    },
-    {
-     "mean": 88.3,
+     "mean": 92.2,
      "goodShare": 0.999,
      "poorShare": 0.0,
      "days": 930
     },
     {
      "mean": 90.9,
-     "goodShare": 0.998,
+     "goodShare": 1.0,
+     "poorShare": 0.0,
+     "days": 900
+    },
+    {
+     "mean": 89.9,
+     "goodShare": 1.0,
      "poorShare": 0.0,
      "days": 930
     },
     {
      "mean": 91.9,
-     "goodShare": 0.997,
-     "poorShare": 0.0,
-     "days": 900
-    },
-    {
-     "mean": 88.4,
-     "goodShare": 0.997,
+     "goodShare": 0.998,
      "poorShare": 0.0,
      "days": 930
     },
     {
-     "mean": 86.3,
-     "goodShare": 0.983,
+     "mean": 92.8,
+     "goodShare": 0.998,
      "poorShare": 0.0,
      "days": 900
     },
     {
-     "mean": 77.8,
-     "goodShare": 0.816,
+     "mean": 89.9,
+     "goodShare": 1.0,
+     "poorShare": 0.0,
+     "days": 930
+    },
+    {
+     "mean": 87.7,
+     "goodShare": 0.994,
+     "poorShare": 0.0,
+     "days": 900
+    },
+    {
+     "mean": 80.2,
+     "goodShare": 0.886,
      "poorShare": 0.0,
      "days": 929
     }
    ],
    "beach": [
     {
-     "mean": 49.9,
-     "goodShare": 0.027,
-     "poorShare": 0.197,
+     "mean": 53.2,
+     "goodShare": 0.049,
+     "poorShare": 0.144,
      "days": 930
     },
     {
-     "mean": 47.2,
-     "goodShare": 0.002,
-     "poorShare": 0.269,
+     "mean": 50.4,
+     "goodShare": 0.006,
+     "poorShare": 0.206,
      "days": 848
     },
     {
-     "mean": 52.8,
-     "goodShare": 0.048,
-     "poorShare": 0.119,
+     "mean": 55.7,
+     "goodShare": 0.074,
+     "poorShare": 0.102,
      "days": 930
     },
     {
-     "mean": 69.2,
-     "goodShare": 0.472,
-     "poorShare": 0.01,
+     "mean": 71.5,
+     "goodShare": 0.551,
+     "poorShare": 0.002,
      "days": 900
     },
     {
-     "mean": 83.9,
-     "goodShare": 0.997,
+     "mean": 85.5,
+     "goodShare": 0.998,
      "poorShare": 0.0,
      "days": 930
     },
     {
-     "mean": 84.1,
-     "goodShare": 0.999,
+     "mean": 85.3,
+     "goodShare": 1.0,
      "poorShare": 0.0,
      "days": 900
     },
     {
-     "mean": 82.8,
-     "goodShare": 0.997,
-     "poorShare": 0.0,
-     "days": 930
-    },
-    {
-     "mean": 84.7,
-     "goodShare": 0.997,
+     "mean": 83.8,
+     "goodShare": 1.0,
      "poorShare": 0.0,
      "days": 930
     },
     {
      "mean": 85.5,
-     "goodShare": 0.997,
-     "poorShare": 0.0,
-     "days": 900
-    },
-    {
-     "mean": 78.6,
-     "goodShare": 0.958,
+     "goodShare": 0.998,
      "poorShare": 0.0,
      "days": 930
     },
     {
-     "mean": 74.2,
-     "goodShare": 0.806,
+     "mean": 86.5,
+     "goodShare": 0.998,
      "poorShare": 0.0,
      "days": 900
     },
     {
-     "mean": 63.5,
-     "goodShare": 0.258,
-     "poorShare": 0.023,
+     "mean": 80.2,
+     "goodShare": 0.986,
+     "poorShare": 0.0,
+     "days": 930
+    },
+    {
+     "mean": 75.6,
+     "goodShare": 0.87,
+     "poorShare": 0.0,
+     "days": 900
+    },
+    {
+     "mean": 65.8,
+     "goodShare": 0.321,
+     "poorShare": 0.01,
      "days": 929
     }
    ],
@@ -3952,20 +3952,20 @@
      "days": 929
     },
     {
-     "mean": 69.5,
-     "goodShare": 0.555,
-     "poorShare": 0.018,
+     "mean": 69.3,
+     "goodShare": 0.553,
+     "poorShare": 0.019,
      "days": 848
     },
     {
-     "mean": 76.0,
-     "goodShare": 0.769,
+     "mean": 75.8,
+     "goodShare": 0.766,
      "poorShare": 0.011,
      "days": 930
     },
     {
-     "mean": 85.1,
-     "goodShare": 0.952,
+     "mean": 85.0,
+     "goodShare": 0.951,
      "poorShare": 0.001,
      "days": 900
     },
@@ -3976,8 +3976,8 @@
      "days": 930
     },
     {
-     "mean": 73.7,
-     "goodShare": 0.671,
+     "mean": 73.9,
+     "goodShare": 0.673,
      "poorShare": 0.0,
      "days": 900
     },
@@ -3994,27 +3994,27 @@
      "days": 930
     },
     {
-     "mean": 77.3,
-     "goodShare": 0.783,
+     "mean": 77.5,
+     "goodShare": 0.79,
      "poorShare": 0.0,
      "days": 900
     },
     {
-     "mean": 83.4,
+     "mean": 83.5,
      "goodShare": 0.943,
      "poorShare": 0.001,
      "days": 930
     },
     {
-     "mean": 79.0,
-     "goodShare": 0.84,
+     "mean": 78.9,
+     "goodShare": 0.837,
      "poorShare": 0.002,
      "days": 900
     },
     {
-     "mean": 68.8,
-     "goodShare": 0.556,
-     "poorShare": 0.028,
+     "mean": 68.7,
+     "goodShare": 0.549,
+     "poorShare": 0.029,
      "days": 930
     }
    ],
@@ -4026,20 +4026,20 @@
      "days": 929
     },
     {
-     "mean": 56.6,
-     "goodShare": 0.185,
+     "mean": 56.4,
+     "goodShare": 0.178,
      "poorShare": 0.077,
      "days": 848
     },
     {
-     "mean": 65.7,
-     "goodShare": 0.475,
+     "mean": 65.5,
+     "goodShare": 0.471,
      "poorShare": 0.048,
      "days": 930
     },
     {
-     "mean": 79.1,
-     "goodShare": 0.828,
+     "mean": 78.9,
+     "goodShare": 0.827,
      "poorShare": 0.007,
      "days": 900
     },
@@ -4050,7 +4050,7 @@
      "days": 930
     },
     {
-     "mean": 88.1,
+     "mean": 88.2,
      "goodShare": 0.996,
      "poorShare": 0.0,
      "days": 900
@@ -4068,27 +4068,27 @@
      "days": 930
     },
     {
-     "mean": 88.8,
+     "mean": 88.9,
      "goodShare": 0.99,
      "poorShare": 0.0,
      "days": 900
     },
     {
-     "mean": 84.8,
-     "goodShare": 0.934,
+     "mean": 84.7,
+     "goodShare": 0.933,
      "poorShare": 0.001,
      "days": 930
     },
     {
-     "mean": 70.0,
+     "mean": 69.9,
      "goodShare": 0.599,
      "poorShare": 0.022,
      "days": 900
     },
     {
-     "mean": 55.1,
-     "goodShare": 0.135,
-     "poorShare": 0.125,
+     "mean": 54.9,
+     "goodShare": 0.131,
+     "poorShare": 0.127,
      "days": 930
     }
    ],
@@ -4116,9 +4116,9 @@
      "days": 929
     },
     {
-     "mean": 75.7,
-     "goodShare": 0.809,
-     "poorShare": 0.012,
+     "mean": 75.9,
+     "goodShare": 0.812,
+     "poorShare": 0.011,
      "days": 848
     },
     {
@@ -4128,8 +4128,8 @@
      "days": 930
     },
     {
-     "mean": 81.3,
-     "goodShare": 0.893,
+     "mean": 81.2,
+     "goodShare": 0.894,
      "poorShare": 0.0,
      "days": 900
     },
@@ -4146,8 +4146,8 @@
      "days": 900
     },
     {
-     "mean": 67.7,
-     "goodShare": 0.578,
+     "mean": 67.5,
+     "goodShare": 0.571,
      "poorShare": 0.01,
      "days": 930
     },
@@ -4176,8 +4176,8 @@
      "days": 900
     },
     {
-     "mean": 78.2,
-     "goodShare": 0.854,
+     "mean": 78.4,
+     "goodShare": 0.853,
      "poorShare": 0.0,
      "days": 930
     }
@@ -4191,7 +4191,7 @@
     },
     {
      "mean": 77.2,
-     "goodShare": 0.881,
+     "goodShare": 0.88,
      "poorShare": 0.001,
      "days": 848
     },
@@ -4202,8 +4202,8 @@
      "days": 930
     },
     {
-     "mean": 73.1,
-     "goodShare": 0.764,
+     "mean": 72.8,
+     "goodShare": 0.751,
      "poorShare": 0.001,
      "days": 900
     },
@@ -4220,9 +4220,9 @@
      "days": 900
     },
     {
-     "mean": 56.8,
-     "goodShare": 0.013,
-     "poorShare": 0.078,
+     "mean": 56.5,
+     "goodShare": 0.01,
+     "poorShare": 0.082,
      "days": 930
     },
     {
@@ -4250,8 +4250,8 @@
      "days": 900
     },
     {
-     "mean": 71.0,
-     "goodShare": 0.676,
+     "mean": 70.7,
+     "goodShare": 0.668,
      "poorShare": 0.012,
      "days": 930
     }
@@ -4304,32 +4304,32 @@
      "days": 930
     },
     {
-     "mean": 85.1,
+     "mean": 85.3,
      "goodShare": 0.983,
      "poorShare": 0.0,
      "days": 900
     },
     {
-     "mean": 76.8,
-     "goodShare": 0.848,
+     "mean": 77.1,
+     "goodShare": 0.855,
      "poorShare": 0.0,
      "days": 930
     },
     {
-     "mean": 74.8,
-     "goodShare": 0.785,
+     "mean": 75.1,
+     "goodShare": 0.797,
      "poorShare": 0.0,
      "days": 930
     },
     {
-     "mean": 84.2,
-     "goodShare": 0.957,
+     "mean": 84.5,
+     "goodShare": 0.961,
      "poorShare": 0.0,
      "days": 900
     },
     {
      "mean": 89.1,
-     "goodShare": 0.984,
+     "goodShare": 0.983,
      "poorShare": 0.0,
      "days": 930
     },
@@ -4340,8 +4340,8 @@
      "days": 900
     },
     {
-     "mean": 65.3,
-     "goodShare": 0.361,
+     "mean": 65.2,
+     "goodShare": 0.357,
      "poorShare": 0.039,
      "days": 930
     }
@@ -4384,26 +4384,26 @@
      "days": 900
     },
     {
-     "mean": 89.4,
+     "mean": 89.5,
      "goodShare": 1.0,
      "poorShare": 0.0,
      "days": 930
     },
     {
-     "mean": 87.8,
+     "mean": 88.1,
      "goodShare": 1.0,
      "poorShare": 0.0,
      "days": 930
     },
     {
-     "mean": 93.1,
+     "mean": 93.2,
      "goodShare": 1.0,
      "poorShare": 0.0,
      "days": 900
     },
     {
-     "mean": 88.0,
-     "goodShare": 0.967,
+     "mean": 87.9,
+     "goodShare": 0.966,
      "poorShare": 0.0,
      "days": 930
     },
@@ -4414,8 +4414,8 @@
      "days": 900
     },
     {
-     "mean": 48.7,
-     "goodShare": 0.042,
+     "mean": 48.5,
+     "goodShare": 0.04,
      "poorShare": 0.175,
      "days": 930
     }
@@ -4444,14 +4444,14 @@
      "days": 929
     },
     {
-     "mean": 60.4,
-     "goodShare": 0.047,
+     "mean": 60.3,
+     "goodShare": 0.044,
      "poorShare": 0.014,
      "days": 848
     },
     {
-     "mean": 64.9,
-     "goodShare": 0.274,
+     "mean": 64.8,
+     "goodShare": 0.269,
      "poorShare": 0.014,
      "days": 930
     },
@@ -4468,8 +4468,8 @@
      "days": 930
     },
     {
-     "mean": 76.2,
-     "goodShare": 0.808,
+     "mean": 76.3,
+     "goodShare": 0.814,
      "poorShare": 0.0,
      "days": 900
     },
@@ -4493,7 +4493,7 @@
     },
     {
      "mean": 81.3,
-     "goodShare": 0.889,
+     "goodShare": 0.888,
      "poorShare": 0.002,
      "days": 930
     },
@@ -4518,15 +4518,15 @@
      "days": 929
     },
     {
-     "mean": 40.3,
+     "mean": 40.2,
      "goodShare": 0.001,
-     "poorShare": 0.513,
+     "poorShare": 0.524,
      "days": 848
     },
     {
-     "mean": 47.8,
-     "goodShare": 0.024,
-     "poorShare": 0.228,
+     "mean": 47.7,
+     "goodShare": 0.023,
+     "poorShare": 0.229,
      "days": 930
     },
     {
@@ -4542,7 +4542,7 @@
      "days": 930
     },
     {
-     "mean": 88.0,
+     "mean": 88.1,
      "goodShare": 0.993,
      "poorShare": 0.0,
      "days": 900
@@ -4566,8 +4566,8 @@
      "days": 900
     },
     {
-     "mean": 76.5,
-     "goodShare": 0.761,
+     "mean": 76.4,
+     "goodShare": 0.757,
      "poorShare": 0.015,
      "days": 930
     },
@@ -4602,9 +4602,9 @@
   "bali": {
    "urban": [
     {
-     "mean": 29.9,
+     "mean": 30.3,
      "goodShare": 0.0,
-     "poorShare": 0.719,
+     "poorShare": 0.712,
      "days": 929
     },
     {
@@ -4620,9 +4620,9 @@
      "days": 930
     },
     {
-     "mean": 37.2,
+     "mean": 37.3,
      "goodShare": 0.0,
-     "poorShare": 0.348,
+     "poorShare": 0.347,
      "days": 900
     },
     {
@@ -4676,9 +4676,9 @@
    ],
    "beach": [
     {
-     "mean": 37.0,
+     "mean": 37.2,
      "goodShare": 0.0,
-     "poorShare": 0.462,
+     "poorShare": 0.456,
      "days": 929
     },
     {
@@ -4694,7 +4694,7 @@
      "days": 930
     },
     {
-     "mean": 46.6,
+     "mean": 46.7,
      "goodShare": 0.0,
      "poorShare": 0.176,
      "days": 900
@@ -5926,8 +5926,8 @@
      "days": 848
     },
     {
-     "mean": 78.5,
-     "goodShare": 0.834,
+     "mean": 78.3,
+     "goodShare": 0.831,
      "poorShare": 0.003,
      "days": 930
     },
@@ -5938,38 +5938,38 @@
      "days": 900
     },
     {
-     "mean": 85.7,
-     "goodShare": 0.956,
+     "mean": 85.9,
+     "goodShare": 0.96,
      "poorShare": 0.0,
      "days": 930
     },
     {
-     "mean": 77.4,
-     "goodShare": 0.861,
+     "mean": 77.7,
+     "goodShare": 0.868,
      "poorShare": 0.0,
      "days": 900
     },
     {
-     "mean": 67.8,
-     "goodShare": 0.413,
+     "mean": 68.1,
+     "goodShare": 0.429,
      "poorShare": 0.0,
      "days": 930
     },
     {
-     "mean": 64.8,
-     "goodShare": 0.196,
+     "mean": 65.0,
+     "goodShare": 0.209,
      "poorShare": 0.0,
      "days": 930
     },
     {
-     "mean": 72.0,
-     "goodShare": 0.61,
+     "mean": 72.3,
+     "goodShare": 0.626,
      "poorShare": 0.0,
      "days": 900
     },
     {
-     "mean": 80.1,
-     "goodShare": 0.914,
+     "mean": 80.3,
+     "goodShare": 0.916,
      "poorShare": 0.0,
      "days": 930
     },
@@ -5980,9 +5980,9 @@
      "days": 900
     },
     {
-     "mean": 76.3,
-     "goodShare": 0.8,
-     "poorShare": 0.008,
+     "mean": 76.1,
+     "goodShare": 0.799,
+     "poorShare": 0.009,
      "days": 930
     }
    ],
@@ -6000,9 +6000,9 @@
      "days": 848
     },
     {
-     "mean": 72.2,
-     "goodShare": 0.677,
-     "poorShare": 0.046,
+     "mean": 71.9,
+     "goodShare": 0.672,
+     "poorShare": 0.047,
      "days": 930
     },
     {
@@ -6018,31 +6018,31 @@
      "days": 930
     },
     {
-     "mean": 89.8,
+     "mean": 90.0,
      "goodShare": 1.0,
      "poorShare": 0.0,
      "days": 900
     },
     {
-     "mean": 82.4,
+     "mean": 82.6,
      "goodShare": 1.0,
      "poorShare": 0.0,
      "days": 930
     },
     {
-     "mean": 80.1,
+     "mean": 80.3,
      "goodShare": 1.0,
      "poorShare": 0.0,
      "days": 930
     },
     {
-     "mean": 86.1,
+     "mean": 86.3,
      "goodShare": 0.998,
      "poorShare": 0.0,
      "days": 900
     },
     {
-     "mean": 91.3,
+     "mean": 91.4,
      "goodShare": 0.981,
      "poorShare": 0.0,
      "days": 930
@@ -6054,9 +6054,9 @@
      "days": 900
     },
     {
-     "mean": 68.0,
-     "goodShare": 0.575,
-     "poorShare": 0.057,
+     "mean": 67.8,
+     "goodShare": 0.569,
+     "poorShare": 0.058,
      "days": 930
     }
    ],
@@ -7391,148 +7391,148 @@
    "urban": [
     {
      "mean": 56.1,
-     "goodShare": 0.0,
-     "poorShare": 0.072,
+     "goodShare": 0.002,
+     "poorShare": 0.073,
      "days": 930
     },
     {
-     "mean": 56.8,
-     "goodShare": 0.052,
+     "mean": 56.9,
+     "goodShare": 0.055,
      "poorShare": 0.107,
      "days": 848
     },
     {
-     "mean": 60.8,
-     "goodShare": 0.199,
-     "poorShare": 0.085,
+     "mean": 61.3,
+     "goodShare": 0.212,
+     "poorShare": 0.08,
      "days": 930
     },
     {
-     "mean": 64.7,
-     "goodShare": 0.367,
-     "poorShare": 0.076,
+     "mean": 65.4,
+     "goodShare": 0.393,
+     "poorShare": 0.068,
      "days": 900
     },
     {
-     "mean": 72.2,
-     "goodShare": 0.668,
-     "poorShare": 0.023,
+     "mean": 73.3,
+     "goodShare": 0.71,
+     "poorShare": 0.019,
      "days": 930
     },
     {
-     "mean": 73.9,
-     "goodShare": 0.709,
-     "poorShare": 0.001,
+     "mean": 74.2,
+     "goodShare": 0.728,
+     "poorShare": 0.0,
      "days": 900
     },
     {
-     "mean": 73.2,
-     "goodShare": 0.684,
+     "mean": 72.7,
+     "goodShare": 0.659,
      "poorShare": 0.002,
      "days": 930
     },
     {
-     "mean": 73.7,
-     "goodShare": 0.714,
-     "poorShare": 0.001,
+     "mean": 73.4,
+     "goodShare": 0.71,
+     "poorShare": 0.002,
      "days": 930
     },
     {
-     "mean": 73.6,
-     "goodShare": 0.693,
+     "mean": 74.3,
+     "goodShare": 0.718,
      "poorShare": 0.03,
      "days": 900
     },
     {
-     "mean": 64.5,
-     "goodShare": 0.37,
-     "poorShare": 0.076,
+     "mean": 65.3,
+     "goodShare": 0.396,
+     "poorShare": 0.072,
      "days": 930
     },
     {
-     "mean": 56.0,
-     "goodShare": 0.062,
+     "mean": 56.2,
+     "goodShare": 0.057,
      "poorShare": 0.15,
      "days": 900
     },
     {
      "mean": 55.1,
-     "goodShare": 0.003,
-     "poorShare": 0.118,
+     "goodShare": 0.002,
+     "poorShare": 0.126,
      "days": 930
     }
    ],
    "beach": [
     {
-     "mean": 38.0,
+     "mean": 37.9,
      "goodShare": 0.0,
-     "poorShare": 0.433,
+     "poorShare": 0.429,
      "days": 930
     },
     {
-     "mean": 39.0,
-     "goodShare": 0.0,
-     "poorShare": 0.413,
+     "mean": 38.9,
+     "goodShare": 0.001,
+     "poorShare": 0.416,
      "days": 848
     },
     {
-     "mean": 42.6,
-     "goodShare": 0.018,
-     "poorShare": 0.354,
+     "mean": 43.2,
+     "goodShare": 0.028,
+     "poorShare": 0.339,
      "days": 930
     },
     {
-     "mean": 49.9,
-     "goodShare": 0.106,
-     "poorShare": 0.244,
+     "mean": 51.0,
+     "goodShare": 0.12,
+     "poorShare": 0.226,
      "days": 900
     },
     {
-     "mean": 61.1,
-     "goodShare": 0.322,
-     "poorShare": 0.109,
+     "mean": 62.5,
+     "goodShare": 0.37,
+     "poorShare": 0.099,
      "days": 930
     },
     {
-     "mean": 69.2,
-     "goodShare": 0.597,
-     "poorShare": 0.033,
+     "mean": 70.3,
+     "goodShare": 0.634,
+     "poorShare": 0.032,
      "days": 900
     },
     {
-     "mean": 74.5,
-     "goodShare": 0.773,
-     "poorShare": 0.008,
+     "mean": 75.1,
+     "goodShare": 0.784,
+     "poorShare": 0.005,
      "days": 930
     },
     {
-     "mean": 73.6,
-     "goodShare": 0.737,
-     "poorShare": 0.019,
+     "mean": 74.3,
+     "goodShare": 0.769,
+     "poorShare": 0.015,
      "days": 930
     },
     {
-     "mean": 62.7,
-     "goodShare": 0.427,
-     "poorShare": 0.102,
+     "mean": 63.9,
+     "goodShare": 0.461,
+     "poorShare": 0.091,
      "days": 900
     },
     {
-     "mean": 48.6,
-     "goodShare": 0.075,
-     "poorShare": 0.235,
+     "mean": 49.5,
+     "goodShare": 0.087,
+     "poorShare": 0.224,
      "days": 930
     },
     {
-     "mean": 35.8,
-     "goodShare": 0.009,
-     "poorShare": 0.541,
+     "mean": 36.2,
+     "goodShare": 0.008,
+     "poorShare": 0.528,
      "days": 900
     },
     {
      "mean": 36.6,
      "goodShare": 0.0,
-     "poorShare": 0.492,
+     "poorShare": 0.485,
      "days": 930
     }
    ],
@@ -10864,32 +10864,32 @@
      "days": 930
     },
     {
-     "mean": 84.5,
+     "mean": 84.7,
      "goodShare": 0.991,
      "poorShare": 0.0,
      "days": 900
     },
     {
-     "mean": 75.8,
-     "goodShare": 0.869,
+     "mean": 76.1,
+     "goodShare": 0.877,
      "poorShare": 0.0,
      "days": 930
     },
     {
-     "mean": 73.5,
-     "goodShare": 0.74,
+     "mean": 73.8,
+     "goodShare": 0.756,
      "poorShare": 0.0,
      "days": 930
     },
     {
-     "mean": 79.8,
-     "goodShare": 0.916,
+     "mean": 80.0,
+     "goodShare": 0.922,
      "poorShare": 0.0,
      "days": 900
     },
     {
-     "mean": 84.9,
-     "goodShare": 0.956,
+     "mean": 85.1,
+     "goodShare": 0.958,
      "poorShare": 0.0,
      "days": 930
     },
@@ -10900,9 +10900,9 @@
      "days": 900
     },
     {
-     "mean": 69.4,
-     "goodShare": 0.615,
-     "poorShare": 0.042,
+     "mean": 69.2,
+     "goodShare": 0.609,
+     "poorShare": 0.044,
      "days": 930
     }
    ],
@@ -10938,31 +10938,31 @@
      "days": 930
     },
     {
-     "mean": 93.3,
+     "mean": 93.4,
      "goodShare": 1.0,
      "poorShare": 0.0,
      "days": 900
     },
     {
-     "mean": 88.7,
+     "mean": 89.0,
      "goodShare": 1.0,
      "poorShare": 0.0,
      "days": 930
     },
     {
-     "mean": 86.5,
+     "mean": 86.7,
      "goodShare": 1.0,
      "poorShare": 0.0,
      "days": 930
     },
     {
-     "mean": 92.2,
+     "mean": 92.3,
      "goodShare": 0.998,
      "poorShare": 0.0,
      "days": 900
     },
     {
-     "mean": 90.0,
+     "mean": 89.9,
      "goodShare": 0.972,
      "poorShare": 0.0,
      "days": 930
@@ -10974,8 +10974,8 @@
      "days": 900
     },
     {
-     "mean": 57.8,
-     "goodShare": 0.237,
+     "mean": 57.5,
+     "goodShare": 0.23,
      "poorShare": 0.134,
      "days": 930
     }
@@ -13950,9 +13950,9 @@
   "corfu": {
    "urban": [
     {
-     "mean": 63.0,
-     "goodShare": 0.368,
-     "poorShare": 0.086,
+     "mean": 62.9,
+     "goodShare": 0.363,
+     "poorShare": 0.087,
      "days": 929
     },
     {
@@ -13980,8 +13980,8 @@
      "days": 930
     },
     {
-     "mean": 80.8,
-     "goodShare": 0.894,
+     "mean": 81.0,
+     "goodShare": 0.897,
      "poorShare": 0.0,
      "days": 900
     },
@@ -13998,21 +13998,21 @@
      "days": 930
     },
     {
-     "mean": 77.1,
-     "goodShare": 0.794,
+     "mean": 77.4,
+     "goodShare": 0.799,
      "poorShare": 0.0,
      "days": 900
     },
     {
-     "mean": 80.6,
+     "mean": 80.7,
      "goodShare": 0.839,
      "poorShare": 0.0,
      "days": 930
     },
     {
-     "mean": 71.2,
+     "mean": 71.1,
      "goodShare": 0.649,
-     "poorShare": 0.021,
+     "poorShare": 0.022,
      "days": 900
     },
     {
@@ -14024,9 +14024,9 @@
    ],
    "beach": [
     {
-     "mean": 49.3,
-     "goodShare": 0.026,
-     "poorShare": 0.214,
+     "mean": 49.1,
+     "goodShare": 0.025,
+     "poorShare": 0.219,
      "days": 929
     },
     {
@@ -14054,7 +14054,7 @@
      "days": 930
     },
     {
-     "mean": 91.7,
+     "mean": 91.8,
      "goodShare": 0.986,
      "poorShare": 0.0,
      "days": 900
@@ -14072,20 +14072,20 @@
      "days": 930
     },
     {
-     "mean": 86.9,
-     "goodShare": 0.91,
+     "mean": 87.0,
+     "goodShare": 0.911,
      "poorShare": 0.0,
      "days": 900
     },
     {
-     "mean": 78.0,
+     "mean": 77.9,
      "goodShare": 0.813,
-     "poorShare": 0.009,
+     "poorShare": 0.01,
      "days": 930
     },
     {
-     "mean": 60.5,
-     "goodShare": 0.357,
+     "mean": 60.3,
+     "goodShare": 0.344,
      "poorShare": 0.147,
      "days": 900
     },
@@ -14278,149 +14278,149 @@
   "cusco": {
    "urban": [
     {
-     "mean": 50.8,
-     "goodShare": 0.0,
-     "poorShare": 0.141,
+     "mean": 53.9,
+     "goodShare": 0.011,
+     "poorShare": 0.109,
      "days": 930
     },
     {
-     "mean": 49.8,
-     "goodShare": 0.0,
-     "poorShare": 0.157,
+     "mean": 53.1,
+     "goodShare": 0.002,
+     "poorShare": 0.113,
      "days": 848
     },
     {
-     "mean": 54.5,
-     "goodShare": 0.001,
-     "poorShare": 0.069,
+     "mean": 57.5,
+     "goodShare": 0.019,
+     "poorShare": 0.054,
      "days": 930
     },
     {
-     "mean": 62.0,
-     "goodShare": 0.017,
-     "poorShare": 0.006,
+     "mean": 64.0,
+     "goodShare": 0.064,
+     "poorShare": 0.004,
      "days": 900
     },
     {
-     "mean": 68.6,
-     "goodShare": 0.335,
+     "mean": 70.0,
+     "goodShare": 0.505,
      "poorShare": 0.001,
      "days": 930
     },
     {
-     "mean": 71.4,
-     "goodShare": 0.706,
+     "mean": 72.6,
+     "goodShare": 0.77,
      "poorShare": 0.001,
      "days": 900
     },
     {
-     "mean": 72.0,
-     "goodShare": 0.738,
-     "poorShare": 0.001,
+     "mean": 73.4,
+     "goodShare": 0.852,
+     "poorShare": 0.0,
      "days": 930
     },
     {
-     "mean": 71.4,
-     "goodShare": 0.746,
-     "poorShare": 0.002,
+     "mean": 72.6,
+     "goodShare": 0.82,
+     "poorShare": 0.003,
      "days": 930
     },
     {
-     "mean": 67.8,
-     "goodShare": 0.204,
+     "mean": 69.2,
+     "goodShare": 0.461,
      "poorShare": 0.0,
      "days": 900
     },
     {
-     "mean": 62.6,
-     "goodShare": 0.062,
-     "poorShare": 0.014,
+     "mean": 64.5,
+     "goodShare": 0.141,
+     "poorShare": 0.009,
      "days": 930
     },
     {
-     "mean": 59.2,
-     "goodShare": 0.016,
-     "poorShare": 0.042,
+     "mean": 61.4,
+     "goodShare": 0.073,
+     "poorShare": 0.024,
      "days": 900
     },
     {
-     "mean": 53.6,
-     "goodShare": 0.005,
-     "poorShare": 0.099,
+     "mean": 56.2,
+     "goodShare": 0.02,
+     "poorShare": 0.076,
      "days": 929
     }
    ],
    "beach": [
     {
-     "mean": 31.9,
+     "mean": 37.5,
      "goodShare": 0.0,
-     "poorShare": 0.743,
+     "poorShare": 0.439,
      "days": 930
     },
     {
-     "mean": 30.3,
+     "mean": 36.2,
      "goodShare": 0.0,
-     "poorShare": 0.817,
+     "poorShare": 0.508,
      "days": 848
     },
     {
-     "mean": 35.3,
+     "mean": 41.1,
      "goodShare": 0.0,
-     "poorShare": 0.741,
+     "poorShare": 0.323,
      "days": 930
     },
     {
-     "mean": 43.1,
+     "mean": 48.5,
      "goodShare": 0.0,
-     "poorShare": 0.296,
+     "poorShare": 0.131,
      "days": 900
     },
     {
-     "mean": 52.9,
-     "goodShare": 0.0,
+     "mean": 56.5,
+     "goodShare": 0.028,
      "poorShare": 0.008,
      "days": 930
     },
     {
-     "mean": 58.3,
-     "goodShare": 0.009,
+     "mean": 60.6,
+     "goodShare": 0.089,
      "poorShare": 0.004,
      "days": 900
     },
     {
-     "mean": 60.5,
-     "goodShare": 0.047,
-     "poorShare": 0.011,
+     "mean": 62.9,
+     "goodShare": 0.175,
+     "poorShare": 0.005,
      "days": 930
     },
     {
-     "mean": 58.2,
-     "goodShare": 0.054,
-     "poorShare": 0.013,
+     "mean": 60.6,
+     "goodShare": 0.128,
+     "poorShare": 0.012,
      "days": 930
     },
     {
-     "mean": 52.2,
-     "goodShare": 0.002,
-     "poorShare": 0.016,
+     "mean": 56.1,
+     "goodShare": 0.013,
+     "poorShare": 0.009,
      "days": 900
     },
     {
-     "mean": 44.4,
-     "goodShare": 0.0,
-     "poorShare": 0.219,
+     "mean": 49.2,
+     "goodShare": 0.001,
+     "poorShare": 0.101,
      "days": 930
     },
     {
-     "mean": 41.2,
+     "mean": 45.7,
      "goodShare": 0.0,
-     "poorShare": 0.433,
+     "poorShare": 0.193,
      "days": 900
     },
     {
-     "mean": 34.8,
+     "mean": 40.1,
      "goodShare": 0.0,
-     "poorShare": 0.653,
+     "poorShare": 0.363,
      "days": 929
     }
    ],
@@ -14448,15 +14448,15 @@
      "days": 929
     },
     {
-     "mean": 61.3,
-     "goodShare": 0.251,
-     "poorShare": 0.026,
+     "mean": 61.5,
+     "goodShare": 0.255,
+     "poorShare": 0.024,
      "days": 848
     },
     {
-     "mean": 53.2,
+     "mean": 53.4,
      "goodShare": 0.072,
-     "poorShare": 0.058,
+     "poorShare": 0.057,
      "days": 930
     },
     {
@@ -14522,14 +14522,14 @@
      "days": 929
     },
     {
-     "mean": 69.0,
-     "goodShare": 0.526,
+     "mean": 69.1,
+     "goodShare": 0.532,
      "poorShare": 0.007,
      "days": 848
     },
     {
-     "mean": 64.8,
-     "goodShare": 0.285,
+     "mean": 64.9,
+     "goodShare": 0.291,
      "poorShare": 0.019,
      "days": 930
     },
@@ -15602,14 +15602,14 @@
      "days": 848
     },
     {
-     "mean": 81.3,
-     "goodShare": 0.925,
+     "mean": 81.5,
+     "goodShare": 0.926,
      "poorShare": 0.0,
      "days": 930
     },
     {
-     "mean": 67.2,
-     "goodShare": 0.466,
+     "mean": 67.5,
+     "goodShare": 0.48,
      "poorShare": 0.0,
      "days": 900
     },
@@ -15676,14 +15676,14 @@
      "days": 848
     },
     {
-     "mean": 89.4,
+     "mean": 89.5,
      "goodShare": 0.986,
      "poorShare": 0.0,
      "days": 930
     },
     {
-     "mean": 82.4,
-     "goodShare": 0.961,
+     "mean": 82.6,
+     "goodShare": 0.962,
      "poorShare": 0.0,
      "days": 900
     },
@@ -16246,9 +16246,9 @@
   "durban": {
    "urban": [
     {
-     "mean": 57.4,
-     "goodShare": 0.139,
-     "poorShare": 0.051,
+     "mean": 57.6,
+     "goodShare": 0.145,
+     "poorShare": 0.048,
      "days": 929
     },
     {
@@ -16258,8 +16258,8 @@
      "days": 848
     },
     {
-     "mean": 61.0,
-     "goodShare": 0.244,
+     "mean": 61.2,
+     "goodShare": 0.246,
      "poorShare": 0.032,
      "days": 930
     },
@@ -16270,7 +16270,7 @@
      "days": 900
     },
     {
-     "mean": 81.7,
+     "mean": 81.9,
      "goodShare": 0.949,
      "poorShare": 0.0,
      "days": 930
@@ -16294,8 +16294,8 @@
      "days": 930
     },
     {
-     "mean": 79.0,
-     "goodShare": 0.862,
+     "mean": 79.1,
+     "goodShare": 0.868,
      "poorShare": 0.0,
      "days": 900
     },
@@ -16320,8 +16320,8 @@
    ],
    "beach": [
     {
-     "mean": 66.6,
-     "goodShare": 0.422,
+     "mean": 66.8,
+     "goodShare": 0.428,
      "poorShare": 0.012,
      "days": 929
     },
@@ -16332,8 +16332,8 @@
      "days": 848
     },
     {
-     "mean": 72.1,
-     "goodShare": 0.642,
+     "mean": 72.3,
+     "goodShare": 0.652,
      "poorShare": 0.004,
      "days": 930
     },
@@ -16345,7 +16345,7 @@
     },
     {
      "mean": 89.3,
-     "goodShare": 0.966,
+     "goodShare": 0.965,
      "poorShare": 0.0,
      "days": 930
     },
@@ -17066,149 +17066,149 @@
   "ella": {
    "urban": [
     {
-     "mean": 78.6,
-     "goodShare": 0.843,
+     "mean": 77.4,
+     "goodShare": 0.833,
      "poorShare": 0.0,
      "days": 929
     },
     {
-     "mean": 77.6,
-     "goodShare": 0.828,
+     "mean": 76.0,
+     "goodShare": 0.822,
      "poorShare": 0.0,
      "days": 848
     },
     {
-     "mean": 74.5,
-     "goodShare": 0.819,
+     "mean": 73.0,
+     "goodShare": 0.792,
      "poorShare": 0.0,
      "days": 930
-    },
-    {
-     "mean": 62.9,
-     "goodShare": 0.4,
-     "poorShare": 0.019,
-     "days": 900
-    },
-    {
-     "mean": 61.9,
-     "goodShare": 0.119,
-     "poorShare": 0.032,
-     "days": 930
-    },
-    {
-     "mean": 67.3,
-     "goodShare": 0.377,
-     "poorShare": 0.002,
-     "days": 900
-    },
-    {
-     "mean": 69.0,
-     "goodShare": 0.688,
-     "poorShare": 0.0,
-     "days": 930
-    },
-    {
-     "mean": 68.7,
-     "goodShare": 0.697,
-     "poorShare": 0.002,
-     "days": 930
-    },
-    {
-     "mean": 67.2,
-     "goodShare": 0.65,
-     "poorShare": 0.001,
-     "days": 900
     },
     {
      "mean": 60.9,
-     "goodShare": 0.402,
-     "poorShare": 0.0,
-     "days": 930
-    },
-    {
-     "mean": 62.5,
-     "goodShare": 0.433,
-     "poorShare": 0.0,
+     "goodShare": 0.253,
+     "poorShare": 0.038,
      "days": 900
     },
     {
-     "mean": 71.3,
-     "goodShare": 0.653,
+     "mean": 59.0,
+     "goodShare": 0.023,
+     "poorShare": 0.08,
+     "days": 930
+    },
+    {
+     "mean": 63.5,
+     "goodShare": 0.056,
+     "poorShare": 0.02,
+     "days": 900
+    },
+    {
+     "mean": 64.6,
+     "goodShare": 0.097,
+     "poorShare": 0.016,
+     "days": 930
+    },
+    {
+     "mean": 64.4,
+     "goodShare": 0.11,
+     "poorShare": 0.026,
+     "days": 930
+    },
+    {
+     "mean": 63.2,
+     "goodShare": 0.2,
+     "poorShare": 0.027,
+     "days": 900
+    },
+    {
+     "mean": 58.3,
+     "goodShare": 0.248,
+     "poorShare": 0.022,
+     "days": 930
+    },
+    {
+     "mean": 60.8,
+     "goodShare": 0.386,
+     "poorShare": 0.006,
+     "days": 900
+    },
+    {
+     "mean": 69.9,
+     "goodShare": 0.63,
      "poorShare": 0.0,
      "days": 930
     }
    ],
    "beach": [
     {
-     "mean": 72.7,
-     "goodShare": 0.775,
+     "mean": 73.4,
+     "goodShare": 0.799,
      "poorShare": 0.003,
      "days": 929
     },
     {
-     "mean": 77.8,
-     "goodShare": 0.864,
-     "poorShare": 0.006,
+     "mean": 78.3,
+     "goodShare": 0.866,
+     "poorShare": 0.002,
      "days": 848
     },
     {
-     "mean": 80.1,
-     "goodShare": 0.875,
-     "poorShare": 0.002,
+     "mean": 79.9,
+     "goodShare": 0.874,
+     "poorShare": 0.0,
      "days": 930
     },
     {
-     "mean": 69.0,
-     "goodShare": 0.623,
+     "mean": 67.9,
+     "goodShare": 0.59,
      "poorShare": 0.0,
      "days": 900
     },
     {
-     "mean": 67.4,
-     "goodShare": 0.527,
+     "mean": 65.2,
+     "goodShare": 0.38,
+     "poorShare": 0.027,
+     "days": 930
+    },
+    {
+     "mean": 67.2,
+     "goodShare": 0.4,
+     "poorShare": 0.004,
+     "days": 900
+    },
+    {
+     "mean": 67.7,
+     "goodShare": 0.475,
      "poorShare": 0.008,
      "days": 930
     },
     {
-     "mean": 69.3,
-     "goodShare": 0.638,
-     "poorShare": 0.001,
-     "days": 900
-    },
-    {
-     "mean": 69.6,
-     "goodShare": 0.655,
-     "poorShare": 0.004,
+     "mean": 68.5,
+     "goodShare": 0.646,
+     "poorShare": 0.003,
      "days": 930
     },
     {
-     "mean": 70.4,
-     "goodShare": 0.766,
-     "poorShare": 0.0,
-     "days": 930
-    },
-    {
-     "mean": 69.8,
-     "goodShare": 0.726,
+     "mean": 68.2,
+     "goodShare": 0.641,
      "poorShare": 0.004,
      "days": 900
     },
     {
-     "mean": 62.2,
-     "goodShare": 0.449,
-     "poorShare": 0.015,
+     "mean": 61.7,
+     "goodShare": 0.432,
+     "poorShare": 0.014,
      "days": 930
     },
     {
-     "mean": 61.3,
-     "goodShare": 0.401,
-     "poorShare": 0.016,
+     "mean": 61.6,
+     "goodShare": 0.418,
+     "poorShare": 0.01,
      "days": 900
     },
     {
-     "mean": 66.1,
-     "goodShare": 0.527,
-     "poorShare": 0.032,
+     "mean": 66.8,
+     "goodShare": 0.558,
+     "poorShare": 0.024,
      "days": 930
     }
    ],
@@ -17236,15 +17236,15 @@
      "days": 929
     },
     {
-     "mean": 61.4,
-     "goodShare": 0.083,
-     "poorShare": 0.022,
+     "mean": 61.6,
+     "goodShare": 0.088,
+     "poorShare": 0.02,
      "days": 848
     },
     {
-     "mean": 57.4,
+     "mean": 57.6,
      "goodShare": 0.004,
-     "poorShare": 0.051,
+     "poorShare": 0.046,
      "days": 930
     },
     {
@@ -17310,14 +17310,14 @@
      "days": 929
     },
     {
-     "mean": 69.0,
-     "goodShare": 0.547,
+     "mean": 69.2,
+     "goodShare": 0.559,
      "poorShare": 0.002,
      "days": 848
     },
     {
-     "mean": 64.0,
-     "goodShare": 0.28,
+     "mean": 64.1,
+     "goodShare": 0.296,
      "poorShare": 0.006,
      "days": 930
     },
@@ -17892,21 +17892,21 @@
      "days": 930
     },
     {
-     "mean": 48.7,
-     "goodShare": 0.073,
+     "mean": 48.9,
+     "goodShare": 0.075,
      "poorShare": 0.216,
      "days": 848
     },
     {
-     "mean": 55.4,
-     "goodShare": 0.171,
-     "poorShare": 0.114,
+     "mean": 55.7,
+     "goodShare": 0.176,
+     "poorShare": 0.111,
      "days": 930
     },
     {
-     "mean": 65.8,
-     "goodShare": 0.437,
-     "poorShare": 0.028,
+     "mean": 66.2,
+     "goodShare": 0.456,
+     "poorShare": 0.026,
      "days": 900
     },
     {
@@ -17916,7 +17916,7 @@
      "days": 930
     },
     {
-     "mean": 77.7,
+     "mean": 77.8,
      "goodShare": 0.824,
      "poorShare": 0.0,
      "days": 900
@@ -17946,15 +17946,15 @@
      "days": 930
     },
     {
-     "mean": 64.3,
-     "goodShare": 0.411,
-     "poorShare": 0.047,
+     "mean": 64.6,
+     "goodShare": 0.414,
+     "poorShare": 0.044,
      "days": 900
     },
     {
-     "mean": 55.9,
-     "goodShare": 0.213,
-     "poorShare": 0.11,
+     "mean": 56.3,
+     "goodShare": 0.217,
+     "poorShare": 0.107,
      "days": 929
     }
    ],
@@ -17966,20 +17966,20 @@
      "days": 930
     },
     {
-     "mean": 58.2,
-     "goodShare": 0.211,
-     "poorShare": 0.1,
+     "mean": 58.3,
+     "goodShare": 0.217,
+     "poorShare": 0.098,
      "days": 848
     },
     {
-     "mean": 64.6,
-     "goodShare": 0.357,
-     "poorShare": 0.034,
+     "mean": 64.7,
+     "goodShare": 0.365,
+     "poorShare": 0.032,
      "days": 930
     },
     {
-     "mean": 73.3,
-     "goodShare": 0.681,
+     "mean": 73.5,
+     "goodShare": 0.691,
      "poorShare": 0.0,
      "days": 900
     },
@@ -17990,7 +17990,7 @@
      "days": 930
     },
     {
-     "mean": 73.1,
+     "mean": 73.0,
      "goodShare": 0.738,
      "poorShare": 0.01,
      "days": 900
@@ -18020,15 +18020,15 @@
      "days": 930
     },
     {
-     "mean": 67.7,
-     "goodShare": 0.573,
+     "mean": 67.8,
+     "goodShare": 0.578,
      "poorShare": 0.023,
      "days": 900
     },
     {
-     "mean": 62.7,
+     "mean": 63.0,
      "goodShare": 0.355,
-     "poorShare": 0.052,
+     "poorShare": 0.045,
      "days": 929
     }
    ],
@@ -18542,149 +18542,149 @@
   "gabala": {
    "urban": [
     {
-     "mean": 65.3,
-     "goodShare": 0.29,
-     "poorShare": 0.014,
+     "mean": 64.4,
+     "goodShare": 0.244,
+     "poorShare": 0.017,
      "days": 929
     },
     {
-     "mean": 65.0,
-     "goodShare": 0.308,
-     "poorShare": 0.019,
+     "mean": 64.1,
+     "goodShare": 0.265,
+     "poorShare": 0.024,
      "days": 848
     },
     {
-     "mean": 68.9,
-     "goodShare": 0.501,
-     "poorShare": 0.02,
+     "mean": 67.3,
+     "goodShare": 0.44,
+     "poorShare": 0.029,
      "days": 930
     },
     {
-     "mean": 74.8,
-     "goodShare": 0.724,
-     "poorShare": 0.007,
+     "mean": 74.0,
+     "goodShare": 0.698,
+     "poorShare": 0.012,
      "days": 900
     },
     {
-     "mean": 76.5,
-     "goodShare": 0.813,
+     "mean": 77.4,
+     "goodShare": 0.83,
      "poorShare": 0.0,
      "days": 930
     },
     {
-     "mean": 69.1,
-     "goodShare": 0.528,
+     "mean": 70.3,
+     "goodShare": 0.571,
      "poorShare": 0.0,
      "days": 900
     },
     {
-     "mean": 62.4,
-     "goodShare": 0.222,
-     "poorShare": 0.004,
+     "mean": 63.9,
+     "goodShare": 0.275,
+     "poorShare": 0.003,
      "days": 930
     },
     {
-     "mean": 64.4,
-     "goodShare": 0.31,
-     "poorShare": 0.008,
+     "mean": 65.7,
+     "goodShare": 0.372,
+     "poorShare": 0.005,
      "days": 930
     },
     {
-     "mean": 78.8,
-     "goodShare": 0.866,
+     "mean": 79.6,
+     "goodShare": 0.879,
      "poorShare": 0.0,
      "days": 900
     },
     {
-     "mean": 80.3,
-     "goodShare": 0.835,
-     "poorShare": 0.004,
+     "mean": 80.1,
+     "goodShare": 0.827,
+     "poorShare": 0.005,
      "days": 930
     },
     {
-     "mean": 71.0,
-     "goodShare": 0.589,
-     "poorShare": 0.019,
+     "mean": 69.7,
+     "goodShare": 0.551,
+     "poorShare": 0.022,
      "days": 900
     },
     {
-     "mean": 67.9,
-     "goodShare": 0.43,
-     "poorShare": 0.008,
+     "mean": 67.2,
+     "goodShare": 0.395,
+     "poorShare": 0.01,
      "days": 930
     }
    ],
    "beach": [
     {
-     "mean": 49.5,
-     "goodShare": 0.019,
-     "poorShare": 0.059,
+     "mean": 48.7,
+     "goodShare": 0.01,
+     "poorShare": 0.061,
      "days": 929
     },
     {
-     "mean": 49.2,
-     "goodShare": 0.041,
-     "poorShare": 0.119,
+     "mean": 47.7,
+     "goodShare": 0.027,
+     "poorShare": 0.127,
      "days": 848
     },
     {
-     "mean": 55.5,
-     "goodShare": 0.218,
-     "poorShare": 0.142,
+     "mean": 53.5,
+     "goodShare": 0.167,
+     "poorShare": 0.162,
      "days": 930
     },
     {
-     "mean": 65.2,
-     "goodShare": 0.472,
-     "poorShare": 0.068,
+     "mean": 63.6,
+     "goodShare": 0.418,
+     "poorShare": 0.08,
      "days": 900
     },
     {
-     "mean": 75.8,
-     "goodShare": 0.833,
-     "poorShare": 0.004,
+     "mean": 75.3,
+     "goodShare": 0.814,
+     "poorShare": 0.006,
      "days": 930
+    },
+    {
+     "mean": 80.5,
+     "goodShare": 0.91,
+     "poorShare": 0.0,
+     "days": 900
     },
     {
      "mean": 79.8,
-     "goodShare": 0.907,
-     "poorShare": 0.0,
-     "days": 900
-    },
-    {
-     "mean": 78.8,
-     "goodShare": 0.923,
+     "goodShare": 0.933,
      "poorShare": 0.0,
      "days": 930
     },
     {
-     "mean": 80.0,
-     "goodShare": 0.929,
+     "mean": 80.9,
+     "goodShare": 0.935,
      "poorShare": 0.0,
      "days": 930
     },
     {
-     "mean": 84.9,
-     "goodShare": 0.926,
-     "poorShare": 0.003,
+     "mean": 85.0,
+     "goodShare": 0.922,
+     "poorShare": 0.004,
      "days": 900
     },
     {
-     "mean": 73.2,
-     "goodShare": 0.713,
-     "poorShare": 0.041,
+     "mean": 72.3,
+     "goodShare": 0.687,
+     "poorShare": 0.043,
      "days": 930
     },
     {
-     "mean": 58.6,
-     "goodShare": 0.276,
-     "poorShare": 0.093,
+     "mean": 57.0,
+     "goodShare": 0.234,
+     "poorShare": 0.104,
      "days": 900
     },
     {
-     "mean": 53.6,
-     "goodShare": 0.078,
-     "poorShare": 0.058,
+     "mean": 52.4,
+     "goodShare": 0.059,
+     "poorShare": 0.06,
      "days": 930
     }
    ],
@@ -18706,14 +18706,14 @@
   "gaborone": {
    "urban": [
     {
-     "mean": 59.4,
-     "goodShare": 0.166,
-     "poorShare": 0.038,
+     "mean": 59.7,
+     "goodShare": 0.179,
+     "poorShare": 0.037,
      "days": 929
     },
     {
-     "mean": 61.2,
-     "goodShare": 0.212,
+     "mean": 61.4,
+     "goodShare": 0.219,
      "poorShare": 0.025,
      "days": 848
     },
@@ -18724,13 +18724,13 @@
      "days": 930
     },
     {
-     "mean": 81.7,
-     "goodShare": 0.929,
+     "mean": 81.9,
+     "goodShare": 0.93,
      "poorShare": 0.0,
      "days": 900
     },
     {
-     "mean": 92.5,
+     "mean": 92.6,
      "goodShare": 0.989,
      "poorShare": 0.0,
      "days": 930
@@ -18754,21 +18754,21 @@
      "days": 930
     },
     {
-     "mean": 85.2,
+     "mean": 85.4,
      "goodShare": 0.981,
      "poorShare": 0.0,
      "days": 900
     },
     {
-     "mean": 75.4,
-     "goodShare": 0.796,
+     "mean": 75.6,
+     "goodShare": 0.803,
      "poorShare": 0.001,
      "days": 930
     },
     {
-     "mean": 66.0,
-     "goodShare": 0.414,
-     "poorShare": 0.012,
+     "mean": 66.4,
+     "goodShare": 0.419,
+     "poorShare": 0.011,
      "days": 900
     },
     {
@@ -18780,14 +18780,14 @@
    ],
    "beach": [
     {
-     "mean": 71.5,
-     "goodShare": 0.622,
-     "poorShare": 0.002,
+     "mean": 71.7,
+     "goodShare": 0.629,
+     "poorShare": 0.001,
      "days": 929
     },
     {
-     "mean": 74.1,
-     "goodShare": 0.752,
+     "mean": 74.3,
+     "goodShare": 0.762,
      "poorShare": 0.0,
      "days": 848
     },
@@ -18804,8 +18804,8 @@
      "days": 900
     },
     {
-     "mean": 91.9,
-     "goodShare": 0.985,
+     "mean": 91.8,
+     "goodShare": 0.984,
      "poorShare": 0.0,
      "days": 930
     },
@@ -18834,14 +18834,14 @@
      "days": 900
     },
     {
-     "mean": 87.7,
+     "mean": 87.8,
      "goodShare": 0.975,
      "poorShare": 0.0,
      "days": 930
     },
     {
-     "mean": 77.3,
-     "goodShare": 0.807,
+     "mean": 77.4,
+     "goodShare": 0.812,
      "poorShare": 0.0,
      "days": 900
     },
@@ -18876,26 +18876,26 @@
      "days": 930
     },
     {
-     "mean": 46.4,
+     "mean": 46.7,
      "goodShare": 0.0,
      "poorShare": 0.167,
      "days": 848
     },
     {
-     "mean": 46.6,
+     "mean": 46.7,
      "goodShare": 0.0,
-     "poorShare": 0.158,
+     "poorShare": 0.157,
      "days": 930
     },
     {
-     "mean": 45.8,
+     "mean": 46.0,
      "goodShare": 0.002,
      "poorShare": 0.191,
      "days": 900
     },
     {
-     "mean": 51.1,
-     "goodShare": 0.003,
+     "mean": 51.4,
+     "goodShare": 0.004,
      "poorShare": 0.042,
      "days": 930
     },
@@ -18950,26 +18950,26 @@
      "days": 930
     },
     {
-     "mean": 58.7,
-     "goodShare": 0.046,
-     "poorShare": 0.085,
+     "mean": 58.8,
+     "goodShare": 0.058,
+     "poorShare": 0.084,
      "days": 848
     },
     {
      "mean": 61.4,
-     "goodShare": 0.149,
-     "poorShare": 0.077,
+     "goodShare": 0.153,
+     "poorShare": 0.076,
      "days": 930
     },
     {
-     "mean": 59.5,
-     "goodShare": 0.13,
+     "mean": 59.6,
+     "goodShare": 0.141,
      "poorShare": 0.112,
      "days": 900
     },
     {
-     "mean": 61.5,
-     "goodShare": 0.171,
+     "mean": 61.7,
+     "goodShare": 0.187,
      "poorShare": 0.019,
      "days": 930
     },
@@ -21020,8 +21020,8 @@
      "days": 930
     },
     {
-     "mean": 78.1,
-     "goodShare": 0.957,
+     "mean": 78.4,
+     "goodShare": 0.959,
      "poorShare": 0.0,
      "days": 900
     },
@@ -21068,7 +21068,7 @@
      "days": 900
     },
     {
-     "mean": 89.2,
+     "mean": 89.3,
      "goodShare": 0.992,
      "poorShare": 0.0,
      "days": 929
@@ -21094,7 +21094,7 @@
      "days": 930
     },
     {
-     "mean": 90.0,
+     "mean": 90.1,
      "goodShare": 0.998,
      "poorShare": 0.0,
      "days": 900
@@ -21142,7 +21142,7 @@
      "days": 900
     },
     {
-     "mean": 88.3,
+     "mean": 88.2,
      "goodShare": 0.988,
      "poorShare": 0.0,
      "days": 929
@@ -21658,9 +21658,9 @@
   "guba": {
    "urban": [
     {
-     "mean": 58.6,
-     "goodShare": 0.024,
-     "poorShare": 0.018,
+     "mean": 58.5,
+     "goodShare": 0.02,
+     "poorShare": 0.019,
      "days": 929
     },
     {
@@ -21670,8 +21670,8 @@
      "days": 848
     },
     {
-     "mean": 61.7,
-     "goodShare": 0.186,
+     "mean": 61.6,
+     "goodShare": 0.185,
      "poorShare": 0.045,
      "days": 930
     },
@@ -21694,8 +21694,8 @@
      "days": 900
     },
     {
-     "mean": 73.7,
-     "goodShare": 0.734,
+     "mean": 73.9,
+     "goodShare": 0.741,
      "poorShare": 0.0,
      "days": 930
     },
@@ -21712,8 +21712,8 @@
      "days": 900
     },
     {
-     "mean": 73.7,
-     "goodShare": 0.668,
+     "mean": 73.6,
+     "goodShare": 0.665,
      "poorShare": 0.025,
      "days": 930
     },
@@ -21724,8 +21724,8 @@
      "days": 900
     },
     {
-     "mean": 60.1,
-     "goodShare": 0.062,
+     "mean": 60.0,
+     "goodShare": 0.059,
      "poorShare": 0.025,
      "days": 930
     }
@@ -21744,9 +21744,9 @@
      "days": 848
     },
     {
-     "mean": 43.4,
-     "goodShare": 0.02,
-     "poorShare": 0.363,
+     "mean": 43.3,
+     "goodShare": 0.019,
+     "poorShare": 0.366,
      "days": 930
     },
     {
@@ -21786,8 +21786,8 @@
      "days": 900
     },
     {
-     "mean": 62.9,
-     "goodShare": 0.431,
+     "mean": 62.7,
+     "goodShare": 0.428,
      "poorShare": 0.11,
      "days": 930
     },
@@ -21798,7 +21798,7 @@
      "days": 900
     },
     {
-     "mean": 44.0,
+     "mean": 43.9,
      "goodShare": 0.003,
      "poorShare": 0.184,
      "days": 930
@@ -22168,9 +22168,9 @@
      "days": 930
     },
     {
-     "mean": 51.6,
-     "goodShare": 0.132,
-     "poorShare": 0.097,
+     "mean": 51.7,
+     "goodShare": 0.136,
+     "poorShare": 0.096,
      "days": 900
     },
     {
@@ -22216,8 +22216,8 @@
      "days": 900
     },
     {
-     "mean": 77.2,
-     "goodShare": 0.783,
+     "mean": 77.3,
+     "goodShare": 0.786,
      "poorShare": 0.006,
      "days": 930
     }
@@ -22242,8 +22242,8 @@
      "days": 930
     },
     {
-     "mean": 59.4,
-     "goodShare": 0.187,
+     "mean": 59.5,
+     "goodShare": 0.189,
      "poorShare": 0.051,
      "days": 900
     },
@@ -22290,8 +22290,8 @@
      "days": 900
     },
     {
-     "mean": 72.0,
-     "goodShare": 0.641,
+     "mean": 71.9,
+     "goodShare": 0.637,
      "poorShare": 0.015,
      "days": 930
     }
@@ -22314,9 +22314,9 @@
   "havana": {
    "urban": [
     {
-     "mean": 71.0,
-     "goodShare": 0.571,
-     "poorShare": 0.01,
+     "mean": 71.3,
+     "goodShare": 0.584,
+     "poorShare": 0.009,
      "days": 930
     },
     {
@@ -22380,16 +22380,16 @@
      "days": 900
     },
     {
-     "mean": 67.5,
-     "goodShare": 0.441,
-     "poorShare": 0.015,
+     "mean": 67.7,
+     "goodShare": 0.452,
+     "poorShare": 0.013,
      "days": 929
     }
    ],
    "beach": [
     {
-     "mean": 78.8,
-     "goodShare": 0.866,
+     "mean": 79.0,
+     "goodShare": 0.869,
      "poorShare": 0.001,
      "days": 930
     },
@@ -22454,8 +22454,8 @@
      "days": 900
     },
     {
-     "mean": 77.4,
-     "goodShare": 0.82,
+     "mean": 77.5,
+     "goodShare": 0.826,
      "poorShare": 0.003,
      "days": 929
     }
@@ -22642,8 +22642,8 @@
   "heraklion": {
    "urban": [
     {
-     "mean": 67.4,
-     "goodShare": 0.518,
+     "mean": 67.3,
+     "goodShare": 0.511,
      "poorShare": 0.029,
      "days": 929
     },
@@ -22654,9 +22654,9 @@
      "days": 848
     },
     {
-     "mean": 76.7,
-     "goodShare": 0.784,
-     "poorShare": 0.01,
+     "mean": 76.5,
+     "goodShare": 0.78,
+     "poorShare": 0.011,
      "days": 930
     },
     {
@@ -22666,32 +22666,32 @@
      "days": 900
     },
     {
-     "mean": 85.2,
-     "goodShare": 0.947,
+     "mean": 85.4,
+     "goodShare": 0.948,
      "poorShare": 0.0,
      "days": 930
     },
     {
-     "mean": 77.8,
-     "goodShare": 0.823,
+     "mean": 78.1,
+     "goodShare": 0.831,
      "poorShare": 0.0,
      "days": 900
     },
     {
-     "mean": 70.2,
-     "goodShare": 0.601,
-     "poorShare": 0.003,
+     "mean": 70.5,
+     "goodShare": 0.611,
+     "poorShare": 0.002,
      "days": 930
     },
     {
-     "mean": 69.0,
-     "goodShare": 0.52,
+     "mean": 69.3,
+     "goodShare": 0.532,
      "poorShare": 0.004,
      "days": 930
     },
     {
-     "mean": 76.7,
-     "goodShare": 0.759,
+     "mean": 76.9,
+     "goodShare": 0.768,
      "poorShare": 0.0,
      "days": 900
     },
@@ -22702,8 +22702,8 @@
      "days": 930
     },
     {
-     "mean": 80.4,
-     "goodShare": 0.876,
+     "mean": 80.3,
+     "goodShare": 0.877,
      "poorShare": 0.003,
      "days": 900
     },
@@ -22716,9 +22716,9 @@
    ],
    "beach": [
     {
-     "mean": 53.4,
-     "goodShare": 0.052,
-     "poorShare": 0.132,
+     "mean": 53.2,
+     "goodShare": 0.048,
+     "poorShare": 0.135,
      "days": 929
     },
     {
@@ -22728,9 +22728,9 @@
      "days": 848
     },
     {
-     "mean": 66.6,
-     "goodShare": 0.499,
-     "poorShare": 0.046,
+     "mean": 66.4,
+     "goodShare": 0.497,
+     "poorShare": 0.049,
      "days": 930
     },
     {
@@ -22740,31 +22740,31 @@
      "days": 900
     },
     {
-     "mean": 91.3,
-     "goodShare": 0.978,
+     "mean": 91.2,
+     "goodShare": 0.977,
      "poorShare": 0.0,
      "days": 930
     },
     {
-     "mean": 89.5,
+     "mean": 89.7,
      "goodShare": 0.994,
      "poorShare": 0.0,
      "days": 900
     },
     {
-     "mean": 84.1,
+     "mean": 84.3,
      "goodShare": 0.995,
      "poorShare": 0.0,
      "days": 930
     },
     {
-     "mean": 83.2,
+     "mean": 83.4,
      "goodShare": 0.994,
      "poorShare": 0.0,
      "days": 930
     },
     {
-     "mean": 89.5,
+     "mean": 89.6,
      "goodShare": 0.987,
      "poorShare": 0.0,
      "days": 900
@@ -22776,8 +22776,8 @@
      "days": 930
     },
     {
-     "mean": 71.3,
-     "goodShare": 0.666,
+     "mean": 71.2,
+     "goodShare": 0.66,
      "poorShare": 0.017,
      "days": 900
     },
@@ -23140,14 +23140,14 @@
      "days": 929
     },
     {
-     "mean": 61.7,
-     "goodShare": 0.271,
-     "poorShare": 0.028,
+     "mean": 62.0,
+     "goodShare": 0.282,
+     "poorShare": 0.026,
      "days": 848
     },
     {
-     "mean": 53.8,
-     "goodShare": 0.067,
+     "mean": 54.0,
+     "goodShare": 0.072,
      "poorShare": 0.051,
      "days": 930
     },
@@ -23214,14 +23214,14 @@
      "days": 929
     },
     {
-     "mean": 69.5,
-     "goodShare": 0.531,
+     "mean": 69.6,
+     "goodShare": 0.544,
      "poorShare": 0.007,
      "days": 848
     },
     {
-     "mean": 65.5,
-     "goodShare": 0.325,
+     "mean": 65.6,
+     "goodShare": 0.338,
      "poorShare": 0.018,
      "days": 930
     },
@@ -25594,14 +25594,14 @@
   "johannesburg": {
    "urban": [
     {
-     "mean": 72.0,
-     "goodShare": 0.708,
+     "mean": 72.1,
+     "goodShare": 0.71,
      "poorShare": 0.001,
      "days": 929
     },
     {
-     "mean": 74.5,
-     "goodShare": 0.796,
+     "mean": 74.7,
+     "goodShare": 0.797,
      "poorShare": 0.0,
      "days": 848
     },
@@ -25642,20 +25642,20 @@
      "days": 930
     },
     {
-     "mean": 90.7,
+     "mean": 90.8,
      "goodShare": 0.977,
      "poorShare": 0.002,
      "days": 900
     },
     {
-     "mean": 82.0,
+     "mean": 82.1,
      "goodShare": 0.888,
      "poorShare": 0.001,
      "days": 930
     },
     {
-     "mean": 76.4,
-     "goodShare": 0.792,
+     "mean": 76.5,
+     "goodShare": 0.793,
      "poorShare": 0.0,
      "days": 900
     },
@@ -25669,14 +25669,14 @@
    "beach": [
     {
      "mean": 77.6,
-     "goodShare": 0.821,
+     "goodShare": 0.82,
      "poorShare": 0.003,
      "days": 929
     },
     {
      "mean": 79.9,
      "goodShare": 0.861,
-     "poorShare": 0.002,
+     "poorShare": 0.004,
      "days": 848
     },
     {
@@ -25716,20 +25716,20 @@
      "days": 930
     },
     {
-     "mean": 88.5,
+     "mean": 88.4,
      "goodShare": 0.964,
      "poorShare": 0.006,
      "days": 900
     },
     {
-     "mean": 83.6,
+     "mean": 83.5,
      "goodShare": 0.897,
      "poorShare": 0.004,
      "days": 930
     },
     {
      "mean": 78.3,
-     "goodShare": 0.83,
+     "goodShare": 0.829,
      "poorShare": 0.001,
      "days": 900
     },
@@ -25946,15 +25946,15 @@
      "days": 900
     },
     {
-     "mean": 63.5,
-     "goodShare": 0.305,
+     "mean": 63.4,
+     "goodShare": 0.301,
      "poorShare": 0.06,
      "days": 930
     },
     {
-     "mean": 71.0,
-     "goodShare": 0.669,
-     "poorShare": 0.009,
+     "mean": 70.8,
+     "goodShare": 0.666,
+     "poorShare": 0.01,
      "days": 900
     },
     {
@@ -25970,19 +25970,19 @@
      "days": 930
     },
     {
-     "mean": 70.9,
-     "goodShare": 0.623,
+     "mean": 70.7,
+     "goodShare": 0.62,
      "poorShare": 0.011,
      "days": 900
     },
     {
      "mean": 62.6,
-     "goodShare": 0.16,
+     "goodShare": 0.159,
      "poorShare": 0.041,
      "days": 930
     },
     {
-     "mean": 57.3,
+     "mean": 57.2,
      "goodShare": 0.012,
      "poorShare": 0.037,
      "days": 900
@@ -26020,15 +26020,15 @@
      "days": 900
     },
     {
-     "mean": 48.1,
-     "goodShare": 0.033,
-     "poorShare": 0.218,
+     "mean": 47.9,
+     "goodShare": 0.032,
+     "poorShare": 0.222,
      "days": 930
     },
     {
-     "mean": 58.3,
-     "goodShare": 0.116,
-     "poorShare": 0.082,
+     "mean": 58.0,
+     "goodShare": 0.113,
+     "poorShare": 0.083,
      "days": 900
     },
     {
@@ -26044,14 +26044,14 @@
      "days": 930
     },
     {
-     "mean": 59.7,
-     "goodShare": 0.218,
-     "poorShare": 0.062,
+     "mean": 59.6,
+     "goodShare": 0.212,
+     "poorShare": 0.064,
      "days": 900
     },
     {
-     "mean": 46.5,
-     "goodShare": 0.014,
+     "mean": 46.4,
+     "goodShare": 0.011,
      "poorShare": 0.137,
      "days": 930
     },
@@ -26250,149 +26250,149 @@
   "kathmandu": {
    "urban": [
     {
-     "mean": 78.8,
-     "goodShare": 0.899,
-     "poorShare": 0.004,
+     "mean": 78.9,
+     "goodShare": 0.906,
+     "poorShare": 0.002,
      "days": 929
     },
     {
-     "mean": 84.1,
-     "goodShare": 0.928,
+     "mean": 84.7,
+     "goodShare": 0.934,
      "poorShare": 0.001,
      "days": 848
     },
     {
-     "mean": 86.6,
-     "goodShare": 0.946,
+     "mean": 86.3,
+     "goodShare": 0.96,
      "poorShare": 0.0,
      "days": 930
     },
     {
-     "mean": 78.4,
-     "goodShare": 0.864,
+     "mean": 77.8,
+     "goodShare": 0.871,
      "poorShare": 0.0,
      "days": 900
     },
     {
-     "mean": 64.6,
-     "goodShare": 0.461,
-     "poorShare": 0.03,
+     "mean": 63.9,
+     "goodShare": 0.415,
+     "poorShare": 0.031,
      "days": 930
     },
     {
-     "mean": 44.7,
+     "mean": 41.8,
+     "goodShare": 0.001,
+     "poorShare": 0.532,
+     "days": 900
+    },
+    {
+     "mean": 30.7,
+     "goodShare": 0.0,
+     "poorShare": 0.903,
+     "days": 930
+    },
+    {
+     "mean": 32.5,
+     "goodShare": 0.0,
+     "poorShare": 0.84,
+     "days": 930
+    },
+    {
+     "mean": 48.7,
      "goodShare": 0.008,
-     "poorShare": 0.474,
+     "poorShare": 0.303,
      "days": 900
     },
     {
-     "mean": 34.0,
-     "goodShare": 0.0,
-     "poorShare": 0.817,
+     "mean": 74.9,
+     "goodShare": 0.804,
+     "poorShare": 0.003,
      "days": 930
     },
     {
-     "mean": 36.2,
-     "goodShare": 0.0,
-     "poorShare": 0.712,
-     "days": 930
-    },
-    {
-     "mean": 50.6,
-     "goodShare": 0.013,
-     "poorShare": 0.254,
-     "days": 900
-    },
-    {
-     "mean": 75.9,
-     "goodShare": 0.832,
-     "poorShare": 0.002,
-     "days": 930
-    },
-    {
-     "mean": 89.5,
-     "goodShare": 0.996,
+     "mean": 88.9,
+     "goodShare": 0.992,
      "poorShare": 0.0,
      "days": 900
     },
     {
-     "mean": 84.1,
-     "goodShare": 0.978,
-     "poorShare": 0.001,
+     "mean": 84.4,
+     "goodShare": 0.976,
+     "poorShare": 0.0,
      "days": 930
     }
    ],
    "beach": [
     {
-     "mean": 70.3,
-     "goodShare": 0.589,
-     "poorShare": 0.025,
+     "mean": 70.5,
+     "goodShare": 0.573,
+     "poorShare": 0.024,
      "days": 929
     },
     {
-     "mean": 76.3,
-     "goodShare": 0.783,
-     "poorShare": 0.017,
+     "mean": 76.8,
+     "goodShare": 0.81,
+     "poorShare": 0.015,
      "days": 848
     },
     {
-     "mean": 84.8,
-     "goodShare": 0.951,
+     "mean": 85.6,
+     "goodShare": 0.963,
      "poorShare": 0.001,
      "days": 930
     },
     {
-     "mean": 85.3,
-     "goodShare": 0.929,
+     "mean": 85.7,
+     "goodShare": 0.943,
      "poorShare": 0.0,
      "days": 900
     },
     {
-     "mean": 75.2,
-     "goodShare": 0.744,
+     "mean": 74.8,
+     "goodShare": 0.742,
      "poorShare": 0.0,
      "days": 930
     },
     {
-     "mean": 51.3,
-     "goodShare": 0.123,
-     "poorShare": 0.263,
+     "mean": 48.8,
+     "goodShare": 0.072,
+     "poorShare": 0.321,
      "days": 900
     },
     {
-     "mean": 36.1,
+     "mean": 32.9,
      "goodShare": 0.0,
-     "poorShare": 0.682,
+     "poorShare": 0.788,
      "days": 930
     },
     {
-     "mean": 39.8,
+     "mean": 36.4,
      "goodShare": 0.0,
-     "poorShare": 0.572,
+     "poorShare": 0.662,
      "days": 930
     },
     {
-     "mean": 56.4,
-     "goodShare": 0.143,
-     "poorShare": 0.101,
+     "mean": 54.7,
+     "goodShare": 0.086,
+     "poorShare": 0.138,
      "days": 900
     },
     {
-     "mean": 82.1,
-     "goodShare": 0.929,
+     "mean": 82.0,
+     "goodShare": 0.931,
      "poorShare": 0.0,
      "days": 930
     },
     {
-     "mean": 84.5,
-     "goodShare": 0.991,
+     "mean": 84.7,
+     "goodShare": 0.992,
      "poorShare": 0.0,
      "days": 900
     },
     {
-     "mean": 76.0,
-     "goodShare": 0.833,
-     "poorShare": 0.01,
+     "mean": 76.3,
+     "goodShare": 0.838,
+     "poorShare": 0.008,
      "days": 930
     }
    ],
@@ -26602,15 +26602,15 @@
      "days": 900
     },
     {
-     "mean": 54.6,
+     "mean": 54.5,
      "goodShare": 0.018,
      "poorShare": 0.129,
      "days": 930
     },
     {
-     "mean": 59.0,
-     "goodShare": 0.209,
-     "poorShare": 0.068,
+     "mean": 58.9,
+     "goodShare": 0.204,
+     "poorShare": 0.069,
      "days": 900
     },
     {
@@ -26626,13 +26626,13 @@
      "days": 930
     },
     {
-     "mean": 65.5,
-     "goodShare": 0.383,
+     "mean": 65.4,
+     "goodShare": 0.379,
      "poorShare": 0.03,
      "days": 900
     },
     {
-     "mean": 60.4,
+     "mean": 60.3,
      "goodShare": 0.143,
      "poorShare": 0.072,
      "days": 930
@@ -26676,15 +26676,15 @@
      "days": 900
     },
     {
-     "mean": 34.2,
+     "mean": 34.1,
      "goodShare": 0.0,
-     "poorShare": 0.712,
+     "poorShare": 0.715,
      "days": 930
     },
     {
-     "mean": 44.1,
+     "mean": 44.0,
      "goodShare": 0.007,
-     "poorShare": 0.346,
+     "poorShare": 0.348,
      "days": 900
     },
     {
@@ -26700,15 +26700,15 @@
      "days": 930
     },
     {
-     "mean": 50.8,
-     "goodShare": 0.078,
-     "poorShare": 0.144,
+     "mean": 50.7,
+     "goodShare": 0.076,
+     "poorShare": 0.146,
      "days": 900
     },
     {
-     "mean": 43.0,
+     "mean": 42.9,
      "goodShare": 0.0,
-     "poorShare": 0.247,
+     "poorShare": 0.248,
      "days": 930
     },
     {
@@ -26906,149 +26906,149 @@
   "kingston": {
    "urban": [
     {
-     "mean": 61.0,
-     "goodShare": 0.117,
-     "poorShare": 0.005,
+     "mean": 56.8,
+     "goodShare": 0.057,
+     "poorShare": 0.006,
      "days": 930
     },
     {
-     "mean": 62.8,
-     "goodShare": 0.117,
-     "poorShare": 0.004,
+     "mean": 58.5,
+     "goodShare": 0.062,
+     "poorShare": 0.005,
      "days": 848
     },
     {
-     "mean": 61.8,
-     "goodShare": 0.17,
-     "poorShare": 0.009,
+     "mean": 57.5,
+     "goodShare": 0.074,
+     "poorShare": 0.012,
      "days": 930
     },
     {
-     "mean": 56.2,
-     "goodShare": 0.018,
-     "poorShare": 0.021,
-     "days": 900
-    },
-    {
-     "mean": 45.6,
-     "goodShare": 0.0,
-     "poorShare": 0.153,
-     "days": 930
-    },
-    {
-     "mean": 43.9,
-     "goodShare": 0.0,
-     "poorShare": 0.128,
-     "days": 900
-    },
-    {
-     "mean": 47.2,
-     "goodShare": 0.0,
-     "poorShare": 0.088,
-     "days": 930
-    },
-    {
-     "mean": 44.8,
-     "goodShare": 0.0,
-     "poorShare": 0.148,
-     "days": 930
-    },
-    {
-     "mean": 42.3,
-     "goodShare": 0.0,
-     "poorShare": 0.224,
-     "days": 900
-    },
-    {
-     "mean": 41.0,
-     "goodShare": 0.0,
-     "poorShare": 0.295,
-     "days": 930
-    },
-    {
-     "mean": 48.5,
-     "goodShare": 0.001,
-     "poorShare": 0.106,
-     "days": 900
-    },
-    {
-     "mean": 55.0,
-     "goodShare": 0.056,
+     "mean": 52.8,
+     "goodShare": 0.007,
      "poorShare": 0.038,
+     "days": 900
+    },
+    {
+     "mean": 44.7,
+     "goodShare": 0.0,
+     "poorShare": 0.173,
+     "days": 930
+    },
+    {
+     "mean": 44.5,
+     "goodShare": 0.0,
+     "poorShare": 0.116,
+     "days": 900
+    },
+    {
+     "mean": 47.7,
+     "goodShare": 0.0,
+     "poorShare": 0.076,
+     "days": 930
+    },
+    {
+     "mean": 45.4,
+     "goodShare": 0.0,
+     "poorShare": 0.139,
+     "days": 930
+    },
+    {
+     "mean": 42.2,
+     "goodShare": 0.0,
+     "poorShare": 0.227,
+     "days": 900
+    },
+    {
+     "mean": 41.3,
+     "goodShare": 0.0,
+     "poorShare": 0.286,
+     "days": 930
+    },
+    {
+     "mean": 47.8,
+     "goodShare": 0.001,
+     "poorShare": 0.096,
+     "days": 900
+    },
+    {
+     "mean": 53.0,
+     "goodShare": 0.025,
+     "poorShare": 0.03,
      "days": 929
     }
    ],
    "beach": [
     {
-     "mean": 76.2,
-     "goodShare": 0.915,
-     "poorShare": 0.001,
+     "mean": 73.5,
+     "goodShare": 0.815,
+     "poorShare": 0.002,
      "days": 930
     },
     {
-     "mean": 78.4,
-     "goodShare": 0.974,
+     "mean": 75.6,
+     "goodShare": 0.943,
      "poorShare": 0.0,
      "days": 848
     },
     {
-     "mean": 76.8,
-     "goodShare": 0.912,
+     "mean": 74.0,
+     "goodShare": 0.809,
      "poorShare": 0.0,
      "days": 930
     },
     {
-     "mean": 71.7,
-     "goodShare": 0.668,
-     "poorShare": 0.001,
+     "mean": 69.7,
+     "goodShare": 0.503,
+     "poorShare": 0.004,
      "days": 900
     },
     {
-     "mean": 59.9,
-     "goodShare": 0.07,
-     "poorShare": 0.052,
+     "mean": 59.5,
+     "goodShare": 0.061,
+     "poorShare": 0.065,
      "days": 930
     },
     {
-     "mean": 57.0,
-     "goodShare": 0.003,
-     "poorShare": 0.052,
+     "mean": 57.6,
+     "goodShare": 0.007,
+     "poorShare": 0.043,
      "days": 900
     },
     {
-     "mean": 62.1,
-     "goodShare": 0.037,
-     "poorShare": 0.035,
+     "mean": 62.7,
+     "goodShare": 0.066,
+     "poorShare": 0.027,
      "days": 930
     },
     {
-     "mean": 59.6,
-     "goodShare": 0.006,
-     "poorShare": 0.039,
+     "mean": 60.2,
+     "goodShare": 0.018,
+     "poorShare": 0.031,
      "days": 930
     },
     {
      "mean": 55.6,
      "goodShare": 0.002,
-     "poorShare": 0.079,
+     "poorShare": 0.086,
      "days": 900
     },
     {
-     "mean": 53.9,
-     "goodShare": 0.002,
-     "poorShare": 0.128,
+     "mean": 54.3,
+     "goodShare": 0.001,
+     "poorShare": 0.112,
      "days": 930
     },
     {
-     "mean": 62.5,
-     "goodShare": 0.223,
-     "poorShare": 0.049,
+     "mean": 62.4,
+     "goodShare": 0.206,
+     "poorShare": 0.043,
      "days": 900
     },
     {
-     "mean": 70.2,
-     "goodShare": 0.555,
-     "poorShare": 0.005,
+     "mean": 69.2,
+     "goodShare": 0.49,
+     "poorShare": 0.009,
      "days": 929
     }
    ],
@@ -28564,14 +28564,14 @@
      "days": 930
     },
     {
-     "mean": 74.1,
-     "goodShare": 0.747,
+     "mean": 74.4,
+     "goodShare": 0.757,
      "poorShare": 0.0,
      "days": 900
     },
     {
-     "mean": 60.3,
-     "goodShare": 0.134,
+     "mean": 60.5,
+     "goodShare": 0.141,
      "poorShare": 0.0,
      "days": 930
     },
@@ -28638,13 +28638,13 @@
      "days": 930
     },
     {
-     "mean": 86.9,
+     "mean": 87.1,
      "goodShare": 0.992,
      "poorShare": 0.0,
      "days": 900
     },
     {
-     "mean": 78.5,
+     "mean": 78.6,
      "goodShare": 0.997,
      "poorShare": 0.0,
      "days": 930
@@ -28874,149 +28874,149 @@
   "la-paz": {
    "urban": [
     {
-     "mean": 53.9,
-     "goodShare": 0.003,
-     "poorShare": 0.102,
+     "mean": 61.0,
+     "goodShare": 0.125,
+     "poorShare": 0.058,
      "days": 930
     },
     {
-     "mean": 55.3,
-     "goodShare": 0.008,
-     "poorShare": 0.096,
+     "mean": 62.0,
+     "goodShare": 0.126,
+     "poorShare": 0.053,
      "days": 848
     },
     {
-     "mean": 58.1,
-     "goodShare": 0.01,
-     "poorShare": 0.044,
+     "mean": 64.3,
+     "goodShare": 0.178,
+     "poorShare": 0.023,
      "days": 930
     },
     {
-     "mean": 62.7,
-     "goodShare": 0.074,
-     "poorShare": 0.019,
-     "days": 900
-    },
-    {
-     "mean": 69.5,
-     "goodShare": 0.56,
+     "mean": 68.0,
+     "goodShare": 0.379,
      "poorShare": 0.008,
+     "days": 900
+    },
+    {
+     "mean": 73.9,
+     "goodShare": 0.877,
+     "poorShare": 0.001,
      "days": 930
     },
     {
-     "mean": 70.1,
-     "goodShare": 0.646,
-     "poorShare": 0.004,
+     "mean": 73.9,
+     "goodShare": 0.896,
+     "poorShare": 0.002,
      "days": 900
+    },
+    {
+     "mean": 73.1,
+     "goodShare": 0.867,
+     "poorShare": 0.003,
+     "days": 930
+    },
+    {
+     "mean": 72.0,
+     "goodShare": 0.766,
+     "poorShare": 0.005,
+     "days": 930
     },
     {
      "mean": 69.3,
-     "goodShare": 0.545,
-     "poorShare": 0.011,
-     "days": 930
-    },
-    {
-     "mean": 67.6,
-     "goodShare": 0.496,
-     "poorShare": 0.011,
-     "days": 930
-    },
-    {
-     "mean": 64.4,
-     "goodShare": 0.183,
-     "poorShare": 0.016,
+     "goodShare": 0.546,
+     "poorShare": 0.001,
      "days": 900
     },
     {
-     "mean": 61.0,
-     "goodShare": 0.062,
-     "poorShare": 0.037,
+     "mean": 67.2,
+     "goodShare": 0.398,
+     "poorShare": 0.009,
      "days": 930
     },
     {
-     "mean": 61.0,
-     "goodShare": 0.053,
-     "poorShare": 0.027,
+     "mean": 67.3,
+     "goodShare": 0.377,
+     "poorShare": 0.011,
      "days": 900
     },
     {
-     "mean": 56.1,
-     "goodShare": 0.008,
-     "poorShare": 0.078,
+     "mean": 63.2,
+     "goodShare": 0.167,
+     "poorShare": 0.034,
      "days": 929
     }
    ],
    "beach": [
     {
-     "mean": 35.6,
+     "mean": 45.3,
      "goodShare": 0.0,
-     "poorShare": 0.6,
+     "poorShare": 0.183,
      "days": 930
     },
     {
-     "mean": 36.3,
+     "mean": 45.6,
      "goodShare": 0.0,
-     "poorShare": 0.583,
+     "poorShare": 0.154,
      "days": 848
     },
     {
-     "mean": 39.1,
+     "mean": 48.8,
      "goodShare": 0.0,
-     "poorShare": 0.547,
+     "poorShare": 0.097,
      "days": 930
     },
     {
-     "mean": 45.4,
-     "goodShare": 0.0,
-     "poorShare": 0.174,
+     "mean": 55.1,
+     "goodShare": 0.012,
+     "poorShare": 0.04,
      "days": 900
     },
     {
-     "mean": 56.1,
+     "mean": 65.0,
+     "goodShare": 0.26,
+     "poorShare": 0.003,
+     "days": 930
+    },
+    {
+     "mean": 63.9,
+     "goodShare": 0.238,
+     "poorShare": 0.008,
+     "days": 900
+    },
+    {
+     "mean": 62.5,
+     "goodShare": 0.16,
+     "poorShare": 0.011,
+     "days": 930
+    },
+    {
+     "mean": 61.1,
+     "goodShare": 0.137,
+     "poorShare": 0.014,
+     "days": 930
+    },
+    {
+     "mean": 57.3,
+     "goodShare": 0.037,
+     "poorShare": 0.026,
+     "days": 900
+    },
+    {
+     "mean": 54.4,
      "goodShare": 0.011,
-     "poorShare": 0.024,
+     "poorShare": 0.067,
      "days": 930
     },
     {
-     "mean": 57.7,
-     "goodShare": 0.044,
-     "poorShare": 0.024,
+     "mean": 53.5,
+     "goodShare": 0.002,
+     "poorShare": 0.04,
      "days": 900
     },
     {
-     "mean": 56.5,
-     "goodShare": 0.001,
-     "poorShare": 0.027,
-     "days": 930
-    },
-    {
-     "mean": 54.2,
-     "goodShare": 0.008,
-     "poorShare": 0.057,
-     "days": 930
-    },
-    {
-     "mean": 49.7,
+     "mean": 47.8,
      "goodShare": 0.0,
-     "poorShare": 0.106,
-     "days": 900
-    },
-    {
-     "mean": 44.0,
-     "goodShare": 0.0,
-     "poorShare": 0.2,
-     "days": 930
-    },
-    {
-     "mean": 43.8,
-     "goodShare": 0.0,
-     "poorShare": 0.22,
-     "days": 900
-    },
-    {
-     "mean": 38.1,
-     "goodShare": 0.0,
-     "poorShare": 0.499,
+     "poorShare": 0.112,
      "days": 929
     }
    ],
@@ -29038,7 +29038,7 @@
   "labuan-bajo": {
    "urban": [
     {
-     "mean": 27.6,
+     "mean": 27.7,
      "goodShare": 0.0,
      "poorShare": 0.75,
      "days": 929
@@ -29130,9 +29130,9 @@
      "days": 930
     },
     {
-     "mean": 52.9,
+     "mean": 53.0,
      "goodShare": 0.0,
-     "poorShare": 0.121,
+     "poorShare": 0.12,
      "days": 900
     },
     {
@@ -31244,9 +31244,9 @@
    ],
    "beach": [
     {
-     "mean": 39.3,
+     "mean": 39.4,
      "goodShare": 0.0,
-     "poorShare": 0.398,
+     "poorShare": 0.397,
      "days": 929
     },
     {
@@ -31728,8 +31728,8 @@
      "days": 900
     },
     {
-     "mean": 83.5,
-     "goodShare": 0.97,
+     "mean": 83.7,
+     "goodShare": 0.972,
      "poorShare": 0.001,
      "days": 929
     }
@@ -32816,9 +32816,9 @@
      "days": 930
     },
     {
-     "mean": 72.0,
-     "goodShare": 0.688,
-     "poorShare": 0.009,
+     "mean": 71.8,
+     "goodShare": 0.678,
+     "poorShare": 0.011,
      "days": 848
     },
     {
@@ -32828,8 +32828,8 @@
      "days": 930
     },
     {
-     "mean": 76.8,
-     "goodShare": 0.859,
+     "mean": 76.6,
+     "goodShare": 0.849,
      "poorShare": 0.002,
      "days": 900
     },
@@ -32840,7 +32840,7 @@
      "days": 930
     },
     {
-     "mean": 86.9,
+     "mean": 87.0,
      "goodShare": 0.992,
      "poorShare": 0.0,
      "days": 900
@@ -32890,8 +32890,8 @@
      "days": 930
     },
     {
-     "mean": 59.5,
-     "goodShare": 0.159,
+     "mean": 59.3,
+     "goodShare": 0.153,
      "poorShare": 0.048,
      "days": 848
     },
@@ -32902,9 +32902,9 @@
      "days": 930
     },
     {
-     "mean": 65.5,
-     "goodShare": 0.329,
-     "poorShare": 0.02,
+     "mean": 65.2,
+     "goodShare": 0.326,
+     "poorShare": 0.021,
      "days": 900
     },
     {
@@ -32914,8 +32914,8 @@
      "days": 930
     },
     {
-     "mean": 81.9,
-     "goodShare": 0.964,
+     "mean": 81.7,
+     "goodShare": 0.962,
      "poorShare": 0.0,
      "days": 900
     },
@@ -34286,14 +34286,14 @@
   "maputo": {
    "urban": [
     {
-     "mean": 51.1,
+     "mean": 51.3,
      "goodShare": 0.047,
-     "poorShare": 0.125,
+     "poorShare": 0.124,
      "days": 929
     },
     {
-     "mean": 51.1,
-     "goodShare": 0.037,
+     "mean": 51.4,
+     "goodShare": 0.041,
      "poorShare": 0.116,
      "days": 848
     },
@@ -34334,20 +34334,20 @@
      "days": 930
     },
     {
-     "mean": 74.9,
-     "goodShare": 0.767,
+     "mean": 75.1,
+     "goodShare": 0.774,
      "poorShare": 0.003,
      "days": 900
     },
     {
-     "mean": 67.7,
-     "goodShare": 0.506,
-     "poorShare": 0.01,
+     "mean": 67.9,
+     "goodShare": 0.519,
+     "poorShare": 0.009,
      "days": 930
     },
     {
-     "mean": 58.6,
-     "goodShare": 0.216,
+     "mean": 58.9,
+     "goodShare": 0.223,
      "poorShare": 0.059,
      "days": 900
     },
@@ -34360,15 +34360,15 @@
    ],
    "beach": [
     {
-     "mean": 63.9,
-     "goodShare": 0.29,
+     "mean": 64.1,
+     "goodShare": 0.298,
      "poorShare": 0.052,
      "days": 929
     },
     {
-     "mean": 65.0,
-     "goodShare": 0.303,
-     "poorShare": 0.051,
+     "mean": 65.1,
+     "goodShare": 0.312,
+     "poorShare": 0.05,
      "days": 848
     },
     {
@@ -34408,21 +34408,21 @@
      "days": 930
     },
     {
-     "mean": 85.2,
+     "mean": 85.3,
      "goodShare": 0.961,
      "poorShare": 0.0,
      "days": 900
     },
     {
-     "mean": 76.0,
-     "goodShare": 0.784,
+     "mean": 76.1,
+     "goodShare": 0.786,
      "poorShare": 0.002,
      "days": 930
     },
     {
-     "mean": 67.6,
-     "goodShare": 0.471,
-     "poorShare": 0.03,
+     "mean": 67.7,
+     "goodShare": 0.476,
+     "poorShare": 0.029,
      "days": 900
     },
     {
@@ -34778,149 +34778,149 @@
   "medellin": {
    "urban": [
     {
-     "mean": 65.0,
-     "goodShare": 0.431,
-     "poorShare": 0.0,
+     "mean": 64.1,
+     "goodShare": 0.303,
+     "poorShare": 0.002,
      "days": 930
     },
     {
-     "mean": 60.5,
-     "goodShare": 0.255,
-     "poorShare": 0.014,
+     "mean": 59.8,
+     "goodShare": 0.18,
+     "poorShare": 0.028,
      "days": 848
     },
     {
      "mean": 53.2,
-     "goodShare": 0.057,
-     "poorShare": 0.085,
+     "goodShare": 0.037,
+     "poorShare": 0.116,
      "days": 930
     },
     {
-     "mean": 47.3,
+     "mean": 47.0,
      "goodShare": 0.008,
-     "poorShare": 0.267,
+     "poorShare": 0.299,
      "days": 900
     },
     {
-     "mean": 46.4,
-     "goodShare": 0.005,
-     "poorShare": 0.281,
+     "mean": 45.5,
+     "goodShare": 0.0,
+     "poorShare": 0.324,
      "days": 930
     },
     {
-     "mean": 50.3,
-     "goodShare": 0.006,
-     "poorShare": 0.166,
+     "mean": 48.6,
+     "goodShare": 0.001,
+     "poorShare": 0.221,
      "days": 900
     },
     {
-     "mean": 52.8,
-     "goodShare": 0.024,
-     "poorShare": 0.087,
-     "days": 930
-    },
-    {
-     "mean": 52.5,
-     "goodShare": 0.043,
-     "poorShare": 0.097,
-     "days": 930
-    },
-    {
-     "mean": 49.5,
+     "mean": 51.0,
      "goodShare": 0.013,
-     "poorShare": 0.142,
-     "days": 900
-    },
-    {
-     "mean": 50.2,
-     "goodShare": 0.024,
-     "poorShare": 0.128,
+     "poorShare": 0.151,
      "days": 930
     },
     {
-     "mean": 52.5,
-     "goodShare": 0.041,
-     "poorShare": 0.079,
+     "mean": 51.0,
+     "goodShare": 0.017,
+     "poorShare": 0.166,
+     "days": 930
+    },
+    {
+     "mean": 48.4,
+     "goodShare": 0.007,
+     "poorShare": 0.232,
      "days": 900
     },
     {
-     "mean": 60.8,
-     "goodShare": 0.262,
-     "poorShare": 0.006,
+     "mean": 49.9,
+     "goodShare": 0.016,
+     "poorShare": 0.161,
+     "days": 930
+    },
+    {
+     "mean": 51.9,
+     "goodShare": 0.023,
+     "poorShare": 0.113,
+     "days": 900
+    },
+    {
+     "mean": 59.9,
+     "goodShare": 0.164,
+     "poorShare": 0.01,
      "days": 929
     }
    ],
    "beach": [
     {
-     "mean": 67.5,
-     "goodShare": 0.599,
-     "poorShare": 0.002,
+     "mean": 67.4,
+     "goodShare": 0.594,
+     "poorShare": 0.001,
      "days": 930
     },
     {
-     "mean": 63.3,
-     "goodShare": 0.356,
-     "poorShare": 0.006,
+     "mean": 63.2,
+     "goodShare": 0.333,
+     "poorShare": 0.012,
      "days": 848
     },
     {
-     "mean": 55.1,
-     "goodShare": 0.084,
-     "poorShare": 0.059,
+     "mean": 55.6,
+     "goodShare": 0.074,
+     "poorShare": 0.074,
      "days": 930
     },
     {
-     "mean": 47.7,
+     "mean": 48.1,
      "goodShare": 0.0,
-     "poorShare": 0.286,
+     "poorShare": 0.293,
      "days": 900
     },
     {
-     "mean": 46.7,
-     "goodShare": 0.001,
-     "poorShare": 0.33,
+     "mean": 46.4,
+     "goodShare": 0.0,
+     "poorShare": 0.348,
      "days": 930
     },
     {
-     "mean": 52.6,
-     "goodShare": 0.019,
-     "poorShare": 0.05,
+     "mean": 51.6,
+     "goodShare": 0.004,
+     "poorShare": 0.086,
      "days": 900
     },
     {
-     "mean": 54.5,
-     "goodShare": 0.02,
-     "poorShare": 0.035,
+     "mean": 53.4,
+     "goodShare": 0.011,
+     "poorShare": 0.058,
      "days": 930
     },
     {
-     "mean": 54.6,
-     "goodShare": 0.065,
-     "poorShare": 0.035,
+     "mean": 53.6,
+     "goodShare": 0.039,
+     "poorShare": 0.061,
      "days": 930
     },
     {
-     "mean": 50.9,
-     "goodShare": 0.013,
-     "poorShare": 0.077,
+     "mean": 50.4,
+     "goodShare": 0.003,
+     "poorShare": 0.103,
      "days": 900
     },
     {
-     "mean": 51.0,
-     "goodShare": 0.001,
-     "poorShare": 0.1,
+     "mean": 51.4,
+     "goodShare": 0.003,
+     "poorShare": 0.113,
      "days": 930
     },
     {
-     "mean": 52.9,
-     "goodShare": 0.016,
-     "poorShare": 0.097,
+     "mean": 53.0,
+     "goodShare": 0.012,
+     "poorShare": 0.103,
      "days": 900
     },
     {
      "mean": 61.6,
-     "goodShare": 0.286,
-     "poorShare": 0.016,
+     "goodShare": 0.262,
+     "poorShare": 0.015,
      "days": 929
     }
    ],
@@ -36090,149 +36090,149 @@
   "montego-bay": {
    "urban": [
     {
-     "mean": 62.4,
-     "goodShare": 0.206,
-     "poorShare": 0.019,
+     "mean": 58.9,
+     "goodShare": 0.13,
+     "poorShare": 0.024,
      "days": 930
     },
     {
-     "mean": 63.5,
-     "goodShare": 0.242,
-     "poorShare": 0.019,
+     "mean": 60.3,
+     "goodShare": 0.145,
+     "poorShare": 0.022,
      "days": 848
     },
     {
-     "mean": 60.2,
-     "goodShare": 0.161,
-     "poorShare": 0.039,
+     "mean": 57.4,
+     "goodShare": 0.108,
+     "poorShare": 0.046,
      "days": 930
     },
     {
-     "mean": 51.7,
-     "goodShare": 0.038,
-     "poorShare": 0.148,
+     "mean": 50.9,
+     "goodShare": 0.022,
+     "poorShare": 0.124,
      "days": 900
     },
     {
-     "mean": 39.4,
-     "goodShare": 0.005,
-     "poorShare": 0.434,
+     "mean": 40.5,
+     "goodShare": 0.001,
+     "poorShare": 0.368,
      "days": 930
+    },
+    {
+     "mean": 41.3,
+     "goodShare": 0.0,
+     "poorShare": 0.237,
+     "days": 900
+    },
+    {
+     "mean": 44.0,
+     "goodShare": 0.0,
+     "poorShare": 0.204,
+     "days": 930
+    },
+    {
+     "mean": 41.5,
+     "goodShare": 0.0,
+     "poorShare": 0.269,
+     "days": 930
+    },
+    {
+     "mean": 38.5,
+     "goodShare": 0.0,
+     "poorShare": 0.386,
+     "days": 900
     },
     {
      "mean": 39.8,
      "goodShare": 0.0,
-     "poorShare": 0.338,
-     "days": 900
-    },
-    {
-     "mean": 42.4,
-     "goodShare": 0.0,
-     "poorShare": 0.292,
+     "poorShare": 0.348,
      "days": 930
     },
     {
-     "mean": 39.7,
-     "goodShare": 0.0,
-     "poorShare": 0.372,
-     "days": 930
-    },
-    {
-     "mean": 36.9,
-     "goodShare": 0.0,
-     "poorShare": 0.468,
+     "mean": 48.0,
+     "goodShare": 0.004,
+     "poorShare": 0.141,
      "days": 900
     },
     {
-     "mean": 39.0,
-     "goodShare": 0.0,
-     "poorShare": 0.394,
-     "days": 930
-    },
-    {
-     "mean": 49.2,
-     "goodShare": 0.014,
-     "poorShare": 0.146,
-     "days": 900
-    },
-    {
-     "mean": 57.9,
-     "goodShare": 0.117,
-     "poorShare": 0.036,
+     "mean": 55.2,
+     "goodShare": 0.078,
+     "poorShare": 0.038,
      "days": 929
     }
    ],
    "beach": [
     {
-     "mean": 77.0,
-     "goodShare": 0.86,
+     "mean": 74.4,
+     "goodShare": 0.771,
      "poorShare": 0.002,
      "days": 930
     },
     {
-     "mean": 79.2,
-     "goodShare": 0.949,
+     "mean": 76.7,
+     "goodShare": 0.91,
      "poorShare": 0.0,
      "days": 848
     },
     {
-     "mean": 76.0,
-     "goodShare": 0.831,
+     "mean": 74.0,
+     "goodShare": 0.773,
      "poorShare": 0.0,
      "days": 930
     },
     {
-     "mean": 68.4,
-     "goodShare": 0.536,
-     "poorShare": 0.022,
+     "mean": 68.1,
+     "goodShare": 0.476,
+     "poorShare": 0.017,
      "days": 900
     },
     {
-     "mean": 55.0,
-     "goodShare": 0.062,
-     "poorShare": 0.212,
+     "mean": 56.2,
+     "goodShare": 0.056,
+     "poorShare": 0.167,
      "days": 930
     },
     {
-     "mean": 53.4,
-     "goodShare": 0.002,
-     "poorShare": 0.151,
+     "mean": 54.8,
+     "goodShare": 0.003,
+     "poorShare": 0.097,
      "days": 900
     },
     {
-     "mean": 57.8,
-     "goodShare": 0.01,
-     "poorShare": 0.122,
+     "mean": 59.3,
+     "goodShare": 0.013,
+     "poorShare": 0.069,
      "days": 930
     },
     {
-     "mean": 54.5,
+     "mean": 56.0,
      "goodShare": 0.001,
+     "poorShare": 0.099,
+     "days": 930
+    },
+    {
+     "mean": 52.0,
+     "goodShare": 0.0,
+     "poorShare": 0.161,
+     "days": 900
+    },
+    {
+     "mean": 52.6,
+     "goodShare": 0.003,
      "poorShare": 0.146,
      "days": 930
     },
     {
-     "mean": 50.5,
-     "goodShare": 0.0,
-     "poorShare": 0.209,
+     "mean": 62.8,
+     "goodShare": 0.243,
+     "poorShare": 0.049,
      "days": 900
     },
     {
-     "mean": 51.8,
-     "goodShare": 0.004,
-     "poorShare": 0.185,
-     "days": 930
-    },
-    {
-     "mean": 63.9,
-     "goodShare": 0.282,
-     "poorShare": 0.05,
-     "days": 900
-    },
-    {
-     "mean": 73.1,
-     "goodShare": 0.689,
-     "poorShare": 0.005,
+     "mean": 71.0,
+     "goodShare": 0.606,
+     "poorShare": 0.006,
      "days": 929
     }
    ],
@@ -36424,7 +36424,7 @@
      "days": 930
     },
     {
-     "mean": 51.5,
+     "mean": 51.4,
      "goodShare": 0.0,
      "poorShare": 0.085,
      "days": 848
@@ -36448,8 +36448,8 @@
      "days": 930
     },
     {
-     "mean": 72.5,
-     "goodShare": 0.65,
+     "mean": 72.6,
+     "goodShare": 0.652,
      "poorShare": 0.01,
      "days": 900
     },
@@ -36460,14 +36460,14 @@
      "days": 930
     },
     {
-     "mean": 72.0,
-     "goodShare": 0.628,
-     "poorShare": 0.017,
+     "mean": 72.2,
+     "goodShare": 0.632,
+     "poorShare": 0.016,
      "days": 930
     },
     {
      "mean": 75.7,
-     "goodShare": 0.768,
+     "goodShare": 0.766,
      "poorShare": 0.006,
      "days": 900
     },
@@ -36478,15 +36478,15 @@
      "days": 930
     },
     {
-     "mean": 55.9,
-     "goodShare": 0.034,
-     "poorShare": 0.082,
+     "mean": 55.8,
+     "goodShare": 0.032,
+     "poorShare": 0.083,
      "days": 900
     },
     {
-     "mean": 50.5,
+     "mean": 50.4,
      "goodShare": 0.0,
-     "poorShare": 0.109,
+     "poorShare": 0.111,
      "days": 929
     }
    ],
@@ -36535,12 +36535,12 @@
     },
     {
      "mean": 76.0,
-     "goodShare": 0.809,
+     "goodShare": 0.81,
      "poorShare": 0.003,
      "days": 930
     },
     {
-     "mean": 70.9,
+     "mean": 70.8,
      "goodShare": 0.626,
      "poorShare": 0.016,
      "days": 900
@@ -36552,15 +36552,15 @@
      "days": 930
     },
     {
-     "mean": 37.1,
+     "mean": 37.0,
      "goodShare": 0.001,
-     "poorShare": 0.634,
+     "poorShare": 0.636,
      "days": 900
     },
     {
      "mean": 34.3,
      "goodShare": 0.0,
-     "poorShare": 0.734,
+     "poorShare": 0.735,
      "days": 929
     }
    ],
@@ -37238,7 +37238,7 @@
   "muscat": {
    "urban": [
     {
-     "mean": 88.7,
+     "mean": 88.8,
      "goodShare": 0.984,
      "poorShare": 0.0,
      "days": 929
@@ -37298,21 +37298,21 @@
      "days": 930
     },
     {
-     "mean": 75.4,
-     "goodShare": 0.781,
+     "mean": 75.7,
+     "goodShare": 0.798,
      "poorShare": 0.002,
      "days": 900
     },
     {
-     "mean": 85.6,
-     "goodShare": 0.98,
+     "mean": 85.7,
+     "goodShare": 0.981,
      "poorShare": 0.0,
      "days": 930
     }
    ],
    "beach": [
     {
-     "mean": 91.9,
+     "mean": 91.8,
      "goodShare": 0.987,
      "poorShare": 0.0,
      "days": 929
@@ -37372,13 +37372,13 @@
      "days": 930
     },
     {
-     "mean": 89.3,
+     "mean": 89.5,
      "goodShare": 0.993,
      "poorShare": 0.0,
      "days": 900
     },
     {
-     "mean": 93.5,
+     "mean": 93.6,
      "goodShare": 0.991,
      "poorShare": 0.0,
      "days": 930
@@ -37414,8 +37414,8 @@
      "days": 848
     },
     {
-     "mean": 74.4,
-     "goodShare": 0.741,
+     "mean": 74.2,
+     "goodShare": 0.738,
      "poorShare": 0.009,
      "days": 930
     },
@@ -37432,8 +37432,8 @@
      "days": 930
     },
     {
-     "mean": 81.3,
-     "goodShare": 0.974,
+     "mean": 81.5,
+     "goodShare": 0.976,
      "poorShare": 0.0,
      "days": 900
     },
@@ -37450,27 +37450,27 @@
      "days": 930
     },
     {
-     "mean": 80.3,
-     "goodShare": 0.958,
+     "mean": 80.6,
+     "goodShare": 0.964,
      "poorShare": 0.0,
      "days": 900
     },
     {
-     "mean": 84.8,
+     "mean": 84.9,
      "goodShare": 0.958,
      "poorShare": 0.0,
      "days": 930
     },
     {
      "mean": 80.3,
-     "goodShare": 0.848,
+     "goodShare": 0.846,
      "poorShare": 0.0,
      "days": 900
     },
     {
-     "mean": 69.2,
-     "goodShare": 0.555,
-     "poorShare": 0.024,
+     "mean": 69.1,
+     "goodShare": 0.551,
+     "poorShare": 0.025,
      "days": 930
     }
    ],
@@ -37488,9 +37488,9 @@
      "days": 848
     },
     {
-     "mean": 65.4,
-     "goodShare": 0.459,
-     "poorShare": 0.037,
+     "mean": 65.3,
+     "goodShare": 0.449,
+     "poorShare": 0.038,
      "days": 930
     },
     {
@@ -37506,7 +37506,7 @@
      "days": 930
     },
     {
-     "mean": 91.1,
+     "mean": 91.2,
      "goodShare": 1.0,
      "poorShare": 0.0,
      "days": 900
@@ -37524,27 +37524,27 @@
      "days": 930
     },
     {
-     "mean": 90.1,
+     "mean": 90.2,
      "goodShare": 0.999,
      "poorShare": 0.0,
      "days": 900
     },
     {
-     "mean": 87.5,
-     "goodShare": 0.953,
+     "mean": 87.4,
+     "goodShare": 0.951,
      "poorShare": 0.0,
      "days": 930
     },
     {
-     "mean": 72.5,
-     "goodShare": 0.678,
+     "mean": 72.3,
+     "goodShare": 0.672,
      "poorShare": 0.01,
      "days": 900
     },
     {
-     "mean": 57.5,
-     "goodShare": 0.206,
-     "poorShare": 0.129,
+     "mean": 57.3,
+     "goodShare": 0.203,
+     "poorShare": 0.131,
      "days": 930
     }
    ],
@@ -37736,14 +37736,14 @@
      "days": 929
     },
     {
-     "mean": 76.2,
-     "goodShare": 0.928,
+     "mean": 76.4,
+     "goodShare": 0.93,
      "poorShare": 0.0,
      "days": 848
     },
     {
-     "mean": 72.7,
-     "goodShare": 0.866,
+     "mean": 72.9,
+     "goodShare": 0.875,
      "poorShare": 0.002,
      "days": 930
     },
@@ -37754,8 +37754,8 @@
      "days": 900
     },
     {
-     "mean": 72.7,
-     "goodShare": 0.824,
+     "mean": 72.9,
+     "goodShare": 0.825,
      "poorShare": 0.001,
      "days": 930
     },
@@ -37816,8 +37816,8 @@
      "days": 848
     },
     {
-     "mean": 79.1,
-     "goodShare": 0.926,
+     "mean": 79.2,
+     "goodShare": 0.929,
      "poorShare": 0.001,
      "days": 930
     },
@@ -37828,8 +37828,8 @@
      "days": 900
     },
     {
-     "mean": 73.4,
-     "goodShare": 0.839,
+     "mean": 73.3,
+     "goodShare": 0.838,
      "poorShare": 0.0,
      "days": 930
     },
@@ -38386,8 +38386,8 @@
   "nha-trang": {
    "urban": [
     {
-     "mean": 58.8,
-     "goodShare": 0.123,
+     "mean": 59.0,
+     "goodShare": 0.129,
      "poorShare": 0.068,
      "days": 929
     },
@@ -38452,16 +38452,16 @@
      "days": 900
     },
     {
-     "mean": 48.2,
-     "goodShare": 0.027,
-     "poorShare": 0.284,
+     "mean": 48.5,
+     "goodShare": 0.028,
+     "poorShare": 0.281,
      "days": 930
     }
    ],
    "beach": [
     {
-     "mean": 66.4,
-     "goodShare": 0.442,
+     "mean": 66.6,
+     "goodShare": 0.455,
      "poorShare": 0.029,
      "days": 929
     },
@@ -38526,9 +38526,9 @@
      "days": 900
     },
     {
-     "mean": 55.0,
-     "goodShare": 0.132,
-     "poorShare": 0.202,
+     "mean": 55.2,
+     "goodShare": 0.143,
+     "poorShare": 0.201,
      "days": 930
     }
    ],
@@ -38780,7 +38780,7 @@
      "days": 900
     },
     {
-     "mean": 88.8,
+     "mean": 89.0,
      "goodShare": 0.996,
      "poorShare": 0.0,
      "days": 930
@@ -39868,14 +39868,14 @@
      "days": 929
     },
     {
-     "mean": 55.7,
+     "mean": 55.6,
      "goodShare": 0.017,
-     "poorShare": 0.071,
+     "poorShare": 0.072,
      "days": 848
     },
     {
-     "mean": 59.4,
-     "goodShare": 0.174,
+     "mean": 59.3,
+     "goodShare": 0.172,
      "poorShare": 0.087,
      "days": 930
     },
@@ -39892,8 +39892,8 @@
      "days": 930
     },
     {
-     "mean": 82.2,
-     "goodShare": 0.959,
+     "mean": 82.4,
+     "goodShare": 0.958,
      "poorShare": 0.0,
      "days": 900
     },
@@ -39916,8 +39916,8 @@
      "days": 900
     },
     {
-     "mean": 75.0,
-     "goodShare": 0.777,
+     "mean": 74.8,
+     "goodShare": 0.775,
      "poorShare": 0.015,
      "days": 930
     },
@@ -39942,15 +39942,15 @@
      "days": 929
     },
     {
-     "mean": 36.8,
-     "goodShare": 0.004,
+     "mean": 36.7,
+     "goodShare": 0.002,
      "poorShare": 0.6,
      "days": 848
     },
     {
-     "mean": 40.5,
-     "goodShare": 0.008,
-     "poorShare": 0.474,
+     "mean": 40.4,
+     "goodShare": 0.006,
+     "poorShare": 0.475,
      "days": 930
     },
     {
@@ -39966,8 +39966,8 @@
      "days": 930
     },
     {
-     "mean": 84.7,
-     "goodShare": 0.948,
+     "mean": 84.6,
+     "goodShare": 0.947,
      "poorShare": 0.001,
      "days": 900
     },
@@ -39990,8 +39990,8 @@
      "days": 900
     },
     {
-     "mean": 65.3,
-     "goodShare": 0.473,
+     "mean": 65.1,
+     "goodShare": 0.46,
      "poorShare": 0.07,
      "days": 930
     },
@@ -41508,14 +41508,14 @@
      "days": 929
     },
     {
-     "mean": 63.1,
-     "goodShare": 0.163,
+     "mean": 63.0,
+     "goodShare": 0.154,
      "poorShare": 0.032,
      "days": 848
     },
     {
-     "mean": 63.9,
-     "goodShare": 0.149,
+     "mean": 63.8,
+     "goodShare": 0.142,
      "poorShare": 0.017,
      "days": 930
     },
@@ -41562,14 +41562,14 @@
      "days": 930
     },
     {
-     "mean": 69.0,
-     "goodShare": 0.466,
+     "mean": 68.9,
+     "goodShare": 0.46,
      "poorShare": 0.003,
      "days": 900
     },
     {
-     "mean": 66.5,
-     "goodShare": 0.318,
+     "mean": 66.4,
+     "goodShare": 0.315,
      "poorShare": 0.008,
      "days": 930
     }
@@ -41582,15 +41582,15 @@
      "days": 929
     },
     {
-     "mean": 46.3,
+     "mean": 46.2,
      "goodShare": 0.002,
      "poorShare": 0.136,
      "days": 848
     },
     {
-     "mean": 47.8,
+     "mean": 47.6,
      "goodShare": 0.005,
-     "poorShare": 0.17,
+     "poorShare": 0.173,
      "days": 930
     },
     {
@@ -41636,15 +41636,15 @@
      "days": 930
     },
     {
-     "mean": 54.4,
-     "goodShare": 0.037,
-     "poorShare": 0.052,
+     "mean": 54.2,
+     "goodShare": 0.036,
+     "poorShare": 0.054,
      "days": 900
     },
     {
-     "mean": 51.0,
-     "goodShare": 0.004,
-     "poorShare": 0.052,
+     "mean": 50.8,
+     "goodShare": 0.002,
+     "poorShare": 0.053,
      "days": 930
     }
    ],
@@ -42170,7 +42170,7 @@
      "days": 848
     },
     {
-     "mean": 87.7,
+     "mean": 87.6,
      "goodShare": 0.983,
      "poorShare": 0.0,
      "days": 930
@@ -42194,26 +42194,26 @@
      "days": 900
     },
     {
-     "mean": 64.1,
-     "goodShare": 0.276,
+     "mean": 64.5,
+     "goodShare": 0.297,
      "poorShare": 0.0,
      "days": 930
     },
     {
-     "mean": 62.4,
-     "goodShare": 0.178,
+     "mean": 62.7,
+     "goodShare": 0.192,
      "poorShare": 0.0,
      "days": 930
     },
     {
-     "mean": 70.8,
-     "goodShare": 0.612,
+     "mean": 71.0,
+     "goodShare": 0.622,
      "poorShare": 0.0,
      "days": 900
     },
     {
-     "mean": 82.8,
-     "goodShare": 0.955,
+     "mean": 83.0,
+     "goodShare": 0.957,
      "poorShare": 0.0,
      "days": 930
     },
@@ -42224,7 +42224,7 @@
      "days": 900
     },
     {
-     "mean": 83.4,
+     "mean": 83.2,
      "goodShare": 0.982,
      "poorShare": 0.0,
      "days": 930
@@ -42244,9 +42244,9 @@
      "days": 848
     },
     {
-     "mean": 85.0,
-     "goodShare": 0.929,
-     "poorShare": 0.0,
+     "mean": 84.8,
+     "goodShare": 0.928,
+     "poorShare": 0.001,
      "days": 930
     },
     {
@@ -42268,38 +42268,38 @@
      "days": 900
     },
     {
-     "mean": 78.1,
+     "mean": 78.4,
      "goodShare": 0.999,
      "poorShare": 0.0,
      "days": 930
     },
     {
-     "mean": 77.4,
-     "goodShare": 1.0,
-     "poorShare": 0.0,
-     "days": 930
-    },
-    {
-     "mean": 84.4,
-     "goodShare": 1.0,
-     "poorShare": 0.0,
-     "days": 900
-    },
-    {
-     "mean": 93.5,
-     "goodShare": 1.0,
-     "poorShare": 0.0,
-     "days": 930
-    },
-    {
-     "mean": 89.6,
-     "goodShare": 0.986,
-     "poorShare": 0.0,
-     "days": 900
-    },
-    {
      "mean": 77.6,
-     "goodShare": 0.823,
+     "goodShare": 1.0,
+     "poorShare": 0.0,
+     "days": 930
+    },
+    {
+     "mean": 84.6,
+     "goodShare": 1.0,
+     "poorShare": 0.0,
+     "days": 900
+    },
+    {
+     "mean": 93.6,
+     "goodShare": 1.0,
+     "poorShare": 0.0,
+     "days": 930
+    },
+    {
+     "mean": 89.5,
+     "goodShare": 0.984,
+     "poorShare": 0.0,
+     "days": 900
+    },
+    {
+     "mean": 77.5,
+     "goodShare": 0.817,
      "poorShare": 0.001,
      "days": 930
     }
@@ -43148,9 +43148,9 @@
      "days": 929
     },
     {
-     "mean": 37.6,
+     "mean": 37.8,
      "goodShare": 0.005,
-     "poorShare": 0.399,
+     "poorShare": 0.394,
      "days": 848
     },
     {
@@ -43166,7 +43166,7 @@
      "days": 900
     },
     {
-     "mean": 28.7,
+     "mean": 28.8,
      "goodShare": 0.0,
      "poorShare": 0.667,
      "days": 930
@@ -43222,8 +43222,8 @@
      "days": 929
     },
     {
-     "mean": 48.7,
-     "goodShare": 0.039,
+     "mean": 48.9,
+     "goodShare": 0.04,
      "poorShare": 0.219,
      "days": 848
     },
@@ -43242,7 +43242,7 @@
     {
      "mean": 39.9,
      "goodShare": 0.0,
-     "poorShare": 0.426,
+     "poorShare": 0.425,
      "days": 930
     },
     {
@@ -43986,9 +43986,9 @@
      "days": 900
     },
     {
-     "mean": 57.0,
-     "goodShare": 0.149,
-     "poorShare": 0.133,
+     "mean": 56.7,
+     "goodShare": 0.139,
+     "poorShare": 0.138,
      "days": 930
     },
     {
@@ -44016,9 +44016,9 @@
      "days": 900
     },
     {
-     "mean": 65.6,
-     "goodShare": 0.382,
-     "poorShare": 0.056,
+     "mean": 64.9,
+     "goodShare": 0.357,
+     "poorShare": 0.057,
      "days": 930
     },
     {
@@ -44060,9 +44060,9 @@
      "days": 900
     },
     {
-     "mean": 65.3,
-     "goodShare": 0.434,
-     "poorShare": 0.085,
+     "mean": 65.1,
+     "goodShare": 0.43,
+     "poorShare": 0.086,
      "days": 930
     },
     {
@@ -44090,9 +44090,9 @@
      "days": 900
     },
     {
-     "mean": 73.8,
-     "goodShare": 0.76,
-     "poorShare": 0.019,
+     "mean": 73.4,
+     "goodShare": 0.747,
+     "poorShare": 0.02,
      "days": 930
     },
     {
@@ -44618,148 +44618,148 @@
   "puerto-vallarta": {
    "urban": [
     {
-     "mean": 73.1,
-     "goodShare": 0.744,
+     "mean": 72.3,
+     "goodShare": 0.708,
      "poorShare": 0.001,
      "days": 930
     },
     {
-     "mean": 74.6,
-     "goodShare": 0.809,
+     "mean": 73.8,
+     "goodShare": 0.787,
      "poorShare": 0.0,
      "days": 848
     },
     {
-     "mean": 74.6,
-     "goodShare": 0.866,
+     "mean": 73.9,
+     "goodShare": 0.848,
      "poorShare": 0.0,
      "days": 930
     },
     {
-     "mean": 69.0,
-     "goodShare": 0.599,
+     "mean": 68.5,
+     "goodShare": 0.576,
      "poorShare": 0.0,
      "days": 900
     },
     {
-     "mean": 59.8,
-     "goodShare": 0.152,
-     "poorShare": 0.014,
+     "mean": 59.4,
+     "goodShare": 0.123,
+     "poorShare": 0.011,
      "days": 930
     },
     {
-     "mean": 40.8,
+     "mean": 41.4,
      "goodShare": 0.001,
-     "poorShare": 0.357,
+     "poorShare": 0.307,
      "days": 900
     },
     {
-     "mean": 30.1,
+     "mean": 31.1,
      "goodShare": 0.0,
-     "poorShare": 0.618,
+     "poorShare": 0.562,
      "days": 930
     },
     {
-     "mean": 27.2,
+     "mean": 28.0,
      "goodShare": 0.0,
-     "poorShare": 0.702,
+     "poorShare": 0.667,
      "days": 930
     },
     {
-     "mean": 27.2,
+     "mean": 27.6,
      "goodShare": 0.0,
-     "poorShare": 0.701,
+     "poorShare": 0.666,
      "days": 900
     },
     {
-     "mean": 43.4,
-     "goodShare": 0.013,
-     "poorShare": 0.312,
+     "mean": 43.1,
+     "goodShare": 0.006,
+     "poorShare": 0.29,
      "days": 930
     },
     {
-     "mean": 60.1,
-     "goodShare": 0.211,
-     "poorShare": 0.036,
+     "mean": 58.2,
+     "goodShare": 0.161,
+     "poorShare": 0.049,
      "days": 900
     },
     {
-     "mean": 69.5,
-     "goodShare": 0.596,
-     "poorShare": 0.0,
+     "mean": 68.6,
+     "goodShare": 0.567,
+     "poorShare": 0.003,
      "days": 929
     }
    ],
    "beach": [
     {
-     "mean": 83.6,
-     "goodShare": 0.941,
+     "mean": 83.2,
+     "goodShare": 0.94,
      "poorShare": 0.0,
      "days": 930
     },
     {
-     "mean": 85.8,
-     "goodShare": 0.976,
+     "mean": 85.3,
+     "goodShare": 0.973,
      "poorShare": 0.0,
      "days": 848
     },
     {
-     "mean": 87.1,
-     "goodShare": 0.988,
+     "mean": 86.6,
+     "goodShare": 0.99,
      "poorShare": 0.0,
      "days": 930
     },
     {
-     "mean": 81.4,
-     "goodShare": 0.943,
+     "mean": 81.2,
+     "goodShare": 0.94,
      "poorShare": 0.0,
      "days": 900
     },
     {
-     "mean": 75.7,
-     "goodShare": 0.758,
+     "mean": 75.6,
+     "goodShare": 0.774,
      "poorShare": 0.004,
      "days": 930
     },
     {
-     "mean": 53.1,
-     "goodShare": 0.032,
-     "poorShare": 0.194,
+     "mean": 53.7,
+     "goodShare": 0.03,
+     "poorShare": 0.191,
      "days": 900
     },
     {
-     "mean": 40.8,
+     "mean": 41.7,
      "goodShare": 0.0,
-     "poorShare": 0.427,
+     "poorShare": 0.389,
      "days": 930
     },
     {
-     "mean": 37.6,
+     "mean": 38.3,
      "goodShare": 0.0,
-     "poorShare": 0.524,
+     "poorShare": 0.494,
      "days": 930
     },
     {
-     "mean": 36.9,
+     "mean": 37.2,
      "goodShare": 0.0,
-     "poorShare": 0.544,
+     "poorShare": 0.519,
      "days": 900
     },
     {
-     "mean": 57.8,
-     "goodShare": 0.112,
-     "poorShare": 0.135,
+     "mean": 57.7,
+     "goodShare": 0.097,
+     "poorShare": 0.14,
      "days": 930
     },
     {
-     "mean": 74.4,
-     "goodShare": 0.722,
-     "poorShare": 0.007,
+     "mean": 73.2,
+     "goodShare": 0.681,
+     "poorShare": 0.012,
      "days": 900
     },
     {
-     "mean": 80.3,
-     "goodShare": 0.913,
+     "mean": 79.7,
+     "goodShare": 0.905,
      "poorShare": 0.0,
      "days": 929
     }
@@ -45614,15 +45614,15 @@
      "days": 848
     },
     {
-     "mean": 51.8,
-     "goodShare": 0.082,
-     "poorShare": 0.119,
+     "mean": 51.6,
+     "goodShare": 0.08,
+     "poorShare": 0.128,
      "days": 930
     },
     {
-     "mean": 52.8,
-     "goodShare": 0.107,
-     "poorShare": 0.08,
+     "mean": 52.6,
+     "goodShare": 0.1,
+     "poorShare": 0.082,
      "days": 900
     },
     {
@@ -45662,9 +45662,9 @@
      "days": 930
     },
     {
-     "mean": 53.5,
-     "goodShare": 0.102,
-     "poorShare": 0.073,
+     "mean": 53.2,
+     "goodShare": 0.097,
+     "poorShare": 0.076,
      "days": 900
     },
     {
@@ -45688,15 +45688,15 @@
      "days": 848
     },
     {
-     "mean": 37.3,
+     "mean": 37.1,
      "goodShare": 0.0,
-     "poorShare": 0.534,
+     "poorShare": 0.537,
      "days": 930
     },
     {
-     "mean": 38.8,
+     "mean": 38.6,
      "goodShare": 0.0,
-     "poorShare": 0.489,
+     "poorShare": 0.491,
      "days": 900
     },
     {
@@ -45736,9 +45736,9 @@
      "days": 930
     },
     {
-     "mean": 39.9,
+     "mean": 39.7,
      "goodShare": 0.0,
-     "poorShare": 0.451,
+     "poorShare": 0.458,
      "days": 900
     },
     {
@@ -46598,9 +46598,9 @@
      "days": 848
     },
     {
-     "mean": 46.4,
-     "goodShare": 0.018,
-     "poorShare": 0.223,
+     "mean": 46.6,
+     "goodShare": 0.022,
+     "poorShare": 0.222,
      "days": 930
     },
     {
@@ -46634,8 +46634,8 @@
      "days": 930
     },
     {
-     "mean": 65.4,
-     "goodShare": 0.411,
+     "mean": 65.7,
+     "goodShare": 0.418,
      "poorShare": 0.014,
      "days": 900
     },
@@ -46646,14 +46646,14 @@
      "days": 930
     },
     {
-     "mean": 52.0,
-     "goodShare": 0.132,
-     "poorShare": 0.137,
+     "mean": 52.7,
+     "goodShare": 0.149,
+     "poorShare": 0.13,
      "days": 900
     },
     {
-     "mean": 46.2,
-     "goodShare": 0.026,
+     "mean": 46.3,
+     "goodShare": 0.027,
      "poorShare": 0.213,
      "days": 929
     }
@@ -46672,9 +46672,9 @@
      "days": 848
     },
     {
-     "mean": 58.8,
-     "goodShare": 0.127,
-     "poorShare": 0.089,
+     "mean": 58.9,
+     "goodShare": 0.13,
+     "poorShare": 0.086,
      "days": 930
     },
     {
@@ -46708,8 +46708,8 @@
      "days": 930
     },
     {
-     "mean": 73.3,
-     "goodShare": 0.67,
+     "mean": 73.4,
+     "goodShare": 0.678,
      "poorShare": 0.002,
      "days": 900
     },
@@ -46720,14 +46720,14 @@
      "days": 930
     },
     {
-     "mean": 60.1,
-     "goodShare": 0.251,
-     "poorShare": 0.068,
+     "mean": 60.4,
+     "goodShare": 0.263,
+     "poorShare": 0.063,
      "days": 900
     },
     {
      "mean": 57.0,
-     "goodShare": 0.13,
+     "goodShare": 0.135,
      "poorShare": 0.095,
      "days": 929
     }
@@ -47570,7 +47570,7 @@
   "salalah": {
    "urban": [
     {
-     "mean": 85.2,
+     "mean": 85.4,
      "goodShare": 0.994,
      "poorShare": 0.0,
      "days": 929
@@ -47582,14 +47582,14 @@
      "days": 848
     },
     {
-     "mean": 70.9,
-     "goodShare": 0.569,
+     "mean": 71.2,
+     "goodShare": 0.585,
      "poorShare": 0.002,
      "days": 930
     },
     {
-     "mean": 58.8,
-     "goodShare": 0.036,
+     "mean": 58.9,
+     "goodShare": 0.038,
      "poorShare": 0.001,
      "days": 900
     },
@@ -47656,13 +47656,13 @@
      "days": 848
     },
     {
-     "mean": 85.8,
-     "goodShare": 0.986,
+     "mean": 86.1,
+     "goodShare": 0.987,
      "poorShare": 0.0,
      "days": 930
     },
     {
-     "mean": 77.7,
+     "mean": 77.8,
      "goodShare": 0.986,
      "poorShare": 0.0,
      "days": 900
@@ -47680,7 +47680,7 @@
      "days": 900
     },
     {
-     "mean": 59.6,
+     "mean": 59.7,
      "goodShare": 0.0,
      "poorShare": 0.001,
      "days": 930
@@ -48390,149 +48390,149 @@
   "san-jose": {
    "urban": [
     {
-     "mean": 69.9,
-     "goodShare": 0.557,
-     "poorShare": 0.002,
+     "mean": 71.9,
+     "goodShare": 0.725,
+     "poorShare": 0.0,
      "days": 930
     },
     {
-     "mean": 68.6,
-     "goodShare": 0.489,
-     "poorShare": 0.006,
+     "mean": 71.0,
+     "goodShare": 0.673,
+     "poorShare": 0.004,
      "days": 848
     },
     {
-     "mean": 64.5,
-     "goodShare": 0.174,
-     "poorShare": 0.01,
+     "mean": 67.2,
+     "goodShare": 0.315,
+     "poorShare": 0.005,
      "days": 930
     },
     {
-     "mean": 55.8,
-     "goodShare": 0.017,
-     "poorShare": 0.091,
+     "mean": 58.1,
+     "goodShare": 0.028,
+     "poorShare": 0.082,
      "days": 900
     },
     {
-     "mean": 39.5,
+     "mean": 42.2,
      "goodShare": 0.0,
-     "poorShare": 0.535,
+     "poorShare": 0.49,
      "days": 930
     },
     {
-     "mean": 37.5,
+     "mean": 40.0,
      "goodShare": 0.0,
-     "poorShare": 0.627,
+     "poorShare": 0.569,
      "days": 900
     },
     {
-     "mean": 43.6,
+     "mean": 46.0,
      "goodShare": 0.0,
-     "poorShare": 0.444,
+     "poorShare": 0.392,
      "days": 930
     },
     {
-     "mean": 41.1,
+     "mean": 43.3,
      "goodShare": 0.0,
-     "poorShare": 0.525,
+     "poorShare": 0.474,
      "days": 930
     },
     {
-     "mean": 37.1,
+     "mean": 39.3,
      "goodShare": 0.0,
-     "poorShare": 0.677,
+     "poorShare": 0.621,
      "days": 900
     },
     {
-     "mean": 39.7,
+     "mean": 41.5,
      "goodShare": 0.0,
-     "poorShare": 0.58,
+     "poorShare": 0.533,
      "days": 930
     },
     {
-     "mean": 51.5,
-     "goodShare": 0.006,
-     "poorShare": 0.251,
+     "mean": 53.5,
+     "goodShare": 0.016,
+     "poorShare": 0.222,
      "days": 900
     },
     {
-     "mean": 63.7,
-     "goodShare": 0.183,
-     "poorShare": 0.038,
+     "mean": 65.5,
+     "goodShare": 0.321,
+     "poorShare": 0.018,
      "days": 929
     }
    ],
    "beach": [
     {
-     "mean": 79.3,
-     "goodShare": 0.961,
+     "mean": 80.7,
+     "goodShare": 0.967,
      "poorShare": 0.0,
      "days": 930
     },
     {
-     "mean": 79.1,
-     "goodShare": 0.91,
+     "mean": 81.0,
+     "goodShare": 0.938,
      "poorShare": 0.0,
      "days": 848
     },
     {
-     "mean": 74.4,
-     "goodShare": 0.818,
+     "mean": 76.6,
+     "goodShare": 0.899,
      "poorShare": 0.001,
      "days": 930
     },
     {
-     "mean": 62.8,
-     "goodShare": 0.226,
-     "poorShare": 0.048,
+     "mean": 64.8,
+     "goodShare": 0.308,
+     "poorShare": 0.038,
      "days": 900
     },
     {
-     "mean": 43.8,
+     "mean": 45.9,
      "goodShare": 0.0,
-     "poorShare": 0.411,
+     "poorShare": 0.395,
      "days": 930
     },
     {
-     "mean": 41.6,
+     "mean": 43.7,
      "goodShare": 0.0,
-     "poorShare": 0.481,
+     "poorShare": 0.46,
      "days": 900
     },
     {
-     "mean": 46.8,
+     "mean": 48.9,
      "goodShare": 0.0,
-     "poorShare": 0.34,
+     "poorShare": 0.326,
      "days": 930
     },
     {
-     "mean": 45.1,
+     "mean": 47.1,
      "goodShare": 0.0,
-     "poorShare": 0.409,
+     "poorShare": 0.391,
      "days": 930
-    },
-    {
-     "mean": 41.4,
-     "goodShare": 0.0,
-     "poorShare": 0.529,
-     "days": 900
     },
     {
      "mean": 43.3,
      "goodShare": 0.0,
-     "poorShare": 0.467,
-     "days": 930
-    },
-    {
-     "mean": 55.2,
-     "goodShare": 0.053,
-     "poorShare": 0.203,
+     "poorShare": 0.51,
      "days": 900
     },
     {
-     "mean": 71.4,
-     "goodShare": 0.731,
-     "poorShare": 0.004,
+     "mean": 44.9,
+     "goodShare": 0.0,
+     "poorShare": 0.456,
+     "days": 930
+    },
+    {
+     "mean": 56.9,
+     "goodShare": 0.096,
+     "poorShare": 0.173,
+     "days": 900
+    },
+    {
+     "mean": 73.0,
+     "goodShare": 0.805,
+     "poorShare": 0.001,
      "days": 929
     }
    ],
@@ -48906,8 +48906,8 @@
      "days": 900
     },
     {
-     "mean": 67.6,
-     "goodShare": 0.449,
+     "mean": 67.4,
+     "goodShare": 0.447,
      "poorShare": 0.012,
      "days": 930
     },
@@ -48936,9 +48936,9 @@
      "days": 900
     },
     {
-     "mean": 53.7,
-     "goodShare": 0.141,
-     "poorShare": 0.057,
+     "mean": 53.0,
+     "goodShare": 0.133,
+     "poorShare": 0.059,
      "days": 930
     },
     {
@@ -48980,8 +48980,8 @@
      "days": 900
     },
     {
-     "mean": 70.3,
-     "goodShare": 0.555,
+     "mean": 70.2,
+     "goodShare": 0.548,
      "poorShare": 0.006,
      "days": 930
     },
@@ -49010,9 +49010,9 @@
      "days": 900
     },
     {
-     "mean": 62.5,
-     "goodShare": 0.248,
-     "poorShare": 0.023,
+     "mean": 62.1,
+     "goodShare": 0.234,
+     "poorShare": 0.025,
      "days": 930
     },
     {
@@ -49386,8 +49386,8 @@
      "days": 848
     },
     {
-     "mean": 76.6,
-     "goodShare": 0.802,
+     "mean": 76.5,
+     "goodShare": 0.796,
      "poorShare": 0.006,
      "days": 930
     },
@@ -49404,8 +49404,8 @@
      "days": 930
     },
     {
-     "mean": 79.4,
-     "goodShare": 0.949,
+     "mean": 79.7,
+     "goodShare": 0.953,
      "poorShare": 0.0,
      "days": 900
     },
@@ -49422,13 +49422,13 @@
      "days": 930
     },
     {
-     "mean": 78.1,
-     "goodShare": 0.91,
+     "mean": 78.3,
+     "goodShare": 0.914,
      "poorShare": 0.0,
      "days": 900
     },
     {
-     "mean": 84.4,
+     "mean": 84.5,
      "goodShare": 0.962,
      "poorShare": 0.0,
      "days": 930
@@ -49460,9 +49460,9 @@
      "days": 848
     },
     {
-     "mean": 67.9,
-     "goodShare": 0.538,
-     "poorShare": 0.026,
+     "mean": 67.6,
+     "goodShare": 0.531,
+     "poorShare": 0.028,
      "days": 930
     },
     {
@@ -49478,7 +49478,7 @@
      "days": 930
     },
     {
-     "mean": 90.0,
+     "mean": 90.2,
      "goodShare": 1.0,
      "poorShare": 0.0,
      "days": 900
@@ -49496,13 +49496,13 @@
      "days": 930
     },
     {
-     "mean": 89.5,
+     "mean": 89.6,
      "goodShare": 0.998,
      "poorShare": 0.0,
      "days": 900
     },
     {
-     "mean": 88.9,
+     "mean": 88.8,
      "goodShare": 0.974,
      "poorShare": 0.0,
      "days": 930
@@ -49538,9 +49538,9 @@
   "sao-paulo": {
    "urban": [
     {
-     "mean": 48.1,
-     "goodShare": 0.069,
-     "poorShare": 0.287,
+     "mean": 48.4,
+     "goodShare": 0.074,
+     "poorShare": 0.284,
      "days": 930
     },
     {
@@ -49550,32 +49550,32 @@
      "days": 848
     },
     {
-     "mean": 55.6,
-     "goodShare": 0.154,
-     "poorShare": 0.137,
+     "mean": 55.9,
+     "goodShare": 0.159,
+     "poorShare": 0.133,
      "days": 930
     },
     {
-     "mean": 68.1,
-     "goodShare": 0.484,
-     "poorShare": 0.019,
+     "mean": 68.6,
+     "goodShare": 0.504,
+     "poorShare": 0.018,
      "days": 900
     },
     {
-     "mean": 76.6,
-     "goodShare": 0.809,
+     "mean": 76.8,
+     "goodShare": 0.813,
      "poorShare": 0.001,
      "days": 930
     },
     {
-     "mean": 80.4,
-     "goodShare": 0.911,
+     "mean": 80.5,
+     "goodShare": 0.913,
      "poorShare": 0.0,
      "days": 900
     },
     {
-     "mean": 80.4,
-     "goodShare": 0.901,
+     "mean": 80.5,
+     "goodShare": 0.9,
      "poorShare": 0.002,
      "days": 930
     },
@@ -49586,9 +49586,9 @@
      "days": 930
     },
     {
-     "mean": 70.9,
-     "goodShare": 0.624,
-     "poorShare": 0.009,
+     "mean": 71.0,
+     "goodShare": 0.626,
+     "poorShare": 0.008,
      "days": 900
     },
     {
@@ -49598,9 +49598,9 @@
      "days": 930
     },
     {
-     "mean": 61.2,
-     "goodShare": 0.334,
-     "poorShare": 0.108,
+     "mean": 61.6,
+     "goodShare": 0.346,
+     "poorShare": 0.101,
      "days": 900
     },
     {
@@ -49612,9 +49612,9 @@
    ],
    "beach": [
     {
-     "mean": 54.0,
-     "goodShare": 0.109,
-     "poorShare": 0.145,
+     "mean": 54.2,
+     "goodShare": 0.113,
+     "poorShare": 0.142,
      "days": 930
     },
     {
@@ -49624,32 +49624,32 @@
      "days": 848
     },
     {
-     "mean": 62.1,
-     "goodShare": 0.32,
-     "poorShare": 0.048,
+     "mean": 62.3,
+     "goodShare": 0.326,
+     "poorShare": 0.045,
      "days": 930
     },
     {
-     "mean": 72.4,
-     "goodShare": 0.728,
-     "poorShare": 0.004,
-     "days": 900
-    },
-    {
-     "mean": 74.5,
-     "goodShare": 0.798,
-     "poorShare": 0.001,
-     "days": 930
-    },
-    {
-     "mean": 77.9,
-     "goodShare": 0.848,
+     "mean": 72.6,
+     "goodShare": 0.734,
      "poorShare": 0.003,
      "days": 900
     },
     {
-     "mean": 77.9,
-     "goodShare": 0.803,
+     "mean": 74.5,
+     "goodShare": 0.795,
+     "poorShare": 0.001,
+     "days": 930
+    },
+    {
+     "mean": 77.8,
+     "goodShare": 0.843,
+     "poorShare": 0.004,
+     "days": 900
+    },
+    {
+     "mean": 77.8,
+     "goodShare": 0.802,
      "poorShare": 0.014,
      "days": 930
     },
@@ -49661,7 +49661,7 @@
     },
     {
      "mean": 71.6,
-     "goodShare": 0.653,
+     "goodShare": 0.656,
      "poorShare": 0.016,
      "days": 900
     },
@@ -49672,9 +49672,9 @@
      "days": 930
     },
     {
-     "mean": 62.8,
-     "goodShare": 0.398,
-     "poorShare": 0.056,
+     "mean": 63.0,
+     "goodShare": 0.402,
+     "poorShare": 0.05,
      "days": 900
     },
     {
@@ -49866,9 +49866,9 @@
   "sarajevo": {
    "urban": [
     {
-     "mean": 55.0,
+     "mean": 54.9,
      "goodShare": 0.019,
-     "poorShare": 0.083,
+     "poorShare": 0.086,
      "days": 930
     },
     {
@@ -49878,63 +49878,63 @@
      "days": 848
     },
     {
-     "mean": 61.4,
-     "goodShare": 0.214,
-     "poorShare": 0.071,
+     "mean": 61.6,
+     "goodShare": 0.224,
+     "poorShare": 0.073,
      "days": 930
     },
     {
      "mean": 67.0,
-     "goodShare": 0.447,
-     "poorShare": 0.062,
+     "goodShare": 0.454,
+     "poorShare": 0.061,
      "days": 900
     },
     {
-     "mean": 74.0,
-     "goodShare": 0.709,
-     "poorShare": 0.015,
+     "mean": 74.4,
+     "goodShare": 0.72,
+     "poorShare": 0.014,
      "days": 930
     },
     {
-     "mean": 74.2,
-     "goodShare": 0.678,
-     "poorShare": 0.003,
+     "mean": 74.4,
+     "goodShare": 0.69,
+     "poorShare": 0.002,
+     "days": 900
+    },
+    {
+     "mean": 73.1,
+     "goodShare": 0.645,
+     "poorShare": 0.0,
+     "days": 930
+    },
+    {
+     "mean": 73.6,
+     "goodShare": 0.701,
+     "poorShare": 0.0,
+     "days": 930
+    },
+    {
+     "mean": 77.6,
+     "goodShare": 0.8,
+     "poorShare": 0.01,
      "days": 900
     },
     {
      "mean": 73.0,
-     "goodShare": 0.647,
-     "poorShare": 0.0,
+     "goodShare": 0.622,
+     "poorShare": 0.028,
      "days": 930
     },
     {
-     "mean": 73.5,
-     "goodShare": 0.694,
-     "poorShare": 0.0,
-     "days": 930
-    },
-    {
-     "mean": 77.9,
-     "goodShare": 0.799,
-     "poorShare": 0.008,
+     "mean": 60.7,
+     "goodShare": 0.23,
+     "poorShare": 0.078,
      "days": 900
     },
     {
-     "mean": 73.3,
-     "goodShare": 0.631,
-     "poorShare": 0.026,
-     "days": 930
-    },
-    {
-     "mean": 60.9,
-     "goodShare": 0.233,
-     "poorShare": 0.074,
-     "days": 900
-    },
-    {
-     "mean": 54.4,
-     "goodShare": 0.024,
-     "poorShare": 0.101,
+     "mean": 54.3,
+     "goodShare": 0.026,
+     "poorShare": 0.108,
      "days": 930
     }
    ],
@@ -49948,67 +49948,67 @@
     {
      "mean": 37.6,
      "goodShare": 0.002,
-     "poorShare": 0.535,
+     "poorShare": 0.544,
      "days": 848
     },
     {
-     "mean": 43.8,
-     "goodShare": 0.027,
+     "mean": 44.0,
+     "goodShare": 0.028,
      "poorShare": 0.342,
      "days": 930
     },
     {
      "mean": 53.0,
-     "goodShare": 0.174,
-     "poorShare": 0.208,
+     "goodShare": 0.172,
+     "poorShare": 0.206,
      "days": 900
     },
     {
-     "mean": 65.3,
-     "goodShare": 0.477,
-     "poorShare": 0.071,
+     "mean": 65.8,
+     "goodShare": 0.483,
+     "poorShare": 0.063,
      "days": 930
     },
     {
-     "mean": 74.1,
-     "goodShare": 0.76,
-     "poorShare": 0.019,
+     "mean": 74.4,
+     "goodShare": 0.768,
+     "poorShare": 0.017,
      "days": 900
     },
     {
-     "mean": 79.1,
-     "goodShare": 0.868,
+     "mean": 79.2,
+     "goodShare": 0.87,
      "poorShare": 0.001,
      "days": 930
     },
     {
-     "mean": 80.9,
-     "goodShare": 0.899,
-     "poorShare": 0.001,
+     "mean": 81.0,
+     "goodShare": 0.898,
+     "poorShare": 0.002,
      "days": 930
     },
     {
-     "mean": 72.2,
-     "goodShare": 0.68,
-     "poorShare": 0.03,
+     "mean": 72.0,
+     "goodShare": 0.676,
+     "poorShare": 0.033,
      "days": 900
     },
     {
-     "mean": 60.5,
-     "goodShare": 0.361,
-     "poorShare": 0.113,
+     "mean": 60.1,
+     "goodShare": 0.354,
+     "poorShare": 0.112,
      "days": 930
     },
     {
-     "mean": 43.5,
+     "mean": 43.4,
      "goodShare": 0.027,
-     "poorShare": 0.351,
+     "poorShare": 0.352,
      "days": 900
     },
     {
      "mean": 35.6,
      "goodShare": 0.0,
-     "poorShare": 0.611,
+     "poorShare": 0.606,
      "days": 930
     }
    ],
@@ -50030,9 +50030,9 @@
   "saranda": {
    "urban": [
     {
-     "mean": 62.3,
-     "goodShare": 0.323,
-     "poorShare": 0.094,
+     "mean": 62.2,
+     "goodShare": 0.315,
+     "poorShare": 0.095,
      "days": 930
     },
     {
@@ -50060,8 +50060,8 @@
      "days": 930
     },
     {
-     "mean": 76.6,
-     "goodShare": 0.744,
+     "mean": 76.8,
+     "goodShare": 0.75,
      "poorShare": 0.0,
      "days": 900
     },
@@ -50078,21 +50078,21 @@
      "days": 930
     },
     {
-     "mean": 77.2,
-     "goodShare": 0.791,
+     "mean": 77.4,
+     "goodShare": 0.794,
      "poorShare": 0.001,
      "days": 900
     },
     {
-     "mean": 81.0,
+     "mean": 81.1,
      "goodShare": 0.847,
      "poorShare": 0.002,
      "days": 930
     },
     {
-     "mean": 69.2,
-     "goodShare": 0.626,
-     "poorShare": 0.034,
+     "mean": 69.0,
+     "goodShare": 0.623,
+     "poorShare": 0.036,
      "days": 900
     },
     {
@@ -50104,9 +50104,9 @@
    ],
    "beach": [
     {
-     "mean": 46.2,
-     "goodShare": 0.006,
-     "poorShare": 0.224,
+     "mean": 46.1,
+     "goodShare": 0.005,
+     "poorShare": 0.226,
      "days": 930
     },
     {
@@ -50134,7 +50134,7 @@
      "days": 930
     },
     {
-     "mean": 88.0,
+     "mean": 88.1,
      "goodShare": 0.977,
      "poorShare": 0.0,
      "days": 900
@@ -50158,15 +50158,15 @@
      "days": 900
     },
     {
-     "mean": 77.2,
-     "goodShare": 0.788,
+     "mean": 77.0,
+     "goodShare": 0.785,
      "poorShare": 0.015,
      "days": 930
     },
     {
-     "mean": 57.6,
-     "goodShare": 0.269,
-     "poorShare": 0.166,
+     "mean": 57.4,
+     "goodShare": 0.26,
+     "poorShare": 0.171,
      "days": 900
     },
     {
@@ -51348,8 +51348,8 @@
      "days": 929
     },
     {
-     "mean": 56.0,
-     "goodShare": 0.067,
+     "mean": 56.1,
+     "goodShare": 0.071,
      "poorShare": 0.014,
      "days": 848
     },
@@ -51402,8 +51402,8 @@
      "days": 930
     },
     {
-     "mean": 49.3,
-     "goodShare": 0.023,
+     "mean": 49.4,
+     "goodShare": 0.024,
      "poorShare": 0.1,
      "days": 900
     },
@@ -51422,8 +51422,8 @@
      "days": 929
     },
     {
-     "mean": 72.6,
-     "goodShare": 0.61,
+     "mean": 72.7,
+     "goodShare": 0.617,
      "poorShare": 0.004,
      "days": 848
     },
@@ -51477,7 +51477,7 @@
     },
     {
      "mean": 63.0,
-     "goodShare": 0.253,
+     "goodShare": 0.256,
      "poorShare": 0.039,
      "days": 900
     },
@@ -51670,8 +51670,8 @@
   "skopje": {
    "urban": [
     {
-     "mean": 60.4,
-     "goodShare": 0.095,
+     "mean": 60.3,
+     "goodShare": 0.092,
      "poorShare": 0.033,
      "days": 930
     },
@@ -51706,8 +51706,8 @@
      "days": 900
     },
     {
-     "mean": 73.0,
-     "goodShare": 0.634,
+     "mean": 73.2,
+     "goodShare": 0.642,
      "poorShare": 0.0,
      "days": 930
     },
@@ -51718,33 +51718,33 @@
      "days": 930
     },
     {
-     "mean": 81.7,
-     "goodShare": 0.92,
+     "mean": 81.8,
+     "goodShare": 0.928,
      "poorShare": 0.0,
      "days": 900
     },
     {
-     "mean": 79.2,
-     "goodShare": 0.814,
+     "mean": 79.1,
+     "goodShare": 0.812,
      "poorShare": 0.012,
      "days": 930
     },
     {
-     "mean": 67.0,
-     "goodShare": 0.42,
-     "poorShare": 0.031,
+     "mean": 66.8,
+     "goodShare": 0.413,
+     "poorShare": 0.032,
      "days": 900
     },
     {
      "mean": 59.6,
-     "goodShare": 0.077,
+     "goodShare": 0.076,
      "poorShare": 0.055,
      "days": 930
     }
    ],
    "beach": [
     {
-     "mean": 43.3,
+     "mean": 43.2,
      "goodShare": 0.001,
      "poorShare": 0.267,
      "days": 930
@@ -51780,8 +51780,8 @@
      "days": 900
     },
     {
-     "mean": 86.2,
-     "goodShare": 0.968,
+     "mean": 86.4,
+     "goodShare": 0.969,
      "poorShare": 0.0,
      "days": 930
     },
@@ -51798,15 +51798,15 @@
      "days": 900
     },
     {
-     "mean": 70.2,
-     "goodShare": 0.586,
+     "mean": 70.1,
+     "goodShare": 0.585,
      "poorShare": 0.046,
      "days": 930
     },
     {
-     "mean": 51.9,
-     "goodShare": 0.1,
-     "poorShare": 0.137,
+     "mean": 51.7,
+     "goodShare": 0.093,
+     "poorShare": 0.139,
      "days": 900
     },
     {
@@ -53316,8 +53316,8 @@
      "days": 929
     },
     {
-     "mean": 69.7,
-     "goodShare": 0.573,
+     "mean": 69.6,
+     "goodShare": 0.572,
      "poorShare": 0.038,
      "days": 848
     },
@@ -53328,9 +53328,9 @@
      "days": 930
     },
     {
-     "mean": 65.0,
-     "goodShare": 0.372,
-     "poorShare": 0.034,
+     "mean": 65.3,
+     "goodShare": 0.377,
+     "poorShare": 0.032,
      "days": 900
     },
     {
@@ -53370,8 +53370,8 @@
      "days": 930
     },
     {
-     "mean": 66.8,
-     "goodShare": 0.48,
+     "mean": 66.9,
+     "goodShare": 0.482,
      "poorShare": 0.032,
      "days": 900
     },
@@ -53390,9 +53390,9 @@
      "days": 929
     },
     {
-     "mean": 58.8,
-     "goodShare": 0.334,
-     "poorShare": 0.16,
+     "mean": 58.7,
+     "goodShare": 0.331,
+     "poorShare": 0.162,
      "days": 848
     },
     {
@@ -53402,9 +53402,9 @@
      "days": 930
     },
     {
-     "mean": 65.7,
-     "goodShare": 0.43,
-     "poorShare": 0.037,
+     "mean": 65.8,
+     "goodShare": 0.434,
+     "poorShare": 0.038,
      "days": 900
     },
     {
@@ -53445,8 +53445,8 @@
     },
     {
      "mean": 65.3,
-     "goodShare": 0.463,
-     "poorShare": 0.023,
+     "goodShare": 0.462,
+     "poorShare": 0.024,
      "days": 900
     },
     {
@@ -54300,14 +54300,14 @@
      "days": 929
     },
     {
-     "mean": 65.2,
-     "goodShare": 0.337,
+     "mean": 65.1,
+     "goodShare": 0.335,
      "poorShare": 0.032,
      "days": 848
     },
     {
-     "mean": 69.9,
-     "goodShare": 0.58,
+     "mean": 69.8,
+     "goodShare": 0.575,
      "poorShare": 0.016,
      "days": 930
     },
@@ -54324,8 +54324,8 @@
      "days": 930
     },
     {
-     "mean": 75.2,
-     "goodShare": 0.744,
+     "mean": 75.5,
+     "goodShare": 0.751,
      "poorShare": 0.001,
      "days": 900
     },
@@ -54348,8 +54348,8 @@
      "days": 900
     },
     {
-     "mean": 81.8,
-     "goodShare": 0.894,
+     "mean": 81.7,
+     "goodShare": 0.89,
      "poorShare": 0.003,
      "days": 930
     },
@@ -54374,14 +54374,14 @@
      "days": 929
     },
     {
-     "mean": 49.3,
-     "goodShare": 0.044,
-     "poorShare": 0.145,
+     "mean": 49.1,
+     "goodShare": 0.04,
+     "poorShare": 0.147,
      "days": 848
     },
     {
-     "mean": 56.7,
-     "goodShare": 0.189,
+     "mean": 56.5,
+     "goodShare": 0.184,
      "poorShare": 0.102,
      "days": 930
     },
@@ -54398,7 +54398,7 @@
      "days": 930
     },
     {
-     "mean": 87.0,
+     "mean": 87.1,
      "goodShare": 0.954,
      "poorShare": 0.0,
      "days": 900
@@ -54422,9 +54422,9 @@
      "days": 900
     },
     {
-     "mean": 74.7,
-     "goodShare": 0.731,
-     "poorShare": 0.016,
+     "mean": 74.6,
+     "goodShare": 0.729,
+     "poorShare": 0.017,
      "days": 930
     },
     {
@@ -56098,8 +56098,8 @@
   "varadero": {
    "urban": [
     {
-     "mean": 71.9,
-     "goodShare": 0.595,
+     "mean": 72.1,
+     "goodShare": 0.603,
      "poorShare": 0.008,
      "days": 930
     },
@@ -56164,16 +56164,16 @@
      "days": 900
     },
     {
-     "mean": 68.3,
-     "goodShare": 0.45,
+     "mean": 68.5,
+     "goodShare": 0.457,
      "poorShare": 0.006,
      "days": 929
     }
    ],
    "beach": [
     {
-     "mean": 79.3,
-     "goodShare": 0.904,
+     "mean": 79.4,
+     "goodShare": 0.906,
      "poorShare": 0.001,
      "days": 930
     },
@@ -56238,8 +56238,8 @@
      "days": 900
     },
     {
-     "mean": 77.9,
-     "goodShare": 0.863,
+     "mean": 78.0,
+     "goodShare": 0.869,
      "poorShare": 0.0,
      "days": 929
     }
@@ -58096,31 +58096,31 @@
      "days": 930
     },
     {
-     "mean": 60.5,
-     "goodShare": 0.239,
-     "poorShare": 0.033,
+     "mean": 60.8,
+     "goodShare": 0.243,
+     "poorShare": 0.032,
      "days": 900
     },
     {
-     "mean": 51.1,
-     "goodShare": 0.038,
-     "poorShare": 0.108,
+     "mean": 51.2,
+     "goodShare": 0.039,
+     "poorShare": 0.106,
      "days": 930
     },
     {
-     "mean": 56.0,
-     "goodShare": 0.146,
+     "mean": 56.2,
+     "goodShare": 0.152,
      "poorShare": 0.078,
      "days": 930
     },
     {
-     "mean": 70.9,
-     "goodShare": 0.622,
+     "mean": 71.0,
+     "goodShare": 0.627,
      "poorShare": 0.01,
      "days": 900
     },
     {
-     "mean": 77.9,
+     "mean": 77.8,
      "goodShare": 0.819,
      "poorShare": 0.01,
      "days": 930
@@ -58133,7 +58133,7 @@
     },
     {
      "mean": 67.3,
-     "goodShare": 0.338,
+     "goodShare": 0.331,
      "poorShare": 0.0,
      "days": 930
     }
@@ -58170,33 +58170,33 @@
      "days": 930
     },
     {
-     "mean": 69.2,
-     "goodShare": 0.524,
+     "mean": 69.4,
+     "goodShare": 0.538,
      "poorShare": 0.007,
      "days": 900
     },
     {
-     "mean": 63.6,
-     "goodShare": 0.249,
+     "mean": 63.7,
+     "goodShare": 0.255,
      "poorShare": 0.037,
      "days": 930
     },
     {
-     "mean": 68.0,
-     "goodShare": 0.466,
-     "poorShare": 0.026,
+     "mean": 68.2,
+     "goodShare": 0.473,
+     "poorShare": 0.025,
      "days": 930
     },
     {
      "mean": 73.1,
-     "goodShare": 0.736,
+     "goodShare": 0.738,
      "poorShare": 0.019,
      "days": 900
     },
     {
-     "mean": 69.0,
-     "goodShare": 0.588,
-     "poorShare": 0.049,
+     "mean": 68.8,
+     "goodShare": 0.58,
+     "poorShare": 0.051,
      "days": 930
     },
     {
@@ -58206,8 +58206,8 @@
      "days": 900
     },
     {
-     "mean": 52.4,
-     "goodShare": 0.019,
+     "mean": 52.2,
+     "goodShare": 0.018,
      "poorShare": 0.011,
      "days": 930
     }
@@ -58394,7 +58394,7 @@
   "yogyakarta": {
    "urban": [
     {
-     "mean": 25.7,
+     "mean": 25.8,
      "goodShare": 0.0,
      "poorShare": 0.787,
      "days": 929
@@ -58412,7 +58412,7 @@
      "days": 930
     },
     {
-     "mean": 32.4,
+     "mean": 32.5,
      "goodShare": 0.0,
      "poorShare": 0.539,
      "days": 900
@@ -58722,147 +58722,147 @@
   "zakopane": {
    "urban": [
     {
-     "mean": 51.7,
+     "mean": 51.6,
      "goodShare": 0.0,
-     "poorShare": 0.057,
+     "poorShare": 0.062,
      "days": 930
     },
     {
-     "mean": 52.7,
-     "goodShare": 0.0,
-     "poorShare": 0.057,
+     "mean": 52.4,
+     "goodShare": 0.001,
+     "poorShare": 0.062,
      "days": 848
     },
     {
-     "mean": 56.6,
-     "goodShare": 0.026,
-     "poorShare": 0.042,
-     "days": 930
-    },
-    {
-     "mean": 62.9,
-     "goodShare": 0.271,
+     "mean": 56.5,
+     "goodShare": 0.042,
      "poorShare": 0.047,
-     "days": 900
-    },
-    {
-     "mean": 68.4,
-     "goodShare": 0.477,
-     "poorShare": 0.031,
      "days": 930
-    },
-    {
-     "mean": 72.0,
-     "goodShare": 0.628,
-     "poorShare": 0.01,
-     "days": 900
-    },
-    {
-     "mean": 73.8,
-     "goodShare": 0.688,
-     "poorShare": 0.001,
-     "days": 930
-    },
-    {
-     "mean": 76.2,
-     "goodShare": 0.766,
-     "poorShare": 0.004,
-     "days": 930
-    },
-    {
-     "mean": 71.5,
-     "goodShare": 0.589,
-     "poorShare": 0.031,
-     "days": 900
     },
     {
      "mean": 62.9,
-     "goodShare": 0.284,
-     "poorShare": 0.056,
-     "days": 930
-    },
-    {
-     "mean": 55.9,
-     "goodShare": 0.028,
-     "poorShare": 0.061,
+     "goodShare": 0.281,
+     "poorShare": 0.058,
      "days": 900
     },
     {
-     "mean": 52.1,
+     "mean": 67.9,
+     "goodShare": 0.474,
+     "poorShare": 0.04,
+     "days": 930
+    },
+    {
+     "mean": 71.6,
+     "goodShare": 0.632,
+     "poorShare": 0.016,
+     "days": 900
+    },
+    {
+     "mean": 73.0,
+     "goodShare": 0.66,
+     "poorShare": 0.005,
+     "days": 930
+    },
+    {
+     "mean": 75.7,
+     "goodShare": 0.759,
+     "poorShare": 0.008,
+     "days": 930
+    },
+    {
+     "mean": 71.0,
+     "goodShare": 0.59,
+     "poorShare": 0.033,
+     "days": 900
+    },
+    {
+     "mean": 63.0,
+     "goodShare": 0.294,
+     "poorShare": 0.061,
+     "days": 930
+    },
+    {
+     "mean": 55.8,
+     "goodShare": 0.034,
+     "poorShare": 0.063,
+     "days": 900
+    },
+    {
+     "mean": 51.8,
      "goodShare": 0.0,
-     "poorShare": 0.059,
+     "poorShare": 0.063,
      "days": 930
     }
    ],
    "beach": [
     {
-     "mean": 34.0,
+     "mean": 33.8,
      "goodShare": 0.0,
-     "poorShare": 0.787,
+     "poorShare": 0.788,
      "days": 930
     },
     {
-     "mean": 33.7,
+     "mean": 33.5,
      "goodShare": 0.0,
-     "poorShare": 0.771,
+     "poorShare": 0.772,
      "days": 848
     },
     {
-     "mean": 36.5,
+     "mean": 36.8,
      "goodShare": 0.0,
-     "poorShare": 0.633,
+     "poorShare": 0.623,
      "days": 930
     },
     {
-     "mean": 46.4,
-     "goodShare": 0.063,
-     "poorShare": 0.3,
+     "mean": 46.6,
+     "goodShare": 0.086,
+     "poorShare": 0.318,
      "days": 900
     },
     {
-     "mean": 54.9,
-     "goodShare": 0.206,
-     "poorShare": 0.172,
+     "mean": 54.6,
+     "goodShare": 0.222,
+     "poorShare": 0.188,
      "days": 930
     },
     {
-     "mean": 63.1,
+     "mean": 62.8,
      "goodShare": 0.391,
-     "poorShare": 0.063,
+     "poorShare": 0.081,
      "days": 900
     },
     {
-     "mean": 67.6,
-     "goodShare": 0.53,
-     "poorShare": 0.043,
+     "mean": 67.0,
+     "goodShare": 0.515,
+     "poorShare": 0.054,
      "days": 930
     },
     {
-     "mean": 71.4,
-     "goodShare": 0.66,
-     "poorShare": 0.025,
+     "mean": 70.8,
+     "goodShare": 0.647,
+     "poorShare": 0.029,
      "days": 930
     },
     {
-     "mean": 57.4,
-     "goodShare": 0.278,
-     "poorShare": 0.151,
+     "mean": 57.2,
+     "goodShare": 0.281,
+     "poorShare": 0.154,
      "days": 900
     },
     {
-     "mean": 45.2,
-     "goodShare": 0.06,
-     "poorShare": 0.372,
+     "mean": 45.3,
+     "goodShare": 0.065,
+     "poorShare": 0.38,
      "days": 930
     },
     {
      "mean": 34.9,
      "goodShare": 0.0,
-     "poorShare": 0.75,
+     "poorShare": 0.744,
      "days": 900
     },
     {
-     "mean": 33.2,
+     "mean": 33.0,
      "goodShare": 0.0,
      "poorShare": 0.809,
      "days": 930
@@ -59380,6 +59380,38 @@
   {
    "id": "coronet-peak",
    "why": "no cloud series"
+  },
+  {
+   "id": "easter-island",
+   "why": "no ERA5-Land download"
+  },
+  {
+   "id": "maafushi",
+   "why": "no ERA5-Land download"
+  },
+  {
+   "id": "mahe",
+   "why": "no ERA5-Land download"
+  },
+  {
+   "id": "male",
+   "why": "no ERA5-Land download"
+  },
+  {
+   "id": "nukualofa",
+   "why": "no ERA5-Land download"
+  },
+  {
+   "id": "praslin",
+   "why": "no ERA5-Land download"
+  },
+  {
+   "id": "roatan",
+   "why": "no ERA5-Land download"
+  },
+  {
+   "id": "sal",
+   "why": "no ERA5-Land download"
   }
  ]
 }

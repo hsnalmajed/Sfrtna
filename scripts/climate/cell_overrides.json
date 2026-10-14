@@ -445,6 +445,9 @@
    "latitude": 49.4,
    "longitude": 20.0,
    "reason": "check_cells 14 Oct 2026: own cell averages 1236 m against the town's 829 m; the land cell 12.0 km away averages 717 m."
+  },
+  "valletta": {
+   "withhold": "Malta's own station (Luqa) is in neither the WMO nor the GHCN normals used here; the correction comes from Sicilian stations 103–133 km away and leaves July highs near 27.5 °C, about 4 °C below Malta's summer. Needs a station override (Malta Meteorological Office normals). Withheld 14 Oct 2026."
   }
  }
 }

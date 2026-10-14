@@ -132,3 +132,14 @@ suggestions need fare data), live site check: API ✓, browser ✓ except the
 stale calendar test (fixed). `mobile-taps.yml` on the new code: 28 page
 checks, no errors; "no effect" only on already-selected items (active tab,
 chosen amount, current language).
+
+## Climate data published (14 Oct, afternoon)
+
+| # | Check | Result |
+|---|---|---|
+| C.1 | Accuracy test (leave-own-station-out, ±2 °C) | ✅ highs 91 % calibrated / 88 % regional; lows 85 / 84 % |
+| C.2 | Season tests (`npm run test:seasons`) | ✅ 25/25 |
+| C.3 | Old 144 cities: months keeping their class | ✅ 92.2 %; 1 two-class jump (Al Wakrah Oct, 35.1 → 37 °C) |
+| C.4 | Gabala (lone-station bug) | ✅ Jan 4.2 / Jul 28.5 °C (was 9.3 / 32.7) |
+| C.5 | 68 newly rated cities read by hand for impossible values | ✅ one found (Valletta July 27.5 °C) → withheld |
+| C.6 | Local build at 390 px: /ar/seasons, Gabala year view, home | ✅ October 110 cities, no page errors |

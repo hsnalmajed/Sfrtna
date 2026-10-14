@@ -105,7 +105,7 @@ Rule: Official station (WMO normals first, then GHCN-Daily) within 25 km and 150
 | saint-petersburg | StPetersburg (00026063) | WMO | 3.3 km | 3 m / 11 m | Tmax, Tmin, Tmean, rain mm, rain days ≥ 1 mm, humidity | -1.6 |
 | kazan | Kazan (00027595) | WMO | 8.8 km | 116 m / 80 m | Tmax, Tmin, Tmean, rain mm, rain days ≥ 1 mm, humidity | -1.6 |
 | sochi | Sotchi (00037099) | WMO | 3.5 km | 142 m / 5 m | Tmax, Tmin, Tmean, rain mm, rain days ≥ 1 mm, humidity | -2.6 |
-| sarajevo | SARAJEVO (00014654) | WMO | 1.5 km | 630 m / 542 m | Tmax, Tmin, Tmean, rain mm, rain days ≥ 1 mm, humidity | -3.1 |
+| sarajevo | SARAJEVO (00014654) | WMO | 1.5 km | 630 m / 542 m | Tmax, Tmin, Tmean, rain mm, rain days ≥ 1 mm, humidity | -2.3 |
 | mostar | MOSTAR (00014648) | WMO | 1.3 km | 99 m / 66 m | Tmax, Tmin, Tmean, rain mm, rain days ≥ 1 mm, humidity | -4.3 |
 | kotor | HercegNovi (00013455) | WMO | 18.9 km | 10 m / 13 m | Tmax, Tmin, Tmean=(Tmax+Tmin)/2, rain mm, rain days ≥ 1 mm | -5.3 |
 | podgorica | Podgorica (00013463) | WMO | 1.4 km | 49 m / 45 m | Tmax, Tmin, Tmean=(Tmax+Tmin)/2, rain mm, rain days ≥ 1 mm | -3.2 |
@@ -115,7 +115,7 @@ Rule: Official station (WMO normals first, then GHCN-Daily) within 25 km and 150
 | dubrovnik | DUBROVNIK (ghcn:HRE00155411) | GHCN | 17.5 km | 165 m / 30 m | Tmax, Tmin, Tmean=(Tmax+Tmin)/2, rain mm, rain days ≥ 1 mm | -3.1 |
 | prague | PrahaLibus (00011520) | WMO | 9.0 km | 302 m / 203 m | Tmax, Tmin, Tmean, rain mm, rain days ≥ 1 mm, humidity | -0.8 |
 | budapest | BudapestBelterulet (00012840) | WMO | 1.7 km | 153 m / 114 m | Tmax, Tmin, Tmean, rain mm, rain days ≥ 1 mm, humidity | -2.2 |
-| zakopane | LIESEK (00011918) | WMO | 21.3 km | 692 m / 829 m | Tmax, Tmin, Tmean, rain mm, rain days ≥ 1 mm, humidity | -4.2 |
+| zakopane | LIESEK (00011918) | WMO | 21.3 km | 692 m / 829 m | Tmax, Tmin, Tmean, rain mm, rain days ≥ 1 mm, humidity | -1.5 |
 | dublin | DublinAirport (00003969) | WMO | 8.8 km | 71 m / 12 m | Tmax, Tmin, Tmean, rain mm, rain days ≥ 1 mm, humidity | -1.1 |
 | brussels | UCCLE (00006447) | WMO | 5.5 km | 99 m / 33 m | Tmax, Tmin, Tmean, rain mm, rain days ≥ 1 mm, humidity | -0.5 |
 | bruges | OOSTENDEAIRPORT (00006407) | WMO | 23.7 km | 3 m / 12 m | Tmax, Tmin, Tmean, rain mm, rain days ≥ 1 mm, humidity | -0.3 |
@@ -127,20 +127,20 @@ Rule: Official station (WMO normals first, then GHCN-Daily) within 25 km and 150
 | helsinki | HelsinkiKaisaniemi (00002978) | WMO | 0.9 km | 3 m / 21 m | Tmax, Tmin, Tmean, rain mm, rain days ≥ 1 mm, humidity | -1.2 |
 | rovaniemi | RovaniemiLentoasema (00002845) | WMO | 8.1 km | 189 m / 96 m | Tmax, Tmin, Tmean, rain mm, rain days ≥ 1 mm, humidity | -0.6 |
 | ljubljana | LjubljanaBezigrad (00014015) | WMO | 1.9 km | 299 m / 301 m | Tmax, Tmin, Tmean, rain mm, rain days ≥ 1 mm, humidity | -1.8 |
-| bled | LESCE (ghcn:SIE00114966) | GHCN | 7.7 km | 515 m / 496 m | Tmax, Tmin, Tmean=(Tmax+Tmin)/2, rain mm, rain days ≥ 1 mm | -3.5 |
+| bled | LESCE (ghcn:SIE00114966) | GHCN | 7.7 km | 515 m / 496 m | Tmax, Tmin, Tmean=(Tmax+Tmin)/2, rain mm, rain days ≥ 1 mm | -2.0 |
 | larnaca | LarnakaAirport (00017609) | WMO | 5.5 km | 2 m / 10 m | Tmax, Tmin, Tmean, rain mm, rain days ≥ 1 mm | -1.0 |
 | paphos | PafosAirport (00017600) | WMO | 9.3 km | 9 m / 76 m | Tmax, Tmin, Tmean, rain mm | -2.4 |
 | bucharest | BucurestiBaneasa (00015420) | WMO | 8.4 km | 90 m / 87 m | Tmax, Tmin, Tmean, rain mm, rain days ≥ 1 mm, humidity | -0.9 |
 | reykjavik | Reykjavik (00004030) | WMO | 2.8 km | 52 m / 8 m | Tmax, Tmin, Tmean, rain mm, rain days ≥ 1 mm, humidity | -1.6 |
 | yerevan | YerevanArabkir (00037789) | WMO | 1.9 km | 1113 m / 997 m | rain mm, rain days ≥ 1 mm, humidity | — |
-| almaty | ALMATYOGMS (00036870) | WMO | 1.1 km | 847 m / 891 m | Tmax, Tmin, Tmean, rain mm, rain days ≥ 1 mm, humidity | -4.9 |
+| almaty | ALMATYOGMS (00036870) | WMO | 1.1 km | 847 m / 891 m | Tmax, Tmin, Tmean, rain mm, rain days ≥ 1 mm, humidity | -3.9 |
 | astana | Nur-Sultan (00035188) | WMO | 5.3 km | 347 m / 346 m | Tmax, Tmin, Tmean, rain mm, rain days ≥ 1 mm, humidity | -0.7 |
 | tashkent | Tashkent (00038457) | WMO | 2.9 km | 477 m / 454 m | Tmax, Tmin, Tmean, rain mm, rain days ≥ 1 mm, humidity | -1.7 |
 | samarkand | Samarkand (00038696) | WMO | 3.3 km | 725 m / 720 m | Tmax, Tmin, Tmean, rain mm, rain days ≥ 1 mm, humidity | -1.3 |
 | bukhara | Buhara (00038683) | WMO | 18.5 km | 224 m / 236 m | Tmax, Tmin, Tmean, rain mm, rain days ≥ 1 mm, humidity | 0.3 |
 | islamabad | Islamabad (00041571) | WMO | 9.1 km | 507 m / 535 m | Tmax, Tmin, Tmean, rain mm, rain days ≥ 1 mm | -2.8 |
 | lahore | Lahore (00041640) | WMO | 2.5 km | 214 m / 218 m | Tmax, Tmin, Tmean, rain mm, rain days ≥ 1 mm | -0.7 |
-| kathmandu | Kathmandu (00044454) | WMO | 3.5 km | 1337 m / 1304 m | Tmax, Tmin, Tmean, rain mm, rain days ≥ 1 mm | -5.8 |
+| kathmandu | Kathmandu (00044454) | WMO | 3.5 km | 1337 m / 1304 m | Tmax, Tmin, Tmean, rain mm, rain days ≥ 1 mm | -4.7 |
 | pokhara | Pokhara (00044434) | WMO | 1.6 km | 827 m / 846 m | Tmax, Tmin, Tmean, rain mm, rain days ≥ 1 mm | -5.2 |
 | manila | PortAreaManila (00098425) | WMO | 1.7 km | 15 m / 5 m | Tmax, Tmin, Tmean, rain mm, rain days ≥ 1 mm, humidity | -2.0 |
 | cebu | MactanInternationalAirportCebu (00098646) | WMO | 5.9 km | 24 m / 11 m | Tmax, Tmin, Tmean, rain mm, rain days ≥ 1 mm, humidity | -3.2 |
@@ -214,8 +214,8 @@ Rule: Official station (WMO normals first, then GHCN-Daily) within 25 km and 150
 | ottawa | Ottawa_Cda_Rcs (00071063) | WMO | 4.7 km | 79 m / 75 m | Tmax, Tmin, Tmean | -0.4 |
 | punta-cana | PuntaCana (00078479) | WMO | 1.4 km | 7 m / 11 m | Tmax, Tmin, Tmean, rain mm | -2.8 |
 | santo-domingo | SantoDomingo (00078486) | WMO | 2.2 km | 14 m / 22 m | Tmax, Tmin, Tmean, rain mm | -2.3 |
-| montego-bay | MontegoBaySangster (00078388) | WMO | 3.1 km | 1 m / 8 m | Tmax, Tmin, Tmean, rain mm, rain days ≥ 1 mm | -2.6 |
-| kingston | KingstonNormanManley (00078397) | WMO | 4.4 km | 3 m / 14 m | Tmax, Tmin, Tmean, rain mm, rain days ≥ 1 mm | -5.1 |
+| montego-bay | MontegoBaySangster (00078388) | WMO | 3.1 km | 1 m / 8 m | Tmax, Tmin, Tmean, rain mm, rain days ≥ 1 mm | -2.5 |
+| kingston | KingstonNormanManley (00078397) | WMO | 4.4 km | 3 m / 14 m | Tmax, Tmin, Tmean, rain mm, rain days ≥ 1 mm | -2.5 |
 | liberia | DanielOduberInternationalAirpo (00078774) | WMO | 11.6 km | 70 m / 145 m | Tmax, Tmin, Tmean, rain mm, rain days ≥ 1 mm | -5.1 |
 | guatemala-city | La_Aurora (00078641) | WMO | 6.4 km | 1491 m / 1504 m | Tmax, Tmin, Tmean, rain mm, rain days ≥ 1 mm | -6.5 |
 | san-salvador | ILOPANGO (00078663) | WMO | 7.9 km | 624 m / 658 m | Tmax, Tmin, Tmean, rain mm, rain days ≥ 1 mm | -2.7 |
@@ -231,7 +231,7 @@ Rule: Official station (WMO normals first, then GHCN-Daily) within 25 km and 150
 | punta-arenas | Carlosibanezaeropuertopuntaare (00085934) | WMO | 18.4 km | 36 m / 18 m | Tmax, Tmin, Tmean, rain mm, rain days ≥ 1 mm, humidity | -2.4 |
 | easter-island | Isladepascuaad (00085469) | WMO | 1.3 km | 44 m / 21 m | Tmax, Tmin, Tmean, rain mm, rain days ≥ 1 mm | — |
 | bogota | El_Dorado_Catam__AUT_ (21205791) | WMO | 9.5 km | 2547 m / 2555 m | Tmax, Tmin, Tmean, rain mm, rain days ≥ 1 mm | -0.9 |
-| medellin | Olaya_Herrera__AUT_ (27015330) | WMO | 5.7 km | 1490 m / 1598 m | Tmax, Tmin, Tmean, rain mm, rain days ≥ 1 mm | -6.9 |
+| medellin | Olaya_Herrera__AUT_ (27015330) | WMO | 5.7 km | 1490 m / 1598 m | Tmax, Tmin, Tmean, rain mm, rain days ≥ 1 mm | -5.6 |
 | cartagena | Aeropuerto_Rafael_Nunez (14015080) | WMO | 3.8 km | 2 m / 3 m | Tmax, Tmin, Tmean, rain mm, rain days ≥ 1 mm | -1.8 |
 | montevideo | Prado (00086585) | WMO | 5.2 km | 14 m / 45 m | Tmax, Tmin, Tmean, rain mm, rain days ≥ 1 mm | -2.0 |
 | asuncion | Asuncion (00086218) | WMO | 13.0 km | 83 m / 79 m | Tmax, Tmin, Tmean, rain mm | -1.6 |
@@ -258,57 +258,57 @@ Rule: Official station (WMO normals first, then GHCN-Daily) within 25 km and 150
 | alula | regional median (150 stations) | +1.6 |
 | abu-dhabi | AbuDhabiIntlAirport (27.7 km), AlAinIntlAirport (126.6 km), DubaiIntlAirport (130.9 km) | +0.7 |
 | doha | regional median (135 stations) | +1.6 |
-| al-wakrah | regional median (132 stations) | +1.7 |
-| kuwait-city | regional median (178 stations) | +1.5 |
+| al-wakrah | regional median (132 stations) | +1.6 |
+| kuwait-city | regional median (178 stations) | +1.4 |
 | muscat | regional median (126 stations) | +1.8 |
-| salalah | regional median (117 stations) | +2.3 |
+| salalah | regional median (117 stations) | +2.2 |
 | nizwa | regional median (119 stations) | +1.8 |
 | fes | FESSAIS (8.1 km), MEKNES (49.7 km) | +0.7 |
 | chefchaouen | FESSAIS (136.2 km), MEKNES (145.3 km) | +0.6 |
 | tangier | TARIFA (33.0 km), TETOUAN (46.9 km), LARACHE (73.2 km) | +0.7 |
-| amman | JERUSALEM (68.9 km), ZEFAT (120.8 km) | -1.7 |
+| amman | JERUSALEM (68.9 km), ZEFAT (120.8 km) | -1.2 |
 | petra | regional median (189 stations) | +1.4 |
 | manchester | BUXTON (29.6 km), Bingley (47.5 km), KEELE (49.5 km) | +0.7 |
 | venice | Treviso_Sant_Angelo (26.4 km), Treviso_Istrana (32.7 km), Udine_Rivolto (81.7 km) | +1.9 |
 | naples | Grazzanise (28.8 km) | +1.9 |
 | athens | regional median (322 stations) | +1.5 |
 | santorini | regional median (304 stations) | +1.5 |
-| mykonos | regional median (317 stations) | +1.5 |
+| mykonos | regional median (317 stations) | +1.4 |
 | thessaloniki | regional median (347 stations) | +1.4 |
 | porto | VIGOPEINADOR (121.1 km), PONTEVEDRA (143.2 km), OURENSE (144.7 km) | +2.4 |
 | madeira | regional median (237 stations) | +1.5 |
-| ella | Bandarawela (8.6 km) | -1.3 |
+| ella | Bandarawela (8.6 km) | +0.0 |
 | bali | regional median (28 stations) | +2.5 |
 | ubud | regional median (29 stations) | +2.5 |
 | yogyakarta | regional median (26 stations) | +2.5 |
 | langkawi | Satun (44.7 km), HatYaiAirport (93.3 km), Songkhla (127.4 km) | +2.6 |
 | kyoto | Osaka (43.2 km), Maizuru (63.7 km), Tsu (75.1 km) | +1.5 |
-| xian | regional median (284 stations) | +1.6 |
+| xian | regional median (284 stations) | +1.5 |
 | hanoi | regional median (110 stations) | +1.9 |
 | ho-chi-minh-city | regional median (118 stations) | +2.5 |
-| da-nang | regional median (128 stations) | +2.4 |
-| hoi-an | regional median (130 stations) | +2.4 |
+| da-nang | regional median (128 stations) | +2.3 |
+| hoi-an | regional median (130 stations) | +2.3 |
 | agra | ALIGARH (78.9 km), GWALIOR (107.5 km), ETAWAH (128.4 km) | +0.8 |
 | goa | PANJIM (35.2 km) | +1.8 |
 | baku | regional median (347 stations) | +1.4 |
-| gabala | AKHTY (55.5 km) | +6.6 |
+| gabala | regional median (352 stations) | +1.4 |
 | guba | regional median (358 stations) | +1.4 |
 | batumi | Qobuleti (26.9 km), Hopa (32.1 km), Poti (41.4 km) | +3.8 |
-| kazbegi | regional median (375 stations) | +1.4 |
-| johannesburg | regional median (52 stations) | +1.9 |
-| durban | regional median (43 stations) | +1.7 |
-| nairobi | regional median (57 stations) | +2.4 |
+| kazbegi | regional median (375 stations) | +1.3 |
+| johannesburg | regional median (52 stations) | +1.8 |
+| durban | regional median (43 stations) | +1.6 |
+| nairobi | regional median (57 stations) | +2.3 |
 | mombasa | regional median (34 stations) | +2.3 |
 | cancun | regional median (111 stations) | +1.9 |
 | guadalajara | regional median (109 stations) | +1.9 |
 | rio-de-janeiro | regional median (39 stations) | +2.0 |
-| sao-paulo | regional median (41 stations) | +2.0 |
-| beirut | regional median (273 stations) | +1.6 |
-| byblos | regional median (281 stations) | +1.6 |
-| baalbek | regional median (274 stations) | +1.6 |
+| sao-paulo | regional median (41 stations) | +1.9 |
+| beirut | regional median (273 stations) | +1.5 |
+| byblos | regional median (281 stations) | +1.5 |
+| baalbek | regional median (274 stations) | +1.5 |
 | tirana | Ulcinj (83.0 km), Bar (105.9 km), Podgorica (131.3 km) | +3.7 |
 | durres | Ulcinj (70.3 km), Bar (93.1 km), Podgorica (125.8 km) | +3.8 |
-| saranda | regional median (338 stations) | +1.5 |
+| saranda | regional median (338 stations) | +1.4 |
 | budva | Bar (28.3 km), HercegNovi (30.6 km), Podgorica (39.5 km) | +4.4 |
 | split | HVAR (38.4 km), KNIN (61.7 km), LASTOVO (90.8 km) | +3.3 |
 | karlovy-vary | KarlovyVary (4.5 km), PrahaRuzyne (99.8 km), PrahaLibus (115.1 km) | +0.4 |
@@ -320,52 +320,52 @@ Rule: Official station (WMO normals first, then GHCN-Daily) within 25 km and 150
 | brasov | MIERCUREA CIUC (80.0 km), MiercureaCiuc (80.9 km) | +2.7 |
 | yerevan | Igdir (48.4 km) | +1.8 |
 | bishkek | Otar (87.6 km), Shokpar (106.3 km) | +1.0 |
-| karakol | regional median (375 stations) | +1.4 |
+| karakol | regional median (375 stations) | +1.3 |
 | boracay | RomblonCityRomblon (76.3 km), RoxasCityCapiz (97.3 km) | +1.7 |
 | siem-reap | regional median (125 stations) | +2.4 |
 | phnom-penh | regional median (123 stations) | +2.5 |
 | arusha | regional median (42 stations) | +2.2 |
 | port-louis | Plaisance (35.7 km) | +1.9 |
 | grand-baie | Plaisance (48.0 km) | +1.9 |
-| montreal | regional median (356 stations) | +1.3 |
+| montreal | regional median (356 stations) | +1.2 |
 | taif | Taif (27.0 km) | +1.4 |
 | osh | regional median (347 stations) | +1.4 |
 | kochi | ALAPPUZHA (50.2 km), KOTTAYAM (62.1 km), PUNALUR (130.5 km) | +2.5 |
 | paro | regional median (172 stations) | +1.6 |
 | shenzhen | HongKongObservatory (29.6 km), TaipaGrande (66.1 km), GUANGZHOU (95.4 km) | +1.0 |
-| taipei | regional median (130 stations) | +1.7 |
+| taipei | regional median (130 stations) | +1.6 |
 | krabi | Phuket (59.7 km), KoLanta (60.4 km), PhuketAirport (66.6 km) | +3.6 |
 | koh-samui | regional median (114 stations) | +2.5 |
 | lombok | regional median (29 stations) | +2.5 |
 | labuan-bajo | regional median (29 stations) | +2.5 |
-| nha-trang | regional median (125 stations) | +2.5 |
+| nha-trang | regional median (125 stations) | +2.4 |
 | phu-quoc | regional median (118 stations) | +2.5 |
 | bologna | Punta_Marina (75.9 km), Firenze_Peretola (77.0 km), Cervia (81.0 km) | +1.0 |
 | palermo | Trapani_Birgi (78.6 km), Gela (138.4 km) | +0.5 |
 | malaga | MALAGAAEROPUERTO (11.5 km), MORONDELAFRONTERA (112.9 km), MORON DE LA FRONTERA (113.1 km) | +2.6 |
 | faro | HUELVARONDAESTE (95.2 km), HUELVA (RONDA DEL ESTE) (95.5 km), ROTABNOBSERVATORIO (148.7 km) | +0.4 |
 | glasgow | Drumalbin (41.4 km), Prestwick (43.8 km), AUCHINCRUIVE (47.1 km) | +1.5 |
-| heraklion | regional median (284 stations) | +1.6 |
+| heraklion | regional median (284 stations) | +1.5 |
 | rhodes | Marmaris (44.0 km), Datca (56.1 km), Dalaman (62.7 km) | +3.9 |
-| corfu | regional median (337 stations) | +1.5 |
+| corfu | regional median (337 stations) | +1.4 |
 | vilnius | OSHMYANY (50.3 km), LYNTUPY (76.9 km), LIDA (87.3 km) | +1.0 |
 | skopje | regional median (365 stations) | +1.4 |
 | san-marino | Frontone (51.8 km) | +1.2 |
-| andorra-la-vella | regional median (375 stations) | +1.4 |
+| andorra-la-vella | regional median (375 stations) | +1.3 |
 | addis-ababa | regional median (109 stations) | +2.4 |
 | entebbe | regional median (66 stations) | +2.5 |
 | lagos | LagosRoof (39.4 km), IjebuOde (59.5 km), Abeokuta (93.6 km) | +1.6 |
 | windhoek | regional median (37 stations) | +2.0 |
-| gaborone | regional median (47 stations) | +1.9 |
-| maputo | regional median (52 stations) | +1.9 |
+| gaborone | regional median (47 stations) | +1.8 |
+| maputo | regional median (52 stations) | +1.8 |
 | calgary | OKOTOKS (35.8 km) | +1.5 |
 | los-cabos | regional median (120 stations) | +1.8 |
 | puerto-vallarta | regional median (109 stations) | +1.9 |
 | havana | regional median (119 stations) | +1.8 |
 | varadero | regional median (119 stations) | +1.8 |
-| san-jose | TobiasBolanosPalmaAirport (6.1 km), JuanSantamariaInternationalAir (11.1 km) | +6.3 |
+| san-jose | TobiasBolanosPalmaAirport (6.1 km), JuanSantamariaInternationalAir (11.1 km) | +5.4 |
 | panama-city | regional median (109 stations) | +2.4 |
-| florianopolis | regional median (47 stations) | +1.8 |
+| florianopolis | regional median (47 stations) | +1.7 |
 | lima | Donoso (62.5 km), Huayan (66.7 km) | +1.2 |
 | cusco | regional median (30 stations) | +2.4 |
 | arequipa | regional median (34 stations) | +2.1 |
@@ -375,7 +375,7 @@ Rule: Official station (WMO normals first, then GHCN-Daily) within 25 km and 150
 | punta-del-este | Rocha (77.9 km), Carrasco (98.6 km), Prado (115.8 km) | +1.6 |
 | la-paz | regional median (34 stations) | +2.1 |
 | santa-cruz | regional median (36 stations) | +2.1 |
-| auckland | regional median (39 stations) | +1.9 |
+| auckland | regional median (39 stations) | +1.8 |
 | queenstown | Lauder_Observatory (80.4 km), Tara_Hills_AWS (112.1 km) | +5.0 |
 | port-moresby | regional median (30 stations) | +2.4 |
 | port-vila | regional median (36 stations) | +2.1 |
