@@ -12,7 +12,8 @@
 // and the visa directory leaves it out rather than show a status we cannot
 // back. Still to confirm (their official pages blocked automated reading or
 // did not name Saudi Arabia on 26 Sep 2026; list updated 13 Oct 2026):
-// JO, KH, KW, TN (JS-only or bot-walled pages; MA, TZ confirmed 14 Oct), and the
+// TN (no Tunisian government page names Saudi Arabia; MA, TZ, KW, KH, JO
+// confirmed 14 Oct), and the
 // countries being added (scripts/coverage/report.md lists them).
 //
 // The four categories, easiest first — what a traveller has to do before
@@ -123,6 +124,9 @@ export const VISA_STATUS: Record<string, VisaStatus> = {
     then: { from: "2026-11-01", category: "required", source: "https://europeanwesternbalkans.com/2026/07/28/montenegro-introduces-visas-for-citizens-of-belarus-china-russia-saudi-arabia-and-turkiye/", quote: "Government of Montenegro decree aligning with EU visa policy: nationals of Saudi Arabia \"will require a visa to enter Montenegro as of 1 November 2026\"" } },
   MA: { category: "free", source: "https://www.consulat.ma/fr/liste-des-pays-dont-les-ressortissants-sont-dispenses-du-visa-dentree-au-maroc", quote: "Moroccan MFA (consulat.ma), list of countries whose nationals are exempt from an entry visa: \"Arabie Saoudite\" (read 14 Oct 2026)" },
   TZ: { category: "arrival", source: "https://visa.immigration.go.tz/guidelines", quote: "Tanzania Immigration Services, eVisa guidelines: \"Nationals from the listed countries below are eligible for both Online as well as on arrival Visa facility\" — the list includes Saudi Arabia (spelt \"Saud Arabia\" on the page; read 14 Oct 2026)" },
+  KW: { category: "free", source: "https://www.spa.gov.sa/2349663", quote: "Saudi General Directorate of Passports (via SPA, 28 Apr 2022): citizens can travel to the GCC states using the national ID card, checking the entry conditions of the destination (read 14 Oct 2026)" },
+  KH: { category: "eta", source: "https://www.evisa.gov.kh/", quote: "Cambodia MFA visa-exemption list (mfaic.gov.kh, 2025) does not include Saudi Arabia; the MFA's official e-Visa (Visa T, USD 30, stay 1 month) is applied for online with no nationality restriction stated (read 14 Oct 2026)" },
+  JO: { category: "free", source: "https://www.rj.com/en/travel-requirements-and-restrictions", quote: "Royal Jordanian (Jordan's national carrier), entry requirements for Jordan: \"GCC Countries do not require entry visas\" (read 14 Oct 2026; Jordan MOI pages do not list exempt nationalities)" },
 };
 
 export function visaStatusFor(code: string): VisaStatus | undefined {

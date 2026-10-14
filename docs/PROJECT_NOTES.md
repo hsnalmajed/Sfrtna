@@ -895,18 +895,18 @@ Chrome), climate v2 after the owner's download, publishing staged cities.
    by the site yet), `node
    scripts/climate/generate_seasons.mts`, review class changes for the 144
    live cities, tests, publish; then the 156 staged cities.
-3. **Visa:** MA ✅, TZ ✅ 14 Oct (consulat.ma exempt list; visa.immigration.go.tz
-   eVisa/on-arrival list). Still JO, KH, KW, TN — JO: Royal Jordanian says
-   GCC need no visa (airline, not government; visitjordan.com needs a
-   WebFetch approval from the owner). Tried 14 Oct: KW — kuwaitvisa.moi.gov.kw
-   tourist list omits all GCC nationals but also Egypt/Iraq, so absence is
-   not proof; Saudi embassy in Kuwait and gcc-sg.org pages have no explicit
-   line (GCC-SG movement page now 404). TN — diplomatie.gov.tn/visa 404,
-   discovertunisia.com formalities page has no country list. KH —
-   evisa.gov.kh FAQ answers load on click; application is behind a CAPTCHA
-   (do not pass it). Next: KH FAQ answers, TZ immigration.go.tz visa page,
-   JO MOI / visitjordan list; for KW/TN look for an embassy page naming
-   Saudi Arabia.
+3. **Visa:** MA ✅, TZ ✅, KW ✅, KH ✅, JO ✅ 14 Oct. KW free — Saudi Jawazat
+   via SPA (spa.gov.sa/2349663): GCC travel with the national ID. KH eta —
+   MFA exemption list (image on mfaic.gov.kh) has no Saudi Arabia; official
+   e-Visa (evisa.gov.kh) has no nationality limit (application behind a
+   CAPTCHA — not passed). JO free — Royal Jordanian (national carrier):
+   "GCC Countries do not require entry visas"; Jordan MOI/MFA/visitjordan
+   pages list no exempt nationalities (checked). **TN still open:**
+   diplomatie.gov.tn has no list, Saudi embassy portal (saudiembassy.sa →
+   tn.saudiembassy.sa) has no host-country entry page, IATA Travel Centre
+   freezes the test browser at the results step. Next for TN: the owner (or a
+   visible Chrome) runs IATA Travel Centre RUH → TUN once, or a Tunisian
+   embassy page naming Saudi Arabia.
 4. **Accounts:** ✅ owner tested 14 Oct 01:05 — saving the plan to the
    account and the plan PDF work.
 5. **PayPal (owner, 14 Oct):** owner's PayPal account permanently limited;
