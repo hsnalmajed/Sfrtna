@@ -29,6 +29,7 @@ export const COUNTRY_CITIES: Record<string, CityEntry[]> = {
     { slug: "alula", nameAr: "العُلا", nameEn: "AlUla", wikiTitle: "Al-'Ula" },
     { slug: "abha", nameAr: "أبها", nameEn: "Abha", wikiTitle: "Abha" },
     { slug: "dammam", nameAr: "الدمام", nameEn: "Dammam", wikiTitle: "Dammam" },
+    { slug: "taif", nameAr: "الطائف", nameEn: "Taif", wikiTitle: "Taif" },
   ],
   TR: [
     { slug: "istanbul", nameAr: "إسطنبول", nameEn: "Istanbul", wikiTitle: "Istanbul" },
@@ -86,6 +87,7 @@ export const COUNTRY_CITIES: Record<string, CityEntry[]> = {
     { slug: "oxford", nameAr: "أكسفورد", nameEn: "Oxford", wikiTitle: "Oxford" },
     { slug: "glasgow", nameAr: "غلاسكو", nameEn: "Glasgow", wikiTitle: "Glasgow" },
     { slug: "belfast", nameAr: "بلفاست", nameEn: "Belfast", wikiTitle: "Belfast" },
+    { slug: "birmingham", nameAr: "برمنغهام", nameEn: "Birmingham", wikiTitle: "Birmingham" },
   ],
   FR: [
     { slug: "paris", nameAr: "باريس", nameEn: "Paris", wikiTitle: "Paris" },
@@ -93,6 +95,7 @@ export const COUNTRY_CITIES: Record<string, CityEntry[]> = {
     { slug: "lyon", nameAr: "ليون", nameEn: "Lyon", wikiTitle: "Lyon" },
     { slug: "marseille", nameAr: "مرسيليا", nameEn: "Marseille", wikiTitle: "Marseille" },
     { slug: "bordeaux", nameAr: "بوردو", nameEn: "Bordeaux", wikiTitle: "Bordeaux" },
+    { slug: "strasbourg", nameAr: "ستراسبورغ", nameEn: "Strasbourg", wikiTitle: "Strasbourg" },
   ],
   ES: [
     { slug: "barcelona", nameAr: "برشلونة", nameEn: "Barcelona", wikiTitle: "Barcelona" },
@@ -103,6 +106,7 @@ export const COUNTRY_CITIES: Record<string, CityEntry[]> = {
     { slug: "malaga", nameAr: "ملقة", nameEn: "Málaga", wikiTitle: "Málaga" },
     { slug: "ibiza", nameAr: "إيبيزا", nameEn: "Ibiza", wikiTitle: "Ibiza (town)" },
     { slug: "palma", nameAr: "بالما دي مايوركا", nameEn: "Palma de Mallorca", wikiTitle: "Palma de Mallorca" },
+    { slug: "valencia", nameAr: "فالنسيا", nameEn: "Valencia", wikiTitle: "Valencia" },
   ],
   IT: [
     { slug: "rome", nameAr: "روما", nameEn: "Rome", wikiTitle: "Rome" },
@@ -129,6 +133,7 @@ export const COUNTRY_CITIES: Record<string, CityEntry[]> = {
     { slug: "interlaken", nameAr: "إنترلاكن", nameEn: "Interlaken", wikiTitle: "Interlaken" },
     { slug: "lucerne", nameAr: "لوسيرن", nameEn: "Lucerne", wikiTitle: "Lucerne" },
     { slug: "lausanne", nameAr: "لوزان", nameEn: "Lausanne", wikiTitle: "Lausanne" },
+    { slug: "zermatt", nameAr: "زيرمات", nameEn: "Zermatt", wikiTitle: "Zermatt" },
   ],
   AT: [
     { slug: "vienna", nameAr: "فيينا", nameEn: "Vienna", wikiTitle: "Vienna" },
@@ -195,6 +200,7 @@ export const COUNTRY_CITIES: Record<string, CityEntry[]> = {
     { slug: "hiroshima", nameAr: "هيروشيما", nameEn: "Hiroshima", wikiTitle: "Hiroshima" },
     { slug: "fukuoka", nameAr: "فوكوكا", nameEn: "Fukuoka", wikiTitle: "Fukuoka" },
     { slug: "okinawa", nameAr: "أوكيناوا", nameEn: "Okinawa", wikiTitle: "Naha" },
+    { slug: "sapporo", nameAr: "سابورو", nameEn: "Sapporo", wikiTitle: "Sapporo" },
   ],
   KR: [
     { slug: "seoul", nameAr: "سيول", nameEn: "Seoul", wikiTitle: "Seoul" },
@@ -207,6 +213,7 @@ export const COUNTRY_CITIES: Record<string, CityEntry[]> = {
     { slug: "xian", nameAr: "شيان", nameEn: "Xi'an", wikiTitle: "Xi'an" },
     { slug: "guangzhou", nameAr: "قوانغتشو", nameEn: "Guangzhou", wikiTitle: "Guangzhou" },
     { slug: "chengdu", nameAr: "تشنغدو", nameEn: "Chengdu", wikiTitle: "Chengdu" },
+    { slug: "shenzhen", nameAr: "شينزن", nameEn: "Shenzhen", wikiTitle: "Shenzhen" },
   ],
   VN: [
     { slug: "hanoi", nameAr: "هانوي", nameEn: "Hanoi", wikiTitle: "Hanoi" },
@@ -235,6 +242,8 @@ export const COUNTRY_CITIES: Record<string, CityEntry[]> = {
     { slug: "chicago", nameAr: "شيكاغو", nameEn: "Chicago", wikiTitle: "Chicago" },
     { slug: "honolulu", nameAr: "هونولولو", nameEn: "Honolulu", wikiTitle: "Honolulu" },
     { slug: "boston", nameAr: "بوسطن", nameEn: "Boston", wikiTitle: "Boston" },
+    { slug: "washington-dc", nameAr: "واشنطن العاصمة", nameEn: "Washington, D.C.", wikiTitle: "Washington, D.C." },
+    { slug: "seattle", nameAr: "سياتل", nameEn: "Seattle", wikiTitle: "Seattle" },
   ],
   AZ: [
     { slug: "baku", nameAr: "باكو", nameEn: "Baku", wikiTitle: "Baku" },
@@ -261,6 +270,7 @@ export const COUNTRY_CITIES: Record<string, CityEntry[]> = {
     { slug: "cancun", nameAr: "كانكون", nameEn: "Cancún", wikiTitle: "Cancún" },
     { slug: "guadalajara", nameAr: "غوادالاخارا", nameEn: "Guadalajara", wikiTitle: "Guadalajara" },
     { slug: "puerto-vallarta", nameAr: "بويرتو فالارتا", nameEn: "Puerto Vallarta", wikiTitle: "Puerto Vallarta" },
+    { slug: "los-cabos", nameAr: "لوس كابوس", nameEn: "Los Cabos", wikiTitle: "Cabo San Lucas" },
   ],
   BR: [
     { slug: "rio-de-janeiro", nameAr: "ريو دي جانيرو", nameEn: "Rio de Janeiro", wikiTitle: "Rio de Janeiro" },
@@ -443,6 +453,7 @@ export const COUNTRY_CITIES: Record<string, CityEntry[]> = {
   ],
   LA: [
     { slug: "luang-prabang", nameAr: "لوانغ برابانغ", nameEn: "Luang Prabang", wikiTitle: "Luang Prabang" },
+    { slug: "vientiane", nameAr: "فينتيان", nameEn: "Vientiane", wikiTitle: "Vientiane" },
   ],
   BN: [
     { slug: "bandar-seri-begawan", nameAr: "بندر سري بيغاوان", nameEn: "Bandar Seri Begawan", wikiTitle: "Bandar Seri Begawan" },
@@ -482,6 +493,7 @@ export const COUNTRY_CITIES: Record<string, CityEntry[]> = {
   ],
   DO: [
     { slug: "punta-cana", nameAr: "بونتا كانا", nameEn: "Punta Cana", wikiTitle: "Punta Cana" },
+    { slug: "santo-domingo", nameAr: "سانتو دومينغو", nameEn: "Santo Domingo", wikiTitle: "Santo Domingo" },
   ],
   JM: [
     { slug: "montego-bay", nameAr: "مونتيغو باي", nameEn: "Montego Bay", wikiTitle: "Montego Bay" },
@@ -505,6 +517,7 @@ export const COUNTRY_CITIES: Record<string, CityEntry[]> = {
   CL: [
     { slug: "santiago", nameAr: "سانتياغو", nameEn: "Santiago", wikiTitle: "Santiago" },
     { slug: "easter-island", nameAr: "جزيرة القيامة", nameEn: "Easter Island", wikiTitle: "Hanga Roa" },
+    { slug: "punta-arenas", nameAr: "بونتا أريناس", nameEn: "Punta Arenas", wikiTitle: "Punta Arenas" },
   ],
   PE: [
     { slug: "lima", nameAr: "ليما", nameEn: "Lima", wikiTitle: "Lima" },
@@ -532,12 +545,33 @@ export const COUNTRY_CITIES: Record<string, CityEntry[]> = {
     { slug: "auckland", nameAr: "أوكلاند", nameEn: "Auckland", wikiTitle: "Auckland" },
     { slug: "christchurch", nameAr: "كرايستشيرش", nameEn: "Christchurch", wikiTitle: "Christchurch" },
     { slug: "queenstown", nameAr: "كوينزتاون", nameEn: "Queenstown", wikiTitle: "Queenstown, New Zealand" },
+    { slug: "wellington", nameAr: "ويلينغتون", nameEn: "Wellington", wikiTitle: "Wellington" },
   ],
   FJ: [
     { slug: "nadi", nameAr: "نادي", nameEn: "Nadi", wikiTitle: "Nadi" },
+    { slug: "suva", nameAr: "سوفا", nameEn: "Suva", wikiTitle: "Suva" },
   ],
   SB: [
     { slug: "honiara", nameAr: "هونيارا", nameEn: "Honiara", wikiTitle: "Honiara" },
+  ],
+  TW: [
+    { slug: "taipei", nameAr: "تايبيه", nameEn: "Taipei", wikiTitle: "Taipei" },
+  ],
+  EE: [
+    { slug: "tallinn", nameAr: "تالين", nameEn: "Tallinn", wikiTitle: "Tallinn" },
+  ],
+  LT: [
+    { slug: "vilnius", nameAr: "فيلنيوس", nameEn: "Vilnius", wikiTitle: "Vilnius" },
+  ],
+  BG: [
+    { slug: "sofia", nameAr: "صوفيا", nameEn: "Sofia", wikiTitle: "Sofia" },
+    { slug: "varna", nameAr: "فارنا", nameEn: "Varna", wikiTitle: "Varna, Bulgaria" },
+  ],
+  NA: [
+    { slug: "windhoek", nameAr: "ويندهوك", nameEn: "Windhoek", wikiTitle: "Windhoek" },
+  ],
+  ZW: [
+    { slug: "victoria-falls", nameAr: "شلالات فيكتوريا", nameEn: "Victoria Falls", wikiTitle: "Victoria Falls (city)" },
   ],
 };
 

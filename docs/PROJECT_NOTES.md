@@ -955,14 +955,13 @@ Chrome), climate v2 after the owner's download, publishing staged cities.
    (`generate_seasons.mts`: `fields` + one string `table` + rows; strings as
    `[index]`), unpacked per city on first use in `site.ts` → 339 KB for 313
    cities; 211-city unpack checked identical to the old objects. Worker
-   upload 15.5 → 10.7 MB (2,188 KiB gzip). Re-published with it. **54 still staged:** 21 hotels
-   missing (taif, shenzhen, sapporo, taipei, vientiane, strasbourg,
-   valencia, zermatt, tallinn, vilnius, sofia, varna, skopje, vatican-city,
-   windhoek, victoria-falls, washington-dc, seattle, varadero, santo-domingo,
-   wellington, suva — re-run dispatched 00:36), 6 places missing
-   (birmingham, andorra-la-vella, algiers, los-cabos, punta-arenas,
-   port-moresby), visa for the 26 countries listed above, HOLD cusco/paro.
-   Rerun the dry run when the collectors commit; publish the rest the same way.
+   upload 15.5 → 10.7 MB (2,188 KiB gzip). Re-published with it (6cc1ed3; Site check `check` passed, `pages`
+   flaky once on the next-step tabs click, passed on the 04:47 run; partner
+   pages now cover 316 cities). **15 Oct 08:20: +22 cities** (the re-run
+   collectors finished them) → **338 live** (site seasons 335), site file
+   362 KB, Worker 10.8 MB / 2,208 KiB gzip. Live 338 cities / 110 countries.
+   **32 still staged:** 30 wait only on visa (the 26 countries listed above),
+   HOLD cusco/paro — data is otherwise complete. Rerun the dry run when the collectors commit; publish the rest the same way.
 3. **Visa:** MA ✅, TZ ✅, KW ✅, KH ✅, JO ✅ 14 Oct. KW free — Saudi Jawazat
    via SPA (spa.gov.sa/2349663): GCC travel with the national ID. KH eta —
    MFA exemption list (image on mfaic.gov.kh) has no Saudi Arabia; official

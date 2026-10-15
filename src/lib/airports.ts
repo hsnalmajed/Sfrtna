@@ -317,6 +317,23 @@ export const AIRPORTS: Airport[] = [
   { iata: "ZQN", nameAr: "مطار كوينزتاون", nameEn: "Queenstown Airport", cityAr: "كوينزتاون", cityEn: "Queenstown", countryAr: "نيوزيلندا", countryEn: "New Zealand" },
   { iata: "NAN", nameAr: "مطار نادي الدولي", nameEn: "Nadi International Airport", cityAr: "نادي", cityEn: "Nadi", countryAr: "فيجي", countryEn: "Fiji" },
   { iata: "HIR", nameAr: "مطار هونيارا الدولي", nameEn: "Honiara International Airport", cityAr: "هونيارا", cityEn: "Honiara", countryAr: "جزر سليمان", countryEn: "Solomon Islands" },
+  // Coverage batch 2 gateways (owner's list, confirmed in OurAirports)
+  { iata: "SZX", nameAr: "مطار شينزن الدولي", nameEn: "Shenzhen Bao'an International Airport", cityAr: "شينزن", cityEn: "Shenzhen", countryAr: "الصين", countryEn: "China" },
+  { iata: "CTS", nameAr: "مطار سابورو", nameEn: "New Chitose Airport", cityAr: "سابورو", cityEn: "Sapporo", countryAr: "اليابان", countryEn: "Japan" },
+  { iata: "VTE", nameAr: "مطار فينتيان الدولي", nameEn: "Wattay International Airport", cityAr: "فينتيان", cityEn: "Vientiane", countryAr: "لاوس", countryEn: "Laos" },
+  { iata: "SXB", nameAr: "مطار ستراسبورغ", nameEn: "Strasbourg Airport", cityAr: "ستراسبورغ", cityEn: "Strasbourg", countryAr: "فرنسا", countryEn: "France" },
+  { iata: "VLC", nameAr: "مطار فالنسيا", nameEn: "Valencia Airport", cityAr: "فالنسيا", cityEn: "Valencia", countryAr: "إسبانيا", countryEn: "Spain" },
+  { iata: "BHX", nameAr: "مطار برمنغهام", nameEn: "Birmingham Airport", cityAr: "برمنغهام", cityEn: "Birmingham", countryAr: "بريطانيا", countryEn: "United Kingdom" },
+  { iata: "TLL", nameAr: "مطار تالين", nameEn: "Lennart Meri Tallinn Airport", cityAr: "تالين", cityEn: "Tallinn", countryAr: "إستونيا", countryEn: "Estonia" },
+  { iata: "VNO", nameAr: "مطار فيلنيوس الدولي", nameEn: "Vilnius International Airport", cityAr: "فيلنيوس", cityEn: "Vilnius", countryAr: "ليتوانيا", countryEn: "Lithuania" },
+  { iata: "VAR", nameAr: "مطار فارنا", nameEn: "Varna Airport", cityAr: "فارنا", cityEn: "Varna", countryAr: "بلغاريا", countryEn: "Bulgaria" },
+  { iata: "WDH", nameAr: "مطار ويندهوك الدولي", nameEn: "Hosea Kutako International Airport", cityAr: "ويندهوك", cityEn: "Windhoek", countryAr: "ناميبيا", countryEn: "Namibia" },
+  { iata: "VFA", nameAr: "مطار شلالات فيكتوريا الدولي", nameEn: "Victoria Falls International Airport", cityAr: "شلالات فيكتوريا", cityEn: "Victoria Falls", countryAr: "زيمبابوي", countryEn: "Zimbabwe" },
+  { iata: "SJD", nameAr: "مطار لوس كابوس الدولي", nameEn: "Los Cabos International Airport", cityAr: "لوس كابوس", cityEn: "Los Cabos", countryAr: "المكسيك", countryEn: "Mexico" },
+  { iata: "SDQ", nameAr: "مطار سانتو دومينغو الدولي", nameEn: "Las Américas International Airport", cityAr: "سانتو دومينغو", cityEn: "Santo Domingo", countryAr: "جمهورية الدومينيكان", countryEn: "Dominican Republic" },
+  { iata: "PUQ", nameAr: "مطار بونتا أريناس الدولي", nameEn: "President Carlos Ibáñez International Airport", cityAr: "بونتا أريناس", cityEn: "Punta Arenas", countryAr: "تشيلي", countryEn: "Chile" },
+  { iata: "WLG", nameAr: "مطار ويلينغتون الدولي", nameEn: "Wellington International Airport", cityAr: "ويلينغتون", cityEn: "Wellington", countryAr: "نيوزيلندا", countryEn: "New Zealand" },
+  { iata: "SUV", nameAr: "مطار سوفا الدولي", nameEn: "Nausori International Airport", cityAr: "سوفا", cityEn: "Suva", countryAr: "فيجي", countryEn: "Fiji" },
 ];
 
 /**
