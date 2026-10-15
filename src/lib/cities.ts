@@ -573,6 +573,72 @@ export const COUNTRY_CITIES: Record<string, CityEntry[]> = {
   ZW: [
     { slug: "victoria-falls", nameAr: "شلالات فيكتوريا", nameEn: "Victoria Falls", wikiTitle: "Victoria Falls (city)" },
   ],
+  MK: [
+    { slug: "skopje", nameAr: "سكوبيه", nameEn: "Skopje", wikiTitle: "Skopje" },
+  ],
+  SM: [
+    { slug: "san-marino", nameAr: "سان مارينو", nameEn: "San Marino", wikiTitle: "City of San Marino" },
+  ],
+  VA: [
+    { slug: "vatican-city", nameAr: "الفاتيكان", nameEn: "Vatican City", wikiTitle: "Vatican City" },
+  ],
+  AD: [
+    { slug: "andorra-la-vella", nameAr: "أندورا لا فيلا", nameEn: "Andorra la Vella", wikiTitle: "Andorra la Vella" },
+  ],
+  DZ: [
+    { slug: "algiers", nameAr: "الجزائر العاصمة", nameEn: "Algiers", wikiTitle: "Algiers" },
+    { slug: "oran", nameAr: "وهران", nameEn: "Oran", wikiTitle: "Oran" },
+  ],
+  GH: [
+    { slug: "accra", nameAr: "أكرا", nameEn: "Accra", wikiTitle: "Accra" },
+  ],
+  NG: [
+    { slug: "lagos", nameAr: "لاغوس", nameEn: "Lagos", wikiTitle: "Lagos" },
+  ],
+  CV: [
+    { slug: "sal", nameAr: "سال", nameEn: "Sal", wikiTitle: "Santa Maria, Cape Verde" },
+  ],
+  CU: [
+    { slug: "havana", nameAr: "هافانا", nameEn: "Havana", wikiTitle: "Havana" },
+    { slug: "varadero", nameAr: "فاراديرو", nameEn: "Varadero", wikiTitle: "Varadero" },
+  ],
+  CR: [
+    { slug: "san-jose", nameAr: "سان خوسيه", nameEn: "San José", wikiTitle: "San José, Costa Rica" },
+    { slug: "liberia", nameAr: "ليبيريا", nameEn: "Liberia", wikiTitle: "Liberia, Costa Rica" },
+  ],
+  PA: [
+    { slug: "panama-city", nameAr: "مدينة بنما", nameEn: "Panama City", wikiTitle: "Panama City" },
+  ],
+  GT: [
+    { slug: "guatemala-city", nameAr: "مدينة غواتيمالا", nameEn: "Guatemala City", wikiTitle: "Guatemala City" },
+  ],
+  HN: [
+    { slug: "roatan", nameAr: "رواتان", nameEn: "Roatán", wikiTitle: "Roatán" },
+  ],
+  BB: [
+    { slug: "bridgetown", nameAr: "بريدجتاون", nameEn: "Bridgetown", wikiTitle: "Bridgetown" },
+  ],
+  TT: [
+    { slug: "port-of-spain", nameAr: "بورت أوف سبين", nameEn: "Port of Spain", wikiTitle: "Port of Spain" },
+  ],
+  PY: [
+    { slug: "asuncion", nameAr: "أسونسيون", nameEn: "Asunción", wikiTitle: "Asunción" },
+  ],
+  PG: [
+    { slug: "port-moresby", nameAr: "بورت مورسبي", nameEn: "Port Moresby", wikiTitle: "Port Moresby" },
+  ],
+  WS: [
+    { slug: "apia", nameAr: "أبيا", nameEn: "Apia", wikiTitle: "Apia" },
+  ],
+  TO: [
+    { slug: "nukualofa", nameAr: "نوكوالوفا", nameEn: "Nukuʻalofa", wikiTitle: "Nukuʻalofa" },
+  ],
+  VU: [
+    { slug: "port-vila", nameAr: "بورت فيلا", nameEn: "Port Vila", wikiTitle: "Port Vila" },
+  ],
+  PW: [
+    { slug: "koror", nameAr: "كورور", nameEn: "Koror", wikiTitle: "Koror" },
+  ],
 };
 
 export function findCity(countryCode: string, slug: string): CityEntry | undefined {

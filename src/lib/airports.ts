@@ -334,6 +334,26 @@ export const AIRPORTS: Airport[] = [
   { iata: "PUQ", nameAr: "مطار بونتا أريناس الدولي", nameEn: "President Carlos Ibáñez International Airport", cityAr: "بونتا أريناس", cityEn: "Punta Arenas", countryAr: "تشيلي", countryEn: "Chile" },
   { iata: "WLG", nameAr: "مطار ويلينغتون الدولي", nameEn: "Wellington International Airport", cityAr: "ويلينغتون", cityEn: "Wellington", countryAr: "نيوزيلندا", countryEn: "New Zealand" },
   { iata: "SUV", nameAr: "مطار سوفا الدولي", nameEn: "Nausori International Airport", cityAr: "سوفا", cityEn: "Suva", countryAr: "فيجي", countryEn: "Fiji" },
+  // Coverage batch 2 gateways (owner's list, confirmed in OurAirports)
+  { iata: "SKP", nameAr: "مطار سكوبيه الدولي", nameEn: "Skopje International Airport", cityAr: "سكوبيه", cityEn: "Skopje", countryAr: "مقدونيا الشمالية", countryEn: "North Macedonia" },
+  { iata: "RMI", nameAr: "مطار سان مارينو الدولي", nameEn: "Federico Fellini International Airport", cityAr: "سان مارينو", cityEn: "San Marino", countryAr: "سان مارينو", countryEn: "San Marino" },
+  { iata: "ORN", nameAr: "مطار وهران الدولي", nameEn: "Oran Es-Sénia (Ahmed Ben Bella) International Airport", cityAr: "وهران", cityEn: "Oran", countryAr: "الجزائر", countryEn: "Algeria" },
+  { iata: "SID", nameAr: "مطار سال الدولي", nameEn: "Amílcar Cabral International Airport", cityAr: "سال", cityEn: "Sal", countryAr: "الرأس الأخضر", countryEn: "Cabo Verde" },
+  { iata: "HAV", nameAr: "مطار هافانا الدولي", nameEn: "José Martí International Airport", cityAr: "هافانا", cityEn: "Havana", countryAr: "كوبا", countryEn: "Cuba" },
+  { iata: "VRA", nameAr: "مطار فاراديرو الدولي", nameEn: "Juan Gualberto Gomez International Airport", cityAr: "فاراديرو", cityEn: "Varadero", countryAr: "كوبا", countryEn: "Cuba" },
+  { iata: "SJO", nameAr: "مطار سان خوسيه الدولي", nameEn: "Juan Santamaría International Airport", cityAr: "سان خوسيه", cityEn: "San José", countryAr: "كوستاريكا", countryEn: "Costa Rica" },
+  { iata: "LIR", nameAr: "مطار ليبيريا الدولي", nameEn: "Daniel Oduber Quirós International Airport", cityAr: "ليبيريا", cityEn: "Liberia", countryAr: "كوستاريكا", countryEn: "Costa Rica" },
+  { iata: "PTY", nameAr: "مطار مدينة بنما الدولي", nameEn: "Tocumen International Airport", cityAr: "مدينة بنما", cityEn: "Panama City", countryAr: "بنما", countryEn: "Panama" },
+  { iata: "GUA", nameAr: "مطار مدينة غواتيمالا الدولي", nameEn: "La Aurora International Airport", cityAr: "مدينة غواتيمالا", cityEn: "Guatemala City", countryAr: "غواتيمالا", countryEn: "Guatemala" },
+  { iata: "RTB", nameAr: "مطار رواتان الدولي", nameEn: "Juan Manuel Gálvez International Airport", cityAr: "رواتان", cityEn: "Roatán", countryAr: "هندوراس", countryEn: "Honduras" },
+  { iata: "BGI", nameAr: "مطار بريدجتاون الدولي", nameEn: "Grantley Adams International Airport", cityAr: "بريدجتاون", cityEn: "Bridgetown", countryAr: "باربادوس", countryEn: "Barbados" },
+  { iata: "POS", nameAr: "مطار بورت أوف سبين الدولي", nameEn: "Piarco International Airport", cityAr: "بورت أوف سبين", cityEn: "Port of Spain", countryAr: "ترينيداد وتوباغو", countryEn: "Trinidad and Tobago" },
+  { iata: "ASU", nameAr: "مطار أسونسيون الدولي", nameEn: "Silvio Pettirossi International Airport", cityAr: "أسونسيون", cityEn: "Asunción", countryAr: "باراغواي", countryEn: "Paraguay" },
+  { iata: "POM", nameAr: "مطار بورت مورسبي الدولي", nameEn: "Port Moresby Jacksons International Airport", cityAr: "بورت مورسبي", cityEn: "Port Moresby", countryAr: "بابوا غينيا الجديدة", countryEn: "Papua New Guinea" },
+  { iata: "APW", nameAr: "مطار أبيا الدولي", nameEn: "Faleolo International Airport", cityAr: "أبيا", cityEn: "Apia", countryAr: "ساموا", countryEn: "Samoa" },
+  { iata: "TBU", nameAr: "مطار نوكوالوفا الدولي", nameEn: "Fua'amotu International Airport", cityAr: "نوكوالوفا", cityEn: "Nukuʻalofa", countryAr: "تونغا", countryEn: "Tonga" },
+  { iata: "VLI", nameAr: "مطار بورت فيلا الدولي", nameEn: "Bauerfield International Airport", cityAr: "بورت فيلا", cityEn: "Port Vila", countryAr: "فانواتو", countryEn: "Vanuatu" },
+  { iata: "ROR", nameAr: "مطار كورور الدولي", nameEn: "Roman Tmetuchl International Airport", cityAr: "كورور", cityEn: "Koror", countryAr: "بالاو", countryEn: "Palau" },
 ];
 
 /**

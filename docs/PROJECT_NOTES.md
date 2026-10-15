@@ -960,8 +960,18 @@ Chrome), climate v2 after the owner's download, publishing staged cities.
    pages now cover 316 cities). **15 Oct 08:20: +22 cities** (the re-run
    collectors finished them) → **338 live** (site seasons 335), site file
    362 KB, Worker 10.8 MB / 2,208 KiB gzip. Live 338 cities / 110 countries.
-   **32 still staged:** 30 wait only on visa (the 26 countries listed above),
-   HOLD cusco/paro — data is otherwise complete. Rerun the dry run when the collectors commit; publish the rest the same way.
+   **15 Oct ~06:40 UTC: visa for 22 more countries** (official pages, each
+   `checked: 2026-10-15` with quote): free GT HN BB PA VU WS FM; arrival CV
+   PW; eta CU (e-visa since 30 Jun 2025) NG (eVisa); required DZ MK CR PY GH
+   PG TT TO, and SM/VA/AD (reached only through Schengen; SM tourism office
+   "open to all those who have a valid visa to enter Italy"). GACA circulars
+   (gaca.gov.sa Air-Transport-Facilitation-Circulars) are an official Saudi
+   source for exemptions (Honduras = no. 180) — check them first next time.
+   **+24 cities → 362 live / 131 countries**, site seasons file 388 KB, Worker
+   10.9 MB / 2,239 KiB gzip. **Still staged (8):** visa TN (hammamet), MG
+   (antananarivo, nosy-be), GY (georgetown), SR (paramaribo) — no official page
+   found yet (Suriname entry-fee notices name no countries; Madagascar e-visa
+   news only); HOLD cusco, paro; pohnpei (climate withheld). Rerun the dry run when the collectors commit; publish the rest the same way.
 3. **Visa:** MA ✅, TZ ✅, KW ✅, KH ✅, JO ✅ 14 Oct. KW free — Saudi Jawazat
    via SPA (spa.gov.sa/2349663): GCC travel with the national ID. KH eta —
    MFA exemption list (image on mfaic.gov.kh) has no Saudi Arabia; official
