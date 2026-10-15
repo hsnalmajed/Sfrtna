@@ -31,6 +31,9 @@
   "BE": {
    "airalo": "https://www.airalo.com/belgium-esim"
   },
+  "BG": {
+   "airalo": "https://www.airalo.com/bulgaria-esim"
+  },
   "BH": {
    "airalo": "https://www.airalo.com/bahrain-esim"
   },
@@ -84,6 +87,9 @@
   },
   "EC": {
    "airalo": "https://www.airalo.com/ecuador-esim"
+  },
+  "EE": {
+   "airalo": "https://www.airalo.com/estonia-esim"
   },
   "EG": {
    "airalo": "https://www.airalo.com/egypt-esim"
@@ -172,6 +178,9 @@
   "LK": {
    "airalo": "https://www.airalo.com/sri-lanka-esim"
   },
+  "LT": {
+   "airalo": "https://www.airalo.com/lithuania-esim"
+  },
   "LU": {
    "airalo": "https://www.airalo.com/luxembourg-esim"
   },
@@ -205,6 +214,9 @@
   },
   "MZ": {
    "airalo": "https://www.airalo.com/mozambique-esim"
+  },
+  "NA": {
+   "airalo": "https://www.airalo.com/namibia-esim"
   },
   "NL": {
    "airalo": "https://www.airalo.com/netherlands-esim"
@@ -283,6 +295,9 @@
   "TR": {
    "airalo": "https://www.airalo.com/turkey-esim"
   },
+  "TW": {
+   "airalo": "https://www.airalo.com/taiwan-esim"
+  },
   "TZ": {
    "airalo": "https://www.airalo.com/tanzania-esim"
   },
@@ -306,12 +321,13 @@
   },
   "ZM": {
    "airalo": "https://www.airalo.com/zambia-esim"
+  },
+  "ZW": {
+   "airalo": "https://www.airalo.com/zimbabwe-esim"
   }
  },
  "cities": {
-  "abha": {
-   "kiwitaxi": "https://kiwitaxi.com/en/saudi-arabia/abha"
-  },
+  "abha": {},
   "abu-dhabi": {
    "kiwitaxi": "https://kiwitaxi.com/en/uae/abu-dhabi",
    "localrent": "https://localrent.com/en/uae/abu-dhabi/",
@@ -376,6 +392,7 @@
    "radicalstorage": "https://radicalstorage.com/luggage-storage/athens"
   },
   "auckland": {
+   "welcomepickups": "https://www.welcomepickups.com/auckland/airport-transfer/",
    "radicalstorage": "https://radicalstorage.com/luggage-storage/auckland"
   },
   "baalbek": {},
@@ -411,6 +428,7 @@
    "welcomepickups": "https://www.welcomepickups.com/beirut/airport-transfer/"
   },
   "belfast": {
+   "kiwitaxi": "https://kiwitaxi.com/en/united-kingdom/belfast",
    "welcomepickups": "https://www.welcomepickups.com/belfast/airport-transfer/",
    "radicalstorage": "https://radicalstorage.com/luggage-storage/belfast"
   },
@@ -431,6 +449,10 @@
    "localrent": "https://localrent.com/en/germany/berlin/",
    "radicalstorage": "https://radicalstorage.com/luggage-storage/berlin"
   },
+  "birmingham": {
+   "kiwitaxi": "https://kiwitaxi.com/en/united-kingdom/birmingham",
+   "radicalstorage": "https://radicalstorage.com/luggage-storage/birmingham"
+  },
   "bishkek": {
    "localrent": "https://localrent.com/en/kyrgyzstan/bishkek/"
   },
@@ -438,6 +460,7 @@
    "radicalstorage": "https://radicalstorage.com/luggage-storage/bled"
   },
   "bodrum": {
+   "kiwitaxi": "https://kiwitaxi.com/en/turkey/bodrum",
    "welcomepickups": "https://www.welcomepickups.com/bodrum/airport-transfer/",
    "localrent": "https://localrent.com/en/turkey/bodrum/"
   },
@@ -664,6 +687,7 @@
   },
   "glasgow": {
    "kiwitaxi": "https://kiwitaxi.com/en/united-kingdom/glasgow",
+   "welcomepickups": "https://www.welcomepickups.com/glasgow/airport-transfer/",
    "radicalstorage": "https://radicalstorage.com/luggage-storage/glasgow"
   },
   "goa": {},
@@ -716,7 +740,6 @@
    "localrent": "https://localrent.com/en/vietnam/hoi-an/"
   },
   "hong-kong": {
-   "welcomepickups": "https://www.welcomepickups.com/hong-kong/airport-transfer/",
    "radicalstorage": "https://radicalstorage.com/luggage-storage/hong-kong"
   },
   "honiara": {},
@@ -729,6 +752,7 @@
    "localrent": "https://localrent.com/en/egypt/hurghada/"
   },
   "ibiza": {
+   "welcomepickups": "https://www.welcomepickups.com/ibiza/airport-transfer/",
    "localrent": "https://localrent.com/en/spain/ibiza/",
    "radicalstorage": "https://radicalstorage.com/luggage-storage/ibiza"
   },
@@ -760,6 +784,7 @@
    "radicalstorage": "https://radicalstorage.com/luggage-storage/jeju"
   },
   "johannesburg": {
+   "welcomepickups": "https://www.welcomepickups.com/johannesburg/airport-transfer/",
    "radicalstorage": "https://radicalstorage.com/luggage-storage/johannesburg"
   },
   "kandy": {},
@@ -848,9 +873,9 @@
    "radicalstorage": "https://radicalstorage.com/luggage-storage/london"
   },
   "los-angeles": {
-   "welcomepickups": "https://www.welcomepickups.com/los-angeles/airport-transfer/",
    "radicalstorage": "https://radicalstorage.com/luggage-storage/los-angeles"
   },
+  "los-cabos": {},
   "luang-prabang": {},
   "lucerne": {
    "radicalstorage": "https://radicalstorage.com/luggage-storage/lucerne"
@@ -877,7 +902,6 @@
    "kiwitaxi": "https://kiwitaxi.com/en/saudi-arabia/medina"
   },
   "madrid": {
-   "welcomepickups": "https://www.welcomepickups.com/madrid/airport-transfer/",
    "localrent": "https://localrent.com/en/spain/madrid/",
    "radicalstorage": "https://radicalstorage.com/luggage-storage/madrid"
   },
@@ -956,7 +980,6 @@
    "radicalstorage": "https://radicalstorage.com/luggage-storage/mumbai"
   },
   "munich": {
-   "welcomepickups": "https://www.welcomepickups.com/munich/airport-transfer/",
    "radicalstorage": "https://radicalstorage.com/luggage-storage/munich"
   },
   "muscat": {
@@ -975,7 +998,6 @@
    "radicalstorage": "https://radicalstorage.com/luggage-storage/nairobi"
   },
   "naples": {
-   "welcomepickups": "https://www.welcomepickups.com/naples/airport-transfer/",
    "localrent": "https://localrent.com/en/italy/naples/",
    "radicalstorage": "https://radicalstorage.com/luggage-storage/naples"
   },
@@ -1056,7 +1078,6 @@
    "localrent": "https://localrent.com/en/vietnam/phu-quoc/"
   },
   "phuket": {
-   "welcomepickups": "https://www.welcomepickups.com/phuket/airport-transfer/",
    "localrent": "https://localrent.com/en/thailand/phuket/",
    "radicalstorage": "https://radicalstorage.com/luggage-storage/phuket"
   },
@@ -1074,6 +1095,7 @@
    "localrent": "https://localrent.com/en/mauritius/port-louis/"
   },
   "porto": {
+   "welcomepickups": "https://www.welcomepickups.com/porto/airport-transfer/",
    "localrent": "https://localrent.com/en/portugal/porto/",
    "radicalstorage": "https://radicalstorage.com/luggage-storage/porto"
   },
@@ -1088,6 +1110,9 @@
   "puerto-vallarta": {
    "welcomepickups": "https://www.welcomepickups.com/puerto-vallarta/airport-transfer/",
    "radicalstorage": "https://radicalstorage.com/luggage-storage/puerto-vallarta"
+  },
+  "punta-arenas": {
+   "localrent": "https://localrent.com/en/chile/punta-arenas/"
   },
   "punta-cana": {
    "welcomepickups": "https://www.welcomepickups.com/punta-cana/airport-transfer/",
@@ -1168,12 +1193,19 @@
    "localrent": "https://localrent.com/en/chile/santiago/",
    "radicalstorage": "https://radicalstorage.com/luggage-storage/santiago"
   },
+  "santo-domingo": {
+   "radicalstorage": "https://radicalstorage.com/luggage-storage/santo-domingo"
+  },
   "santorini": {
+   "welcomepickups": "https://www.welcomepickups.com/santorini/airport-transfer/",
    "localrent": "https://localrent.com/en/greece/santorini/",
    "radicalstorage": "https://radicalstorage.com/luggage-storage/santorini"
   },
   "sao-paulo": {
    "radicalstorage": "https://radicalstorage.com/luggage-storage/sao-paulo"
+  },
+  "sapporo": {
+   "radicalstorage": "https://radicalstorage.com/luggage-storage/sapporo"
   },
   "sarajevo": {
    "welcomepickups": "https://www.welcomepickups.com/sarajevo/airport-transfer/",
@@ -1182,6 +1214,10 @@
   "saranda": {
    "localrent": "https://localrent.com/en/albania/sarande/",
    "radicalstorage": "https://radicalstorage.com/luggage-storage/sarande"
+  },
+  "seattle": {
+   "welcomepickups": "https://www.welcomepickups.com/seattle/airport-transfer/",
+   "radicalstorage": "https://radicalstorage.com/luggage-storage/seattle"
   },
   "seoul": {
    "welcomepickups": "https://www.welcomepickups.com/seoul/airport-transfer/",
@@ -1201,12 +1237,18 @@
   "sharm-el-sheikh": {
    "kiwitaxi": "https://kiwitaxi.com/en/egypt/sharm-el-sheikh"
   },
+  "shenzhen": {},
   "siem-reap": {},
   "singapore": {
    "welcomepickups": "https://www.welcomepickups.com/singapore/airport-transfer/",
    "radicalstorage": "https://radicalstorage.com/luggage-storage/singapore"
   },
   "sochi": {},
+  "sofia": {
+   "welcomepickups": "https://www.welcomepickups.com/sofia/airport-transfer/",
+   "localrent": "https://localrent.com/en/bulgaria/sofia/",
+   "radicalstorage": "https://radicalstorage.com/luggage-storage/sofia"
+  },
   "sousse": {
    "localrent": "https://localrent.com/en/tunisia/sousse/",
    "radicalstorage": "https://radicalstorage.com/luggage-storage/sousse"
@@ -1220,10 +1262,25 @@
    "welcomepickups": "https://www.welcomepickups.com/stockholm/airport-transfer/",
    "radicalstorage": "https://radicalstorage.com/luggage-storage/stockholm"
   },
+  "strasbourg": {
+   "radicalstorage": "https://radicalstorage.com/luggage-storage/strasbourg"
+  },
+  "suva": {
+   "localrent": "https://localrent.com/en/fiji/suva/"
+  },
   "sydney": {
    "welcomepickups": "https://www.welcomepickups.com/sydney/airport-transfer/",
    "localrent": "https://localrent.com/en/australia/sydney/",
    "radicalstorage": "https://radicalstorage.com/luggage-storage/sydney"
+  },
+  "taif": {
+   "kiwitaxi": "https://kiwitaxi.com/en/saudi-arabia/taif"
+  },
+  "taipei": {
+   "radicalstorage": "https://radicalstorage.com/luggage-storage/taipei"
+  },
+  "tallinn": {
+   "radicalstorage": "https://radicalstorage.com/luggage-storage/tallinn"
   },
   "tangier": {
    "kiwitaxi": "https://kiwitaxi.com/en/morocco/tangier",
@@ -1248,7 +1305,6 @@
    "radicalstorage": "https://radicalstorage.com/luggage-storage/tirana"
   },
   "tokyo": {
-   "welcomepickups": "https://www.welcomepickups.com/tokyo/airport-transfer/",
    "radicalstorage": "https://radicalstorage.com/luggage-storage/tokyo"
   },
   "toronto": {
@@ -1265,6 +1321,11 @@
   "ubud": {
    "localrent": "https://localrent.com/en/indonesia/ubud/"
   },
+  "valencia": {
+   "welcomepickups": "https://www.welcomepickups.com/valencia/airport-transfer/",
+   "localrent": "https://localrent.com/en/spain/valencia/",
+   "radicalstorage": "https://radicalstorage.com/luggage-storage/valencia"
+  },
   "valletta": {
    "localrent": "https://localrent.com/en/malta/valletta/"
   },
@@ -1272,20 +1333,33 @@
    "welcomepickups": "https://www.welcomepickups.com/vancouver/airport-transfer/",
    "radicalstorage": "https://radicalstorage.com/luggage-storage/vancouver"
   },
+  "varna": {
+   "localrent": "https://localrent.com/en/bulgaria/varna/"
+  },
   "venice": {
    "welcomepickups": "https://www.welcomepickups.com/venice/airport-transfer/",
    "localrent": "https://localrent.com/en/italy/venice/",
    "radicalstorage": "https://radicalstorage.com/luggage-storage/venice"
   },
+  "victoria-falls": {},
   "vienna": {
    "welcomepickups": "https://www.welcomepickups.com/vienna/airport-transfer/",
    "localrent": "https://localrent.com/en/austria/vienna/",
    "radicalstorage": "https://radicalstorage.com/luggage-storage/vienna"
   },
+  "vientiane": {},
+  "vilnius": {
+   "radicalstorage": "https://radicalstorage.com/luggage-storage/vilnius"
+  },
   "warsaw": {
    "localrent": "https://localrent.com/en/poland/warsaw/",
    "radicalstorage": "https://radicalstorage.com/luggage-storage/warsaw"
   },
+  "washington-dc": {},
+  "wellington": {
+   "radicalstorage": "https://radicalstorage.com/luggage-storage/wellington"
+  },
+  "windhoek": {},
   "xian": {},
   "yerevan": {
    "localrent": "https://localrent.com/en/armenia/yerevan/",
@@ -1301,6 +1375,9 @@
   },
   "zanzibar": {
    "localrent": "https://localrent.com/en/tanzania/zanzibar/"
+  },
+  "zermatt": {
+   "radicalstorage": "https://radicalstorage.com/luggage-storage/zermatt"
   },
   "zurich": {
    "welcomepickups": "https://www.welcomepickups.com/zurich/airport-transfer/",
