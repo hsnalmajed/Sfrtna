@@ -388,4 +388,7 @@ export const CITY_AIRPORTS: Record<string, { iata: string; km: number | null }> 
   "nukualofa": { iata: "TBU", km: 13 },
   "port-vila": { iata: "VLI", km: 5 },
   "koror": { iata: "ROR", km: 8 },
+  "hammamet": { iata: "NBE", km: 40 },
+  "georgetown": { iata: "GEO", km: 36 },
+  "paramaribo": { iata: "PBM", km: 41 },
 };

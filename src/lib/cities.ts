@@ -292,6 +292,7 @@ export const COUNTRY_CITIES: Record<string, CityEntry[]> = {
     { slug: "tunis", nameAr: "تونس العاصمة", nameEn: "Tunis", wikiTitle: "Tunis" },
     { slug: "sousse", nameAr: "سوسة", nameEn: "Sousse", wikiTitle: "Sousse" },
     { slug: "djerba", nameAr: "جربة", nameEn: "Djerba", wikiTitle: "Djerba" },
+    { slug: "hammamet", nameAr: "الحمامات", nameEn: "Hammamet", wikiTitle: "Hammamet" },
   ],
   LB: [
     { slug: "beirut", nameAr: "بيروت", nameEn: "Beirut", wikiTitle: "Beirut" },
@@ -638,6 +639,12 @@ export const COUNTRY_CITIES: Record<string, CityEntry[]> = {
   ],
   PW: [
     { slug: "koror", nameAr: "كورور", nameEn: "Koror", wikiTitle: "Koror" },
+  ],
+  GY: [
+    { slug: "georgetown", nameAr: "جورج تاون", nameEn: "Georgetown", wikiTitle: "Georgetown, Guyana" },
+  ],
+  SR: [
+    { slug: "paramaribo", nameAr: "باراماريبو", nameEn: "Paramaribo", wikiTitle: "Paramaribo" },
   ],
 };
 

@@ -354,6 +354,10 @@ export const AIRPORTS: Airport[] = [
   { iata: "TBU", nameAr: "مطار نوكوالوفا الدولي", nameEn: "Fua'amotu International Airport", cityAr: "نوكوالوفا", cityEn: "Nukuʻalofa", countryAr: "تونغا", countryEn: "Tonga" },
   { iata: "VLI", nameAr: "مطار بورت فيلا الدولي", nameEn: "Bauerfield International Airport", cityAr: "بورت فيلا", cityEn: "Port Vila", countryAr: "فانواتو", countryEn: "Vanuatu" },
   { iata: "ROR", nameAr: "مطار كورور الدولي", nameEn: "Roman Tmetuchl International Airport", cityAr: "كورور", cityEn: "Koror", countryAr: "بالاو", countryEn: "Palau" },
+  // Coverage batch 2 gateways (owner's list, confirmed in OurAirports)
+  { iata: "NBE", nameAr: "مطار الحمامات الدولي", nameEn: "Enfidha - Hammamet International Airport", cityAr: "الحمامات", cityEn: "Hammamet", countryAr: "تونس", countryEn: "Tunisia" },
+  { iata: "GEO", nameAr: "مطار جورج تاون الدولي", nameEn: "Cheddi Jagan International Airport", cityAr: "جورج تاون", cityEn: "Georgetown", countryAr: "غيانا", countryEn: "Guyana" },
+  { iata: "PBM", nameAr: "مطار باراماريبو الدولي", nameEn: "Johan Adolf Pengel International Airport", cityAr: "باراماريبو", cityEn: "Paramaribo", countryAr: "سورينام", countryEn: "Suriname" },
 ];
 
 /**

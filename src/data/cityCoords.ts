@@ -387,6 +387,9 @@ export const CITY_COORDS: Record<string, Point & { code: string }> = {
   "nukualofa": { lat: -21.13434, lon: -175.20181, code: "TO" },
   "port-vila": { lat: -17.7415, lon: 168.31502, code: "VU" },
   "koror": { lat: 7.34328, lon: 134.47668, code: "PW" },
+  "hammamet": { lat: 36.40066, lon: 10.61906, code: "TN" },
+  "georgetown": { lat: 6.80326, lon: -58.14554, code: "GY" },
+  "paramaribo": { lat: 5.82476, lon: -55.17039, code: "SR" },
 };
 
 /** Curated landmarks, keyed by "<country code>:<English name>". */

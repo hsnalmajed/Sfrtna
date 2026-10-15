@@ -968,10 +968,12 @@ Chrome), climate v2 after the owner's download, publishing staged cities.
    (gaca.gov.sa Air-Transport-Facilitation-Circulars) are an official Saudi
    source for exemptions (Honduras = no. 180) — check them first next time.
    **+24 cities → 362 live / 131 countries**, site seasons file 388 KB, Worker
-   10.9 MB / 2,239 KiB gzip. **Still staged (8):** visa TN (hammamet), MG
-   (antananarivo, nosy-be), GY (georgetown), SR (paramaribo) — no official page
-   found yet (Suriname entry-fee notices name no countries; Madagascar e-visa
-   news only); HOLD cusco, paro; pohnpei (climate withheld). Rerun the dry run when the collectors commit; publish the rest the same way.
+   10.9 MB / 2,239 KiB gzip. Then TN free (SPA 30 May 2012: Tunisia
+   exempts Saudi citizens), GY required (MFA list 17 Jul 2025), SR eta (online
+   Entry Fee; visa only for 21 listed countries) → **365 live / 133
+   countries**. **Still staged (5):** MG antananarivo, nosy-be (no official
+   page found — Madagascar e-visa news only); HOLD cusco, paro; pohnpei
+   (climate withheld). Rerun the dry run when the collectors commit; publish the rest the same way.
 3. **Visa:** MA ✅, TZ ✅, KW ✅, KH ✅, JO ✅ 14 Oct. KW free — Saudi Jawazat
    via SPA (spa.gov.sa/2349663): GCC travel with the national ID. KH eta —
    MFA exemption list (image on mfaic.gov.kh) has no Saudi Arabia; official

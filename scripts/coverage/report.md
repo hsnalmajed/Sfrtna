@@ -1,52 +1,46 @@
 # Coverage
 
-## Live: 362 cities in 131 countries
+## Live: 365 cities in 133 countries
 
-- centre: 362/362
-- airport: 362/362
-- type: 362/362
-- climate: 359/362
-- places: 362/362
-- hotels: 362/362
-- visa: 359/362
-- currency: 362/362
-- country: 362/362
-- tourism (expected): 113/362
-- guide (expected): 201/362
-- photo (expected): 0/362
+- centre: 365/365
+- airport: 365/365
+- type: 365/365
+- climate: 362/365
+- places: 365/365
+- hotels: 365/365
+- visa: 365/365
+- currency: 365/365
+- country: 365/365
+- tourism (expected): 113/365
+- guide (expected): 202/365
+- photo (expected): 0/365
 
-Missing a required item (6):
+Missing a required item (3):
 
 - PT madeira: climate
 - GE kazbegi: climate
-- TN tunis: visa
-- TN sousse: visa
-- TN djerba: visa
 - MT valletta: climate
 
-## Staged (not on the site yet): 8 cities in 7 countries
+## Staged (not on the site yet): 5 cities in 4 countries
 
-- centre: 0/8
-- airport: 0/8
-- type: 8/8
-- climate: 6/8
-- places: 8/8
-- hotels: 0/8
-- visa: 3/8
-- currency: 8/8
-- country: 8/8
-- tourism (expected): 0/8
-- guide (expected): 1/8
-- photo (expected): 0/8
+- centre: 0/5
+- airport: 0/5
+- type: 5/5
+- climate: 3/5
+- places: 5/5
+- hotels: 0/5
+- visa: 3/5
+- currency: 5/5
+- country: 5/5
+- tourism (expected): 0/5
+- guide (expected): 0/5
+- photo (expected): 0/5
 
-Missing a required item (8):
+Missing a required item (5):
 
 - BT paro: centre, airport, climate, hotels
-- TN hammamet: centre, airport, hotels, visa
 - MG antananarivo: centre, airport, hotels, visa
 - MG nosy-be: centre, airport, hotels, visa
 - PE cusco: centre, airport, hotels
-- GY georgetown: centre, airport, hotels, visa
-- SR paramaribo: centre, airport, hotels, visa
 - FM pohnpei: centre, airport, climate, hotels
 
