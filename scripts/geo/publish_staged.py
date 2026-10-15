@@ -58,11 +58,7 @@ def main() -> None:
     seasons = set(seasons_file["records"].keys())
     withheld = set((seasons_file["meta"].get("withheld") or {}).keys())
     places = {p.stem for p in (ROOT / "public/data/places").glob("*.json")}
-    # Staged hotels are collected into scripts/hotels/cities/; build-index.ts
-    # writes public/data/hotels/ only for live cities, so it runs after --apply.
-    hotels = {p.stem for p in (ROOT / "public/data/hotels").glob("*.json")} | {
-        p.stem for p in (ROOT / "scripts/hotels/cities").glob("*.json") if p.stat().st_size > 2
-    }
+    hotels = {p.stem for p in (ROOT / "public/data/hotels").glob("*.json")}
     visa = keys(read("src/data/visaStatus.ts"), r"^  ([A-Z]{2}): \{") | {"SA"}
     countries = {
         m.group(1): (m.group(2), m.group(3))
@@ -70,8 +66,7 @@ def main() -> None:
     }
     cur_src = read("src/lib/currencies.ts")
     euro = set(re.findall(r'"([A-Z]{2})"', cur_src.split("EURO_COUNTRIES = new Set([", 1)[1].split("]);", 1)[0]))
-    overrides = cur_src.split("COUNTRY_CURRENCY_OVERRIDES", 1)[1].split("};", 1)[0]
-    with_cur = set(re.findall(r'country: "([A-Z]{2})"', cur_src)) | euro | set(re.findall(r'^  ([A-Z]{2}): "', overrides, re.M))
+    with_cur = set(re.findall(r'country: "([A-Z]{2})"', cur_src)) | euro
     listed_iata = set(re.findall(r'iata: "([A-Z]{3})"', air_ts))
 
     ready, waiting = [], []
@@ -113,7 +108,7 @@ def main() -> None:
         ar, en, wiki = c["nameAr"], c["nameEn"], c.get("wikiTitle") or c["nameEn"]
         by_cc.setdefault(cc, []).append(f'    {{ slug: "{slug}", nameAr: "{ar}", nameEn: "{en}", wikiTitle: "{wiki}" }},')
         new_coords.append(f'  "{slug}": {{ lat: {c["lat"]}, lon: {c["lon"]}, code: "{cc}" }},')
-        a = dict(c["airport"], name=c["airport"]["name"].replace('"', ""))
+        a = c["airport"]
         new_cair.append(f'  "{slug}": {{ iata: "{a["iata"]}", km: {round(a["km"])} }},')
         if a["iata"] not in listed_iata:
             listed_iata.add(a["iata"])
@@ -124,8 +119,6 @@ def main() -> None:
             )
 
     for cc, lines in by_cc.items():
-        # A one-line block ("  MV: [{ … }],") is opened up first.
-        cities_ts = re.sub(rf"^  {cc}: \[(\{{.*\}})\],$", rf"  {cc}: [\n    \1,\n  ],", cities_ts, flags=re.M)
         m = re.search(rf"^  {cc}: \[\n", cities_ts, re.M)
         if m:  # the country already has cities: append to its block
             end = cities_ts.index("\n  ],", m.end())

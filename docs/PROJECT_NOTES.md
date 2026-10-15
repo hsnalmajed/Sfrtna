@@ -937,25 +937,6 @@ Chrome), climate v2 after the owner's download, publishing staged cities.
    cancelled). Dry run before they finish: 124 ready except places/hotels,
    32 waiting on visa. After publish: partner-pages.yml, mobile-taps.yml,
    live check.
-   **15 Oct ~03:40 UTC: 102 cities published** → live 316 cities / 104
-   countries (site seasons 313; madeira, kazbegi, valletta withheld), 78
-   gateway airports added, hotel index 129,552 hotels. Collectors now stop
-   after `STOP_AFTER_MIN` (300) and commit; the 13–14 Oct runs had hit the
-   340-min job limit with nothing saved. Gate fixes in publish_staged.py:
-   staged hotels are read from `scripts/hotels/cities/` (build-index writes
-   public/data/hotels only for live cities → run
-   `npx tsx scripts/hotels/build-index.ts` after `--apply`), currency
-   overrides (EC/PA/SV/PW/FM/ZW = USD) count, one-line country blocks
-   (`MV: [{…}]`) are opened before appending, quotes stripped from airport
-   names. Worker after publish: 2,285 KiB gzip, season site file 2.0 MB ×2
-   copies (watch: 4 × 5.8 MB gave 1102). **54 still staged:** 21 hotels
-   missing (taif, shenzhen, sapporo, taipei, vientiane, strasbourg,
-   valencia, zermatt, tallinn, vilnius, sofia, varna, skopje, vatican-city,
-   windhoek, victoria-falls, washington-dc, seattle, varadero, santo-domingo,
-   wellington, suva — re-run dispatched 00:36), 6 places missing
-   (birmingham, andorra-la-vella, algiers, los-cabos, punta-arenas,
-   port-moresby), visa for the 26 countries listed above, HOLD cusco/paro.
-   Rerun the dry run when the collectors commit; publish the rest the same way.
 3. **Visa:** MA ✅, TZ ✅, KW ✅, KH ✅, JO ✅ 14 Oct. KW free — Saudi Jawazat
    via SPA (spa.gov.sa/2349663): GCC travel with the national ID. KH eta —
    MFA exemption list (image on mfaic.gov.kh) has no Saudi Arabia; official
