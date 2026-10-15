@@ -38,11 +38,11 @@
   buttons 3, tapped 3
   NO EFFECT: عربي
 
-## Pixel 7 /ar/results?tripType=flight&tripRoute=oneway&origin=RUH&destination=IST&departDate=2026-11-23&returnDate=&adults=1&childrenAges=&infants=0&budget=0&currency=SAR&directOnly=false&baggageIncluded=false&nights=0
-  buttons 6, tapped 6
+## Pixel 7 /ar/results?tripType=flight&tripRoute=oneway&origin=RUH&destination=IST&departDate=2026-11-24&returnDate=&adults=1&childrenAges=&infants=0&budget=0&currency=SAR&directOnly=false&baggageIncluded=false&nights=0
+  buttons 10, tapped 8
 
-## Pixel 7 /ar/hotel-results?hmode=discover&checkIn=2026-11-23&checkOut=2026-11-27&adults=2&childrenAges=&infants=0&city=Istanbul&label=%D8%A5%D8%B3%D8%B7%D9%86%D8%A8%D9%88%D9%84&budget=0&currency=SAR
-  buttons 6, tapped 6
+## Pixel 7 /ar/hotel-results?hmode=discover&checkIn=2026-11-24&checkOut=2026-11-28&adults=2&childrenAges=&infants=0&city=Istanbul&label=%D8%A5%D8%B3%D8%B7%D9%86%D8%A8%D9%88%D9%84&budget=0&currency=SAR
+  buttons 27, tapped 19
 
 ## iPhone 13 /ar
   buttons 40, tapped 8
@@ -83,8 +83,8 @@
   buttons 3, tapped 3
   NO EFFECT: عربي
 
-## iPhone 13 /ar/results?tripType=flight&tripRoute=oneway&origin=RUH&destination=IST&departDate=2026-11-23&returnDate=&adults=1&childrenAges=&infants=0&budget=0&currency=SAR&directOnly=false&baggageIncluded=false&nights=0
-  buttons 11, tapped 6
+## iPhone 13 /ar/results?tripType=flight&tripRoute=oneway&origin=RUH&destination=IST&departDate=2026-11-24&returnDate=&adults=1&childrenAges=&infants=0&budget=0&currency=SAR&directOnly=false&baggageIncluded=false&nights=0
+  buttons 6, tapped 6
 
-## iPhone 13 /ar/hotel-results?hmode=discover&checkIn=2026-11-23&checkOut=2026-11-27&adults=2&childrenAges=&infants=0&city=Istanbul&label=%D8%A5%D8%B3%D8%B7%D9%86%D8%A8%D9%88%D9%84&budget=0&currency=SAR
-  buttons 27, tapped 17
+## iPhone 13 /ar/hotel-results?hmode=discover&checkIn=2026-11-24&checkOut=2026-11-28&adults=2&childrenAges=&infants=0&city=Istanbul&label=%D8%A5%D8%B3%D8%B7%D9%86%D8%A8%D9%88%D9%84&budget=0&currency=SAR
+  buttons 27, tapped 16
