@@ -118,9 +118,32 @@ writeFileSync(
 // The slim copy the site imports (see src/lib/travelSeason/siteFields.ts):
 // only the cities on the site (src/lib/cities.ts) — staged cities are rated in
 // the full file and the reports, but stay out of the Worker until published.
-const pick = (r: SeasonRecord) => Object.fromEntries(SITE_FIELDS.map((f) => [f, r[f]]));
+// Packed (src/lib/travelSeason/site.ts unpacks): each month is a row of
+// SITE_FIELDS values, every string replaced by its index in one table. The
+// same few dozen sentences repeat thousands of times; sent as objects the
+// file was 2 MB for 313 cities and every /api request paid to parse it on
+// the Workers free plan (Cloudflare 1102, 15 Oct). Packed it is ~250 KB.
+const table: string[] = [];
+const tableIndex = new Map<string, number>();
+const str = (v: string) => {
+  let i = tableIndex.get(v);
+  if (i === undefined) {
+    i = table.length;
+    table.push(v);
+    tableIndex.set(v, i);
+  }
+  return i;
+};
+// Numbers and null stay as they are; a string is its table index wrapped in
+// a one-item array, so a number value and a string index can't be confused.
+const cell = (v: unknown) => (typeof v === "string" ? [str(v)] : v);
 const liveSlugs = new Set(
   [...readFileSync(join(root, "src/lib/cities.ts"), "utf8").matchAll(/slug: "([^"]+)"/g)].map((m) => m[1])
+);
+const packedRecords = Object.fromEntries(
+  Object.entries(records)
+    .filter(([k]) => liveSlugs.has(k))
+    .map(([k, recs]) => [k, recs.map((r) => SITE_FIELDS.map((f) => cell(r[f])))])
 );
 writeFileSync(
   sitePath,
@@ -132,7 +155,9 @@ writeFileSync(
       climatePeriod: normals.meta.period,
       generatedAt,
     },
-    records: Object.fromEntries(Object.entries(records).filter(([k]) => liveSlugs.has(k)).map(([k, recs]) => [k, recs.map(pick)])),
+    fields: SITE_FIELDS,
+    table,
+    records: packedRecords,
   }) + "\n"
 );
 

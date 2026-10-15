@@ -17,7 +17,10 @@ import type { SiteField } from "@/lib/travelSeason/siteFields";
 /** A month as the site sees it: only the fields in SITE_FIELDS. */
 export type SeasonRecord = Pick<FullSeasonRecord, SiteField>;
 
-interface SeasonsFile {
+/** A value in the packed file: number / null as is, a string as [tableIndex]. */
+type PackedCell = number | null | [number];
+
+interface PackedSeasonsFile {
   meta: {
     scoringVersion: string;
     tourismLastVerified: string;
@@ -25,25 +28,46 @@ interface SeasonsFile {
     climatePeriod: string;
     generatedAt: string;
   };
-  records: Record<string, SeasonRecord[]>;
+  fields: SiteField[];
+  table: string[];
+  records: Record<string, PackedCell[][]>;
 }
 
-const FILE = data as unknown as SeasonsFile;
+const PACKED = data as unknown as PackedSeasonsFile;
+
+// Rebuilt per city on first use (scripts/climate/generate_seasons.mts packs
+// it; see there for why), so a request touching one city unpacks one city.
+const unpacked = new Map<string, SeasonRecord[]>();
+function cityRecords(slug: string): SeasonRecord[] | undefined {
+  const done = unpacked.get(slug);
+  if (done) return done;
+  if (!Object.prototype.hasOwnProperty.call(PACKED.records, slug)) return undefined;
+  const recs = PACKED.records[slug].map((row) => {
+    const o: Record<string, unknown> = {};
+    PACKED.fields.forEach((f, i) => {
+      const v = row[i];
+      o[f] = Array.isArray(v) ? PACKED.table[v[0]] : v;
+    });
+    return o as unknown as SeasonRecord;
+  });
+  unpacked.set(slug, recs);
+  return recs;
+}
 
 export { CLASS_DOT } from "@/lib/travelSeason/labels";
 
 /** The 12 records for a destination, January first; undefined if none. */
 export function seasonRecords(slug: string): SeasonRecord[] | undefined {
-  return FILE.records[slug];
+  return cityRecords(slug);
 }
 
 export function seasonRecord(slug: string, month: number): SeasonRecord | undefined {
-  return FILE.records[slug]?.[month - 1];
+  return cityRecords(slug)?.[month - 1];
 }
 
 /** Months (1–12) the destination is EXCELLENT or VERY_GOOD. */
 export function bestMonths(slug: string): number[] {
-  return (FILE.records[slug] ?? [])
+  return (cityRecords(slug) ?? [])
     .filter((r) => r.classification === "EXCELLENT" || r.classification === "VERY_GOOD")
     .map((r) => r.month);
 }
