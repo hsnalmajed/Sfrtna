@@ -93,6 +93,8 @@ export default async function SeasonsPage({ params, searchParams }: PageProps<"/
           rainDays: r.precipitationDays,
           summary: isAr ? r.weatherSummaryAr : r.weatherSummaryEn,
           reason: isAr ? r.reasonAr : r.reasonEn,
+          highlight: isAr ? r.highlightAr : r.highlightEn,
+          highlightIcon: r.highlightIcon,
         })),
         // Sources stay internal: the page shows ratings and weather, not
         // which data set or tourism board they came from.

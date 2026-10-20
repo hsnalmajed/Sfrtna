@@ -12,9 +12,10 @@ import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { scoreDestination } from "../../src/lib/travelSeason/engine.ts";
+import { HIGHLIGHT_LABEL, WINTER_HIGHLIGHTS, highlightsFor } from "../../src/data/seasonHighlights.ts";
 import { SCORING } from "../../src/lib/travelSeason/config.ts";
 import { SITE_FIELDS } from "../../src/lib/travelSeason/siteFields.ts";
-import type { DestinationClimate, SeasonRecord, TourismSignalInput } from "../../src/lib/travelSeason/types.ts";
+import type { DestinationClimate, SeasonRecord, TourismSignalInput, MonthHighlight } from "../../src/lib/travelSeason/types.ts";
 import { DESTINATION_TYPES, DESTINATION_TYPES_VERSION, QA_DESTINATION_TYPES } from "../../src/data/destinationTypes.ts";
 import { CITY_SEASON_SOURCES, SEASON_SOURCES, TOURISM_LAST_VERIFIED } from "../../src/data/citySeasonSources.ts";
 
@@ -39,6 +40,18 @@ const normals: NormalsFile = JSON.parse(readFileSync(normalsPath, "utf8"));
 const destList = JSON.parse(readFileSync(join(here, "destinations.json"), "utf8")).destinations as {
   id: string; countryCode: string; name: string; qa: boolean;
 }[];
+
+/** Sourced highlights of a city by month, labels resolved (src/data/seasonHighlights.ts). */
+function monthHighlights(id: string): Map<number, MonthHighlight[]> {
+  const out = new Map<number, MonthHighlight[]>();
+  for (const [m, hs] of highlightsFor(id)) {
+    out.set(
+      m,
+      hs.map((h) => ({ ...HIGHLIGHT_LABEL[h.kind], winter: WINTER_HIGHLIGHTS.includes(h.kind) }))
+    );
+  }
+  return out;
+}
 
 function tourismFor(id: string): TourismSignalInput | null {
   const e = CITY_SEASON_SOURCES[id];
@@ -76,7 +89,7 @@ for (const d of destList) {
     id: d.id, countryCode: n.countryCode, latitude: n.latitude, longitude: n.longitude, months: n.months,
     provenance: n.provenance, station: n.station ?? null, parameterSources: n.parameterSources,
   };
-  const recs = scoreDestination(climate, types, d.qa ? null : tourismFor(d.id), generatedAt);
+  const recs = scoreDestination(climate, types, d.qa ? null : tourismFor(d.id), generatedAt, d.qa ? new Map() : monthHighlights(d.id));
   const dz = recs[0].climateElevationDifferenceM;
   if (!d.qa && n.provenance.withheldReason && n.parameterSources?.highC !== "station") {
     withheld[d.id] = { reason: n.provenance.withheldReason, records: recs };

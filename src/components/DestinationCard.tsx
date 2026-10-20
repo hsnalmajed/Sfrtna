@@ -166,6 +166,11 @@ export default function DestinationCard({
               {place.seasonName.icon} {isAr ? place.seasonName.ar : place.seasonName.en}
             </span>
           )}
+          {place?.highlight && (
+            <span className="max-w-full truncate rounded-full bg-violet-50 px-2 py-0.5 text-[11px] font-extrabold text-violet-900 ring-1 ring-violet-200 sm:px-2.5 sm:py-1 sm:text-xs">
+              {place.highlight.icon} {isAr ? place.highlight.ar : place.highlight.en}
+            </span>
+          )}
           {place?.high !== undefined && (
             <span className="rounded-full bg-mist-50 px-2 py-0.5 text-[11px] font-bold text-navy-800 ring-1 ring-mist-200 sm:px-2.5 sm:py-1 sm:text-xs" dir="ltr">
               🌡{" "}

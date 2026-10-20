@@ -41,6 +41,7 @@ export function placeForDestination(code: string, nameEn: string, month: number)
     classification: r?.classification ?? undefined,
     seasonName: r ? { ar: r.seasonNameAr, en: r.seasonNameEn, icon: r.seasonIcon } : undefined,
     seasonKinds: r ? seasonKindsOf(r.seasonNameEn) : undefined,
+    highlight: r?.highlightAr && r.highlightEn ? { ar: r.highlightAr, en: r.highlightEn, icon: r.highlightIcon ?? "" } : undefined,
     visa: visaStatusFor(city.countryCode)?.category,
   };
 }

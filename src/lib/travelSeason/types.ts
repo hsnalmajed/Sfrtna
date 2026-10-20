@@ -183,6 +183,12 @@ export interface SeasonRecord {
   weatherSummaryEn: string | null;
   reasonAr: string | null;
   reasonEn: string | null;
+  /** What the month is for beyond its weather (src/data/seasonHighlights.ts), or null. */
+  highlightAr: string | null;
+  highlightEn: string | null;
+  highlightIcon: string | null;
+  /** Why the class was lifted above the weather alone: "highlight", "tourism", "neighbour", or null. */
+  liftedBy: "highlight" | "tourism" | "neighbour" | null;
 
   climateSource: string;
   climateDataset: string;
@@ -201,4 +207,13 @@ export interface SeasonRecord {
 
   scoringVersion: string;
   generatedAt: string;
+}
+
+/** A month's highlight as the engine receives it (labels already resolved). */
+export interface MonthHighlight {
+  ar: string;
+  en: string;
+  icon: string;
+  /** The cold is the point (aurora, ski, Christmas markets): cold limits do not apply. */
+  winter: boolean;
 }

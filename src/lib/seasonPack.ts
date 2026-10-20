@@ -21,10 +21,13 @@ export interface PlainMonth {
   rainDays: number | null;
   summary: string | null;
   reason: string | null;
+  /** What the month is for beyond its weather (aurora, Christmas markets…). */
+  highlight: string | null;
+  highlightIcon: string | null;
 }
 
-/** [classification, finalScore, season, pattern, seasonName, seasonIcon, phase, high, low, rainDays, summary, reason] — strings as table indexes, null as -1 (strings) or null (numbers). */
-export type PackedMonth = [number, number | null, number, number, number, number, number, number | null, number | null, number | null, number, number];
+/** [classification, finalScore, season, pattern, seasonName, seasonIcon, phase, high, low, rainDays, summary, reason, highlight, highlightIcon] — strings as table indexes, null as -1 (strings) or null (numbers). */
+export type PackedMonth = [number, number | null, number, number, number, number, number, number | null, number | null, number | null, number, number, number, number];
 
 export class SeasonPacker {
   readonly table: string[] = [];
@@ -55,6 +58,8 @@ export class SeasonPacker {
       m.rainDays,
       this.s(m.summary),
       this.s(m.reason),
+      this.s(m.highlight),
+      this.s(m.highlightIcon),
     ];
   }
 }
@@ -74,5 +79,7 @@ export function unpackMonth(p: PackedMonth, table: readonly string[]): PlainMont
     rainDays: p[9],
     summary: s(p[10]),
     reason: s(p[11]),
+    highlight: s(p[12] ?? -1),
+    highlightIcon: s(p[13] ?? -1),
   };
 }

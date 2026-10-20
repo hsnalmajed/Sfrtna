@@ -24,6 +24,9 @@ export const SITE_FIELDS = [
   "reasonEn",
   "confidenceLevel",
   "tourismSignal",
+  "highlightAr",
+  "highlightEn",
+  "highlightIcon",
 ] as const;
 
 export type SiteField = (typeof SITE_FIELDS)[number];

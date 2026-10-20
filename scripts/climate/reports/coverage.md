@@ -1,4 +1,4 @@
-# Coverage — scoring v1.1, 2026-10-15T08:08:26.224Z
+# Coverage — scoring v1.2, 2026-10-20T22:59:24.943Z
 
 - Total destinations: 1090
 - With coordinates: 1090

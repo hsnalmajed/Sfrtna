@@ -44,6 +44,9 @@ export interface SeasonMonth {
   rainDays: number | null;
   summary: string | null;
   reason: string | null;
+  /** What the month is for beyond its weather («🌌 موسم الشفق القطبي»). */
+  highlight: string | null;
+  highlightIcon: string | null;
 }
 
 export interface SeasonCity {
@@ -357,6 +360,11 @@ export default function CitySeasons({
                                   🌡 {temps(r)}
                                 </span>
                               )}
+                              {r.highlight && (
+                                <span className="inline-flex max-w-full truncate rounded-full bg-violet-600/85 px-2 py-0.5 text-xs font-extrabold text-white backdrop-blur-sm">
+                                  {r.highlightIcon} {r.highlight}
+                                </span>
+                              )}
                             </div>
                           </div>
                         </button>
@@ -500,6 +508,11 @@ export default function CitySeasons({
                           </span>
                         </span>
                         <span className="mt-1.5 block truncate text-xs font-semibold text-navy-500">{r.seasonName}</span>
+                        {r.highlight && (
+                          <span className="mt-1.5 block rounded-lg bg-violet-50 px-2 py-1 text-[11px] font-extrabold leading-snug text-violet-900 ring-1 ring-violet-100">
+                            {r.highlightIcon} {r.highlight}
+                          </span>
+                        )}
                       </button>
                     );
                   })}
@@ -650,6 +663,12 @@ function MonthDialog({
             )}
             {r.phase && <span className="text-xs font-bold text-emerald-800">{t.phases[r.phase]}</span>}
           </div>
+
+          {r.highlight && (
+            <p className="mt-4 rounded-2xl bg-violet-50 px-4 py-3 text-sm font-extrabold text-violet-900 ring-1 ring-violet-100">
+              <span aria-hidden="true">{r.highlightIcon}</span> {r.highlight}
+            </p>
+          )}
 
           <div className="mt-4 grid grid-cols-2 gap-2">
             <div className="rounded-2xl bg-mist-50 p-3 ring-1 ring-mist-200">

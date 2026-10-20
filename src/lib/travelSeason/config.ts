@@ -40,7 +40,7 @@ export interface ThermalProfile {
 }
 
 export const SCORING = {
-  version: "1.1",
+  version: "1.2",
 
   profiles: {
     city: {
@@ -203,6 +203,29 @@ export const SCORING = {
    * push an equally good unnamed month out.)
    */
   excellentWithinBest: 8,
+
+  /**
+   * v1.2 (owner, 21 Oct 2026: "the weather alone says ‘not suitable’ for
+   * months travellers call the best"). A month is lifted to at least
+   * VERY_GOOD («وقت ممتاز للزيارة») when
+   *   - it has a sourced highlight (src/data/seasonHighlights.ts), or
+   *   - the city's tourism source names it (an official body, even about the
+   *     city's region; a guide only about the city itself),
+   * and no heat or rain limit applies to it (for a winter highlight the cold
+   * limits are set aside — the cold is the point). Its score is raised to
+   * the class's floor so the number and the words agree.
+   *
+   * And two neighbouring months with the same season name whose scores sit
+   * within `neighbourGap` points are not split across GOOD / VERY_GOOD: the
+   * lower is lifted (February ممتاز, March جيد at the same heat and the same
+   * dry season read as a contradiction — a 6-point humidity difference was
+   * crossing the line).
+   */
+  lift: {
+    floor: 72,
+    coldCaps: ["extremeCold", "veryCold"] as string[],
+    neighbourGap: 6,
+  },
 
   confidence: {
     climateComplete: 35,

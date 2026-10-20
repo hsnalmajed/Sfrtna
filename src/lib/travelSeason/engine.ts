@@ -31,6 +31,7 @@ import type {
   DestinationClimate,
   FavorablePhase,
   MonthClimate,
+  MonthHighlight,
   Season,
   SeasonRecord,
   TourismSignalInput,
@@ -320,7 +321,9 @@ export function scoreDestination(
   climate: DestinationClimate,
   types: DestinationType[],
   tourism: TourismSignalInput | null,
-  generatedAt: string
+  generatedAt: string,
+  /** Month (1–12) → its sourced highlights (src/data/seasonHighlights.ts). */
+  highlights: Map<number, MonthHighlight[]> = new Map()
 ): SeasonRecord[] {
   const { months, provenance: prov } = climate;
   const patterns = climatePatterns(months);
@@ -334,7 +337,13 @@ export function scoreDestination(
   const yearHasWetDry = patterns.some((p) => p === "rainy_season" || p === "dry_season");
 
   const subs = months.map((m) => bestProfileScore(m, types));
-  const caps = months.map((m) => capsFor(m, types));
+  // A winter highlight (aurora, ski, Christmas markets) sets the cold limits
+  // aside for its month: the cold is what the traveller comes for.
+  const caps = months.map((m, i) => {
+    const all = capsFor(m, types);
+    const winter = (highlights.get(i + 1) ?? []).some((h) => h.winter);
+    return winter ? all.filter((c) => !SCORING.lift.coldCaps.includes(c.id)) : all;
+  });
   const climateScores = subs.map((s, i) => {
     if (!s) return null;
     const cap = Math.min(100, ...caps[i].map((c) => c.cap));
@@ -376,6 +385,55 @@ export function scoreDestination(
   const knownClimate = climateScores.filter((c): c is number => c !== null);
   const bestClimate = knownClimate.length ? Math.max(...knownClimate) : 0;
   const classes = finals.map((f, i) => (f === null ? null : classify(f, climateScores[i] as number, bestClimate, caps[i].some((c) => c.cap <= SCORING.notRecommendedMaxCap), subs[i]?.high ?? 100)));
+
+  // Season names first: the neighbour rule below compares them.
+  const names = months.map((m, i) =>
+    seasonName({
+      temperate,
+      season: seasonFor(climate.latitude, i + 1),
+      month: m,
+      yearMm,
+      yearMeanHighC,
+      pattern: patterns[i],
+      prevPattern: patterns[(i + 11) % 12],
+      nextPattern: patterns[(i + 1) % 12],
+      yearHasWetDry,
+    })
+  );
+
+  // v1.2 lifts (config.ts → lift): sourced highlights and the city's own
+  // tourism months reach at least VERY_GOOD when no heat or rain limit applies.
+  const L = SCORING.lift;
+  const classRank = (c: Classification | null) => (c === null ? -1 : 4 - SCORING.classes.findIndex((x) => x.id === c));
+  const VG = classRank("VERY_GOOD");
+  const liftedBy: SeasonRecord["liftedBy"][] = months.map(() => null);
+  const lift = (i: number, by: NonNullable<SeasonRecord["liftedBy"]>) => {
+    if (classes[i] === null || classRank(classes[i]) >= VG) return;
+    classes[i] = "VERY_GOOD";
+    finals[i] = Math.max(finals[i] as number, L.floor);
+    liftedBy[i] = by;
+  };
+  months.forEach((_, i) => {
+    if (caps[i].length > 0) return;
+    if ((highlights.get(i + 1) ?? []).length > 0) lift(i, "highlight");
+    // An official tourism body naming the month counts even when it speaks of
+    // the region the city sits in (VisitSaudi on Aseer for Abha's summer); a
+    // guide's country-wide statement does not.
+    else if (adjustments[i].signal === "listed" && tourism && (tourism.official || !tourism.broad)) lift(i, "tourism");
+  });
+  // Neighbours with the same season name and nearly the same score are not
+  // split across GOOD / VERY_GOOD (one pass, from the classes above).
+  const before = [...classes];
+  months.forEach((_, i) => {
+    if (before[i] !== "GOOD" || caps[i].length > 0 || finals[i] === null) return;
+    for (const j of [(i + 11) % 12, (i + 1) % 12]) {
+      if (classRank(before[j]) < VG || finals[j] === null) continue;
+      if (names[j].en !== names[i].en) continue;
+      if ((finals[j] as number) - (finals[i] as number) > L.neighbourGap) continue;
+      lift(i, "neighbour");
+      return;
+    }
+  });
   const phases = favorablePhases(classes, finals);
   const stationTemps = stationTemperatures(climate);
   const st = climate.station ?? null;
@@ -386,18 +444,14 @@ export function scoreDestination(
     const month = i + 1;
     const cls = classes[i];
     const summary = weatherSummary(m);
-    const name = seasonName({
-      temperate,
-      season: seasonFor(climate.latitude, month),
-      month: m,
-      yearMm,
-      yearMeanHighC,
-      pattern: patterns[i],
-      prevPattern: patterns[(i + 11) % 12],
-      nextPattern: patterns[(i + 1) % 12],
-      yearHasWetDry,
-    });
-    const reason = cls ? reasonText({ month: m, sub: s, caps: caps[i], signal: adjustments[i].signal, tourism, classification: cls }) : null;
+    const name = names[i];
+    const hl = highlights.get(month) ?? [];
+    const base = cls ? reasonText({ month: m, sub: s, caps: caps[i], signal: adjustments[i].signal, tourism, classification: cls }) : null;
+    // A highlight leads the reason; the weather still follows it.
+    const reason =
+      base && hl.length
+        ? { ar: `${hl.map((h) => h.ar).join(" · ")} — ${base.ar}`, en: `${hl.map((h) => h.en).join(" · ")} — ${base.en}` }
+        : base;
     return {
       destinationId: climate.id,
       countryCode: climate.countryCode,
@@ -449,6 +503,10 @@ export function scoreDestination(
       weatherSummaryEn: summary?.en ?? null,
       reasonAr: reason?.ar ?? null,
       reasonEn: reason?.en ?? null,
+      highlightAr: hl.length ? hl.map((h) => h.ar).join(" · ") : null,
+      highlightEn: hl.length ? hl.map((h) => h.en).join(" · ") : null,
+      highlightIcon: hl.length ? hl[0].icon : null,
+      liftedBy: liftedBy[i],
       climateSource: st ? `${st.source}; other parameters: ${prov.source}` : prov.source,
       climateDataset: st ? `WMO 1991–2020 station normals + ${prov.dataset}` : prov.dataset,
       climateDatasetUrl: st ? st.url : prov.datasetUrl,

@@ -215,6 +215,8 @@ export interface DestinationPlace {
   seasonName?: { ar: string; en: string; icon: string };
   /** The kinds of season that name stands for (winter, snow, dry…), for the filter. */
   seasonKinds?: import("@/lib/travelSeason/kinds").SeasonKind[];
+  /** What the month is for beyond its weather (aurora, Christmas markets…). */
+  highlight?: { ar: string; en: string; icon: string };
   /** Confirmed entry status for a Saudi passport. */
   visa?: "free" | "arrival" | "eta" | "required";
 }

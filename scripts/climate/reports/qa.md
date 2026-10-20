@@ -1,6 +1,6 @@
-# Quality test — scoring v1.1
+# Quality test — scoring v1.2
 
-Climate: ERA5-Land hourly time-series (reanalysis-era5-land-timeseries), 1991–2020. Generated 2026-10-15T08:08:26.224Z.
+Climate: ERA5-Land hourly time-series (reanalysis-era5-land-timeseries), 1991–2020. Generated 2026-10-20T22:59:24.943Z.
 
 ## riyadh — city + desert — station RiyadhOld (WMO 40438), 8.3 km; destination's own grid cell: 24.60, 46.70 (4.6 km) — confidence high (100)
 
@@ -8,8 +8,8 @@ Climate: ERA5-Land hourly time-series (reanalysis-era5-land-timeseries), 1991–
 |---|---|---|---|---|---|---|---|---|---|---|---|
 | Jan | 20 | 9 | 15 | 2.1 | 48 | — | 100 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain. |
 | Feb | 24 | 12 | 6 | 1.0 | 36 | — | 100 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain. |
-| Mar | 28 | 15 | 21 | 2.7 | 30 | 27 | 100 | listed | 100 | EXCELLENT (end) | Comfortable temperatures, with little rain. |
-| Apr | 34 | 21 | 24 | 3.4 | 25 | 31 | 72 | listed | 80 | GOOD | High temperatures, with little rain. |
+| Mar | 28 | 15 | 21 | 2.7 | 30 | 27 | 100 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain. |
+| Apr | 34 | 21 | 24 | 3.4 | 25 | 31 | 72 | listed | 80 | VERY_GOOD (end) | High temperatures, with little rain. |
 | May | 39 | 26 | 5 | 0.8 | 16 | 36 | 42 | listed | 42 | NOT_RECOMMENDED | Very hot (average high 39°). |
 | Jun | 43 | 28 | 0 | 0.0 | 10 | 39 | 25 | listed | 25 | NOT_RECOMMENDED | Extreme heat (average high 43°). |
 | Jul | 43 | 29 | 0 | 0.0 | 10 | 39 | 25 | unlisted | 21 | NOT_RECOMMENDED | Extreme heat (average high 43°). |
@@ -40,15 +40,15 @@ Climate: ERA5-Land hourly time-series (reanalysis-era5-land-timeseries), 1991–
 
 | Month | High | Low | Rain mm | Rain days | RH % | Heat index | Climate | Tourism | Final | Class | Reason |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| Jan | 20 | 8 | 13 | 1.4 | 68 | — | 100 | unlisted | 100 | EXCELLENT (peak) | Comfortable temperatures, with little rain. |
+| Jan | 20 | 8 | 13 | 1.4 | 68 | — | 100 | unlisted | 100 | EXCELLENT | Comfortable temperatures, with little rain. |
 | Feb | 22 | 10 | 12 | 0.9 | 63 | — | 100 | unlisted | 100 | EXCELLENT | Comfortable temperatures, with little rain. |
 | Mar | 24 | 12 | 35 | 1.9 | 60 | — | 100 | unlisted | 100 | EXCELLENT | Comfortable temperatures, with little rain. |
 | Apr | 26 | 14 | 39 | 4.7 | 56 | — | 100 | unlisted | 96 | EXCELLENT | Comfortable temperatures, with little rain. |
-| May | 29 | 15 | 26 | 3.8 | 47 | 28 | 87 | unlisted | 83 | VERY_GOOD (end) | Fair temperatures, with little rain. |
-| Jun | 31 | 17 | 8 | 1.7 | 36 | 30 | 75 | listed | 83 | GOOD | High temperatures, with little rain. |
-| Jul | 31 | 18 | 22 | 3.5 | 43 | 30 | 76 | listed | 84 | GOOD | High temperatures, with little rain. |
-| Aug | 31 | 17 | 26 | 4.1 | 51 | 30 | 78 | listed | 86 | GOOD | Fair temperatures, with little rain. |
-| Sep | 30 | 16 | 6 | 1.0 | 36 | 28 | 82 | listed | 90 | VERY_GOOD (start) | Fair temperatures, with little rain. |
+| May | 29 | 15 | 26 | 3.8 | 47 | 28 | 87 | unlisted | 83 | VERY_GOOD | Fair temperatures, with little rain. |
+| Jun | 31 | 17 | 8 | 1.7 | 36 | 30 | 75 | listed | 83 | VERY_GOOD | High temperatures, with little rain. |
+| Jul | 31 | 18 | 22 | 3.5 | 43 | 30 | 76 | listed | 84 | VERY_GOOD | High temperatures, with little rain. |
+| Aug | 31 | 17 | 26 | 4.1 | 51 | 30 | 78 | listed | 86 | VERY_GOOD | Fair temperatures, with little rain. |
+| Sep | 30 | 16 | 6 | 1.0 | 36 | 28 | 82 | listed | 90 | VERY_GOOD | Fair temperatures, with little rain. |
 | Oct | 26 | 12 | 4 | 0.7 | 40 | — | 99 | unlisted | 95 | EXCELLENT | Comfortable temperatures, with little rain. |
 | Nov | 23 | 10 | 7 | 1.0 | 61 | — | 100 | unlisted | 96 | EXCELLENT | Comfortable temperatures, with little rain. |
 | Dec | 21 | 8 | 2 | 0.5 | 66 | — | 100 | unlisted | 96 | EXCELLENT | Comfortable temperatures, with little rain. |
@@ -110,15 +110,15 @@ Climate: ERA5-Land hourly time-series (reanalysis-era5-land-timeseries), 1991–
 |---|---|---|---|---|---|---|---|---|---|---|---|
 | Jan | 9 | 4 | 74 | 10.0 | 81 | — | 50 | unlisted | 46 | ACCEPTABLE | Cold weather, with little rain. |
 | Feb | 10 | 4 | 77 | 10.3 | 80 | — | 51 | unlisted | 47 | ACCEPTABLE | Cold weather, with little rain. |
-| Mar | 12 | 5 | 60 | 8.6 | 76 | — | 64 | listed | 72 | GOOD | Cold weather, with little rain. |
-| Apr | 17 | 9 | 47 | 6.7 | 73 | — | 86 | listed | 94 | VERY_GOOD (start) | Fair temperatures, with little rain. |
+| Mar | 12 | 5 | 60 | 8.6 | 76 | — | 64 | listed | 72 | VERY_GOOD (start) | Cold weather, with little rain. |
+| Apr | 17 | 9 | 47 | 6.7 | 73 | — | 86 | listed | 94 | VERY_GOOD | Fair temperatures, with little rain. |
 | May | 22 | 13 | 33 | 4.1 | 74 | — | 100 | listed | 100 | EXCELLENT (peak) | Comfortable temperatures, with little rain. |
 | Jun | 27 | 18 | 31 | 4.3 | 70 | — | 97 | unlisted | 93 | EXCELLENT | Comfortable temperatures, with little rain. |
-| Jul | 30 | 21 | 19 | 2.2 | 69 | 31 | 79 | unlisted | 75 | VERY_GOOD (end) | Comfortable temperatures, with little rain. |
-| Aug | 30 | 21 | 23 | 3.3 | 70 | 31 | 76 | unlisted | 72 | GOOD | Fair temperatures, with little rain. |
-| Sep | 26 | 17 | 42 | 5.1 | 72 | — | 100 | listed | 100 | EXCELLENT (start) | Comfortable temperatures, with little rain. |
-| Oct | 21 | 14 | 75 | 6.8 | 78 | — | 98 | listed | 100 | EXCELLENT (end) | Comfortable temperatures, with little rain. |
-| Nov | 16 | 9 | 70 | 7.6 | 79 | — | 79 | listed | 87 | GOOD | Fair temperatures, with little rain. |
+| Jul | 30 | 21 | 19 | 2.2 | 69 | 31 | 79 | unlisted | 75 | VERY_GOOD | Comfortable temperatures, with little rain. |
+| Aug | 30 | 21 | 23 | 3.3 | 70 | 31 | 76 | unlisted | 72 | VERY_GOOD | Fair temperatures, with little rain. |
+| Sep | 26 | 17 | 42 | 5.1 | 72 | — | 100 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain. |
+| Oct | 21 | 14 | 75 | 6.8 | 78 | — | 98 | listed | 100 | EXCELLENT | Comfortable temperatures, with little rain. |
+| Nov | 16 | 9 | 70 | 7.6 | 79 | — | 79 | listed | 87 | VERY_GOOD (end) | Fair temperatures, with little rain. |
 | Dec | 11 | 6 | 88 | 11.0 | 81 | — | 56 | unlisted | 52 | ACCEPTABLE | Cold weather. |
 
 ## antalya — beach + city — station AntalyaHavalimani (WMO 17300), 8.8 km; nearest ERA5-Land land cell: 36.90, 30.80 (8.8 km) — confidence high (93)
@@ -161,8 +161,8 @@ Climate: ERA5-Land hourly time-series (reanalysis-era5-land-timeseries), 1991–
 |---|---|---|---|---|---|---|---|---|---|---|---|
 | Jan | 8 | 3 | 48 | 9.9 | 84 | — | 45 | unlisted | 41 | ACCEPTABLE | Cold weather, with little rain. |
 | Feb | 9 | 3 | 42 | 9.1 | 78 | — | 50 | unlisted | 46 | ACCEPTABLE | Cold weather, with little rain. |
-| Mar | 13 | 6 | 45 | 9.5 | 69 | — | 65 | listed | 73 | GOOD | Cold weather, with little rain. |
-| Apr | 17 | 8 | 46 | 8.6 | 63 | — | 83 | listed | 91 | VERY_GOOD (start) | Fair temperatures, with little rain. |
+| Mar | 13 | 6 | 45 | 9.5 | 69 | — | 65 | listed | 73 | VERY_GOOD (start) | Cold weather, with little rain. |
+| Apr | 17 | 8 | 46 | 8.6 | 63 | — | 83 | listed | 91 | VERY_GOOD | Fair temperatures, with little rain. |
 | May | 20 | 11 | 69 | 9.2 | 65 | — | 97 | listed | 100 | EXCELLENT (peak) | Comfortable temperatures, with little rain. |
 | Jun | 23 | 14 | 51 | 8.3 | 64 | — | 99 | unlisted | 95 | EXCELLENT | Comfortable temperatures, with little rain. |
 | Jul | 26 | 16 | 59 | 7.4 | 61 | — | 100 | unlisted | 100 | EXCELLENT | Comfortable temperatures, with little rain. |
@@ -193,8 +193,8 @@ Climate: ERA5-Land hourly time-series (reanalysis-era5-land-timeseries), 1991–
 
 | Month | High | Low | Rain mm | Rain days | RH % | Heat index | Climate | Tourism | Final | Class | Reason |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| Jan | 3 | -2 | 87 | 15.3 | 81 | — | 26 | unavailable | 26 | NOT_RECOMMENDED | Very cold. |
-| Feb | 3 | -2 | 91 | 15.0 | 80 | — | 26 | unavailable | 26 | NOT_RECOMMENDED | Very cold. |
+| Jan | 3 | -2 | 87 | 15.3 | 81 | — | 26 | unavailable | 72 | VERY_GOOD | Northern lights season — Cold weather. |
+| Feb | 3 | -2 | 91 | 15.0 | 80 | — | 26 | unavailable | 72 | VERY_GOOD (end) | Northern lights season — Cold weather. |
 | Mar | 4 | -1 | 81 | 14.2 | 78 | — | 29 | unavailable | 29 | NOT_RECOMMENDED | Very cold. |
 | Apr | 7 | 1 | 59 | 12.0 | 74 | — | 40 | unavailable | 40 | ACCEPTABLE | Cold weather. |
 | May | 10 | 4 | 53 | 10.8 | 74 | — | 55 | unavailable | 55 | ACCEPTABLE | Cold weather, with little rain. |
@@ -204,7 +204,7 @@ Climate: ERA5-Land hourly time-series (reanalysis-era5-land-timeseries), 1991–
 | Sep | 11 | 6 | 87 | 15.0 | 81 | — | 56 | unavailable | 56 | ACCEPTABLE | Cold weather. |
 | Oct | 8 | 3 | 80 | 13.1 | 80 | — | 41 | unavailable | 41 | ACCEPTABLE | Cold weather. |
 | Nov | 5 | -0 | 86 | 13.7 | 81 | — | 31 | unavailable | 31 | NOT_RECOMMENDED | Very cold. |
-| Dec | 3 | -2 | 95 | 14.6 | 82 | — | 26 | unavailable | 26 | NOT_RECOMMENDED | Very cold. |
+| Dec | 3 | -2 | 95 | 14.6 | 82 | — | 26 | unavailable | 72 | VERY_GOOD (start) | Northern lights season — Cold weather. |
 
 ## bangkok — city + tropical — station BangkokMetropolis (WMO 48455), 7.8 km; destination's own grid cell: 13.80, 100.50 (5.3 km) — confidence high (93)
 
@@ -261,9 +261,9 @@ Climate: ERA5-Land hourly time-series (reanalysis-era5-land-timeseries), 1991–
 
 | Month | High | Low | Rain mm | Rain days | RH % | Heat index | Climate | Tourism | Final | Class | Reason |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| Jan | 31 | 26 | 87 | 5.5 | 79 | 35 | 67 | listed | 79 | GOOD | Comfortable temperatures, with high humidity. |
-| Feb | 31 | 26 | 38 | 3.2 | 78 | 36 | 69 | listed | 81 | GOOD | Comfortable temperatures, with high humidity. |
-| Mar | 32 | 27 | 49 | 4.5 | 77 | 37 | 66 | listed | 78 | GOOD | Comfortable temperatures, with high humidity. |
+| Jan | 31 | 26 | 87 | 5.5 | 79 | 35 | 67 | listed | 79 | VERY_GOOD (start) | Comfortable temperatures, with high humidity. |
+| Feb | 31 | 26 | 38 | 3.2 | 78 | 36 | 69 | listed | 81 | VERY_GOOD (peak) | Comfortable temperatures, with high humidity. |
+| Mar | 32 | 27 | 49 | 4.5 | 77 | 37 | 66 | listed | 78 | VERY_GOOD (end) | Comfortable temperatures, with high humidity. |
 | Apr | 32 | 27 | 127 | 8.5 | 78 | 38 | 59 | unlisted | 55 | ACCEPTABLE | Comfortable temperatures, with high humidity. |
 | May | 32 | 27 | 238 | 15.0 | 81 | 39 | 47 | unlisted | 43 | ACCEPTABLE | Comfortable temperatures, with high humidity. |
 | Jun | 31 | 26 | 146 | 12.9 | 82 | 38 | 53 | unlisted | 49 | ACCEPTABLE | Comfortable temperatures, with high humidity. |
@@ -280,15 +280,15 @@ Climate: ERA5-Land hourly time-series (reanalysis-era5-land-timeseries), 1991–
 |---|---|---|---|---|---|---|---|---|---|---|---|
 | Jan | 10 | 1 | 60 | 4.5 | 50 | — | 53 | unavailable | 53 | ACCEPTABLE | Cold weather, with little rain. |
 | Feb | 11 | 2 | 56 | 5.2 | 52 | — | 58 | unavailable | 58 | ACCEPTABLE | Cold weather, with little rain. |
-| Mar | 14 | 5 | 116 | 9.2 | 58 | — | 68 | unavailable | 68 | GOOD | Cold weather. |
-| Apr | 19 | 10 | 134 | 9.5 | 62 | — | 86 | unavailable | 90 | EXCELLENT (start) | Comfortable temperatures. |
+| Mar | 14 | 5 | 116 | 9.2 | 58 | — | 68 | unavailable | 72 | VERY_GOOD (start) | Cherry blossom season — Cold weather. |
+| Apr | 19 | 10 | 134 | 9.5 | 62 | — | 86 | unavailable | 90 | EXCELLENT | Cherry blossom season — Comfortable temperatures. |
 | May | 24 | 15 | 140 | 10.1 | 67 | — | 87 | unavailable | 91 | EXCELLENT (peak) | Comfortable temperatures. |
 | Jun | 26 | 19 | 168 | 11.6 | 75 | — | 79 | unavailable | 79 | VERY_GOOD (end) | Comfortable temperatures. |
 | Jul | 30 | 22 | 156 | 10.5 | 76 | 33 | 58 | unavailable | 58 | ACCEPTABLE | Fair temperatures, with high humidity. |
 | Aug | 31 | 24 | 155 | 7.9 | 74 | 35 | 52 | unavailable | 52 | ACCEPTABLE | Fair temperatures, with high humidity. |
-| Sep | 28 | 20 | 225 | 11.0 | 75 | 29 | 71 | unavailable | 71 | GOOD | Comfortable temperatures. |
-| Oct | 22 | 15 | 235 | 10.5 | 71 | — | 76 | unavailable | 76 | VERY_GOOD (start) | Comfortable temperatures. |
-| Nov | 17 | 9 | 96 | 7.4 | 66 | — | 82 | unavailable | 86 | VERY_GOOD (end) | Fair temperatures, with little rain. |
+| Sep | 28 | 20 | 225 | 11.0 | 75 | 29 | 71 | unavailable | 72 | VERY_GOOD (start) | Comfortable temperatures. |
+| Oct | 22 | 15 | 235 | 10.5 | 71 | — | 76 | unavailable | 76 | VERY_GOOD | Comfortable temperatures. |
+| Nov | 17 | 9 | 96 | 7.4 | 66 | — | 82 | unavailable | 86 | VERY_GOOD (end) | Autumn colours — Fair temperatures, with little rain. |
 | Dec | 12 | 4 | 58 | 5.2 | 56 | — | 63 | unavailable | 63 | GOOD | Cold weather, with little rain. |
 
 ## sapporo — city — station Sapporo (WMO 47412), 2.1 km; destination's own grid cell: 43.10, 141.40 (5.6 km) — confidence high (75)
@@ -296,7 +296,7 @@ Climate: ERA5-Land hourly time-series (reanalysis-era5-land-timeseries), 1991–
 | Month | High | Low | Rain mm | Rain days | RH % | Heat index | Climate | Tourism | Final | Class | Reason |
 |---|---|---|---|---|---|---|---|---|---|---|---|
 | Jan | -0 | -6 | 108 | 18.3 | 70 | — | 22 | unavailable | 22 | NOT_RECOMMENDED | Extreme cold. |
-| Feb | 0 | -6 | 92 | 16.0 | 70 | — | 24 | unavailable | 24 | NOT_RECOMMENDED | Very cold. |
+| Feb | 0 | -6 | 92 | 16.0 | 70 | — | 24 | unavailable | 72 | VERY_GOOD | Snow festival — Cold weather. |
 | Mar | 5 | -2 | 78 | 13.9 | 66 | — | 30 | unavailable | 30 | NOT_RECOMMENDED | Very cold. |
 | Apr | 12 | 3 | 55 | 9.6 | 61 | — | 60 | unavailable | 60 | GOOD | Cold weather, with little rain. |
 | May | 18 | 9 | 56 | 8.5 | 64 | — | 89 | unavailable | 93 | VERY_GOOD (start) | Comfortable temperatures, with little rain. |
@@ -386,9 +386,9 @@ Climate: ERA5-Land hourly time-series (reanalysis-era5-land-timeseries), 1991–
 | Apr | 15 | 3 | 110 | 12.7 | 81 | — | 76 | unavailable | 76 | VERY_GOOD (end) | Fair temperatures. |
 | May | 11 | 1 | 135 | 15.8 | 89 | — | 51 | unavailable | 51 | ACCEPTABLE | Cold weather. |
 | Jun | 7 | -2 | 112 | 14.4 | 93 | — | 35 | unavailable | 35 | ACCEPTABLE | Cold weather. |
-| Jul | 6 | -2 | 104 | 14.0 | 92 | — | 33 | unavailable | 33 | ACCEPTABLE | Cold weather. |
-| Aug | 8 | -1 | 110 | 14.4 | 91 | — | 39 | unavailable | 39 | ACCEPTABLE | Cold weather. |
-| Sep | 10 | 1 | 132 | 15.0 | 86 | — | 50 | unavailable | 50 | ACCEPTABLE | Cold weather. |
+| Jul | 6 | -2 | 104 | 14.0 | 92 | — | 33 | unavailable | 72 | VERY_GOOD (start) | Ski and snow season — Cold weather. |
+| Aug | 8 | -1 | 110 | 14.4 | 91 | — | 39 | unavailable | 72 | VERY_GOOD | Ski and snow season — Cold weather. |
+| Sep | 10 | 1 | 132 | 15.0 | 86 | — | 50 | unavailable | 72 | VERY_GOOD (end) | Ski and snow season — Cold weather. |
 | Oct | 14 | 3 | 148 | 16.7 | 81 | — | 61 | unavailable | 61 | GOOD | Fair temperatures. |
 | Nov | 17 | 5 | 139 | 16.1 | 75 | — | 74 | unavailable | 74 | VERY_GOOD | Comfortable temperatures. |
 | Dec | 20 | 7 | 146 | 16.7 | 72 | — | 72 | unavailable | 72 | GOOD | Comfortable temperatures. |
@@ -448,16 +448,16 @@ Climate: ERA5-Land hourly time-series (reanalysis-era5-land-timeseries), 1991–
 
 | Month | High | Low | Rain mm | Rain days | RH % | Heat index | Climate | Tourism | Final | Class | Reason |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| Jan | 1 | -7 | 42 | 6.3 | 65 | — | 66 | unavailable | 66 | GOOD | Good snow cover, with little rain. |
-| Feb | 2 | -7 | 30 | 5.5 | 63 | — | 66 | unavailable | 66 | GOOD | Good snow cover, with little rain. |
-| Mar | 6 | -4 | 33 | 5.3 | 60 | — | 65 | unavailable | 65 | GOOD | Good snow cover, with little rain. |
-| Apr | 10 | -1 | 40 | 6.3 | 57 | — | 68 | unavailable | 68 | GOOD | Good snow cover, with little rain. |
-| May | 14 | 3 | 77 | 9.5 | 61 | — | 78 | unavailable | 78 | VERY_GOOD (start) | Fair temperatures, with little rain. |
+| Jan | 1 | -7 | 42 | 6.3 | 65 | — | 66 | unavailable | 72 | VERY_GOOD | Ski and snow season — Good snow cover, with little rain. |
+| Feb | 2 | -7 | 30 | 5.5 | 63 | — | 66 | unavailable | 72 | VERY_GOOD | Ski and snow season — Good snow cover, with little rain. |
+| Mar | 6 | -4 | 33 | 5.3 | 60 | — | 65 | unavailable | 72 | VERY_GOOD | Ski and snow season — Good snow cover, with little rain. |
+| Apr | 10 | -1 | 40 | 6.3 | 57 | — | 68 | unavailable | 72 | VERY_GOOD | Ski and snow season — Good snow cover, with little rain. |
+| May | 14 | 3 | 77 | 9.5 | 61 | — | 78 | unavailable | 78 | VERY_GOOD | Fair temperatures, with little rain. |
 | Jun | 18 | 7 | 70 | 9.7 | 63 | — | 95 | unavailable | 99 | EXCELLENT | Comfortable temperatures, with little rain. |
 | Jul | 20 | 8 | 59 | 9.0 | 62 | — | 98 | unavailable | 100 | EXCELLENT (peak) | Comfortable temperatures, with little rain. |
 | Aug | 20 | 8 | 68 | 9.8 | 64 | — | 95 | unavailable | 99 | EXCELLENT | Comfortable temperatures, with little rain. |
 | Sep | 15 | 5 | 51 | 7.3 | 68 | — | 90 | unavailable | 90 | VERY_GOOD (end) | Comfortable temperatures, with little rain. |
 | Oct | 11 | 1 | 57 | 7.0 | 68 | — | 64 | unavailable | 64 | GOOD | Cold weather, with little rain. |
 | Nov | 5 | -3 | 65 | 7.1 | 69 | — | 65 | unavailable | 65 | GOOD | Good snow cover, with little rain. |
-| Dec | 2 | -6 | 47 | 6.9 | 67 | — | 66 | unavailable | 66 | GOOD | Good snow cover, with little rain. |
+| Dec | 2 | -6 | 47 | 6.9 | 67 | — | 66 | unavailable | 72 | VERY_GOOD (start) | Ski and snow season — Good snow cover, with little rain. |
 

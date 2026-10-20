@@ -234,3 +234,25 @@ test("a city warm all year is named by its rainy and dry seasons, not winter", (
   assert.equal(w[0].seasonNameAr, "شتاء ممطر");
   assert.equal(w[1].seasonNameAr, "شتاء مع ثلوج");
 });
+
+test("v1.2: a winter highlight sets the cold aside; a heat limit still blocks a lift", () => {
+  const cold = { highC: -2, lowC: -7, meanC: -4, precipMm: 90, precipDays: 12, relativeHumidity: 80, dewPointC: -6, windMs: 5, snowCoverPct: 90 };
+  const mild = { highC: 20, lowC: 10, meanC: 15, precipMm: 40, precipDays: 5, relativeHumidity: 60, dewPointC: 9, windMs: 3, snowCoverPct: 0 };
+  const months = Array.from({ length: 12 }, (_, i) => (i === 0 || i === 11 ? cold : mild));
+  const climate = {
+    id: "t", countryCode: "NO", latitude: 69.6, longitude: 18.9, months,
+    provenance: { kind: "grid", source: "s", dataset: "d", datasetUrl: "u", period: "p", gridNote: "destination's own grid cell", usedLat: 69.6, usedLon: 18.9, distanceKm: 0, retrievedAt: "r" },
+  } as unknown as Parameters<typeof scoreDestination>[0];
+  const plain = scoreDestination(climate, ["city"], null, "x");
+  assert.equal(plain[0].classification, "NOT_RECOMMENDED");
+  const lifted = scoreDestination(climate, ["city"], null, "x", new Map([[1, [{ ar: "شفق", en: "Aurora", icon: "🌌", winter: true }]]]));
+  assert.equal(lifted[0].classification, "VERY_GOOD");
+  assert.equal(lifted[0].liftedBy, "highlight");
+  assert.equal(lifted[0].highlightEn, "Aurora");
+  assert.ok((lifted[0].reasonEn ?? "").startsWith("Aurora — "));
+  // December has no highlight: unchanged.
+  assert.equal(lifted[11].classification, "NOT_RECOMMENDED");
+  // A non-winter highlight in the cold month does not set the cold limit aside.
+  const notWinter = scoreDestination(climate, ["city"], null, "x", new Map([[1, [{ ar: "مهرجان", en: "Festival", icon: "🎭", winter: false }]]]));
+  assert.equal(notWinter[0].classification, "NOT_RECOMMENDED");
+});
