@@ -410,7 +410,7 @@ export default function TripPlanner({
                   role="radio"
                   aria-checked={active}
                   onClick={() => setTripRoute(r.value)}
-                  className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-bold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400 ${
+                  className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-1.5 text-xs font-bold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400 ${
                     active
                       ? dark
                         ? "bg-white text-navy-950"
@@ -420,7 +420,7 @@ export default function TripPlanner({
                         : "text-navy-600 hover:text-navy-900"
                   }`}
                 >
-                  <Icon name={r.icon} className="h-3.5 w-3.5" />
+                  <Icon name={r.icon} className="hidden h-3.5 w-3.5 min-[400px]:block" />
                   {r.label}
                 </button>
               );
