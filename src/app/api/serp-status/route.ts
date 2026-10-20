@@ -10,7 +10,7 @@ export async function GET() {
   if (!usage) return NextResponse.json({ connected: false, keySet: serpConfigured() });
   const share = usage.perMonth ? Math.round((usage.used / usage.perMonth) * 100) : 0;
   return NextResponse.json(
-    { connected: true, used: usage.used, left: usage.left, perMonth: usage.perMonth, usedPercent: share, mayUse: usage.mayUse, warn: share >= 80 },
+    { connected: true, used: usage.used, left: usage.left, perMonth: usage.perMonth, usedPercent: share, mayUse: usage.mayUse, renews: usage.renews, warn: share >= 80 },
     { headers: { "Cache-Control": "no-store" } }
   );
 }

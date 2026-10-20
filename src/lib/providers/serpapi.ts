@@ -33,6 +33,8 @@ interface Account {
   /** The plan's monthly searches. */
   perMonth: number;
   used: number;
+  /** The day the plan's allowance renews (YYYY-MM-DD), when SerpApi gives it. */
+  renews: string | null;
 }
 
 /** The account's usage, read at most every two minutes. Free: not a search. */
@@ -47,11 +49,13 @@ async function account(): Promise<Account | null> {
         plan_searches_left?: number;
         searches_per_month?: number;
         this_month_usage?: number;
+        plan_renewal_date?: string | null;
       };
       const left = Number(a.total_searches_left ?? a.plan_searches_left);
       const perMonth = Number(a.searches_per_month);
       if (!Number.isFinite(left) || !Number.isFinite(perMonth)) return null;
-      return { left, perMonth, used: Number(a.this_month_usage) || 0 };
+      const renews = /^\d{4}-\d{2}-\d{2}/.test(a.plan_renewal_date ?? "") ? a.plan_renewal_date!.slice(0, 10) : null;
+      return { left, perMonth, used: Number(a.this_month_usage) || 0, renews };
     } catch {
       return null;
     }
@@ -77,10 +81,23 @@ async function maySearch(kind: "hotel" | "flight" = "hotel"): Promise<boolean> {
   // all the traveller has at that moment.
   if (kind === "flight") return a.left > 2;
   if (a.left <= FLIGHT_RESERVE) return false;
+  // Paced to the plan's own renewal day (not the calendar month's end):
+  // what is left must cover the days after today at an even daily share.
   const now = new Date();
-  const daysInMonth = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() + 1, 0)).getUTCDate();
-  const daysAfterToday = daysInMonth - now.getUTCDate();
-  const perDay = a.perMonth / daysInMonth;
+  const today = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
+  let cycleDays: number;
+  let daysAfterToday: number;
+  const renews = a.renews ? Date.parse(`${a.renews}T00:00:00Z`) : NaN;
+  if (Number.isFinite(renews) && renews > today) {
+    daysAfterToday = Math.max(0, Math.round((renews - today) / 86_400_000) - 1);
+    const r = new Date(renews);
+    const start = Date.UTC(r.getUTCFullYear(), r.getUTCMonth() - 1, r.getUTCDate());
+    cycleDays = Math.max(28, Math.round((renews - start) / 86_400_000));
+  } else {
+    cycleDays = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() + 1, 0)).getUTCDate();
+    daysAfterToday = cycleDays - now.getUTCDate();
+  }
+  const perDay = a.perMonth / cycleDays;
   return a.left > Math.floor(daysAfterToday * perDay);
 }
 
