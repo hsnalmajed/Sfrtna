@@ -243,7 +243,7 @@ export function EdgeTabs<T extends string>({
               <Icon name={t.icon} className="h-[1.125rem] w-[1.125rem]" />
             </span>
             <span className="min-w-0">
-              <span className="flex items-center gap-1.5 text-sm font-extrabold sm:text-base">
+              <span className="flex items-center gap-1.5 whitespace-nowrap text-sm font-extrabold sm:text-base">
                 <Icon name={t.icon} className="h-4 w-4 sm:hidden" />
                 {t.title}
               </span>

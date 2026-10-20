@@ -903,6 +903,32 @@ Chrome), climate v2 after the owner's download, publishing staged cities.
   through vacation rentals (Google lists Booking/Vrbo/Airbnb offers) — owner
   may contact Gathern directly.
 
+## Whole-project pass, 20 Oct afternoon (owner: "apply every note to the whole site and app")
+
+- **Audit tool:** `scripts/ux-audit.mjs` + `.github/workflows/ux-audit.yml` (by hand):
+  26 pages, two phones, browser + app UA, flags overflow/off-screen/wrapped/
+  cut/blurry (real file pixels)/tiny taps/dead-end words/empty bands/errors,
+  full-page JPEG per page; report + shots force-pushed to branch
+  `ux-audit-results` (artifacts and logs are not reachable from the
+  workspace). Run it after every section.
+- Flight fallback has priority on SerpApi (`FLIGHT_RESERVE` 40, hotels stop
+  above it); fares shown with price + «احجز», no warning banner.
+- Hero photos: portrait crops (sharp attention, 720/1080/1440) made by
+  `hero-photos.mjs`, listed in `src/data/heroPortrait.json`, used by the home
+  and every PageHero via `<picture>` (orientation: portrait). The host's own
+  crop answered at CSS width — not used. NB: `img.naturalWidth` of a srcset
+  image is divided by its density — measure the file itself.
+- No dead ends: discover cards show the fare that chose them + «ضمن ميزانيتك»
+  + «احجز» (owner asked to show the price, 20 Oct); unpriced places only on
+  hotel-only searches; a hotel with no price → «فنادق <المدينة> المتاحة»; no
+  plain partner-search pills on hotel pages.
+- Seasons opens on this month; recent searches on the home planner
+  (`recentSearches.ts`, this browser only); share button on flight/hotel
+  results; welcome cards as points; 40 px taps site-wide.
+- **Business decision open:** SerpApi plan — the free 250/month was spent by
+  20 Oct (162 used), so hotel city lists fall back to the partners' English
+  widget. Proposed Starter $25 (1,000) or Developer $75 (5,000).
+
 ## Next, in order
 
 **▶ Start here (hand-off 20 Oct):** coverage section closed — 365 live cities /

@@ -159,3 +159,16 @@ chosen amount, current language).
 | 20.9 | App (html.in-app, 390 px): home photo top 62 svh, navy below, Book tab | ✅ no white area; Book now opens the flight form directly (next deploy) |
 | 20.10 | Built-in browser on the owner's PC: flight partner did not load → fallback card shown | note: same network issue as 13 Oct; Chrome loads it |
 | 20.11 | Not tested live | install banner (no store link yet — hidden by design), first-launch intro (needs the app), photos (Pexels resets 25 Oct) |
+
+## Whole-site phone audit (20 Oct, `ux-audit.yml` → branch `ux-audit-results`)
+
+26 pages × iPhone 13 + Pixel 7 × browser + app (app user agent), screenshot each.
+
+| Check | Run 1 | Run 3 (after fixes) |
+|---|---|---|
+| Sideways scroll / off-screen | 0 | 0 |
+| Blurry photos (real pixels vs screen) | every photo hero ×2.6–4 | 0 (portrait crops `public/hero/<id>-p<w>.webp`) |
+| Dead ends (no price, "search elsewhere") | flight fallback, hotel page, discover unpriced | 0 |
+| Tap targets < 32 px | chips, switches, currency, maps, counters | map pin 28 px, map chips 32 px → fixed after run 3 |
+| Empty screens | seasons (app), account (app) | account only (sign-in methods) |
+| Page errors | 0 | 0 |

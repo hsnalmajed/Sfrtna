@@ -319,7 +319,7 @@ export default function MapCanvas({
   }
 
   const chip = (on: boolean) =>
-    `inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-bold transition ${
+    `inline-flex min-h-10 items-center gap-1.5 rounded-full px-3.5 py-2 text-xs font-bold transition ${
       on ? "bg-navy-900 text-white" : "bg-white text-navy-500 ring-1 ring-mist-300 hover:ring-navy-300"
     }`;
 
@@ -357,7 +357,7 @@ export default function MapCanvas({
           <button
             type="button"
             onClick={locate}
-            className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-xs font-bold text-navy-600 ring-1 ring-mist-300 transition hover:ring-navy-300"
+            className="inline-flex min-h-10 items-center gap-1.5 rounded-full bg-white px-3.5 py-2 text-xs font-bold text-navy-600 ring-1 ring-mist-300 transition hover:ring-navy-300"
           >
             <span aria-hidden="true">📍</span>
             {dict.nearMe}

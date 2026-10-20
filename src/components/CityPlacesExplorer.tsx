@@ -246,7 +246,7 @@ export default function CityPlacesExplorer({
                         onClick={() => onShowOnMap(p)}
                         title={showOnMapLabel}
                         aria-label={`${showOnMapLabel}: ${p.name}`}
-                        className="-mt-0.5 inline-flex h-7 w-7 shrink-0 text-sm sm:h-8 sm:w-8 sm:text-base items-center justify-center rounded-full bg-sun-50 text-base ring-1 ring-sun-200 transition hover:bg-sun-100 hover:ring-sun-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400"
+                        className="-mt-0.5 inline-flex h-9 w-9 shrink-0 text-sm sm:h-9 sm:w-9 sm:text-base items-center justify-center rounded-full bg-sun-50 text-base ring-1 ring-sun-200 transition hover:bg-sun-100 hover:ring-sun-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400"
                       >
                         <span aria-hidden="true">📍</span>
                       </button>
