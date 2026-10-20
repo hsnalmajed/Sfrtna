@@ -1,5 +1,6 @@
 "use client";
 
+import ShareButton from "@/components/ShareButton";
 import FallbackFlights, { type FallbackRoute } from "@/components/FallbackFlights";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
@@ -9,7 +10,7 @@ import type { Dictionary } from "@/lib/dictionaries";
 import { findAirport } from "@/lib/airports";
 import { countLabel } from "@/lib/format";
 import Icon from "@/components/ui/Icon";
-import FilterPill from "@/components/ui/FilterPill";
+import FilterPill, { FILTER_ROW } from "@/components/ui/FilterPill";
 import { lastSearchContext, track } from "@/lib/analytics";
 
 /**
@@ -847,7 +848,8 @@ export default function FlightResultsGuide({
     }));
   const filterBar = state.filtering && pool.length > 0 && !prefsAsk && (
     <div className="mb-4">
-      <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none] sm:mx-0 sm:flex-wrap sm:px-0">
+      <p className="mb-2 text-sm font-extrabold text-navy-900">{t.fTitle}</p>
+      <div className={FILTER_ROW}>
         <FilterPill<Stops>
           locale={locale}
           multi
@@ -936,7 +938,7 @@ export default function FlightResultsGuide({
           <button
             type="button"
             onClick={() => setFilters(NO_FILTERS)}
-            className="shrink-0 rounded-full px-3.5 py-2 text-sm font-bold text-rose-700 ring-1 ring-rose-200 hover:bg-rose-50"
+            className="col-span-2 min-h-10 shrink-0 rounded-full px-3.5 py-2 text-sm font-bold text-rose-700 ring-1 ring-rose-200 hover:bg-rose-50"
           >
             {t.fReset}
           </button>
@@ -1306,7 +1308,7 @@ function FlightCard({
                 {flight.airlines.join(" + ")}
               </p>
             </div>
-            <div className="flex flex-wrap gap-1.5">
+            <div className="flex flex-wrap items-center gap-1.5">
               {flight.legs.length > 0 &&
                 (flight.maxStops === 0 ? (
                   <span className="inline-flex items-center gap-1.5 rounded-full bg-sky-50 px-3 py-1.5 text-xs font-bold text-sky-800 ring-1 ring-sky-200">
@@ -1331,6 +1333,23 @@ function FlightCard({
                   {t.cardBagExtra}
                 </span>
               ) : null}
+              {/* This flight, to send to whoever travels with you (owner,
+                    21 Oct: share the flight, not the whole search). */}
+                <ShareButton
+                  tone="light"
+                  className="!min-h-9 !px-2.5 !py-1.5 text-xs"
+                  title={flight.airlines.join(" + ")}
+                  text={[
+                    flight.airlines.join(" + "),
+                    ...flight.legs.map(
+                      (l, i) =>
+                        `${labels[i]}: ${l.depCity} ${l.depTime} ${isAr ? "←" : "→"} ${l.arrCity} ${l.arrTime} · ${l.depDay}${
+                          l.stops.length ? ` · ${l.stops.map((st) => t.stopAt.replace("{city}", st.city)).join("، ")}` : ` · ${t.legDirect}`
+                        }`
+                    ),
+                    `${t.priceTotalLabel}: ${money(pay)}`,
+                  ].join("\n")}
+                />
             </div>
           </div>
 
@@ -1369,11 +1388,7 @@ function FlightCard({
                       <span className="h-2 w-2 rounded-full ring-2 ring-navy-200" />
                     </div>
                     <p className={`truncate text-xs font-bold ${l.stops.length ? "text-rose-700" : "text-sky-700"}`}>
-                      {l.stops.length === 0
-                        ? t.legDirect
-                        : `${t.chipStops.replace("{n}", String(l.stops.length))} · ${l.stops
-                            .map((s) => (s.wait ? `${s.city} (${s.wait})` : s.city))
-                            .join("، ")}`}
+                      {l.stops.length === 0 ? t.legDirect : t.chipStops.replace("{n}", String(l.stops.length))}
                     </p>
                   </div>
                   <div className="text-end">
@@ -1390,6 +1405,22 @@ function FlightCard({
                     </p>
                   </div>
                 </div>
+                {/* Where the flight stops and for how long, in full (owner,
+                    21 Oct: «أبوظبي (1…» cut off on phones was not acceptable). */}
+                {l.stops.length > 0 && (
+                  <ul className="space-y-1 rounded-xl bg-rose-50/70 px-3 py-2 text-xs font-bold text-rose-900 ring-1 ring-rose-100 sm:col-start-2">
+                    {l.stops.map((st, k) => (
+                      <li key={k} className="flex flex-wrap items-center gap-x-1.5">
+                        <Icon name="route" className="h-3.5 w-3.5 shrink-0 text-rose-500" />
+                        <span>{t.stopAt.replace("{city}", st.city)}</span>
+                        {st.wait && (
+                          <span className="font-semibold text-rose-800/80">· {t.stopWait.replace("{wait}", st.wait)}</span>
+                        )}
+                        {st.waitMin > LONG_STOP_MIN && <span className="rounded-full bg-rose-200/70 px-2 py-0.5 text-[11px]">{t.stopLong}</span>}
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
             ))}
           </div>

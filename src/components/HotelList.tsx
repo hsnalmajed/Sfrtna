@@ -181,7 +181,7 @@ export default function HotelList({
   ];
   return (
     <div className="space-y-3">
-      <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none] sm:mx-0 sm:flex-wrap sm:px-0" role="group" aria-label={hp.sortLabel}>
+      <div className="flex flex-wrap gap-2" role="group" aria-label={hp.sortLabel}>
         {sorts.map(([k, label]) => (
           <button
             key={k}

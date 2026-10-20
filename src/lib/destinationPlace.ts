@@ -8,6 +8,7 @@ import { COUNTRY_CITIES } from "@/lib/cities";
 import { CITY_AIRPORTS } from "@/data/cityAirports";
 import { seasonRecord } from "@/lib/travelSeason/site";
 import { visaStatusFor } from "@/data/visaStatus";
+import { seasonKindsOf } from "@/lib/travelSeason/kinds";
 import type { DestinationPlace } from "@/lib/types";
 
 function findCity(code: string, nameEn: string): { countryCode: string; slug: string; nameEn: string } | undefined {
@@ -39,6 +40,7 @@ export function placeForDestination(code: string, nameEn: string, month: number)
     inSeason: r?.classification ? r.classification === "EXCELLENT" || r.classification === "VERY_GOOD" : undefined,
     classification: r?.classification ?? undefined,
     seasonName: r ? { ar: r.seasonNameAr, en: r.seasonNameEn, icon: r.seasonIcon } : undefined,
+    seasonKinds: r ? seasonKindsOf(r.seasonNameEn) : undefined,
     visa: visaStatusFor(city.countryCode)?.category,
   };
 }

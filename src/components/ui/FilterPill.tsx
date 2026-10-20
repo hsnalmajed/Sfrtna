@@ -29,7 +29,16 @@ export interface FilterOption<T extends string | number> {
 }
 
 const pillBase =
-  "inline-flex max-w-full shrink-0 items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-bold ring-1 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400";
+  "inline-flex min-h-10 max-w-full shrink-0 items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-bold ring-1 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400";
+
+/**
+ * Where a row of pills sits. On a phone every filter is in sight — two to a
+ * row, no sideways scrolling to discover the rest (owner, 21 Oct: "the
+ * traveller won't notice he has to scroll") — and on wider screens one
+ * wrapping line.
+ */
+export const FILTER_ROW =
+  "grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:items-center [&>*]:w-full [&>*]:justify-center sm:[&>*]:w-auto sm:[&>*]:justify-start";
 const pillOff = "bg-white text-navy-800 ring-mist-300 hover:ring-navy-300";
 const pillOn = "bg-navy-900 text-white ring-navy-900";
 

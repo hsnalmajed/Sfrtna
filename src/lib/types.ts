@@ -189,6 +189,8 @@ export interface DiscoverParams {
   preferenceCategories?: DestinationCategory[];
   /** Only destinations on these continents; empty or absent = anywhere. */
   continents?: Continent[];
+  /** Kinds of season wanted in the month of travel; empty = no preference. */
+  seasonKinds?: import("@/lib/travelSeason/kinds").SeasonKind[];
 }
 
 /**
@@ -211,6 +213,8 @@ export interface DestinationPlace {
   classification?: "EXCELLENT" | "VERY_GOOD" | "GOOD" | "ACCEPTABLE" | "NOT_RECOMMENDED";
   /** What the month is there ("Rainy winter", "Dry season"), with its icon. */
   seasonName?: { ar: string; en: string; icon: string };
+  /** The kinds of season that name stands for (winter, snow, dry…), for the filter. */
+  seasonKinds?: import("@/lib/travelSeason/kinds").SeasonKind[];
   /** Confirmed entry status for a Saudi passport. */
   visa?: "free" | "arrival" | "eta" | "required";
 }

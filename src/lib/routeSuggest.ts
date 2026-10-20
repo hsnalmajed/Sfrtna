@@ -19,6 +19,7 @@
 // a table of their own: MAX_REQUESTS keeps the search inside the Worker's
 // subrequest limit (50 on the free plan) with room to spare.
 
+import type { SeasonKind } from "@/lib/travelSeason/kinds";
 import { DESTINATIONS } from "@/lib/destinations";
 import { discoverCandidates, type Candidate } from "@/lib/discoverPool";
 import { placeForDestination } from "@/lib/destinationPlace";
@@ -50,6 +51,8 @@ export interface RouteQuery {
   categories?: DestinationCategory[];
   /** Only stops on these continents; empty = anywhere. */
   continents?: Continent[];
+  /** Only stops whose season that month is one of these; empty = any. */
+  seasonKinds?: SeasonKind[];
 }
 
 function addDays(iso: string, days: number): string {
@@ -111,7 +114,9 @@ export async function suggestRoutes(q: RouteQuery): Promise<RouteSuggestion[]> {
       d.code !== q.origin &&
       d.countryCode !== homeCountry &&
       (!q.categories?.length || d.categories.some((c) => q.categories!.includes(c))) &&
-      (!q.continents?.length || (d.continent !== undefined && q.continents.includes(d.continent)))
+      (!q.continents?.length || (d.continent !== undefined && q.continents.includes(d.continent))) &&
+      (!q.seasonKinds?.length ||
+        (placeForDestination(d.code, d.nameEn, Number(q.startDate.slice(5, 7)))?.seasonKinds ?? []).some((k) => q.seasonKinds!.includes(k)))
   );
   if (pool.length < q.stops) return [];
 

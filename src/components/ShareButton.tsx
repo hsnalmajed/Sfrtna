@@ -5,10 +5,21 @@ import { useDictionary } from "@/lib/dict/context";
 import { track } from "@/lib/analytics";
 
 /**
- * Share this search (WhatsApp, messages…) through the phone's own share
- * sheet; on a computer, the address is copied. Trips are planned together.
+ * Share (WhatsApp, messages…) through the phone's own share sheet; on a
+ * computer, the text and address are copied. Trips are planned together.
+ * `text` describes what is shared (one flight: airline, times, stops, price).
  */
-export default function ShareButton({ title, className = "" }: { title: string; className?: string }) {
+export default function ShareButton({
+  title,
+  text,
+  className = "",
+  tone = "glass",
+}: {
+  title: string;
+  text?: string;
+  className?: string;
+  tone?: "glass" | "light";
+}) {
   const t = useDictionary().share;
   const [copied, setCopied] = useState(false);
   const share = async () => {
@@ -16,10 +27,10 @@ export default function ShareButton({ title, className = "" }: { title: string; 
     track("share", { page_path: window.location.pathname });
     try {
       if (navigator.share) {
-        await navigator.share({ title, url });
+        await navigator.share(text ? { title, text, url } : { title, url });
         return;
       }
-      await navigator.clipboard.writeText(url);
+      await navigator.clipboard.writeText(text ? `${text}\n${url}` : url);
       setCopied(true);
       window.setTimeout(() => setCopied(false), 2000);
     } catch {
@@ -30,7 +41,9 @@ export default function ShareButton({ title, className = "" }: { title: string; 
     <button
       type="button"
       onClick={share}
-      className={`inline-flex items-center gap-1.5 rounded-xl bg-white/10 px-3 py-2 text-[13px] font-bold text-white ring-1 ring-white/20 transition hover:bg-white/20 ${className}`}
+      className={`inline-flex min-h-10 items-center gap-1.5 rounded-xl px-3 py-2 text-[13px] font-bold transition ${
+        tone === "light" ? "bg-white text-navy-800 ring-1 ring-mist-300 hover:ring-navy-300" : "bg-white/10 text-white ring-1 ring-white/20 hover:bg-white/20"
+      } ${className}`}
     >
       <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
         <path strokeLinecap="round" strokeLinejoin="round" d="M4 12v7a1 1 0 001 1h14a1 1 0 001-1v-7M16 6l-4-4-4 4M12 2v14" />

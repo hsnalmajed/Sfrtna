@@ -23,7 +23,6 @@ import { flightSearchCode, parseFlightSearchCode } from "@/lib/flightSearchCode"
 import { findCityByName } from "@/lib/cities";
 import { findCountryByEnglishName } from "@/lib/countries";
 import ComboHotelSection from "@/components/ComboHotelSection";
-import ShareButton from "@/components/ShareButton";
 import { useMember } from "@/lib/useMember";
 import { openJoin, showToast } from "@/components/member/events";
 import { track } from "@/lib/analytics";
@@ -409,7 +408,9 @@ function ResultsContent() {
                 </span>
               </Link>
 
-              <div className="-mx-4 flex gap-2 overflow-x-auto px-4 [scrollbar-width:none] sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0 [&>*]:shrink-0 [&>*]:whitespace-nowrap">
+              {/* Visa, requirements and currency all in sight on a phone:
+                  they wrap, never scroll sideways (owner, 21 Oct). */}
+              <div className="flex flex-wrap gap-2">
               {destinationCountry && !sameCountry && (
                 <>
                   {visa ? (
@@ -436,7 +437,6 @@ function ResultsContent() {
               {showCurrencyStrip && homeCurrency && tripCurrency && (
                 <TripCurrencyInline from={homeCurrency} to={tripCurrency} locale={locale} />
               )}
-              <ShareButton title={`${originCityName} ← ${destinationCityName ?? search.destination}`} />
               </div>
             </div>
           </div>

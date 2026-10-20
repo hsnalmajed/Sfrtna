@@ -1,5 +1,6 @@
 "use client";
 
+import { SEASON_KINDS, SEASON_KIND_ICON, type SeasonKind } from "@/lib/travelSeason/kinds";
 import { useEffect, useRef, useState } from "react";
 import { warmFlightSearch } from "@/components/FlightMetasearch";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -132,6 +133,10 @@ export default function TripPlanner({
   // Continents to suggest from; none chosen = no preference.
   const [continents, setContinents] = useState<Continent[]>(() =>
     (sp.get("continents") ?? "").split(",").filter((c): c is Continent => CONTINENTS.includes(c as Continent))
+  );
+  // Kinds of season in the month of travel (owner, 21 Oct): winter, snow…
+  const [seasonKinds, setSeasonKinds] = useState<SeasonKind[]>(() =>
+    (sp.get("seasonKinds") ?? "").split(",").filter((k): k is SeasonKind => (SEASON_KINDS as readonly string[]).includes(k))
   );
   // Any number of kinds of place (owner, 20 Oct: "more than one choice").
   const [preferenceCategories, setPreferenceCategories] = useState<DestinationCategory[]>(() =>
@@ -352,6 +357,7 @@ export default function TripPlanner({
         oneWayOnly: String(isOneWay),
         preferenceCategory: preferenceCategories.join(","),
         continents: continents.join(","),
+        seasonKinds: seasonKinds.join(","),
       });
       if (combo) writeCombo(comboHotel, params);
       trackSearchUrl(`/${locale}/discover-results?${params.toString()}`);
@@ -732,6 +738,7 @@ export default function TripPlanner({
           ...(baggageIncluded ? [dict.form.baggageShort] : []),
           ...(mode === "discover" ? continents.map((c) => dict.attractions.continents[c]) : []),
           ...(mode === "discover" ? preferenceCategories.map((c) => dict.categories[c]) : []),
+          ...(mode === "discover" ? seasonKinds.map((k) => dict.filters.seasonKinds[k]) : []),
         ]}
       >
           {/* The two switches side by side. */}
@@ -811,6 +818,38 @@ export default function TripPlanner({
                     >
                       {active && c ? "✓ " : ""}
                       {c ? dict.categories[c] : dict.categories.any}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+          {/* The kind of season they want there that month — several at once. */}
+          {mode === "discover" && (
+            <div>
+              <p className={labelRow}>
+                <Icon name="calendar" className={labelIcon} />
+                {dict.discoverForm.seasonKindLabel}
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {(["", ...SEASON_KINDS] as (SeasonKind | "")[]).map((k) => {
+                  const active = k ? seasonKinds.includes(k) : seasonKinds.length === 0;
+                  return (
+                    <button
+                      key={k || "any"}
+                      type="button"
+                      aria-pressed={active}
+                      onClick={() => setSeasonKinds((prev) => (!k ? [] : prev.includes(k) ? prev.filter((x) => x !== k) : [...prev, k]))}
+                      className={`min-h-10 rounded-full px-3.5 py-2 text-xs font-bold ring-1 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400 ${
+                        active
+                          ? "bg-sun-400 text-navy-950 ring-sun-400"
+                          : dark
+                            ? "bg-white/[0.05] text-white/80 ring-white/15 hover:bg-white/10"
+                            : "bg-white text-navy-700 ring-mist-200 hover:ring-navy-200"
+                      }`}
+                    >
+                      {active && k ? "✓ " : ""}
+                      {k ? `${SEASON_KIND_ICON[k]} ${dict.filters.seasonKinds[k]}` : dict.categories.any}
                     </button>
                   );
                 })}

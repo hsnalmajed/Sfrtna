@@ -1,5 +1,6 @@
 "use client";
 
+import { SEASON_KINDS, SEASON_KIND_ICON, type SeasonKind } from "@/lib/travelSeason/kinds";
 import { countLabel } from "@/lib/format";
 
 import { Suspense, useEffect, useMemo, useState } from "react";
@@ -10,7 +11,7 @@ import DestinationCard from "@/components/DestinationCard";
 import PricesUnavailable from "@/components/PricesUnavailable";
 import RouteCard from "@/components/RouteCard";
 import ResultsBand from "@/components/ResultsBand";
-import FilterPill from "@/components/ui/FilterPill";
+import FilterPill, { FILTER_ROW } from "@/components/ui/FilterPill";
 import { VISA_ORDER, type VisaCategory } from "@/data/visaStatus";
 import { CLASS_DOT, CLASS_RANKING as CLASS_ORDER } from "@/lib/travelSeason/labels";
 import type { Classification } from "@/lib/travelSeason/config";
@@ -54,6 +55,7 @@ function DiscoverResultsContent() {
   const preferenceCategories = (sp.get("preferenceCategory") || "").split(",").filter(Boolean) as DestinationCategory[];
   const categoriesParam = preferenceCategories.join(",");
   const continentsParam = sp.get("continents") || "";
+  const seasonKindsParam = sp.get("seasonKinds") || "";
   const editSearchParams = sp.toString();
   const combo = useMemo(() => (sp.get("combo") === "1" ? comboParams(new URLSearchParams(sp.toString())) : undefined), [sp]);
 
@@ -104,6 +106,7 @@ function DiscoverResultsContent() {
         breakfastIncluded,
         preferenceCategories,
         continents: continentsParam ? continentsParam.split(",") : [],
+        seasonKinds: seasonKindsParam ? seasonKindsParam.split(",") : [],
       }),
     })
       // A refused or failed search is an error to say so — never an empty
@@ -145,6 +148,7 @@ function DiscoverResultsContent() {
     breakfastIncluded,
     categoriesParam,
     continentsParam,
+    seasonKindsParam,
   ]);
 
   // Generated prices never reach a visitor — see the note in results/page.tsx.
@@ -176,12 +180,14 @@ function DiscoverResultsContent() {
   // Continent and kind of place, beside season and visa (owner, 20 Oct).
   const [continentPick, setContinentPick] = useState<Continent[]>([]);
   const [kindPick, setKindPick] = useState<DestinationCategory[]>([]);
+  // The kind of season (winter, snow, dry…), beside the weather fit.
+  const [seasonKindPick, setSeasonKindPick] = useState<SeasonKind[]>([]);
   const [showOver, setShowOver] = useState(false);
   // Every place is listed (the traveller filters), a page at a time.
   const PAGE = 24;
   const [shownWithin, setShownWithin] = useState(PAGE);
   const [shownUnpriced, setShownUnpriced] = useState(PAGE);
-  const filterKey = `${seasonPick.join()}|${visaPick.join()}|${continentPick.join()}|${kindPick.join()}`;
+  const filterKey = `${seasonPick.join()}|${visaPick.join()}|${continentPick.join()}|${kindPick.join()}|${seasonKindPick.join()}`;
   const [lastKey, setLastKey] = useState(filterKey);
   if (lastKey !== filterKey) {
     setLastKey(filterKey);
@@ -197,6 +203,7 @@ function DiscoverResultsContent() {
     return (
       (seasonPick.length === 0 || (p?.classification !== undefined && seasonPick.includes(p.classification))) &&
       (visaPick.length === 0 || (p?.visa !== undefined && visaPick.includes(p.visa))) &&
+      (seasonKindPick.length === 0 || (p?.seasonKinds ?? []).some((k) => seasonKindPick.includes(k))) &&
       (skip === "continent" || continentPick.length === 0 || (c !== undefined && continentPick.includes(c))) &&
       (skip === "kind" || kindPick.length === 0 || (x.categories ?? []).some((k) => kindPick.includes(k)))
     );
@@ -212,12 +219,13 @@ function DiscoverResultsContent() {
   const items = mode === "routes" ? routeList : singles;
   const within = items.filter((x) => x.withinBudget);
   const over = items.filter((x) => !x.withinBudget).sort((a, b) => a.totalPrice - b.totalPrice);
-  const filtered = seasonPick.length > 0 || visaPick.length > 0 || continentPick.length > 0 || kindPick.length > 0;
+  const filtered = seasonPick.length > 0 || visaPick.length > 0 || continentPick.length > 0 || kindPick.length > 0 || seasonKindPick.length > 0;
   const clearAll = () => {
     setSeasonPick([]);
     setVisaPick([]);
     setContinentPick([]);
     setKindPick([]);
+    setSeasonKindPick([]);
   };
   const money = (n: number) => `${Math.abs(n).toLocaleString("en-US")} ${currency}`;
   const d = dict.discoverResults;
@@ -231,6 +239,8 @@ function DiscoverResultsContent() {
       : [...singleSuggestions, ...unpriced].map((x) => x.place);
   const seasonCount = (c: Classification) => allPlaces.filter((p) => p?.classification === c).length;
   const visaCount = (v: VisaCategory) => allPlaces.filter((p) => p?.visa === v).length;
+  const seasonKindCount = (k: SeasonKind) => allPlaces.filter((p) => p?.seasonKinds?.includes(k)).length;
+  const seasonKindsSeen = SEASON_KINDS.filter((k) => seasonKindCount(k) > 0);
   const tagged: Tagged[] = mode === "routes" ? routes.flatMap((r) => r.stops) : [...singleSuggestions, ...unpriced];
   const continentCount = (c: Continent) => tagged.filter((x) => placeOk(x, "continent") && continentOf(x) === c).length;
   const kindCount = (k: DestinationCategory) => tagged.filter((x) => placeOk(x, "kind") && (x.categories ?? []).includes(k)).length;
@@ -329,7 +339,7 @@ function DiscoverResultsContent() {
         {!loading && !error && !pricesUnavailable && hasResults && (
           // The site's filter pills: each opens every option with how
           // many results it keeps; several can be chosen.
-          <div className="mb-5 flex flex-wrap items-center gap-2 rounded-2xl bg-white p-3 shadow-sm ring-1 ring-black/5">
+          <div className={`mb-5 rounded-2xl bg-white p-3 shadow-sm ring-1 ring-black/5 ${FILTER_ROW}`}>
             <FilterPill<Classification>
               locale={locale}
               multi
@@ -340,6 +350,18 @@ function DiscoverResultsContent() {
               onChange={setSeasonPick}
               options={CLASS_ORDER.map((c) => ({ value: c, label: `${CLASS_DOT[c]} ${dict.travelSeasons.classes[c]}`, count: seasonCount(c) }))}
             />
+            {seasonKindsSeen.length > 1 && (
+              <FilterPill<SeasonKind>
+                locale={locale}
+                multi
+                icon="🍂"
+                label={ft.seasonKind}
+                allLabel={ft.allSeasonKinds}
+                value={seasonKindPick}
+                onChange={setSeasonKindPick}
+                options={seasonKindsSeen.map((k) => ({ value: k, label: `${SEASON_KIND_ICON[k]} ${ft.seasonKinds[k]}`, count: seasonKindCount(k) }))}
+              />
+            )}
             <FilterPill<VisaCategory>
               locale={locale}
               multi
@@ -376,7 +398,7 @@ function DiscoverResultsContent() {
               <button
                 type="button"
                 onClick={clearAll}
-                className="ms-auto text-xs font-bold text-sea-700 hover:underline"
+                className="col-span-2 min-h-10 text-xs font-bold text-sea-700 hover:underline sm:ms-auto"
               >
                 ✕ {dict.filters.clear}
               </button>

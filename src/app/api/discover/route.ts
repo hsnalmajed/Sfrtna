@@ -6,6 +6,7 @@ import { tripFaresFrom, CITY_OF_AIRPORT, type TripFare } from "@/lib/providers/t
 import { exploreFares } from "@/lib/providers/serpapi";
 import { CONTINENTS, type Continent } from "@/lib/countries";
 import { discoverCandidates, type Candidate } from "@/lib/discoverPool";
+import { SEASON_KINDS, type SeasonKind } from "@/lib/travelSeason/kinds";
 import type {
   DestinationCategory,
   FlightOffer,
@@ -158,6 +159,9 @@ export async function POST(req: NextRequest) {
     continents: Array.isArray(body.continents)
       ? body.continents.filter((c: unknown): c is Continent => CONTINENTS.includes(c as Continent))
       : [],
+    seasonKinds: (Array.isArray(body.seasonKinds) ? body.seasonKinds : String(body.seasonKinds || "").split(",")).filter(
+      (k: unknown): k is SeasonKind => (SEASON_KINDS as readonly string[]).includes(k as string)
+    ),
   };
 
   if (!params.origin || !params.departDate || !params.budgetTotal) {
@@ -168,7 +172,9 @@ export async function POST(req: NextRequest) {
     (d) =>
       d.code !== resolveIata(params.origin) &&
       (!params.preferenceCategories?.length || d.categories.some((c) => params.preferenceCategories!.includes(c))) &&
-      (!params.continents?.length || (d.continent !== undefined && params.continents.includes(d.continent)))
+      (!params.continents?.length || (d.continent !== undefined && params.continents.includes(d.continent))) &&
+      (!params.seasonKinds?.length ||
+        (placeForDestination(d.code, d.nameEn, Number(params.departDate.slice(5, 7)))?.seasonKinds ?? []).some((k) => params.seasonKinds!.includes(k)))
   );
 
   if (!params.multiDestination) {
@@ -269,6 +275,7 @@ export async function POST(req: NextRequest) {
     directOnly: params.directFlightsOnly,
     categories: params.preferenceCategories,
     continents: params.continents,
+    seasonKinds: params.seasonKinds,
   });
   return NextResponse.json({ mode: "routes", routes });
 }
