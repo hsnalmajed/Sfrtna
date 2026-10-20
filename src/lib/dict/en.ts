@@ -489,7 +489,7 @@ const en = {
   },
   account: {
     title: "My account",
-    subtitle: "Sign in to save your trip plans and open them on any device — on the site or in the app.",
+    subtitle: "Sign in to keep your trips, favourites and plans, on all your devices — site and app.",
     signInTitle: "Sign in or create an account",
     signInSub: "One account, no password: sign in with Google or with a code sent to your email.",
     google: "Continue with Google",

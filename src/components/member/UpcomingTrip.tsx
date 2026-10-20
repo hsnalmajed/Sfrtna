@@ -28,23 +28,28 @@ export default function UpcomingTrip({ locale }: { locale: Locale }) {
   const step = tripSteps(next).find((s) => !next.done.includes(s));
   const href = step ? stepHref(locale, next, step) : null;
   return (
-    <div className="mx-auto mb-4 flex max-w-4xl flex-wrap items-center gap-3 rounded-2xl bg-white/[0.1] px-4 py-3 text-white ring-1 ring-sun-400/40">
-      <span className="text-2xl" aria-hidden="true">
-        🧳
-      </span>
-      <div className="min-w-0 flex-1">
-        <p className="text-sm font-extrabold">
-          {t.upcomingTitle.replace("{city}", tripCityName(next, isAr))} · <span className="text-sun-300">{countdown(next.depart)}</span>
-        </p>
-        <p className="text-xs text-white/70">{step ? t.nextStep.replace("{step}", t.steps[step]) : t.ready}</p>
+    <div className="mx-auto mb-4 max-w-4xl rounded-2xl bg-white/[0.1] px-4 py-3 text-white ring-1 ring-sun-400/40 sm:flex sm:items-center sm:gap-3">
+      <div className="flex min-w-0 flex-1 items-center gap-3">
+        <span className="text-2xl" aria-hidden="true">
+          🧳
+        </span>
+        <div className="min-w-0">
+          <p className="text-sm font-extrabold leading-snug">
+            {t.upcomingTitle.replace("{city}", tripCityName(next, isAr))} · <span className="whitespace-nowrap text-sun-300">{countdown(next.depart)}</span>
+          </p>
+          <p className="text-xs text-white/70">{step ? t.nextStep.replace("{step}", t.steps[step]) : t.ready}</p>
+        </div>
       </div>
-      <div className="flex gap-2">
+      <div className="mt-3 flex gap-2 sm:mt-0 sm:shrink-0">
         {href && (
-          <Link href={href} className="inline-flex min-h-10 items-center rounded-full bg-sun-400 px-4 text-sm font-extrabold text-navy-950">
+          <Link href={href} className="inline-flex min-h-10 flex-1 items-center justify-center whitespace-nowrap rounded-full bg-sun-400 px-4 text-sm font-extrabold text-navy-950 sm:flex-none">
             {t.steps[step!]}
           </Link>
         )}
-        <Link href={`/${locale}/account#trips`} className="inline-flex min-h-10 items-center rounded-full px-3 text-sm font-bold text-white ring-1 ring-white/25">
+        <Link
+          href={`/${locale}/account#trips`}
+          className="inline-flex min-h-10 flex-1 items-center justify-center whitespace-nowrap rounded-full px-4 text-sm font-bold text-white ring-1 ring-white/25 sm:flex-none"
+        >
           {t.openTrips}
         </Link>
       </div>

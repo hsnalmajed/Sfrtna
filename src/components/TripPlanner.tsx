@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { warmFlightSearch } from "@/components/FlightMetasearch";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { DestinationCategory, FlightRoute, Locale, TravelerCounts } from "@/lib/types";
@@ -122,7 +122,10 @@ export default function TripPlanner({
   const tripRoute: FlightRoute = combo ? "roundtrip" : tripRouteRaw;
   const [comboHotel, setComboHotel] = useState<ComboHotel>(() => readCombo(sp));
   const [origin, setOrigin] = useState(sp.get("origin") || "");
-  useDefaultOrigin(origin, setOrigin);
+  // The nearest airport fills an empty origin — unless the member's profile
+  // already named theirs (whichever answers first, the profile wins).
+  const profileOrigin = useRef(false);
+  useDefaultOrigin(origin, (iata) => setOrigin((cur) => (profileOrigin.current ? cur : iata)));
   const [destination, setDestination] = useState(sp.get("destination") || "");
   // Suggest + several countries: how many countries the route visits.
   const [stopCount, setStopCount] = useState<2 | 3>(sp.get("stops") === "3" ? 3 : 2);
@@ -187,7 +190,10 @@ export default function TripPlanner({
   // currency, flight preferences) — owner, 21 Oct.
   const [fromProfile] = useState(() => !sp.get("origin") && !sp.get("adults"));
   const [applyProfile] = useState(() => (p: Profile) => {
-    if (p.origin) setOrigin(p.origin);
+    if (p.origin) {
+      profileOrigin.current = true;
+      setOrigin(p.origin);
+    }
     if (p.adults) setTravelers({ adults: p.adults, childrenAges: p.childrenAges ?? [], infants: p.infants ?? 0 });
     if (p.currency) {
       setCurrency(p.currency);

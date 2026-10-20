@@ -929,6 +929,50 @@ Chrome), climate v2 after the owner's download, publishing staged cities.
   20 Oct (162 used), so hotel city lists fall back to the partners' English
   widget. Proposed Starter $25 (1,000) or Developer $75 (5,000).
 
+## Accounts, membership and app sign-in — 21 Oct (owner: "do all three; Apple later")
+
+- **Member features** (owner: only accurate ones), stored in the Accounts DO
+  table `items` (`accounts.js`; kinds profile / fav / search / trip, limits
+  1 / 200 / 20 / 30), routes `/api/me/items` (GET, POST) and
+  `/api/me/items/delete`, validation in `src/lib/memberItems.ts`
+  (`cleanItem`), client store `src/lib/useMember.ts`:
+  - profile: home airport, travellers, currency, direct/bags, breakfast,
+    stars → fills an empty TripPlanner/HotelPlanner once (`useProfileOnce`);
+  - favourites: `member/FavButton.tsx` ♡ on city pages (hero), discover
+    cards, named hotel page; list in «حسابي» (#favs);
+  - searches: `rememberSearch` also keeps them in the account when signed in;
+    home «عمليات بحثك الأخيرة» merges account + browser;
+  - trips: «احجز» on flight results (single trips) saves the trip
+    (`keepTrip` in results page) → «رحلاتي» (#trips) with countdown, «حجزتها»
+    (the traveller says so — we cannot see bookings), get-ready checklist
+    (hotel, services, plan, visa — ticked by the traveller, each with its
+    link, `member/tripLinks.ts`); home shows the next trip within 60 days
+    (`member/UpcomingTrip.tsx`).
+- **Encouraging sign-up:** `member/JoinHost.tsx` (layout) — sheet listing the
+  six benefits (`member/JoinBenefits.tsx`, dict `member.benefits`) opened by
+  ♡ or the first «احجز» of a visit when signed out; toasts confirm saves;
+  benefits on the sign-in card; More sheet subtitle. GA4: `join_prompt`,
+  `favourite`, `login` (google_auto).
+- **App sign-in (no Google WebView):** `src/lib/appAuth.ts` — PKCE verifier in
+  the app, Custom Tab to `/{l}/account/app?c=<challenge>`
+  (`member/AppHandoff.tsx`; Google button works there), `/api/auth/app-code`
+  issues a 2-minute one-time code bound to the challenge, the browser opens
+  `sfrtna://auth?code=…&lang=…` (intent filter on MainActivity), the app
+  loads `/{l}/account?app_code=…` and trades code + verifier at
+  `/api/auth/app-exchange`. Needs the new APK (plugin `openAuth`, `info`
+  features ["auth","google"]); an old APK keeps the sign-in link hidden.
+- **Staying signed in:** sessions renew while used (`SESSION_RENEW_DAYS`
+  90, cookie re-set by /api/auth/me). Silent Google sign-in on app open:
+  `member/AppAutoSignIn.tsx` → plugin `googleSilent` (Credential Manager,
+  authorized accounts only, auto-select), once per launch, never after a
+  deliberate sign-out (`sfr-no-auto`). **Works only after an Android OAuth
+  client (package com.sfrtna.app + signing SHA-1) exists in the same Google
+  Cloud project** — test APKs are signed with a fresh debug key per build,
+  so this waits for the Play upload (Play App Signing SHA-1).
+- DO logic tested in local workerd (code flow, wrong verifier, reuse, items,
+  search eviction, delete account). Email sign-in still needs
+  `RESEND_API_KEY` (owner).
+
 ## Next, in order
 
 **▶ Start here (hand-off 20 Oct):** coverage section closed — 365 live cities /

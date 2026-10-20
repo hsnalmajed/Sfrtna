@@ -172,3 +172,19 @@ chosen amount, current language).
 | Tap targets < 32 px | chips, switches, currency, maps, counters | map pin 28 px, map chips 32 px → fixed after run 3 |
 | Empty screens | seasons (app), account (app) | account only (sign-in methods) |
 | Page errors | 0 | 0 |
+
+
+## Accounts and membership — 21 Oct (local workerd + Playwright, 390 px, signed-in session seeded)
+
+| Check | Result |
+|---|---|
+| ♡ signed out on city page → sheet with the six benefits + «أنشئ حسابك مجاناً» | ✓ |
+| ♡ signed in → toast «حُفظت في مفضلتك ✓», aria-pressed, item stored | ✓ |
+| Trip saved (API), «حسابي»: رحلاتي, countdown, checklist; ticking «الفندق» persists | ✓ |
+| Profile (JED, direct, 4★) saved; home flight form opens with JED (beats the nearest-airport guess) | ✓ |
+| Home «رحلتك القادمة إلى إسطنبول» card, next step + «رحلاتي» (phone layout fixed) | ✓ |
+| App hand-off: /ar/account/app?c= → «المتابعة إلى التطبيق باسم …» → sfrtna://auth?code=…&lang=ar | ✓ |
+| App context: /ar/account?app_code= + verifier → signed in; same code again → 400 | ✓ |
+| More sheet (app UA): language first, then sign-in with subtitle | ✓ |
+| DO unit run: wrong verifier, reuse, 20-search cap, delete account removes items | ✓ |
+| Not testable here: native Custom Tab + deep link on a phone (needs the new APK), silent Google (needs Android OAuth client), email codes (needs RESEND_API_KEY) | owner |
