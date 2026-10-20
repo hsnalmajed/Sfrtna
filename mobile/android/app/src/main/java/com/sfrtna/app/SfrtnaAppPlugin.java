@@ -1,6 +1,20 @@
 package com.sfrtna.app;
 
 import android.content.ActivityNotFoundException;
+import android.os.CancellationSignal;
+import androidx.core.content.ContextCompat;
+import androidx.credentials.ClearCredentialStateRequest;
+import androidx.credentials.Credential;
+import androidx.credentials.CredentialManager;
+import androidx.credentials.CredentialManagerCallback;
+import androidx.credentials.CustomCredential;
+import androidx.credentials.GetCredentialRequest;
+import androidx.credentials.GetCredentialResponse;
+import androidx.credentials.exceptions.ClearCredentialException;
+import androidx.credentials.exceptions.GetCredentialException;
+import com.getcapacitor.JSArray;
+import com.google.android.libraries.identity.googleid.GetGoogleIdOption;
+import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -19,7 +33,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 /**
- * The two site buttons a WebView cannot carry out by itself.
+ * What the site asks of the phone that a WebView cannot do by itself.
  *
  * The site calls these through window.Capacitor.Plugins.SfrtnaApp, only
  * when it is running inside the app (src/lib/nativeApp.ts). Capacitor only
@@ -30,6 +44,14 @@ import java.nio.charset.StandardCharsets;
  *    Organic Maps, save to Files or Drive, send on WhatsApp.
  *  - print: the "save as PDF" button. window.print() does nothing in a
  *    WebView, so the page goes to Android's own print / save-as-PDF screen.
+ *  - openAuth: signing in. Google refuses its sign-in inside a WebView, so
+ *    our sign-in page opens in the phone's browser (Custom Tab) and comes
+ *    back through sfrtna://auth (MainActivity) — see src/lib/appAuth.ts.
+ *  - googleSilent / googleSignOut: Google's own sign-in on the phone
+ *    (Credential Manager), used only silently, for a Google account that
+ *    already signed in to Sfrtna — the app then opens signed in. It works
+ *    once the app's Android OAuth client (package + signing certificate) is
+ *    registered with Google; until then it fails quietly.
  */
 @CapacitorPlugin(name = "SfrtnaApp")
 public class SfrtnaAppPlugin extends Plugin {
@@ -104,6 +126,96 @@ public class SfrtnaAppPlugin extends Plugin {
             // Our own package is always installed.
         }
         ret.put("version", version);
+        // What this build can do: the site checks before it offers a button.
+        JSArray features = new JSArray();
+        features.put("share");
+        features.put("print");
+        features.put("auth");
+        features.put("google");
+        ret.put("features", features);
         call.resolve(ret);
+    }
+
+    @PluginMethod
+    public void openAuth(PluginCall call) {
+        String url = call.getString("url", "");
+        // Only our own sign-in page, never another address.
+        if (url == null || !url.matches("^https://sfrtna\\.com/(ar|en)/account/app\\?c=[A-Za-z0-9_-]{43}$")) {
+            call.reject("bad_url");
+            return;
+        }
+        getActivity().runOnUiThread(() -> {
+            ExternalLinks.open(getActivity(), Uri.parse(url));
+            call.resolve();
+        });
+    }
+
+    @PluginMethod
+    public void googleSilent(PluginCall call) {
+        String clientId = call.getString("clientId", "");
+        if (clientId == null || !clientId.endsWith(".apps.googleusercontent.com")) {
+            call.reject("bad_client");
+            return;
+        }
+        GetGoogleIdOption option = new GetGoogleIdOption.Builder()
+            .setServerClientId(clientId)
+            // Only an account that already signed in to us, and no chooser.
+            .setFilterByAuthorizedAccounts(true)
+            .setAutoSelectEnabled(true)
+            .build();
+        GetCredentialRequest request = new GetCredentialRequest.Builder().addCredentialOption(option).build();
+        CredentialManager manager = CredentialManager.create(getContext());
+        manager.getCredentialAsync(
+            getActivity(),
+            request,
+            new CancellationSignal(),
+            ContextCompat.getMainExecutor(getContext()),
+            new CredentialManagerCallback<GetCredentialResponse, GetCredentialException>() {
+                @Override
+                public void onResult(GetCredentialResponse response) {
+                    Credential credential = response.getCredential();
+                    if (credential instanceof CustomCredential
+                        && GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL.equals(credential.getType())) {
+                        try {
+                            String token = GoogleIdTokenCredential.createFrom(credential.getData()).getIdToken();
+                            JSObject ret = new JSObject();
+                            ret.put("idToken", token);
+                            call.resolve(ret);
+                            return;
+                        } catch (RuntimeException e) {
+                            call.reject("bad_credential");
+                            return;
+                        }
+                    }
+                    call.reject("no_google");
+                }
+
+                @Override
+                public void onError(GetCredentialException e) {
+                    call.reject(e.getType());
+                }
+            }
+        );
+    }
+
+    @PluginMethod
+    public void googleSignOut(PluginCall call) {
+        CredentialManager manager = CredentialManager.create(getContext());
+        manager.clearCredentialStateAsync(
+            new ClearCredentialStateRequest(),
+            new CancellationSignal(),
+            ContextCompat.getMainExecutor(getContext()),
+            new CredentialManagerCallback<Void, ClearCredentialException>() {
+                @Override
+                public void onResult(Void result) {
+                    call.resolve();
+                }
+
+                @Override
+                public void onError(ClearCredentialException e) {
+                    call.resolve();
+                }
+            }
+        );
     }
 }

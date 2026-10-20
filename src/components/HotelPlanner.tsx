@@ -28,6 +28,8 @@ import { focusFirstError, hasErrors, type FieldErrors } from "@/lib/formErrors";
 import { formStyles, type FormTone } from "@/lib/formTone";
 import { BudgetInput, ChoiceChips, EdgeTabs, FieldLabel, PreferencesPanel, Toggle } from "@/components/PlannerFields";
 import { trackSearchUrl } from "@/lib/analytics";
+import { useProfileOnce } from "@/lib/useMember";
+import type { Profile } from "@/lib/memberItems";
 
 /**
  * The hotel planner.
@@ -114,6 +116,16 @@ export default function HotelPlanner({
   const setPref = <K extends keyof HotelPrefs>(k: K, v: HotelPrefs[K]) => setPrefs((p) => ({ ...p, [k]: v }));
   const [breakfast, setBreakfast] = useState(sp.get("breakfast") === "true");
   const [errors, setErrors] = useState<FieldErrors>({});
+  // A member's profile fills an empty form: travellers, currency, stars,
+  // breakfast (owner, 21 Oct).
+  const [fromProfile] = useState(() => !sp.get("adults") && !sp.get("checkIn"));
+  const [applyProfile] = useState(() => (p: Profile) => {
+    if (p.adults) setTravelers({ adults: p.adults, childrenAges: p.childrenAges ?? [], infants: p.infants ?? 0 });
+    if (p.currency) setCurrency(p.currency);
+    if (p.minStars !== undefined) setMinStars(p.minStars);
+    if (p.breakfast !== undefined) setBreakfast(p.breakfast);
+  });
+  useProfileOnce(fromProfile, applyProfile);
 
   const guests = occupancy(travelers);
   const roomPossible = roomFitsParty(guests);

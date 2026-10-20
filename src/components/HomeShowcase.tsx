@@ -10,6 +10,7 @@ import Icon, { type IconName } from "@/components/ui/Icon";
 import { PLAN_EVENT, HOME_TAB_EVENT, HOME_SEASON_EVENT, type PlanProduct } from "@/lib/planEvents";
 import TripPlanner from "@/components/TripPlanner";
 import RecentSearches from "@/components/RecentSearches";
+import UpcomingTrip from "@/components/member/UpcomingTrip";
 import HotelPlanner from "@/components/HotelPlanner";
 import VisaBadge, { VISA_STYLES } from "@/components/VisaBadge";
 import VisaRequirementsDialog from "@/components/VisaRequirementsDialog";
@@ -674,6 +675,7 @@ export default function HomeShowcase({
 
             {active === "plan" && (
               <div>
+                <UpcomingTrip locale={locale} />
                 <RecentSearches locale={locale} />
                 {/* Flights or hotels, then that search opens right here —
                     the choice shrinks to a switch once a form is showing. */}

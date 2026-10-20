@@ -1,5 +1,6 @@
 "use client";
 
+import FavButton from "@/components/member/FavButton";
 import { nightsLabel } from "@/lib/format";
 
 import { useEffect, useMemo, useState } from "react";
@@ -497,7 +498,10 @@ function HotelDetail({ hotel, c, checkedAt }: { hotel: HotelResult; c: Common; c
                 </p>
               )}
             </div>
-            <Rating hotel={hotel} c={c} size="lg" />
+            <div className="flex items-start gap-2">
+              <Rating hotel={hotel} c={c} size="lg" />
+              <FavButton locale={c.locale} fav={{ type: "hotel", name: hotel.name, area: "", label: hotel.nameAr || undefined }} />
+            </div>
           </div>
 
           {(hotel.locationRating || hotel.checkInTime || hotel.checkOutTime) && (

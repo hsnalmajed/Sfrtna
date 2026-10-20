@@ -63,6 +63,19 @@ interface AccountsStub {
   plansList(token: string): Promise<SavedPlan[] | null>;
   planSave(token: string, title: string, data: SavedPlanData): Promise<{ ok: true; id: string } | Fail>;
   planDelete(token: string, id: string): Promise<{ ok: true } | Fail>;
+  appCodeStart(token: string, challenge: string): Promise<{ ok: true; code: string } | Fail>;
+  appCodeExchange(code: string, verifier: string): Promise<SignedIn | Fail>;
+  itemsList(token: string): Promise<StoredItem[] | null>;
+  itemPut(token: string, kind: string, key: string, data: unknown): Promise<{ ok: true } | Fail>;
+  itemDelete(token: string, kind: string, key: string): Promise<{ ok: true } | Fail>;
+  sessionMaxAge(): Promise<number>;
+}
+
+export interface StoredItem {
+  kind: string;
+  key: string;
+  created: number;
+  data: unknown;
 }
 
 interface AccountsNamespace {

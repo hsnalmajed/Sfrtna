@@ -11,6 +11,8 @@ import Analytics from "@/components/Analytics";
 import AppTabBar from "@/components/AppTabBar";
 import AppInstallBanner from "@/components/AppInstallBanner";
 import AppWelcome from "@/components/AppWelcome";
+import JoinHost from "@/components/member/JoinHost";
+import AppAutoSignIn from "@/components/member/AppAutoSignIn";
 import { DictionaryProvider } from "@/lib/dict/context";
 import { clientDictionary } from "@/lib/dict/clientSections";
 
@@ -99,6 +101,8 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
           <AppTabBar locale={loc} />
           <AppInstallBanner />
           <AppWelcome />
+          <JoinHost locale={loc} />
+          <AppAutoSignIn />
           <NavTracker />
           {/* GA4 + consent banner + partner-click tracking (sfrtna.com only). */}
           <Analytics locale={loc} />

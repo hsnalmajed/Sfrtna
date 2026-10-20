@@ -5,7 +5,10 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useDictionary } from "@/lib/dict/context";
 import type { Locale } from "@/lib/types";
-import { inApp } from "@/lib/nativeApp";
+import { appFeatures, googleSignOutInApp, inApp, openAuthInApp } from "@/lib/nativeApp";
+import JoinBenefits from "@/components/member/JoinBenefits";
+import MemberSections from "@/components/member/MemberSections";
+import { newAppChallenge, takeAppCode, takeVerifier } from "@/lib/appAuth";
 import { PENDING_PLAN_KEY, refreshAccount, setSignedIn, useAccount, type AccountUser } from "@/lib/useAccount";
 
 interface SavedPlan {
@@ -46,6 +49,7 @@ export function savedPlanHref(locale: Locale, p: SavedPlan): string {
  */
 export default function AccountPanel({ locale }: { locale: Locale }) {
   const t = useDictionary().account;
+  const m = useDictionary().member;
   const account = useAccount();
   const router = useRouter();
 
@@ -74,12 +78,48 @@ export default function AccountPanel({ locale }: { locale: Locale }) {
     [router]
   );
 
-  if (account.status === "loading") return <p className="py-10 text-center text-navy-500">{t.loading}</p>;
+  // Back from signing in on the phone's browser (sfrtna://auth → the app
+  // opens this page with ?app_code=): trade the code for the app's session.
+  const [exchanging, setExchanging] = useState(false);
+  const [exchangeFailed, setExchangeFailed] = useState(false);
+  useEffect(() => {
+    const code = takeAppCode();
+    if (!code) return;
+    const verifier = takeVerifier();
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- one exchange on arrival
+    setExchanging(true);
+    fetch("/api/auth/app-exchange", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ code, verifier }) })
+      .then((r) => r.json() as Promise<{ ok: boolean; user?: AccountUser }>)
+      .then((j) => {
+        if (j.ok && j.user) {
+          try {
+            window.localStorage.removeItem("sfr-no-auto");
+          } catch {
+            /* storage off */
+          }
+          return afterSignIn(j.user);
+        }
+        setExchangeFailed(true);
+      })
+      .catch(() => setExchangeFailed(true))
+      .finally(() => setExchanging(false));
+  }, [afterSignIn]);
+
+  if (account.status === "loading" || exchanging) return <p className="py-10 text-center text-navy-500">{t.loading}</p>;
   if (account.user) return <SignedIn locale={locale} user={account.user} />;
-  return <SignInForm locale={locale} methods={account.methods} onSignedIn={afterSignIn} />;
+  return (
+    <>
+      {exchangeFailed && (
+        <p role="alert" className="mb-4 rounded-2xl bg-red-50 px-4 py-3 text-sm font-bold text-red-700">
+          {m.appFailed}
+        </p>
+      )}
+      <SignInForm locale={locale} methods={account.methods} onSignedIn={afterSignIn} />
+    </>
+  );
 }
 
-function SignInForm({
+export function SignInForm({
   locale,
   methods,
   onSignedIn,
@@ -89,6 +129,20 @@ function SignInForm({
   onSignedIn: (u: AccountUser) => void;
 }) {
   const t = useDictionary().account;
+  const m = useDictionary().member;
+  const [appAuth, setAppAuth] = useState(false);
+  const [opening, setOpening] = useState(false);
+  useEffect(() => {
+    void appFeatures().then((f) => setAppAuth(f.includes("auth")));
+  }, []);
+  async function appSignIn() {
+    setOpening(true);
+    setError("");
+    const challenge = await newAppChallenge();
+    const ok = await openAuthInApp(`${window.location.origin}/${locale}/account/app?c=${challenge}`);
+    setOpening(false);
+    if (!ok) setError(m.appFailed);
+  }
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
   const [step, setStep] = useState<"email" | "code">("email");
@@ -175,7 +229,8 @@ function SignInForm({
     }
   }
 
-  const none = !googleId && !methods.email;
+  const appButton = app && appAuth && (Boolean(methods.google) || methods.email);
+  const none = !googleId && !methods.email && !appButton && !(app && methods.google);
   const input =
     "w-full rounded-2xl border border-mist-300 bg-white px-4 py-3 text-base text-navy-900 outline-none focus:border-sea-500 focus:ring-2 focus:ring-sea-200";
   const primary =
@@ -185,6 +240,10 @@ function SignInForm({
     <div className="rounded-3xl bg-white p-6 shadow-[var(--shadow-card)] ring-1 ring-navy-950/5 sm:p-8">
       <h2 className="font-display text-xl font-extrabold text-navy-900">{t.signInTitle}</h2>
       <p className="mt-1 text-sm leading-relaxed text-navy-600">{t.signInSub}</p>
+      <div className="mt-5 rounded-2xl bg-sea-50/60 p-4 ring-1 ring-sea-100">
+        <p className="mb-3 text-sm font-extrabold text-navy-900">{m.benefitsTitle}</p>
+        <JoinBenefits compact />
+      </div>
 
       {none ? (
         <p className="mt-6 rounded-2xl bg-mist-50 px-4 py-3 text-sm text-navy-700">{t.off}</p>
@@ -202,7 +261,24 @@ function SignInForm({
               )}
             </>
           )}
-          {app && methods.google && <p className="text-center text-xs text-navy-500">{t.googleInApp}</p>}
+          {/* In the app: Google refuses its sign-in inside a WebView, so the
+              phone's browser signs in and hands the session back. */}
+          {appButton && (
+            <>
+              <button type="button" onClick={appSignIn} disabled={opening} className={`${primary} flex flex-col items-center`}>
+                <span>{opening ? m.appOpening : m.appButton}</span>
+                <span className="text-xs font-semibold text-navy-800/80">{m.appButtonSub}</span>
+              </button>
+              {methods.email && (
+                <div className="flex items-center gap-3 text-xs font-bold text-navy-400">
+                  <span className="h-px flex-1 bg-mist-200" />
+                  {t.or}
+                  <span className="h-px flex-1 bg-mist-200" />
+                </div>
+              )}
+            </>
+          )}
+          {app && !appAuth && methods.google && !methods.email && <p className="text-center text-sm text-navy-600">{m.appNeedsUpdate}</p>}
 
           {methods.email &&
             (step === "email" ? (
@@ -298,6 +374,13 @@ function SignedIn({ locale, user }: { locale: Locale; user: AccountUser }) {
 
   async function signOut() {
     await fetch("/api/auth/signout", { method: "POST" });
+    // Signed out on purpose: the app does not sign back in by itself.
+    try {
+      window.localStorage.setItem("sfr-no-auto", "1");
+    } catch {
+      /* storage off */
+    }
+    await googleSignOutInApp();
     await refreshAccount();
   }
 
@@ -328,8 +411,10 @@ function SignedIn({ locale, user }: { locale: Locale; user: AccountUser }) {
         </button>
       </div>
 
-      <section>
-        <h2 className="mb-3 font-display text-lg font-extrabold text-navy-900">🧳 {t.myPlans}</h2>
+      <MemberSections locale={locale} />
+
+      <section id="plans" className="scroll-mt-24">
+        <h2 className="mb-3 font-display text-lg font-extrabold text-navy-900">🗺️ {t.myPlans}</h2>
         {plans === null ? (
           <p className="text-sm text-navy-500">{t.loading}</p>
         ) : plans.length === 0 ? (

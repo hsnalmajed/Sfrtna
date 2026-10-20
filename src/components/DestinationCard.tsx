@@ -1,4 +1,5 @@
 import Link from "next/link";
+import FavButton from "@/components/member/FavButton";
 import VisaDetailsButton from "@/components/VisaDetailsButton";
 import { CLASS_DOT } from "@/lib/travelSeason/labels";
 import type { DestinationSuggestion, Locale, TravelerCounts } from "@/lib/types";
@@ -136,9 +137,16 @@ export default function DestinationCard({
             </div>
           }
         />
+        {place && (
+          <FavButton
+            locale={locale}
+            className="absolute end-2 top-2 !h-9 !w-9 sm:end-3 sm:top-3"
+            fav={{ type: "city", code: place.countryCode, slug: place.citySlug, nameAr: suggestion.destinationNameAr, nameEn: suggestion.destinationNameEn }}
+          />
+        )}
         {place?.classification && (
           <span
-            className={`absolute start-2 top-2 max-w-[calc(100%-1rem)] truncate rounded-full px-2 py-0.5 text-[11px] font-bold shadow-sm sm:start-3 sm:top-3 sm:px-2.5 sm:py-1 sm:text-xs ${
+            className={`absolute start-2 top-2 max-w-[calc(100%-3.5rem)] truncate rounded-full px-2 py-0.5 text-[11px] font-bold shadow-sm sm:start-3 sm:top-3 sm:px-2.5 sm:py-1 sm:text-xs ${
               place.inSeason ? "bg-emerald-100 text-emerald-900" : "bg-white/90 text-navy-700"
             }`}
           >

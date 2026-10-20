@@ -1,6 +1,8 @@
 package com.sfrtna.app;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.os.Bundle;
@@ -74,6 +76,9 @@ public class MainActivity extends BridgeActivity {
             introView.postDelayed(this::endIntro, MAX_SPLASH_MS);
         }
 
+        // Opened by sfrtna://auth (the app was not running).
+        openAuthReturn(getIntent());
+
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
@@ -133,6 +138,28 @@ public class MainActivity extends BridgeActivity {
         }
         networkCallback = null;
         super.onStop();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        openAuthReturn(intent);
+    }
+
+    /**
+     * sfrtna://auth?code=…&lang=ar — back from signing in on the phone's
+     * browser: the account page trades the code (with the verifier only this
+     * app holds) for the app's own session. Anything else is ignored.
+     */
+    private void openAuthReturn(Intent intent) {
+        if (intent == null || bridge == null) return;
+        Uri data = intent.getData();
+        if (data == null || !"sfrtna".equals(data.getScheme()) || !"auth".equals(data.getHost())) return;
+        String code = data.getQueryParameter("code");
+        String lang = "en".equals(data.getQueryParameter("lang")) ? "en" : "ar";
+        if (code == null || !code.matches("^[a-f0-9]{64}$")) return;
+        intent.setData(null);
+        bridge.getWebView().loadUrl("https://sfrtna.com/" + lang + "/account?app_code=" + code);
     }
 
     /** A page of ours finished drawing. */

@@ -6,8 +6,12 @@ import type { Locale } from "@/lib/types";
 import { useDictionary } from "@/lib/dict/context";
 import { findAirport } from "@/lib/airports";
 import { readRecent, type RecentSearch } from "@/lib/recentSearches";
+import { useMember } from "@/lib/useMember";
 
-/** «عمليات بحثك الأخيرة»: the last searches from this browser, one tap each. */
+/**
+ * «عمليات بحثك الأخيرة»: the last searches, one tap each — from this
+ * browser, and for a signed-in traveller from every device (site and app).
+ */
 export default function RecentSearches({ locale }: { locale: Locale }) {
   const t = useDictionary().recent;
   const [list, setList] = useState<RecentSearch[]>([]);
@@ -16,7 +20,17 @@ export default function RecentSearches({ locale }: { locale: Locale }) {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setList(readRecent());
   }, []);
-  if (!list.length) return null;
+  const member = useMember();
+  const today = new Date().toISOString().slice(0, 10);
+  const merged: RecentSearch[] = [...list];
+  for (const s of member.searches) {
+    const d = s.data;
+    if (d.date && d.date < today) continue;
+    if (merged.some((r) => r.url === d.url || (r.kind === d.kind && r.from === d.from && r.to === d.to && r.date === d.date && r.back === d.back))) continue;
+    merged.push({ ...d, at: s.created });
+  }
+  const shown = merged.sort((a, b) => b.at - a.at).slice(0, 6);
+  if (!shown.length) return null;
 
   const place = (s?: string) => {
     if (!s) return "";
@@ -37,7 +51,7 @@ export default function RecentSearches({ locale }: { locale: Locale }) {
     <div className="mx-auto mb-4 max-w-4xl">
       <p className="mb-2 text-xs font-bold text-white/70">{t.title}</p>
       <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none] sm:mx-0 sm:flex-wrap sm:px-0">
-        {list.map((r) => (
+        {shown.map((r) => (
           <Link
             key={r.url}
             href={r.url}

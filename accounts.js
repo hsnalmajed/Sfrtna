@@ -11,6 +11,12 @@
 //   codes     SHA-256 of a 6-digit sign-in code, its email, expiry, tries
 //   plans     a saved plan: city, dates, the chosen places by key (no copies
 //             of place data), title
+//   items     what the traveller keeps (owner, 21 Oct): the travel profile
+//             (home airport, travellers, preferences), favourite cities and
+//             hotels, recent searches, and trips with their checklist
+//   appcodes  SHA-256 of a one-time code that carries a sign-in from the
+//             phone's browser back into the app (2 minutes, used once,
+//             bound to a PKCE challenge only the app knows the answer to)
 // Deleting an account deletes all of its rows.
 
 import { DurableObject } from "cloudflare:workers";
@@ -21,10 +27,20 @@ const CODE_TRIES = 5;
 const CODES_PER_HOUR = 5;
 const MAX_PLANS = 50;
 const MAX_PLAN_BYTES = 20_000;
+const APP_CODE_SECONDS = 120;
+// Sessions are renewed while used: a traveller who opens the app now and
+// then stays signed in (owner, 21 Oct).
+const SESSION_RENEW_DAYS = 90;
+const ITEM_LIMITS = { profile: 1, fav: 200, search: 20, trip: 30 };
+const MAX_ITEM_BYTES = 4_000;
 
 const hex = (buf) => [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, "0")).join("");
 async function sha256(text) {
   return hex(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text)));
+}
+async function sha256url(text) {
+  const d = new Uint8Array(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text)));
+  return btoa(String.fromCharCode(...d)).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 }
 function randomToken() {
   const b = new Uint8Array(32);
@@ -53,6 +69,9 @@ export class Accounts extends DurableObject {
       CREATE TABLE IF NOT EXISTS codes (email TEXT PRIMARY KEY, hash TEXT NOT NULL, expires INTEGER NOT NULL, tries INTEGER NOT NULL, sent TEXT NOT NULL);
       CREATE TABLE IF NOT EXISTS plans (id TEXT PRIMARY KEY, user TEXT NOT NULL, title TEXT NOT NULL, data TEXT NOT NULL, created INTEGER NOT NULL);
       CREATE INDEX IF NOT EXISTS plans_user ON plans(user, created);
+      CREATE TABLE IF NOT EXISTS items (user TEXT NOT NULL, kind TEXT NOT NULL, key TEXT NOT NULL, data TEXT NOT NULL, created INTEGER NOT NULL, PRIMARY KEY (user, kind, key));
+      CREATE INDEX IF NOT EXISTS items_user ON items(user, kind, created);
+      CREATE TABLE IF NOT EXISTS appcodes (hash TEXT PRIMARY KEY, user TEXT NOT NULL, challenge TEXT NOT NULL, expires INTEGER NOT NULL);
     `);
   }
 
@@ -128,9 +147,100 @@ export class Accounts extends DurableObject {
 
   async userFor(token) {
     if (!token) return null;
-    const s = this.one("SELECT user, expires FROM sessions WHERE hash = ?", await sha256(token));
-    if (!s || s.expires < Date.now()) return null;
+    const hash = await sha256(token);
+    const s = this.one("SELECT user, expires FROM sessions WHERE hash = ?", hash);
+    const now = Date.now();
+    if (!s || s.expires < now) return null;
+    if (s.expires - now < SESSION_RENEW_DAYS * 864e5) this.sql.exec("UPDATE sessions SET expires = ? WHERE hash = ?", now + SESSION_DAYS * 864e5, hash);
     return this.publicUser(this.one("SELECT * FROM users WHERE id = ?", s.user));
+  }
+
+  /** The renewed cookie lifetime for a session in use (seconds). */
+  sessionMaxAge() {
+    return SESSION_DAYS * 86400;
+  }
+
+  // ---- Sign-in carried from the phone's browser into the app ---------
+
+  /** A one-time code for the signed-in browser to hand to the app. */
+  async appCodeStart(token, challenge) {
+    const user = await this.userFor(token);
+    if (!user) return { ok: false, reason: "signed_out" };
+    if (typeof challenge !== "string" || !/^[A-Za-z0-9_-]{43}$/.test(challenge)) return { ok: false, reason: "bad_challenge" };
+    const now = Date.now();
+    this.sql.exec("DELETE FROM appcodes WHERE expires < ?", now);
+    const code = randomToken();
+    this.sql.exec("INSERT INTO appcodes (hash, user, challenge, expires) VALUES (?, ?, ?, ?)", await sha256(code), user.id, challenge, now + APP_CODE_SECONDS * 1000);
+    return { ok: true, code };
+  }
+
+  /** The app trades the code and its secret verifier for its own session. */
+  async appCodeExchange(code, verifier) {
+    if (typeof code !== "string" || !/^[a-f0-9]{64}$/.test(code) || typeof verifier !== "string" || !/^[A-Za-z0-9_-]{43,128}$/.test(verifier))
+      return { ok: false, reason: "bad_code" };
+    const hash = await sha256(code);
+    const row = this.one("SELECT user, challenge, expires FROM appcodes WHERE hash = ?", hash);
+    // Used once, whatever the outcome.
+    this.sql.exec("DELETE FROM appcodes WHERE hash = ?", hash);
+    if (!row || row.expires < Date.now()) return { ok: false, reason: "expired" };
+    if ((await sha256url(verifier)) !== row.challenge) return { ok: false, reason: "bad_code" };
+    const user = this.one("SELECT * FROM users WHERE id = ?", row.user);
+    if (!user) return { ok: false, reason: "expired" };
+    return { ok: true, user: this.publicUser(user), ...(await this.newSession(user.id)) };
+  }
+
+  // ---- What the traveller keeps --------------------------------------
+
+  async itemsList(token) {
+    const user = await this.userFor(token);
+    if (!user) return null;
+    return this.sql
+      .exec("SELECT kind, key, data, created FROM items WHERE user = ? ORDER BY created DESC", user.id)
+      .toArray()
+      .map((r) => ({ kind: r.kind, key: r.key, created: r.created, data: JSON.parse(r.data) }));
+  }
+
+  async itemPut(token, kind, key, data) {
+    const user = await this.userFor(token);
+    if (!user) return { ok: false, reason: "signed_out" };
+    const limit = ITEM_LIMITS[kind];
+    if (!limit || typeof key !== "string" || !key || key.length > 200) return { ok: false, reason: "bad_item" };
+    const json = JSON.stringify(data);
+    if (json.length > MAX_ITEM_BYTES) return { ok: false, reason: "too_big" };
+    const now = Date.now();
+    const exists = this.one("SELECT created FROM items WHERE user = ? AND kind = ? AND key = ?", user.id, kind, key);
+    // Searches move to the top when repeated; everything else keeps its date.
+    const created = exists && kind !== "search" ? exists.created : now;
+    this.sql.exec(
+      "INSERT INTO items (user, kind, key, data, created) VALUES (?, ?, ?, ?, ?) ON CONFLICT(user, kind, key) DO UPDATE SET data = excluded.data, created = excluded.created",
+      user.id,
+      kind,
+      key,
+      json,
+      created
+    );
+    const count = this.one("SELECT COUNT(*) AS n FROM items WHERE user = ? AND kind = ?", user.id, kind).n;
+    if (count > limit) {
+      if (kind !== "search") {
+        this.sql.exec("DELETE FROM items WHERE user = ? AND kind = ? AND key = ?", user.id, kind, key);
+        return { ok: false, reason: "too_many" };
+      }
+      // The oldest searches make way.
+      this.sql.exec(
+        "DELETE FROM items WHERE user = ? AND kind = 'search' AND key IN (SELECT key FROM items WHERE user = ? AND kind = 'search' ORDER BY created ASC LIMIT ?)",
+        user.id,
+        user.id,
+        count - limit
+      );
+    }
+    return { ok: true };
+  }
+
+  async itemDelete(token, kind, key) {
+    const user = await this.userFor(token);
+    if (!user) return { ok: false, reason: "signed_out" };
+    this.sql.exec("DELETE FROM items WHERE user = ? AND kind = ? AND key = ?", user.id, kind, key);
+    return { ok: true };
   }
 
   async signOut(token) {
@@ -142,6 +252,8 @@ export class Accounts extends DurableObject {
     const user = await this.userFor(token);
     if (!user) return { ok: false };
     this.sql.exec("DELETE FROM plans WHERE user = ?", user.id);
+    this.sql.exec("DELETE FROM items WHERE user = ?", user.id);
+    this.sql.exec("DELETE FROM appcodes WHERE user = ?", user.id);
     this.sql.exec("DELETE FROM sessions WHERE user = ?", user.id);
     if (user.email) this.sql.exec("DELETE FROM codes WHERE email = ?", user.email);
     this.sql.exec("DELETE FROM users WHERE id = ?", user.id);

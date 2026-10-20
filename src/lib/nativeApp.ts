@@ -16,6 +16,12 @@ const APP_UA = /SfrtnaApp\/(Android|iOS)/;
 interface SfrtnaAppPlugin {
   shareFile(options: { name: string; mimeType: string; content: string }): Promise<void>;
   print(options: { title: string }): Promise<void>;
+  info(): Promise<{ platform: string; version: string; features?: string[] }>;
+  /** Opens our sign-in page in the phone's browser (Custom Tab); app builds from 21 Oct 2026. */
+  openAuth(options: { url: string }): Promise<void>;
+  /** Google's own silent sign-in on the phone (Credential Manager); app builds from 21 Oct 2026. */
+  googleSilent(options: { clientId: string }): Promise<{ idToken: string }>;
+  googleSignOut(): Promise<void>;
 }
 
 declare global {
@@ -75,4 +81,49 @@ export function printPage(title?: string): void {
   void printInApp(title || document.title).then((done) => {
     if (!done) window.print();
   });
+}
+
+let featuresAsk: Promise<string[]> | null = null;
+/** What this build of the app can do natively ([] on the site or an old build). */
+export function appFeatures(): Promise<string[]> {
+  const app = plugin();
+  if (!app) return Promise.resolve([]);
+  featuresAsk ??= app
+    .info()
+    .then((i) => (Array.isArray(i.features) ? i.features : []))
+    .catch(() => []);
+  return featuresAsk;
+}
+
+/** Open a page of ours in the phone's browser, for signing in. */
+export async function openAuthInApp(url: string): Promise<boolean> {
+  const app = plugin();
+  if (!app || !(await appFeatures()).includes("auth")) return false;
+  try {
+    await app.openAuth({ url });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/** A Google ID token without any screen, when this phone's Google account already signed in to us. */
+export async function googleSilentInApp(clientId: string): Promise<string | null> {
+  const app = plugin();
+  if (!app || !(await appFeatures()).includes("google")) return null;
+  try {
+    return (await app.googleSilent({ clientId })).idToken || null;
+  } catch {
+    return null;
+  }
+}
+
+export async function googleSignOutInApp(): Promise<void> {
+  const app = plugin();
+  if (!app || !(await appFeatures()).includes("google")) return;
+  try {
+    await app.googleSignOut();
+  } catch {
+    /* nothing to clear */
+  }
 }

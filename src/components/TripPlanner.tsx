@@ -17,6 +17,8 @@ import { focusFirstError, hasErrors, type FieldErrors } from "@/lib/formErrors";
 import { formStyles, type FormTone } from "@/lib/formTone";
 import { BudgetInput, EdgeTabs, FieldLabel, PreferencesPanel, Toggle, nightsBetween, toDigits } from "@/components/PlannerFields";
 import { useDefaultOrigin } from "@/lib/useOrigin";
+import { useProfileOnce } from "@/lib/useMember";
+import type { Profile } from "@/lib/memberItems";
 import { trackSearchUrl } from "@/lib/analytics";
 import ComboHotelFields from "@/components/ComboHotelFields";
 import { readCombo, writeCombo, type ComboHotel } from "@/lib/combo";
@@ -181,6 +183,20 @@ export default function TripPlanner({
    * their own budget before they can type it.
    */
   const [currencyTouched, setCurrencyTouched] = useState(Boolean(sp.get("currency")));
+  // A member's profile fills an empty form (home airport, travellers,
+  // currency, flight preferences) — owner, 21 Oct.
+  const [fromProfile] = useState(() => !sp.get("origin") && !sp.get("adults"));
+  const [applyProfile] = useState(() => (p: Profile) => {
+    if (p.origin) setOrigin(p.origin);
+    if (p.adults) setTravelers({ adults: p.adults, childrenAges: p.childrenAges ?? [], infants: p.infants ?? 0 });
+    if (p.currency) {
+      setCurrency(p.currency);
+      setCurrencyTouched(true);
+    }
+    if (p.directOnly !== undefined) setDirectOnly(p.directOnly);
+    if (p.baggage !== undefined) setBaggageIncluded(p.baggage);
+  });
+  useProfileOnce(fromProfile, applyProfile);
   const originCurrency = currencyForOrigin(origin);
   const effectiveCurrency = !currencyTouched && originCurrency ? originCurrency : currency;
 

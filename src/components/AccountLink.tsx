@@ -4,7 +4,8 @@ import Link from "next/link";
 import type { Locale } from "@/lib/types";
 import { useDictionary } from "@/lib/dict/context";
 import { useAccount } from "@/lib/useAccount";
-import { inApp } from "@/lib/nativeApp";
+import { useEffect, useState } from "react";
+import { appFeatures, inApp } from "@/lib/nativeApp";
 
 /**
  * «تسجيل الدخول» / «حسابي» — shown once sign-in is switched on (or someone
@@ -21,7 +22,12 @@ export default function AccountLink({
   onNavigate?: (e: React.MouseEvent, href: string) => void;
 }) {
   const nav = useDictionary().nav;
+  const member = useDictionary().member;
   const { status, user, methods } = useAccount();
+  const [appAuth, setAppAuth] = useState(false);
+  useEffect(() => {
+    void appFeatures().then((f) => setAppAuth(f.includes("auth")));
+  }, []);
   // While the account is being asked for, the header keeps the button's
   // place (invisible), so nothing beside it jumps when it appears.
   if (status !== "ready" && variant === "header")
@@ -30,9 +36,10 @@ export default function AccountLink({
         <PersonIcon /> {nav.signIn}
       </span>
     );
-  // Google refuses sign-in inside the app's WebView, so in the app only an
-  // email sign-in counts — no link to a page that cannot sign anyone in.
-  const google = Boolean(methods.google) && !(status === "ready" && inApp());
+  // Google refuses sign-in inside the app's WebView: in the app Google
+  // counts only when this build can sign in through the phone's browser —
+  // no link to a page that cannot sign anyone in.
+  const google = Boolean(methods.google) && (!(status === "ready" && inApp()) || appAuth);
   if (status !== "ready" || (!user && !methods.email && !google)) return null;
   const href = `/${locale}/account`;
   const label = user ? nav.account : nav.signIn;
@@ -58,7 +65,10 @@ export default function AccountLink({
     >
       <span className="flex min-w-0 items-center gap-2">
         <PersonIcon />
-        <span className="truncate">{user ? `${label}${user.email ? ` · ${user.email}` : ""}` : label}</span>
+        <span className="min-w-0">
+          <span className="block truncate">{user ? `${label}${user.email ? ` · ${user.email}` : ""}` : label}</span>
+          {!user && <span className="block truncate text-xs font-semibold text-white/65">{member.moreSub}</span>}
+        </span>
       </span>
       <span aria-hidden="true" className="text-white/50 rtl:rotate-180">›</span>
     </Link>

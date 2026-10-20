@@ -24,6 +24,9 @@ import { findCityByName } from "@/lib/cities";
 import { findCountryByEnglishName } from "@/lib/countries";
 import ComboHotelSection from "@/components/ComboHotelSection";
 import ShareButton from "@/components/ShareButton";
+import { useMember } from "@/lib/useMember";
+import { openJoin, showToast } from "@/components/member/events";
+import { track } from "@/lib/analytics";
 import { comboParams, readCombo } from "@/lib/combo";
 
 
@@ -231,6 +234,42 @@ function ResultsContent() {
   // The money they leave with and the money they'll spend. Both have to
   // resolve, and to different currencies, for the strip to have anything to
   // say — a Riyadh-to-Dammam trip doesn't need an exchange rate.
+  // «احجز» on a flight: a member's trip is kept in «رحلاتي» with the steps
+  // left to get ready; a visitor is offered an account, once a visit.
+  const member = useMember();
+  const dictMember = dict.member;
+  function keepTrip() {
+    if (!search.origin || !search.destination || !search.departDate) return;
+    if (!member.signedIn) {
+      try {
+        if (window.sessionStorage.getItem("sfr-join-trip")) return;
+        window.sessionStorage.setItem("sfr-join-trip", "1");
+      } catch {
+        /* storage off: offer it anyway */
+      }
+      track("join_prompt", { reason: "trip" });
+      window.setTimeout(() => openJoin("trip"), 600);
+      return;
+    }
+    const existing = member.trips.find((t) => t.data.origin === search.origin && t.data.destination === search.destination && t.data.depart === search.departDate && (t.data.back || "") === (search.returnDate || ""));
+    void member
+      .saveTrip({
+        origin: search.origin,
+        destination: search.destination,
+        depart: search.departDate,
+        back: search.returnDate,
+        code: destinationCountry?.code,
+        slug: destinationCity?.slug,
+        cityAr: destinationCity?.nameAr ?? destinationAirport?.cityAr,
+        cityEn: destinationCity?.nameEn ?? destinationAirport?.cityEn,
+        adults: Math.max(1, search.adults),
+        childrenAges: search.childrenAges ?? [],
+        infants: search.infants ?? 0,
+        booked: existing?.data.booked ?? false,
+        done: existing?.data.done ?? [],
+      })
+      .then((ok) => ok && showToast({ text: dictMember.tripSaved, href: `/${locale}/account#trips`, linkText: dictMember.openTrips }));
+  }
   const originAirport = findAirport(search.origin);
   const originCityName = originAirport ? (locale === "ar" ? originAirport.cityAr : originAirport.cityEn) : search.origin;
   // The traveller's own money: the currency they searched in (their budget's),
@@ -462,6 +501,7 @@ function ResultsContent() {
         onPicked={(fare) => {
           if (isMulti) savePick(fare);
           if (destinationCity) markStep(destinationCity.slug, "flight");
+          if (!isMulti) keepTrip();
         }}
         currency={search.currency}
         travelers={travelers}

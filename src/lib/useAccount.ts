@@ -43,6 +43,11 @@ export async function refreshAccount(): Promise<AccountState> {
   return state;
 }
 
+/** Who is signed in right now, for code outside React (null when unknown). */
+export function currentUserId(): string | null {
+  return state.user?.id ?? null;
+}
+
 export function setSignedIn(user: AccountUser | null) {
   set({ ...state, status: "ready", user });
 }

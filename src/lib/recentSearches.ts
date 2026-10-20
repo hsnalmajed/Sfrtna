@@ -1,6 +1,8 @@
-// The traveller's last searches, kept in this browser only (never sent
-// anywhere), so the same trip is one tap away next time — the way the big
-// travel sites greet a returning visitor.
+// The traveller's last searches, kept in this browser — and, for a
+// signed-in traveller, in their account too, so they follow them to the app
+// and any other device — the same trip one tap away next time.
+
+import { rememberSearchInAccount } from "@/lib/useMember";
 
 const KEY = "sfr-recent-searches";
 const MAX = 4;
@@ -48,6 +50,8 @@ export function rememberSearch(url: string): void {
     // One chip per trip: the same places and dates replace the older one.
     const same = (r: RecentSearch) => r.kind === entry.kind && r.from === entry.from && r.to === entry.to && r.date === entry.date && r.back === entry.back;
     const list = [entry, ...readRecent().filter((r) => !same(r))].slice(0, MAX);
+    // Signed in: the same search is kept in the account too (every device).
+    rememberSearchInAccount({ url: entry.url, kind: entry.kind, from: entry.from, to: entry.to, date: entry.date, back: entry.back });
     window.localStorage.setItem(KEY, JSON.stringify(list));
   } catch {
     /* storage blocked: nothing to remember */

@@ -22,6 +22,7 @@ import { TICKETED_KINDS } from "@/lib/activityLinks";
 import CityPlacesView, { type CityView } from "@/components/CityPlacesView";
 import TourCard from "@/components/TourCard";
 import PageHero from "@/components/ui/PageHero";
+import FavButton from "@/components/member/FavButton";
 import BackLink from "@/components/BackLink";
 
 /**
@@ -222,6 +223,11 @@ export default async function CityPlacesPageBody({
               {dict.itinerary.backToResults}
             </Link>
           )}
+          <FavButton
+            locale={loc}
+            tone="glass"
+            fav={{ type: "city", code: country.code, slug: cityEntry.slug, nameAr: cityEntry.nameAr, nameEn: cityEntry.nameEn }}
+          />
           <BackLink
             href={`/${loc}/attractions/${country.code}`}
             label={dict.attractions.backToCities}
