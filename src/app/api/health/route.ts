@@ -1,3 +1,4 @@
+import { readJson } from "@/lib/edgeCache";
 import { NextResponse } from "next/server";
 import { configuredProviders } from "@/lib/providers";
 import { travelpayouts } from "@/lib/providers/travelpayouts";
@@ -303,6 +304,8 @@ export async function GET(req: Request) {
         emailSignIn: Boolean(process.env.RESEND_API_KEY),
       },
       flightProbe: probe,
+      // The email sender's last refusal (status, error name, message), if any.
+      emailLastError: await readJson("email-last-error"),
     },
     { headers: { "cache-control": "no-store" } }
   );

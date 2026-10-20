@@ -20,6 +20,8 @@
  * A method whose setting is missing is simply not offered.
  */
 
+import { writeJson } from "@/lib/edgeCache";
+
 export const SESSION_COOKIE = "sfr_s";
 
 export interface AccountUser {
@@ -143,6 +145,14 @@ export async function sendCodeEmail(to: string, code: string, locale: "ar" | "en
       body: JSON.stringify({ from: process.env.EMAIL_FROM || "سفرتنا <no-reply@sfrtna.com>", to: [to], subject, text, html }),
       signal: AbortSignal.timeout(10_000),
     });
+    if (!res.ok) {
+      // Why the sender refused (unverified domain, key without permission…),
+      // kept a day for /api/health and the Workers logs — never the key.
+      const body = (await res.json().catch(() => ({}))) as { name?: string; message?: string };
+      const why = { at: new Date().toISOString(), status: res.status, name: String(body.name ?? ""), message: String(body.message ?? "").slice(0, 200) };
+      console.error("email send refused", JSON.stringify(why));
+      await writeJson("email-last-error", why, 86_400);
+    }
     return res.ok;
   } catch {
     return false;
