@@ -17,6 +17,7 @@ import type { Classification } from "@/lib/travelSeason/config";
 import { findAirport } from "@/lib/airports";
 import { parseChildrenAges } from "@/lib/searchParamsUtil";
 import { CONTINENTS, findCountry, type Continent } from "@/lib/countries";
+import { comboParams } from "@/lib/combo";
 
 export default function DiscoverResultsPage() {
   return (
@@ -53,6 +54,7 @@ function DiscoverResultsContent() {
   const categoriesParam = preferenceCategories.join(",");
   const continentsParam = sp.get("continents") || "";
   const editSearchParams = sp.toString();
+  const combo = useMemo(() => (sp.get("combo") === "1" ? comboParams(new URLSearchParams(sp.toString())) : undefined), [sp]);
 
   const stops = sp.get("stops") === "3" ? 3 : 2;
   const [mode, setMode] = useState<"single" | "routes">(multiDestination ? "routes" : "single");
@@ -250,6 +252,7 @@ function DiscoverResultsContent() {
           baggageIncluded={baggageIncluded}
           photo={s.place ? photos[`${s.place.countryCode}/${s.place.citySlug}`] : undefined}
           hotelFirst={tripType === "hotel"}
+          combo={combo}
         />
       ))}
     </div>

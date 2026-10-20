@@ -22,6 +22,8 @@ import { findAirport } from "@/lib/airports";
 import { flightSearchCode, parseFlightSearchCode } from "@/lib/flightSearchCode";
 import { findCityByName } from "@/lib/cities";
 import { findCountryByEnglishName } from "@/lib/countries";
+import ComboHotelSection from "@/components/ComboHotelSection";
+import { comboParams, readCombo } from "@/lib/combo";
 
 
 export default function ResultsPage() {
@@ -261,6 +263,11 @@ function ResultsContent() {
         ? "place"
         : null;
 
+  // «طيران + فندق»: the hotel half rides in the same address (see combo.ts).
+  const isCombo = q.get("combo") === "1" && !isMulti;
+  const combo = useMemo(() => readCombo(q), [q]);
+  const money = (n: number) => `${Math.round(n).toLocaleString("en-US")} ${search.currency}`;
+
   const editSearchParams = useMemo(() => {
     const p = new URLSearchParams({
       mode: "known",
@@ -286,8 +293,9 @@ function ResultsContent() {
       p.set("origin", mcLegs[0].origin);
       p.set("departDate", mcLegs[0].date);
     }
+    if (isCombo) for (const [k, v] of comboParams(q)) p.set(k, v);
     return p.toString();
-  }, [search, isMulti, legsRaw, mcLegs]);
+  }, [search, isMulti, legsRaw, mcLegs, isCombo, q]);
 
   return (
     <div className="bg-mist-50">
@@ -417,6 +425,22 @@ function ResultsContent() {
         </div>
       ) : (
       <>
+      {/* Flight + hotel: the two halves and their budgets, one tap apart. */}
+      {isCombo && (
+        <nav className="sticky top-20 z-20 mb-5 grid grid-cols-2 gap-2 rounded-2xl bg-white/95 p-2 shadow-sm ring-1 ring-black/5 backdrop-blur" aria-label={dict.combo.productTitle}>
+          <a href="#combo-flight" className="rounded-xl bg-navy-950 px-3 py-2 text-center text-white">
+            <span className="block text-sm font-extrabold">{dict.combo.jumpFlight}</span>
+            <span className="block text-[11px] font-semibold text-white/75">{dict.combo.budgetFlight.replace("{amount}", money(search.budgetTotal))}</span>
+          </a>
+          <a href="#combo-hotel" className="rounded-xl bg-sun-400 px-3 py-2 text-center text-navy-950">
+            <span className="block text-sm font-extrabold">{dict.combo.jumpHotel}</span>
+            <span className="block text-[11px] font-semibold text-navy-800">
+              {Number(combo.budget) > 0 ? dict.combo.budgetHotel.replace("{amount}", money(Number(combo.budget))) : "—"}
+            </span>
+          </a>
+        </nav>
+      )}
+      <div id="combo-flight" className="scroll-mt-28" />
       {/* 2. The answer: the flight picked within the budget, and the way
           to the others — see FlightResultsGuide. */}
       {isMulti && (
@@ -464,6 +488,23 @@ function ResultsContent() {
       <div className="mt-5">
         <FlightMetasearch locale={locale} prefill={flightSearchCode(search)} hideSearchForm />
       </div>
+
+      {isCombo && (destinationCity || destinationAirport) && search.returnDate && (
+        <ComboHotelSection
+          locale={locale}
+          combo={combo}
+          city={{
+            nameEn: destinationCity?.nameEn ?? destinationAirport?.cityEn ?? search.destination,
+            label: destinationCityName ?? (locale === "ar" ? destinationAirport?.cityAr : destinationAirport?.cityEn) ?? search.destination,
+            slug: destinationCity?.slug,
+          }}
+          checkIn={search.departDate}
+          checkOut={search.returnDate}
+          adults={search.adults}
+          childrenAges={search.childrenAges ?? []}
+          infants={search.infants ?? 0}
+        />
+      )}
       </>
       )}
 

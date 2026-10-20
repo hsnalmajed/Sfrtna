@@ -18,6 +18,8 @@ import { formStyles, type FormTone } from "@/lib/formTone";
 import { BudgetInput, EdgeTabs, FieldLabel, PreferencesPanel, Toggle, nightsBetween, toDigits } from "@/components/PlannerFields";
 import { useDefaultOrigin } from "@/lib/useOrigin";
 import { trackSearchUrl } from "@/lib/analytics";
+import ComboHotelFields from "@/components/ComboHotelFields";
+import { readCombo, writeCombo, type ComboHotel } from "@/lib/combo";
 
 /**
  * The flight planner, laid out the way a traveller thinks.
@@ -79,6 +81,7 @@ export default function TripPlanner({
   locale,
   tone = "light",
   preset,
+  combo = false,
 }: {
   locale: Locale;
   /**
@@ -89,6 +92,8 @@ export default function TripPlanner({
   preset?: string;
   /** "dark" when the form sits on the hero photograph — see formTone.ts. */
   tone?: FormTone;
+  /** «طيران + فندق»: the hotel's own fields, budget and preferences under the flight's. */
+  combo?: boolean;
 }) {
   // The results page runs the partner's flight search; fetch its script
   // and open its connections while this form is being filled in.
@@ -107,9 +112,13 @@ export default function TripPlanner({
   // including which tab it came from.
   const [mode, setMode] = useState<Mode>(sp.get("mode") === "discover" ? "discover" : "known");
 
-  const [tripRoute, setTripRoute] = useState<FlightRoute>(
+  const [tripRouteRaw, setTripRoute] = useState<FlightRoute>(
     (sp.get("tripRoute") as FlightRoute) || "roundtrip"
   );
+  // A flight + hotel trip is a round trip: the hotel runs from landing to
+  // flying back (one way has no check-out; several cities, several hotels).
+  const tripRoute: FlightRoute = combo ? "roundtrip" : tripRouteRaw;
+  const [comboHotel, setComboHotel] = useState<ComboHotel>(() => readCombo(sp));
   const [origin, setOrigin] = useState(sp.get("origin") || "");
   useDefaultOrigin(origin, setOrigin);
   const [destination, setDestination] = useState(sp.get("destination") || "");
@@ -247,10 +256,14 @@ export default function TripPlanner({
     if (showReturnDate && !returnDate) next.returnDate = dict.form.errorReturnDate;
     if (!budget) next.budget = dict.form.errorBudget;
     else if (Number(budget) <= 0) next.budget = dict.form.errorBudgetPositive;
+    if (combo) {
+      if (mode === "known" && comboHotel.name.trim() && !comboHotel.picked) next.hotel = dict.hotelForm.errorPickHotel;
+      if (!(Number(comboHotel.budget) > 0)) next.hotelBudget = dict.combo.errorHotelBudget;
+    }
     return next;
   }
 
-  const FIELD_ORDER = ["origin", "destination", "legs", "departDate", "returnDate", "budget"];
+  const FIELD_ORDER = ["origin", "destination", "legs", "departDate", "returnDate", "budget", "hotel", "hotelBudget"];
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -318,6 +331,7 @@ export default function TripPlanner({
         preferenceCategory: preferenceCategories.join(","),
         continents: continents.join(","),
       });
+      if (combo) writeCombo(comboHotel, params);
       trackSearchUrl(`/${locale}/discover-results?${params.toString()}`);
       router.push(`/${locale}/discover-results?${params.toString()}`);
       return;
@@ -329,6 +343,7 @@ export default function TripPlanner({
       destination,
       returnDate: showReturnDate ? returnDate : "",
     });
+    if (combo) writeCombo(comboHotel, params);
     trackSearchUrl(`/${locale}/results?${params.toString()}`);
     router.push(`/${locale}/results?${params.toString()}`);
   }
@@ -375,6 +390,9 @@ export default function TripPlanner({
       />
 
       {/* ── 2. Round trip, one way, several cities ─────────────────── */}
+      {combo ? (
+        <p className={`mb-2.5 text-center ${muted}`}>{dict.combo.roundTripNote}</p>
+      ) : (
       <div className="mb-2.5 flex flex-col items-center gap-2.5">
         {/* A secondary choice, so a compact switch under the tabs rather
             than a second row of big buttons competing with them. */}
@@ -409,6 +427,7 @@ export default function TripPlanner({
             })}
           </div>
       </div>
+      )}
 
       {/* ── 3. The row that is the search ─────────────────────────────
           Auto-fit, so the known tab's five fields and the suggest tab's
@@ -679,7 +698,7 @@ export default function TripPlanner({
           what is chosen; it opens by itself when something already is. */}
       <PreferencesPanel
         dark={dark}
-        title={dict.form.extrasTitle}
+        title={combo ? dict.combo.flightPrefsTitle : dict.form.extrasTitle}
         hint={dict.form.extrasHint}
         chosen={[
           ...(directOnly ? [dict.form.directShort] : []),
@@ -772,6 +791,26 @@ export default function TripPlanner({
             </div>
           )}
       </PreferencesPanel>
+
+      {combo && (
+        <ComboHotelFields
+          locale={locale}
+          dark={dark}
+          inputClass={inputClass}
+          discover={mode === "discover"}
+          value={comboHotel}
+          onChange={(v) => {
+            setComboHotel(v);
+            setErrors((prev) => ({ ...prev, hotel: "", hotelBudget: "" }));
+          }}
+          currency={effectiveCurrency}
+          onCurrencyChange={(c) => {
+            setCurrency(c);
+            setCurrencyTouched(true);
+          }}
+          errors={{ hotel: errors.hotel, hotelBudget: errors.hotelBudget }}
+        />
+      )}
 
       {/* ── 5. Go ────────────────────────────────────────────────────── */}
       <button

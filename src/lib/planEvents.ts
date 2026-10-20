@@ -8,7 +8,7 @@
  * the tab (and to flights or hotels, when one is named) and scrolls to it.
  */
 
-export type PlanProduct = "flights" | "hotels";
+export type PlanProduct = "flights" | "hotels" | "combo";
 
 export const PLAN_EVENT = "sfrtna:open-planner";
 
@@ -24,7 +24,8 @@ export function openPlanner(product?: PlanProduct) {
 /** Which search a homepage URL asks for: `product=`, or the edit-search params. */
 export function planFromParams(get: (key: string) => string | null | undefined): PlanProduct | null {
   const p = get("product");
-  if (p === "flights" || p === "hotels") return p;
+  if (p === "flights" || p === "hotels" || p === "combo") return p;
+  if (get("combo") === "1") return "combo";
   if (get("hmode")) return "hotels";
   if (get("mode")) return "flights";
   return null;

@@ -10,6 +10,7 @@ import { countLabel } from "@/lib/format";
 import Photo from "@/components/Photo";
 import VisaBadge from "@/components/VisaBadge";
 import Flag from "@/components/ui/Flag";
+import { comboHotelHref, readCombo } from "@/lib/combo";
 
 /** The stay's last night, when discover priced it in nights rather than dates. */
 function addDaysIso(dateStr: string, days: number): string {
@@ -45,6 +46,7 @@ export default function DestinationCard({
   baggageIncluded = false,
   photo,
   hotelFirst = false,
+  combo,
 }: {
   suggestion: DestinationSuggestion;
   locale: Locale;
@@ -58,6 +60,8 @@ export default function DestinationCard({
   photo?: string;
   /** "Hotel only" search: the hotel search is the card's main button. */
   hotelFirst?: boolean;
+  /** «طيران + فندق»: the hotel half's own keys, carried to both buttons. */
+  combo?: URLSearchParams;
 }) {
   const dict = useDictionary();
   const d = dict.discoverResults;
@@ -88,17 +92,22 @@ export default function DestinationCard({
     currency,
     directOnly: String(directOnly),
     baggageIncluded: String(baggageIncluded),
+    mode: "known",
+    tripRoute: returnDate ? "roundtrip" : "oneway",
   });
+  if (combo) for (const [k, v] of combo) flightParams.set(k, v);
   // Straight to the city's hotels for these dates and this party (it used
   // to open the home form, one more step for nothing).
-  const hotelHref = `/${locale}/hotel-results?${new URLSearchParams({
-    hmode: "discover",
-    city: place?.cityNameEn ?? suggestion.destinationNameEn,
-    label: name,
-    checkIn: departDate,
-    checkOut: stayEnd,
-    ...party,
-  })}`;
+  const hotelHref = combo
+    ? comboHotelHref(locale, readCombo(combo), { nameEn: place?.cityNameEn ?? suggestion.destinationNameEn, label: name }, departDate, stayEnd, party)
+    : `/${locale}/hotel-results?${new URLSearchParams({
+        hmode: "discover",
+        city: place?.cityNameEn ?? suggestion.destinationNameEn,
+        label: name,
+        checkIn: departDate,
+        checkOut: stayEnd,
+        ...party,
+      })}`;
 
   const visaLabels = {
     free: dict.visa.statusFree,

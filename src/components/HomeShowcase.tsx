@@ -78,6 +78,8 @@ interface ShowcaseDict {
   flightsHint: string;
   hotelsTitle: string;
   hotelsHint: string;
+  comboTitle: string;
+  comboHint: string;
   seasonTitle: string;
   seasonSubtitle: string;
   seasonAllCities: string;
@@ -289,6 +291,7 @@ export default function HomeShowcase({
   const planChoices: { value: PlanProduct; icon: IconName; title: string; hint: string }[] = [
     { value: "flights", icon: "plane", title: dict.flightsTitle, hint: dict.flightsHint },
     { value: "hotels", icon: "hotel", title: dict.hotelsTitle, hint: dict.hotelsHint },
+    { value: "combo", icon: "route", title: dict.comboTitle, hint: dict.comboHint },
   ];
 
   const rainText = (days: number) => {
@@ -671,7 +674,7 @@ export default function HomeShowcase({
                 <div
                   role="radiogroup"
                   aria-label={dict.tabPlan}
-                  className="mx-auto grid max-w-3xl grid-cols-2 gap-3 sm:gap-4"
+                  className="mx-auto grid max-w-4xl grid-cols-3 gap-2 sm:gap-4"
                 >
                   {planChoices.map((c) => {
                     const on = planProduct === c.value;
@@ -719,6 +722,8 @@ export default function HomeShowcase({
                     <Suspense fallback={null}>
                       {planProduct === "flights" ? (
                         <TripPlanner key={`f${planKey}`} locale={locale} tone="dark" preset={planPreset} />
+                      ) : planProduct === "combo" ? (
+                        <TripPlanner key={`c${planKey}`} locale={locale} tone="dark" preset={planPreset} combo />
                       ) : (
                         <HotelPlanner key={`h${planKey}`} locale={locale} tone="dark" preset={planPreset} />
                       )}

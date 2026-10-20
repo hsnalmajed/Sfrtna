@@ -252,7 +252,8 @@ function minutesOf(text: string): number {
   const s = western(text);
   const d = s.match(/(\d+)\s*(?:يوم|أيام|ايام|d)/i);
   const h = s.match(/(\d+)\s*(?:س|h)/i);
-  const m = s.match(/(\d+)\s*(?:د|m)/i);
+  // "40م" / "40د" / "40m": minutes (a duration, never a clock time here).
+  const m = s.match(/(\d+)\s*(?:دقيقة|دقائق|د|م|m)(?![a-z])/i);
   return (d ? Number(d[1]) * 1440 : 0) + (h ? Number(h[1]) * 60 : 0) + (m ? Number(m[1]) : 0);
 }
 
@@ -290,7 +291,17 @@ const NO_FILTERS: Filters = { stops: [], features: [], out: [], back: [], airlin
 type Facet = keyof Filters;
 
 const slotOf = (h: number): Slot | null => (h < 0 ? null : (String(Math.min(3, Math.floor(h / 6))) as Slot));
-const atNight = (h: number) => h >= 0 && h < 6;
+/**
+ * A flight "at night" is one in the air between 1 and 5 in the morning
+ * (local times as printed), or one with an overnight stop — what travellers
+ * mean by a night flight. Landing at 00:30 is not one.
+ */
+function inAirAtNight(l: Leg): boolean {
+  if (l.depHour < 0 || l.arrHour < 0) return false;
+  let end = l.arrHour + 24 * l.plusDays;
+  if (end < l.depHour) end += 24;
+  return [1, 25].some((w) => l.depHour < w + 4 && end > w);
+}
 const factsCache = new WeakMap<Flight, ReturnType<typeof readFacts>>();
 function flightFacts(f: Flight) {
   let x = factsCache.get(f);
@@ -300,8 +311,7 @@ function flightFacts(f: Flight) {
 function readFacts(f: Flight) {
   return {
     stops: (f.maxStops >= 2 ? "2" : String(f.maxStops)) as Stops,
-    night:
-      f.legs.some((l) => atNight(l.depHour) || atNight(l.arrHour)) || f.warnings.some((w) => NIGHT_STOP.test(w)),
+    night: f.legs.some(inAirAtNight) || f.warnings.some((w) => NIGHT_STOP.test(w)),
     long: f.legs.some((l) => l.stops.some((s) => s.waitMin > LONG_STOP_MIN)),
     self: f.warnings.some((w) => SELF_TRANSFER.test(w)),
     bag: f.bag === "in" || f.bagOn,
@@ -650,26 +660,35 @@ export default function FlightResultsGuide({
   const noSelf = filters.features.includes("noSelf");
   useEffect(() => {
     const want = new Set(siteKey ? siteKey.split("|") : []);
+    // One change per second: the widget re-renders its filter after each
+    // click, and two clicks in the same moment lose one (seen live 20 Oct).
+    // Runs until two quiet checks in a row, or 40 s.
+    let quiet = 0;
     let tries = 0;
-    const sync = () => {
+    const step = (): boolean => {
       const root = ticketsRoot();
       if (!root) return false;
-      let done = true;
       const agencyRoot = root.querySelector('[class*="Agencies-module__root"]');
-      agencyRoot?.querySelectorAll("label").forEach((l) => {
+      if (want.size && !agencyRoot) return false;
+      for (const l of agencyRoot?.querySelectorAll("label") ?? []) {
         const input = l.querySelector("input");
         const name = clean([...l.querySelectorAll("span")].find((sp) => sp.children.length === 0) ?? null);
-        if (input && input.checked !== want.has(name)) input.click();
-      });
-      if (want.size && !agencyRoot) done = false;
+        if (input && input.checked !== want.has(name)) {
+          input.click();
+          return false;
+        }
+      }
       const selfBox = [...root.querySelectorAll("label")].find((l) => /تغييرات في المطار|airport change/i.test(l.textContent || ""));
       const input = selfBox?.querySelector("input");
-      if (input && input.checked !== noSelf) input.click();
-      return done;
+      if (input && input.checked !== noSelf) {
+        input.click();
+        return false;
+      }
+      return true;
     };
-    if (sync()) return;
     const id = window.setInterval(() => {
-      if (sync() || ++tries > 20) window.clearInterval(id);
+      quiet = step() ? quiet + 1 : 0;
+      if (quiet >= 2 || ++tries > 40) window.clearInterval(id);
     }, 1000);
     return () => window.clearInterval(id);
   }, [siteKey, noSelf]);
@@ -851,7 +870,7 @@ export default function FlightResultsGuide({
           multi
           icon="🕒"
           label={t.fOutTime}
-          allLabel={t.fAnyTime}
+          allLabel={t.fOutAny}
           value={filters.out}
           onChange={(v) => setFacet("out", v)}
           options={slotOptions("out")}
@@ -862,7 +881,7 @@ export default function FlightResultsGuide({
             multi
             icon="🕘"
             label={t.fBackTime}
-            allLabel={t.fAnyTime}
+            allLabel={t.fBackAny}
             value={filters.back}
             onChange={(v) => setFacet("back", v)}
             options={slotOptions("back")}

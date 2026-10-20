@@ -283,6 +283,8 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
             flightsHint: dict.productSelect.flightsHint,
             hotelsTitle: dict.productSelect.hotelsTitle,
             hotelsHint: dict.productSelect.hotelsHint,
+            comboTitle: dict.combo.productTitle,
+            comboHint: dict.combo.productHint,
             seasonTitle: dict.home.seasonTitle.replace("{month}", monthName(month, loc)),
             seasonSubtitle: dict.home.seasonSubtitle,
             seasonAllCities: dict.home.seasonAllCities.replace("{month}", monthName(month, loc)),
