@@ -9,6 +9,7 @@ import type { Dictionary } from "@/lib/dictionaries";
 import { findAirport } from "@/lib/airports";
 import { countLabel } from "@/lib/format";
 import Icon from "@/components/ui/Icon";
+import FilterPill from "@/components/ui/FilterPill";
 import { lastSearchContext, track } from "@/lib/analytics";
 
 /**
@@ -154,6 +155,8 @@ function clean(el: Element | null | undefined): string {
 interface Stop {
   city: string;
   wait: string;
+  /** The wait in minutes (0 when unreadable). */
+  waitMin: number;
 }
 interface Leg {
   depTime: string;
@@ -168,6 +171,9 @@ interface Leg {
   duration: string;
   minutes: number;
   stops: Stop[];
+  /** Local departure / arrival hour, 0–24 (-1 when unreadable). */
+  depHour: number;
+  arrHour: number;
 }
 interface Flight {
   id: string;
@@ -190,6 +196,14 @@ interface Flight {
   bagOn: boolean;
   total: number;
   best: boolean;
+  /** The widget's notes on this flight: overnight stop, long stop, airport change… */
+  warnings: string[];
+}
+
+/** A booking site in the live search, with its cheapest fare. */
+interface Agency {
+  name: string;
+  price: number | null;
 }
 
 interface State {
@@ -204,6 +218,8 @@ interface State {
   /** Over the budget, cheapest first. */
   over: Flight[];
   hasMore: boolean;
+  /** Every booking site selling flights in this search. */
+  agencies: Agency[];
 }
 
 const EMPTY: State = {
@@ -215,6 +231,7 @@ const EMPTY: State = {
   fits: [],
   over: [],
   hasMore: false,
+  agencies: [],
 };
 
 /**
@@ -237,6 +254,77 @@ function minutesOf(text: string): number {
   const h = s.match(/(\d+)\s*(?:س|h)/i);
   const m = s.match(/(\d+)\s*(?:د|m)/i);
   return (d ? Number(d[1]) * 1440 : 0) + (h ? Number(h[1]) * 60 : 0) + (m ? Number(m[1]) : 0);
+}
+
+/** "03:45 م" / "3:45 PM" / "15:45" → 15.75; -1 when there is no time. */
+function hourOf(text: string): number {
+  const s = western(text);
+  const m = s.match(/(\d{1,2}):(\d{2})\s*(ص|م|AM|PM|am|pm)?/);
+  if (!m) return -1;
+  let h = Number(m[1]) % 12;
+  const pm = m[3] === "م" || /pm/i.test(m[3] ?? "");
+  const marked = Boolean(m[3]);
+  if (!marked) h = Number(m[1]);
+  else if (pm) h += 12;
+  return h + Number(m[2]) / 60;
+}
+
+/** The widget's own words for a change of airport between two flights. */
+const SELF_TRANSFER = /تغيير\s*(?:في\s*)?المطار|تغيير\s*مطار|نقل\s*ذاتي|إعادة\s*تسجيل|self.?transfer|airport\s*change|change\s*of\s*airport|re-?check/i;
+const NIGHT_STOP = /أثناء\s*الليل|ليلة|overnight|night/i;
+/** A layover longer than this is "long" (owner, 20 Oct: up to 4 hours). */
+const LONG_STOP_MIN = 240;
+
+type Stops = "0" | "1" | "2";
+type Feature = "noNight" | "noLong" | "noSelf" | "bag";
+type Slot = "0" | "1" | "2" | "3";
+interface Filters {
+  stops: Stops[];
+  features: Feature[];
+  out: Slot[];
+  back: Slot[];
+  airlines: string[];
+  sites: string[];
+}
+const NO_FILTERS: Filters = { stops: [], features: [], out: [], back: [], airlines: [], sites: [] };
+type Facet = keyof Filters;
+
+const slotOf = (h: number): Slot | null => (h < 0 ? null : (String(Math.min(3, Math.floor(h / 6))) as Slot));
+const atNight = (h: number) => h >= 0 && h < 6;
+const factsCache = new WeakMap<Flight, ReturnType<typeof readFacts>>();
+function flightFacts(f: Flight) {
+  let x = factsCache.get(f);
+  if (!x) factsCache.set(f, (x = readFacts(f)));
+  return x;
+}
+function readFacts(f: Flight) {
+  return {
+    stops: (f.maxStops >= 2 ? "2" : String(f.maxStops)) as Stops,
+    night:
+      f.legs.some((l) => atNight(l.depHour) || atNight(l.arrHour)) || f.warnings.some((w) => NIGHT_STOP.test(w)),
+    long: f.legs.some((l) => l.stops.some((s) => s.waitMin > LONG_STOP_MIN)),
+    self: f.warnings.some((w) => SELF_TRANSFER.test(w)),
+    bag: f.bag === "in" || f.bagOn,
+    out: slotOf(f.legs[0]?.depHour ?? -1),
+    back: f.legs.length === 2 ? slotOf(f.legs[1].depHour) : null,
+  };
+}
+/** Does this flight pass every filter (but `skip`, for that filter's own counts)? */
+function passes(f: Flight, fl: Filters, skip?: Facet): boolean {
+  const x = flightFacts(f);
+  if (skip !== "stops" && fl.stops.length && !fl.stops.includes(x.stops)) return false;
+  if (skip !== "features") {
+    if (fl.features.includes("noNight") && x.night) return false;
+    if (fl.features.includes("noLong") && x.long) return false;
+    if (fl.features.includes("noSelf") && x.self) return false;
+    if (fl.features.includes("bag") && !x.bag) return false;
+  }
+  if (skip !== "out" && fl.out.length && !(x.out && fl.out.includes(x.out))) return false;
+  if (skip !== "back" && fl.back.length && !(x.back && fl.back.includes(x.back))) return false;
+  if (skip !== "airlines" && fl.airlines.length && !f.airlines.some((a) => fl.airlines.includes(a))) return false;
+  // Booking sites are applied by the widget itself (it knows which site
+  // sells which flight), so every flight it still shows passes here.
+  return true;
 }
 
 type Tab = "best" | "cheapest" | "fastest";
@@ -297,8 +385,7 @@ export default function FlightResultsGuide({
   const [showWithin, setShowWithin] = useState(false);
   const [showOver, setShowOver] = useState(false);
   const [sort, setSort] = useState<Sort>("cheapest");
-  const [onlyDirect, setOnlyDirect] = useState(directOnly);
-  const [onlyBag, setOnlyBag] = useState(bagIncluded);
+  const [filters, setFilters] = useState<Filters>(NO_FILTERS);
   const [limit, setLimit] = useState(10);
   const money = (n: number) => moneyIn(currency, n);
   const dur = (min: number) => {
@@ -354,7 +441,7 @@ export default function FlightResultsGuide({
         const stops = [...leg.querySelectorAll('[class*="cardFlightTravelLineTransfer"]')].map((s) => {
           const code = clean(s.querySelector('[class*="airportCode"]'));
           const wait = clean(s).replace(code, "").replace(/transfer/i, "").trim();
-          return { city: cityOf(code), wait: en ? enSpan(wait) : wait };
+          return { city: cityOf(code), wait: en ? enSpan(wait) : wait, waitMin: minutesOf(wait) };
         });
         const duration = clean(leg.querySelector('[class*="cardFlightTravelTime"]')).replace(/^.*:\s*/, "");
         return {
@@ -369,6 +456,8 @@ export default function FlightResultsGuide({
           duration: en ? enSpan(duration) : duration,
           minutes: minutesOf(duration),
           stops,
+          depHour: hourOf(part(dep, "cardFlightTime")),
+          arrHour: hourOf(part(arr, "cardFlightTime")),
         };
       });
 
@@ -385,7 +474,11 @@ export default function FlightResultsGuide({
       const bagExtra = bagOn ? shown - price : bagLabel.includes("+") ? amountOf(bagLabel.split("+")[1] ?? "") : null;
 
       const minutes = legs.map((l) => l.minutes).filter((m) => m > 0);
+      const warnings = [
+        ...card.querySelectorAll('[class*="cardTopRight"] [class*="Tooltip-module__text"]'),
+      ].map((w) => clean(w)).filter(Boolean);
       return {
+        warnings,
         id,
         price,
         airlines,
@@ -455,13 +548,33 @@ export default function FlightResultsGuide({
       }
       const hasMore = Boolean(moreButton);
 
+      // The booking sites, from the widget's own filter list (opened once so
+      // its rows are drawn; the panel itself stays hidden).
+      const agencyRoot = root.querySelector('[class*="Agencies-module__root"]');
+      if (agencyRoot && !agencyRoot.querySelector("label")) {
+        (agencyRoot.querySelector("button") as HTMLElement | null)?.click();
+      }
+      const agencies: Agency[] = agencyRoot
+        ? [...agencyRoot.querySelectorAll("label")]
+            .map((l) => {
+              const spans = [...l.querySelectorAll("span")].filter((sp) => sp.children.length === 0);
+              const priceEl = l.querySelector('[class*="price"]');
+              const name = clean(spans.find((sp) => sp !== priceEl) ?? null);
+              return { name, price: priceEl ? amountOf(clean(priceEl)) : null };
+            })
+            .filter((a) => a.name)
+            .sort((a, b) => (a.price ?? Infinity) - (b.price ?? Infinity))
+        : [];
+
       // What decides "still changing": the fares themselves (each card's
       // price, in order) and the search's own state. Cheap to take from the
       // prices alone; the full read of every card below runs only when this
       // changes. Reading two hundred cards every 400 ms, and re-rendering
       // with them, froze the page once a search had finished (6 Oct 2026).
       const prices = priced.map((p) => p.price ?? 0);
-      const key = `${searching ? 1 : 0}|${filtering ? 1 : 0}|${hasMore ? 1 : 0}|${prices.join(",")}`;
+      const key = `${searching ? 1 : 0}|${filtering ? 1 : 0}|${hasMore ? 1 : 0}|${prices.join(",")}|${agencies
+        .map((a) => `${a.name}:${a.price}`)
+        .join(",")}`;
       const changed = key !== lastKey;
       if (changed) {
         lastKey = key;
@@ -494,6 +607,7 @@ export default function FlightResultsGuide({
         over,
         hasMore,
         settled,
+        agencies,
       });
     }
 
@@ -527,6 +641,38 @@ export default function FlightResultsGuide({
     const more = ticketsRoot()?.querySelector('[class*="TicketsWidget-module__moreTickets"]');
     ((more?.querySelector("button") ?? more) as HTMLElement | null)?.click();
   }, []);
+
+  // Booking sites and "no change of airport" are the widget's own filters:
+  // only it knows which site sells a flight and where a change of airport
+  // is. Its (hidden) checkboxes are set to match ours; it then re-draws its
+  // cards and the reader above picks up the new list.
+  const siteKey = filters.sites.join("|");
+  const noSelf = filters.features.includes("noSelf");
+  useEffect(() => {
+    const want = new Set(siteKey ? siteKey.split("|") : []);
+    let tries = 0;
+    const sync = () => {
+      const root = ticketsRoot();
+      if (!root) return false;
+      let done = true;
+      const agencyRoot = root.querySelector('[class*="Agencies-module__root"]');
+      agencyRoot?.querySelectorAll("label").forEach((l) => {
+        const input = l.querySelector("input");
+        const name = clean([...l.querySelectorAll("span")].find((sp) => sp.children.length === 0) ?? null);
+        if (input && input.checked !== want.has(name)) input.click();
+      });
+      if (want.size && !agencyRoot) done = false;
+      const selfBox = [...root.querySelectorAll("label")].find((l) => /تغييرات في المطار|airport change/i.test(l.textContent || ""));
+      const input = selfBox?.querySelector("input");
+      if (input && input.checked !== noSelf) input.click();
+      return done;
+    };
+    if (sync()) return;
+    const id = window.setInterval(() => {
+      if (sync() || ++tries > 20) window.clearInterval(id);
+    }, 1000);
+    return () => window.clearInterval(id);
+  }, [siteKey, noSelf]);
 
   const hasBudget = budget > 0;
 
@@ -569,8 +715,16 @@ export default function FlightResultsGuide({
   // with a bag usually arrives with the next load (live test 13 Oct: none
   // in the first 20 at 6 s, matches at 18 s once 200 were in).
   const prefsAsk = prefsNone && (state.settled || found.length >= 100);
-  const fits = strict ? state.fits.filter(meets) : state.fits;
-  const over = strict ? state.over.filter(meets) : state.over;
+  // The traveller's filters on the results (stops, features, times,
+  // airlines, booking sites) narrow every list: the pick, the tabs, the rest.
+  const fitsAll = strict ? state.fits.filter(meets) : state.fits;
+  const overAll0 = strict ? state.over.filter(meets) : state.over;
+  const fits = fitsAll.filter((f) => passes(f, filters));
+  const over = overAll0.filter((f) => passes(f, filters));
+  const pool = [...fitsAll, ...overAll0];
+  const filtersOn = (Object.keys(filters) as Facet[]).some((k) => filters[k].length > 0);
+  const countBy = (facet: Facet, test: (f: Flight) => boolean) =>
+    pool.filter((f) => passes(f, filters, facet) && test(f)).length;
   const prefsLabel = [directOnly ? t.chipDirect : "", bagIncluded ? t.chipBag : ""].filter(Boolean).join(" · ");
   const bestFit = fits.find((f) => f.best) ?? fits[0] ?? null;
   const cheapestFit = fits[0] ?? null;
@@ -602,8 +756,7 @@ export default function FlightResultsGuide({
   const overFrom = over.length ? over[0].price - budget : 0;
 
   const refine = (list: Flight[]) =>
-    list
-      .filter((f) => (!onlyDirect || f.maxStops === 0) && (!onlyBag || f.bag === "in" || f.bagOn))
+    [...list]
       .sort((a, b) => (sort === "fastest" ? a.avgMinutes - b.avgMinutes || a.price - b.price : a.price - b.price));
   const withinAll = refine(others);
   const overAll = refine(over);
@@ -629,9 +782,6 @@ export default function FlightResultsGuide({
     <div className="mb-3 mt-4 flex flex-wrap items-center gap-2">
       {chip(sort === "cheapest", () => setSort("cheapest"), t.tabCheapest)}
       {chip(sort === "fastest", () => setSort("fastest"), t.tabFastest)}
-      <span className="mx-1 h-6 w-px bg-mist-300" aria-hidden="true" />
-      {chip(onlyDirect, () => setOnlyDirect((v) => !v), t.chipDirect)}
-      {chip(onlyBag, () => setOnlyBag((v) => !v), t.chipBag)}
     </div>
   );
 
@@ -650,6 +800,137 @@ export default function FlightResultsGuide({
       </span>
       <Icon name="chevron" className={`h-4 w-4 text-navy-600 transition ${showOver ? "rotate-180" : ""}`} />
     </button>
+  );
+
+  // ── The filter row (owner, 20 Oct: "like Wego") ─────────────────────
+  const setFacet = <K extends Facet>(k: K, v: Filters[K]) => setFilters((prev) => ({ ...prev, [k]: v }));
+  const facts = (f: Flight) => flightFacts(f);
+  const hasReturn = pool.some((f) => f.legs.length === 2);
+  const airlineFrom = new Map<string, number>();
+  for (const f of pool) for (const a of f.airlines) airlineFrom.set(a, Math.min(airlineFrom.get(a) ?? Infinity, f.price));
+  const slotOptions = (facet: "out" | "back") =>
+    (["0", "1", "2", "3"] as Slot[]).map((v) => ({
+      value: v,
+      label: t[`fT${v}` as "fT0"],
+      count: countBy(facet, (f) => facts(f)[facet] === v),
+    }));
+  const filterBar = state.filtering && pool.length > 0 && !prefsAsk && (
+    <div className="mb-4">
+      <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none] sm:mx-0 sm:flex-wrap sm:px-0">
+        <FilterPill<Stops>
+          locale={locale}
+          multi
+          icon="🛫"
+          label={t.fStops}
+          allLabel={t.fStopsAll}
+          value={filters.stops}
+          onChange={(v) => setFacet("stops", v)}
+          options={(["0", "1", "2"] as Stops[]).map((v) => ({
+            value: v,
+            label: v === "0" ? t.fStops0 : v === "1" ? t.fStops1 : t.fStops2,
+            count: countBy("stops", (f) => facts(f).stops === v),
+          }))}
+        />
+        <FilterPill<Feature>
+          locale={locale}
+          multi
+          icon="✨"
+          label={t.fFeatures}
+          allLabel={t.fFeaturesAll}
+          value={filters.features}
+          onChange={(v) => setFacet("features", v)}
+          options={[
+            { value: "noNight" as Feature, label: t.fNoNight, count: countBy("features", (f) => !facts(f).night) },
+            { value: "noLong" as Feature, label: t.fNoLong, count: countBy("features", (f) => !facts(f).long) },
+            { value: "noSelf" as Feature, label: t.fNoSelf, count: countBy("features", (f) => !facts(f).self) },
+            { value: "bag" as Feature, label: t.fBagIn, count: countBy("features", (f) => facts(f).bag) },
+          ]}
+        />
+        <FilterPill<Slot>
+          locale={locale}
+          multi
+          icon="🕒"
+          label={t.fOutTime}
+          allLabel={t.fAnyTime}
+          value={filters.out}
+          onChange={(v) => setFacet("out", v)}
+          options={slotOptions("out")}
+        />
+        {hasReturn && (
+          <FilterPill<Slot>
+            locale={locale}
+            multi
+            icon="🕘"
+            label={t.fBackTime}
+            allLabel={t.fAnyTime}
+            value={filters.back}
+            onChange={(v) => setFacet("back", v)}
+            options={slotOptions("back")}
+          />
+        )}
+        <FilterPill<string>
+          locale={locale}
+          multi
+          icon="✈️"
+          label={t.fAirlines}
+          allLabel={t.fAirlinesAll}
+          value={filters.airlines}
+          onChange={(v) => setFacet("airlines", v)}
+          options={[...airlineFrom]
+            .sort((a, b) => a[1] - b[1])
+            .map(([name, from]) => ({
+              value: name,
+              label: name,
+              count: countBy("airlines", (f) => f.airlines.includes(name)),
+              note: t.fSitesNote.replace("{price}", money(from)),
+            }))}
+        />
+        {state.agencies.length > 0 && (
+          <FilterPill<string>
+            locale={locale}
+            multi
+            icon="🛒"
+            label={t.fSites}
+            allLabel={t.fSitesAll}
+            value={filters.sites}
+            onChange={(v) => setFacet("sites", v)}
+            options={state.agencies.map((a) => ({
+              value: a.name,
+              label: a.name,
+              note: a.price ? t.fSitesNote.replace("{price}", money(a.price)) : undefined,
+            }))}
+          />
+        )}
+        {filtersOn && (
+          <button
+            type="button"
+            onClick={() => setFilters(NO_FILTERS)}
+            className="shrink-0 rounded-full px-3.5 py-2 text-sm font-bold text-rose-700 ring-1 ring-rose-200 hover:bg-rose-50"
+          >
+            {t.fReset}
+          </button>
+        )}
+      </div>
+      <p className="mt-2 text-xs font-semibold text-navy-500">
+        {filtersOn
+          ? t.fShowing.replace("{n}", flightsLabel(fits.length + over.length)).replace("{total}", String(pool.length))
+          : state.agencies.length > 1
+            ? t.fSitesCount.replace("{n}", String(state.agencies.length))
+            : null}
+      </p>
+      {filtersOn && fits.length + over.length === 0 && (
+        <div className="mt-3 flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-white px-5 py-4 ring-1 ring-mist-200">
+          <p className="text-sm font-semibold text-navy-700">{t.fNoneMatch}</p>
+          <button
+            type="button"
+            onClick={() => setFilters(NO_FILTERS)}
+            className="rounded-full bg-navy-900 px-4 py-2 text-sm font-extrabold text-white"
+          >
+            {t.fReset}
+          </button>
+        </div>
+      )}
+    </div>
   );
 
   const tabs: { key: Tab; label: string; f: Flight | null }[] = [
@@ -747,6 +1028,8 @@ export default function FlightResultsGuide({
           </div>
         </div>
       )}
+
+      {filterBar}
 
       {shown && (
         <>

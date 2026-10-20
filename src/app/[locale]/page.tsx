@@ -247,7 +247,7 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
             <span className="text-sun-400">{dict.hero.titleLine2}</span>
           </h1>
 
-          <p className="mt-3 max-w-xl text-sm font-medium text-white drop-shadow-[0_1px_8px_rgba(4,24,47,0.95)] sm:text-base">
+          <p className="mt-3 max-w-xl text-balance text-sm font-medium text-white md:max-w-4xl lg:whitespace-nowrap drop-shadow-[0_1px_8px_rgba(4,24,47,0.95)] sm:text-base">
             {dict.hero.subtitle}
           </p>
 
