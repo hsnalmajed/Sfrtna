@@ -168,14 +168,23 @@ export default function FallbackFlights({
                         : `${t.fallbackStops.replace("{n}", String(f.stops))} (${f.layovers.map((l) => city(l.code)).join("، ")})`}
                     </p>
                   </div>
-                  <a
-                    href={answer && answer !== "none" ? answer.url || others[0].href : others[0].href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="shrink-0 rounded-xl bg-sun-400 px-4 py-2.5 text-sm font-extrabold text-navy-950 shadow-[var(--shadow-sun)] hover:bg-sun-300"
-                  >
-                    {money(f.price)}
-                  </a>
+                  <div className="flex w-full items-center justify-between gap-3 border-t border-mist-100 pt-3 sm:w-auto sm:border-0 sm:pt-0">
+                    <div className="text-end">
+                      <p className="font-display text-lg font-black text-navy-950">{money(f.price)}</p>
+                      <p className="text-[11px] text-navy-500">{t.fallbackTotal}</p>
+                    </div>
+                    {/* Opens the same flight search on Google Flights: every
+                        site selling it, with its price and its own booking. */}
+                    <a
+                      href={answer && answer !== "none" ? answer.url || others[0].href : others[0].href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      data-partner="google-flights"
+                      className="shrink-0 rounded-xl bg-sun-400 px-5 py-2.5 text-sm font-extrabold text-navy-950 shadow-[var(--shadow-sun)] hover:bg-sun-300"
+                    >
+                      {t.fallbackBook} {isAr ? "←" : "→"}
+                    </a>
+                  </div>
                 </li>
               );
             })}
@@ -194,7 +203,18 @@ export default function FallbackFlights({
 
       {answer !== null && (
         <div className="rounded-2xl bg-white p-4 ring-1 ring-mist-200">
-          <p className="text-sm font-bold text-navy-800">{flights.length > 0 ? t.fallbackOthers : t.fallbackNoLive}</p>
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <p className="text-sm font-bold text-navy-800">{flights.length > 0 ? t.fallbackOthers : t.fallbackNoLive}</p>
+            {flights.length === 0 && (
+              <button
+                type="button"
+                onClick={() => window.location.reload()}
+                className="rounded-full bg-navy-900 px-4 py-2 text-sm font-extrabold text-white"
+              >
+                {t.fallbackRetry}
+              </button>
+            )}
+          </div>
           <div className="mt-2 flex flex-wrap gap-2">
             {others.map((o) => (
               <a

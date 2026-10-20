@@ -170,6 +170,16 @@ export const SECTION_HEROES: Record<HeroSection, HeroPhoto> = {
 const LOCAL = new Set<string>(heroLocal);
 
 /** The hero's image URLs and srcset, ready for <Photo>. */
+/**
+ * The photograph cut by the photo host to an upright phone screen
+ * (9 : 19.5), at three widths — so a phone shows it sharp and whole across
+ * its full screen instead of a wide picture blown up (owner, 20 Oct).
+ */
+export function heroPortraitSrcSet(photo: HeroPhoto): string {
+  const at = (w: number) => `${photo.src}?auto=compress&cs=tinysrgb&fit=crop&w=${w}&h=${Math.round((w * 19.5) / 9)} ${w}w`;
+  return [720, 1080, 1440].map(at).join(", ");
+}
+
 export function heroImage(photo: HeroPhoto): { url: string; srcSet: string } {
   const s = pexelsSizes(photo.src);
   // Our own copy when the hero-photos workflow has made one (WebP, 828 / 1280

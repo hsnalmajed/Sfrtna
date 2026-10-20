@@ -62,9 +62,21 @@ async function account(): Promise<Account | null> {
  * May a search be spent now? Only while what is left covers the rest of the
  * month at the plan's even daily pace — today's share included.
  */
-async function maySearch(): Promise<boolean> {
+/**
+ * Searches kept back for flights: the flight fallback only runs when the
+ * flight partner cannot be reached, and then it is the traveller's only
+ * source of fares — it must not find the month spent on hotel pages
+ * (owner, 20 Oct: "no prices" on the fallback is not acceptable).
+ */
+const FLIGHT_RESERVE = 40;
+
+async function maySearch(kind: "hotel" | "flight" = "hotel"): Promise<boolean> {
   const a = await account();
   if (!a || a.left <= 0) return false;
+  // Flights: anything left, no daily pace — the fallback is rare and it is
+  // all the traveller has at that moment.
+  if (kind === "flight") return a.left > 2;
+  if (a.left <= FLIGHT_RESERVE) return false;
   const now = new Date();
   const daysInMonth = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() + 1, 0)).getUTCDate();
   const daysAfterToday = daysInMonth - now.getUTCDate();
@@ -84,8 +96,8 @@ export async function serpUsage(): Promise<(Account & { mayUse: boolean }) | nul
   return { ...a, mayUse: await maySearch() };
 }
 
-async function search(params: Record<string, string>): Promise<Record<string, unknown> | null> {
-  if (!key() || !(await maySearch())) return null;
+async function search(params: Record<string, string>, kind: "hotel" | "flight" = "hotel"): Promise<Record<string, unknown> | null> {
+  if (!key() || !(await maySearch(kind))) return null;
   const url = new URL(`${BASE}/search.json`);
   for (const [k, v] of Object.entries(params)) url.searchParams.set(k, v);
   url.searchParams.set("api_key", key());
@@ -399,7 +411,7 @@ export async function googleFlights(q: {
     if (q.children) params.children = String(q.children);
     if (q.infants) params.infants_on_lap = String(q.infants);
     if (q.directOnly) params.stops = "1";
-    const body = await search(params);
+    const body = await search(params, "flight");
     if (!body) return null;
     const best = (body.best_flights as GfOption[] | undefined) ?? [];
     const other = (body.other_flights as GfOption[] | undefined) ?? [];

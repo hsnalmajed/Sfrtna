@@ -948,19 +948,18 @@ html.in-app .home-hero h1 {
 html.in-app .home-hero {
   padding-bottom: 6.5rem;
 }
-/* App home (owner, 20 Oct): the photograph is the top of the screen, not
-   blown up to the whole tall screen (its subject was lost and it looked
-   soft); it fades into navy, and the home block always fills the screen,
-   so nothing white shows under a short panel ("white screen under the
-   flight and hotel buttons"). */
+/* App home (owner, 13 + 20 Oct): the photograph fills the WHOLE phone
+   screen behind everything — sharp, because phones get the photo cut to
+   an upright screen (heroPortraitSrcSet), not a wide one blown up — and
+   the home block always fills the screen, so nothing white or plain navy
+   shows under a short panel. */
 html.in-app .home-photo {
   min-height: calc(100svh - var(--app-tabbar));
 }
-html.in-app .home-photo > .fixed {
-  bottom: auto;
-  height: 62svh;
-  -webkit-mask-image: linear-gradient(to bottom, #000 70%, transparent);
-  mask-image: linear-gradient(to bottom, #000 70%, transparent);
+/* The photograph stays the photograph down the whole screen: only a light
+   shade for legibility, no navy band over its lower half. */
+html.in-app .home-photo > .fixed > .bg-gradient-to-b {
+  opacity: 0.45;
 }
 html.in-app:has(.home-photo) body {
   background: var(--navy-990);

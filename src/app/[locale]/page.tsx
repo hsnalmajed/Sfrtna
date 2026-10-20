@@ -12,7 +12,7 @@ import { cachedJson } from "@/lib/edgeCache";
 import { seasonFares } from "@/lib/seasonFares";
 import { userOrigin } from "@/lib/origin";
 import { CITY_AIRPORTS } from "@/data/cityAirports";
-import { heroImage as heroImageOf, heroPhotoForToday } from "@/lib/heroPhotos";
+import { heroImage as heroImageOf, heroPhotoForToday, heroPortraitSrcSet } from "@/lib/heroPhotos";
 import { monthName } from "@/lib/seasons";
 import HomeShowcase, { type ShowcaseCity } from "@/components/HomeShowcase";
 import { planFromParams } from "@/lib/planEvents";
@@ -206,10 +206,11 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
           src={heroPhoto}
           priority
           srcSet={heroImage.srcSet}
+          portraitSrcSet={heroPortraitSrcSet(heroPick)}
           // A tall phone screen shows the photo much wider than the screen
           // (cover): asked for its real drawn width, so it is never a small
           // file blown up (owner, 20 Oct: "blurry in the app").
-          sizes="(orientation: portrait) 70vh, 100vw"
+          sizes="100vw"
           className="h-full w-full object-cover"
           fallback={
             <div className="h-full w-full bg-[radial-gradient(130%_100%_at_60%_0%,var(--navy-700),var(--navy-990))]" />

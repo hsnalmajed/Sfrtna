@@ -22,6 +22,7 @@ export default function Photo({
   srcSet,
   sizes,
   placeholder = false,
+  portraitSrcSet,
 }: {
   src?: string;
   /** Shown when there's no photo, or when the photo fails to load. */
@@ -43,6 +44,12 @@ export default function Photo({
    * in-flow fallback would sit beside the loading photo and jump away.
    */
   placeholder?: boolean;
+  /**
+   * The same photograph cut to a phone's upright shape (a tall crop made by
+   * the photo host), for a background that fills a portrait screen: drawn
+   * at its own size instead of a wide photo blown up to the screen's height.
+   */
+  portraitSrcSet?: string;
 }) {
   const [failed, setFailed] = useState(false);
 
@@ -55,7 +62,23 @@ export default function Photo({
   return (
     <>
       {placeholder && fallback}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
+      {portraitSrcSet ? (
+        <picture>
+          <source media="(orientation: portrait)" srcSet={portraitSrcSet} sizes="100vw" />
+          <img
+            src={src}
+            srcSet={srcSet}
+            sizes={sizes}
+            alt=""
+            loading={priority ? "eager" : "lazy"}
+            fetchPriority={priority ? "high" : undefined}
+            decoding="async"
+            className={className}
+            onError={() => setFailed(true)}
+          />
+        </picture>
+      ) : (
+      /* eslint-disable-next-line @next/next/no-img-element */
       <img
         src={src}
         srcSet={srcSet}
@@ -67,6 +90,7 @@ export default function Photo({
         className={className}
         onError={() => setFailed(true)}
       />
+      )}
     </>
   );
 }

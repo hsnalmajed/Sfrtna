@@ -977,6 +977,9 @@ export default function FlightResultsGuide({
           arrive; the bar stays until every agency has answered. */}
       {(stalled || (state.settled && state.total === 0)) && (
         <>
+          {/* With a second source the traveller just sees fares — no
+              warning banner over them (owner, 20 Oct). */}
+          {!route && (
           <div role="alert" className="mb-3 flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-amber-50 px-5 py-3 ring-1 ring-amber-200">
             <p className="min-w-0 flex-1 text-sm leading-relaxed text-amber-900">
               <span className="font-extrabold">{t.stalledTitle}</span> {route ? t.stalledBodyFallback : t.stalledBody}
@@ -989,6 +992,7 @@ export default function FlightResultsGuide({
               {t.stalledRetry}
             </button>
           </div>
+          )}
           {route && <FallbackFlights locale={locale} route={route} currency={currency} directOnly={directOnly} />}
         </>
       )}

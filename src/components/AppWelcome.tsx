@@ -28,9 +28,9 @@ export default function AppWelcome() {
 
   if (step === null) return null;
   const cards = [
-    { icon: "✈️", title: t.s1Title, body: t.s1Body },
-    { icon: "🏨", title: t.s2Title, body: t.s2Body },
-    { icon: "🧭", title: t.s3Title, body: t.s3Body },
+    { icon: "✈️", title: t.s1Title, body: t.s1Body, points: t.s1Points },
+    { icon: "🏨", title: t.s2Title, body: t.s2Body, points: t.s2Points },
+    { icon: "🧭", title: t.s3Title, body: t.s3Body, points: t.s3Points },
   ];
   const done = (search: boolean) => {
     try {
@@ -46,12 +46,23 @@ export default function AppWelcome() {
       <button type="button" onClick={() => done(false)} className="self-end rounded-full px-3 py-1.5 text-sm font-bold text-white/70">
         {t.skip}
       </button>
-      <div className="flex flex-1 flex-col items-center justify-center text-center">
+      <div className="flex min-h-0 flex-1 flex-col items-center justify-center overflow-y-auto py-2 text-center">
         <span className="flex h-24 w-24 items-center justify-center rounded-full bg-sun-400/15 text-5xl ring-1 ring-sun-400/40" aria-hidden="true">
           {card.icon}
         </span>
-        <h2 className="mt-8 font-display text-2xl font-black">{card.title}</h2>
+        <h2 className="mt-6 font-display text-2xl font-black">{card.title}</h2>
         <p className="mt-3 max-w-xs text-base leading-relaxed text-white/75">{card.body}</p>
+        {/* Each feature on its own line, so it reads at a glance. */}
+        <ul className="mt-5 w-full max-w-xs space-y-2.5 text-start">
+          {card.points.map((p) => (
+            <li key={p} className="flex items-start gap-2.5 rounded-xl bg-white/[0.06] px-3.5 py-2.5 text-sm font-semibold text-white ring-1 ring-white/10">
+              <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-sun-400 text-[11px] font-black text-navy-950" aria-hidden="true">
+                ✓
+              </span>
+              {p}
+            </li>
+          ))}
+        </ul>
       </div>
       <div className="mb-5 flex justify-center gap-2" aria-hidden="true">
         {cards.map((_, i) => (
