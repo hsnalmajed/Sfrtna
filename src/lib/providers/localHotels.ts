@@ -2,6 +2,7 @@ import { COUNTRY_CITIES, type CityEntry } from "@/lib/cities";
 import { COUNTRIES } from "@/lib/countries";
 import { normalizeSearch } from "@/lib/search";
 import {
+  arabicHotelName,
   dictionaryForms,
   isGeneric,
   joinPhrases,
@@ -23,6 +24,8 @@ export interface LocalHotel {
   /** "Istanbul, Turkey" — carried to the price search. */
   area: string;
   nameAr?: string;
+  /** «مكة، السعودية» — the area for the Arabic page. */
+  areaAr?: string;
   stars?: number;
 }
 
@@ -35,6 +38,7 @@ export interface GuessedCity {
 
 interface CityInfo extends GuessedCity {
   countryEn: string;
+  countryAr: string;
   /** Folded names to recognise in a query: English, Arabic, Arabic without ال. */
   keys: string[][];
 }
@@ -45,7 +49,9 @@ function cities(): Map<string, CityInfo> {
   if (citiesCache) return citiesCache;
   const map = new Map<string, CityInfo>();
   for (const [code, list] of Object.entries(COUNTRY_CITIES)) {
-    const countryEn = COUNTRIES.find((c) => c.code === code)?.nameEn ?? code;
+    const country = COUNTRIES.find((c) => c.code === code);
+    const countryEn = country?.nameEn ?? code;
+    const countryAr = country?.nameAr ?? "";
     for (const c of list as CityEntry[]) {
       const variants = new Set<string>();
       for (const n of [c.nameEn, c.nameAr]) {
@@ -64,6 +70,7 @@ function cities(): Map<string, CityInfo> {
         nameAr: c.nameAr,
         nameEn: c.nameEn,
         countryEn,
+        countryAr,
         keys: [...variants].filter(Boolean).map((v) => v.split(" ")),
       });
     }
@@ -122,12 +129,25 @@ async function readData<T>(path: string): Promise<T | null> {
   }
 }
 
+let cityWordsCache: Map<string, string> | null = null;
+/** Our cities' English names (folded) → Arabic, for arabicHotelName. */
+function cityWords(): Map<string, string> {
+  if (cityWordsCache) return cityWordsCache;
+  const m = new Map<string, string>();
+  for (const c of cities().values()) m.set(words(c.nameEn).join(" "), c.nameAr);
+  return (cityWordsCache = m);
+}
+
 function toLocal(h: StoredHotel): LocalHotel {
   const city = cities().get(h[0]);
+  // A stored Arabic name first; else the local name when it is Arabic; else
+  // the name written in Arabic when every word of it is known.
+  const nameAr = h[2] || (/[\u0600-\u06FF]/.test(h[4]) ? h[4] : "") || (/[\u0600-\u06FF]/.test(h[1]) ? h[1] : "") || arabicHotelName(h[1], cityWords()) || undefined;
   return {
     name: h[1],
     area: city ? `${city.nameEn}, ${city.countryEn}` : "",
-    nameAr: h[2] || undefined,
+    areaAr: city ? `${city.nameAr}${city.countryAr ? `، ${city.countryAr}` : ""}` : undefined,
+    nameAr,
     stars: h[3] || undefined,
   };
 }
@@ -190,7 +210,11 @@ export async function localHotels(
       const hw = words(text).map(stem);
       if (!terms.every((t) => matches(t.forms, hw, text))) continue;
       seen.add(id);
-      const exact = terms.filter((t) => t.forms.some((f) => hw.includes(f))).length;
+      // Whole words first; the typed word itself (or its first spelling,
+      // «سماء» → samaa) before a looser one (sama).
+      const exact =
+        terms.filter((t) => t.forms.some((f) => hw.includes(f))).length * 2 +
+        terms.filter((t) => t.forms.slice(0, 2).some((f) => hw.includes(f))).length;
       // The chain's own hotels before "… by Hilton": a typed word that opens the name.
       const first = words(h[1]).map(stem)[0] ?? "";
       const opens = terms.some((t) => t.forms.some((f) => first.startsWith(f.split(" ")[0]))) ? 1 : 0;
@@ -205,5 +229,5 @@ export async function localHotels(
       b.h[3] - a.h[3] ||
       a.h[1].length - b.h[1].length
   );
-  return { items: found.slice(0, 8).map((f) => toLocal(f.h)), city: guessed, rest: restText };
+  return { items: found.slice(0, 10).map((f) => toLocal(f.h)), city: guessed, rest: restText };
 }

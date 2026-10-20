@@ -37,6 +37,20 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "bad request" }, { status: 400 });
   }
   if (tokenRaw && !token) return NextResponse.json({ error: "bad request" }, { status: 400 });
-  const result = await hotelPrices({ q, checkIn, checkOut, adults, childrenAges, token, minStars, maxPerNight, page });
+  const one = sp.get("one") === "1";
+  const list = (name: string) =>
+    (sp.get(name) || "")
+      .split(",")
+      .map(Number)
+      .filter((n) => Number.isInteger(n) && n > 0 && n < 100)
+      .slice(0, 10);
+  const result = await hotelPrices({
+    q, checkIn, checkOut, adults, childrenAges, token, minStars, maxPerNight, page, one,
+    types: list("types"),
+    amenities: list("amen"),
+    rating: Number(sp.get("rating")) || 0,
+    freeCancel: sp.get("fc") === "1",
+    rentals: sp.get("vr") === "1",
+  });
   return NextResponse.json({ result }, { headers: { "Cache-Control": "no-store" } });
 }

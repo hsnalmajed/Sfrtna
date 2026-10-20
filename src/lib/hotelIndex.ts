@@ -199,7 +199,7 @@ const DICTIONARY_SOURCE: Record<string, string[]> = {
   "قولدن": ["golden"],
   "توليب": ["tulip"],
   "سما": ["sama", "samaa"],
-  "سماء": ["sama", "samaa"],
+  "سماء": ["samaa", "sama"],
   "سفير": ["safir"],
   "قصر": ["palace", "qasr", "kasr"],
   "بالاس": ["palace"],
@@ -305,4 +305,64 @@ export function joinPhrases(ws: string[]): string[] {
 
 export function dictionaryForms(phrase: string): string[] {
   return DICTIONARY.get(phrase) ?? [];
+}
+
+/**
+ * An Arabic way to write a Latin hotel name, for the Arabic page — only when
+ * every word of it is known (a chain or word in the dictionary above, a
+ * generic word, or one of our city names); otherwise null and the page keeps
+ * the hotel's own name. "Hilton Riyadh Hotel" → «فندق هيلتون الرياض». The
+ * price search always uses the hotel's own name, never this one.
+ */
+const GENERIC_AR: Record<string, string> = {
+  hotel: "فندق", hotels: "فنادق", otel: "فندق", oteli: "فندق", resort: "منتجع", resorts: "منتجعات",
+  suites: "أجنحة", suite: "أجنحة", apartments: "شقق فندقية", apartment: "شقق فندقية", apart: "شقق فندقية",
+  "hotel apartments": "شقق فندقية", hostel: "نزل", inn: "إن", spa: "سبا", the: "", and: "و", "&": "و",
+  residence: "ريزيدنس", residences: "ريزيدنسز", villas: "فلل", villa: "فيلا", tower: "برج", towers: "أبراج",
+};
+const LEAD = new Set(["فندق", "منتجع", "أجنحة", "شقق فندقية", "نزل", "فنادق", "منتجعات"]);
+/** Preferred spellings where the dictionary's first key is a folded one. */
+const PREFERRED_AR: Record<string, string> = {
+  hyatt: "حياة", palace: "بالاس", makkah: "مكة", madinah: "المدينة", swissotel: "سويس أوتيل", "swissôtel": "سويس أوتيل",
+  garden: "جاردن", olaya: "العليا", corniche: "الكورنيش", airport: "المطار", bay: "باي", gate: "جيت", square: "سكوير",
+  "by": "من", bosphorus: "البوسفور", taksim: "تقسيم", sultanahmet: "السلطان أحمد", old: "أولد", town: "تاون", "conference": "كونفرنس", center: "سنتر", centre: "سنتر", collection: "كوليكشن", hotels: "فنادق",
+};
+let reverseDict: Map<string, string> | null = null;
+function reverse(): Map<string, string> {
+  if (reverseDict) return reverseDict;
+  const m = new Map<string, string>();
+  for (const [ar, latins] of Object.entries(DICTIONARY_SOURCE)) {
+    if (!/[؀-ۿ]/.test(ar)) continue;
+    for (const l of latins) {
+      const k = normalizeSearch(l);
+      if (!m.has(k)) m.set(k, ar);
+    }
+  }
+  for (const [k, v] of Object.entries(PREFERRED_AR)) m.set(k, v);
+  return (reverseDict = m);
+}
+export function arabicHotelName(latin: string, cityWords: Map<string, string>): string | null {
+  if (!latin || /[؀-ۿ]/.test(latin)) return null;
+  const ws = normalizeSearch(latin)
+    .replace(/[^\p{L}\p{N}&\s]/gu, " ")
+    .split(/\s+/)
+    .filter(Boolean);
+  if (!ws.length || ws.length > 7) return null;
+  const lead: string[] = [];
+  const rest: string[] = [];
+  for (let i = 0; i < ws.length; i++) {
+    const pair = i + 1 < ws.length ? `${ws[i]} ${ws[i + 1]}` : "";
+    const known = (k: string) => GENERIC_AR[k] ?? reverse().get(k) ?? cityWords.get(k);
+    let ar: string | undefined;
+    if (pair && known(pair) !== undefined) {
+      ar = known(pair);
+      i++;
+    } else ar = known(ws[i]);
+    if (ar === undefined) return null;
+    if (!ar) continue;
+    (LEAD.has(ar) && !lead.includes(ar) ? lead : rest).push(ar);
+  }
+  if (!rest.length) return null;
+  // «و» (and) joins the word after it, as Arabic writes it.
+  return [...lead, ...rest].join(" ").replace(/(^|\s)و\s+/g, "$1و");
 }

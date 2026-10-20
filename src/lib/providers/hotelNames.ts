@@ -16,8 +16,10 @@ export interface HotelSuggestion {
   name: string;
   /** Where it is: "Beşiktaş/İstanbul, Türkiye". */
   area: string;
-  /** Its Arabic name, when known — shown to Arabic readers under the name. */
+  /** Its Arabic name, when known — the title on the Arabic page. */
   nameAr?: string;
+  /** Where it is, in Arabic, when known. */
+  areaAr?: string;
 }
 
 function hereKey(): string {
@@ -124,9 +126,9 @@ export async function hotelSuggestions(
 ): Promise<{ items: HotelSuggestion[]; city: GuessedCity | null }> {
   const q = input.trim().replace(/\s+/g, " ").slice(0, 60);
   const local = await localHotels(q, await visitorCountry());
-  const items: HotelSuggestion[] = local.items.map((h) => ({ name: h.name, area: h.area, nameAr: h.nameAr }));
+  const items: HotelSuggestion[] = local.items.map((h) => ({ name: h.name, area: h.area, nameAr: h.nameAr, areaAr: h.areaAr }));
   const city = local.city;
-  if (items.length >= 5) return { items, city };
+  if (items.length >= 6) return { items, city };
 
   // A city was named («فندق ماريوت جدة»): an outside answer elsewhere (a
   // Marriott in Kuwait) is wrong, not helpful — it is left out, and an empty
@@ -142,14 +144,14 @@ export async function hotelSuggestions(
 
   const outside = hereKey() && (local.rest || !city) ? await hereHotels(local.rest || q, city) : null;
   if (outside?.length) add(ranked(outside, q));
-  if (items.length) return { items: items.slice(0, 8), city };
+  if (items.length) return { items: items.slice(0, 10), city };
 
   // OpenStreetMap matches the letters exactly, so every spelling a traveller
   // might mean is asked (each answer cached a week) and the lists merged —
   // the site-wide rule: أ إ آ = ا, ة = ه, ى = ي.
   const lists = await Promise.all(arabicSpellings(q).map((v) => osmHotels(v)));
   for (const list of lists) add(list);
-  return { items: ranked(items, q).slice(0, 8), city };
+  return { items: ranked(items, q).slice(0, 10), city };
 }
 
 /**

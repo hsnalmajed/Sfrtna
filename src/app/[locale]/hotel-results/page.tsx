@@ -15,6 +15,7 @@ import HotelList from "@/components/HotelList";
 import { findHotelCity, hotelCityPlace } from "@/components/HotelCityInput";
 import PartnerLink from "@/components/PartnerLink";
 import NextStepTabs, { markStep, tripCityFrom } from "@/components/NextStepTabs";
+import { RATING_LABEL, readHotelPrefs } from "@/lib/hotelPrefs";
 
 /**
  * Hotel results: the search read back, then live prices from every site.
@@ -56,6 +57,7 @@ function HotelResultsContent() {
   // Where a hotel picked from the suggestions is: shown under its name and
   // added to the price search, so the right one of several namesakes is found.
   const hotelArea = mode === "known" ? sp.get("hotelArea")?.trim().slice(0, 120) || "" : "";
+  const areaLabel = mode === "known" ? sp.get("areaLabel")?.trim().slice(0, 120) || "" : "";
   const checkIn = sp.get("checkIn") || "";
   const checkOut = sp.get("checkOut") || "";
   const adults = Math.max(1, Number(sp.get("adults")) || 1);
@@ -65,8 +67,10 @@ function HotelResultsContent() {
   const currency = sp.get("currency") || "SAR";
   const minStars = Number(sp.get("minStars")) || 0;
   const breakfast = sp.get("breakfast") === "true";
-  const stayRaw = sp.get("stay");
-  const stay = stayRaw === "room" || stayRaw === "apartment" ? stayRaw : undefined;
+  const prefs = useMemo(() => readHotelPrefs(new URLSearchParams(sp.toString())), [sp]);
+  const hp = dict.hotelPrefs;
+  // The partners' own list understands only "an apartment" or not.
+  const stay = prefs.place === "aparthotel" || prefs.place === "rental" ? ("apartment" as const) : undefined;
 
   const complete = Boolean(query && checkIn && checkOut);
   // No list from Google (allowance paced out, or down): our partners' list.
@@ -149,8 +153,11 @@ function HotelResultsContent() {
       if (nights > 1) chips.push(t.budgetPerNight.replace("{amount}", money(budget / nights)));
     }
     chips.push(minStars ? t.stars.replace("{count}", String(minStars)) : t.anyStars);
-    if (stay) chips.push(stay === "apartment" ? t.apartment : t.room);
+    if (prefs.place) chips.push(hp.place[prefs.place]);
     if (breakfast) chips.push(t.breakfast);
+    if (prefs.rating) chips.push(`${hp.ratingLabel} ${RATING_LABEL[prefs.rating]}`);
+    if (prefs.freeCancel) chips.push(hp.freeCancel);
+    for (const a of prefs.amenities) chips.push(hp.amenity[a]);
   }
 
   const partnerButtons = (
@@ -200,7 +207,7 @@ function HotelResultsContent() {
           {hotelArea && (
             <p className="mt-2 flex items-center gap-1.5 text-sm font-semibold text-white/70">
               <Icon name="pin" className="h-4 w-4 shrink-0 text-white/50" />
-              <bdi>{hotelArea}</bdi>
+              <bdi>{areaLabel || hotelArea}</bdi>
             </p>
           )}
 
@@ -287,6 +294,7 @@ function HotelResultsContent() {
                       minStars={minStars}
                       maxPerNight={budget > 0 && nights > 0 ? budget / nights : 0}
                       breakfast={breakfast}
+                      prefs={prefs}
                       c={listCommon}
                       onUnavailable={onListDown}
                     />
@@ -312,6 +320,10 @@ function HotelResultsContent() {
                     labels={{ list: t.viewList, map: t.viewMap, choose: t.viewChoose }}
                   />
                 </section>
+                {/* Plain partner searches only when we have no list of our own
+                    (owner, 20 Oct: the traveller reads everything here and
+                    leaves only to book). */}
+                {listDown && (
                 <div className="mt-6">
                   <p className="text-xs font-bold text-navy-600">{t.otherPartners}</p>
                   <div className="mt-2 flex flex-wrap gap-2">
@@ -328,6 +340,7 @@ function HotelResultsContent() {
                     ))}
                   </div>
                 </div>
+                )}
               </div>
             )}
             <p className="mt-8 text-center text-xs text-navy-500">{t.partnerNote}</p>

@@ -6,6 +6,7 @@ import { tripFaresFrom, type TripFare } from "@/lib/providers/travelpayouts";
 import { CONTINENTS, type Continent } from "@/lib/countries";
 import { discoverCandidates, type Candidate } from "@/lib/discoverPool";
 import type {
+  DestinationCategory,
   FlightOffer,
   HotelOffer,
   DestinationSuggestion,
@@ -13,6 +14,8 @@ import type {
   SearchParams,
   TripType,
 } from "@/lib/types";
+
+const CATEGORIES: DestinationCategory[] = ["beach", "nature", "adventure", "city", "culture", "family"];
 
 function addDays(dateStr: string, days: number) {
   const d = new Date(dateStr);
@@ -121,6 +124,8 @@ async function suggestForDestination(
     currency: params.currency,
     withinBudget: totalPrice <= params.budgetTotal,
     remainingBudget: params.budgetTotal - totalPrice,
+    continent: destination.continent,
+    categories: destination.categories,
   };
 }
 
@@ -144,7 +149,11 @@ export async function POST(req: NextRequest) {
     childrenAges: Array.isArray(body.childrenAges) ? body.childrenAges.map(Number).filter(Number.isFinite) : [],
     infants: Number(body.infants || 0),
     roomType: body.roomType || undefined,
-    preferenceCategory: body.preferenceCategory || undefined,
+    // Any number of kinds of place (owner, 20 Oct); old links sent one.
+    preferenceCategories: (Array.isArray(body.preferenceCategories)
+      ? body.preferenceCategories
+      : String(body.preferenceCategory || "").split(",")
+    ).filter((c: unknown): c is DestinationCategory => CATEGORIES.includes(c as DestinationCategory)),
     continents: Array.isArray(body.continents)
       ? body.continents.filter((c: unknown): c is Continent => CONTINENTS.includes(c as Continent))
       : [],
@@ -157,7 +166,7 @@ export async function POST(req: NextRequest) {
   const pool = discoverCandidates().filter(
     (d) =>
       d.code !== resolveIata(params.origin) &&
-      (!params.preferenceCategory || d.categories.includes(params.preferenceCategory)) &&
+      (!params.preferenceCategories?.length || d.categories.some((c) => params.preferenceCategories!.includes(c))) &&
       (!params.continents?.length || (d.continent !== undefined && params.continents.includes(d.continent)))
   );
 
@@ -199,6 +208,8 @@ export async function POST(req: NextRequest) {
         currency: params.currency,
         withinBudget: false,
         remainingBudget: params.budgetTotal,
+        continent: d.continent,
+        categories: d.categories,
       }))
       .filter((s) => s.place?.inSeason)
       .sort((a, b) => (rank[a.place?.classification ?? ""] ?? 9) - (rank[b.place?.classification ?? ""] ?? 9))
@@ -222,7 +233,7 @@ export async function POST(req: NextRequest) {
     currency: params.currency,
     paying: params.adults + (params.childrenAges?.length ?? 0),
     directOnly: params.directFlightsOnly,
-    category: params.preferenceCategory,
+    categories: params.preferenceCategories,
     continents: params.continents,
   });
   return NextResponse.json({ mode: "routes", routes });

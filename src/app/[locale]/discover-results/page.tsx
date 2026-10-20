@@ -16,6 +16,7 @@ import { CLASS_DOT, CLASS_RANKING as CLASS_ORDER } from "@/lib/travelSeason/labe
 import type { Classification } from "@/lib/travelSeason/config";
 import { findAirport } from "@/lib/airports";
 import { parseChildrenAges } from "@/lib/searchParamsUtil";
+import { CONTINENTS, findCountry, type Continent } from "@/lib/countries";
 
 export default function DiscoverResultsPage() {
   return (
@@ -48,7 +49,8 @@ function DiscoverResultsContent() {
   const oneWayOnly = sp.get("oneWayOnly") === "true";
   const baggageIncluded = sp.get("baggageIncluded") === "true";
   const breakfastIncluded = sp.get("breakfastIncluded") === "true";
-  const preferenceCategory = (sp.get("preferenceCategory") || undefined) as DestinationCategory | undefined;
+  const preferenceCategories = (sp.get("preferenceCategory") || "").split(",").filter(Boolean) as DestinationCategory[];
+  const categoriesParam = preferenceCategories.join(",");
   const continentsParam = sp.get("continents") || "";
   const editSearchParams = sp.toString();
 
@@ -97,7 +99,7 @@ function DiscoverResultsContent() {
         oneWayOnly,
         baggageIncluded,
         breakfastIncluded,
-        preferenceCategory,
+        preferenceCategories,
         continents: continentsParam ? continentsParam.split(",") : [],
       }),
     })
@@ -133,7 +135,7 @@ function DiscoverResultsContent() {
     oneWayOnly,
     baggageIncluded,
     breakfastIncluded,
-    preferenceCategory,
+    categoriesParam,
     continentsParam,
   ]);
 
@@ -163,18 +165,41 @@ function DiscoverResultsContent() {
   // nothing chosen in a row means that row does not filter.
   const [seasonPick, setSeasonPick] = useState<Classification[]>([]);
   const [visaPick, setVisaPick] = useState<VisaCategory[]>([]);
+  // Continent and kind of place, beside season and visa (owner, 20 Oct).
+  const [continentPick, setContinentPick] = useState<Continent[]>([]);
+  const [kindPick, setKindPick] = useState<DestinationCategory[]>([]);
   const [showOver, setShowOver] = useState(false);
   type Place = DestinationSuggestion["place"];
-  const placeOk = (p: Place) =>
-    (seasonPick.length === 0 || (p?.classification !== undefined && seasonPick.includes(p.classification))) &&
-    (visaPick.length === 0 || (p?.visa !== undefined && visaPick.includes(p.visa)));
-  const singles = singleSuggestions.filter((s) => placeOk(s.place));
-  const unpricedShown = unpriced.filter((s) => placeOk(s.place));
-  const routeList = routes.filter((r) => r.stops.every((st) => placeOk(st.place)));
+  type Tagged = { place?: Place; continent?: string; categories?: DestinationCategory[] };
+  const continentOf = (x: Tagged) => (x.continent ?? (x.place ? findCountry(x.place.countryCode)?.continent : undefined)) as Continent | undefined;
+  const placeOk = (x: Tagged, skip?: "continent" | "kind") => {
+    const p = x.place;
+    const c = continentOf(x);
+    return (
+      (seasonPick.length === 0 || (p?.classification !== undefined && seasonPick.includes(p.classification))) &&
+      (visaPick.length === 0 || (p?.visa !== undefined && visaPick.includes(p.visa))) &&
+      (skip === "continent" || continentPick.length === 0 || (c !== undefined && continentPick.includes(c))) &&
+      (skip === "kind" || kindPick.length === 0 || (x.categories ?? []).some((k) => kindPick.includes(k)))
+    );
+  };
+  const singles = singleSuggestions.filter((s) => placeOk(s));
+  const unpricedShown = unpriced.filter((s) => placeOk(s));
+  // A route matches a continent or kind when any of its stops does.
+  const routeOk = (r: RouteSuggestion, skip?: "continent" | "kind") =>
+    r.stops.every((st) => placeOk({ place: st.place, continent: continentPick[0], categories: kindPick })) &&
+    (skip === "continent" || continentPick.length === 0 || r.stops.some((st) => { const c = continentOf(st); return c !== undefined && continentPick.includes(c); })) &&
+    (skip === "kind" || kindPick.length === 0 || r.stops.some((st) => (st.categories ?? []).some((k) => kindPick.includes(k))));
+  const routeList = routes.filter((r) => routeOk(r));
   const items = mode === "routes" ? routeList : singles;
   const within = items.filter((x) => x.withinBudget);
   const over = items.filter((x) => !x.withinBudget).sort((a, b) => a.totalPrice - b.totalPrice);
-  const filtered = seasonPick.length > 0 || visaPick.length > 0;
+  const filtered = seasonPick.length > 0 || visaPick.length > 0 || continentPick.length > 0 || kindPick.length > 0;
+  const clearAll = () => {
+    setSeasonPick([]);
+    setVisaPick([]);
+    setContinentPick([]);
+    setKindPick([]);
+  };
   const money = (n: number) => `${Math.abs(n).toLocaleString("en-US")} ${currency}`;
   const d = dict.discoverResults;
   const ft = dict.filters;
@@ -187,6 +212,11 @@ function DiscoverResultsContent() {
       : [...singleSuggestions, ...unpriced].map((x) => x.place);
   const seasonCount = (c: Classification) => allPlaces.filter((p) => p?.classification === c).length;
   const visaCount = (v: VisaCategory) => allPlaces.filter((p) => p?.visa === v).length;
+  const tagged: Tagged[] = mode === "routes" ? routes.flatMap((r) => r.stops) : [...singleSuggestions, ...unpriced];
+  const continentCount = (c: Continent) => tagged.filter((x) => placeOk(x, "continent") && continentOf(x) === c).length;
+  const kindCount = (k: DestinationCategory) => tagged.filter((x) => placeOk(x, "kind") && (x.categories ?? []).includes(k)).length;
+  const continentsSeen = CONTINENTS.filter((c) => tagged.some((x) => continentOf(x) === c));
+  const KINDS: DestinationCategory[] = ["beach", "nature", "adventure", "city", "culture", "family"];
   const visaLabels: Record<VisaCategory, string> = {
     free: dict.visa.statusFree,
     arrival: dict.visa.statusArrival,
@@ -300,13 +330,32 @@ function DiscoverResultsContent() {
               onChange={setVisaPick}
               options={VISA_ORDER.map((v) => ({ value: v, label: visaLabels[v], count: visaCount(v) }))}
             />
+            {continentsSeen.length > 1 && (
+              <FilterPill<Continent>
+                locale={locale}
+                multi
+                icon="🌍"
+                label={ft.continent}
+                allLabel={ft.allContinentsShort}
+                value={continentPick}
+                onChange={setContinentPick}
+                options={continentsSeen.map((c) => ({ value: c, label: dict.attractions.continents[c], count: continentCount(c) }))}
+              />
+            )}
+            <FilterPill<DestinationCategory>
+              locale={locale}
+              multi
+              icon="🧭"
+              label={ft.kind}
+              allLabel={ft.allKinds}
+              value={kindPick}
+              onChange={setKindPick}
+              options={KINDS.map((k) => ({ value: k, label: dict.categories[k], count: kindCount(k) }))}
+            />
             {filtered && (
               <button
                 type="button"
-                onClick={() => {
-                  setSeasonPick([]);
-                  setVisaPick([]);
-                }}
+                onClick={clearAll}
                 className="ms-auto text-xs font-bold text-sea-700 hover:underline"
               >
                 ✕ {dict.filters.clear}
@@ -359,10 +408,7 @@ function DiscoverResultsContent() {
             {filtered && (
               <button
                 type="button"
-                onClick={() => {
-                  setSeasonPick([]);
-                  setVisaPick([]);
-                }}
+                onClick={clearAll}
                 className="mt-3 rounded-full bg-navy-900 px-4 py-2 text-sm font-bold text-white"
               >
                 {d.clearFilters}

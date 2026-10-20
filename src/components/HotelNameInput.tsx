@@ -51,8 +51,15 @@ export default function HotelNameInput({
     return (body.items ?? []).map((h) => {
       const key = `${h.name}|${h.area}`;
       byKey.current.set(key, h);
-      const subtitle = arabic && h.nameAr && h.nameAr !== h.name ? `${h.nameAr} · ${h.area}` : h.area;
-      return { key, title: h.name, subtitle };
+      // The page's language first (owner, 20 Oct): the Arabic page shows the
+      // Arabic name and area, with the hotel's own name under it; the English
+      // page shows the Latin name.
+      if (arabic) {
+        const title = h.nameAr || h.name;
+        const area = h.areaAr || h.area;
+        return { key, title, subtitle: h.nameAr && h.nameAr !== h.name ? `${h.name} · ${area}` : area };
+      }
+      return { key, title: h.name, subtitle: h.area };
     });
   }, [arabic, onCityGuess]);
 

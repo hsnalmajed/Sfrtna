@@ -10,7 +10,19 @@ import Icon from "@/components/ui/Icon";
 import HotelNameInput from "@/components/HotelNameInput";
 import HotelCityInput, { findHotelCity } from "@/components/HotelCityInput";
 import type { GuessedCity } from "@/lib/providers/localHotels";
-import { MAX_GUESTS_PER_ROOM, occupancy, roomFitsParty, type StayType } from "@/lib/stayType";
+import { MAX_GUESTS_PER_ROOM, occupancy, roomFitsParty } from "@/lib/stayType";
+import {
+  AMENITIES,
+  PLACE_KINDS,
+  RATING_FLOORS,
+  RATING_LABEL,
+  readHotelPrefs,
+  writeHotelPrefs,
+  type Amenity,
+  type HotelPrefs,
+  type PlaceKind,
+  type RatingFloor,
+} from "@/lib/hotelPrefs";
 import { parseChildrenAges, serializeChildrenAges } from "@/lib/searchParamsUtil";
 import { focusFirstError, hasErrors, type FieldErrors } from "@/lib/formErrors";
 import { formStyles, type FormTone } from "@/lib/formTone";
@@ -71,6 +83,10 @@ export default function HotelPlanner({
   const [hotel, setHotel] = useState(sp.get("hotel") || "");
   // Where the picked hotel is, from the suggestion list; cleared on typing.
   const [hotelArea, setHotelArea] = useState(sp.get("hotelArea") || "");
+  // How the picked hotel and its area read on this page (Arabic names on the
+  // Arabic page); the search itself always uses the hotel's own name.
+  const [hotelLabel, setHotelLabel] = useState(sp.get("hmode") === "known" ? sp.get("label") || "" : "");
+  const [areaLabel, setAreaLabel] = useState(sp.get("areaLabel") || "");
   // Only a hotel picked from the list is searched: a typed name, misspelt,
   // finds the wrong hotel or none. A search coming back to be edited was
   // picked the first time.
@@ -94,16 +110,14 @@ export default function HotelPlanner({
   const [budget, setBudget] = useState(sp.get("budget") || "");
   const [currency, setCurrency] = useState(sp.get("currency") || "SAR");
   const [minStars, setMinStars] = useState(Number(sp.get("minStars")) || 0);
-  const [stayType, setStayType] = useState<StayType | "">(() => {
-    const s = sp.get("stay");
-    return s === "room" || s === "apartment" ? s : "";
-  });
+  const [prefs, setPrefs] = useState<HotelPrefs>(() => readHotelPrefs(sp));
+  const setPref = <K extends keyof HotelPrefs>(k: K, v: HotelPrefs[K]) => setPrefs((p) => ({ ...p, [k]: v }));
   const [breakfast, setBreakfast] = useState(sp.get("breakfast") === "true");
   const [errors, setErrors] = useState<FieldErrors>({});
 
   const guests = occupancy(travelers);
   const roomPossible = roomFitsParty(guests);
-  const effectiveStayType: StayType | "" = stayType === "room" && !roomPossible ? "apartment" : stayType;
+  const hp = dict.hotelPrefs;
 
   function validate(): FieldErrors {
     const next: FieldErrors = {};
@@ -146,6 +160,8 @@ export default function HotelPlanner({
     if (mode === "known") {
       params.set("hotel", hotel.trim());
       if (hotelArea) params.set("hotelArea", hotelArea);
+      if (hotelLabel && hotelLabel !== hotel) params.set("label", hotelLabel);
+      if (areaLabel && areaLabel !== hotelArea) params.set("areaLabel", areaLabel);
     } else {
       if (cityEntry) {
         params.set("city", cityEntry.nameEn);
@@ -154,7 +170,7 @@ export default function HotelPlanner({
       params.set("budget", String(Number(budget)));
       params.set("currency", currency);
       if (minStars) params.set("minStars", String(minStars));
-      if (effectiveStayType) params.set("stay", effectiveStayType);
+      writeHotelPrefs(prefs, params);
       if (breakfast) params.set("breakfast", "true");
     }
     trackSearchUrl(`/${locale}/hotel-results?${params.toString()}`);
@@ -191,7 +207,7 @@ export default function HotelPlanner({
             <HotelNameInput
               id="hotel-name"
               className={inputClass}
-              value={hotel}
+              value={hotelLabel || hotel}
               placeholder={dict.hotelForm.hotelNamePlaceholder}
               invalid={Boolean(errors.hotel)}
               loadingText={dict.hotelForm.searchingHotels}
@@ -224,12 +240,16 @@ export default function HotelPlanner({
               }
               onType={(text) => {
                 setHotel(text);
+                setHotelLabel("");
+                setAreaLabel("");
                 setHotelArea("");
                 setHotelPicked(false);
                 setErrors((prev) => ({ ...prev, hotel: "" }));
               }}
               onPick={(h) => {
                 setHotel(h.name);
+                setHotelLabel(locale === "ar" && h.nameAr ? h.nameAr : "");
+                setAreaLabel(locale === "ar" && h.areaAr ? h.areaAr : "");
                 setHotelArea(h.area);
                 setHotelPicked(true);
                 setErrors((prev) => ({ ...prev, hotel: "" }));
@@ -328,9 +348,12 @@ export default function HotelPlanner({
           title={dict.form.extrasTitle}
           hint={dict.form.extrasHint}
           chosen={[
+            ...(prefs.place ? [hp.place[prefs.place]] : []),
             ...(breakfast ? [dict.form.breakfastShort] : []),
             ...(minStars ? ["★".repeat(minStars)] : []),
-            ...(effectiveStayType ? [dict.stayType[effectiveStayType]] : []),
+            ...(prefs.rating ? [`${hp.ratingLabel} ${RATING_LABEL[prefs.rating]}`] : []),
+            ...(prefs.freeCancel ? [hp.freeCancel] : []),
+            ...prefs.amenities.map((a) => hp.amenity[a]),
           ]}
         >
           <Toggle dark={dark} id="hotel-breakfast" checked={breakfast} onChange={setBreakfast} icon="coffee">
@@ -349,28 +372,55 @@ export default function HotelPlanner({
             />
           </div>
 
+          {/* What kind of place, as the booking sites themselves sort them. */}
           <div>
             <FieldLabel dark={dark} icon="bed">
-              {dict.stayType.label}
+              {hp.placeLabel}
             </FieldLabel>
-            <ChoiceChips<StayType | "">
+            <ChoiceChips<PlaceKind>
               dark={dark}
-              options={[
-                { value: "", label: dict.stayType.any },
-                { value: "room", label: dict.stayType.room, disabled: !roomPossible },
-                { value: "apartment", label: dict.stayType.apartment },
-              ]}
-              isOn={(v) => v === effectiveStayType}
-              onPick={setStayType}
+              options={PLACE_KINDS.map((k) => ({ value: k, label: hp.place[k] }))}
+              isOn={(v) => v === prefs.place}
+              onPick={(v) => setPref("place", v)}
             />
             {!roomPossible && (
               <p className={`mt-2 ${muted}`}>
-                {dict.stayType.apartmentOnlyHint.replace("{count}", String(guests))}{" "}
-                <span className="opacity-70">
-                  ({dict.stayType.roomFitsHint.replace("{max}", String(MAX_GUESTS_PER_ROOM))})
-                </span>
+                {hp.bigParty.replace("{count}", String(guests))}{" "}
+                <span className="opacity-70">({dict.stayType.roomFitsHint.replace("{max}", String(MAX_GUESTS_PER_ROOM))})</span>
               </p>
             )}
+          </div>
+
+          <div className="grid grid-cols-1 gap-3 min-[430px]:grid-cols-2">
+            <Toggle dark={dark} id="hotel-free-cancel" checked={prefs.freeCancel} onChange={(v) => setPref("freeCancel", v)} icon="shield">
+              {hp.freeCancel}
+            </Toggle>
+          </div>
+
+          <div>
+            <FieldLabel dark={dark} icon="star">
+              {hp.ratingLabel}
+            </FieldLabel>
+            <ChoiceChips<RatingFloor>
+              dark={dark}
+              options={RATING_FLOORS.map((r) => ({ value: r, label: r ? hp.ratingFloor.replace("{r}", RATING_LABEL[r]) : hp.ratingAny }))}
+              isOn={(v) => v === prefs.rating}
+              onPick={(v) => setPref("rating", v)}
+            />
+          </div>
+
+          <div>
+            <FieldLabel dark={dark} icon="check">
+              {hp.amenitiesLabel}
+            </FieldLabel>
+            <ChoiceChips<Amenity>
+              dark={dark}
+              options={AMENITIES.map((a) => ({ value: a, label: `${prefs.amenities.includes(a) ? "✓ " : ""}${hp.amenity[a]}` }))}
+              isOn={(v) => prefs.amenities.includes(v)}
+              onPick={(v) =>
+                setPref("amenities", prefs.amenities.includes(v) ? prefs.amenities.filter((x) => x !== v) : [...prefs.amenities, v])
+              }
+            />
           </div>
         </PreferencesPanel>
       )}

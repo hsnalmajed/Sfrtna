@@ -119,8 +119,11 @@ export default function TripPlanner({
   const [continents, setContinents] = useState<Continent[]>(() =>
     (sp.get("continents") ?? "").split(",").filter((c): c is Continent => CONTINENTS.includes(c as Continent))
   );
-  const [preferenceCategory, setPreferenceCategory] = useState<DestinationCategory | "">(
-    (sp.get("preferenceCategory") as DestinationCategory) || ""
+  // Any number of kinds of place (owner, 20 Oct: "more than one choice").
+  const [preferenceCategories, setPreferenceCategories] = useState<DestinationCategory[]>(() =>
+    (sp.get("preferenceCategory") ?? "")
+      .split(",")
+      .filter((c): c is DestinationCategory => CATEGORY_OPTIONS.includes(c as DestinationCategory))
   );
   const [departDate, setDepartDate] = useState(sp.get("departDate") || "");
   const [returnDate, setReturnDate] = useState(sp.get("returnDate") || "");
@@ -312,7 +315,7 @@ export default function TripPlanner({
         multiDestination: String(tripRoute === "multicity"),
         stops: String(stopCount),
         oneWayOnly: String(isOneWay),
-        preferenceCategory,
+        preferenceCategory: preferenceCategories.join(","),
         continents: continents.join(","),
       });
       trackSearchUrl(`/${locale}/discover-results?${params.toString()}`);
@@ -682,7 +685,7 @@ export default function TripPlanner({
           ...(directOnly ? [dict.form.directShort] : []),
           ...(baggageIncluded ? [dict.form.baggageShort] : []),
           ...(mode === "discover" ? continents.map((c) => dict.attractions.continents[c]) : []),
-          ...(mode === "discover" && preferenceCategory ? [dict.categories[preferenceCategory]] : []),
+          ...(mode === "discover" ? preferenceCategories.map((c) => dict.categories[c]) : []),
         ]}
       >
           {/* The two switches side by side. */}
@@ -723,6 +726,7 @@ export default function TripPlanner({
                             : "bg-white text-navy-700 ring-mist-200 hover:ring-navy-200"
                       }`}
                     >
+                      {active && c ? "✓ " : ""}
                       {c ? dict.attractions.continents[c] : dict.categories.any}
                     </button>
                   );
@@ -740,13 +744,17 @@ export default function TripPlanner({
               </p>
               <div className="flex flex-wrap gap-2">
                 {(["", ...CATEGORY_OPTIONS] as (DestinationCategory | "")[]).map((c) => {
-                  const active = preferenceCategory === c;
+                  const active = c ? preferenceCategories.includes(c) : preferenceCategories.length === 0;
                   return (
                     <button
                       key={c || "any"}
                       type="button"
                       aria-pressed={active}
-                      onClick={() => setPreferenceCategory(c)}
+                      onClick={() =>
+                        setPreferenceCategories((prev) =>
+                          !c ? [] : prev.includes(c) ? prev.filter((x) => x !== c) : [...prev, c]
+                        )
+                      }
                       className={`rounded-full px-3.5 py-1.5 text-xs font-bold ring-1 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400 ${
                         active
                           ? "bg-sun-400 text-navy-950 ring-sun-400"
@@ -755,6 +763,7 @@ export default function TripPlanner({
                             : "bg-white text-navy-700 ring-mist-200 hover:ring-navy-200"
                       }`}
                     >
+                      {active && c ? "✓ " : ""}
                       {c ? dict.categories[c] : dict.categories.any}
                     </button>
                   );

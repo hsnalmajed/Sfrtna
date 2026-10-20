@@ -6,7 +6,7 @@ import { useEffect, useMemo, useState } from "react";
 import type { HotelResult, HotelSearch } from "@/lib/providers/serpapi";
 import { hotelPartnerLinks } from "@/lib/affiliateLinks";
 import type { Dictionary } from "@/lib/dictionaries";
-import { amenityLabels } from "@/lib/hotelAmenities";
+import { amenityLabels, keyAmenities } from "@/lib/hotelAmenities";
 import Icon from "@/components/ui/Icon";
 import PartnerLink from "@/components/PartnerLink";
 
@@ -277,6 +277,105 @@ export function PriceRows({
   );
 }
 
+/**
+ * The named hotel's booking panel (owner, 20 Oct): the cheapest site, its
+ * price and «احجز الآن» first; every other site with its price and its own
+ * «احجز الآن» one tap away under «قارن الأسعار في N مواقع». The traveller
+ * reads the answer here and leaves only to book.
+ */
+function BookPanel({ hotel, c, checkedAt }: { hotel: HotelResult; c: Common; checkedAt: string }) {
+  const { t, locale } = c;
+  const offers = siteOffers(hotel, c);
+  const [open, setOpen] = useState(false);
+  const time = new Date(checkedAt).toLocaleTimeString(nf(locale), { hour: "2-digit", minute: "2-digit" });
+  const arrow = <span aria-hidden="true">{locale === "ar" ? "←" : "→"}</span>;
+  if (!offers.length) {
+    return (
+      <div>
+        <p className="font-display text-lg font-extrabold text-navy-950">{t.noPriceTitle}</p>
+        <p className="mt-1 text-sm text-navy-600">{t.noPartnerPrice}</p>
+        <PartnerSearchLinks hotel={hotel} c={c} />
+      </div>
+    );
+  }
+  const best = offers[0];
+  const rest = offers.slice(1);
+  const over = c.budget > 0 ? best.total - c.budget : 0;
+  return (
+    <div>
+      <p className="text-xs font-bold text-navy-500">{t.bestPriceTitle}</p>
+      <p className="mt-1 flex flex-wrap items-center gap-1.5 text-sm font-bold text-navy-800">
+        <bdi>{t.atSite.replace("{site}", best.label)}</bdi>
+        {rest.length > 0 && best.total < rest[0].total && (
+          <span className="rounded-full bg-sun-400 px-2 py-0.5 text-[11px] font-extrabold text-navy-950">{t.cheapest}</span>
+        )}
+      </p>
+      <p className="mt-1 font-display text-3xl font-black text-navy-950">{money(best.total, locale)}</p>
+      <p className="text-xs text-navy-600">
+        {c.nights === 1 ? t.stayTotalOne : t.stayTotal.replace("{nights}", nightsLabel(c.nights, t))}
+        {c.nights > 1 && ` · ${t.perNight.replace("{amount}", money(best.total / c.nights, locale))}`}
+      </p>
+      {c.budget > 0 && (
+        <p className={`mt-1 text-xs font-bold ${over > 0 ? "text-rose-700" : "text-sea-700"}`}>
+          {over > 0 ? t.overBudget.replace("{amount}", money(over, locale)) : `✓ ${t.withinBudget}`}
+        </p>
+      )}
+      {best.url && (
+        <PartnerLink
+          partner={best.partner}
+          href={best.url}
+          className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-sun-400 px-4 py-3.5 text-base font-extrabold text-navy-950 shadow-[var(--shadow-sun)] transition hover:bg-sun-300"
+        >
+          {t.bookNow}
+          {arrow}
+        </PartnerLink>
+      )}
+      {rest.length > 0 ? (
+        <div className="mt-4">
+          <button
+            type="button"
+            aria-expanded={open}
+            onClick={() => setOpen((v) => !v)}
+            className="flex w-full items-center justify-between gap-2 rounded-xl bg-mist-50 px-4 py-3 text-sm font-extrabold text-navy-900 ring-1 ring-mist-200 transition hover:ring-navy-300"
+          >
+            {open ? t.hideCompare : t.compareSites.replace("{count}", String(offers.length))}
+            <span aria-hidden="true" className={`transition ${open ? "rotate-180" : ""}`}>▾</span>
+          </button>
+          {open && (
+            <ul className="mt-2 divide-y divide-mist-100 rounded-xl ring-1 ring-mist-200">
+              {offers.map((o, i) => (
+                <li key={`${o.label}-${i}`} className="flex items-center justify-between gap-3 px-3.5 py-2.5">
+                  <div className="min-w-0">
+                    <p className="truncate text-sm font-bold text-navy-800">
+                      <bdi>{o.label}</bdi>
+                    </p>
+                    <p className="font-display text-base font-extrabold text-navy-950">{money(o.total, locale)}</p>
+                  </div>
+                  {o.url && (
+                    <PartnerLink
+                      partner={o.partner}
+                      href={o.url}
+                      className={`inline-flex shrink-0 items-center gap-1 rounded-xl px-3.5 py-2 text-xs font-extrabold transition ${
+                        i === 0 ? "bg-sun-400 text-navy-950 hover:bg-sun-300" : "bg-white text-navy-900 ring-1 ring-mist-200 hover:ring-navy-300"
+                      }`}
+                    >
+                      {t.bookNow}
+                      {arrow}
+                    </PartnerLink>
+                  )}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      ) : (
+        <p className="mt-3 text-xs font-semibold text-navy-500">{t.oneSite}</p>
+      )}
+      <p className="mt-3 text-[11px] leading-relaxed text-navy-500">{t.checkedAtAll.replace("{time}", time)}</p>
+    </div>
+  );
+}
+
 /** Plain partner searches, for when there is no price to show. */
 function PartnerSearchLinks({ hotel, c }: { hotel: HotelResult; c: Common }) {
   const links = hotelPartnerLinks({
@@ -350,7 +449,8 @@ function Gallery({ hotel }: { hotel: HotelResult }) {
 
 function HotelDetail({ hotel, c, checkedAt }: { hotel: HotelResult; c: Common; checkedAt: string }) {
   const { t, locale } = c;
-  const amenities = amenityLabels(hotel.amenities, locale, 8);
+  const amenities = amenityLabels(hotel.amenities, locale, 40);
+  const key = keyAmenities(hotel.amenities, locale);
   return (
     // Phone order: photos, then the prices, then the details — the price is
     // what was asked for. Wide screens: photos and details on one side, the
@@ -362,13 +462,7 @@ function HotelDetail({ hotel, c, checkedAt }: { hotel: HotelResult; c: Common; c
 
       <aside className="lg:sticky lg:top-24 lg:col-start-2 lg:row-span-2 lg:row-start-1">
         <div className="rounded-2xl bg-white p-5 shadow-[0_10px_40px_-15px_rgb(10_30_60/0.35)] ring-1 ring-black/5 sm:p-6">
-          <p className="font-display text-lg font-extrabold text-navy-950">{t.allSitesTitle}</p>
-          <p className="mb-4 mt-0.5 text-xs text-navy-500">{t.allSitesSub}</p>
-          <PriceRows hotel={hotel} c={c} checkedAt={checkedAt} />
-        </div>
-        <div className="mt-4 px-1">
-          <p className="text-xs font-bold text-navy-600">{t.otherPartners}</p>
-          <PartnerSearchLinks hotel={hotel} c={c} />
+          <BookPanel hotel={hotel} c={c} checkedAt={checkedAt} />
         </div>
       </aside>
 
@@ -400,9 +494,28 @@ function HotelDetail({ hotel, c, checkedAt }: { hotel: HotelResult; c: Common; c
             </dl>
           )}
 
+          {key.length > 0 && (
+            <div className="mt-5">
+              <p className="mb-2.5 text-sm font-bold text-navy-900">{t.keyAmenitiesTitle}</p>
+              <ul className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+                {key.map((a) => (
+                  <li
+                    key={a.label}
+                    className={`flex items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-bold ring-1 ${
+                      a.free ? "bg-emerald-50 text-emerald-900 ring-emerald-200" : "bg-mist-50 text-navy-800 ring-mist-200"
+                    }`}
+                  >
+                    <span aria-hidden="true">{a.icon}</span>
+                    {a.label}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
           {amenities.length > 0 && (
             <div className="mt-5">
-              <p className="mb-2.5 text-sm font-bold text-navy-900">{t.amenitiesTitle}</p>
+              <p className="mb-2.5 text-sm font-bold text-navy-900">{t.allAmenitiesTitle}</p>
               <ul className="flex flex-wrap gap-2">
                 {amenities.map((a) => (
                   <li key={a} className="inline-flex items-center gap-1.5 rounded-full bg-mist-100 px-3 py-1.5 text-xs font-bold text-navy-800">
@@ -467,7 +580,7 @@ export default function HotelPrices(
 ) {
   const { query, priceQuery, fallback, ...c } = props;
   const url = useMemo(
-    () => apiUrl(c, { q: (priceQuery || query).slice(0, 120) }),
+    () => apiUrl(c, { q: (priceQuery || query).slice(0, 120), one: "1" }),
     // c is rebuilt each render; its fields are what matter.
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [query, priceQuery, c.checkIn, c.checkOut, c.adults, c.childrenAges]

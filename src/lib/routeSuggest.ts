@@ -46,7 +46,8 @@ export interface RouteQuery {
   /** Adults and children: the seats that are paid for. */
   paying: number;
   directOnly: boolean;
-  category?: DestinationCategory;
+  /** Any of these kinds of place; empty = any. */
+  categories?: DestinationCategory[];
   /** Only stops on these continents; empty = anywhere. */
   continents?: Continent[];
 }
@@ -109,7 +110,7 @@ export async function suggestRoutes(q: RouteQuery): Promise<RouteSuggestion[]> {
     (d) =>
       d.code !== q.origin &&
       d.countryCode !== homeCountry &&
-      (!q.category || d.categories.includes(q.category)) &&
+      (!q.categories?.length || d.categories.some((c) => q.categories!.includes(c))) &&
       (!q.continents?.length || (d.continent !== undefined && q.continents.includes(d.continent)))
   );
   if (pool.length < q.stops) return [];
@@ -194,6 +195,8 @@ export async function suggestRoutes(q: RouteQuery): Promise<RouteSuggestion[]> {
       nights: nights[i],
       arrive: legDates[i],
       place: placeOf(d, legDates[i]),
+      continent: d.continent,
+      categories: d.categories,
     }));
     routes.push({
       stops,

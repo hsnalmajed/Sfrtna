@@ -215,7 +215,7 @@ function hotelOf(p: GhProperty): HotelResult {
       .map((i) => ({ thumb: i.thumb || i.full, full: i.full || i.thumb }))
       .slice(0, 8),
     address: (p.address || "").trim(),
-    amenities: (p.amenities ?? []).filter((a) => typeof a === "string" && a.trim()).slice(0, 10),
+    amenities: (p.amenities ?? []).filter((a) => typeof a === "string" && a.trim()).slice(0, 40),
     description: (p.description || "").trim().slice(0, 600),
     locationRating: typeof p.location_rating === "number" ? p.location_rating : null,
     checkInTime: (p.check_in_time || "").trim(),
@@ -247,14 +247,39 @@ export async function hotelPrices(q: {
   minStars?: number;
   /** Highest price a night, in `currency` (a city list only). */
   maxPerNight?: number;
+  /** Google's property_types / amenities codes, rating floor (7/8/9), free cancellation (a city list only). */
+  types?: number[];
+  amenities?: number[];
+  rating?: number;
+  freeCancel?: boolean;
+  /** Holiday rentals (apartments, villas, chalets) instead of hotels. */
+  rentals?: boolean;
   /** A city list's page token from a previous answer's `nextPage`. */
   page?: string;
+  /**
+   * One named hotel is wanted: when Google answers the name with a list
+   * (it often does for "Hotel X, City"), the first hotel's own page is
+   * asked by its id, so every site's price for it is there — a list row
+   * carries only the cheapest (owner, 20 Oct: "one site only").
+   */
+  one?: boolean;
 }): Promise<HotelSearch | null> {
+  if (q.one && !q.token && !q.page) {
+    const first = await hotelPrices({ ...q, one: false });
+    const top = first?.kind === "list" ? first.hotels.find((h) => h.token) : undefined;
+    if (!first || !top?.token || top.offers.length > 1) return first;
+    return (await hotelPrices({ ...q, one: false, token: top.token })) ?? first;
+  }
   const currency = (q.currency || "SAR").toUpperCase();
   const ages = (q.childrenAges ?? []).map((a) => Math.min(17, Math.max(1, Math.round(a))));
   const stars = q.minStars && q.minStars >= 2 && q.minStars <= 5 ? q.minStars : 0;
   const maxPrice = q.maxPerNight && q.maxPerNight > 0 ? Math.round(q.maxPerNight) : 0;
-  const cacheKey = `serp-hotels5:${q.q.toLowerCase()}:${q.token ?? ""}:${q.checkIn}:${q.checkOut}:${q.adults}:${ages.join(",")}:${currency}:${stars}:${maxPrice}:${q.page ?? ""}`;
+  const rentals = Boolean(q.rentals);
+  const types = rentals ? [] : (q.types ?? []).filter((n) => Number.isInteger(n) && n > 0 && n < 100).slice(0, 6);
+  const amen = (q.amenities ?? []).filter((n) => Number.isInteger(n) && n > 0 && n < 100).slice(0, 10);
+  const rating = q.rating && [7, 8, 9].includes(q.rating) ? q.rating : 0;
+  const freeCancel = !rentals && Boolean(q.freeCancel);
+  const cacheKey = `serp-hotels5:${q.q.toLowerCase()}:${q.token ?? ""}:${q.checkIn}:${q.checkOut}:${q.adults}:${ages.join(",")}:${currency}:${stars}:${maxPrice}:${q.page ?? ""}:${types.join(".")}:${amen.join(".")}:${rating}:${freeCancel ? 1 : 0}:${rentals ? 1 : 0}`;
   return cachedJson<HotelSearch>(cacheKey, 6 * 3600, async () => {
     const body = await search({
       engine: "google_hotels",
@@ -265,7 +290,12 @@ export async function hotelPrices(q: {
       ...(ages.length ? { children: String(ages.length), children_ages: ages.join(",") } : {}),
       ...(q.token ? { property_token: q.token } : {}),
       ...(q.page ? { next_page_token: q.page } : {}),
-      ...(stars ? { hotel_class: [2, 3, 4, 5].filter((c) => c >= stars).join(",") } : {}),
+      ...(stars && !rentals ? { hotel_class: [2, 3, 4, 5].filter((c) => c >= stars).join(",") } : {}),
+      ...(types.length ? { property_types: types.join(",") } : {}),
+      ...(amen.length ? { amenities: amen.join(",") } : {}),
+      ...(rating ? { rating: String(rating) } : {}),
+      ...(freeCancel ? { free_cancellation: "true" } : {}),
+      ...(rentals ? { vacation_rentals: "true" } : {}),
       ...(maxPrice ? { max_price: String(maxPrice) } : {}),
       currency,
       hl: "en",

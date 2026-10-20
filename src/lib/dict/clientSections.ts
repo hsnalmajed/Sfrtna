@@ -10,7 +10,7 @@ import type { Dictionary } from "@/lib/dictionaries";
  */
 export const CLIENT_SECTIONS = [
   "account", "back", "categories", "consent", "currency", "discoverForm", "discoverResults",
-  "filters", "footer", "form", "hotelForm", "hotelResults", "itinerary", "modeSelect", "multicity",
+  "filters", "footer", "form", "hotelForm", "hotelPrefs", "hotelResults", "itinerary", "modeSelect", "multicity",
   "nav", "nextSteps", "notFound", "plan", "productSelect", "results", "siteName", "siteNameAr",
   "siteNameEn", "stayType", "travelSeasons", "travelers", "tripPlan", "visa",
 ] as const satisfies readonly (keyof Dictionary)[];

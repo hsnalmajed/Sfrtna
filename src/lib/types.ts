@@ -185,7 +185,8 @@ export interface DiscoverParams {
   childrenAges?: number[];
   infants?: number;
   roomType?: RoomType;
-  preferenceCategory?: DestinationCategory;
+  /** Any of these kinds of place; empty or absent = any. */
+  preferenceCategories?: DestinationCategory[];
   /** Only destinations on these continents; empty or absent = anywhere. */
   continents?: Continent[];
 }
@@ -229,6 +230,9 @@ export interface DestinationSuggestion {
   currency: string;
   withinBudget: boolean;
   remainingBudget: number;
+  /** For the results' own filters (continent, kind of place). */
+  continent?: string;
+  categories?: DestinationCategory[];
 }
 
 export interface DestinationPairSuggestion {
@@ -310,6 +314,8 @@ export interface RouteStop {
   nights: number;
   arrive: string; // YYYY-MM-DD
   place?: DestinationPlace;
+  continent?: string;
+  categories?: DestinationCategory[];
 }
 
 /** Home → A → B (→ C) → home, every flight priced. */

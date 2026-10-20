@@ -6,6 +6,8 @@ import { amenityLabels } from "@/lib/hotelAmenities";
 import { CITY_COORDS } from "@/data/cityCoords";
 import Icon from "@/components/ui/Icon";
 import { PriceRows, Photo, Rating, Shimmer, Stars, money, type Common } from "@/components/HotelPrices";
+import { AMENITY_CODE, BREAKFAST_CODE, NO_HOTEL_PREFS, PLACE_TYPE_CODE, type HotelPrefs } from "@/lib/hotelPrefs";
+import { useDictionary } from "@/lib/dict/context";
 
 /**
  * «اقترح لي فندق»: a city's hotels as cards, like the flight cards — photo,
@@ -36,6 +38,7 @@ export default function HotelList({
   minStars,
   maxPerNight,
   breakfast,
+  prefs = NO_HOTEL_PREFS,
   c,
   onUnavailable,
 }: {
@@ -46,17 +49,32 @@ export default function HotelList({
   minStars: number;
   maxPerNight: number;
   breakfast: boolean;
+  /** Kind of place, facilities, rating, free cancellation — applied by Google itself. */
+  prefs?: HotelPrefs;
   c: Common;
   onUnavailable: () => void;
 }) {
   const { t, locale } = c;
+  const hp = useDictionary().hotelPrefs;
+  type Sort = "best" | "cheapest" | "rating" | "reviews" | "near";
+  const [sort, setSort] = useState<Sort>("best");
+  const prefsKey = `${prefs.place}|${prefs.amenities.join(",")}|${prefs.rating}|${prefs.freeCancel ? 1 : 0}|${breakfast ? 1 : 0}`;
   const url = useMemo(() => {
     const p = new URLSearchParams({ q: `hotels in ${cityQuery}`.slice(0, 120), checkIn: c.checkIn, checkOut: c.checkOut, adults: String(c.adults) });
     if (c.childrenAges.length) p.set("childrenAges", c.childrenAges.join(","));
     if (minStars >= 2) p.set("minStars", String(minStars));
     if (maxPerNight > 0) p.set("maxPerNight", String(Math.round(maxPerNight)));
+    const [place, amen, rating, fc, bf] = prefsKey.split("|");
+    const type = PLACE_TYPE_CODE[place as HotelPrefs["place"]];
+    if (type) p.set("types", String(type));
+    if (place === "rental") p.set("vr", "1");
+    const codes = amen ? amen.split(",").map((a) => AMENITY_CODE[a as keyof typeof AMENITY_CODE]) : [];
+    if (bf === "1") codes.push(BREAKFAST_CODE);
+    if (codes.length) p.set("amen", codes.join(","));
+    if (rating !== "0") p.set("rating", rating);
+    if (fc === "1") p.set("fc", "1");
     return `/api/hotel-prices?${p.toString()}`;
-  }, [cityQuery, c.checkIn, c.checkOut, c.adults, c.childrenAges, minStars, maxPerNight]);
+  }, [cityQuery, c.checkIn, c.checkOut, c.adults, c.childrenAges, minStars, maxPerNight, prefsKey]);
 
   const [state, setState] = useState<{ url: string; result: HotelSearch | null } | null>(null);
   useEffect(() => {
@@ -137,8 +155,43 @@ export default function HotelList({
   if (!hotels.length) {
     return <p className="rounded-2xl bg-white p-6 text-center text-sm font-semibold text-navy-700 shadow-sm ring-1 ring-black/5">{t.listEmpty}</p>;
   }
+  const dist = (h: HotelResult) => (centre && h.lat != null && h.lng != null ? km(centre, { lat: h.lat, lon: h.lng }) : Infinity);
+  const price = (h: HotelResult) => h.total ?? (h.perNight ? h.perNight * c.nights : Infinity);
+  if (sort !== "best") {
+    hotels = [...hotels].sort((a, b) =>
+      sort === "cheapest"
+        ? price(a) - price(b)
+        : sort === "rating"
+          ? (b.rating ?? 0) - (a.rating ?? 0) || (b.reviews ?? 0) - (a.reviews ?? 0)
+          : sort === "reviews"
+            ? (b.reviews ?? 0) - (a.reviews ?? 0)
+            : dist(a) - dist(b)
+    );
+  }
+  const sorts: [Sort, string][] = [
+    ["best", hp.sortBest],
+    ["cheapest", hp.sortCheapest],
+    ["rating", hp.sortRating],
+    ["reviews", hp.sortReviews],
+    ...(centre ? ([["near", hp.sortNear]] as [Sort, string][]) : []),
+  ];
   return (
     <div className="space-y-3">
+      <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none] sm:mx-0 sm:flex-wrap sm:px-0" role="group" aria-label={hp.sortLabel}>
+        {sorts.map(([k, label]) => (
+          <button
+            key={k}
+            type="button"
+            aria-pressed={sort === k}
+            onClick={() => setSort(k)}
+            className={`shrink-0 rounded-full px-4 py-2 text-sm font-bold transition ${
+              sort === k ? "bg-navy-950 text-white" : "bg-white text-navy-800 ring-1 ring-mist-300 hover:ring-navy-300"
+            }`}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
       {note && <p className="text-sm font-semibold text-navy-700">{note}</p>}
       {hotels.map((h) => (
         <HotelCard
