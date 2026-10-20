@@ -102,7 +102,7 @@ export default function CurrencyConverter({
 
   // The two rows share one shape: the currency on one side, the amount on
   // the other, the same height, so the eye reads straight down.
-  const row = "grid grid-cols-2 items-stretch gap-2 sm:grid-cols-[15rem_1fr]";
+  const row = "grid grid-cols-1 items-stretch gap-2 sm:grid-cols-[15rem_1fr]";
   const box = "h-14 rounded-xl px-4";
 
   return (

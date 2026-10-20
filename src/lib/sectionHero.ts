@@ -1,4 +1,4 @@
-import { SECTION_HEROES, heroImage, type HeroSection, type SectionHero } from "@/lib/heroPhotos";
+import { SECTION_HEROES, heroImage, heroPortraitSrcSet, type HeroSection, type SectionHero } from "@/lib/heroPhotos";
 import { getDictionary } from "@/lib/dictionaries";
 import type { Locale } from "@/lib/types";
 
@@ -10,6 +10,7 @@ export async function sectionHero(section: HeroSection, locale: Locale): Promise
   return {
     photo: image.url,
     photoSrcSet: image.srcSet,
+    photoPortraitSrcSet: heroPortraitSrcSet(pick),
     photoCredit: {
       text: dict.hero.photoCredit
         .replace("{place}", locale === "ar" ? pick.placeAr : pick.placeEn)

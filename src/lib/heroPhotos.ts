@@ -1,5 +1,6 @@
 import { pexelsSizes } from "@/lib/pexels";
 import heroLocal from "@/data/heroLocal.json";
+import heroPortrait from "@/data/heroPortrait.json";
 
 // The photographs the homepage and the section pages open on.
 //
@@ -103,6 +104,8 @@ export function heroPhotoForToday(date = new Date()): HeroPhoto {
 export interface SectionHero {
   photo?: string;
   photoSrcSet?: string;
+  /** The same photograph cut for an upright phone screen. */
+  photoPortraitSrcSet?: string;
   photoCredit?: { text: string; href: string };
 }
 
@@ -168,6 +171,7 @@ export const SECTION_HEROES: Record<HeroSection, HeroPhoto> = {
 
 /** Hero ids copied to our domain by scripts/hero-photos.mjs. */
 const LOCAL = new Set<string>(heroLocal);
+const PORTRAIT = new Set<string>(heroPortrait);
 
 /** The hero's image URLs and srcset, ready for <Photo>. */
 /**
@@ -175,9 +179,13 @@ const LOCAL = new Set<string>(heroLocal);
  * (9 : 19.5), at three widths — so a phone shows it sharp and whole across
  * its full screen instead of a wide picture blown up (owner, 20 Oct).
  */
-export function heroPortraitSrcSet(photo: HeroPhoto): string {
-  const at = (w: number) => `${photo.src}?auto=compress&cs=tinysrgb&fit=crop&w=${w}&h=${Math.round((w * 19.5) / 9)} ${w}w`;
-  return [720, 1080, 1440].map(at).join(", ");
+export function heroPortraitSrcSet(photo: HeroPhoto): string | undefined {
+  // Our own crops (scripts/hero-photos.mjs). The photo host's own crop
+  // answered at the screen's CSS width (390 px for a 1170 px screen), so it
+  // is not used: no crop → the wide photo as before.
+  const id = photo.src.match(/\/photos\/(\d+)\//)?.[1];
+  if (!id || !PORTRAIT.has(id)) return undefined;
+  return [720, 1080, 1440].map((w) => `/hero/${id}-p${w}.webp ${w}w`).join(", ");
 }
 
 export function heroImage(photo: HeroPhoto): { url: string; srcSet: string } {

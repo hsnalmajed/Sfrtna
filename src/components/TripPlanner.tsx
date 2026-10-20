@@ -410,7 +410,7 @@ export default function TripPlanner({
                   role="radio"
                   aria-checked={active}
                   onClick={() => setTripRoute(r.value)}
-                  className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-1.5 text-xs font-bold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400 ${
+                  className={`inline-flex min-h-10 items-center gap-1.5 whitespace-nowrap rounded-full px-3.5 py-2 text-xs font-bold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400 ${
                     active
                       ? dark
                         ? "bg-white text-navy-950"
@@ -742,7 +742,7 @@ export default function TripPlanner({
                           !c ? [] : prev.includes(c) ? prev.filter((x) => x !== c) : [...prev, c]
                         )
                       }
-                      className={`rounded-full px-3.5 py-1.5 text-xs font-bold ring-1 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400 ${
+                      className={`min-h-10 rounded-full px-3.5 py-2 text-xs font-bold ring-1 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400 ${
                         active
                           ? "bg-sun-400 text-navy-950 ring-sun-400"
                           : dark
@@ -779,7 +779,7 @@ export default function TripPlanner({
                           !c ? [] : prev.includes(c) ? prev.filter((x) => x !== c) : [...prev, c]
                         )
                       }
-                      className={`rounded-full px-3.5 py-1.5 text-xs font-bold ring-1 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400 ${
+                      className={`min-h-10 rounded-full px-3.5 py-2 text-xs font-bold ring-1 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400 ${
                         active
                           ? "bg-sun-400 text-navy-950 ring-sun-400"
                           : dark

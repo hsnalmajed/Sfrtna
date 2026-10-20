@@ -13,8 +13,14 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import sharp from "sharp";
 
 const WIDTHS = [828, 1280, 1920];
+// Upright crops for phone screens (9 : 19.5), cut around the photo's subject
+// (sharp's "attention" strategy) — a wide photo blown up to a tall screen
+// was soft and lost its subject (owner, 20 Oct). public/hero/<id>-p<w>.webp
+const PORTRAIT = [720, 1080, 1440];
+const portraitH = (w) => Math.round((w * 19.5) / 9);
 const OUT_DIR = "public/hero";
 const LIST = "src/data/heroLocal.json";
+const PORTRAIT_LIST = "src/data/heroPortrait.json";
 
 const source = readFileSync("src/lib/heroPhotos.ts", "utf8");
 const photos = [...source.matchAll(/P\("(\d+)",\s*"([^"]+)"\)/g)].map((m) => ({
@@ -28,7 +34,12 @@ const done = new Set(existsSync(LIST) ? JSON.parse(readFileSync(LIST, "utf8")) :
 let failed = 0;
 
 for (const p of unique) {
-  if (done.has(p.id) && WIDTHS.every((w) => existsSync(`${OUT_DIR}/${p.id}-${w}.webp`))) continue;
+  if (
+    done.has(p.id) &&
+    WIDTHS.every((w) => existsSync(`${OUT_DIR}/${p.id}-${w}.webp`)) &&
+    PORTRAIT.every((w) => existsSync(`${OUT_DIR}/${p.id}-p${w}.webp`))
+  )
+    continue;
   try {
     // The 1920w JPEG Pexels already serves to the site, re-encoded smaller.
     const res = await fetch(`${p.url}?auto=compress&cs=tinysrgb&w=1920`);
@@ -36,6 +47,16 @@ for (const p of unique) {
     const input = Buffer.from(await res.arrayBuffer());
     for (const w of WIDTHS) {
       await sharp(input).resize({ width: w, withoutEnlargement: true }).webp({ quality: 72 }).toFile(`${OUT_DIR}/${p.id}-${w}.webp`);
+    }
+    // The tall crops need the full height: asked again at 3,200 px high.
+    const tall = await fetch(`${p.url}?auto=compress&cs=tinysrgb&h=3200`);
+    if (!tall.ok) throw new Error(`HTTP ${tall.status} (tall)`);
+    const tallInput = Buffer.from(await tall.arrayBuffer());
+    for (const w of PORTRAIT) {
+      await sharp(tallInput)
+        .resize({ width: w, height: portraitH(w), fit: "cover", position: sharp.strategy.attention })
+        .webp({ quality: 74 })
+        .toFile(`${OUT_DIR}/${p.id}-p${w}.webp`);
     }
     done.add(p.id);
     console.log(`ok   ${p.id}`);
@@ -46,5 +67,7 @@ for (const p of unique) {
 }
 
 writeFileSync(LIST, JSON.stringify([...done].sort(), null, 2) + "\n");
+const portraitDone = unique.filter((p) => PORTRAIT.every((w) => existsSync(`${OUT_DIR}/${p.id}-p${w}.webp`))).map((p) => p.id);
+writeFileSync(PORTRAIT_LIST, JSON.stringify(portraitDone.sort(), null, 2) + "\n");
 console.log(`${done.size}/${unique.length} hero photos on our domain${failed ? `, ${failed} failed` : ""}`);
 if (failed) process.exitCode = 1;

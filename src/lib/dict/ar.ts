@@ -663,7 +663,7 @@ const ar = {
     bookFlight: "احجز الطيران",
     bookFlightShort: "احجز",
     fareSeen: "أقل سعر لتواريخك",
-    fareNear: "أقل سعر ليوم قريب من تاريخك",
+    fareNear: "أقل سعر ليوم قريب",
     fareWithin: "✓ ضمن ميزانيتك",
     fareFor: "لكل المسافرين · ذهاب وعودة",
     fareForOneWay: "لكل المسافرين · ذهاب",

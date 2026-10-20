@@ -339,27 +339,6 @@ function HotelResultsContent() {
                     labels={{ list: t.viewList, map: t.viewMap, choose: t.viewChoose }}
                   />
                 </section>
-                {/* Plain partner searches only when we have no list of our own
-                    (owner, 20 Oct: the traveller reads everything here and
-                    leaves only to book). */}
-                {listDown && (
-                <div className="mt-6">
-                  <p className="text-xs font-bold text-navy-600">{t.otherPartners}</p>
-                  <div className="mt-2 flex flex-wrap gap-2">
-                    {links.map((l) => (
-                      <PartnerLink
-                        key={l.partner}
-                        partner={l.partner}
-                        href={l.url}
-                        className="inline-flex items-center gap-1.5 rounded-full bg-white px-3.5 py-2 text-xs font-bold text-navy-900 ring-1 ring-mist-200 transition hover:ring-navy-300"
-                      >
-                        <Icon name="search" className="h-3.5 w-3.5 text-navy-500" />
-                        {t.openAt.replace("{partner}", l.partner)}
-                      </PartnerLink>
-                    ))}
-                  </div>
-                </div>
-                )}
               </div>
             )}
             <p className="mt-8 text-center text-xs text-navy-500">{t.partnerNote}</p>

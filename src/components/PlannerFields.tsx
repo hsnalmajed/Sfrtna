@@ -314,7 +314,7 @@ export function PreferencesPanel({
         </span>
         <span className="min-w-0 flex-1">
           <span className={`block text-sm font-extrabold ${dark ? "text-white" : "text-navy-900"}`}>{title}</span>
-          <span className={`block truncate text-xs font-semibold ${chosen.length ? (dark ? "text-sun-300" : "text-sun-800") : dark ? "text-white/55" : "text-navy-500"}`}>
+          <span className={`block text-xs font-semibold leading-snug ${chosen.length ? (dark ? "text-sun-300" : "text-sun-800") : dark ? "text-white/55" : "text-navy-500"}`}>
             {chosen.length ? chosen.join(" · ") : hint}
           </span>
         </span>
@@ -367,7 +367,7 @@ export function ChoiceChips<T extends string | number>({
             aria-pressed={on}
             disabled={o.disabled}
             onClick={() => onPick(o.value)}
-            className={`rounded-full px-3.5 py-1.5 text-xs font-bold ring-1 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400 disabled:cursor-not-allowed disabled:opacity-40 ${
+            className={`min-h-10 rounded-full px-3.5 py-2 text-xs font-bold ring-1 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400 disabled:cursor-not-allowed disabled:opacity-40 ${
               on
                 ? "bg-sun-400 text-navy-950 ring-sun-400"
                 : dark

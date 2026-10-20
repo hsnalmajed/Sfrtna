@@ -24,6 +24,7 @@ import Photo from "@/components/Photo";
 export default function PageHero({
   photo,
   photoSrcSet,
+  photoPortraitSrcSet,
   eyebrow,
   title,
   subtitle,
@@ -35,6 +36,7 @@ export default function PageHero({
   photo?: string;
   /** Larger renderings by width, for displays that can show them. */
   photoSrcSet?: string;
+  photoPortraitSrcSet?: string;
   /** Accepted but not shown: the site names no photo source (owner, 8 Oct 2026). */
   photoCredit?: { text: string; href: string };
   eyebrow?: string;
@@ -65,6 +67,7 @@ export default function PageHero({
         // the browser wait for layout before it will even ask for the file.
         priority
         srcSet={photoSrcSet}
+        portraitSrcSet={photoPortraitSrcSet}
         sizes="100vw"
         className="absolute inset-0 -z-10 h-full w-full object-cover"
         fallback={
