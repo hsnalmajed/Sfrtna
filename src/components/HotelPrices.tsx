@@ -44,6 +44,8 @@ export interface Common {
   t: T;
   /** The traveller's budget for the stay, 0 when none. */
   budget: number;
+  /** Our own list of the city's hotels for these dates: where a hotel with no price sends the traveller. */
+  alternatives?: { href: string; city: string };
 }
 
 const nf = (locale: "ar" | "en") => (locale === "ar" ? "ar-SA-u-nu-latn" : "en-US");
@@ -295,7 +297,15 @@ function BookPanel({ hotel, c, checkedAt }: { hotel: HotelResult; c: Common; che
       <div>
         <p className="font-display text-lg font-extrabold text-navy-950">{t.noPriceTitle}</p>
         <p className="mt-1 text-sm text-navy-600">{t.noPartnerPrice}</p>
-        <PartnerSearchLinks hotel={hotel} c={c} />
+        {c.alternatives && (
+          <a
+            href={c.alternatives.href}
+            className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-sun-400 px-4 py-3 text-sm font-extrabold text-navy-950 shadow-[var(--shadow-sun)] hover:bg-sun-300"
+          >
+            {t.cityAlternatives.replace("{city}", c.alternatives.city)}
+            {arrow}
+          </a>
+        )}
       </div>
     );
   }
@@ -615,7 +625,22 @@ export default function HotelPrices(
         </span>
         <p className="font-display text-lg font-extrabold text-navy-950">{c.t.unavailableTitle}</p>
         <p className="mx-auto mb-5 mt-1.5 max-w-lg text-sm text-navy-600">{c.t.unavailable}</p>
-        {fallback}
+        <div className="flex flex-col justify-center gap-2 sm:flex-row">
+          <button
+            type="button"
+            onClick={() => window.location.reload()}
+            className="rounded-xl bg-navy-900 px-5 py-3 text-sm font-extrabold text-white"
+          >
+            {c.t.retry}
+          </button>
+          {c.alternatives ? (
+            <a href={c.alternatives.href} className="rounded-xl bg-sun-400 px-5 py-3 text-sm font-extrabold text-navy-950">
+              {c.t.cityAlternatives.replace("{city}", c.alternatives.city)}
+            </a>
+          ) : (
+            fallback
+          )}
+        </div>
       </div>
     );
   }

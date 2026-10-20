@@ -115,7 +115,9 @@ function DiscoverResultsContent() {
           setRoutes(data.routes || []);
         } else {
           setSingleSuggestions(data.suggestions || []);
-          setUnpriced(data.unpriced || []);
+          // Without a fare we cannot say a place fits a flight budget: those
+          // are offered only on a hotel-only search.
+          setUnpriced(tripType === "hotel" ? data.unpriced || [] : []);
         }
       })
       .catch((e) => {
@@ -425,7 +427,10 @@ function DiscoverResultsContent() {
         )}
 
         {/* In season, but no fare seen for these dates: no price, no budget claim. */}
-        {!loading && !pricesUnavailable && mode !== "routes" && unpricedShown.length > 0 && (
+        {/* Places with no fare for these dates are not offered on a flight
+            search: we could not say they fit the budget (owner, 20 Oct).
+            A hotel-only search lists them — its prices come per city. */}
+        {!loading && !pricesUnavailable && mode !== "routes" && tripType === "hotel" && unpricedShown.length > 0 && (
           <section className="mt-10">
             <h2 className="font-display text-lg font-extrabold text-navy-900">{d.unpricedTitle}</h2>
             <p className="mb-4 mt-1 max-w-3xl text-sm leading-relaxed text-navy-600">{tripType === "hotel" ? d.unpricedBodyHotel : d.unpricedBody}</p>

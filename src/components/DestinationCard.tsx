@@ -194,6 +194,19 @@ export default function DestinationCard({
           ) : null}
         </div>
 
+        {/* The fare that chose this place, said plainly (owner, 20 Oct: show
+            the price and that it fits). «احجز» opens every flight live. */}
+        {suggestion.flight && suggestion.totalPrice > 0 && (
+          <div className="mt-3 rounded-xl bg-sea-50/70 px-2.5 py-2 ring-1 ring-sea-100 sm:px-3">
+            <p className="text-[11px] font-bold text-navy-600">{suggestion.flight.nearDays ? d.fareNear : d.fareSeen}</p>
+            <p className="font-display text-lg font-black text-navy-950 sm:text-xl">
+              <bdi dir="ltr">{`${Math.round(suggestion.totalPrice).toLocaleString("en-US")} ${currency}`}</bdi>
+            </p>
+            <p className="text-[11px] text-navy-500">{returnDate ? d.fareFor : d.fareForOneWay}</p>
+            {suggestion.withinBudget && <p className="mt-0.5 text-[11px] font-extrabold text-sea-700">{d.fareWithin}</p>}
+          </div>
+        )}
+
         <div className="mt-auto space-y-2 pt-3 sm:pt-4">
           {(() => {
             const main =

@@ -49,7 +49,17 @@ export default async function ServicesPage({ params, searchParams }: PageProps<"
 
   return (
     <div>
-      <PageHero {...hero} size="sm" align="center" title={dict.services.title} subtitle={dict.services.subtitle} />
+      <PageHero {...hero} size="sm" align="center" title={dict.services.title} subtitle={dict.services.lead}>
+        {/* What is here, one item each, readable at a glance (owner, 20 Oct:
+            features as points, not one long sentence). */}
+        <ul className="mt-4 flex flex-wrap justify-center gap-2">
+          {dict.services.points.map((p) => (
+            <li key={p} className="rounded-full bg-white/10 px-3.5 py-1.5 text-sm font-bold text-white ring-1 ring-white/20">
+              {p}
+            </li>
+          ))}
+        </ul>
+      </PageHero>
       <div className="mx-auto max-w-4xl px-4 pb-10 sm:px-6">
         <ServicesFinder locale={loc} initial={cityName} placeholder={dict.services.placeholder} label={dict.services.label} />
         {country && city ? (

@@ -279,6 +279,23 @@ function HotelResultsContent() {
                 locale={locale}
                 t={t}
                 fallback={partnerButtons}
+                alternatives={
+                  tripCity
+                    ? {
+                        city: locale === "ar" ? tripCity.nameAr : tripCity.nameEn,
+                        href: `/${locale}/hotel-results?${new URLSearchParams({
+                          hmode: "discover",
+                          city: tripCity.nameEn,
+                          label: locale === "ar" ? tripCity.nameAr : tripCity.nameEn,
+                          checkIn,
+                          checkOut,
+                          adults: String(adults),
+                          childrenAges: childrenAges.join(","),
+                          infants: sp.get("infants") || "0",
+                        })}`,
+                      }
+                    : undefined
+                }
               />
             ) : (
               <div>
