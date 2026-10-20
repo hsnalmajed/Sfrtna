@@ -514,7 +514,7 @@ export async function dayFares(
 
 
 /** Airport → its city's code, where the city has several airports (FCO → ROM). */
-const CITY_OF_AIRPORT: Record<string, string> = {
+export const CITY_OF_AIRPORT: Record<string, string> = {
   CDG: "PAR", ORY: "PAR", LHR: "LON", LGW: "LON", STN: "LON", JFK: "NYC", EWR: "NYC", MXP: "MIL", LIN: "MIL",
   FCO: "ROM", CIA: "ROM", HND: "TYO", NRT: "TYO", SVO: "MOW", DME: "MOW", VKO: "MOW", IAD: "WAS", DCA: "WAS",
   ORD: "CHI", ARN: "STO", OTP: "BUH", ICN: "SEL", GMP: "SEL", PEK: "BJS", PKX: "BJS", PVG: "SHA", KIX: "OSA",

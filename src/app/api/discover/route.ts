@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { resolveIata, searchFlights } from "@/lib/flights";
 import { suggestRoutes } from "@/lib/routeSuggest";
 import { placeForDestination } from "@/lib/destinationPlace";
-import { tripFaresFrom, type TripFare } from "@/lib/providers/travelpayouts";
+import { tripFaresFrom, CITY_OF_AIRPORT, type TripFare } from "@/lib/providers/travelpayouts";
+import { exploreFares } from "@/lib/providers/serpapi";
 import { CONTINENTS, type Continent } from "@/lib/countries";
 import { discoverCandidates, type Candidate } from "@/lib/discoverPool";
 import type {
@@ -86,7 +87,7 @@ async function suggestForDestination(
   // With a live fare source, flights are priced from the fares seen for the
   // trip's own dates (one request for every city, see tripFaresFrom);
   // without one (local development) the sample search stands in.
-  const fare = fares?.get(destination.code);
+  const fare = fares?.get(destination.code) ?? fares?.get(CITY_OF_AIRPORT[destination.code] ?? "");
   if (fares && params.directFlightsOnly && fare && fare.transfers !== 0) return "no-fare";
   const [flights, hotels] = await Promise.all([
     wantsFlight
@@ -172,10 +173,44 @@ export async function POST(req: NextRequest) {
 
   if (!params.multiDestination) {
     const returnDate = params.oneWayOnly ? undefined : params.returnDate || addDays(params.departDate, params.nights);
-    const fares =
-      params.tripType !== "hotel" && process.env.TRAVELPAYOUTS_TOKEN
-        ? await tripFaresFrom(resolveIata(params.origin), params.departDate, returnDate, params.currency)
-        : null;
+    const home = resolveIata(params.origin);
+    const paying = Math.max(1, params.adults + (params.childrenAges?.length ?? 0));
+    const wantsFlight = params.tripType !== "hotel";
+    const [partnerFares, googleFares] = await Promise.all([
+      wantsFlight && process.env.TRAVELPAYOUTS_TOKEN
+        ? tripFaresFrom(home, params.departDate, returnDate, params.currency)
+        : Promise.resolve(null),
+      // Every place priced for these exact dates and this party — so places
+      // the partner's data has no fare for still get a price (owner, 20 Oct:
+      // every destination within the budget, the traveller filters).
+      wantsFlight
+        ? exploreFares({
+            origin: home,
+            departDate: params.departDate,
+            returnDate,
+            adults: params.adults,
+            children: params.childrenAges?.length ?? 0,
+            infants: params.infants ?? 0,
+            currency: params.currency.toUpperCase(),
+            directOnly: params.directFlightsOnly,
+          })
+        : Promise.resolve(null),
+    ]);
+    let fares: Map<string, TripFare> | null = partnerFares;
+    if (googleFares?.length) {
+      fares = new Map(partnerFares ?? []);
+      for (const g of googleFares) {
+        // Google's price covers the whole party; a TripFare is per traveller.
+        const fare: TripFare = { price: Math.round(g.price / paying), airline: g.airline || "—", transfers: g.stops, off: 0 };
+        for (const k of [g.airport, CITY_OF_AIRPORT[g.airport]]) {
+          if (!k) continue;
+          const prev = fares.get(k);
+          // The partner's fare stays when it is for these days and no dearer
+          // (its link earns); otherwise the exact-day price.
+          if (!prev || prev.off > 0 || prev.price > fare.price) fares.set(k, fare);
+        }
+      }
+    }
     const answers = await Promise.all(pool.map((d) => suggestForDestination(params, d, params.nights, fares)));
     const results = answers.filter((r): r is DestinationSuggestion => r !== null && r !== "no-fare");
 
@@ -190,11 +225,12 @@ export async function POST(req: NextRequest) {
       ...results.filter((r) => !r.withinBudget).sort(byPrice),
     ];
 
-    // Cities at their best in the month of travel that no fare was seen for
-    // on these dates: no price, and no claim about the budget — a way to the
-    // live search instead. Best months first.
+    // Every other place in the pool, whatever its season: no fare was seen
+    // for these dates, so no price and no claim about the budget — the card
+    // opens the live search. The traveller filters (season, visa, continent,
+    // kind); we do not filter for them (owner, 20 Oct). Best seasons first.
     const month = Number(params.departDate.slice(5, 7));
-    const rank = { EXCELLENT: 0, VERY_GOOD: 1 } as Record<string, number>;
+    const rank = { EXCELLENT: 0, VERY_GOOD: 1, GOOD: 2, ACCEPTABLE: 3, NOT_RECOMMENDED: 4 } as Record<string, number>;
     const unpriced: DestinationSuggestion[] = pool
       .filter((d, i) => answers[i] === "no-fare")
       .map((d) => ({
@@ -211,9 +247,7 @@ export async function POST(req: NextRequest) {
         continent: d.continent,
         categories: d.categories,
       }))
-      .filter((s) => s.place?.inSeason)
-      .sort((a, b) => (rank[a.place?.classification ?? ""] ?? 9) - (rank[b.place?.classification ?? ""] ?? 9))
-      .slice(0, 24);
+      .sort((a, b) => (rank[a.place?.classification ?? ""] ?? 9) - (rank[b.place?.classification ?? ""] ?? 9));
 
     return NextResponse.json({ mode: "single", suggestions, unpriced });
   }

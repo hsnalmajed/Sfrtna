@@ -156,22 +156,36 @@ export function BudgetInput({
             : "border-gray-200 bg-white shadow-sm focus-within:border-brand-500 focus-within:ring-brand-100"
         } ${error ? (dark ? "border-rose-300" : "border-red-400") : ""}`}
       >
-        <input
-          id={id}
-          type="text"
-          inputMode="numeric"
-          autoComplete="off"
-          dir="ltr"
-          className={`min-w-0 flex-1 bg-transparent px-4 py-2.75 text-sm font-semibold tabular-nums outline-none ${
-            dark
-              ? "text-white placeholder:font-normal placeholder:text-white/45"
-              : "text-gray-800 placeholder:font-normal placeholder:text-gray-400"
-          } ${locale === "ar" ? "text-right" : "text-left"}`}
-          value={value ? Number(value).toLocaleString("en-US") : ""}
-          placeholder={placeholder}
-          aria-invalid={Boolean(error)}
-          onChange={(e) => onChange(toDigits(e.target.value))}
-        />
+        {/* The hint is drawn over the box and scales to its width, so the
+            whole sentence always shows («ميزانية الطيران لكل المسافرين» was
+            cut to «زانية…» on phones — a native placeholder cannot shrink). */}
+        <div className="@container relative min-w-0 flex-1">
+          <input
+            id={id}
+            type="text"
+            inputMode="numeric"
+            autoComplete="off"
+            dir="ltr"
+            className={`w-full bg-transparent px-3 py-2.75 text-sm font-semibold tabular-nums outline-none sm:px-4 ${
+              dark ? "text-white" : "text-gray-800"
+            } ${locale === "ar" ? "text-right" : "text-left"}`}
+            value={value ? Number(value).toLocaleString("en-US") : ""}
+            aria-label={`${label} — ${placeholder}`}
+            aria-invalid={Boolean(error)}
+            onChange={(e) => onChange(toDigits(e.target.value))}
+          />
+          {!value && (
+            <span
+              aria-hidden="true"
+              dir={locale === "ar" ? "rtl" : "ltr"}
+              className={`pointer-events-none absolute inset-y-0 start-0 end-0 flex items-center overflow-hidden whitespace-nowrap px-3 text-[length:clamp(10px,6.2cqi,14px)] sm:px-4 ${
+                dark ? "text-white/55" : "text-gray-400"
+              }`}
+            >
+              {placeholder}
+            </span>
+          )}
+        </div>
         <CurrencySelect
           className={`cursor-pointer border-s bg-transparent px-2.5 text-sm font-bold outline-none ${
             dark ? "border-white/15 text-white" : "border-gray-200 text-navy-800"

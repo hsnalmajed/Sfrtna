@@ -74,9 +74,13 @@ async function account(): Promise<Account | null> {
  */
 const FLIGHT_RESERVE = 40;
 
-async function maySearch(kind: "hotel" | "flight" = "hotel"): Promise<boolean> {
+async function maySearch(kind: "hotel" | "flight" | "explore" = "hotel"): Promise<boolean> {
   const a = await account();
   if (!a || a.left <= 0) return false;
+  // "Suggest a destination": one search prices every place for the
+  // traveller's own dates (cached per origin, dates and travellers), so it
+  // may run whenever the flight reserve stays untouched.
+  if (kind === "explore") return a.left > FLIGHT_RESERVE;
   // Flights: anything left, no daily pace — the fallback is rare and it is
   // all the traveller has at that moment.
   if (kind === "flight") return a.left > 2;
@@ -113,7 +117,7 @@ export async function serpUsage(): Promise<(Account & { mayUse: boolean }) | nul
   return { ...a, mayUse: await maySearch() };
 }
 
-async function search(params: Record<string, string>, kind: "hotel" | "flight" = "hotel"): Promise<Record<string, unknown> | null> {
+async function search(params: Record<string, string>, kind: "hotel" | "flight" | "explore" = "hotel"): Promise<Record<string, unknown> | null> {
   if (!key() || !(await maySearch(kind))) return null;
   const url = new URL(`${BASE}/search.json`);
   for (const [k, v] of Object.entries(params)) url.searchParams.set(k, v);
@@ -456,5 +460,78 @@ export async function googleFlights(q: {
       }));
     const meta = body.search_metadata as { google_flights_url?: string } | undefined;
     return { flights, url: httpsOnly(meta?.google_flights_url), roundTrip: round, currency: q.currency };
+  });
+}
+
+export interface ExploreFare {
+  /** Airport the fare lands at (IATA). */
+  airport: string;
+  /** Whole trip for every paying traveller, in the asked currency. */
+  price: number;
+  stops: number | null;
+  airline: string;
+}
+
+/**
+ * Every place Google Flights prices from `origin` for the traveller's own
+ * dates and party, in one search (Google Travel Explore) — what lets
+ * "suggest a destination" show a price on places the flight partner has no
+ * fare for. Cached six hours per origin, dates and travellers.
+ */
+export async function exploreFares(q: {
+  origin: string;
+  departDate: string;
+  returnDate?: string;
+  adults: number;
+  children: number;
+  infants: number;
+  currency: string;
+  directOnly: boolean;
+}): Promise<ExploreFare[] | null> {
+  const round = Boolean(q.returnDate);
+  const key = `serp-explore1:${q.origin}:${q.departDate}:${q.returnDate || "-"}:${q.adults}:${q.children}:${q.infants}:${q.currency}:${q.directOnly ? 1 : 0}`;
+  return cachedJson<ExploreFare[]>(key, 6 * 3600, async () => {
+    const params: Record<string, string> = {
+      engine: "google_travel_explore",
+      departure_id: q.origin,
+      outbound_date: q.departDate,
+      type: round ? "1" : "2",
+      travel_mode: "1",
+      adults: String(q.adults),
+      currency: q.currency,
+      hl: "en",
+      gl: "sa",
+    };
+    if (round) params.return_date = q.returnDate as string;
+    if (q.children) params.children = String(q.children);
+    if (q.infants) params.infants_on_lap = String(q.infants);
+    if (q.directOnly) params.stops = "1";
+    const body = await search(params, "explore");
+    if (!body) return null;
+    type Row = {
+      flight_price?: number;
+      number_of_stops?: number;
+      airline?: string;
+      start_date?: string;
+      end_date?: string;
+      destination_airport?: { code?: string };
+    };
+    const rows = (body.destinations as Row[] | undefined) ?? [];
+    return rows
+      .filter(
+        (r) =>
+          typeof r.flight_price === "number" &&
+          r.flight_price > 0 &&
+          r.destination_airport?.code &&
+          // Only fares for the traveller's own days.
+          (!r.start_date || r.start_date === q.departDate) &&
+          (!round || !r.end_date || r.end_date === q.returnDate)
+      )
+      .map((r) => ({
+        airport: (r.destination_airport?.code ?? "").toUpperCase(),
+        price: Math.round(r.flight_price as number),
+        stops: typeof r.number_of_stops === "number" ? r.number_of_stops : null,
+        airline: r.airline ?? "",
+      }));
   });
 }

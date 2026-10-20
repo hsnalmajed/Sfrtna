@@ -117,7 +117,7 @@ function DiscoverResultsContent() {
           setSingleSuggestions(data.suggestions || []);
           // Without a fare we cannot say a place fits a flight budget: those
           // are offered only on a hotel-only search.
-          setUnpriced(tripType === "hotel" ? data.unpriced || [] : []);
+          setUnpriced(data.unpriced || []);
         }
       })
       .catch((e) => {
@@ -177,6 +177,17 @@ function DiscoverResultsContent() {
   const [continentPick, setContinentPick] = useState<Continent[]>([]);
   const [kindPick, setKindPick] = useState<DestinationCategory[]>([]);
   const [showOver, setShowOver] = useState(false);
+  // Every place is listed (the traveller filters), a page at a time.
+  const PAGE = 24;
+  const [shownWithin, setShownWithin] = useState(PAGE);
+  const [shownUnpriced, setShownUnpriced] = useState(PAGE);
+  const filterKey = `${seasonPick.join()}|${visaPick.join()}|${continentPick.join()}|${kindPick.join()}`;
+  const [lastKey, setLastKey] = useState(filterKey);
+  if (lastKey !== filterKey) {
+    setLastKey(filterKey);
+    setShownWithin(PAGE);
+    setShownUnpriced(PAGE);
+  }
   type Place = DestinationSuggestion["place"];
   type Tagged = { place?: Place; continent?: string; categories?: DestinationCategory[] };
   const continentOf = (x: Tagged) => (x.continent ?? (x.place ? findCountry(x.place.countryCode)?.continent : undefined)) as Continent | undefined;
@@ -403,7 +414,12 @@ function DiscoverResultsContent() {
 
         {/* Within budget: the answer. */}
         {!loading && !pricesUnavailable && within.length > 0 &&
-          (mode === "routes" ? renderRoutes(within as RouteSuggestion[]) : renderSingle(within as DestinationSuggestion[]))}
+          (mode === "routes"
+            ? renderRoutes(within as RouteSuggestion[])
+            : renderSingle((within as DestinationSuggestion[]).slice(0, shownWithin)))}
+        {!loading && !pricesUnavailable && mode !== "routes" && within.length > shownWithin && (
+          <ShowMore onClick={() => setShownWithin((n) => n + PAGE)} label={d.showMore.replace("{count}", String(within.length - shownWithin))} />
+        )}
 
         {/* Nothing fits: say what it would take. */}
         {!loading && !pricesUnavailable && hasResults && within.length === 0 && over.length > 0 && (
@@ -426,15 +442,19 @@ function DiscoverResultsContent() {
           </div>
         )}
 
-        {/* In season, but no fare seen for these dates: no price, no budget claim. */}
-        {/* Places with no fare for these dates are not offered on a flight
-            search: we could not say they fit the budget (owner, 20 Oct).
-            A hotel-only search lists them — its prices come per city. */}
-        {!loading && !pricesUnavailable && mode !== "routes" && tripType === "hotel" && unpricedShown.length > 0 && (
-          <section className="mt-10">
-            <h2 className="font-display text-lg font-extrabold text-navy-900">{d.unpricedTitle}</h2>
+        {/* Every other place, whatever its season: no fare for these dates
+            yet, so no price and no budget claim — the card opens the live
+            search. The traveller narrows them with the filters above. */}
+        {!loading && !pricesUnavailable && mode !== "routes" && unpricedShown.length > 0 && (
+          <section className={within.length > 0 ? "mt-10" : ""}>
+            <h2 className="font-display text-lg font-extrabold text-navy-900">
+              {(tripType === "hotel" ? d.unpricedTitleHotel : d.unpricedTitle).replace("{count}", String(unpricedShown.length))}
+            </h2>
             <p className="mb-4 mt-1 max-w-3xl text-sm leading-relaxed text-navy-600">{tripType === "hotel" ? d.unpricedBodyHotel : d.unpricedBody}</p>
-            {renderSingle(unpricedShown)}
+            {renderSingle(unpricedShown.slice(0, shownUnpriced))}
+            {unpricedShown.length > shownUnpriced && (
+              <ShowMore onClick={() => setShownUnpriced((n) => n + PAGE)} label={d.showMore.replace("{count}", String(unpricedShown.length - shownUnpriced))} />
+            )}
           </section>
         )}
 
@@ -462,6 +482,20 @@ function DiscoverResultsContent() {
           </div>
         )}
       </div>
+    </div>
+  );
+}
+
+function ShowMore({ onClick, label }: { onClick: () => void; label: string }) {
+  return (
+    <div className="mt-5 text-center">
+      <button
+        type="button"
+        onClick={onClick}
+        className="min-h-10 rounded-full bg-white px-6 py-2.5 text-sm font-bold text-navy-900 shadow-sm ring-1 ring-mist-300 transition hover:ring-navy-300"
+      >
+        {label}
+      </button>
     </div>
   );
 }
