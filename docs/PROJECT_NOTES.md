@@ -860,7 +860,20 @@ Chrome), climate v2 after the owner's download, publishing staged cities.
 
 ## Next, in order
 
-**▶ Start here (hand-off 14 Oct):**
+**▶ Start here (hand-off 20 Oct):** coverage section closed — 365 live cities /
+133 countries, all checks green (Site check, e2e, phone taps on 30565a7). The
+owner opens a new conversation with **a list of notes — work on that list
+first**, one section at a time. Open before the closed beta:
+- Owner: payout method to replace PayPal (Travelpayouts); Android phone test;
+  one «احجز الرحلة» seen in Travelpayouts; settings `GOOGLE_CLIENT_ID` +
+  `RESEND_API_KEY` to switch on sign-in.
+- Claude: re-test TEST_PLAN 3.4 (meals — restaurants now stored, 361 files),
+  2.8/2.9, 3.7, 5.5/5.6, 6.1 (phone 390 px iframe + app); photos for the 151
+  new cities fill in after the Pexels reset on 25 Oct (photos.yml hourly) —
+  check after; Madagascar visa (official page), Cusco/Paro/Pohnpei/Valletta/
+  Madeira/Kazbegi climate (national normals).
+
+**Previous hand-off (14 Oct):**
 1. ✅ **Phone speed closed 14 Oct:** re-run on 33c8fac, applied throttling
    1.9–2.1 s on all 8 pages (TEST_PLAN). History: /ar/itinerary 3.0 s and /ar/visa
    2.7 s (applied throttling) are just over 2.5 s (their HTML is small:
