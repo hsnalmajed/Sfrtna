@@ -173,8 +173,8 @@ for (const device of ["iPhone 13", "Pixel 7"]) {
           window.scrollTo(0, 0);
           return out;
         }, DEAD_END.map((r) => ({ source: r.source, flags: r.flags })));
-        const file = `${OUT}/${String(n).padStart(3, "0")}-${device.replace(/\s+/g, "")}-${mode}.png`;
-        await page.screenshot({ path: file, fullPage: true }).catch(() => {});
+        const file = `${OUT}/${String(n).padStart(3, "0")}-${device.replace(/\s+/g, "")}-${mode}.jpg`;
+        await page.screenshot({ path: file, fullPage: true, type: "jpeg", quality: 55 }).catch(() => {});
         report.push({ device, mode, path, file, ...found, errors: [...new Set(errors)].slice(0, 5) });
       } catch (e) {
         report.push({ device, mode, path, failed: String(e?.message || e).split("\n")[0] });

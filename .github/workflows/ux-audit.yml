@@ -26,12 +26,18 @@ jobs:
         env:
           SMOKE_TOKEN: ${{ secrets.SMOKE_TOKEN }}
         run: node scripts/ux-audit.mjs
-      - name: Keep the screenshots
+      # On a branch of their own (never main, so nothing is deployed): the
+      # report and the screenshots, replaced on every run.
+      - name: Keep the report and screenshots
         if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: ux-audit
-          path: |
-            scripts/ux-audit/
-            scripts/ux-audit-report.txt
-          retention-days: 14
+        run: |
+          mkdir -p /tmp/out && cp -r scripts/ux-audit scripts/ux-audit-report.txt /tmp/out/ 2>/dev/null || true
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout --orphan ux-audit-results
+          git rm -rf --cached . >/dev/null
+          find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+          cp -r /tmp/out/* .
+          git add -A
+          git commit -m "UX audit $(date -u +%FT%TZ)" >/dev/null
+          git push -f origin ux-audit-results
