@@ -1,0 +1,37 @@
+# The whole site checked on two phones, in the browser and in the app, with
+# a screenshot of every page (scripts/ux-audit.mjs). By hand, after a
+# section's changes are deployed.
+name: UX audit
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install the browser
+        run: |
+          npm install --no-save --no-audit --no-fund playwright@1
+          npx playwright install --with-deps chromium
+      - name: Audit every page
+        env:
+          SMOKE_TOKEN: ${{ secrets.SMOKE_TOKEN }}
+        run: node scripts/ux-audit.mjs
+      - name: Keep the screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ux-audit
+          path: |
+            scripts/ux-audit/
+            scripts/ux-audit-report.txt
+          retention-days: 14
