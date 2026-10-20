@@ -23,6 +23,7 @@ import { flightSearchCode, parseFlightSearchCode } from "@/lib/flightSearchCode"
 import { findCityByName } from "@/lib/cities";
 import { findCountryByEnglishName } from "@/lib/countries";
 import ComboHotelSection from "@/components/ComboHotelSection";
+import ShareButton from "@/components/ShareButton";
 import { comboParams, readCombo } from "@/lib/combo";
 
 
@@ -396,6 +397,7 @@ function ResultsContent() {
               {showCurrencyStrip && homeCurrency && tripCurrency && (
                 <TripCurrencyInline from={homeCurrency} to={tripCurrency} locale={locale} />
               )}
+              <ShareButton title={`${originCityName} ← ${destinationCityName ?? search.destination}`} />
               </div>
             </div>
           </div>

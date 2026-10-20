@@ -257,6 +257,11 @@ const en = {
     suite: "Suite",
     apartment: "Full apartment",
   },
+  share: { share: "Share", copied: "Link copied" },
+  recent: {
+    title: "Your recent searches",
+    discover: "Suggest a destination",
+  },
   appWelcome: {
     s1Title: "Flights from every site",
     s1Body: "We pick the best flight within your budget.",

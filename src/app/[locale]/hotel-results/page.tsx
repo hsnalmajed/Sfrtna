@@ -16,6 +16,7 @@ import { findHotelCity, hotelCityPlace } from "@/components/HotelCityInput";
 import PartnerLink from "@/components/PartnerLink";
 import NextStepTabs, { markStep, tripCityFrom } from "@/components/NextStepTabs";
 import { RATING_LABEL, readHotelPrefs } from "@/lib/hotelPrefs";
+import ShareButton from "@/components/ShareButton";
 
 /**
  * Hotel results: the search read back, then live prices from every site.
@@ -235,6 +236,7 @@ function HotelResultsContent() {
                 {t.backToSearch}
               </span>
             </Link>
+            <ShareButton title={label || query} />
             {chips.map((c) => (
               <span
                 key={c}

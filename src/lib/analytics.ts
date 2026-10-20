@@ -1,3 +1,4 @@
+import { rememberSearch } from "@/lib/recentSearches";
 /**
  * Google Analytics 4 — one place for every measurement call on the site.
  *
@@ -139,6 +140,9 @@ function count(list: string | null): number {
  * so each form needs one line and none can describe itself differently.
  */
 export function trackSearchUrl(url: string): void {
+  // Every search a form starts is also offered again on the home page
+  // («عمليات بحثك الأخيرة»), measured or not.
+  rememberSearch(url);
   if (!isMeasuredHost()) return;
   try {
     const u = new URL(url, window.location.origin);

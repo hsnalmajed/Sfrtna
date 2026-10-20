@@ -272,6 +272,11 @@ const ar = {
   },
   // What the traveller is actually asked, as opposed to what the hotel API
   // is told. See stayType.ts.
+  share: { share: "مشاركة", copied: "نُسخ الرابط" },
+  recent: {
+    title: "عمليات بحثك الأخيرة",
+    discover: "اقترح لي وجهة",
+  },
   appWelcome: {
     s1Title: "طيرانك من كل المواقع",
     s1Body: "نختار لك أفضل رحلة ضمن ميزانيتك.",
