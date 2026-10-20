@@ -210,6 +210,10 @@ export default function HomeShowcase({
     function show(product?: PlanProduct) {
       setActive("plan");
       if (product) setPlanProduct(product);
+      // In the app the «احجز» tab opens straight on a form (flights, the
+      // first choice), not on three buttons over an empty screen (owner,
+      // 20 Oct); the switch above it still changes to hotels or both.
+      else if (document.documentElement.classList.contains("in-app")) setPlanProduct((p) => p ?? "flights");
       requestAnimationFrame(() =>
         document.getElementById("plan")?.scrollIntoView({ behavior: "smooth", block: "start" })
       );
@@ -689,8 +693,8 @@ export default function HomeShowcase({
                           setPlanPreset(undefined);
                           setPlanProduct(c.value);
                         }}
-                        className={`group flex items-center gap-3 rounded-2xl text-start ring-1 transition duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400 sm:gap-4 ${
-                          compact ? "justify-center px-4 py-3" : "p-5 hover:-translate-y-1 sm:p-8"
+                        className={`group flex flex-col items-center gap-1.5 rounded-2xl text-center ring-1 transition duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400 sm:flex-row sm:gap-4 sm:text-start ${
+                          compact ? "justify-center px-2 py-2.5 sm:px-4 sm:py-3" : "p-3 hover:-translate-y-1 sm:p-8"
                         } ${
                           on
                             ? "bg-white text-navy-950 ring-white"
@@ -705,7 +709,7 @@ export default function HomeShowcase({
                           <Icon name={c.icon} className={compact ? "h-[1.125rem] w-[1.125rem]" : "h-6 w-6 sm:h-7 sm:w-7"} />
                         </span>
                         <span className="min-w-0">
-                          <span className={`block font-display font-extrabold ${compact ? "text-base" : "text-lg sm:text-h3"}`}>
+                          <span className={`block whitespace-nowrap font-display font-extrabold ${compact ? "text-sm sm:text-base" : "text-base sm:text-h3"}`}>
                             {c.title}
                           </span>
                         </span>
