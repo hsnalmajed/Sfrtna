@@ -8,6 +8,7 @@ import Icon from "@/components/ui/Icon";
 import { PriceRows, Photo, Rating, Shimmer, Stars, money, type Common } from "@/components/HotelPrices";
 import { AMENITY_CODE, BREAKFAST_CODE, NO_HOTEL_PREFS, PLACE_TYPE_CODE, type HotelPrefs } from "@/lib/hotelPrefs";
 import { useDictionary } from "@/lib/dict/context";
+import { track } from "@/lib/analytics";
 
 /**
  * «اقترح لي فندق»: a city's hotels as cards, like the flight cards — photo,
@@ -102,8 +103,10 @@ export default function HotelList({
   const result = state?.url === url ? state.result : undefined;
   const failed = result === null || (result && result.kind !== "list");
   useEffect(() => {
-    if (failed) onUnavailable();
-  }, [failed, onUnavailable]);
+    if (!failed) return;
+    onUnavailable();
+    track("service_failure", { service: "hotel_list", reason: result === null ? "no_answer" : "not_a_list" });
+  }, [failed, onUnavailable, result]);
 
   const nextToken = extra.hotels.length ? extra.next : result?.nextPage ?? null;
   const loadMore = () => {

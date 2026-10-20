@@ -158,7 +158,9 @@ export function trackSearchUrl(url: string): void {
     }
 
     const params: Params = {
-      search_type: type,
+      // «طيران + فندق» is its own kind of search, with its own hotel budget.
+      search_type: q.get("combo") === "1" ? `${type}_hotel` : type,
+      hotel_budget: Number(q.get("hb")) || undefined,
       search_mode: q.get("hmode") || q.get("mode") || undefined,
       trip_route: q.get("tripRoute") || undefined,
       origin: q.get("origin") || undefined,

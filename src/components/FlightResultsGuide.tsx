@@ -379,7 +379,11 @@ export default function FlightResultsGuide({
   const [stalled, setStalled] = useState(false);
   useEffect(() => {
     const id = window.setTimeout(() => {
-      if (!document.getElementById("tpwl-tickets")?.shadowRoot) setStalled(true);
+      if (!document.getElementById("tpwl-tickets")?.shadowRoot) {
+        setStalled(true);
+        // The flight partner did not load: seen in GA4 as a failure.
+        track("service_failure", { service: "flight_search", reason: "widget_not_loaded" });
+      }
     }, 12_000);
     const watch = window.setInterval(() => {
       if (document.getElementById("tpwl-tickets")?.shadowRoot) {
@@ -822,7 +826,10 @@ export default function FlightResultsGuide({
   );
 
   // ── The filter row (owner, 20 Oct: "like Wego") ─────────────────────
-  const setFacet = <K extends Facet>(k: K, v: Filters[K]) => setFilters((prev) => ({ ...prev, [k]: v }));
+  const setFacet = <K extends Facet>(k: K, v: Filters[K]) => {
+    setFilters((prev) => ({ ...prev, [k]: v }));
+    track("flight_filter", { filter: k, values: v.length ? v.join(",").slice(0, 90) : "all" });
+  };
   const facts = (f: Flight) => flightFacts(f);
   const hasReturn = pool.some((f) => f.legs.length === 2);
   const airlineFrom = new Map<string, number>();

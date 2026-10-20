@@ -18,6 +18,7 @@ import { findAirport } from "@/lib/airports";
 import { parseChildrenAges } from "@/lib/searchParamsUtil";
 import { CONTINENTS, findCountry, type Continent } from "@/lib/countries";
 import { comboParams } from "@/lib/combo";
+import { track } from "@/lib/analytics";
 
 export default function DiscoverResultsPage() {
   return (
@@ -117,7 +118,10 @@ function DiscoverResultsContent() {
           setUnpriced(data.unpriced || []);
         }
       })
-      .catch(() => setError("error"))
+      .catch((e) => {
+        setError("error");
+        track("service_failure", { service: "discover", reason: String((e as Error)?.message ?? "error").slice(0, 40) });
+      })
       .finally(() => setLoading(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [

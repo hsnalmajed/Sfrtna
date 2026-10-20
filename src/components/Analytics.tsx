@@ -120,7 +120,30 @@ export default function Analytics({ locale }: { locale: Locale }) {
     document.addEventListener("auxclick", onClick, { capture: true });
     const reopen = () => setAskConsent(true);
     window.addEventListener(CONSENT_OPEN_EVENT, reopen);
+    // Anything that breaks in a visitor's browser reaches GA4 as an
+    // "exception" (owner, 20 Oct: "know whatever breaks on the site or app").
+    // At most ten a page, the message cut short, no addresses or values.
+    let reported = 0;
+    const report = (description: string, fatal: boolean) => {
+      if (reported++ >= 10) return;
+      track("exception", {
+        description: description.replace(/https?:\/\/\S+/g, "<url>").slice(0, 120),
+        fatal,
+        page_path: window.location.pathname,
+        app: document.documentElement.classList.contains("in-app") ? "android" : "web",
+      });
+    };
+    const onError = (e: ErrorEvent) => {
+      // Errors inside partners' widgets (another origin) carry no message.
+      if (!e.message || e.message === "Script error.") return;
+      report(e.message, true);
+    };
+    const onRejection = (e: PromiseRejectionEvent) => report(String((e.reason as Error)?.message ?? e.reason), false);
+    window.addEventListener("error", onError);
+    window.addEventListener("unhandledrejection", onRejection);
     return () => {
+      window.removeEventListener("error", onError);
+      window.removeEventListener("unhandledrejection", onRejection);
       document.removeEventListener("click", onClick, { capture: true });
       document.removeEventListener("auxclick", onClick, { capture: true });
       window.removeEventListener(CONSENT_OPEN_EVENT, reopen);
