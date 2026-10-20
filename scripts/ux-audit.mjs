@@ -102,7 +102,7 @@ for (const device of ["iPhone 13", "Pixel 7"]) {
         await page.waitForTimeout(path.includes("results") ? 14_000 : 3_000);
         const found = await page.evaluate((deadEnd) => {
           const W = window.innerWidth;
-          const out = { overflow: document.documentElement.scrollWidth - W, offscreen: [], wrapped: [], cut: [], blurry: [], tiny: [], deadEnd: [], empty: [] };
+          const out = { overflow: document.documentElement.scrollWidth - W, offscreen: [], wrapped: [], cut: [], blurry: [], tiny: [], deadEnd: [], empty: [], imgs: [] };
           const visible = (el) => {
             const r = el.getBoundingClientRect();
             const s = getComputedStyle(el);
@@ -128,7 +128,9 @@ for (const device of ["iPhone 13", "Pixel 7"]) {
             const r = el.getBoundingClientRect();
             const lh = parseFloat(getComputedStyle(el).lineHeight) || parseFloat(getComputedStyle(el).fontSize) * 1.4;
             const lines = text.split("\n").filter(Boolean).length;
-            if (text && text.length <= 24 && lines === 1 && el.scrollHeight > lh * 2.2 && r.height < 140 && !el.querySelector("img, svg + span + span")) out.wrapped.push(`${label(el)} (${Math.round(r.width)}×${Math.round(r.height)})`);
+            // Icon-over-label tiles (tab bar, plan choices) are tall by design.
+            const stacked = el.querySelector("img, svg") && getComputedStyle(el).flexDirection.startsWith("column");
+            if (text && text.length <= 24 && lines === 1 && !stacked && el.scrollHeight > lh * 2.2 && r.height < 140 && !el.querySelector("img, svg + span + span")) out.wrapped.push(`${label(el)} (${Math.round(r.width)}×${Math.round(r.height)})`);
             if ((el.tagName === "BUTTON" || el.getAttribute("role")) && (r.width < 32 || r.height < 32) && !el.closest(".leaflet-container")) out.tiny.push(`${label(el) || el.className.slice(0, 30)} (${Math.round(r.width)}×${Math.round(r.height)})`);
           }
           for (const el of document.querySelectorAll("p, span, h1, h2, h3, a, button, input")) {
@@ -140,15 +142,12 @@ for (const device of ["iPhone 13", "Pixel 7"]) {
               if (el.tagName !== "INPUT" || ph) out.cut.push(`${label(el)} (${el.clientWidth}/${el.scrollWidth})`);
             }
           }
-          const dpr = window.devicePixelRatio;
+          out.imgs = [];
           for (const img of document.querySelectorAll("img")) {
             if (!visible(img) || !img.naturalWidth) continue;
             const r = img.getBoundingClientRect();
-            if (r.width < 120) continue;
-            const s = getComputedStyle(img);
-            // object-fit: cover draws the file at the larger of the two ratios.
-            const scale = s.objectFit === "cover" ? Math.max((r.width * dpr) / img.naturalWidth, (r.height * dpr) / img.naturalHeight) : (r.width * dpr) / img.naturalWidth;
-            if (scale > 1.6) out.blurry.push(`${(img.currentSrc || img.src).replace(/^https?:\/\/[^/]+/, "").slice(0, 70)} ×${scale.toFixed(1)}`);
+            if (r.width < 120 || img.closest(".leaflet-container")) continue;
+            out.imgs.push({ src: img.currentSrc || img.src, w: r.width, h: r.height, cover: getComputedStyle(img).objectFit === "cover" });
           }
           const text = document.body.innerText;
           for (const src of deadEnd) {
@@ -173,6 +172,25 @@ for (const device of ["iPhone 13", "Pixel 7"]) {
           window.scrollTo(0, 0);
           return out;
         }, DEAD_END.map((r) => ({ source: r.source, flags: r.flags })));
+        // A photo's real pixels (naturalWidth of an <img> with srcset is
+        // divided by its density, so the file is opened on its own).
+        found.blurry = await page.evaluate(async (imgs) => {
+          const dpr = window.devicePixelRatio;
+          const out = [];
+          for (const i of imgs) {
+            const im = new Image();
+            im.src = i.src;
+            try {
+              await im.decode();
+            } catch {
+              continue;
+            }
+            const scale = i.cover ? Math.max((i.w * dpr) / im.naturalWidth, (i.h * dpr) / im.naturalHeight) : (i.w * dpr) / im.naturalWidth;
+            if (scale > 1.6) out.push(`${i.src.replace(/^https?:\/\/[^/]+/, "").slice(0, 70)} ×${scale.toFixed(1)}`);
+          }
+          return out;
+        }, found.imgs || []);
+        delete found.imgs;
         const file = `${OUT}/${String(n).padStart(3, "0")}-${device.replace(/\s+/g, "")}-${mode}.jpg`;
         await page.screenshot({ path: file, fullPage: true, type: "jpeg", quality: 55 }).catch(() => {});
         report.push({ device, mode, path, file, ...found, errors: [...new Set(errors)].slice(0, 5) });

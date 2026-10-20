@@ -468,7 +468,7 @@ export default function TripPlanner({
                 onClick={swapPlaces}
                 aria-label={dict.form.swapPlaces}
                 title={dict.form.swapPlaces}
-                className={`absolute -bottom-[1.4rem] end-4 z-10 flex h-8 w-8 rotate-90 items-center justify-center rounded-full ring-1 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400 sm:bottom-auto sm:-end-[1.15rem] sm:top-[2.15rem] sm:rotate-0 ${
+                className={`absolute -bottom-[1.6rem] end-4 z-10 flex h-10 w-10 rotate-90 items-center justify-center rounded-full ring-1 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400 sm:bottom-auto sm:-end-[1.15rem] sm:top-[2.15rem] sm:rotate-0 ${
                   dark
                     ? "bg-navy-990 text-white/85 ring-white/25 hover:text-sun-400 hover:ring-sun-400"
                     : "bg-white text-navy-700 ring-mist-300 hover:ring-navy-400"

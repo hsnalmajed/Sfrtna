@@ -89,7 +89,7 @@ export default function TripCurrencyInline({
           onClick={() => setOpen(true)}
           className={
             variant === "light"
-              ? "inline-flex items-center gap-1.5 rounded-full bg-sun-400 px-3 py-1 text-xs font-extrabold text-navy-950 transition hover:bg-sun-300"
+              ? "inline-flex min-h-10 items-center gap-1.5 rounded-full bg-sun-400 px-3.5 py-2 text-xs font-extrabold text-navy-950 transition hover:bg-sun-300"
               : "inline-flex items-center gap-1.5 self-stretch border-s border-white/15 bg-white px-3.5 py-2 font-extrabold text-navy-950 transition hover:bg-sun-100"
           }
         >

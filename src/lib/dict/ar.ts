@@ -549,7 +549,7 @@ const ar = {
     fromCentre: "{km} كم من وسط {city}",
     freeBreakfast: "إفطار مجاني",
     lowestStay: "أقل سعر للإقامة",
-    pricesEverySite: "الأسعار في كل المواقع",
+    pricesEverySite: "قارن الأسعار واحجز",
     listChecking: "نجلب فنادق {city} وأسعارها…",
     listNoBreakfast: "لا يوجد في القائمة فندق بإفطار مجاني لهذه التواريخ. نعرض كل الفنادق:",
     listEmpty: "لا توجد فنادق مطابقة لاختياراتك في هذه التواريخ.",

@@ -144,7 +144,7 @@ export default function CurrencyConverter({
               type="button"
               onClick={() => setAmount(String(n))}
               aria-pressed={validAmount === n}
-              className={`rounded-full px-3 py-1 text-xs font-bold ring-1 transition ${
+              className={`min-h-10 rounded-full px-4 py-2 text-xs font-bold ring-1 transition ${
                 validAmount === n ? "bg-navy-900 text-white ring-navy-900" : "bg-mist-50 text-navy-700 ring-mist-200 hover:ring-navy-300"
               }`}
             >

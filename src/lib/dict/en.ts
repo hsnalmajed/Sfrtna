@@ -533,7 +533,7 @@ const en = {
     fromCentre: "{km} km from central {city}",
     freeBreakfast: "Free breakfast",
     lowestStay: "Lowest price for the stay",
-    pricesEverySite: "Prices on every site",
+    pricesEverySite: "Compare & book",
     listChecking: "Finding hotels and prices in {city}…",
     listNoBreakfast: "No hotel in the list has free breakfast on these dates. Showing all hotels:",
     listEmpty: "No hotels match your choices on these dates.",

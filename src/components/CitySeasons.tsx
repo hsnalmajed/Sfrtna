@@ -149,7 +149,7 @@ export default function CitySeasons({
   );
   const startCity = initialCity && cities.some((c) => c.slug === initialCity) ? initialCity : "";
   // Nothing chosen on arrival: the visitor picks "by month" or "by city".
-  const [mode, setMode] = useState<"month" | "city" | null>(startCity ? "city" : null);
+  const [mode, setMode] = useState<"month" | "city" | null>(startCity ? "city" : "month");
   const [month, setMonth] = useState(currentMonth);
   const [continent, setContinent] = useState<Continent | "all">("all");
   const [withGood, setWithGood] = useState(false);
@@ -230,7 +230,9 @@ export default function CitySeasons({
 
   return (
     <div ref={top} className="scroll-mt-24">
-      <div role="tablist" className="grid gap-3 sm:grid-cols-2">
+      {/* Opens on this month's best places — never on two buttons over an
+          empty screen (owner, 20 Oct); the two views sit side by side. */}
+      <div role="tablist" className="grid grid-cols-2 gap-2 sm:gap-3">
         {modes.map((o) => {
           const active = mode === o.m;
           return (
@@ -240,19 +242,19 @@ export default function CitySeasons({
               role="tab"
               aria-selected={active}
               onClick={() => setMode(o.m)}
-              className={`flex items-center justify-center gap-3 rounded-2xl p-4 text-center transition sm:items-start sm:justify-start sm:p-5 sm:text-start ${
+              className={`flex items-center justify-center gap-2 rounded-2xl px-2 py-3 text-center transition sm:items-start sm:justify-start sm:gap-3 sm:p-5 sm:text-start ${
                 active
                   ? "bg-navy-900 text-white shadow-[var(--shadow-lift)]"
                   : "bg-white text-navy-900 shadow-[var(--shadow-card)] ring-1 ring-navy-950/5 hover:ring-sea-400/50"
               }`}
             >
-              <span className="text-3xl leading-none" aria-hidden="true">
+              <span className="text-2xl leading-none sm:text-3xl" aria-hidden="true">
                 {o.icon}
               </span>
               <span className="min-w-0">
                 <span className="flex flex-wrap items-baseline justify-center gap-x-2 sm:justify-start">
-                  <span className="font-display text-lg font-extrabold">{o.title}</span>
-                  <span className={`text-sm font-bold ${active ? "text-sun-300" : "text-sea-600"}`}>{o.q}</span>
+                  <span className="whitespace-nowrap font-display text-base font-extrabold sm:text-lg">{o.title}</span>
+                  <span className={`hidden text-sm font-bold sm:inline ${active ? "text-sun-300" : "text-sea-600"}`}>{o.q}</span>
                 </span>
                 <span className={`mt-1 hidden text-sm leading-relaxed sm:block ${active ? "text-white/75" : "text-navy-600"}`}>
                   {o.hint}

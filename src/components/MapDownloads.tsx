@@ -66,7 +66,7 @@ export default function MapDownloads({
 
   if (compactLabel) {
     const pill =
-      "inline-flex items-center gap-1 rounded-full bg-white px-3 py-1.5 text-xs font-bold text-navy-800 ring-1 ring-mist-300 transition hover:ring-sun-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400";
+      "inline-flex min-h-10 items-center gap-1 rounded-full bg-white px-3.5 py-2 text-xs font-bold text-navy-800 ring-1 ring-mist-300 transition hover:ring-sun-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400";
     return (
       <div className="flex flex-wrap items-center gap-2">
         <span className="text-xs font-bold text-navy-600">📥 {compactLabel}</span>
