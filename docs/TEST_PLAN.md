@@ -143,3 +143,19 @@ chosen amount, current language).
 | C.4 | Gabala (lone-station bug) | ✅ Jan 4.2 / Jul 28.5 °C (was 9.3 / 32.7) |
 | C.5 | 68 newly rated cities read by hand for impossible values | ✅ one found (Valletta July 27.5 °C) → withheld |
 | C.6 | Local build at 390 px: /ar/seasons, Gabala year view, home | ✅ October 110 cities, no page errors |
+
+## Owner's notes of 20 Oct — live checks (sfrtna.com, after each deploy)
+
+| # | Scenario | Result |
+|---|---|---|
+| 20.1 | Flight filters RUH→IST 24 Nov–1 Dec: stops / features / outbound+return time / airlines / booking sites, counts per option | ✅ stops «مباشر» 32/200, all cards direct; time 18–24 → 22; airlines with "from" price; 18 booking sites with each one's cheapest |
+| 20.2 | Booking-site filter drives the partner's own filter | ✅ Qatar → 31 flights, + Lufthansa → 33, «إلغاء الفلاتر» → 200 (after a sync fix: one click per second, kept in sync while chosen) |
+| 20.3 | Night flights definition | ✅ fixed: in the air 1–5 am or an overnight stop (was any 0–6 am departure/arrival → 14/200) |
+| 20.4 | Discover RUH 10–17 Dec, 6,000, kinds beach+city | ✅ 32 cards; continent pill (آسيا 20 · أوروبا 3 · أفريقيا 9), Asia → 20, + beaches → 11 |
+| 20.5 | Named hotel (Hilton Riyadh Olaya, 24–27 Nov) | ✅ Arabic title «هيلتون الرياض العليا», cheapest Booking 2,974 + «احجز الآن», «قارن الأسعار في 8 مواقع» each with price + button; key features row; no «ابحث لدى بقية شركائنا» |
+| 20.6 | Hotel name search Arabic | ✅ «هيلتون الرياض» → Arabic names + Arabic area («الرياض، السعودية»); names with no known Arabic stay in their own spelling |
+| 20.7 | Flight + hotel (RUH→IST, 2 adults, flight 6,000, hotel 4,000, 4★, breakfast) | ✅ two budgets bar, flight results, «فندقك في إسطنبول» 18 cards all 4★ + free breakfast, ≤ budget |
+| 20.8 | Home: combo choice, 390 px | ✅ form, hotel block, both budget hints readable (224 / 192 px fields) |
+| 20.9 | App (html.in-app, 390 px): home photo top 62 svh, navy below, Book tab | ✅ no white area; Book now opens the flight form directly (next deploy) |
+| 20.10 | Built-in browser on the owner's PC: flight partner did not load → fallback card shown | note: same network issue as 13 Oct; Chrome loads it |
+| 20.11 | Not tested live | install banner (no store link yet — hidden by design), first-launch intro (needs the app), photos (Pexels resets 25 Oct) |

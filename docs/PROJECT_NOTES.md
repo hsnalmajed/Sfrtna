@@ -858,6 +858,51 @@ Chrome), climate v2 after the owner's download, publishing staged cities.
   date picker is a dialog → fixed. Local e2e: 7/8 (route suggestions need
   fare data, pass live).
 
+## Owner's notes of 20 Oct — done (live)
+
+- **Flight filters (Wego-style)** in `FlightResultsGuide.tsx`: stops, features
+  (no night flights = in the air 1–5 am or overnight stop; no long stops > 4 h;
+  no self-transfer; bag included), outbound/return time slots, airlines, and
+  **booking sites** read from the widget's own agencies list (each site's
+  cheapest) and applied by ticking the widget's hidden checkboxes (one click
+  per second, kept in sync while chosen). Filters narrow the pick, tabs and
+  lists; counts per option are faceted.
+- **Discover:** kinds of place multi-select (`preferenceCategory` comma list →
+  `preferenceCategories`), continent + kind pills on results.
+  Pending owner: show «أرخص سعر رُصد» on cards (cached fares) or keep no number.
+- **Hotels:** suggestions show Arabic names/areas on the Arabic page
+  (`arabicHotelName` in hotelIndex.ts: only when every word is known — chains,
+  generic words, our cities); the same on price results (`lang=ar`). Named
+  hotel = `BookPanel` (cheapest + «احجز الآن», «قارن الأسعار في N مواقع»),
+  `one=1` asks Google by the hotel's id when a name returns a list; all
+  amenities + key features. Preferences now Google's own filters
+  (`src/lib/hotelPrefs.ts`): kind of place (all/apartment hotels/resorts/
+  boutique/beach/**apartments-villas-chalets = vacation rentals**), guest
+  rating, free cancellation, facilities; list sort on the client.
+  «ابحث لدى بقية شركائنا» shown only when no list/price exists.
+- **Flight + hotel:** third home choice; `TripPlanner combo` + `ComboHotelFields`;
+  hotel half rides in the address as h* keys (`src/lib/combo.ts`);
+  `/results` shows a two-budget bar and `ComboHotelSection`; discover cards
+  carry it. Round trip only.
+- **Photos:** stored choices moved to `public/data/photos.json`, read through
+  ASSETS (`storedPhotos()` in pexels.ts) — never bundled into the Worker
+  (900+ subjects × 3 would have been ~800 KB in every route chunk → 1102).
+  `scripts/check-bundle-json.mjs` (prebuild) fails the build on any imported
+  JSON > 800 KB. src/data/pexelsPhotos.json is no longer read (kept, not deleted).
+- **App:** home photo = top 62 svh fading to navy, home block fills the
+  screen (no white), body navy on app home; Book tab opens the flight form;
+  first-launch intro `AppWelcome.tsx` (3 cards, once).
+- **Store buttons + install suggestion:** `src/lib/appLinks.ts` (empty until
+  the listings exist), footer `AppStoreButtons`, `AppInstallBanner` (phone
+  browser only, its OS's store, after the cookie question, 14 days quiet).
+- **Monitoring:** Workers Logs on (`observability` in wrangler.jsonc); GA4
+  `exception` (browser errors), `service_failure` (flight widget not loaded,
+  discover error, hotel list down), `flight_filter`; combo searches are
+  `search_type = flight_hotel`; site check every 2 h.
+- Chalets: no public affiliate programme found for Gathern; chalets reach us
+  through vacation rentals (Google lists Booking/Vrbo/Airbnb offers) — owner
+  may contact Gathern directly.
+
 ## Next, in order
 
 **▶ Start here (hand-off 20 Oct):** coverage section closed — 365 live cities /
