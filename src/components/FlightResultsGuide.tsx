@@ -690,9 +690,14 @@ export default function FlightResultsGuide({
       }
       return true;
     };
+    // While a site (or "no change of airport") is chosen, keep checking for
+    // as long as the page is open: the widget redraws its filter as the
+    // search goes on and can drop a choice (seen live 20 Oct). With none
+    // chosen, stop once everything is cleared.
+    const keep = want.size > 0 || noSelf;
     const id = window.setInterval(() => {
       quiet = step() ? quiet + 1 : 0;
-      if (quiet >= 2 || ++tries > 40) window.clearInterval(id);
+      if (!keep && (quiet >= 2 || ++tries > 40)) window.clearInterval(id);
     }, 1000);
     return () => window.clearInterval(id);
   }, [siteKey, noSelf]);
