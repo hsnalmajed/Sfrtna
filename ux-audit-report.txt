@@ -1,0 +1,255 @@
+
+## iPhone 13 · web · /ar  [001-iPhone13-web.jpg]
+
+## iPhone 13 · web · /ar?product=flights#plan  [002-iPhone13-web.jpg]
+
+## iPhone 13 · web · /ar?product=hotels#plan  [003-iPhone13-web.jpg]
+  WRAPPED: لدي فندق محدد (142×68) | اقترح لي فندق (142×68)
+
+## iPhone 13 · web · /ar?product=combo#plan  [004-iPhone13-web.jpg]
+
+## iPhone 13 · web · /ar/attractions  [005-iPhone13-web.jpg]
+
+## iPhone 13 · web · /ar/attractions/TR  [006-iPhone13-web.jpg]
+
+## iPhone 13 · web · /ar/attractions/TR/istanbul  [007-iPhone13-web.jpg]
+  CUT: 329 مكان (1/64)
+  TINY TAP: 📍 (28×28)
+
+## iPhone 13 · web · /ar/maps  [008-iPhone13-web.jpg]
+
+## iPhone 13 · web · /ar/maps/TR/istanbul  [009-iPhone13-web.jpg]
+  CUT: İstanbul Üniversitesi Rıdvan Çelikel Arkeoloji Müz (304/353)
+  TINY TAP: معالم سياحية وتاريخية 329 (189×32) | أنشطة وترفيه 171 (140×32) | 📍 قريب مني (99×32)
+
+## iPhone 13 · web · /ar/seasons  [010-iPhone13-web.jpg]
+  CUT: 🌧️ دافئ طوال العام، ذروة الأمطار (149/183) | 🌦️ بين موسمي الأمطار والجفاف (149/181) | 🌧️ معتدل طوال العام، ذروة الأمطار (149/198)
+
+## iPhone 13 · web · /ar/visa  [011-iPhone13-web.jpg]
+
+## iPhone 13 · web · /ar/visa/TR  [012-iPhone13-web.jpg]
+
+## iPhone 13 · web · /ar/currency  [013-iPhone13-web.jpg]
+  WRAPPED: SAR — الريال السعودي (318×56) | USD — الدولار الأمريكي (318×56)
+  CUT: من (1/19) | إلى (1/16)
+
+## iPhone 13 · web · /ar/services  [014-iPhone13-web.jpg]
+
+## iPhone 13 · web · /ar/services?code=TR&city=istanbul  [015-iPhone13-web.jpg]
+
+## iPhone 13 · web · /ar/itinerary  [016-iPhone13-web.jpg]
+
+## iPhone 13 · web · /ar/account  [017-iPhone13-web.jpg]
+
+## iPhone 13 · web · /ar/about  [018-iPhone13-web.jpg]
+
+## iPhone 13 · web · /ar/privacy  [019-iPhone13-web.jpg]
+
+## iPhone 13 · web · /ar/results?tripType=flight&origin=RUH&destination=IST&adults=1&childrenAges=&infants=0&currency=SAR&directOnl  [020-iPhone13-web.jpg]
+  WRAPPED: 📋 متطلبات السفر (119×36) | احسب مبلغاً آخر (114×36) | مشاركة (84×36)
+
+## iPhone 13 · web · /ar/results?tripType=flight&origin=RUH&destination=IST&adults=2&childrenAges=&infants=0&currency=SAR&directOnl  [021-iPhone13-web.jpg]
+  WRAPPED: 📋 متطلبات السفر (119×36) | احسب مبلغاً آخر (114×36) | مشاركة (84×36)
+
+## iPhone 13 · web · /ar/discover-results?tripType=flight&origin=RUH&destination=IST&adults=1&childrenAges=&infants=0&currency=SAR&  [022-iPhone13-web.jpg]
+
+## iPhone 13 · web · /ar/hotel-results?hmode=discover&checkIn=2026-11-29&checkOut=2026-12-03&adults=2&childrenAges=&infants=0&city=  [023-iPhone13-web.jpg]
+
+## iPhone 13 · web · /ar/hotel-results?hmode=known&hotel=Hilton+Riyadh+Olaya&hotelArea=Riyadh,+Saudi+Arabia&label=هيلتون+الرياض+الع  [024-iPhone13-web.jpg]
+
+## iPhone 13 · web · /en  [025-iPhone13-web.jpg]
+
+## iPhone 13 · web · /en/attractions/TR/istanbul  [026-iPhone13-web.jpg]
+  CUT: 329 places (1/81)
+  TINY TAP: 📍 (28×28)
+
+## iPhone 13 · app · /ar  [027-iPhone13-app.jpg]
+
+## iPhone 13 · app · /ar?product=flights#plan  [028-iPhone13-app.jpg]
+
+## iPhone 13 · app · /ar?product=hotels#plan  [029-iPhone13-app.jpg]
+  WRAPPED: لدي فندق محدد (143×66) | اقترح لي فندق (143×66)
+
+## iPhone 13 · app · /ar?product=combo#plan  [030-iPhone13-app.jpg]
+
+## iPhone 13 · app · /ar/attractions  [031-iPhone13-app.jpg]
+
+## iPhone 13 · app · /ar/attractions/TR  [032-iPhone13-app.jpg]
+
+## iPhone 13 · app · /ar/attractions/TR/istanbul  [033-iPhone13-app.jpg]
+  CUT: 329 مكان (1/64)
+  TINY TAP: 📍 (27×27)
+
+## iPhone 13 · app · /ar/maps  [034-iPhone13-app.jpg]
+
+## iPhone 13 · app · /ar/maps/TR/istanbul  [035-iPhone13-app.jpg]
+  CUT: İstanbul Üniversitesi Rıdvan Çelikel Arkeoloji Müz (306/353)
+  TINY TAP: معالم سياحية وتاريخية 329 (188×31) | أنشطة وترفيه 171 (139×31) | 📍 قريب مني (98×31)
+
+## iPhone 13 · app · /ar/seasons  [036-iPhone13-app.jpg]
+  CUT: 🌧️ دافئ طوال العام، ذروة الأمطار (150/183) | 🌦️ بين موسمي الأمطار والجفاف (150/181) | 🌧️ معتدل طوال العام، ذروة الأمطار (150/198)
+
+## iPhone 13 · app · /ar/visa  [037-iPhone13-app.jpg]
+
+## iPhone 13 · app · /ar/visa/TR  [038-iPhone13-app.jpg]
+
+## iPhone 13 · app · /ar/currency  [039-iPhone13-app.jpg]
+  WRAPPED: SAR — الريال السعودي (320×55) | USD — الدولار الأمريكي (320×55)
+  CUT: من (1/19) | إلى (1/16)
+
+## iPhone 13 · app · /ar/services  [040-iPhone13-app.jpg]
+
+## iPhone 13 · app · /ar/services?code=TR&city=istanbul  [041-iPhone13-app.jpg]
+
+## iPhone 13 · app · /ar/itinerary  [042-iPhone13-app.jpg]
+
+## iPhone 13 · app · /ar/account  [043-iPhone13-app.jpg]
+
+## iPhone 13 · app · /ar/about  [044-iPhone13-app.jpg]
+
+## iPhone 13 · app · /ar/privacy  [045-iPhone13-app.jpg]
+
+## iPhone 13 · app · /ar/results?tripType=flight&origin=RUH&destination=IST&adults=1&childrenAges=&infants=0&currency=SAR&directOnl  [046-iPhone13-app.jpg]
+  WRAPPED: 📋 متطلبات السفر (118×35) | احسب مبلغاً آخر (113×35) | مشاركة (83×35)
+
+## iPhone 13 · app · /ar/results?tripType=flight&origin=RUH&destination=IST&adults=2&childrenAges=&infants=0&currency=SAR&directOnl  [047-iPhone13-app.jpg]
+  WRAPPED: 📋 متطلبات السفر (118×35) | احسب مبلغاً آخر (113×35) | مشاركة (83×35)
+
+## iPhone 13 · app · /ar/discover-results?tripType=flight&origin=RUH&destination=IST&adults=1&childrenAges=&infants=0&currency=SAR&  [048-iPhone13-app.jpg]
+
+## iPhone 13 · app · /ar/hotel-results?hmode=discover&checkIn=2026-11-29&checkOut=2026-12-03&adults=2&childrenAges=&infants=0&city=  [049-iPhone13-app.jpg]
+
+## iPhone 13 · app · /ar/hotel-results?hmode=known&hotel=Hilton+Riyadh+Olaya&hotelArea=Riyadh,+Saudi+Arabia&label=هيلتون+الرياض+الع  [050-iPhone13-app.jpg]
+
+## iPhone 13 · app · /en  [051-iPhone13-app.jpg]
+
+## iPhone 13 · app · /en/attractions/TR/istanbul  [052-iPhone13-app.jpg]
+  CUT: 329 places (1/81)
+  TINY TAP: 📍 (27×27)
+
+## Pixel 7 · web · /ar  [053-Pixel7-web.jpg]
+
+## Pixel 7 · web · /ar?product=flights#plan  [054-Pixel7-web.jpg]
+
+## Pixel 7 · web · /ar?product=hotels#plan  [055-Pixel7-web.jpg]
+
+## Pixel 7 · web · /ar?product=combo#plan  [056-Pixel7-web.jpg]
+
+## Pixel 7 · web · /ar/attractions  [057-Pixel7-web.jpg]
+
+## Pixel 7 · web · /ar/attractions/TR  [058-Pixel7-web.jpg]
+
+## Pixel 7 · web · /ar/attractions/TR/istanbul  [059-Pixel7-web.jpg]
+  CUT: 329 مكان (1/64)
+  TINY TAP: 📍 (28×28)
+
+## Pixel 7 · web · /ar/maps  [060-Pixel7-web.jpg]
+
+## Pixel 7 · web · /ar/maps/TR/istanbul  [061-Pixel7-web.jpg]
+  CUT: İstanbul Üniversitesi Rıdvan Çelikel Arkeoloji Müz (326/353)
+  TINY TAP: معالم سياحية وتاريخية 329 (189×32) | أنشطة وترفيه 171 (140×32) | 📍 قريب مني (99×32)
+
+## Pixel 7 · web · /ar/seasons  [062-Pixel7-web.jpg]
+  CUT: 🌧️ دافئ طوال العام، ذروة الأمطار (160/183) | 🌦️ بين موسمي الأمطار والجفاف (160/181) | 🌧️ معتدل طوال العام، ذروة الأمطار (160/198)
+
+## Pixel 7 · web · /ar/visa  [063-Pixel7-web.jpg]
+
+## Pixel 7 · web · /ar/visa/TR  [064-Pixel7-web.jpg]
+
+## Pixel 7 · web · /ar/currency  [065-Pixel7-web.jpg]
+  WRAPPED: SAR — الريال السعودي (340×56) | USD — الدولار الأمريكي (340×56)
+  CUT: من (1/19) | إلى (1/16)
+
+## Pixel 7 · web · /ar/services  [066-Pixel7-web.jpg]
+
+## Pixel 7 · web · /ar/services?code=TR&city=istanbul  [067-Pixel7-web.jpg]
+
+## Pixel 7 · web · /ar/itinerary  [068-Pixel7-web.jpg]
+
+## Pixel 7 · web · /ar/account  [069-Pixel7-web.jpg]
+
+## Pixel 7 · web · /ar/about  [070-Pixel7-web.jpg]
+
+## Pixel 7 · web · /ar/privacy  [071-Pixel7-web.jpg]
+
+## Pixel 7 · web · /ar/results?tripType=flight&origin=RUH&destination=IST&adults=1&childrenAges=&infants=0&currency=SAR&directOnl  [072-Pixel7-web.jpg]
+  WRAPPED: 📋 متطلبات السفر (119×36) | احسب مبلغاً آخر (114×36) | مشاركة (84×36)
+
+## Pixel 7 · web · /ar/results?tripType=flight&origin=RUH&destination=IST&adults=2&childrenAges=&infants=0&currency=SAR&directOnl  [073-Pixel7-web.jpg]
+  WRAPPED: 📋 متطلبات السفر (119×36) | احسب مبلغاً آخر (114×36) | مشاركة (84×36)
+
+## Pixel 7 · web · /ar/discover-results?tripType=flight&origin=RUH&destination=IST&adults=1&childrenAges=&infants=0&currency=SAR&  [074-Pixel7-web.jpg]
+
+## Pixel 7 · web · /ar/hotel-results?hmode=discover&checkIn=2026-11-29&checkOut=2026-12-03&adults=2&childrenAges=&infants=0&city=  [075-Pixel7-web.jpg]
+
+## Pixel 7 · web · /ar/hotel-results?hmode=known&hotel=Hilton+Riyadh+Olaya&hotelArea=Riyadh,+Saudi+Arabia&label=هيلتون+الرياض+الع  [076-Pixel7-web.jpg]
+
+## Pixel 7 · web · /en  [077-Pixel7-web.jpg]
+
+## Pixel 7 · web · /en/attractions/TR/istanbul  [078-Pixel7-web.jpg]
+  CUT: 329 places (1/81)
+  TINY TAP: 📍 (28×28)
+
+## Pixel 7 · app · /ar  [079-Pixel7-app.jpg]
+
+## Pixel 7 · app · /ar?product=flights#plan  [080-Pixel7-app.jpg]
+
+## Pixel 7 · app · /ar?product=hotels#plan  [081-Pixel7-app.jpg]
+
+## Pixel 7 · app · /ar?product=combo#plan  [082-Pixel7-app.jpg]
+
+## Pixel 7 · app · /ar/attractions  [083-Pixel7-app.jpg]
+
+## Pixel 7 · app · /ar/attractions/TR  [084-Pixel7-app.jpg]
+
+## Pixel 7 · app · /ar/attractions/TR/istanbul  [085-Pixel7-app.jpg]
+  CUT: 329 مكان (1/64)
+  TINY TAP: 📍 (28×28)
+
+## Pixel 7 · app · /ar/maps  [086-Pixel7-app.jpg]
+
+## Pixel 7 · app · /ar/maps/TR/istanbul  [087-Pixel7-app.jpg]
+  CUT: İstanbul Üniversitesi Rıdvan Çelikel Arkeoloji Müz (326/353)
+  TINY TAP: معالم سياحية وتاريخية 329 (189×32) | أنشطة وترفيه 171 (140×32) | 📍 قريب مني (99×32)
+
+## Pixel 7 · app · /ar/seasons  [088-Pixel7-app.jpg]
+  CUT: 🌧️ دافئ طوال العام، ذروة الأمطار (160/183) | 🌦️ بين موسمي الأمطار والجفاف (160/181) | 🌧️ معتدل طوال العام، ذروة الأمطار (160/198)
+
+## Pixel 7 · app · /ar/visa  [089-Pixel7-app.jpg]
+
+## Pixel 7 · app · /ar/visa/TR  [090-Pixel7-app.jpg]
+
+## Pixel 7 · app · /ar/currency  [091-Pixel7-app.jpg]
+  WRAPPED: SAR — الريال السعودي (340×56) | USD — الدولار الأمريكي (340×56)
+  CUT: من (1/19) | إلى (1/16)
+
+## Pixel 7 · app · /ar/services  [092-Pixel7-app.jpg]
+
+## Pixel 7 · app · /ar/services?code=TR&city=istanbul  [093-Pixel7-app.jpg]
+
+## Pixel 7 · app · /ar/itinerary  [094-Pixel7-app.jpg]
+
+## Pixel 7 · app · /ar/account  [095-Pixel7-app.jpg]
+  EMPTY: around y=520
+
+## Pixel 7 · app · /ar/about  [096-Pixel7-app.jpg]
+
+## Pixel 7 · app · /ar/privacy  [097-Pixel7-app.jpg]
+
+## Pixel 7 · app · /ar/results?tripType=flight&origin=RUH&destination=IST&adults=1&childrenAges=&infants=0&currency=SAR&directOnl  [098-Pixel7-app.jpg]
+  WRAPPED: 📋 متطلبات السفر (119×36) | احسب مبلغاً آخر (114×36) | مشاركة (84×36)
+
+## Pixel 7 · app · /ar/results?tripType=flight&origin=RUH&destination=IST&adults=2&childrenAges=&infants=0&currency=SAR&directOnl  [099-Pixel7-app.jpg]
+  WRAPPED: 📋 متطلبات السفر (119×36) | احسب مبلغاً آخر (114×36) | مشاركة (84×36)
+
+## Pixel 7 · app · /ar/discover-results?tripType=flight&origin=RUH&destination=IST&adults=1&childrenAges=&infants=0&currency=SAR&  [100-Pixel7-app.jpg]
+
+## Pixel 7 · app · /ar/hotel-results?hmode=discover&checkIn=2026-11-29&checkOut=2026-12-03&adults=2&childrenAges=&infants=0&city=  [101-Pixel7-app.jpg]
+
+## Pixel 7 · app · /ar/hotel-results?hmode=known&hotel=Hilton+Riyadh+Olaya&hotelArea=Riyadh,+Saudi+Arabia&label=هيلتون+الرياض+الع  [102-Pixel7-app.jpg]
+
+## Pixel 7 · app · /en  [103-Pixel7-app.jpg]
+
+## Pixel 7 · app · /en/attractions/TR/istanbul  [104-Pixel7-app.jpg]
+  CUT: 329 places (1/81)
+  TINY TAP: 📍 (28×28)
