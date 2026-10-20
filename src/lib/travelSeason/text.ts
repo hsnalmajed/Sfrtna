@@ -162,33 +162,66 @@ export function reasonText(args: {
   tourism: TourismSignalInput | null;
   classification: Classification;
 }): Bilingual {
+  // Every factor that shaped the month, each with its own figure (owner,
+  // 21 Oct 2026: "explain in detail — humidity, rain… not only one reason"):
+  // limits first, then temperature, humidity, rain, wind, snow.
   const { month: m, sub, caps, signal, tourism } = args;
   const parts: Bilingual[] = [];
+  const r = (x: number) => Math.round(x);
 
-  if (caps.length) {
-    const worst = [...caps].sort((a, b) => a.cap - b.cap)[0];
-    parts.push(CAP_TEXT[worst.id](m));
-  } else if (sub) {
-    if (sub.profile === "ski" && sub.snow !== null) {
-      parts.push(sub.snow >= 80 ? { ar: "غطاء ثلجي جيد", en: "Good snow cover" } : { ar: "غطاء ثلجي محدود", en: "Limited snow cover" });
-    } else if (sub.high >= 85 && (sub.low === null || sub.low >= 70)) {
-      parts.push({ ar: "درجات حرارة مريحة", en: "Comfortable temperatures" });
-    } else if (sub.high < 70 && m.highC !== null) {
-      const prof = sub.profile === "ski" ? null : SCORING.profiles[sub.profile];
-      const cold = prof ? m.highC < prof.idealHigh[0] : false;
-      parts.push(cold ? { ar: "أجواء باردة", en: "Cold weather" } : { ar: "حرارة مرتفعة", en: "High temperatures" });
-    } else {
-      parts.push({ ar: "درجات حرارة مقبولة", en: "Fair temperatures" });
-    }
-    if (sub.humidity !== null && sub.humidity < 60) parts.push({ ar: "رطوبة مرتفعة", en: "high humidity" });
-    if (sub.precipitation !== null) {
-      if (sub.precipitation < 55) parts.push({ ar: "أمطار متكررة", en: "frequent rain" });
-      else if (sub.precipitation >= 90 && parts.length < 2) parts.push({ ar: "أمطار قليلة", en: "little rain" });
-    }
+  for (const c of [...caps].sort((a, b) => a.cap - b.cap)) {
+    // Several heat limits say the same thing: keep the strongest one.
+    if (parts.length && /heat|hot/i.test(c.id) && parts.some((p) => /حرارة/.test(p.ar))) continue;
+    if (parts.length && /rain/i.test(c.id) && parts.some((p) => /أمطار/.test(p.ar))) continue;
+    parts.push(CAP_TEXT[c.id](m));
   }
 
-  const ar = parts.slice(0, 2).map((p) => p.ar).join("، و");
-  const en = parts.slice(0, 2).map((p, i) => (i === 0 ? p.en : p.en.charAt(0).toLowerCase() + p.en.slice(1))).join(", with ");
+  if (sub) {
+    const capsSayHeat = parts.some((p) => /حرارة/.test(p.ar));
+    if (sub.profile === "ski" && sub.snow !== null) {
+      parts.push(sub.snow >= 80 ? { ar: "غطاء ثلجي جيد", en: "Good snow cover" } : { ar: "غطاء ثلجي محدود", en: "Limited snow cover" });
+    } else if (!capsSayHeat && m.highC !== null) {
+      const t = m.lowC !== null ? { ar: `العظمى ${r(m.highC)}° والصغرى ${r(m.lowC)}°`, en: `highs ${r(m.highC)}°, lows ${r(m.lowC)}°` } : { ar: `العظمى ${r(m.highC)}°`, en: `highs ${r(m.highC)}°` };
+      const prof = sub.profile === "ski" ? null : SCORING.profiles[sub.profile];
+      const cold = prof ? m.highC < prof.idealHigh[0] : false;
+      const word =
+        sub.high >= 85 && (sub.low === null || sub.low >= 70)
+          ? { ar: "حرارة مريحة", en: "Comfortable temperatures" }
+          : sub.high < 70
+            ? cold
+              ? { ar: "أجواء باردة", en: "Cold weather" }
+              : { ar: "حرارة مرتفعة", en: "High temperatures" }
+            : sub.low !== null && sub.low < 60 && m.lowC !== null && prof && m.lowC < prof.idealLow[0]
+              ? { ar: "نهار معتدل وليالٍ باردة", en: "Mild days, cold nights" }
+              : { ar: "حرارة مقبولة", en: "Fair temperatures" };
+      parts.push({ ar: `${word.ar} (${t.ar})`, en: `${word.en} (${t.en})` });
+    }
+    if (sub.humidity !== null && sub.humidity < 60 && !parts.some((p) => /رطوبة/.test(p.ar))) {
+      const hi = heatIndexC(m);
+      parts.push(
+        hi !== null && m.highC !== null && hi >= m.highC + 2
+          ? { ar: `رطوبة مرتفعة (الحرارة المحسوسة نحو ${r(hi)}°)`, en: `high humidity (feels like about ${r(hi)}°)` }
+          : { ar: "رطوبة مرتفعة", en: "high humidity" }
+      );
+    }
+    if (sub.precipitation !== null && !parts.some((p) => /أمطار|هطول/.test(p.ar))) {
+      const days = m.precipDays !== null ? r(m.precipDays) : null;
+      const mm = m.precipMm !== null ? r(m.precipMm) : null;
+      const fig = days !== null && mm !== null ? { ar: ` (نحو ${days} ${days >= 3 && days <= 10 ? "أيام" : "يوماً"}، ${mm} ملم)`, en: ` (about ${days} days, ${mm} mm)` } : { ar: "", en: "" };
+      // At freezing highs the precipitation is snow as much as rain.
+      const snowy = m.highC !== null && m.highC <= 2;
+      const w = snowy ? { ar: "هطول ثلج أو مطر", en: "snow or rain" } : { ar: "أمطار", en: "rain" };
+      if (sub.precipitation < 55) parts.push({ ar: `${w.ar} متكرر${snowy ? "" : "ة"}${fig.ar}`, en: `frequent ${w.en}${fig.en}` });
+      else if (sub.precipitation < 80) parts.push({ ar: `${w.ar} متفرق${snowy ? "" : "ة"}${fig.ar}`, en: `some ${w.en}${fig.en}` });
+      else parts.push({ ar: snowy ? "هطول قليل" : "أمطار قليلة", en: snowy ? "little snow or rain" : "little rain" });
+    }
+    if (m.windMs !== null && m.windMs >= SCORING.wind.good + 2) parts.push({ ar: "رياح نشطة", en: "windy" });
+    if (sub.profile !== "ski" && m.snowCoverPct !== null && m.snowCoverPct >= SCORING.seasonNames.snowCoverPct)
+      parts.push({ ar: "ثلوج على الأرض", en: "snow on the ground" });
+  }
+
+  const ar = parts.slice(0, 5).map((p) => p.ar).join("، ");
+  const en = parts.slice(0, 5).map((p, i) => (i === 0 ? p.en : p.en.charAt(0).toLowerCase() + p.en.slice(1))).join(", ");
   // The tourism source counts in the score but is not named to visitors.
   void signal;
   void tourism;

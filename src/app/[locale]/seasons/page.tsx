@@ -92,7 +92,9 @@ export default async function SeasonsPage({ params, searchParams }: PageProps<"/
           low: r.averageLowC,
           rainDays: r.precipitationDays,
           summary: isAr ? r.weatherSummaryAr : r.weatherSummaryEn,
-          reason: isAr ? r.reasonAr : r.reasonEn,
+          // Fetched when a month is opened (/api/season-reasons): each one
+          // is unique, so 365 × 12 of them would weigh down the page.
+          reason: null,
           highlight: isAr ? r.highlightAr : r.highlightEn,
           highlightIcon: r.highlightIcon,
         })),

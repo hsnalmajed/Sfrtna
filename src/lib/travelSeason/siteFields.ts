@@ -20,8 +20,6 @@ export const SITE_FIELDS = [
   "precipitationDays",
   "weatherSummaryAr",
   "weatherSummaryEn",
-  "reasonAr",
-  "reasonEn",
   "confidenceLevel",
   "tourismSignal",
   "highlightAr",

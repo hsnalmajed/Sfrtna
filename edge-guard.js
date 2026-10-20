@@ -34,6 +34,7 @@ export const ROUTES = {
   "/api/destination-photos": { methods: ["GET"], caller: "page" },
   "/api/hotel-suggest": { methods: ["GET"], caller: "page" },
   "/api/rates": { methods: ["GET"], caller: "page" },
+  "/api/season-reasons": { methods: ["GET"], caller: "page" },
   "/api/origin": { methods: ["GET"], caller: "page" },
   // Both are sent as POST by their results pages (the search is in the
   // body). Listing them as GET answered every search with 405 — "no

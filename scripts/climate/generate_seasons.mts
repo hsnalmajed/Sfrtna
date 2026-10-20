@@ -153,6 +153,19 @@ const cell = (v: unknown) => (typeof v === "string" ? [str(v)] : v);
 const liveSlugs = new Set(
   [...readFileSync(join(root, "src/lib/cities.ts"), "utf8").matchAll(/slug: "([^"]+)"/g)].map((m) => m[1])
 );
+// Each month's reason, every factor with its figures (v1.2): almost every
+// sentence is unique, so they stay out of the Worker bundle and are read
+// through ASSETS (src/lib/travelSeason/reasons.ts) — 12 per city per language.
+writeFileSync(
+  join(root, "public/data/season-reasons.json"),
+  JSON.stringify(
+    Object.fromEntries(
+      Object.entries(records)
+        .filter(([k]) => liveSlugs.has(k))
+        .map(([k, recs]) => [k, { ar: recs.map((r) => r.reasonAr), en: recs.map((r) => r.reasonEn) }])
+    )
+  ) + "\n"
+);
 const packedRecords = Object.fromEntries(
   Object.entries(records)
     .filter(([k]) => liveSlugs.has(k))

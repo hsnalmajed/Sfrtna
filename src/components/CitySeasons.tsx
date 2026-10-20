@@ -567,6 +567,20 @@ function MonthDialog({
   const isAr = locale === "ar";
   const t = dict.ts;
   const r = city.months[month - 1];
+  // The month's reasons (every factor with its figures) are fetched when the
+  // card is opened — one city, twelve sentences — not sent with the page.
+  const [reasons, setReasons] = useState<(string | null)[] | null>(null);
+  useEffect(() => {
+    let live = true;
+    fetch(`/api/season-reasons?city=${encodeURIComponent(city.slug)}&lang=${locale}`)
+      .then((res) => (res.ok ? (res.json() as Promise<{ reasons: (string | null)[] }>) : { reasons: [] }))
+      .then((j) => live && setReasons(j.reasons))
+      .catch(() => live && setReasons([]));
+    return () => {
+      live = false;
+    };
+  }, [city.slug, locale]);
+  const reason = r.reason ?? reasons?.[month - 1] ?? null;
   const prev = month === 1 ? 12 : month - 1;
   const next = month === 12 ? 1 : month + 1;
 
@@ -706,9 +720,9 @@ function MonthDialog({
             )}
           </div>
 
-          {r.reason && (
+          {reason && (
             <p className="mt-4 rounded-2xl bg-sea-50 px-4 py-3 text-sm leading-relaxed text-navy-800 ring-1 ring-sea-100">
-              <span className="font-extrabold">{t.reasonLabel}:</span> {r.reason}
+              <span className="font-extrabold">{t.reasonLabel}:</span> {reason}
             </p>
           )}
 

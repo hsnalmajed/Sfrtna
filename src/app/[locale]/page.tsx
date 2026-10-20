@@ -1,4 +1,5 @@
 import { getDictionary } from "@/lib/dictionaries";
+import { seasonReasons } from "@/lib/travelSeason/reasons";
 import type { Locale } from "@/lib/types";
 import { COUNTRY_GUIDES } from "@/lib/countryGuides";
 import { COUNTRY_CITIES } from "@/lib/cities";
@@ -111,6 +112,7 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
     eta: dict.home.cardVisaEta,
     required: dict.home.cardVisaRequired,
   };
+  const reasons = await seasonReasons();
   const citySummary = (code: string, slug: string) => {
     const r = seasonRecord(slug, month);
     const best = bestMonths(slug);
@@ -122,7 +124,7 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
       classLabel: r?.classification ? `${CLASS_DOT[r.classification]} ${ts.classes[r.classification]}` : undefined,
       low: r?.averageLowC ?? null,
       weatherSummary: r ? ((isAr ? r.weatherSummaryAr : r.weatherSummaryEn) ?? undefined) : undefined,
-      reason: r ? ((isAr ? r.reasonAr : r.reasonEn) ?? undefined) : undefined,
+      reason: reasons[slug]?.[isAr ? "ar" : "en"]?.[month - 1] ?? undefined,
       bestMonths: best.map((m) => monthName(m, loc)).join(isAr ? "، " : ", "),
       visa: visa
         ? { category: visa.category, label: visaNames[visa.category], short: visaShort[visa.category] }
