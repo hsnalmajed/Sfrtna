@@ -13,6 +13,8 @@ import { CONTACT_EMAIL } from "@/lib/contact";
  * metasearch site the honest line ("we compare, they book") is not fine
  * print; it is the reason to trust the prices above it.
  */
+import AppStoreButtons from "@/components/AppStoreButtons";
+
 export default function Footer({ locale }: { locale: Locale }) {
   const dict = getDictionary(locale);
   const year = new Date().getFullYear();
@@ -97,6 +99,10 @@ export default function Footer({ locale }: { locale: Locale }) {
               ))}
             </ul>
           </div>
+        </div>
+
+        <div className="border-t border-white/10 pt-6">
+          <AppStoreButtons locale={locale} title={dict.footer.appsHeading} soon={dict.footer.appsSoon} />
         </div>
 
         <div className="flex flex-wrap items-center justify-between gap-3 pt-7 text-white/35">

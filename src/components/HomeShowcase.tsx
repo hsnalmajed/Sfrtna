@@ -216,7 +216,7 @@ export default function HomeShowcase({
     }
     function onOpen(e: Event) {
       const p = (e as CustomEvent<PlanProduct | undefined>).detail;
-      show(p === "flights" || p === "hotels" ? p : undefined);
+      show(p === "flights" || p === "hotels" || p === "combo" ? p : undefined);
     }
     function onHash() {
       if (window.location.hash === "#plan") show();

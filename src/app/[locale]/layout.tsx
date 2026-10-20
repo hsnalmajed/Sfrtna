@@ -9,6 +9,8 @@ import Footer from "@/components/Footer";
 import NavTracker from "@/components/NavTracker";
 import Analytics from "@/components/Analytics";
 import AppTabBar from "@/components/AppTabBar";
+import AppInstallBanner from "@/components/AppInstallBanner";
+import AppWelcome from "@/components/AppWelcome";
 import { DictionaryProvider } from "@/lib/dict/context";
 import { clientDictionary } from "@/lib/dict/clientSections";
 
@@ -95,6 +97,8 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
           <main className="flex-1">{children}</main>
           <Footer locale={loc} />
           <AppTabBar locale={loc} />
+          <AppInstallBanner />
+          <AppWelcome />
           <NavTracker />
           {/* GA4 + consent banner + partner-click tracking (sfrtna.com only). */}
           <Analytics locale={loc} />

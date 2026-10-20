@@ -9,7 +9,7 @@ import type { Dictionary } from "@/lib/dictionaries";
  * that reads a section (or a picked key) missing here fails `tsc` — add it.
  */
 export const CLIENT_SECTIONS = [
-  "account", "back", "categories", "combo", "consent", "currency", "discoverForm", "discoverResults",
+  "account", "appInstall", "appWelcome", "back", "categories", "combo", "consent", "currency", "discoverForm", "discoverResults",
   "filters", "footer", "form", "hotelForm", "hotelPrefs", "hotelResults", "itinerary", "modeSelect", "multicity",
   "nav", "nextSteps", "notFound", "plan", "productSelect", "results", "siteName", "siteNameAr",
   "siteNameEn", "stayType", "travelSeasons", "travelers", "tripPlan", "visa",

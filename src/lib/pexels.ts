@@ -30,7 +30,13 @@
  * Docs: https://www.pexels.com/api/documentation/
  */
 
-import STORED from "@/data/pexelsPhotos.json";
+// The stored choices live in public/data/photos.json, read through the
+// Worker's asset binding — NOT imported into the Worker's code. With every
+// place's three photos the file is several hundred KB, and a data file that
+// size bundled into the Worker (once per route) is what took every page
+// down with Cloudflare error 1102 on 14 and 15 Oct. The photos refill after
+// the Pexels allowance resets (25 Oct 2026), so it is moved out now.
+// (src/data/pexelsPhotos.json, the old location, is no longer read.)
 
 const API = "https://api.pexels.com/v1/search";
 
@@ -126,10 +132,10 @@ export async function rawSearch({ query, mention }: PexelsQuery): Promise<{ phot
 export interface StoredPhotoRec {
   /** Pexels' original image URL. */
   o: string;
-  /** Photographer's name and page, and the photo's own page. */
+  /** Photographer's name, and (older records) their page and the photo's page. */
   n: string;
-  nu: string;
-  u: string;
+  nu?: string;
+  u?: string;
 }
 
 /**
@@ -139,7 +145,41 @@ export interface StoredPhotoRec {
  */
 export type StoredPhoto = StoredPhotoRec[] | StoredPhotoRec | null;
 
-const STORED_PHOTOS = STORED as Record<string, StoredPhoto>;
+type AssetsBinding = { fetch: (input: Request | string) => Promise<Response> };
+let storedPromise: Promise<Record<string, StoredPhoto>> | null = null;
+
+/** The stored file, read once per Worker instance (or from disk in scripts and dev). */
+export function storedPhotos(): Promise<Record<string, StoredPhoto>> {
+  if (storedPromise) return storedPromise;
+  storedPromise = (async () => {
+    try {
+      const { getCloudflareContext } = await import("@opennextjs/cloudflare");
+      let assets: AssetsBinding | undefined;
+      try {
+        assets = (getCloudflareContext().env as unknown as { ASSETS?: AssetsBinding }).ASSETS;
+      } catch {
+        assets = undefined;
+      }
+      if (assets) {
+        const res = await assets.fetch(new Request("https://assets.local/data/photos.json"));
+        return res.ok ? ((await res.json()) as Record<string, StoredPhoto>) : {};
+      }
+    } catch {
+      // Not on Cloudflare: read the file from disk below.
+    }
+    try {
+      const { readFile } = await import("node:fs/promises");
+      return JSON.parse(await readFile(`${process.cwd()}/public/data/photos.json`, "utf8")) as Record<string, StoredPhoto>;
+    } catch {
+      return {};
+    }
+  })();
+  // A failed read is not kept: the next request tries again.
+  storedPromise.then((v) => {
+    if (!Object.keys(v).length) storedPromise = null;
+  });
+  return storedPromise;
+}
 
 /**
  * The stable name of one subject's searches, as stored in the JSON file.
@@ -151,7 +191,7 @@ export function subjectKey(queries: PexelsQuery[]): string {
 }
 
 function toPhoto(rec: StoredPhotoRec): PexelsPhoto {
-  return { ...pexelsSizes(rec.o), photographer: rec.n, photographerUrl: rec.nu, pageUrl: rec.u };
+  return { ...pexelsSizes(rec.o), photographer: rec.n, photographerUrl: rec.nu ?? "", pageUrl: rec.u ?? "" };
 }
 
 /** A short stable number for a key, so places do not all change on the same photo slot. */
@@ -190,10 +230,10 @@ export function stopCollectingSubjects(): void {
   collector = null;
 }
 
-function lookup(queries: PexelsQuery[]): PexelsPhoto | null {
+function lookup(queries: PexelsQuery[], stored: Record<string, StoredPhoto>): PexelsPhoto | null {
   const k = subjectKey(queries);
   if (collector && queries.length > 0) collector.set(k, queries);
-  return fromStored(k, STORED_PHOTOS[k]);
+  return fromStored(k, stored[k]);
 }
 
 /**
@@ -207,8 +247,9 @@ export async function searchPexelsPhotos(
   wanted: Map<string, PexelsQuery[]>
 ): Promise<Map<string, PexelsPhoto>> {
   const out = new Map<string, PexelsPhoto>();
+  const stored = collector ? {} : await storedPhotos();
   for (const [k, queries] of wanted) {
-    const p = lookup(queries);
+    const p = lookup(queries, stored);
     if (p) out.set(k, p);
   }
   return out;

@@ -1,5 +1,5 @@
 // Chooses a Pexels photo for every place the site shows a picture of, and
-// stores the choices in src/data/pexelsPhotos.json. Pages read that file;
+// stores the choices in public/data/photos.json. Pages read that file;
 // they never call Pexels themselves (see the top of src/lib/pexels.ts).
 //
 //   PEXELS_API_KEY=… npx tsx scripts/pexels-photos.ts [--max 180] [--list]
@@ -40,7 +40,9 @@ import {
   type StoredPhotoRec,
 } from "@/lib/pexels";
 
-const FILE = join(process.cwd(), "src/data/pexelsPhotos.json");
+// Served to our own server through ASSETS, never bundled into the Worker
+// (see storedPhotos() in src/lib/pexels.ts).
+const FILE = join(process.cwd(), "public/data/photos.json");
 
 function arg(name: string): string | undefined {
   const i = process.argv.indexOf(name);
@@ -109,7 +111,7 @@ async function main() {
       for (const p of r.photos) {
         const original = p.url.split("?")[0];
         if (found.some((f) => f.o === original)) continue;
-        found.push({ o: original, n: p.photographer, nu: p.photographerUrl, u: p.pageUrl });
+        found.push({ o: original, n: p.photographer });
         if (found.length >= PHOTOS_PER_PLACE) break;
       }
     }

@@ -257,6 +257,23 @@ const en = {
     suite: "Suite",
     apartment: "Full apartment",
   },
+  appWelcome: {
+    s1Title: "Flights from every site",
+    s1Body: "We search the booking sites and pick the best flight within your budget, with filters for stops, times and airlines.",
+    s2Title: "Your hotel at every site's price",
+    s2Body: "The same hotel's price on every site side by side — book the cheapest in one tap.",
+    s3Title: "Your whole trip in one place",
+    s3Body: "Visa, best season, landmarks, a day-by-day plan, eSIM and transfers — all here.",
+    next: "Next",
+    start: "Plan my trip",
+    skip: "Skip",
+  },
+  appInstall: {
+    title: "The Sfrtna app",
+    body: "Your flight, hotel and plan in one place — faster on your phone.",
+    cta: "Install the app",
+    close: "Close",
+  },
   combo: {
     productTitle: "Flight + hotel",
     productHint: "Your flight and hotel in one search, each with its own budget",
@@ -1242,6 +1259,8 @@ const en = {
       "To show thousands of bookable tours with real prices for every city, add a Viator key as VIATOR_API_KEY. For now, the hand-curated guide is shown below.",
   },
   footer: {
+    appsHeading: "Get the Sfrtna app",
+    appsSoon: "Coming soon to",
     disclaimer:
       "Sfrtna is a comparison and planning assistant. Booking and payment happen with our booking partners; the prices shown are their live prices and can change until you book.",
     rights: "All rights reserved",

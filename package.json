@@ -10,7 +10,7 @@
     "cf:preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "cf:deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
     "test:seasons": "node --test src/lib/travelSeason/*.test.ts",
-    "prebuild": "node scripts/check-guard.mjs && node scripts/check-client-words.mjs",
+    "prebuild": "node scripts/check-guard.mjs && node scripts/check-client-words.mjs && node scripts/check-bundle-json.mjs",
     "check:guard": "node scripts/check-guard.mjs"
   },
   "dependencies": {

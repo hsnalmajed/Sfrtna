@@ -1,4 +1,4 @@
-# Fills src/data/pexelsPhotos.json — the stored photo for every place on the
+# Fills public/data/photos.json — the stored photo for every place on the
 # site (see scripts/pexels-photos.ts and the top of src/lib/pexels.ts).
 #
 # Runs every hour, at most 180 Pexels searches a run (the hourly allowance
@@ -47,13 +47,13 @@ jobs:
       - name: Commit what was found
         if: env.PEXELS_API_KEY != ''
         run: |
-          if git diff --quiet -- src/data/pexelsPhotos.json; then
+          if git diff --quiet -- public/data/photos.json; then
             echo "Nothing new."
             exit 0
           fi
           git config user.name "Claude"
           git config user.email "noreply@anthropic.com"
-          git add src/data/pexelsPhotos.json
+          git add public/data/photos.json
           git commit -m "Photos: stored Pexels choices (automatic run)" \
             -m "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
           git pull --rebase origin main

@@ -149,6 +149,7 @@ gtag('js',new Date());gtag('config','${GA_ID}');`}
       {askConsent && (
         <div
           role="dialog"
+          data-consent-banner=""
           aria-live="polite"
           aria-label={t.title}
           className="lift-over-tabbar fixed inset-x-3 bottom-3 z-[60] mx-auto max-w-xl rounded-2xl bg-navy-990 p-4 text-sm text-white shadow-2xl ring-1 ring-white/10 sm:p-5"
