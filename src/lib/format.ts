@@ -49,10 +49,14 @@ export function countLabel(count: number, shapes: CountShapes): string {
  * English grammar applied to Arabic, and wrong in the same way "6 place"
  * would be. Four shapes, like every other counted noun on the site.
  */
+/** We keep a city's top 500 places; a city at that number has more. */
+export const PLACES_KEPT = 500;
+
 export function placeCountLabel(
   count: number,
-  dict: { placesCount: string; placeOne: string; placeTwo: string; placeFew: string }
+  dict: { placesCount: string; placeOne: string; placeTwo: string; placeFew: string; placesMore?: string }
 ): string {
+  if (count >= PLACES_KEPT && dict.placesMore) return dict.placesMore.replace("{count}", String(PLACES_KEPT));
   return countLabel(count, {
     many: dict.placesCount,
     one: dict.placeOne,

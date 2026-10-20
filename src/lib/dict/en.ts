@@ -1344,6 +1344,7 @@ const en = {
     comingSoonBody:
       "We haven't added a detailed attractions/activities/restaurants guide for this country yet — it's on the way. Browse the cities below to see their attractions on the map.",
     source: "Positions and names: © OpenStreetMap contributors (ODbL). Arabic names where contributors have recorded them, otherwise the local name.",
+    placesMore: "{count}+ places",
     placesCount: "{count} places",
     placeOne: "1 place",
     placeTwo: "2 places",

@@ -1375,6 +1375,7 @@ const ar = {
     source: "المواقع والأسماء: © مساهمو OpenStreetMap (رخصة ODbL). الاسم العربي حيث سجّله المساهمون، وإلا الاسم المحلي. لا نترجم الأسماء بأنفسنا.",
     // Four shapes, because Arabic counts nouns in four — "6 مكان" is as
     // wrong to a native reader as "6 place" is in English.
+    placesMore: "أكثر من {count} مكان",
     placesCount: "{count} مكان",
     placeOne: "مكان واحد",
     placeTwo: "مكانان",
