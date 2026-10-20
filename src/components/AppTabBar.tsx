@@ -190,8 +190,24 @@ export default function AppTabBar({ locale }: { locale: Locale }) {
           <div className="app-sheet relative max-h-[80svh] overflow-y-auto rounded-t-3xl bg-white px-4 pt-2 text-navy-900 shadow-2xl">
             <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-navy-900/15" aria-hidden="true" />
 
+            <p className="px-1 pb-2 text-xs font-bold text-navy-900/50">{dict.nav.language}</p>
+            <div className="flex gap-2 rounded-2xl bg-mist-50 p-1 ring-1 ring-navy-900/5">
+              {(["ar", "en"] as const).map((l) => (
+                <button
+                  key={l}
+                  type="button"
+                  onClick={() => switchLanguage(l)}
+                  className={`flex-1 rounded-xl py-2.5 text-sm font-bold transition ${
+                    locale === l ? "bg-white text-navy-990 shadow-sm ring-1 ring-navy-900/10" : "text-navy-900/55"
+                  }`}
+                >
+                  {l === "ar" ? "العربية" : "English"}
+                </button>
+              ))}
+            </div>
+
             <AccountLink locale={locale} variant="sheet" onNavigate={go} />
-            <p className="px-1 pb-2 text-xs font-bold text-navy-900/50">{dict.nav.tools}</p>
+            <p className="mt-5 px-1 pb-2 text-xs font-bold text-navy-900/50">{dict.nav.tools}</p>
             <div className="grid grid-cols-3 gap-2">
               {tools.map((t) => (
                 <Link
@@ -205,22 +221,6 @@ export default function AppTabBar({ locale }: { locale: Locale }) {
                   <span className="text-2xl leading-none" aria-hidden="true">{t.icon}</span>
                   {t.label}
                 </Link>
-              ))}
-            </div>
-
-            <p className="mt-5 px-1 pb-2 text-xs font-bold text-navy-900/50">{dict.nav.language}</p>
-            <div className="flex gap-2 rounded-2xl bg-mist-50 p-1 ring-1 ring-navy-900/5">
-              {(["ar", "en"] as const).map((l) => (
-                <button
-                  key={l}
-                  type="button"
-                  onClick={() => switchLanguage(l)}
-                  className={`flex-1 rounded-xl py-2.5 text-sm font-bold transition ${
-                    locale === l ? "bg-white text-navy-990 shadow-sm ring-1 ring-navy-900/10" : "text-navy-900/55"
-                  }`}
-                >
-                  {l === "ar" ? "العربية" : "English"}
-                </button>
               ))}
             </div>
 

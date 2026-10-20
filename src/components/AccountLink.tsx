@@ -4,6 +4,7 @@ import Link from "next/link";
 import type { Locale } from "@/lib/types";
 import { useDictionary } from "@/lib/dict/context";
 import { useAccount } from "@/lib/useAccount";
+import { inApp } from "@/lib/nativeApp";
 
 /**
  * «تسجيل الدخول» / «حسابي» — shown once sign-in is switched on (or someone
@@ -29,7 +30,10 @@ export default function AccountLink({
         <PersonIcon /> {nav.signIn}
       </span>
     );
-  if (status !== "ready" || (!user && !methods.email && !methods.google)) return null;
+  // Google refuses sign-in inside the app's WebView, so in the app only an
+  // email sign-in counts — no link to a page that cannot sign anyone in.
+  const google = Boolean(methods.google) && !(status === "ready" && inApp());
+  if (status !== "ready" || (!user && !methods.email && !google)) return null;
   const href = `/${locale}/account`;
   const label = user ? nav.account : nav.signIn;
   const click = onNavigate ? (e: React.MouseEvent) => onNavigate(e, href) : undefined;
@@ -50,7 +54,7 @@ export default function AccountLink({
     <Link
       href={href}
       onClick={click}
-      className="mb-4 flex items-center justify-between rounded-2xl bg-navy-900 px-4 py-3.5 text-sm font-extrabold text-white active:bg-navy-800"
+      className="mt-4 flex items-center justify-between rounded-2xl bg-navy-900 px-4 py-3.5 text-sm font-extrabold text-white active:bg-navy-800"
     >
       <span className="flex min-w-0 items-center gap-2">
         <PersonIcon />
