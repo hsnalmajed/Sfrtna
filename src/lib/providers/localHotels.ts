@@ -138,6 +138,11 @@ function cityWords(): Map<string, string> {
   return (cityWordsCache = m);
 }
 
+/** A Latin hotel name written in Arabic when every word of it is known, else null. */
+export function arabicNameFor(latin: string): string | null {
+  return arabicHotelName(latin, cityWords());
+}
+
 function toLocal(h: StoredHotel): LocalHotel {
   const city = cities().get(h[0]);
   // A stored Arabic name first; else the local name when it is Arabic; else

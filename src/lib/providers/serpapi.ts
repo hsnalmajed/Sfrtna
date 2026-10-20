@@ -116,6 +116,8 @@ export interface HotelOffer {
 
 export interface HotelResult {
   name: string;
+  /** The name for the Arabic page, when we can write it (added by the route). */
+  nameAr?: string;
   /** Google's id for the hotel: asks its own prices without a name search. */
   token: string | null;
   stars: number | null;

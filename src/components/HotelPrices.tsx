@@ -59,6 +59,7 @@ export function money(n: number, locale: "ar" | "en") {
 function apiUrl(c: Common, extra: Record<string, string>) {
   const p = new URLSearchParams({ checkIn: c.checkIn, checkOut: c.checkOut, adults: String(c.adults), ...extra });
   if (c.childrenAges.length) p.set("childrenAges", c.childrenAges.join(","));
+  if (c.locale === "ar") p.set("lang", "ar");
   return `/api/hotel-prices?${p.toString()}`;
 }
 
@@ -472,8 +473,13 @@ function HotelDetail({ hotel, c, checkedAt }: { hotel: HotelResult; c: Common; c
             <div className="min-w-0">
               <Stars count={hotel.stars} className="text-sm" />
               <h2 className="font-display text-h3 font-extrabold text-navy-950">
-                <bdi>{hotel.name}</bdi>
+                <bdi>{(locale === "ar" && hotel.nameAr) || hotel.name}</bdi>
               </h2>
+              {locale === "ar" && hotel.nameAr && (
+                <p className="text-sm font-semibold text-navy-500" dir="ltr">
+                  {hotel.name}
+                </p>
+              )}
               {hotel.address && (
                 <p className="mt-1.5 flex items-start gap-1.5 text-sm text-navy-600">
                   <Icon name="pin" className="mt-0.5 h-4 w-4 shrink-0 text-navy-400" />

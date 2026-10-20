@@ -73,8 +73,9 @@ export default function HotelList({
     if (codes.length) p.set("amen", codes.join(","));
     if (rating !== "0") p.set("rating", rating);
     if (fc === "1") p.set("fc", "1");
+    if (locale === "ar") p.set("lang", "ar");
     return `/api/hotel-prices?${p.toString()}`;
-  }, [cityQuery, c.checkIn, c.checkOut, c.adults, c.childrenAges, minStars, maxPerNight, prefsKey]);
+  }, [cityQuery, c.checkIn, c.checkOut, c.adults, c.childrenAges, minStars, maxPerNight, prefsKey, locale]);
 
   const [state, setState] = useState<{ url: string; result: HotelSearch | null } | null>(null);
   useEffect(() => {
@@ -253,8 +254,13 @@ function HotelCard({
             <div className="min-w-0">
               <Stars count={hotel.stars} className="text-xs" />
               <h3 className="font-display text-base font-extrabold leading-snug text-navy-950">
-                <bdi>{hotel.name}</bdi>
+                <bdi>{(locale === "ar" && hotel.nameAr) || hotel.name}</bdi>
               </h3>
+              {locale === "ar" && hotel.nameAr && (
+                <p className="text-xs font-semibold text-navy-500" dir="ltr">
+                  {hotel.name}
+                </p>
+              )}
             </div>
             <Rating hotel={hotel} c={c} />
           </div>

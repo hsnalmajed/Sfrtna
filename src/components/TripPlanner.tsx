@@ -432,7 +432,12 @@ export default function TripPlanner({
       {/* ── 3. The row that is the search ─────────────────────────────
           Auto-fit, so the known tab's five fields and the suggest tab's
           four both fill the width with no empty column. */}
-      <div className="mt-4 grid grid-cols-1 gap-x-3 gap-y-3.5 sm:mt-5 sm:grid-cols-2 sm:gap-y-4 lg:grid-cols-[repeat(auto-fit,minmax(9.5rem,1fr))]">
+      {/* The budget column is wider on a wide screen: its hint («ميزانية
+          الطيران لكل المسافرين») must be readable in full (owner, 20 Oct). */}
+      <div
+        style={{ ["--cols" as string]: String((listsLegs ? 0 : 2) + (showDestination ? 1 : 0) + 1) }}
+        className="mt-4 grid grid-cols-1 gap-x-3 gap-y-3.5 sm:mt-5 sm:grid-cols-2 sm:gap-y-4 lg:grid-cols-[repeat(var(--cols),minmax(0,1fr))_minmax(15rem,1.3fr)]"
+      >
           {!listsLegs && (
           <div data-field="origin" className="relative">
             <FieldLabel dark={dark} icon="pin">{dict.form.origin}</FieldLabel>

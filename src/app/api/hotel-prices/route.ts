@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { hotelPrices } from "@/lib/providers/serpapi";
 import { parseChildrenAges } from "@/lib/searchParamsUtil";
+import { arabicNameFor } from "@/lib/providers/localHotels";
 
 export const dynamic = "force-dynamic";
 
@@ -52,5 +53,10 @@ export async function GET(req: NextRequest) {
     freeCancel: sp.get("fc") === "1",
     rentals: sp.get("vr") === "1",
   });
+  // The Arabic page shows Arabic names where every word is known (chains,
+  // cities, «فندق»…); the hotel's own name stays for the booking sites.
+  if (result && sp.get("lang") === "ar") {
+    for (const h of result.hotels) h.nameAr = arabicNameFor(h.name) ?? undefined;
+  }
   return NextResponse.json({ result }, { headers: { "Cache-Control": "no-store" } });
 }
