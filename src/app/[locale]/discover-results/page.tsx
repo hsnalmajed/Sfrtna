@@ -413,6 +413,9 @@ function DiscoverResultsContent() {
         )}
 
         {/* Within budget: the answer. */}
+        {!loading && !pricesUnavailable && mode !== "routes" && within.length > 0 && (
+          <h2 className="mb-4 font-display text-lg font-extrabold text-navy-900">{d.withinTitle.replace("{count}", String(within.length))}</h2>
+        )}
         {!loading && !pricesUnavailable && within.length > 0 &&
           (mode === "routes"
             ? renderRoutes(within as RouteSuggestion[])

@@ -156,9 +156,10 @@ export function BudgetInput({
             : "border-gray-200 bg-white shadow-sm focus-within:border-brand-500 focus-within:ring-brand-100"
         } ${error ? (dark ? "border-rose-300" : "border-red-400") : ""}`}
       >
-        {/* The hint is drawn over the box and scales to its width, so the
-            whole sentence always shows («ميزانية الطيران لكل المسافرين» was
-            cut to «زانية…» on phones — a native placeholder cannot shrink). */}
+        {/* The hint is drawn over the box and scales to its width (two lines
+            on the narrowest boxes), so the whole sentence always shows
+            («ميزانية الطيران لكل المسافرين» was cut to «زانية…» on phones —
+            a native placeholder can neither shrink nor wrap). */}
         <div className="@container relative min-w-0 flex-1">
           <input
             id={id}
@@ -178,7 +179,7 @@ export function BudgetInput({
             <span
               aria-hidden="true"
               dir={locale === "ar" ? "rtl" : "ltr"}
-              className={`pointer-events-none absolute inset-y-0 start-0 end-0 flex items-center overflow-hidden whitespace-nowrap px-3 text-[length:clamp(10px,6.2cqi,14px)] sm:px-4 ${
+              className={`pointer-events-none absolute inset-y-0 start-0 end-0 flex items-center overflow-hidden px-3 text-[length:clamp(11px,6.2cqi,14px)] leading-[1.15] sm:px-4 ${
                 dark ? "text-white/55" : "text-gray-400"
               }`}
             >
