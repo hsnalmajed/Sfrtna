@@ -54,8 +54,17 @@ const ROOTS: [Group, string[]][] = [
 const NEVER = new Set(["Q55488" /* railway station */, "Q928830" /* metro station */, "Q3918" /* university */, "Q16917" /* hospital */, "Q123705" /* neighbourhood */, "Q483110" /* stadium */, "Q1248784" /* airport */, "Q27686" /* hotel */, "Q515" /* city */, "Q15284" /* municipality */]);
 
 /** Classes that count only for the famous (an office tower is not a sight; Burj Khalifa is). */
-const BIG_ONLY = new Set(["Q11303", "Q12518"]);
-const BIG_LINKS = 60;
+const BIG_GROUP: Record<string, Group> = {
+  Q11303: "views", // skyscraper
+  Q12518: "views", // tower
+  Q79007: "history", // street (Champs-Élysées, Istiklal)
+  Q7075: "culture", // library (British Library)
+  Q37901: "nature", // strait (Bosporus)
+  Q33837: "nature", // archipelago (Princes' Islands)
+  Q184949: "history", // hippodrome
+};
+const BIG_ONLY = new Set(Object.keys(BIG_GROUP));
+const BIG_LINKS = 45;
 
 /**
  * Parent classes that rule an item out whatever else it is: a town or an
@@ -91,13 +100,13 @@ type B = Record<string, { value: string } | undefined>;
 
 /** Our group for each class id, learned once per run (parent classes asked in bulk). */
 const classGroup = new Map<string, Group | null>();
-const bigClass = new Set<string>();
+const bigClass = new Map<string, Group>();
 const neverClass = new Map<string, string>();
 async function classify(classes: string[]): Promise<void> {
   const todo = classes.filter((c) => !classGroup.has(c));
   for (const c of todo) if (NEVER.has(c)) classGroup.set(c, null);
   const ask = todo.filter((c) => !classGroup.has(c));
-  const roots = [...ROOTS.flatMap(([, ids]) => ids), ...NEVER_ROOTS];
+  const roots = [...ROOTS.flatMap(([, ids]) => ids), ...NEVER_ROOTS, ...BIG_ONLY];
   for (let i = 0; i < ask.length; i += 150) {
     const chunk = ask.slice(i, i + 150);
     const rows = await sparql<B>(`SELECT ?c ?root WHERE {
@@ -124,7 +133,8 @@ async function classify(classes: string[]): Promise<void> {
       const plain = rs ? [...rs].filter((id) => !BIG_ONLY.has(id)) : [];
       const g = plain.length ? (ROOTS.find(([, ids]) => ids.some((id) => plain.includes(id)))?.[0] ?? null) : null;
       classGroup.set(c, g);
-      if (!g && rs && [...rs].some((id) => BIG_ONLY.has(id))) bigClass.add(c);
+      const big = rs ? [...rs].find((id) => BIG_ONLY.has(id)) : undefined;
+      if (!g && big) bigClass.set(c, BIG_GROUP[big]);
     }
     await sleep(1000);
   }
@@ -231,7 +241,7 @@ async function main() {
       const groups = new Set([...r.classes].map((c) => classGroup.get(c)).filter((g): g is Group => Boolean(g)));
       let g = ROOTS.map(([gr]) => gr).find((gr) => groups.has(gr));
       if (!g && iconic && [...r.classes].some((c) => soft(c))) g = "views";
-      if (!g && r.sl >= BIG_LINKS && [...r.classes].some((c) => bigClass.has(c))) g = "views";
+      if (!g && r.sl >= BIG_LINKS) g = [...r.classes].map((c) => bigClass.get(c)).find(Boolean);
       if (!g) {
         if (r.sl >= 25) dropped.push(`${r.sl}|${r.en ?? r.q} ${r.sl} (no group: ${[...r.classes].slice(0, 4).join(",")})`);
         continue;
