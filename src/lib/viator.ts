@@ -305,7 +305,7 @@ export async function viatorDestinationFor(slug: string, nameEn: string, lat: nu
  */
 export async function viatorOffers(destinationId: number, q: string | undefined, count: number): Promise<ViatorTour[]> {
   const currency = "USD";
-  const key = `viator-offers:v1:${destinationId}:${(q ?? "").toLowerCase()}:${count}`;
+  const key = `viator-offers:v2:${destinationId}:${(q ?? "").toLowerCase()}:${count}`;
   return (
     (await cachedJson<ViatorTour[]>(key, 6 * 3600, async () => {
       if (q) {
@@ -315,7 +315,7 @@ export async function viatorOffers(destinationId: number, q: string | undefined,
             searchTerm: q,
             currency,
             productFiltering: { destination: String(destinationId) },
-            productSorting: { sort: "TRAVELER_RATING", order: "DESCENDING" },
+            productSorting: { sort: "DEFAULT" },
             searchTypes: [{ searchType: "PRODUCTS", pagination: { start: 1, count } }],
           }),
         });
@@ -328,7 +328,8 @@ export async function viatorOffers(destinationId: number, q: string | undefined,
           filtering: { destination: String(destinationId) },
           pagination: { start: 1, count },
           currency,
-          sorting: { sort: "TRAVELER_RATING", order: "DESCENDING" },
+          // Viator's own ranking (bookings and reviews), not a 5.0 with few reviews.
+          sorting: { sort: "DEFAULT" },
         }),
       });
       const list = (data?.products ?? []).map((p) => toTour(p, currency)).filter((t): t is ViatorTour => t !== null);
