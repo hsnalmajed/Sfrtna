@@ -1050,7 +1050,7 @@ Chrome), climate v2 after the owner's download, publishing staged cities.
 - Payout: bank transfer (USD, min $50, monthly for trips travelled the month
   before) set in Finance → Payment Methods; billing address = owner's national
   address; contact details filled. Account still named "iTravel" → owner to
-  ask support to rename; ID verification to confirm (commission needs it).
+  ask support to rename; ID verification: **Verified** (owner, 21 Oct 23:01).
 - Next: map our 365 cities to Viator destination ids; attraction cards with
   live ticket price + rating + book (client-side); tours per day in the smart
   plan; budget advisor activities from live prices. Ingestion
