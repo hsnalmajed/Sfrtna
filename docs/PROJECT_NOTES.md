@@ -1093,6 +1093,10 @@ missing a canonical/hreflang), then 403, soft 404, the 5xx.
   Saudi National Address certificate 22 Oct 01:33 on the support ticket
   (opened 00:30). Support Mon–Fri 9–17 EST (16:00–24:00 KSA). Expect reply
   22 Oct after 16:00; then "Missing payout method" should clear.
+  22 Oct 01:40 Joe Roberts (Stay22) answered: "requested the document from
+  the payee, will get back" — owner to point him to the attachment.
+- Search Console validation of 403 started 01:11, before the Cloudflare fix
+  (01:26): if it ends "Failed", press Validate fix again.
 - GetYourGuide: partner chat support 9–17 CET (10:00–18:00 KSA); analytics
   shows earning links/placements (use once bookings start). Our GYG links
   are searches (`/api/go/gyg?q=`), so deactivated activities can't break them.
