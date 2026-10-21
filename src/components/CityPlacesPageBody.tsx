@@ -1,4 +1,5 @@
 import { readGuide } from "@/lib/guide";
+import { guidePlanReady } from "@/lib/guidePlan";
 import { readableHours, type Group } from "@/lib/guideTypes";
 import type { PinCategory } from "@/lib/pinStyles";
 import Link from "next/link";
@@ -339,6 +340,7 @@ export default async function CityPlacesPageBody({
               places={items}
               countryCode={country.code}
               citySlug={cityEntry.slug}
+              smartReady={guidePlanReady(guide)}
               cityName={cityName}
               countryName={loc === "ar" ? country.nameAr : country.nameEn}
               mapTitle={dict.maps.cityMapTitle.replace("{city}", cityName)}

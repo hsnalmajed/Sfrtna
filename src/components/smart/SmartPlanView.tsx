@@ -87,6 +87,25 @@ export default function SmartPlanView({ locale, plan, onNew }: { locale: Locale;
           )}
         </div>
 
+        {dd.prayers && (
+          <p className="mt-2 rounded-2xl bg-emerald-50 px-3 py-2 text-[13px] leading-relaxed text-emerald-950 ring-1 ring-emerald-100">
+            <span className="font-extrabold">🕌 {t.prayersTitle}:</span>{" "}
+            {(["fajr", "dhuhr", "asr", "maghrib", "isha"] as const).map((k, n) => (
+              <span key={k} className="whitespace-nowrap">
+                {n > 0 ? " · " : ""}
+                {t.prayers[k]} <span dir="ltr">{dd.prayers?.[k]}</span>
+              </span>
+            ))}
+          </p>
+        )}
+        {dd.notes && dd.notes.length > 0 && (
+          <ul className="mt-2 space-y-1 text-[13px] text-navy-600">
+            {dd.notes.map((n) => (
+              <li key={n}>ℹ️ {n}</li>
+            ))}
+          </ul>
+        )}
+
         <ol className="relative mt-5 space-y-4 border-s-2 border-mist-200 ps-5">
           {dd.items.map((it, k) => (
             <li key={k} className="relative">
@@ -114,6 +133,11 @@ export default function SmartPlanView({ locale, plan, onNew }: { locale: Locale;
                 </p>
               ) : null}
               {typeof it.fromPrevKm === "number" && it.fromPrevKm > 0 && <p className="mt-0.5 text-[11px] font-semibold text-navy-400">↳ {t.km.replace("{n}", String(it.fromPrevKm))}</p>}
+              {it.forYou && (
+                <p className="mt-1 inline-flex rounded-full bg-sun-50 px-2.5 py-0.5 text-[11px] font-extrabold text-sun-800 ring-1 ring-sun-200">
+                  {it.forYou === "famous" ? `⭐ ${t.famousPick}` : t.forYou.replace("{x}", (t.interests as Record<string, string>)[it.forYou] ?? "")}
+                </p>
+              )}
               {it.why && <p className="mt-1 text-[13px] leading-relaxed text-navy-700">{it.why}</p>}
               <Facts item={it} t={t} />
               <div className="mt-2 flex flex-wrap gap-2 print:hidden">

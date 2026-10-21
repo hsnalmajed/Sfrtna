@@ -29,6 +29,7 @@ export default function CityPlacesView({
   places,
   countryCode,
   citySlug,
+  smartReady = false,
   cityName,
   countryName,
   mapTitle,
@@ -46,6 +47,8 @@ export default function CityPlacesView({
   places: PlaceListItem[];
   countryCode: string;
   citySlug: string;
+  /** Our planner has this city's guide: every «أنشئ لي» goes to it. */
+  smartReady?: boolean;
   cityName: string;
   countryName: string;
   mapTitle: string;
@@ -204,6 +207,7 @@ export default function CityPlacesView({
           cityName={cityName}
           countryCode={countryCode}
           citySlug={citySlug}
+          smartReady={smartReady}
           countryName={countryName}
           dict={plannerDict}
           onShowOnMap={pins.length ? showOnMap : undefined}

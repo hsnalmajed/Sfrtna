@@ -24,7 +24,7 @@ export function EstimatePicker({ locale, list, onPick }: { locale: Locale; list:
   return (
     <section className="rounded-3xl bg-white p-5 shadow-[var(--shadow-card)] ring-1 ring-navy-950/5 sm:p-6">
       <h2 className="font-display text-lg font-extrabold text-navy-950">{t.pickTitle}</h2>
-      <p className="mt-1 text-sm text-navy-600">{list.options.length ? t.pickHint : t.pickNone}</p>
+      <p className="mt-1 text-sm text-navy-600">{!list.options.length ? t.pickNone : list.options.some((o) => !o.live) ? t.pickHintSeen : t.pickHint}</p>
       <ul className="mt-4 grid gap-2 sm:grid-cols-2">
         {list.options.map((o) => (
           <li key={o.code}>
@@ -127,8 +127,8 @@ export default function BudgetEstimateView({
           </div>
           {est.flight ? (
             <p className="mt-1 flex flex-wrap items-center gap-2 text-xs text-navy-600">
-              <Tag live>{t.live}</Tag>
-              {t.flightBasis}
+              <Tag live={est.flight.live}>{est.flight.live ? t.live : t.seenTag}</Tag>
+              {est.flight.live ? t.flightBasis : t.flightSeen}
               {est.flight.stops != null && ` · ${est.flight.stops === 0 ? t.direct0 : t.stopsN.replace("{n}", String(est.flight.stops))}`}
               {est.flight.airline && ` · ${est.flight.airline}`}
             </p>
@@ -145,8 +145,8 @@ export default function BudgetEstimateView({
           {est.hotel ? (
             <>
               <p className="mt-1 flex flex-wrap items-center gap-2 text-xs text-navy-600">
-                <Tag live>{t.live}</Tag>
-                {t.hotelBasis.replace("{nights}", nights).replace("{rooms}", countLabel(est.hotel.rooms, t.roomsShapes)).replace("{stars}", String(est.hotel.stars))}
+                <Tag live={est.hotel.live}>{est.hotel.live ? t.live : t.estimateTag}</Tag>
+                {(est.hotel.live ? t.hotelBasis : t.hotelTypical).replace("{nights}", nights).replace("{rooms}", countLabel(est.hotel.rooms, t.roomsShapes)).replace("{stars}", String(est.hotel.stars))}
               </p>
               {est.hotel.examples.length > 0 && (
                 <ul className="mt-2 space-y-1 text-xs text-navy-700">

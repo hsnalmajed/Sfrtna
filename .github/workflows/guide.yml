@@ -12,7 +12,7 @@ on:
   workflow_dispatch:
     inputs:
       task:
-        description: "probe | facts | write | all"
+        description: "probe | facts | write | costs | all"
         type: string
         default: all
       only:
@@ -46,13 +46,16 @@ jobs:
       - name: Facts (OpenStreetMap + Wikidata)
         if: inputs.task == 'facts' || inputs.task == 'all' || github.event_name == 'schedule'
         run: npx --yes tsx@4 scripts/guide/build-facts-wd.ts ${{ inputs.only && format('--only {0}', inputs.only) || '' }}
+      - name: City costs (Gemini)
+        if: inputs.task == 'costs' || inputs.task == 'all' || github.event_name == 'schedule'
+        run: npx --yes tsx@4 scripts/guide/costs.ts ${{ inputs.only && inputs.only != 'all' && format('--only {0}', inputs.only) || '' }}
       - name: Write-ups (Gemini)
         if: inputs.task == 'write' || inputs.task == 'all' || github.event_name == 'schedule'
         run: npx --yes tsx@4 scripts/guide/write.ts ${{ inputs.only && format('--only {0}', inputs.only) || '' }}
       - name: Commit
         if: always()
         run: |
-          for p in public/data/guide scripts/guide/reports; do if [ -e "$p" ]; then git add "$p"; fi; done
+          for p in public/data/guide public/data/costs.json scripts/guide/reports; do if [ -e "$p" ]; then git add "$p"; fi; done
           if git diff --cached --quiet; then echo "Nothing new."; exit 0; fi
           git config user.name "Claude"
           git config user.email "noreply@anthropic.com"

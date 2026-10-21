@@ -8,6 +8,7 @@ import { buildGuidePlan, guidePlanReady } from "@/lib/guidePlan";
 import type { GuideFile } from "@/lib/guideTypes";
 import { readStoredRestaurants } from "@/lib/mapPins";
 import { findCity } from "@/lib/cities";
+import { CITY_COORDS } from "@/data/cityCoords";
 
 export const dynamic = "force-dynamic";
 
@@ -27,7 +28,7 @@ export async function POST(request: Request) {
     const city = findCity(req.code, req.slug);
     if (!city) return NextResponse.json({ ok: false, reason: "bad_request" }, { status: 400 });
     const restaurants = await readStoredRestaurants(req.slug);
-    const plan = buildGuidePlan(req, guide as GuideFile, restaurants, req.locale === "ar" ? city.nameAr : city.nameEn, city.nameEn);
+    const plan = buildGuidePlan(req, guide as GuideFile, restaurants, req.locale === "ar" ? city.nameAr : city.nameEn, city.nameEn, CITY_COORDS[req.slug]);
     return NextResponse.json({ ok: true, plan, fresh: true }, { headers: { "Cache-Control": "no-store" } });
   }
   if (!aiConfigured()) return NextResponse.json({ ok: false, reason: "off" }, { status: 503 });

@@ -30,9 +30,14 @@ import { CITY_COORDS } from "@/data/cityCoords";
 
 export const COMPANY = ["solo", "couple", "family_kids", "family_adults", "friends", "seniors"] as const;
 export const INTERESTS = [
-  "landmarks", "museums", "nature", "shopping", "adventure", "beaches",
-  "local_life", "kids_fun", "photography", "food", "nightlife_calm", "wellness",
+  "famous", "history", "islamic", "museums", "art", "oldtown",
+  "nature", "mountains", "beaches", "relax", "kids", "malls",
+  "souqs", "food", "modern", "photo", "night", "churches",
 ] as const;
+/** When the traveller arrives on the first day and leaves on the last. */
+export const DAY_PART = ["morning", "noon", "evening"] as const;
+/** Needs that change the plan (strollers, wheelchairs, crowds…). */
+export const NEEDS = ["stroller", "wheelchair", "less_walking", "avoid_crowds", "free_first", "prayer"] as const;
 export const PACE = ["relaxed", "balanced", "packed"] as const;
 export const START = ["early", "normal", "late"] as const;
 export const FOOD = ["local", "international", "fine", "quick"] as const;
@@ -54,6 +59,9 @@ export interface PlanAnswers {
   firstVisit: boolean;
   /** Anything else, in their words (short). */
   note: string;
+  arrive?: (typeof DAY_PART)[number];
+  leave?: (typeof DAY_PART)[number];
+  needs?: (typeof NEEDS)[number][];
 }
 
 export interface PlanRequest {
@@ -98,7 +106,7 @@ export function cleanPlanRequest(b: unknown): PlanRequest | null {
     answers: {
       company,
       kidsAges: Array.isArray(a.kidsAges) ? a.kidsAges.filter((x) => Number.isInteger(x) && (x as number) >= 0 && (x as number) <= 17).slice(0, 6) as number[] : undefined,
-      interests: pickMany(INTERESTS, a.interests, 6),
+      interests: pickMany(INTERESTS, a.interests, 8),
       pace,
       start,
       lateNights: a.lateNights === true,
@@ -109,6 +117,9 @@ export function cleanPlanRequest(b: unknown): PlanRequest | null {
       spend,
       firstVisit: a.firstVisit !== false,
       note: typeof a.note === "string" ? a.note.replace(/[<>]/g, "").trim().slice(0, 200) : "",
+      arrive: pickEnum(DAY_PART, a.arrive) ?? "morning",
+      leave: pickEnum(DAY_PART, a.leave) ?? "evening",
+      needs: pickMany(NEEDS, a.needs, NEEDS.length),
     },
   };
 }
@@ -140,6 +151,8 @@ export interface PlanItem {
   ticketQuery?: string;
   /** The stop as a Google Maps search (name and city). */
   mapQuery?: string;
+  /** Which of the traveller's interests chose it (an INTERESTS key). */
+  forYou?: string;
 }
 
 export interface PlanDay {
@@ -149,6 +162,10 @@ export interface PlanDay {
   weather: string;
   wear: string;
   items: PlanItem[];
+  /** The day's prayer times in the city's own time ("05:12 · 11:58 …"). */
+  prayers?: { fajr: string; dhuhr: string; asr: string; maghrib: string; isha: string };
+  /** What shaped this day (heat, arrival, a closed day…), short notes. */
+  notes?: string[];
 }
 
 export interface SmartPlan {

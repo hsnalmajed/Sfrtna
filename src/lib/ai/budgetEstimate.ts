@@ -21,6 +21,11 @@ import { cachedJson } from "@/lib/edgeCache";
 import { findAirport } from "@/lib/airports";
 import { CITY_OF_AIRPORT } from "@/lib/providers/travelpayouts";
 import { exploreFares, googleFlights, hotelPrices, type HotelResult } from "@/lib/providers/serpapi";
+import { tripFaresFrom } from "@/lib/providers/travelpayouts";
+import { readCityCosts } from "@/lib/costs";
+import type { CityCosts, Pair } from "@/lib/costsTypes";
+import { fetchRates, rateBetween, type Rates } from "@/lib/rates";
+import { CITY_AIRPORTS } from "@/data/cityAirports";
 import { discoverCandidates } from "@/lib/discoverPool";
 import type { Continent } from "@/lib/countries";
 
@@ -67,13 +72,16 @@ export interface BudgetEstimate {
   travellers: number;
   currency: string;
   style: Style;
-  flight: { price: number; stops: number | null; airline: string } | null;
+  /** live: a price found now for these dates and this party; else a fare seen recently (estimate). */
+  flight: { price: number; stops: number | null; airline: string; live: boolean } | null;
   hotel: {
     low: number;
     typical: number;
     rooms: number;
     stars: number;
     examples: { name: string; stars: number | null; rating: number | null; total: number }[];
+    /** live: the city's hotels for these nights now; else our stored typical range (estimate). */
+    live: boolean;
   } | null;
   daily: DailyCosts | null;
   total: Range & { recommended: number };
@@ -88,6 +96,8 @@ export interface DestinationOption {
   emoji: string;
   price: number;
   stops: number | null;
+  /** A price found now; else a fare seen recently (estimate). */
+  live: boolean;
 }
 
 export interface EstimateList {
@@ -113,7 +123,7 @@ async function flightTo(r: EstimateRequest, dest: string): Promise<BudgetEstimat
     directOnly: r.directOnly,
   });
   const hit = (explore ?? []).filter((f) => sameCity(f.airport, dest)).sort((a, b) => a.price - b.price)[0];
-  if (hit) return { price: hit.price, stops: hit.stops, airline: hit.airline };
+  if (hit) return { price: hit.price, stops: hit.stops, airline: hit.airline, live: true };
   const gf = await googleFlights({
     origin: r.origin,
     destination: dest,
@@ -128,7 +138,14 @@ async function flightTo(r: EstimateRequest, dest: string): Promise<BudgetEstimat
     pace: "explore",
   });
   const best = (gf?.flights ?? []).slice().sort((a, b) => a.price - b.price)[0];
-  return best ? { price: Math.round(best.price), stops: best.stops, airline: best.legs[0]?.airline ?? "" } : null;
+  if (best) return { price: Math.round(best.price), stops: best.stops, airline: best.legs[0]?.airline ?? "", live: true };
+  // No live price to be had now: the fare seen recently for these days
+  // (within two days of them), per seat, times the party — an estimate.
+  const seen = await tripFaresFrom(r.origin, r.from, r.to, r.currency);
+  const f = seen.get(dest) ?? seen.get(CITY_OF_AIRPORT[dest] ?? "") ?? [...seen.entries()].find(([k]) => sameCity(k, dest))?.[1];
+  if (!f) return null;
+  const seats = r.adults + r.childrenAges.length + r.infants * 0.1;
+  return { price: Math.round(f.price * seats), stops: f.transfers, airline: f.airline, live: false };
 }
 
 /** The city's hotels for these nights at the chosen level, live. */
@@ -164,7 +181,60 @@ async function hotelsIn(r: EstimateRequest, cityEn: string): Promise<BudgetEstim
     .sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0))
     .slice(0, 3)
     .map((h) => ({ name: h.name, stars: h.stars, rating: h.rating, total: Math.round(h.total * rooms) }));
-  return { low: Math.round(totals[0] * rooms), typical: Math.round(typical * rooms), rooms, stars, examples };
+  return { low: Math.round(totals[0] * rooms), typical: Math.round(typical * rooms), rooms, stars, examples, live: true };
+}
+
+const usdRates = () => cachedJson<Rates>("rates:usd:v1", 3600, fetchRates);
+
+/** A stored range in US dollars, in the traveller's currency. */
+function inCurrency(p: Pair, rate: number): Range {
+  return { low: Math.round(p[0] * rate), high: Math.round(p[1] * rate) };
+}
+
+/** The city slug an airport serves (our cities' gateway airports). */
+function slugOfAirport(iata: string): string | undefined {
+  const city = CITY_OF_AIRPORT[iata] ?? iata;
+  return Object.entries(CITY_AIRPORTS).find(([, a]) => a.iata === iata || a.iata === city || CITY_OF_AIRPORT[a.iata] === city)?.[0];
+}
+
+const LEVEL_INDEX: Record<Style, 0 | 1 | 2> = { budget: 0, mid: 1, luxury: 2 };
+const BASIS = {
+  ar: { budget: "مطاعم شعبية ومواصلات عامة وأماكن مجانية أو رخيصة", mid: "مطاعم جيدة وتاكسي أحياناً وأشهر الأماكن المدفوعة", luxury: "مطاعم راقية وسيارة خاصة وجولات مميزة" },
+  en: { budget: "local eateries, public transport, free or cheap sights", mid: "good restaurants, taxis sometimes, the main paid sights", luxury: "fine dining, a private car, premium tours" },
+};
+const EXTRA = {
+  ar: { transfer: "تاكسي المطار ذهاباً وعودة", sim: "شريحة أو eSIM للإنترنت" },
+  en: { transfer: "Airport taxi both ways", sim: "SIM or eSIM with data" },
+};
+
+/** Daily spending and hotels from our stored city costs (estimates), in the traveller's currency. */
+async function storedCosts(r: EstimateRequest, travellers: number): Promise<{ daily: DailyCosts; hotel: (stars: number, nights: number, rooms: number) => { low: number; typical: number } } | null> {
+  const slug = slugOfAirport(r.destination);
+  const c: CityCosts | null = slug ? await readCityCosts(slug) : null;
+  if (!c) return null;
+  const rates = await usdRates();
+  const rate = rates ? rateBetween("USD", r.currency, rates) : r.currency === "USD" ? 1 : null;
+  if (!rate) return null;
+  const L = LEVEL_INDEX[r.style];
+  const share = Math.max(1, travellers);
+  const daily: DailyCosts = {
+    food: inCurrency(c.food[L], rate),
+    transport: inCurrency(c.transport[L], rate),
+    activities: inCurrency(c.activities[L], rate),
+    extras: [
+      // A taxi carries the whole party: its cost shared per traveller.
+      { label: EXTRA[r.locale].transfer, ...inCurrency([(c.transfer[0] * 2) / share, (c.transfer[1] * 2) / share], rate) },
+      { label: EXTRA[r.locale].sim, ...inCurrency(c.sim, rate) },
+    ],
+    basis: BASIS[r.locale][r.style],
+    tips: r.locale === "ar" ? c.tipsAr : c.tipsEn,
+    sources: [],
+  };
+  const hotel = (stars: number, nights: number, rooms: number) => {
+    const h = c.hotel[Math.min(2, Math.max(0, stars - 3))];
+    return { low: Math.round(h[0] * rate * nights * rooms), typical: Math.round(((h[0] + h[1]) / 2) * rate * nights * rooms) };
+  };
+  return { daily, hotel };
 }
 
 const RANGE = {
@@ -261,14 +331,26 @@ export async function estimateBudget(r: EstimateRequest): Promise<BudgetEstimate
       currency: r.currency,
       directOnly: r.directOnly,
     });
-    if (!fares) return null;
+    // No live list now: the fares seen recently for these days (estimates).
+    if (!fares) {
+      const seen = await tripFaresFrom(r.origin, r.from, r.to, r.currency);
+      if (!seen.size) return null;
+      const seats = r.adults + r.childrenAges.length + r.infants * 0.1;
+      const options: DestinationOption[] = [];
+      for (const c of discoverCandidates()) {
+        if (r.continents.length && (!c.continent || !r.continents.includes(c.continent))) continue;
+        const f = seen.get(c.code) ?? seen.get(CITY_OF_AIRPORT[c.code] ?? "");
+        if (f && !options.some((o) => o.code === c.code)) options.push({ code: c.code, nameAr: c.nameAr, nameEn: c.nameEn, emoji: c.emoji, price: Math.round(f.price * seats), stops: f.transfers, live: false });
+      }
+      return { kind: "list", options: options.sort((a, b) => a.price - b.price).slice(0, 18), currency: r.currency };
+    }
     const best = new Map<string, DestinationOption>();
     for (const c of discoverCandidates()) {
       if (r.continents.length && (!c.continent || !r.continents.includes(c.continent))) continue;
       const f = fares.filter((x) => sameCity(x.airport, c.code)).sort((a, b) => a.price - b.price)[0];
       if (!f) continue;
       const prev = best.get(c.code);
-      if (!prev || f.price < prev.price) best.set(c.code, { code: c.code, nameAr: c.nameAr, nameEn: c.nameEn, emoji: c.emoji, price: f.price, stops: f.stops });
+      if (!prev || f.price < prev.price) best.set(c.code, { code: c.code, nameAr: c.nameAr, nameEn: c.nameEn, emoji: c.emoji, price: f.price, stops: f.stops, live: true });
     }
     const options = [...best.values()].sort((a, b) => a.price - b.price).slice(0, 18);
     return { kind: "list", options, currency: r.currency };
@@ -276,7 +358,17 @@ export async function estimateBudget(r: EstimateRequest): Promise<BudgetEstimate
 
   const ap = findAirport(r.destination);
   if (!ap) return null;
-  const [flight, hotel, daily] = await Promise.all([flightTo(r, r.destination), hotelsIn(r, ap.cityEn), dailyCosts(r, ap.cityEn, ap.countryEn)]);
+  const [flight, liveHotel, aiDaily, stored] = await Promise.all([
+    flightTo(r, r.destination),
+    hotelsIn(r, ap.cityEn),
+    dailyCosts(r, ap.cityEn, ap.countryEn),
+    storedCosts(r, travellers),
+  ]);
+  const daily = aiDaily ?? stored?.daily ?? null;
+  // No live hotel prices now: our stored typical range for the level (estimate).
+  const rooms = Math.max(1, Math.ceil(r.adults / 2));
+  const hotel: BudgetEstimate["hotel"] =
+    liveHotel ?? (stored ? { ...stored.hotel(STARS[r.style], nights, rooms), rooms, stars: STARS[r.style], examples: [], live: false } : null);
 
   const days = nights;
   const perDay = (k: "low" | "high") => (daily ? daily.food[k] + daily.transport[k] + daily.activities[k] : 0);

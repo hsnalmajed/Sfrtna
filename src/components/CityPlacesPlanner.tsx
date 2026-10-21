@@ -13,7 +13,7 @@ import CityPlacesExplorer, { score, type PlaceListItem } from "@/components/City
 import PrintHeader from "@/components/PrintHeader";
 import DateRangeInput from "@/components/DateRangeInput";
 import SavePlanButton from "@/components/SavePlanButton";
-import SmartPlanner from "@/components/smart/SmartPlanner";
+import SmartPlanner, { SMART_OPEN_EVENT } from "@/components/smart/SmartPlanner";
 
 /**
  * More than this in one day and the day is travelling, not visiting.
@@ -203,6 +203,7 @@ export default function CityPlacesPlanner({
   cityName,
   countryCode,
   citySlug,
+  smartReady = false,
   dict,
   onShowOnMap,
   showOnMapLabel,
@@ -210,6 +211,12 @@ export default function CityPlacesPlanner({
 }: {
   /** The city's slug, for «خطتي الذكية» (src/components/smart). */
   citySlug?: string;
+  /**
+   * Our planner (guide + engine) covers this city: «أنشئ لي» and arrivals
+   * with ?mode=auto open it instead of the simple interests sheet (owner,
+   * 21 Oct: every plan the site makes goes through our planner).
+   */
+  smartReady?: boolean;
   locale: Locale;
   places: PlaceListItem[];
   /** The city's stored restaurants, for each day's meals. */
@@ -247,13 +254,13 @@ export default function CityPlacesPlanner({
     if (f) setFrom(f);
     if (tt && tt >= f) setTo(tt);
     // From travel tools' «أنشئ لي خطة»: open the interests sheet at once.
-    if (q.get("mode") === "auto" && f && tt) setAutoOpen(true);
+    if (q.get("mode") === "auto" && f && tt && !smartReady) setAutoOpen(true);
     if (q.get("plan") === "1") {
       requestAnimationFrame(() =>
         document.getElementById("trip-plan")?.scrollIntoView({ behavior: "smooth", block: "start" })
       );
     }
-  }, []);
+  }, [smartReady]);
   // «افتح» on a saved plan (حسابي → ?saved=<id>): the plan is rebuilt from
   // this page's own places, by key, and opened.
   useEffect(() => {
@@ -356,6 +363,7 @@ export default function CityPlacesPlanner({
               <span className={`mt-0.5 block text-xs ${mode === "pick" ? "text-navy-900/75" : "text-white/65"}`}>{t.pickModeHint}</span>
             </span>
           </button>
+          {!smartReady && (
           <button type="button" onClick={() => setAutoOpen(true)} className={card}>
             <span className="text-2xl leading-none" aria-hidden="true">✨</span>
             <span>
@@ -363,6 +371,7 @@ export default function CityPlacesPlanner({
               <span className="mt-0.5 block text-xs text-white/65">{t.autoModeHint}</span>
             </span>
           </button>
+          )}
         </div>
       </div>
 
@@ -553,6 +562,7 @@ export default function CityPlacesPlanner({
           onEdit={() => {
             setPlan(null);
             if (plan.source === "pick") setBasketOpen(true);
+            else if (smartReady) window.dispatchEvent(new Event(SMART_OPEN_EVENT));
             else setAutoOpen(true);
           }}
           onClose={() => setPlan(null)}
