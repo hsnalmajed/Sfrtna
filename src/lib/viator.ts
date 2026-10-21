@@ -23,21 +23,13 @@ export function viatorConfigured(): boolean {
   return Boolean(process.env.VIATOR_API_KEY);
 }
 
-/** For /api/health: does the key answer, and how many destinations come back. */
-export async function viatorProbe(): Promise<{ key: boolean; env: string; status: number | null; destinations: number }> {
-  const key = process.env.VIATOR_API_KEY;
+/** For /api/health: the key is set, and how many destinations the (cached) list holds. */
+export async function viatorProbe(): Promise<{ key: boolean; env: string; destinations: number; lastError: string }> {
   const env = process.env.VIATOR_ENV === "sandbox" ? "sandbox" : "production";
-  if (!key) return { key: false, env, status: null, destinations: 0 };
-  try {
-    const res = await fetch(`${BASE()}/destinations`, {
-      headers: { "exp-api-key": key, Accept: "application/json;version=2.0", "Accept-Language": "en-US" },
-    });
-    let n = 0;
-    if (res.ok) n = (((await res.json()) as { destinations?: unknown[] }).destinations ?? []).length;
-    return { key: true, env, status: res.status, destinations: n };
-  } catch {
-    return { key: true, env, status: 0, destinations: 0 };
-  }
+  if (!process.env.VIATOR_API_KEY) return { key: false, env, destinations: 0, lastError: "" };
+  // The cached list: Viator limits how often /destinations may be asked.
+  const all = await viatorDestinations();
+  return { key: true, env, destinations: all.length, lastError };
 }
 
 // Viator serves content in a fixed set of languages and Arabic is not one of
@@ -282,8 +274,7 @@ export async function viatorDebug(): Promise<{ count: number; sample: unknown; t
   const all = await viatorDestinations();
   const types: Record<string, number> = {};
   for (const d of all) types[d.type] = (types[d.type] ?? 0) + 1;
-  const raw = await viatorFetch<{ destinations?: unknown[] }>("/destinations", { method: "GET" });
-  return { count: all.length, sample: raw?.destinations?.find((d) => JSON.stringify(d).includes("Istanbul")) ?? raw?.destinations?.[0], types, lastError };
+  return { count: all.length, sample: all.find((d) => d.name === "Istanbul"), types, lastError };
 }
 
 /**
