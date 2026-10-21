@@ -87,6 +87,12 @@ export interface CitySeasonSource {
 }
 
 export const CITY_SEASON_SOURCES: Record<string, CitySeasonSource> = {
+  // Added 21 Oct 2026 (each read on its page that day).
+  "prague": { months: [4, 5, 9, 10], source: "lonelyPlanet", url: "https://www.lonelyplanet.com/articles/best-time-to-visit-prague" },
+  "budapest": { months: [3, 4, 10], source: "lonelyPlanet", url: "https://www.lonelyplanet.com/articles/best-time-to-visit-budapest" },
+  "hong-kong": { months: [3, 4, 10, 11], source: "lonelyPlanet", url: "https://www.lonelyplanet.com/articles/best-time-to-visit-hong-kong" },
+  "manila": { months: [12, 1, 2, 3, 4, 5], source: "lonelyPlanet", url: "https://www.lonelyplanet.com/articles/best-time-to-visit-philippines", broad: true },
+  "zagreb": { months: [5, 9, 10], source: "lonelyPlanet", url: "https://www.lonelyplanet.com/articles/best-time-to-visit-croatia", broad: true },
   "riyadh": { months: [1, 2, 3, 4, 5, 6, 12], source: "visitSaudi", url: "https://www.visitsaudi.com/en/stories/climate-and-seasons" },
   "jeddah": { months: [1, 2, 3, 9, 10, 11, 12], source: "visitSaudi", url: "https://www.visitsaudi.com/en/stories/climate-and-seasons" },
   "alula": { months: [1, 2, 3, 4, 10, 11, 12], source: "rcu", url: "https://www.rcu.gov.sa/en/visiting-alula" },
