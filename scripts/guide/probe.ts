@@ -1,19 +1,33 @@
 // Checks the Gemini key: models it may use, one plain answer, one with
 // Google Search grounding. Prints no secret.
+import { mkdirSync, writeFileSync } from "node:fs";
 import { generate, listModels, pickModel } from "./gemini";
+
+// Logs of the run are not readable from the workspace, so the result is
+// committed as scripts/guide/reports/probe.txt.
+const lines: string[] = [];
+const log = (...a: unknown[]) => {
+  const l = a.map(String).join(" ");
+  lines.push(l);
+  console.log(l);
+};
+function save() {
+  mkdirSync("scripts/guide/reports", { recursive: true });
+  writeFileSync("scripts/guide/reports/probe.txt", `${new Date().toISOString()}\n${lines.join("\n")}\n`);
+}
 
 async function main() {
   const models = await listModels();
-  console.log("models:", models.map((m) => m.name.replace("models/", "")).join(", "));
+  log("models:", models.map((m) => m.name.replace("models/", "")).join(", "));
   const model = pickModel(models);
-  console.log("picked:", model);
+  log("picked:", model);
   const plain = await generate<{ ar: string; minutes: number }>({
     model,
     system: "Answer in JSON.",
     user: 'Hagia Sophia, Istanbul: {"ar": one-sentence Arabic description, "minutes": typical visit length}',
     schema: { type: "object", properties: { ar: { type: "string" }, minutes: { type: "integer" } }, required: ["ar", "minutes"] },
   });
-  console.log("plain:", JSON.stringify(plain.data));
+  log("plain:", JSON.stringify(plain.data));
   try {
     const g = await generate<{ hours: string }>({
       model,
@@ -21,12 +35,14 @@ async function main() {
       user: 'Current opening hours of Topkapi Palace, Istanbul, as {"hours": "..."}',
       search: true,
     });
-    console.log("grounded:", JSON.stringify(g.data), "sources:", g.sources.length);
+    log("grounded:", JSON.stringify(g.data), "sources:", g.sources.length);
   } catch (e) {
-    console.log("grounded FAILED:", String(e).slice(0, 300));
+    log("grounded FAILED:", String(e).slice(0, 300));
   }
+  save();
 }
 main().catch((e) => {
-  console.error(String(e).slice(0, 500));
+  log("FAILED:", String(e).slice(0, 500));
+  save();
   process.exit(1);
 });

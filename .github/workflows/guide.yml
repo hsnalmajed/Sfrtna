@@ -48,7 +48,7 @@ jobs:
         if: inputs.task == 'write' || inputs.task == 'all' || github.event_name == 'schedule'
         run: npx --yes tsx@4 scripts/guide/write.ts ${{ inputs.only && format('--only {0}', inputs.only) || '' }}
       - name: Commit
-        if: inputs.task != 'probe'
+        if: always()
         run: |
           git add public/data/guide scripts/guide/reports || true
           if git diff --cached --quiet; then echo "Nothing new."; exit 0; fi

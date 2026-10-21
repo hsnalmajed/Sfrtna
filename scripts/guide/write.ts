@@ -1,0 +1,153 @@
+// Our place guide, step 2: a short write-up for each kept place, in Arabic
+// and English — what it is, how long a visit takes, the best time, what to
+// wear when it matters, one practical tip, good with children or not.
+//
+//   npx tsx scripts/guide/write.ts [--only slug,slug] [--top N]
+//
+// Gemini on the free tier (GEMINI_API_KEY, Google AI Studio), run on GitHub
+// Actions in daily batches: famous cities first, the top places of each
+// city first; a daily-quota answer ends the run and the next day continues.
+// Only facts the model is sure of — no prices, no opening hours (hours come
+// from OpenStreetMap), no invented numbers. The site reads the stored file;
+// visitors never cause an AI call.
+
+import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { join } from "node:path";
+import { CITY_NAMES_EN } from "./cityNames";
+import { generate, listModels, pickModel, QuotaError } from "./gemini";
+import type { GuideFile, GuidePlace } from "@/lib/guideTypes";
+
+const DIR = join(process.cwd(), "public/data/guide");
+const BATCH = 8;
+const PAUSE_MS = Number(process.env.GEMINI_PAUSE_MS ?? 7_000);
+
+function arg(name: string): string | undefined {
+  const i = process.argv.indexOf(name);
+  return i >= 0 ? process.argv[i + 1] : undefined;
+}
+
+const S = { type: "string" } as const;
+const SCHEMA = {
+  type: "array",
+  items: {
+    type: "object",
+    properties: {
+      q: S,
+      ar: { ...S, description: "1–2 sentences in Modern Standard Arabic: what it is and why visit" },
+      en: { ...S, description: "the same in English" },
+      minutes: { type: "integer", description: "typical visit length in minutes" },
+      best_ar: { ...S, description: "best time to go (time of day / day of week / season), short Arabic phrase" },
+      best_en: S,
+      dress_ar: { ...S, description: "what to wear if it matters (mosques, churches, hikes, beaches); empty string if nothing special" },
+      dress_en: S,
+      tip_ar: { ...S, description: "one practical, specific tip in Arabic" },
+      tip_en: S,
+      kids: { type: "boolean" },
+      known: { type: "boolean", description: "false if you do not know this exact place well" },
+    },
+    required: ["q", "ar", "en", "minutes", "best_ar", "best_en", "dress_ar", "dress_en", "tip_ar", "tip_en", "kids", "known"],
+  },
+} as const;
+
+type Answer = {
+  q: string;
+  ar: string;
+  en: string;
+  minutes: number;
+  best_ar: string;
+  best_en: string;
+  dress_ar: string;
+  dress_en: string;
+  tip_ar: string;
+  tip_en: string;
+  kids: boolean;
+  known: boolean;
+}[];
+
+const SYSTEM = `You write a travel guide for Saudi and Gulf travellers. For each place you get (name, kind, city, Wikidata id), write short, accurate guide notes.
+Rules:
+- Only what is well established about that exact place. If you do not know it well, set known=false and keep the text generic to its kind (no specific claims).
+- Never give prices, ticket costs, phone numbers or opening hours.
+- Arabic: clear Modern Standard Arabic, no transliteration mistakes in famous names, no tashkeel.
+- Descriptions: at most 220 characters each. Tips: specific (e.g. "ادخل من بوابة ... لتجنب الطابور"), not generic advice.
+- For mosques mention modest dress and prayer times; for churches modest dress; for beaches sun protection; for hikes shoes.
+- minutes: a realistic visit (a viewpoint 20–40, a big museum 120–240).`;
+
+function cityOrder(files: string[]): string[] {
+  const fame = (f: string) => {
+    const g = JSON.parse(readFileSync(join(DIR, f), "utf8")) as GuideFile;
+    return g.places.slice(0, 10).reduce((s, p) => s + p.sl, 0);
+  };
+  return files.map((f) => [f, fame(f)] as const).sort((a, b) => b[1] - a[1]).map(([f]) => f.replace(/\.json$/, ""));
+}
+
+async function main() {
+  if (!existsSync(DIR)) return console.log("no guide files yet");
+  const top = Number(arg("--top") ?? 40);
+  const only = arg("--only");
+  let slugs = only ? only.split(",").map((s) => s.trim()) : cityOrder(readdirSync(DIR).filter((f) => f.endsWith(".json")));
+  slugs = slugs.filter((s) => existsSync(join(DIR, `${s}.json`)));
+  const model = pickModel(await listModels());
+  console.log(`model: ${model}; cities: ${slugs.length}`);
+  const started = Date.now();
+  const stopAfter = Number(process.env.STOP_AFTER_MIN ?? 150) * 60_000;
+  let calls = 0;
+  let written = 0;
+  for (const slug of slugs) {
+    const path = join(DIR, `${slug}.json`);
+    const file = JSON.parse(readFileSync(path, "utf8")) as GuideFile;
+    const todo = file.places.slice(0, top).filter((p) => !p.d);
+    if (!todo.length) continue;
+    const city = CITY_NAMES_EN[slug] ?? slug;
+    for (let i = 0; i < todo.length; i += BATCH) {
+      if (Date.now() - started > stopAfter) {
+        console.log(`time budget reached; ${written} places written in ${calls} calls`);
+        return;
+      }
+      const batch = todo.slice(i, i + BATCH);
+      const user = `City: ${city}\nPlaces:\n${batch.map((p) => `- q=${p.q}; name="${p.e || p.n}"; local="${p.n}"; kind=${p.g}${p.wh ? "; World Heritage" : ""}`).join("\n")}`;
+      let ans: Answer;
+      try {
+        ans = (await generate<Answer>({ model, system: SYSTEM, user, schema: SCHEMA as unknown as Record<string, unknown> })).data;
+        calls++;
+      } catch (e) {
+        if (e instanceof QuotaError && e.daily) {
+          console.log(`daily quota reached; ${written} places written in ${calls} calls`);
+          writeFileSync(path, JSON.stringify(file));
+          return;
+        }
+        console.log(`${slug}: batch failed — ${String(e).slice(0, 200)}`);
+        await new Promise((r) => setTimeout(r, PAUSE_MS));
+        continue;
+      }
+      const at = new Date().toISOString().slice(0, 10);
+      for (const a of ans) {
+        const p = file.places.find((x) => x.q === a.q) as GuidePlace | undefined;
+        if (!p || !a.ar || !a.en) continue;
+        p.d = a.ar.slice(0, 260);
+        p.de = a.en.slice(0, 260);
+        if (a.known && a.minutes >= 10 && a.minutes <= 600) p.m = a.minutes;
+        if (a.known) {
+          p.bt = a.best_ar.slice(0, 120) || undefined;
+          p.bte = a.best_en.slice(0, 120) || undefined;
+          p.tp = a.tip_ar.slice(0, 200) || undefined;
+          p.tpe = a.tip_en.slice(0, 200) || undefined;
+        }
+        p.dr = a.dress_ar.slice(0, 140) || undefined;
+        p.dre = a.dress_en.slice(0, 140) || undefined;
+        p.kids = a.kids;
+        p.wAt = at;
+        written++;
+      }
+      writeFileSync(path, JSON.stringify(file));
+      await new Promise((r) => setTimeout(r, PAUSE_MS));
+    }
+    console.log(`${slug}: done (${written} written so far, ${calls} calls)`);
+  }
+  console.log(`all done; ${written} places written in ${calls} calls`);
+}
+
+main().catch((e) => {
+  console.error(e);
+  process.exit(1);
+});
