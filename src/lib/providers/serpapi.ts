@@ -413,6 +413,11 @@ export async function googleFlights(q: {
   currency: string;
   locale: "ar" | "en";
   directOnly: boolean;
+  /**
+   * "explore" for asks that are not the traveller's only source of fares
+   * (budget advisor): they leave the flight reserve untouched.
+   */
+  pace?: "flight" | "explore";
 }): Promise<FallbackFlights | null> {
   const round = Boolean(q.returnDate);
   const cacheKey = `serp-flights2:${q.origin}:${q.destination}:${q.departDate}:${q.returnDate || "-"}:${q.adults}:${q.children}:${q.infants}:${q.currency}:${q.locale}:${q.directOnly ? 1 : 0}`;
@@ -432,7 +437,7 @@ export async function googleFlights(q: {
     if (q.children) params.children = String(q.children);
     if (q.infants) params.infants_on_lap = String(q.infants);
     if (q.directOnly) params.stops = "1";
-    const body = await search(params, "flight");
+    const body = await search(params, q.pace ?? "flight");
     if (!body) return null;
     const best = (body.best_flights as GfOption[] | undefined) ?? [];
     const other = (body.other_flights as GfOption[] | undefined) ?? [];

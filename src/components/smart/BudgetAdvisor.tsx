@@ -16,8 +16,12 @@ import { useDefaultOrigin } from "@/lib/useOrigin";
 import { useProfileOnce } from "@/lib/useMember";
 import type { BudgetUnderstanding } from "@/lib/ai/budget";
 import type { Profile } from "@/lib/memberItems";
+import type { BudgetEstimate, EstimateList, Style } from "@/lib/ai/budgetEstimate";
+import Icon from "@/components/ui/Icon";
+import BudgetEstimateView, { EstimatePicker } from "@/components/smart/BudgetEstimateView";
 
 type Scope = "both" | "flight" | "hotel";
+type Mode = "know" | "estimate";
 
 /**
  * «مستشار الميزانية»: the trip in the traveller's words (AI reads it into the
@@ -47,9 +51,14 @@ export default function BudgetAdvisor({ locale }: { locale: Locale }) {
   const [currency, setCurrency] = useState("SAR");
   const [scope, setScope] = useState<Scope>("both");
   const [flightShare, setFlightShare] = useState(40);
-  const [stars, setStars] = useState(0);
+  const [starsPicked, setStars] = useState(0);
   const [direct, setDirect] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [mode, setMode] = useState<Mode>("estimate");
+  const [style, setStyle] = useState<Style>("mid");
+  const [estimating, setEstimating] = useState(false);
+  const [estFailed, setEstFailed] = useState(false);
+  const [est, setEst] = useState<BudgetEstimate | EstimateList | null>(null);
 
   const [applyProfile] = useState(() => (p: Profile) => {
     if (p.origin) setOrigin(p.origin);
@@ -88,6 +97,9 @@ export default function BudgetAdvisor({ locale }: { locale: Locale }) {
         else if (f.departDate && f.nights) setTo(new Date(Date.parse(f.departDate) + f.nights * 86_400_000).toISOString().slice(0, 10));
         if (f.adults) setTravelers({ adults: f.adults, childrenAges: f.childrenAges, infants: 0 });
         if (f.budget) setBudget(String(f.budget));
+        // No budget said → they want to know how much the trip needs.
+        setMode(f.budget ? "know" : "estimate");
+        if (f.hotelStars) setStyle(f.hotelStars >= 5 ? "luxury" : f.hotelStars <= 3 ? "budget" : "mid");
         if (f.currency) setCurrency(f.currency);
         if (f.scope) setScope(f.scope);
         if (f.hotelStars) setStars(f.hotelStars);
@@ -105,20 +117,68 @@ export default function BudgetAdvisor({ locale }: { locale: Locale }) {
     }
   }
 
-  function go() {
+  async function runEstimate(over?: { destination?: string; style?: Style }) {
+    const dest = over?.destination ?? destination;
+    const lvl = over?.style ?? style;
     const e: Record<string, string> = {};
-    if (!origin && scope !== "hotel") e.origin = t.errorFrom;
+    if (!origin && !dest) e.origin = t.errorWhere;
     if (!from || !to) e.dates = t.errorDates;
-    if (!(Number(budget) > 0)) e.budget = t.errorBudget;
     setErrors(e);
     if (Object.keys(e).length) return;
-    const total = Number(budget);
-    const flightBudget = scope === "both" ? Math.round((total * flightShare) / 100) : total;
-    const hotelBudget = scope === "both" ? total - flightBudget : total;
+    if (over?.destination) setDestination(over.destination);
+    if (over?.style) setStyle(over.style);
+    setEstimating(true);
+    setEstFailed(false);
+    setEst(null);
+    try {
+      const res = await fetch("/api/budget-estimate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          origin,
+          destination: dest,
+          continents,
+          from,
+          to,
+          adults: travelers.adults,
+          childrenAges: travelers.childrenAges,
+          infants: travelers.infants,
+          currency,
+          style: lvl,
+          directOnly: direct,
+          locale,
+        }),
+      });
+      const j = (await res.json()) as { ok: boolean; result?: BudgetEstimate | EstimateList };
+      if (j.ok && j.result) {
+        setEst(j.result);
+        track("budget_estimate", { kind: j.result.kind, style: lvl, missing: j.result.kind === "estimate" ? j.result.missing.join(",") : "" });
+      } else setEstFailed(true);
+    } catch {
+      setEstFailed(true);
+    } finally {
+      setEstimating(false);
+      requestAnimationFrame(() => document.getElementById("ba-answer")?.scrollIntoView({ behavior: "smooth", block: "start" }));
+    }
+  }
+
+  function go(over?: { budget: number; flightShare: number }) {
+    const e: Record<string, string> = {};
+    const sc: Scope = over ? "both" : scope;
+    const share = over ? over.flightShare : flightShare;
+    if (!origin && sc !== "hotel") e.origin = t.errorFrom;
+    if (!from || !to) e.dates = t.errorDates;
+    if (!over && !(Number(budget) > 0)) e.budget = t.errorBudget;
+    setErrors(e);
+    if (Object.keys(e).length) return;
+    const total = over ? over.budget : Number(budget);
+    const stars = over ? { budget: 3, mid: 4, luxury: 5 }[style] : starsPicked;
+    const flightBudget = sc === "both" ? Math.round((total * share) / 100) : total;
+    const hotelBudget = sc === "both" ? total - flightBudget : total;
     const nights = Math.max(1, Math.round((Date.parse(to) - Date.parse(from)) / 86_400_000));
     const party = { adults: String(travelers.adults), childrenAges: serializeChildrenAges(travelers.childrenAges), infants: String(travelers.infants) };
     let url: string;
-    if (scope === "hotel") {
+    if (sc === "hotel") {
       const p = new URLSearchParams({ hmode: "discover", checkIn: from, checkOut: to, ...party, budget: String(total), currency });
       if (destination) p.set("city", destination);
       if (stars) p.set("minStars", String(stars));
@@ -137,7 +197,7 @@ export default function BudgetAdvisor({ locale }: { locale: Locale }) {
         baggageIncluded: "false",
         nights: String(nights),
       });
-      if (scope === "both") {
+      if (sc === "both") {
         p.set("combo", "1");
         p.set("hb", String(hotelBudget));
         if (stars) p.set("hs", String(stars));
@@ -152,7 +212,7 @@ export default function BudgetAdvisor({ locale }: { locale: Locale }) {
         url = `/${locale}/discover-results?${p}`;
       }
     }
-    track("ai_budget_go", { scope, known: Boolean(destination) });
+    track("ai_budget_go", { scope: sc, known: Boolean(destination) });
     trackSearchUrl(url);
     router.push(url);
   }
@@ -198,7 +258,7 @@ export default function BudgetAdvisor({ locale }: { locale: Locale }) {
       )}
 
       {(shown || !aiOn) && (
-        <div className={card}>
+        <div id="ba-form" className={`${card} scroll-mt-24`}>
           <p className="font-display text-lg font-extrabold text-navy-950">{aiOn && text ? t.checkTitle : t.title}</p>
           {missing.length > 0 && (
             <div className="mt-3 rounded-2xl bg-amber-50 px-4 py-3 text-sm text-amber-900 ring-1 ring-amber-200">
@@ -210,13 +270,33 @@ export default function BudgetAdvisor({ locale }: { locale: Locale }) {
               </ul>
             </div>
           )}
+          <div className="mt-4 grid grid-cols-2 gap-1 rounded-full bg-mist-100 p-1" role="tablist">
+            {(["estimate", "know"] as Mode[]).map((md) => (
+              <button
+                key={md}
+                type="button"
+                role="tab"
+                aria-selected={mode === md}
+                onClick={() => {
+                  setMode(md);
+                  setErrors({});
+                }}
+                className={`min-h-10 rounded-full px-2 text-center text-sm font-extrabold ${mode === md ? "bg-white text-navy-950 shadow-sm" : "text-navy-600"}`}
+              >
+                {t.modes[md]}
+              </button>
+            ))}
+          </div>
+          <p className="mt-2 text-xs leading-relaxed text-navy-600">{t.modeHint[mode]}</p>
           <div className="mt-4 space-y-4">
+            {mode === "know" && (
             <div>
               <span className={label}>{t.scope}</span>
               <ChoiceChips<Scope> dark={false} options={(["both", "flight", "hotel"] as Scope[]).map((s) => ({ value: s, label: t.scopes[s] }))} isOn={(v) => v === scope} onPick={setScope} />
             </div>
+            )}
             <div className="grid gap-4 sm:grid-cols-2">
-              {scope !== "hotel" && (
+              {(mode === "estimate" || scope !== "hotel") && (
                 <div>
                   <span className={label}>{t.from}</span>
                   <AirportInput locale={locale} value={origin} onChange={setOrigin} placeholder={dict.form.originPlaceholder} ariaLabel={t.from} />
@@ -228,7 +308,7 @@ export default function BudgetAdvisor({ locale }: { locale: Locale }) {
                 <AirportInput locale={locale} value={destination} onChange={setDestination} placeholder={dict.form.destinationPlaceholder} ariaLabel={t.to} />
               </div>
             </div>
-            {!destination && scope !== "hotel" && (
+            {!destination && (mode === "estimate" || scope !== "hotel") && (
               <div>
                 <span className={label}>{t.continents}</span>
                 <div className="flex flex-wrap gap-2">
@@ -270,6 +350,7 @@ export default function BudgetAdvisor({ locale }: { locale: Locale }) {
                 <span className={label}>{t.travellers}</span>
                 <TravelersPicker locale={locale} value={travelers} onChange={setTravelers} />
               </div>
+              {mode === "know" && (
               <BudgetInput
                 id="ba-budget"
                 locale={locale}
@@ -283,8 +364,16 @@ export default function BudgetAdvisor({ locale }: { locale: Locale }) {
                 onCurrencyChange={setCurrency}
                 error={errors.budget}
               />
+              )}
             </div>
-            {scope === "both" && (
+            {mode === "estimate" && (
+              <div>
+                <span className={label}>{t.style}</span>
+                <ChoiceChips<Style> dark={false} options={(["budget", "mid", "luxury"] as Style[]).map((v) => ({ value: v, label: t.styles[v] }))} isOn={(v) => v === style} onPick={setStyle} />
+                <p className="mt-1.5 text-xs text-navy-500">{t.styleHint[style]}</p>
+              </div>
+            )}
+            {mode === "know" && scope === "both" && (
               <div>
                 <span className={label}>{t.split}</span>
                 <input type="range" min={20} max={80} step={5} value={flightShare} onChange={(e) => setFlightShare(Number(e.target.value))} className="w-full accent-navy-900" aria-label={t.split} />
@@ -294,24 +383,69 @@ export default function BudgetAdvisor({ locale }: { locale: Locale }) {
                 </div>
               </div>
             )}
-            {scope !== "flight" && (
+            {mode === "know" && scope !== "flight" && (
               <div>
                 <span className={label}>{t.stars}</span>
-                <ChoiceChips<number> dark={false} options={[{ value: 0, label: t.anyStars }, ...[3, 4, 5].map((n) => ({ value: n, label: "★".repeat(n) }))]} isOn={(v) => v === stars} onPick={setStars} />
+                <ChoiceChips<number> dark={false} options={[{ value: 0, label: t.anyStars }, ...[3, 4, 5].map((n) => ({ value: n, label: "★".repeat(n) }))]} isOn={(v) => v === starsPicked} onPick={setStars} />
               </div>
             )}
-            {scope !== "hotel" && (
+            {(mode === "estimate" || scope !== "hotel") && (
               <Toggle dark={false} id="ba-direct" checked={direct} onChange={setDirect} icon="takeoff">
                 {t.direct}
               </Toggle>
             )}
           </div>
-          <button type="button" onClick={go} className="mt-6 min-h-12 w-full rounded-full bg-sun-400 px-6 font-extrabold text-navy-950 shadow-[var(--shadow-sun)] hover:bg-sun-300">
-            {t.show}
-          </button>
-          <p className="mt-3 text-center text-xs text-navy-500">{t.note}</p>
+          {mode === "know" ? (
+            <>
+              <button type="button" onClick={() => go()} className="mt-6 min-h-12 w-full rounded-full bg-sun-400 px-6 font-extrabold text-navy-950 shadow-[var(--shadow-sun)] hover:bg-sun-300">
+                {t.show}
+              </button>
+              <p className="mt-3 text-center text-xs text-navy-500">{t.note}</p>
+            </>
+          ) : (
+            <button
+              type="button"
+              onClick={() => runEstimate()}
+              disabled={estimating}
+              className="mt-6 min-h-12 w-full rounded-full bg-sun-400 px-6 font-extrabold text-navy-950 shadow-[var(--shadow-sun)] hover:bg-sun-300 disabled:opacity-60"
+            >
+              {estimating ? t.estimating : `🧮 ${t.estimate}`}
+            </button>
+          )}
         </div>
       )}
+
+      <div id="ba-answer" className="scroll-mt-24">
+        {estimating && (
+          <div className="rounded-3xl bg-white p-6 text-center shadow-[var(--shadow-card)] ring-1 ring-navy-950/5" role="status">
+            <div className="sfr-flight-track mx-auto max-w-xs text-sun-500" aria-hidden="true">
+              <span className="sfr-flight-plane">
+                <Icon name="plane" className="h-[22px] w-[22px]" />
+              </span>
+            </div>
+            <p className="mt-3 font-extrabold text-navy-950">{t.estimating}</p>
+            <p className="mt-1 text-sm text-navy-600">{t.estimatingHint}</p>
+          </div>
+        )}
+        {estFailed && !estimating && <p className="rounded-2xl bg-amber-50 px-4 py-3 text-sm font-bold text-amber-900 ring-1 ring-amber-200">{t.estimateFailed}</p>}
+        {est && !estimating && mode === "estimate" &&
+          (est.kind === "list" ? (
+            <EstimatePicker locale={locale} list={est} onPick={(code) => runEstimate({ destination: code })} />
+          ) : (
+            <BudgetEstimateView
+              locale={locale}
+              est={est}
+              onUse={(b, share) => {
+                setBudget(String(b));
+                setScope("both");
+                setFlightShare(share);
+                go({ budget: b, flightShare: share });
+              }}
+              onStyle={(sv) => runEstimate({ style: sv })}
+              onAdjust={() => document.getElementById("ba-form")?.scrollIntoView({ behavior: "smooth", block: "start" })}
+            />
+          ))}
+      </div>
     </div>
   );
 }
