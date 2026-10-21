@@ -62,7 +62,7 @@ const BIG_LINKS = 60;
  * ancient city (Cairo, Byzantium), an administrative area, a school, a
  * hospital, an office block, a hotel, a station.
  */
-const NEVER_ROOTS = ["Q486972" /* human settlement */, "Q56061" /* administrative territorial entity */, "Q2385804" /* educational institution */, "Q16917" /* hospital */, "Q1021645" /* office building */, "Q27686" /* hotel */, "Q12819564" /* station */, "Q483110" /* stadium */, "Q1248784" /* airport */];
+const NEVER_ROOTS = ["Q486972" /* human settlement */, "Q56061" /* administrative territorial entity */, "Q2385804" /* educational institution */, "Q16917" /* hospital */, "Q1021645" /* office building */, "Q27686" /* hotel */, "Q55488" /* railway station */, "Q928830" /* metro station */, "Q483110" /* stadium */, "Q1248784" /* airport */];
 
 async function sparql<T>(q: string): Promise<T[] | null> {
   for (let attempt = 0; attempt < 4; attempt++) {
@@ -92,7 +92,7 @@ type B = Record<string, { value: string } | undefined>;
 /** Our group for each class id, learned once per run (parent classes asked in bulk). */
 const classGroup = new Map<string, Group | null>();
 const bigClass = new Set<string>();
-const neverClass = new Set<string>();
+const neverClass = new Map<string, string>();
 async function classify(classes: string[]): Promise<void> {
   const todo = classes.filter((c) => !classGroup.has(c));
   for (const c of todo) if (NEVER.has(c)) classGroup.set(c, null);
@@ -114,9 +114,10 @@ async function classify(classes: string[]): Promise<void> {
     }
     for (const c of chunk) {
       const rs = found.get(c);
-      if (rs && NEVER_ROOTS.some((n) => rs.has(n))) {
+      const never = rs ? NEVER_ROOTS.find((n) => rs.has(n)) : undefined;
+      if (never) {
         classGroup.set(c, null);
-        neverClass.add(c);
+        neverClass.set(c, never);
         continue;
       }
       // A class reached only through a famous-only root is marked with "!".
@@ -214,14 +215,22 @@ async function main() {
     const old: GuideFile | null = existsSync(path) ? JSON.parse(readFileSync(path, "utf8")) : null;
     const oldByQ = new Map((old?.places ?? []).map((p) => [p.q, p]));
     const places: GuidePlace[] = [];
+    const dropped: string[] = [];
     for (const r of items) {
       // A World Heritage old town or medina stays even though it is a "settlement".
-      if ([...r.classes].some((c) => NEVER.has(c) || (neverClass.has(c) && !r.wh))) continue;
+      const why = [...r.classes].find((c) => NEVER.has(c) || (neverClass.has(c) && !r.wh));
+      if (why) {
+        if (r.sl >= 25) dropped.push(`${r.en ?? r.q} (${why}→${neverClass.get(why) ?? "never"})`);
+        continue;
+      }
       // The first group (in ROOTS order) any of its classes belongs to.
       const groups = new Set([...r.classes].map((c) => classGroup.get(c)).filter((g): g is Group => Boolean(g)));
       let g = ROOTS.map(([gr]) => gr).find((gr) => groups.has(gr));
       if (!g && r.sl >= BIG_LINKS && [...r.classes].some((c) => bigClass.has(c))) g = "views";
-      if (!g) continue;
+      if (!g) {
+        if (r.sl >= 25) dropped.push(`${r.en ?? r.q} (no group: ${[...r.classes].slice(0, 4).join(",")})`);
+        continue;
+      }
       const prev = oldByQ.get(r.q);
       places.push({
         ...(prev ?? {}),
@@ -246,6 +255,7 @@ async function main() {
     writeFileSync(path, JSON.stringify(file));
     const by = Object.fromEntries(GROUPS.map((gr) => [gr, kept.filter((p) => p.g === gr).length]).filter(([, n]) => n));
     report.push(`${slug}: ${Math.round((Date.now() - t0) / 1000)}s, ${items.length} known → ${kept.length} kept ${JSON.stringify(by)}; top: ${kept.slice(0, 6).map((p) => p.e || p.n).join(" | ")}`);
+    if (dropped.length) report.push(`   dropped (famous): ${dropped.slice(0, 25).join("; ")}`);
     console.log(report[report.length - 1]);
     await sleep(1500);
   }
