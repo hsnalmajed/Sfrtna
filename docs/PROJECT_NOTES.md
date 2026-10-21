@@ -48,7 +48,7 @@ The container shell cannot reach sfrtna.com — test through the browser.
 | Partner | Use | Status |
 |---|---|---|
 | Travelpayouts / Aviasales | Flight search widget (`wl_id=22604`), cached fares | bank (USD) = main payout ✅ 22 Oct (PayPal limited); "Drive is not working" = Drive script not installed, on purpose (ignore) |
-| Stay22 (aid `sfrtna`, lmaID in layout) | LinkSwap on all pages; Allez links; hotel map/list widget | stc bank ✅, address proof under review |
+| Stay22 (aid `sfrtna`, lmaID in layout) | LinkSwap on all pages; Allez links; hotel map/list widget | payout portal complete (address, stc bank, tax form; locked), dashboard still says "Missing payout method" 22 Oct → owner asked support; wire min $500 |
 | Expedia (camref `1011l6tt7K`) | City searches via `/api/go/expedia` redirect | bank ✅ |
 | RateHawk / ZenHotels | City hotel links (`src/lib/zenhotels.ts`) | linked ✅, W-8BEN under review |
 | Agoda | Pending manual site review | when approved: Site ID/API key (`AGODA_API_KEY`) + bank, then build our own Arabic hotel list |
