@@ -1105,6 +1105,22 @@ missing a canonical/hreflang), then 403, soft 404, the 5xx.
   https://sfrtna.com (www only if www is routed to the Worker; otherwise a
   Cloudflare redirect rule).
 - 5xx (1): `/en/visa/BW`, crawled once on 28 Sept; answers 200 now.
+- **403 ROOT CAUSE (found 22 Oct 01:16, fixed 01:26):** Cloudflare Security
+  Events showed real Googlebot (AS15169, 66.249.72.x) blocked by Managed
+  rules → "Cloudflare Bot Management rules for all plans" → rule **"Block
+  AI training crawlers"** (BOBA-199), incl. /sitemap.xml. Cloudflare counts
+  Googlebot, BingBot and Applebot as training crawlers too, so the zone-wide
+  "AI bot access → Training: Block" (set 7 Oct) blocked search engines
+  (Googlebot 667 refused in 7 days). Owner changed AI Crawl Control →
+  Security → Settings → Training to **Allow (do not block)** and switched on
+  per-crawler blocks for training-only bots: GPTBot, ClaudeBot, CCBot,
+  Bytespider, Amazonbot, FacebookBot, Meta-ExternalAgent,
+  Google-CloudVertexBot, TikTok Spider, Timpibot, Novellum AI Crawl,
+  ProRataInc. Left allowed: Googlebot, BingBot, Applebot, Baidu, all AI
+  Search/Assistant bots, Claude-User, PetalBot, archivers. Google's own
+  training opt-out stays in robots.txt (Google-Extended). **Never turn the
+  zone-wide Training block back on.** Check Security → Events for
+  66.249.x blocks after 22 Oct 01:26 (should be none).
 - 403 is NOT one-day: URL Inspection of /ar/about shows a 403 crawl on
   21 Oct 14:30 (Googlebot smartphone), while Test live URL 22 Oct 01:03 =
   available → intermittent, at Cloudflare (code never 403s a page). Next:
