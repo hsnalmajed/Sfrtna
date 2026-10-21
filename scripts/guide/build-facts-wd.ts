@@ -42,7 +42,7 @@ const ROOTS: [Group, string[]][] = [
   ["museums", ["Q33506" /* museum */, "Q1007870" /* art gallery */, "Q207694" /* art museum */]],
   ["religion", ["Q32815" /* mosque */, "Q16970" /* church building */, "Q2977" /* cathedral */, "Q44539" /* temple */, "Q845945" /* Shinto shrine */, "Q34627" /* synagogue */, "Q160742" /* abbey */, "Q44613" /* monastery */, "Q1370598" /* place of worship */]],
   ["beach", ["Q40080" /* beach */]],
-  ["nature", ["Q22698" /* park */, "Q1107656" /* garden */, "Q167346" /* botanical garden */, "Q179049" /* nature reserve */, "Q46169" /* national park */, "Q34038" /* waterfall */, "Q8502" /* mountain */, "Q23397" /* lake */, "Q35509" /* cave */, "Q23442" /* island */, "Q39816" /* valley */, "Q8514" /* desert */, "Q150784" /* canyon */]],
+  ["nature", ["Q22698" /* park */, "Q1107656" /* garden */, "Q167346" /* botanical garden */, "Q179049" /* nature reserve */, "Q46169" /* national park */, "Q34038" /* waterfall */, "Q8502" /* mountain */, "Q23397" /* lake */, "Q35509" /* cave */, "Q23442" /* island */, "Q39816" /* valley */, "Q150784" /* canyon */]],
   ["views", ["Q1440300" /* observation tower */, "Q39715" /* lighthouse */, "Q2319498" /* landmark */, "Q11303" /* skyscraper — famous ones only, see BIG */, "Q12518" /* tower — famous ones only */]],
   ["shopping", ["Q11315" /* shopping center */, "Q216107" /* department store */]],
   ["markets", ["Q37654" /* market */, "Q132510" /* marketplace */]],
@@ -55,7 +55,14 @@ const NEVER = new Set(["Q55488" /* railway station */, "Q928830" /* metro statio
 
 /** Classes that count only for the famous (an office tower is not a sight; Burj Khalifa is). */
 const BIG_ONLY = new Set(["Q11303", "Q12518"]);
-const BIG_LINKS = 30;
+const BIG_LINKS = 60;
+
+/**
+ * Parent classes that rule an item out whatever else it is: a town or an
+ * ancient city (Cairo, Byzantium), an administrative area, a school, a
+ * hospital, an office block, a hotel, a station.
+ */
+const NEVER_ROOTS = ["Q486972" /* human settlement */, "Q56061" /* administrative territorial entity */, "Q2385804" /* educational institution */, "Q16917" /* hospital */, "Q1021645" /* office building */, "Q27686" /* hotel */, "Q12819564" /* station */, "Q483110" /* stadium */, "Q1248784" /* airport */];
 
 async function sparql<T>(q: string): Promise<T[] | null> {
   for (let attempt = 0; attempt < 4; attempt++) {
@@ -85,11 +92,12 @@ type B = Record<string, { value: string } | undefined>;
 /** Our group for each class id, learned once per run (parent classes asked in bulk). */
 const classGroup = new Map<string, Group | null>();
 const bigClass = new Set<string>();
+const neverClass = new Set<string>();
 async function classify(classes: string[]): Promise<void> {
   const todo = classes.filter((c) => !classGroup.has(c));
   for (const c of todo) if (NEVER.has(c)) classGroup.set(c, null);
   const ask = todo.filter((c) => !classGroup.has(c));
-  const roots = ROOTS.flatMap(([, ids]) => ids);
+  const roots = [...ROOTS.flatMap(([, ids]) => ids), ...NEVER_ROOTS];
   for (let i = 0; i < ask.length; i += 150) {
     const chunk = ask.slice(i, i + 150);
     const rows = await sparql<B>(`SELECT ?c ?root WHERE {
@@ -106,6 +114,11 @@ async function classify(classes: string[]): Promise<void> {
     }
     for (const c of chunk) {
       const rs = found.get(c);
+      if (rs && NEVER_ROOTS.some((n) => rs.has(n))) {
+        classGroup.set(c, null);
+        neverClass.add(c);
+        continue;
+      }
       // A class reached only through a famous-only root is marked with "!".
       const plain = rs ? [...rs].filter((id) => !BIG_ONLY.has(id)) : [];
       const g = plain.length ? (ROOTS.find(([, ids]) => ids.some((id) => plain.includes(id)))?.[0] ?? null) : null;
@@ -202,7 +215,8 @@ async function main() {
     const oldByQ = new Map((old?.places ?? []).map((p) => [p.q, p]));
     const places: GuidePlace[] = [];
     for (const r of items) {
-      if ([...r.classes].some((c) => NEVER.has(c))) continue;
+      // A World Heritage old town or medina stays even though it is a "settlement".
+      if ([...r.classes].some((c) => NEVER.has(c) || (neverClass.has(c) && !r.wh))) continue;
       // The first group (in ROOTS order) any of its classes belongs to.
       const groups = new Set([...r.classes].map((c) => classGroup.get(c)).filter((g): g is Group => Boolean(g)));
       let g = ROOTS.map(([gr]) => gr).find((gr) => groups.has(gr));
