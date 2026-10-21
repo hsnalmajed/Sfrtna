@@ -87,8 +87,13 @@ async function main() {
   const only = arg("--only");
   let slugs = only ? only.split(",").map((s) => s.trim()) : cityOrder(readdirSync(DIR).filter((f) => f.endsWith(".json")));
   slugs = slugs.filter((s) => existsSync(join(DIR, `${s}.json`)));
-  const model = pickModel(await listModels());
-  console.log(`model: ${model}; cities: ${slugs.length}`);
+  // Each model has its own free daily allowance: when one is spent, the next
+  // (a step down in size) carries on the same day.
+  const names = (await listModels()).map((m) => m.name.replace(/^models\//, ""));
+  const first = pickModel(names.map((name) => ({ name, supportedGenerationMethods: ["generateContent"] })));
+  const models = [first, ...["gemini-3.5-flash", "gemini-2.5-flash", "gemini-3.5-flash-lite", "gemini-3.1-flash-lite", "gemini-2.5-flash-lite"].filter((m) => m !== first && names.includes(m))];
+  let model = models.shift() as string;
+  console.log(`model: ${model} (then ${models.join(", ")}); cities: ${slugs.length}`);
   const started = Date.now();
   const stopAfter = Number(process.env.STOP_AFTER_MIN ?? 150) * 60_000;
   let calls = 0;
@@ -112,9 +117,13 @@ async function main() {
         calls++;
       } catch (e) {
         if (e instanceof QuotaError && e.daily) {
-          console.log(`daily quota reached; ${written} places written in ${calls} calls`);
+          const next = models.shift();
+          console.log(`${model}: daily quota reached after ${calls} calls${next ? ` — switching to ${next}` : ""}`);
           writeFileSync(path, JSON.stringify(file));
-          return;
+          if (!next) return;
+          model = next;
+          i -= BATCH;
+          continue;
         }
         console.log(`${slug}: batch failed — ${String(e).slice(0, 200)}`);
         await new Promise((r) => setTimeout(r, PAUSE_MS));
