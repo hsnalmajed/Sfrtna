@@ -993,6 +993,50 @@ Chrome), climate v2 after the owner's download, publishing staged cities.
   hotel part empty because SerpApi has 47 left (reserve 40) until 6 Nov;
   daily part waits for `OPENAI_API_KEY`. UI checked at 390 px (local, mocked).
 
+## City guide — our own place database, 21 Oct (owner: "our places are very bad"; "no cost we cannot recover")
+
+- **No AI per visitor.** AI writes once, stored; the site reads files.
+- Facts: `scripts/guide/build-facts-wd.ts` (Wikidata query service, CC0 facts,
+  no Wikipedia text): items within 20 km with articles in >= 4 languages,
+  classes sorted into groups (`src/lib/guideTypes.ts` GROUPS) through parent
+  classes; ruled out: settlements, schools (unless also a mosque/museum/
+  palace — Al-Masjid al-Haram is P31 "educational institution"), hospitals,
+  stations, stadiums, airports, hotels/offices (unless >= 45 languages, e.g.
+  Burj Al Arab). Famous-only classes (skyscraper, tower, street, library,
+  strait, archipelago) need >= 45. Ranked by fame + World Heritage +
+  visitors; top 150 per city → `public/data/guide/<slug>.json` (ASSETS).
+  Report with "dropped (famous)" in `scripts/guide/reports/facts.txt` — read
+  it when tuning. (`build-facts.ts` = the older OpenStreetMap route, 5–10
+  min a city on Overpass; kept, unused.)
+- Write-ups: `scripts/guide/write.ts` — Gemini free tier (GitHub secret
+  `GEMINI_API_KEY`, AI Studio key in the Default Gemini Project, no billing):
+  per place Arabic/English description, visit minutes, best time, dress,
+  tip, kids, open_to_public (`out` = seen from outside → not in plans),
+  Arabic name when Wikidata has none (`an`). 15 places a call; newest Flash
+  models have tiny free daily limits, `gemini-3.5-flash-lite` does the bulk
+  (no quota hit in 2.5 h); Gemma last. Notes in `reports/write.txt`.
+- Workflow `guide.yml`: daily 08:11 UTC (after the Pacific-midnight reset),
+  facts refresh after 25 days, write-ups continue where they stopped.
+  Status 21 Oct evening: 365 cities, 20,438 places kept, ~6,200 written,
+  171 cities plan-ready; the rest fill in over the next runs.
+- Site: city page list gets «⭐ الأبرز (N)» / «الكل (N)» (never a shorter list),
+  badges (World Heritage / city highlight / visit length / seen from outside),
+  «تفاصيل الزيارة» (best time, dress, tip, readable OSM hours when known,
+  website, kids, free entry). Joined to listed places by OSM id, else
+  position + name (or a famous place within ~130 m).
+- «خطتي الذكية» = `src/lib/guidePlan.ts` when the city has >= 6 written places
+  (`/api/ai/status?city=` → guide): interests → groups, first visit vs
+  return, kids, pace; variety (<= 2 of a kind a day, one place of worship a
+  day, no two of a kind in a row); a day per part of the city; theme parks
+  alone; times from start + visit + travel (walk < 1.5 km); lunch/dinner =
+  best-documented nearby stored restaurant, halal-tagged first, no chains or
+  cafés; free time shown; weather/wear from our climate normals. OpenAI path
+  (`src/lib/ai/plan.ts`) only if `OPENAI_API_KEY` is ever set.
+- Known gaps: Saudi cities thin in Wikidata (Abha 1 place) — the full list
+  stays; photos wait for the Pexels reset (25 Oct); restaurant ratings: none
+  (owner approved members' 👍/👎 later — the "learning layer": shared
+  plan templates, aggregate signals, member memory with consent).
+
 ## Next, in order
 
 **▶ Start here (hand-off 20 Oct):** coverage section closed — 365 live cities /
