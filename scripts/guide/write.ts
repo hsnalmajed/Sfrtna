@@ -11,13 +11,24 @@
 // from OpenStreetMap), no invented numbers. The site reads the stored file;
 // visitors never cause an AI call.
 
-import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { CITY_NAMES_EN } from "./cityNames";
 import { generate, listModels, pickModel, QuotaError } from "./gemini";
 import type { GuideFile, GuidePlace } from "@/lib/guideTypes";
 
 const DIR = join(process.cwd(), "public/data/guide");
+// Run logs are not readable from the workspace: the run's own notes are
+// committed as scripts/guide/reports/write.txt.
+const notes: string[] = [];
+const note = (l: string) => {
+  notes.push(l);
+  console.log(l);
+};
+function saveNotes() {
+  mkdirSync("scripts/guide/reports", { recursive: true });
+  writeFileSync("scripts/guide/reports/write.txt", `${new Date().toISOString()}\n${notes.join("\n")}\n`);
+}
 const BATCH = 8;
 const PAUSE_MS = Number(process.env.GEMINI_PAUSE_MS ?? 7_000);
 
@@ -93,7 +104,7 @@ async function main() {
   const first = pickModel(names.map((name) => ({ name, supportedGenerationMethods: ["generateContent"] })));
   const models = [first, ...["gemini-3.5-flash", "gemini-2.5-flash", "gemini-3.5-flash-lite", "gemini-3.1-flash-lite", "gemini-2.5-flash-lite"].filter((m) => m !== first && names.includes(m))];
   let model = models.shift() as string;
-  console.log(`model: ${model} (then ${models.join(", ")}); cities: ${slugs.length}`);
+  note(`model: ${model} (then ${models.join(", ")}); cities: ${slugs.length}`);
   const started = Date.now();
   const stopAfter = Number(process.env.STOP_AFTER_MIN ?? 150) * 60_000;
   let calls = 0;
@@ -106,7 +117,7 @@ async function main() {
     const city = CITY_NAMES_EN[slug] ?? slug;
     for (let i = 0; i < todo.length; i += BATCH) {
       if (Date.now() - started > stopAfter) {
-        console.log(`time budget reached; ${written} places written in ${calls} calls`);
+        note(`time budget reached; ${written} places written in ${calls} calls`);
         return;
       }
       const batch = todo.slice(i, i + BATCH);
@@ -118,14 +129,14 @@ async function main() {
       } catch (e) {
         if (e instanceof QuotaError && e.daily) {
           const next = models.shift();
-          console.log(`${model}: daily quota reached after ${calls} calls${next ? ` — switching to ${next}` : ""}`);
+          note(`${model}: daily quota reached after ${calls} calls${next ? ` — switching to ${next}` : ""}`);
           writeFileSync(path, JSON.stringify(file));
           if (!next) return;
           model = next;
           i -= BATCH;
           continue;
         }
-        console.log(`${slug}: batch failed — ${String(e).slice(0, 200)}`);
+        note(`${slug}: batch failed — ${String(e).slice(0, 200)}`);
         await new Promise((r) => setTimeout(r, PAUSE_MS));
         continue;
       }
@@ -151,12 +162,15 @@ async function main() {
       writeFileSync(path, JSON.stringify(file));
       await new Promise((r) => setTimeout(r, PAUSE_MS));
     }
-    console.log(`${slug}: done (${written} written so far, ${calls} calls)`);
+    note(`${slug}: done (${written} written so far, ${calls} calls)`);
   }
-  console.log(`all done; ${written} places written in ${calls} calls`);
+  note(`all done; ${written} places written in ${calls} calls`);
 }
 
-main().catch((e) => {
-  console.error(e);
-  process.exit(1);
-});
+main()
+  .then(saveNotes)
+  .catch((e) => {
+    note(`FAILED: ${String(e).slice(0, 400)}`);
+    saveNotes();
+    process.exit(1);
+  });

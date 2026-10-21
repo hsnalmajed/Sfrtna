@@ -21,7 +21,12 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { cityPoint, liveSlugs, stagedSlugs } from "../lib/cityPoints";
 import { OVERPASS } from "@/lib/mapPins";
-import { GROUPS, groupOf, type GuideFile, type GuidePlace } from "@/lib/guideTypes";
+import {
+  GROUPS,
+  groupOf,
+  type GuideFile,
+  type GuidePlace,
+} from "@/lib/guideTypes";
 
 const DIR = join(process.cwd(), "public/data/guide");
 const RADIUS = 20_000;
@@ -60,15 +65,27 @@ nwr${a}["place"="square"]${w};
 );out center tags;`;
 }
 
-async function overpass(lat: number, lon: number): Promise<El[] | null> {
+async function overpass(
+  lat: number,
+  lon: number,
+  first = 0,
+): Promise<El[] | null> {
+  // Each worker starts at its own mirror, so three cities run side by side.
+  const mirrors = [
+    ...OVERPASS.slice(first % OVERPASS.length),
+    ...OVERPASS.slice(0, first % OVERPASS.length),
+  ];
   const body = `data=${encodeURIComponent(query(lat, lon))}`;
   for (let attempt = 0; attempt < 2; attempt++) {
-    for (const url of OVERPASS) {
+    for (const url of mirrors) {
       try {
         const res = await fetch(url, {
           method: "POST",
           body,
-          headers: { "Content-Type": "application/x-www-form-urlencoded", "User-Agent": UA },
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "User-Agent": UA,
+          },
           signal: AbortSignal.timeout(150_000),
         });
         if (res.status === 429 || res.status === 504) {
@@ -90,7 +107,16 @@ interface WdEntity {
   id: string;
   labels?: Record<string, { value: string }>;
   sitelinks?: Record<string, unknown>;
-  claims?: Record<string, { mainsnak?: { datavalue?: { value?: unknown } }; qualifiers?: Record<string, { datavalue?: { value?: { time?: string } } }[]> }[]>;
+  claims?: Record<
+    string,
+    {
+      mainsnak?: { datavalue?: { value?: unknown } };
+      qualifiers?: Record<
+        string,
+        { datavalue?: { value?: { time?: string } } }[]
+      >;
+    }[]
+  >;
 }
 
 async function wikidata(ids: string[]): Promise<Map<string, WdEntity>> {
@@ -100,7 +126,10 @@ async function wikidata(ids: string[]): Promise<Map<string, WdEntity>> {
     const url = `https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&props=labels|sitelinks|claims&languages=ar|en&ids=${chunk.join("|")}`;
     for (let attempt = 0; attempt < 3; attempt++) {
       try {
-        const res = await fetch(url, { headers: { "User-Agent": UA }, signal: AbortSignal.timeout(60_000) });
+        const res = await fetch(url, {
+          headers: { "User-Agent": UA },
+          signal: AbortSignal.timeout(60_000),
+        });
         if (res.status === 429 || res.status >= 500) {
           await sleep(10_000);
           continue;
@@ -119,7 +148,13 @@ async function wikidata(ids: string[]): Promise<Map<string, WdEntity>> {
 
 /** Language encyclopaedias with an article (not Commons, Wikivoyage, Wikiquote…). */
 function links(e: WdEntity): number {
-  return Object.keys(e.sitelinks ?? {}).filter((k) => /wiki$/.test(k) && !/^(commons|species|meta|mediawiki|wikidata|sources|incubator|outreach|wikimania)wiki$/.test(k)).length;
+  return Object.keys(e.sitelinks ?? {}).filter(
+    (k) =>
+      /wiki$/.test(k) &&
+      !/^(commons|species|meta|mediawiki|wikidata|sources|incubator|outreach|wikimania)wiki$/.test(
+        k,
+      ),
+  ).length;
 }
 
 function visitors(e: WdEntity): number | null {
@@ -137,9 +172,14 @@ function visitors(e: WdEntity): number | null {
   return best ? Math.round(best.n) : null;
 }
 
-function website(e: WdEntity, tags: Record<string, string>): string | undefined {
+function website(
+  e: WdEntity,
+  tags: Record<string, string>,
+): string | undefined {
   const t = tags.website || tags["contact:website"];
-  const w = t || (e.claims?.P856?.[0]?.mainsnak?.datavalue?.value as string | undefined);
+  const w =
+    t ||
+    (e.claims?.P856?.[0]?.mainsnak?.datavalue?.value as string | undefined);
   return w && /^https?:\/\//.test(w) ? w.slice(0, 200) : undefined;
 }
 
@@ -147,7 +187,11 @@ async function main() {
   mkdirSync(DIR, { recursive: true });
   let slugs = process.argv.includes("--staged") ? stagedSlugs() : liveSlugs();
   const only = arg("--only");
-  if (only) slugs = only.split(",").map((s) => s.trim()).filter(Boolean);
+  if (only)
+    slugs = only
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean);
   slugs = slugs.slice(0, Number(arg("--max") ?? Infinity));
   // Monthly refresh: cities checked in the last 25 days are skipped (a daily
   // run finishes the rest), unless named with --only.
@@ -161,76 +205,115 @@ async function main() {
   const started = Date.now();
   const stopAfter = Number(process.env.STOP_AFTER_MIN ?? 150) * 60_000;
   let done = 0;
-  for (const slug of slugs) {
-    if (Date.now() - started > stopAfter) {
-      console.log(`time budget reached after ${done} cities`);
-      break;
-    }
-    if (fresh(slug)) continue;
-    const pt = cityPoint(slug);
-    if (!pt) continue;
-    const els = await overpass(pt.lat, pt.lon);
-    if (!els) {
-      console.log(`${slug}: Overpass failed`);
-      continue;
-    }
-    // One record per Wikidata item (a mosque and its courtyard share one).
-    const byQ = new Map<string, El>();
-    for (const el of els) {
-      const q = el.tags?.wikidata?.split(";")[0]?.trim();
-      if (!q || !/^Q\d+$/.test(q)) continue;
-      const prev = byQ.get(q);
-      // Prefer the outline (way/relation) over a lone node.
-      if (!prev || (prev.type === "node" && el.type !== "node")) byQ.set(q, el);
-    }
-    const ents = await wikidata([...byQ.keys()]);
-    const path = join(DIR, `${slug}.json`);
-    const old: GuideFile | null = existsSync(path) ? JSON.parse(readFileSync(path, "utf8")) : null;
-    const oldByQ = new Map((old?.places ?? []).map((p) => [p.q, p]));
-    const places: GuidePlace[] = [];
-    for (const [q, el] of byQ) {
-      const e = ents.get(q);
-      const tags = el.tags ?? {};
-      const lat = el.lat ?? el.center?.lat;
-      const lon = el.lon ?? el.center?.lon;
-      if (!e || lat === undefined || lon === undefined) continue;
-      const g = groupOf(tags);
-      if (!g) continue;
-      const sl = links(e);
-      const wh = Boolean(e.claims?.P757?.length);
-      const vis = visitors(e);
-      if (sl < MIN_LINKS && !wh && !(vis && vis >= 100_000)) continue;
-      const prev = oldByQ.get(q);
-      const p: GuidePlace = {
-        ...(prev ?? {}),
-        i: `${el.type}/${el.id}`,
-        q,
-        n: tags.name,
-        e: e.labels?.en?.value || tags["name:en"] || undefined,
-        a: e.labels?.ar?.value || tags["name:ar"] || undefined,
-        g,
-        y: Math.round(lat * 1e5) / 1e5,
-        x: Math.round(lon * 1e5) / 1e5,
-        sl,
-        wh: wh || undefined,
-        vis: vis ?? undefined,
-        web: website(e, tags),
-        oh: tags.opening_hours?.slice(0, 160) || undefined,
-        fee: tags.fee === "yes" || tags.fee === "no" ? tags.fee : undefined,
-        wc: tags.wheelchair === "yes" ? true : undefined,
+  const report: string[] = [];
+  const queue = [...slugs];
+  const worker = async (w: number) => {
+    for (let slug = queue.shift(); slug; slug = queue.shift()) {
+      if (Date.now() - started > stopAfter) {
+        console.log(`time budget reached after ${done} cities`);
+        queue.length = 0;
+        break;
+      }
+      if (fresh(slug)) continue;
+      const t0 = Date.now();
+      const pt = cityPoint(slug);
+      if (!pt) continue;
+      const els = await overpass(pt.lat, pt.lon, w);
+      if (!els) {
+        console.log(`${slug}: Overpass failed`);
+        report.push(`${slug}: Overpass failed`);
+        continue;
+      }
+      // One record per Wikidata item (a mosque and its courtyard share one).
+      const byQ = new Map<string, El>();
+      for (const el of els) {
+        const q = el.tags?.wikidata?.split(";")[0]?.trim();
+        if (!q || !/^Q\d+$/.test(q)) continue;
+        const prev = byQ.get(q);
+        // Prefer the outline (way/relation) over a lone node.
+        if (!prev || (prev.type === "node" && el.type !== "node"))
+          byQ.set(q, el);
+      }
+      const ents = await wikidata([...byQ.keys()]);
+      const path = join(DIR, `${slug}.json`);
+      const old: GuideFile | null = existsSync(path)
+        ? JSON.parse(readFileSync(path, "utf8"))
+        : null;
+      const oldByQ = new Map((old?.places ?? []).map((p) => [p.q, p]));
+      const places: GuidePlace[] = [];
+      for (const [q, el] of byQ) {
+        const e = ents.get(q);
+        const tags = el.tags ?? {};
+        const lat = el.lat ?? el.center?.lat;
+        const lon = el.lon ?? el.center?.lon;
+        if (!e || lat === undefined || lon === undefined) continue;
+        const g = groupOf(tags);
+        if (!g) continue;
+        const sl = links(e);
+        const wh = Boolean(e.claims?.P757?.length);
+        const vis = visitors(e);
+        if (sl < MIN_LINKS && !wh && !(vis && vis >= 100_000)) continue;
+        const prev = oldByQ.get(q);
+        const p: GuidePlace = {
+          ...(prev ?? {}),
+          i: `${el.type}/${el.id}`,
+          q,
+          n: tags.name,
+          e: e.labels?.en?.value || tags["name:en"] || undefined,
+          a: e.labels?.ar?.value || tags["name:ar"] || undefined,
+          g,
+          y: Math.round(lat * 1e5) / 1e5,
+          x: Math.round(lon * 1e5) / 1e5,
+          sl,
+          wh: wh || undefined,
+          vis: vis ?? undefined,
+          web: website(e, tags),
+          oh: tags.opening_hours?.slice(0, 160) || undefined,
+          fee: tags.fee === "yes" || tags.fee === "no" ? tags.fee : undefined,
+          wc: tags.wheelchair === "yes" ? true : undefined,
+        };
+        places.push(p);
+      }
+      const score = (p: GuidePlace) =>
+        p.sl +
+        (p.wh ? 40 : 0) +
+        (p.vis ? Math.min(30, Math.log10(p.vis) * 4) : 0);
+      places.sort((a, b) => score(b) - score(a));
+      const kept = places.slice(0, KEEP);
+      const file: GuideFile = {
+        v: 1,
+        city: slug,
+        factsAt: new Date().toISOString(),
+        places: kept,
       };
-      places.push(p);
+      writeFileSync(path, JSON.stringify(file));
+      done++;
+      const byGroup = Object.fromEntries(
+        GROUPS.map((gr) => [gr, kept.filter((p) => p.g === gr).length]).filter(
+          ([, n]) => n,
+        ),
+      );
+      report.push(
+        `${slug}: ${Math.round((Date.now() - t0) / 1000)}s, ${byQ.size} linked → ${kept.length} kept; top: ${kept
+          .slice(0, 5)
+          .map((p) => p.e || p.n)
+          .join(" | ")}`,
+      );
+      console.log(
+        `${slug}: ${byQ.size} linked → ${kept.length} kept ${JSON.stringify(byGroup)} top: ${kept
+          .slice(0, 3)
+          .map((p) => p.e || p.n)
+          .join(" | ")}`,
+      );
+      await sleep(2_000);
     }
-    const score = (p: GuidePlace) => p.sl + (p.wh ? 40 : 0) + (p.vis ? Math.min(30, Math.log10(p.vis) * 4) : 0);
-    places.sort((a, b) => score(b) - score(a));
-    const kept = places.slice(0, KEEP);
-    const file: GuideFile = { v: 1, city: slug, factsAt: new Date().toISOString(), places: kept };
-    writeFileSync(path, JSON.stringify(file));
-    done++;
-    const byGroup = Object.fromEntries(GROUPS.map((gr) => [gr, kept.filter((p) => p.g === gr).length]).filter(([, n]) => n));
-    console.log(`${slug}: ${byQ.size} linked → ${kept.length} kept ${JSON.stringify(byGroup)} top: ${kept.slice(0, 3).map((p) => p.e || p.n).join(" | ")}`);
-    await sleep(2_000);
-  }
+  };
+  await Promise.all([0, 1, 2].map(worker));
+  mkdirSync("scripts/guide/reports", { recursive: true });
+  writeFileSync(
+    "scripts/guide/reports/facts.txt",
+    `${new Date().toISOString()}\n${report.join("\n")}\n`,
+  );
 }
 
 main().catch((e) => {
