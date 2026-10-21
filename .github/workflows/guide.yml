@@ -51,7 +51,7 @@ jobs:
         run: npx --yes tsx@4 scripts/guide/costs.ts ${{ inputs.only && inputs.only != 'all' && format('--only {0}', inputs.only) || '' }}
       - name: Write-ups (Gemini)
         if: inputs.task == 'write' || inputs.task == 'all' || github.event_name == 'schedule'
-        run: npx --yes tsx@4 scripts/guide/write.ts ${{ inputs.only && format('--only {0}', inputs.only) || '' }}
+        run: npx --yes tsx@4 scripts/guide/write.ts ${{ inputs.only && inputs.only != 'all' && format('--only {0}', inputs.only) || '' }}
       - name: Commit
         if: always()
         run: |
