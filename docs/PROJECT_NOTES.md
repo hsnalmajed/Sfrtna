@@ -1104,7 +1104,16 @@ missing a canonical/hreflang), then 403, soft 404, the 5xx.
   edge-worker now 301s http://sfrtna.com and www.sfrtna.com to
   https://sfrtna.com (www only if www is routed to the Worker; otherwise a
   Cloudflare redirect rule).
-- Open: 5xx (1) — waiting for the URL.
+- 5xx (1): `/en/visa/BW`, crawled once on 28 Sept; answers 200 now.
+- Live Site check 22 Oct 00:55 (run 39682357142) all green incl. new SEO
+  checks. Owner: URL Inspection → Test live URL, then Validate fix on
+  Duplicate, Soft 404, 403, 5xx (NOT on "Alternate page with proper
+  canonical" — that one is normal).
+- **Open (Claude):** intermittent Cloudflare error 1102 (Worker over its
+  resource limit → 503) on many routes in the scheduled Site check — seen
+  21 Oct 11:55 and 22 Oct 00:45 (before and after these changes). A 503 to
+  Googlebot is the next 5xx; find which limit (CPU or memory, Workers Logs)
+  and the heavy route.
 
 **▶ Start here (hand-off 21 Oct 23:50):** this conversation built the city
 guide (Wikidata + Gemini), the smart planner on our own engine (everywhere:
