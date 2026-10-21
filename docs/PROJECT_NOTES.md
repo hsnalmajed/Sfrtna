@@ -398,7 +398,7 @@ Travelpayouts.
 - Viator direct: the owner HAS an account (named "iTravel"), status
   "Retry account verification" → owner must re-submit (dashboard → Try
   again; site sfrtna.com).
-- **GetYourGuide direct: account active 10 Oct** (owner signed up as
+- **GetYourGuide direct: account active 10 Oct; bank (USD, SNB) payout set 22 Oct ✅, 2FA on** (owner signed up as
   content creator, site sfrtna.com). Public partner tag `partner_id=NNJW64J`
   (rides in link URLs, not a secret). Tools offered: links, activity / city /
   availability widgets — **no API** on this account; widget languages
