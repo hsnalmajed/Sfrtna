@@ -1105,6 +1105,13 @@ missing a canonical/hreflang), then 403, soft 404, the 5xx.
   https://sfrtna.com (www only if www is routed to the Worker; otherwise a
   Cloudflare redirect rule).
 - 5xx (1): `/en/visa/BW`, crawled once on 28 Sept; answers 200 now.
+- 403 is NOT one-day: URL Inspection of /ar/about shows a 403 crawl on
+  21 Oct 14:30 (Googlebot smartphone), while Test live URL 22 Oct 01:03 =
+  available → intermittent, at Cloudflare (code never 403s a page). Next:
+  Cloudflare Security → Events filtered on Googlebot to name the rule.
+- **Sitemap had never been submitted** (Sitemaps table empty; notes of 6 Oct
+  said to). Owner submitted `https://sfrtna.com/sitemap.xml` 22 Oct 01:07
+  (Domain property → full URL needed). Check its status/discovered count.
 - Live Site check 22 Oct 00:55 (run 39682357142) all green incl. new SEO
   checks. Owner: URL Inspection → Test live URL, then Validate fix on
   Duplicate, Soft 404, 403, 5xx (NOT on "Alternate page with proper
