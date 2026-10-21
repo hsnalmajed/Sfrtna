@@ -35,6 +35,9 @@ export function pickModel(models: ModelInfo[], prefer = process.env.GEMINI_MODEL
   return any[0];
 }
 
+/** The model cannot be used by this key (retired, not offered to new users). */
+export class ModelGone extends Error {}
+
 export class QuotaError extends Error {
   constructor(
     msg: string,
@@ -60,14 +63,16 @@ export async function generate<T>(opts: {
   user: string;
   schema?: Record<string, unknown>;
   search?: boolean;
+  /** The model takes no JSON mode (Gemma): the JSON is asked for in words and read from the text. */
+  plainJson?: boolean;
   temperature?: number;
 }): Promise<GenResult<T>> {
   const body: Record<string, unknown> = {
-    systemInstruction: { parts: [{ text: opts.system }] },
-    contents: [{ role: "user", parts: [{ text: opts.user }] }],
+    ...(opts.plainJson ? {} : { systemInstruction: { parts: [{ text: opts.system }] } }),
+    contents: [{ role: "user", parts: [{ text: opts.plainJson ? `${opts.system}\n\nReply with only a JSON value matching this schema, no other text:\n${JSON.stringify(opts.schema)}\n\n${opts.user}` : opts.user }] }],
     generationConfig: {
       temperature: opts.temperature ?? 0.3,
-      ...(opts.search ? {} : { responseMimeType: "application/json", ...(opts.schema ? { responseSchema: opts.schema } : {}) }),
+      ...(opts.search || opts.plainJson ? {} : { responseMimeType: "application/json", ...(opts.schema ? { responseSchema: opts.schema } : {}) }),
     },
   };
   if (opts.search) body.tools = [{ google_search: {} }];
@@ -90,6 +95,7 @@ export async function generate<T>(opts: {
       await new Promise((r) => setTimeout(r, 15_000));
       continue;
     }
+    if (res.status === 404 || (res.status === 400 && /not (found|supported|available)|no longer available/i.test(text))) throw new ModelGone(text.slice(0, 200));
     if (!res.ok) throw new Error(`generate ${res.status}: ${text.slice(0, 400)}`);
     const j = JSON.parse(text) as {
       candidates?: {

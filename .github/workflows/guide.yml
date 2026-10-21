@@ -1,12 +1,14 @@
 # Our own place guide (scripts/guide/): which places deserve a traveller's
 # time (Wikidata fame, World Heritage, visitors, OpenStreetMap facts) and a
 # short Arabic/English write-up for each (Gemini, free tier, in daily
-# batches). Stored in public/data/guide/ — the site never calls an AI.
+# batches; free allowances reset at midnight Pacific time, so the daily run
+# starts after 08:00 UTC). Stored in public/data/guide/ — the site never
+# calls an AI.
 name: Guide
 
 on:
   schedule:
-    - cron: "41 2 * * *"
+    - cron: "11 8 * * *"
   workflow_dispatch:
     inputs:
       task:

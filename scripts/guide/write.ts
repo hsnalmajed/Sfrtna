@@ -14,7 +14,7 @@
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { CITY_NAMES_EN } from "./cityNames";
-import { generate, listModels, pickModel, QuotaError } from "./gemini";
+import { generate, listModels, ModelGone, pickModel, QuotaError } from "./gemini";
 import type { GuideFile, GuidePlace } from "@/lib/guideTypes";
 
 const DIR = join(process.cwd(), "public/data/guide");
@@ -29,7 +29,7 @@ function saveNotes() {
   mkdirSync("scripts/guide/reports", { recursive: true });
   writeFileSync("scripts/guide/reports/write.txt", `${new Date().toISOString()}\n${notes.join("\n")}\n`);
 }
-const BATCH = 8;
+const BATCH = 15;
 const PAUSE_MS = Number(process.env.GEMINI_PAUSE_MS ?? 7_000);
 
 function arg(name: string): string | undefined {
@@ -102,7 +102,9 @@ async function main() {
   // (a step down in size) carries on the same day.
   const names = (await listModels()).map((m) => m.name.replace(/^models\//, ""));
   const first = pickModel(names.map((name) => ({ name, supportedGenerationMethods: ["generateContent"] })));
-  const models = [first, ...["gemini-3.5-flash", "gemini-2.5-flash", "gemini-3.5-flash-lite", "gemini-3.1-flash-lite", "gemini-2.5-flash-lite"].filter((m) => m !== first && names.includes(m))];
+  // Free daily allowances are small for the newest models: the others follow
+  // the same day; Gemma (very large free allowance) last.
+  const models = [first, ...["gemini-3.5-flash", "gemini-3.5-flash-lite", "gemini-3.1-flash-lite", "gemini-2.5-flash-lite", "gemma-4-31b-it", "gemma-4-26b-a4b-it"].filter((m) => m !== first && names.includes(m))];
   let model = models.shift() as string;
   note(`model: ${model} (then ${models.join(", ")}); cities: ${slugs.length}`);
   const started = Date.now();
@@ -124,12 +126,13 @@ async function main() {
       const user = `City: ${city}\nPlaces:\n${batch.map((p) => `- q=${p.q}; name="${p.e || p.n}"; local="${p.n}"; kind=${p.g}${p.wh ? "; World Heritage" : ""}`).join("\n")}`;
       let ans: Answer;
       try {
-        ans = (await generate<Answer>({ model, system: SYSTEM, user, schema: SCHEMA as unknown as Record<string, unknown> })).data;
+        ans = (await generate<Answer>({ model, system: SYSTEM, user, schema: SCHEMA as unknown as Record<string, unknown>, plainJson: model.startsWith("gemma") })).data;
+        if (!Array.isArray(ans)) throw new Error("not a list");
         calls++;
       } catch (e) {
-        if (e instanceof QuotaError && e.daily) {
+        if ((e instanceof QuotaError && e.daily) || e instanceof ModelGone) {
           const next = models.shift();
-          note(`${model}: daily quota reached after ${calls} calls${next ? ` — switching to ${next}` : ""}`);
+          note(`${model}: ${e instanceof ModelGone ? "not available" : "daily quota reached"} after ${calls} calls${next ? ` — switching to ${next}` : ""}`);
           writeFileSync(path, JSON.stringify(file));
           if (!next) return;
           model = next;
