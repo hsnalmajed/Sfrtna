@@ -55,12 +55,15 @@ export default function BudgetEstimateView({
   onUse,
   onStyle,
   onAdjust,
+  hotelHref,
 }: {
   locale: Locale;
   est: BudgetEstimate;
   onUse: (budget: number, flightShare: number) => void;
   onStyle: (s: Style) => void;
   onAdjust: () => void;
+  /** The hotel results for these dates, when no live hotel price came back. */
+  hotelHref: string;
 }) {
   const t = useDictionary().budgetAdvisor;
   const money = useMoney(locale);
@@ -78,6 +81,7 @@ export default function BudgetEstimateView({
       }
     : null;
   const flightShare = est.flight && est.hotel ? Math.round((est.flight.price / (est.flight.price + est.hotel.typical)) * 100) : 40;
+  const complete = est.missing.length === 0;
   const row = "rounded-2xl bg-mist-50 px-4 py-3 ring-1 ring-mist-200";
 
   return (
@@ -89,11 +93,22 @@ export default function BudgetEstimateView({
 
       {/* The answer first. */}
       <div className="mt-4 rounded-3xl bg-navy-950 px-5 py-4 text-white">
-        <p className="text-sm font-bold text-white/70">{t.recommended}</p>
-        <p className="mt-1 font-display text-3xl font-black text-sun-300">{m(est.total.recommended)}</p>
-        <p className="mt-1 text-sm text-white/85">{t.rangeLabel.replace("{low}", m(est.total.low)).replace("{high}", m(est.total.high))}</p>
-        <p className="mt-1 text-xs text-white/60">{t.recommendedHint}</p>
-        {est.missing.length > 0 && <p className="mt-2 text-xs font-bold text-amber-200">⚠️ {t.partial}</p>}
+        {complete ? (
+          <>
+            <p className="text-sm font-bold text-white/70">{t.recommended}</p>
+            <p className="mt-1 font-display text-3xl font-black text-sun-300">{m(est.total.recommended)}</p>
+            <p className="mt-1 text-sm text-white/85">{t.rangeLabel.replace("{low}", m(est.total.low)).replace("{high}", m(est.total.high))}</p>
+            <p className="mt-1 text-xs text-white/60">{t.recommendedHint}</p>
+          </>
+        ) : (
+          <>
+            <p className="text-sm font-bold text-white/70">{t.soFar}</p>
+            <p className="mt-1 font-display text-3xl font-black text-sun-300">{est.total.low === est.total.high ? m(est.total.high) : `${m(est.total.low)}–${m(est.total.high)}`}</p>
+            <p className="mt-2 text-xs font-bold text-amber-200">
+              ⚠️ {t.notIncluded} {est.missing.map((k) => t.parts[k]).join(locale === "ar" ? " و" : ", ")}
+            </p>
+          </>
+        )}
       </div>
 
       <div className="mt-4 space-y-2.5">
@@ -141,7 +156,12 @@ export default function BudgetEstimateView({
               )}
             </>
           ) : (
-            <p className="mt-1 text-xs text-navy-600">{t.noHotel}</p>
+            <>
+              <p className="mt-1 text-xs text-navy-600">{t.noHotel}</p>
+              <a href={hotelHref} className="mt-2 inline-flex min-h-10 items-center rounded-full bg-navy-900 px-4 text-sm font-extrabold text-white">
+                🏨 {t.seeHotels}
+              </a>
+            </>
           )}
         </div>
 
@@ -182,6 +202,7 @@ export default function BudgetEstimateView({
       </div>
 
       <div className="mt-5 flex flex-col gap-2 sm:flex-row">
+        {complete && (
         <button
           type="button"
           onClick={() => onUse(est.total.recommended, Math.min(80, Math.max(20, Math.round(flightShare / 5) * 5)))}
@@ -189,6 +210,7 @@ export default function BudgetEstimateView({
         >
           {t.useIt}
         </button>
+        )}
         <button type="button" onClick={onAdjust} className="min-h-12 rounded-full bg-white px-6 font-bold text-navy-800 ring-1 ring-mist-300">
           {t.adjust}
         </button>

@@ -442,6 +442,7 @@ export default function BudgetAdvisor({ locale }: { locale: Locale }) {
                 go({ budget: b, flightShare: share });
               }}
               onStyle={(sv) => runEstimate({ style: sv })}
+              hotelHref={`/${locale}/hotel-results?${new URLSearchParams({ hmode: "discover", city: est.city.code, checkIn: from, checkOut: to, adults: String(travelers.adults), childrenAges: serializeChildrenAges(travelers.childrenAges), infants: String(travelers.infants), currency, minStars: String({ budget: 3, mid: 4, luxury: 5 }[est.style]) })}`}
               onAdjust={() => document.getElementById("ba-form")?.scrollIntoView({ behavior: "smooth", block: "start" })}
             />
           ))}
