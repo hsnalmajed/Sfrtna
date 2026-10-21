@@ -44,6 +44,45 @@ export interface PlaceListItem {
    * activityLinks.ts). Absent: no ticket buttons.
    */
   ticketQuery?: string;
+  /**
+   * Our own guide (scripts/guide/, public/data/guide): set on the places
+   * the world knows (Wikidata fame, World Heritage, visitors), already in the
+   * reader's language. `rank` 0 is the city's best-known place.
+   */
+  guide?: {
+    rank: number;
+    heritage?: boolean;
+    visitorsM?: number;
+    minutes?: number;
+    best?: string;
+    dress?: string;
+    tip?: string;
+    /** Opening hours as mapped (OpenStreetMap syntax). */
+    hours?: string;
+    website?: string;
+    kids?: boolean;
+    free?: boolean;
+  };
+}
+
+export interface GuideLabels {
+  top: string;
+  heritage: string;
+  minutes: string;
+  hours: string;
+  hoursMin: string;
+  visit: string;
+  best: string;
+  dress: string;
+  tip: string;
+  open: string;
+  website: string;
+  kids: string;
+  free: string;
+  details: string;
+  featured: string;
+  all: string;
+  visitors: string;
 }
 
 interface ExplorerDict {
@@ -59,6 +98,15 @@ interface ExplorerDict {
   tickets?: string;
   loadMore: string;
   searchPlaceholder: string;
+  guide?: GuideLabels;
+}
+
+/** "1 h 30 min" / "45 min". */
+export function visitLength(m: number, g: GuideLabels): string {
+  if (m < 60) return g.minutes.replace("{n}", String(m));
+  const h = Math.floor(m / 60);
+  const r = m % 60;
+  return r >= 10 ? g.hoursMin.replace("{h}", String(h)).replace("{m}", String(r)) : g.hours.replace("{h}", String(h));
 }
 
 // How many cards to show before the visitor asks for more. A city can carry
@@ -71,6 +119,8 @@ const TAB_ORDER: PinCategory[] = ["historic", "activity", "food", "place"];
 /** How well known a place probably is, from how well documented it is. */
 export function score(p: PlaceListItem): number {
   let n = 0;
+  // In our guide: the places the world knows, best known first.
+  if (p.guide) n += 200 - Math.min(150, p.guide.rank);
   if (p.key.startsWith("guide-")) n += 10; // hand-picked by us
   if (p.bookingLabel) n += 4; // we know how you get in
   if (p.photo) n += 3;
@@ -132,11 +182,17 @@ export default function CityPlacesExplorer({
   const [active, setActive] = useState<PinCategory>(tabs[0] ?? "historic");
   const [query, setQuery] = useState("");
   const [shown, setShown] = useState(PAGE);
+  // «الأبرز»: only the places in our guide, when the tab has enough of them;
+  // «الكل» keeps every mapped place one tap away (never a shorter list).
+  const featuredCount = useMemo(() => places.filter((p) => p.category === active && p.guide).length, [places, active]);
+  const [featuredOnly, setFeaturedOnly] = useState(true);
+  const onlyFeatured = featuredOnly && featuredCount >= 4 && Boolean(dict.guide);
 
   const visible = useMemo(() => {
     const q = query.trim();
     return places
       .filter((p) => p.category === active)
+      .filter((p) => !onlyFeatured || p.guide)
       .filter((p) => searchMatches([p.name, p.description], q))
       // Best-documented first.
       //
@@ -145,7 +201,7 @@ export default function CityPlacesExplorer({
       // know more about — how to get in, a photograph, a name in the
       // reader's language.
       .sort((a, b) => score(b) - score(a));
-  }, [places, active, query]);
+  }, [places, active, query, onlyFeatured]);
 
   function pick(tab: PinCategory) {
     setActive(tab);
@@ -184,6 +240,26 @@ export default function CityPlacesExplorer({
           );
         })}
       </div>
+
+      {dict.guide && featuredCount >= 4 && (
+        <div className="mb-3 inline-flex rounded-full bg-white p-1 ring-1 ring-mist-200" role="tablist">
+          {[true, false].map((f) => (
+            <button
+              key={String(f)}
+              type="button"
+              role="tab"
+              aria-selected={featuredOnly === f}
+              onClick={() => {
+                setFeaturedOnly(f);
+                setShown(PAGE);
+              }}
+              className={`min-h-9 rounded-full px-4 text-sm font-bold ${featuredOnly === f ? "bg-sun-400 text-navy-950" : "text-navy-600"}`}
+            >
+              {f ? `⭐ ${dict.guide?.featured} (${featuredCount})` : `${dict.guide?.all} (${counts[active] ?? 0})`}
+            </button>
+          ))}
+        </div>
+      )}
 
       <input
         value={query}
@@ -253,6 +329,20 @@ export default function CityPlacesExplorer({
                     )}
                   </div>
 
+                  {p.guide && dict.guide && (p.guide.heritage || p.guide.minutes || p.guide.rank < 10) && (
+                    <div className="mt-1 flex flex-wrap gap-1">
+                      {p.guide.heritage && (
+                        <span className="rounded-full bg-sea-50 px-2 py-0.5 text-[10px] font-extrabold text-sea-800 ring-1 ring-sea-200 sm:text-[11px]">🏛️ {dict.guide.heritage}</span>
+                      )}
+                      {!p.guide.heritage && p.guide.rank < 10 && (
+                        <span className="rounded-full bg-sun-50 px-2 py-0.5 text-[10px] font-extrabold text-sun-800 ring-1 ring-sun-200 sm:text-[11px]">⭐ {dict.guide.top}</span>
+                      )}
+                      {p.guide.minutes && (
+                        <span className="rounded-full bg-mist-50 px-2 py-0.5 text-[10px] font-bold text-navy-700 ring-1 ring-mist-200 sm:text-[11px]">⏱ {visitLength(p.guide.minutes, dict.guide)}</span>
+                      )}
+                    </div>
+                  )}
+
                   {p.description && (
                     <p
                       className="mt-1 line-clamp-2 text-xs leading-relaxed text-gray-600 sm:mt-1.5 sm:line-clamp-none sm:text-sm"
@@ -260,6 +350,45 @@ export default function CityPlacesExplorer({
                     >
                       {p.description}
                     </p>
+                  )}
+
+                  {p.guide && dict.guide && (p.guide.best || p.guide.dress || p.guide.tip || p.guide.hours || p.guide.website || p.guide.kids || p.guide.free || p.guide.visitorsM) && (
+                    <details className="group/d mt-2 text-xs">
+                      <summary className="cursor-pointer list-none font-bold text-sea-700 [&::-webkit-details-marker]:hidden">
+                        <span className="group-open/d:hidden">＋ </span>
+                        <span className="hidden group-open/d:inline">－ </span>
+                        {dict.guide.details}
+                      </summary>
+                      <dl className="mt-1.5 space-y-1 leading-relaxed text-gray-700">
+                        {(
+                          [
+                            ["🌤", dict.guide.best, p.guide.best],
+                            ["👕", dict.guide.dress, p.guide.dress],
+                            ["💡", dict.guide.tip, p.guide.tip],
+                            ["🕘", dict.guide.open, p.guide.hours],
+                          ] as const
+                        )
+                          .filter(([, , v]) => v)
+                          .map(([icon, label, v]) => (
+                            <div key={label}>
+                              <dt className="inline font-bold text-navy-800">
+                                <span aria-hidden="true">{icon}</span> {label}:{" "}
+                              </dt>
+                              <dd className="inline">
+                                {v}
+                              </dd>
+                            </div>
+                          ))}
+                        {p.guide.free && <p className="font-bold text-emerald-700">✓ {dict.guide.free}</p>}
+                        {p.guide.kids && <p className="font-bold text-emerald-700">👨‍👩‍👧 {dict.guide.kids}</p>}
+                        {p.guide.visitorsM && <p className="text-navy-600">👥 {dict.guide.visitors.replace("{n}", String(p.guide.visitorsM))}</p>}
+                        {p.guide.website && (
+                          <a href={p.guide.website} target="_blank" rel="noopener noreferrer" className="inline-block font-bold text-brand-700 hover:underline">
+                            🌐 {dict.guide.website} ↗
+                          </a>
+                        )}
+                      </dl>
+                    </details>
                   )}
 
                   {p.bookingLabel && (

@@ -55,7 +55,7 @@ export default function SmartPlanner({ locale, code, slug, cityName }: { locale:
 
   useEffect(() => {
     let live = true;
-    fetch("/api/ai/status")
+    fetch(`/api/ai/status?city=${encodeURIComponent(slug)}`)
       .then((r) => r.json() as Promise<{ on: boolean }>)
       .then((j) => live && setOn(j.on))
       .catch(() => {});
@@ -69,7 +69,7 @@ export default function SmartPlanner({ locale, code, slug, cityName }: { locale:
     return () => {
       live = false;
     };
-  }, []);
+  }, [slug]);
 
   useEffect(() => {
     if (!open) return;

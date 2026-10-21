@@ -1,3 +1,6 @@
+import { readGuide } from "@/lib/guide";
+import { readableHours, type Group } from "@/lib/guideTypes";
+import type { PinCategory } from "@/lib/pinStyles";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getDictionary } from "@/lib/dictionaries";
@@ -32,6 +35,20 @@ import BackLink from "@/components/BackLink";
  * rather than trusted: one leading slash and no second one rules out
  * "//evil.example" and every absolute URL.
  */
+/** Our guide's groups on the page's four tabs. */
+const GUIDE_CATEGORY: Record<Group, PinCategory> = {
+  history: "historic",
+  religion: "historic",
+  museums: "historic",
+  views: "historic",
+  culture: "historic",
+  nature: "activity",
+  beach: "activity",
+  family: "activity",
+  shopping: "activity",
+  markets: "activity",
+};
+
 function safeBackHref(raw: string | string[] | undefined): string | undefined {
   if (typeof raw !== "string") return undefined;
   if (!raw.startsWith("/") || raw.startsWith("//")) return undefined;
@@ -69,7 +86,7 @@ export default async function CityPlacesPageBody({
   const cityEntry = findCity(country.code, city);
   if (!cityEntry) notFound();
 
-  const [places, overviews, viatorCities, highlights] = await Promise.all([
+  const [places, overviews, viatorCities, highlights, guide] = await Promise.all([
     fetchPlacesAroundCities([cityEntry], { locale: loc }),
     fetchCityOverviews([cityEntry]),
     // Empty (and instant) with no Viator key configured, so the guide below
@@ -78,6 +95,8 @@ export default async function CityPlacesPageBody({
     // The country's hand-checked landmarks that actually sit in this city —
     // see guideHighlights.ts for why they now live here rather than a level up.
     fetchCityHighlights(country.code, cityEntry),
+    // Our own guide: the places the world knows, with a write-up of ours.
+    readGuide(cityEntry.slug),
   ]);
 
   // A stored place and a curated landmark are the same thing when their
@@ -154,6 +173,54 @@ export default async function CityPlacesPageBody({
       englishOnly: false,
       bookingLabel: BOOKING_SHORT_LABELS[h.landmark.booking][loc],
       ticketQuery: sellsTickets(h.landmark.booking) ? ticketQueryFor(h.landmark.nameEn) : undefined,
+    });
+  }
+
+  // Our guide (scripts/guide/): the city's best-known places, ranked, with
+  // our own write-up. Joined to a listed place by its map id, or by name or
+  // position; a guide place the list lacks is added.
+  if (guide) {
+    const byKey = new Map(items.map((it) => [it.key, it]));
+    const sameName = (a?: string, b?: string) => Boolean(a && b && a.trim().toLowerCase() === b.trim().toLowerCase());
+    guide.places.forEach((g, rank) => {
+      let it =
+        byKey.get(g.i) ??
+        items.find((x) => x.lat !== undefined && x.lon !== undefined && near(x.lat, x.lon, g.y, g.x) && (sameName(x.name, g.n) || sameName(x.name, g.e) || sameName(x.name, g.a)));
+      const nameAr = g.a;
+      const nameEn = g.e ?? g.n;
+      if (!it) {
+        it = {
+          key: g.i,
+          name: loc === "ar" ? (nameAr ?? nameEn) : nameEn,
+          category: GUIDE_CATEGORY[g.g],
+          lat: g.y,
+          lon: g.x,
+          englishOnly: loc === "ar" && !nameAr,
+        };
+        items.push(it);
+        byKey.set(it.key, it);
+      } else if (it.englishOnly && loc === "ar" && nameAr) {
+        it.name = nameAr;
+        it.englishOnly = false;
+      }
+      const text = loc === "ar" ? g.d : g.de;
+      if (text) it.description = text;
+      if (!it.ticketQuery && (g.fee === "yes" || ((g.g === "museums" || g.g === "history" || g.g === "family") && g.sl >= 15))) {
+        it.ticketQuery = ticketQueryFor(nameEn);
+      }
+      it.guide = {
+        rank,
+        heritage: g.wh,
+        visitorsM: g.vis && g.vis >= 1_000_000 ? Math.round(g.vis / 100_000) / 10 : undefined,
+        minutes: g.m,
+        best: loc === "ar" ? g.bt : g.bte,
+        dress: loc === "ar" ? g.dr : g.dre,
+        tip: loc === "ar" ? g.tp : g.tpe,
+        hours: g.oh ? readableHours(g.oh, loc) : undefined,
+        website: g.web,
+        kids: g.kids,
+        free: g.fee === "no",
+      };
     });
   }
 
@@ -278,6 +345,7 @@ export default async function CityPlacesPageBody({
                 tickets: dict.attractions.ticketsAndTours,
                 loadMore: dict.attractions.loadMore,
                 searchPlaceholder: dict.attractions.placeSearchPlaceholder,
+                guide: dict.attractions.guide,
               }}
               mapDict={{
                 activitiesHeading: dict.maps.legendCityActivity,
