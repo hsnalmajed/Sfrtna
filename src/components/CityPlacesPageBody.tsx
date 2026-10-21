@@ -180,12 +180,21 @@ export default async function CityPlacesPageBody({
   // our own write-up. Joined to a listed place by its map id, or by name or
   // position; a guide place the list lacks is added.
   if (guide) {
+    const nameEnOf = new Map(places.map((p) => [p.id, p.nameEn]));
     const byKey = new Map(items.map((it) => [it.key, it]));
     const sameName = (a?: string, b?: string) => Boolean(a && b && a.trim().toLowerCase() === b.trim().toLowerCase());
     guide.places.forEach((g, rank) => {
+      const close = (x: PlaceListItem) =>
+        x.lat !== undefined && x.lon !== undefined && Math.abs(x.lat - g.y) < 0.0012 && Math.abs(x.lon - g.x) < 0.0015;
       let it =
         byKey.get(g.i) ??
-        items.find((x) => x.lat !== undefined && x.lon !== undefined && near(x.lat, x.lon, g.y, g.x) && (sameName(x.name, g.n) || sameName(x.name, g.e) || sameName(x.name, g.a)));
+        items.find(
+          (x) =>
+            close(x) &&
+            (sameName(x.name, g.n) || sameName(x.name, g.e) || sameName(x.name, g.a) || sameName(nameEnOf.get(x.key), g.e) || (x.fame ?? 0) >= 20)
+        );
+      // Two items of ours on one listed place: the better known keeps it.
+      if (it?.guide) return;
       const nameAr = g.a;
       const nameEn = g.e ?? g.n;
       if (!it) {

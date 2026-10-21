@@ -50,6 +50,8 @@ export interface GuidePlace {
 
 export interface GuideFile {
   v: 1;
+  /** Where the facts came from: Wikidata ("wd") or OpenStreetMap + Wikidata. */
+  src?: "wd" | "osm";
   city: string;
   factsAt: string;
   places: GuidePlace[];
