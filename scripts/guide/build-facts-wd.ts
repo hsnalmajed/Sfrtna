@@ -50,6 +50,50 @@ const ROOTS: [Group, string[]][] = [
   ["history", ["Q16560" /* palace */, "Q23413" /* castle */, "Q1785071" /* fort */, "Q839954" /* archaeological site */, "Q109607" /* ruins */, "Q4989906" /* monument */, "Q162875" /* mausoleum */, "Q381885" /* tomb */, "Q174782" /* town square */, "Q12280" /* bridge */, "Q82117" /* city gate */, "Q16748868" /* city walls */, "Q676050" /* old town */, "Q15243209" /* historic district */, "Q2065736" /* cultural property */, "Q570116" /* tourist attraction */, "Q9259" /* World Heritage Site */, "Q483453" /* fountain */]],
 ];
 
+/**
+ * The kind of place, from the root a class reaches — what lets a traveller
+ * ask for "mosques and Islamic heritage" or "zoos and aquariums" rather than
+ * a whole group. Listed most specific first: an item takes the first kind
+ * any of its classes reaches.
+ */
+const KIND_OF_ROOT: [string, string[]][] = [
+  ["mosque", ["Q32815"]],
+  ["church", ["Q16970", "Q2977", "Q160742", "Q44613"]],
+  ["temple", ["Q44539", "Q845945"]],
+  ["synagogue", ["Q34627"]],
+  ["zoo", ["Q43501"]],
+  ["aquarium", ["Q2281788"]],
+  ["themepark", ["Q194195", "Q2416723"]],
+  ["gallery", ["Q1007870", "Q207694"]],
+  ["museum", ["Q33506"]],
+  ["palace", ["Q16560"]],
+  ["castle", ["Q23413", "Q1785071", "Q16748868", "Q82117"]],
+  ["ancient", ["Q839954", "Q109607"]],
+  ["monument", ["Q4989906", "Q162875", "Q381885"]],
+  ["oldtown", ["Q676050", "Q15243209"]],
+  ["square", ["Q174782"]],
+  ["bridge", ["Q12280"]],
+  ["street", ["Q79007"]],
+  ["beach", ["Q40080"]],
+  ["garden", ["Q1107656", "Q167346"]],
+  ["park", ["Q22698"]],
+  ["reserve", ["Q179049", "Q46169"]],
+  ["waterfall", ["Q34038"]],
+  ["mountain", ["Q8502", "Q39816", "Q150784"]],
+  ["lake", ["Q23397"]],
+  ["cave", ["Q35509"]],
+  ["island", ["Q23442", "Q33837"]],
+  ["water", ["Q37901"]],
+  ["observation", ["Q1440300", "Q39715"]],
+  ["tower", ["Q11303", "Q12518"]],
+  ["mall", ["Q11315", "Q216107"]],
+  ["market", ["Q37654", "Q132510"]],
+  ["theatre", ["Q24354", "Q153562", "Q1060829"]],
+  ["culture", ["Q1329623", "Q7075"]],
+  ["landmark", ["Q2319498", "Q570116", "Q2065736", "Q9259", "Q483453", "Q184949"]],
+];
+const classKinds = new Map<string, Set<string>>();
+
 /** Never a visit, even when a parent class matches (stations, schools…). */
 const NEVER = new Set(["Q55488" /* railway station */, "Q928830" /* metro station */, "Q3918" /* university */, "Q16917" /* hospital */, "Q123705" /* neighbourhood */, "Q483110" /* stadium */, "Q1248784" /* airport */, "Q27686" /* hotel */, "Q515" /* city */, "Q15284" /* municipality */]);
 
@@ -123,6 +167,7 @@ async function classify(classes: string[]): Promise<void> {
     }
     for (const c of chunk) {
       const rs = found.get(c);
+      if (rs) classKinds.set(c, new Set(KIND_OF_ROOT.filter(([, ids]) => ids.some((id) => rs.has(id))).map(([k]) => k)));
       const never = rs ? NEVER_ROOTS.find((n) => rs.has(n)) : undefined;
       if (never) {
         classGroup.set(c, null);
@@ -138,6 +183,12 @@ async function classify(classes: string[]): Promise<void> {
     }
     await sleep(1000);
   }
+}
+
+/** The most specific kind any of the item's classes reaches. */
+function kindOf(classes: Set<string>): string | undefined {
+  const all = new Set([...classes].flatMap((c) => [...(classKinds.get(c) ?? [])]));
+  return KIND_OF_ROOT.find(([k]) => all.has(k))?.[0];
 }
 
 interface Row {
@@ -262,6 +313,7 @@ async function main() {
         y: Math.round(r.lat * 1e5) / 1e5,
         x: Math.round(r.lon * 1e5) / 1e5,
         sl: r.sl,
+        kd: kindOf(r.classes),
         wh: r.wh || undefined,
         vis: r.vis,
         web: r.web ?? prev?.web,

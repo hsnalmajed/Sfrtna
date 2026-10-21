@@ -17,6 +17,8 @@ export interface GuidePlace {
   /** Arabic name written by our write-up when Wikidata has none. */
   an?: string;
   g: Group;
+  /** Kind of place (mosque, church, palace, zoo, mountain, mall…). */
+  kd?: string;
   y: number;
   x: number;
   /** Languages with an encyclopaedia article on it (fame). */
