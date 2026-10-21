@@ -28,6 +28,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/visa", priority: 0.9 },
     { path: "/currency", priority: 0.7 },
     { path: "/services", priority: 0.6 },
+    { path: "/budget", priority: 0.6 },
     { path: "/itinerary", priority: 0.7 },
     { path: "/about", priority: 0.5 },
     ...(CONTACT_EMAIL ? [{ path: "/contact", priority: 0.5 }] : []),

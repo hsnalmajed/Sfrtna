@@ -88,6 +88,7 @@ export default function AppTabBar({ locale }: { locale: Locale }) {
     { href: `/${locale}/visa`, label: dict.nav.visa, icon: "🛂" },
     { href: `/${locale}/currency`, label: dict.nav.currency, icon: "💱" },
     { href: `/${locale}/services`, label: dict.nav.services, icon: "🧳" },
+    { href: `/${locale}/budget`, label: dict.nav.budget, icon: "💰" },
   ];
   const sitePages = [
     { href: `/${locale}/about`, label: dict.legal.aboutTitle },

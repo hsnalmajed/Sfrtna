@@ -50,6 +50,7 @@ export const ROUTES = {
   "/api/itinerary": { methods: ["POST"], caller: "page", heavy: true },
   "/api/ai/plan": { methods: ["POST"], caller: "page", heavy: true },
   "/api/ai/status": { methods: ["GET"], caller: "page" },
+  "/api/ai/understand": { methods: ["POST"], caller: "page", heavy: true },
   "/api/go/expedia": { methods: ["GET"], caller: "link" },
   "/api/go/gyg": { methods: ["GET"], caller: "link" },
   "/api/go/tp": { methods: ["GET"], caller: "link" },

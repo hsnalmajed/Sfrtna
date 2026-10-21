@@ -28,6 +28,7 @@ export default function Footer({ locale }: { locale: Locale }) {
     { href: `/${locale}/visa`, label: dict.nav.visa },
     { href: `/${locale}/currency`, label: dict.nav.currency },
     { href: `/${locale}/services`, label: dict.nav.services },
+    { href: `/${locale}/budget`, label: dict.nav.budget },
   ];
   /**
    * The pages that say who is behind this.
