@@ -10,8 +10,27 @@ import CityGallery, { type CityCard } from "@/components/CityGallery";
 import { cityCardFacts } from "@/lib/cityCardFacts";
 import PageHero from "@/components/ui/PageHero";
 import BackLink from "@/components/BackLink";
+import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
+
+// Its own title and canonical (no canonical before 22 Oct 2026 — one of the
+// "Duplicate without user-selected canonical" groups in Search Console).
+export async function generateMetadata({ params }: PageProps<"/[locale]/maps/[code]">): Promise<Metadata> {
+  const { locale, code } = await params;
+  const loc = (locale === "en" ? "en" : "ar") as Locale;
+  const dict = getDictionary(loc);
+  const country = findCountry(code);
+  if (!country || !(COUNTRY_CITIES[country.code]?.length)) return {};
+  const name = loc === "ar" ? country.nameAr : country.nameEn;
+  return pageMetadata({
+    locale: loc,
+    path: `/maps/${country.code}`,
+    title: dict.maps.countryMapTitle.replace("{country}", name),
+    description: dict.maps.metaCountryDescription.replace("{country}", name),
+  });
+}
 
 // Picking a city, not reading a country map.
 //

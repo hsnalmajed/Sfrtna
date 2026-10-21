@@ -46,6 +46,8 @@ const ar = {
     forSaudiPassports: "للجواز السعودي",
     subtitle: "روابط رسمية تتحقق منها من متطلبات دخول كل دولة بالجواز السعودي، وتقدّم منها على التأشيرة.",
     headingForCountry: "دخول {country} بالجواز السعودي",
+    metaCountryDescription:
+      "متطلبات دخول {country} بالجواز السعودي: روابط التحقق الرسمية، وطريقة التقديم على التأشيرة، والمستندات المعتادة.",
     searchPlaceholder: "اكتب اسم الدولة...",
     countriesCount: "{count} دولة",
     noResults: "لا توجد دول تطابق بحثك.",
@@ -199,6 +201,7 @@ const ar = {
     subtitle: "اختر دولة لعرض معالمها وأنشطتها على خريطة تفاعلية",
     searchPlaceholder: "ابحث عن دولة...",
     countryMapTitle: "خريطة {country} السياحية",
+    metaCountryDescription: "خرائط مدن {country} السياحية: المعالم والمطاعم والأنشطة على خريطة تفاعلية تحمّلها على جوالك.",
     pinsCount: "{count} موقع على الخريطة",
     citiesCount: "{count} مدينة",
     cityOne: "مدينة واحدة",

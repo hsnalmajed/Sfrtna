@@ -10,8 +10,31 @@ import VisaWarning from "@/components/VisaWarning";
 import VisaOfficialLinks from "@/components/VisaOfficialLinks";
 import PageHero from "@/components/ui/PageHero";
 import BackLink from "@/components/BackLink";
+import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
+
+// Its own title and canonical: every country's visa page used to share the
+// site-wide title and carry no canonical, so to Google they were 266 copies
+// of one page (Search Console, 22 Oct 2026).
+export async function generateMetadata({ params }: PageProps<"/[locale]/visa/[code]">): Promise<Metadata> {
+  const { locale, code } = await params;
+  const loc = (locale === "en" ? "en" : "ar") as Locale;
+  const dict = getDictionary(loc);
+  const country = findCountry(code);
+  if (!country) return {};
+  const name = loc === "ar" ? country.nameAr : country.nameEn;
+  const meta = pageMetadata({
+    locale: loc,
+    path: `/visa/${country.code}`,
+    title: dict.visa.headingForCountry.replace("{country}", name),
+    description: dict.visa.metaCountryDescription.replace("{country}", name),
+  });
+  // Saudi Arabia's page stays reachable from a Saudi city's trip links, but
+  // a Saudi passport entering Saudi Arabia is not a page for search results.
+  return country.code === "SA" ? { ...meta, robots: { index: false, follow: true } } : meta;
+}
 
 // One country, and where to go to find out about entering it.
 //

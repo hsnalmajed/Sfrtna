@@ -38,6 +38,34 @@ export function absoluteUrl(path: string): string {
   return `${SITE_URL}${path.startsWith("/") ? path : `/${path}`}`;
 }
 
+/** The one address a page is known by: locale + locale-less path, no query. */
+export function canonicalUrl(locale: Locale, path: string): string {
+  const clean = path === "/" ? "" : path;
+  return absoluteUrl(`/${locale}${clean}`);
+}
+
+/**
+ * canonical + hreflang for a page, on its own — for a page that keeps the
+ * layout's title (the homepage) but still has to say which address is the
+ * real one.
+ *
+ * Search Console, 22 Oct 2026: 337 pages "Duplicate without user-selected
+ * canonical" — the homepage (also opened as /ar?from=…&to=… by "edit
+ * search"), every country's visa page and every country's map page carried
+ * no canonical at all, so Google had to guess which of many near-identical
+ * addresses was the page.
+ */
+export function pageAlternates(locale: Locale, path: string): NonNullable<Metadata["alternates"]> {
+  return {
+    canonical: canonicalUrl(locale, path),
+    languages: {
+      ar: canonicalUrl("ar", path),
+      en: canonicalUrl("en", path),
+      "x-default": canonicalUrl("ar", path),
+    },
+  };
+}
+
 /**
  * Metadata for one page.
  *
@@ -60,8 +88,7 @@ export function pageMetadata({
   image?: string;
 }): Metadata {
   const dict = getDictionary(locale);
-  const clean = path === "/" ? "" : path;
-  const url = absoluteUrl(`/${locale}${clean}`);
+  const url = canonicalUrl(locale, path);
   // The site name goes last so the distinctive part survives truncation in
   // a search result or a browser tab.
   const fullTitle = `${title} | ${dict.siteName}`;
@@ -69,14 +96,7 @@ export function pageMetadata({
   return {
     title: fullTitle,
     description,
-    alternates: {
-      canonical: url,
-      languages: {
-        ar: absoluteUrl(`/ar${clean}`),
-        en: absoluteUrl(`/en${clean}`),
-        "x-default": absoluteUrl(`/ar${clean}`),
-      },
-    },
+    alternates: pageAlternates(locale, path),
     openGraph: {
       type: "website",
       siteName: dict.siteName,

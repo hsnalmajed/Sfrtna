@@ -1,6 +1,16 @@
 import type { Locale } from "@/lib/types";
 import { sectionHero } from "@/lib/sectionHero";
 import ItineraryStart from "@/components/ItineraryStart";
+import type { Metadata } from "next";
+import { getDictionary } from "@/lib/dictionaries";
+import { pageMetadata } from "@/lib/seo";
+
+export async function generateMetadata({ params }: PageProps<"/[locale]/itinerary">): Promise<Metadata> {
+  const { locale } = await params;
+  const loc = (locale === "en" ? "en" : "ar") as Locale;
+  const dict = getDictionary(loc);
+  return pageMetadata({ locale: loc, path: "/itinerary", title: dict.itinerary.title, description: dict.itinerary.subtitle });
+}
 
 // The hero is a fixed Pexels photograph, so the route is
 // rendered per request rather than frozen into the build.

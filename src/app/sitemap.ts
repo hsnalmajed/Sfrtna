@@ -64,25 +64,33 @@ export default function sitemap(): MetadataRoute.Sitemap {
         changeFrequency: "monthly",
         priority: 0.7,
       });
-      entries.push({
+      // No visa page for Saudi Arabia in the index: the visa section is for
+      // Saudi passports, and "entering Saudi Arabia on a Saudi passport" is
+      // not a question (the visa directory leaves it out for the same reason).
+      if (country.code !== "SA") entries.push({
         url: `${SITE_URL}/${locale}/visa/${country.code}`,
         lastModified: now,
         changeFrequency: "weekly",
         priority: 0.6,
       });
 
+      entries.push({
+        url: `${SITE_URL}/${locale}/maps/${country.code}`,
+        lastModified: now,
+        changeFrequency: "monthly",
+        priority: 0.5,
+      });
+
+      // A city's map address (/maps/XX/city) is the map view of its places
+      // page and names that page as canonical, so only the places page is
+      // listed: a sitemap that lists an address whose canonical is another
+      // page sends Google mixed signals (Search Console, 22 Oct 2026).
       for (const city of cities) {
         entries.push({
           url: `${SITE_URL}/${locale}/attractions/${country.code}/${city.slug}`,
           lastModified: now,
           changeFrequency: "monthly",
           priority: 0.6,
-        });
-        entries.push({
-          url: `${SITE_URL}/${locale}/maps/${country.code}/${city.slug}`,
-          lastModified: now,
-          changeFrequency: "monthly",
-          priority: 0.5,
         });
       }
     }

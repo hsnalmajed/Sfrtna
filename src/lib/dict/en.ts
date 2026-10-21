@@ -37,6 +37,8 @@ const en = {
     forSaudiPassports: "Saudi passports",
     subtitle: "Official links to check each country's entry requirements on a Saudi passport, and to apply for the visa.",
     headingForCountry: "Entering {country} on a Saudi passport",
+    metaCountryDescription:
+      "Entry requirements for {country} on a Saudi passport: the official links to check them, how to apply for the visa, and the usual documents.",
     searchPlaceholder: "Type a country name...",
     countriesCount: "{count} countries",
     noResults: "No countries match your search.",
@@ -189,6 +191,7 @@ const en = {
     subtitle: "Pick a country to see its attractions and activities on an interactive map",
     searchPlaceholder: "Search for a country...",
     countryMapTitle: "{country} tourist map",
+    metaCountryDescription: "Tourist maps of {country}'s cities: attractions, restaurants and activities on an interactive map you can download to your phone.",
     pinsCount: "{count} places on the map",
     citiesCount: "{count} cities",
     cityOne: "1 city",

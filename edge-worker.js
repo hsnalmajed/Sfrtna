@@ -82,8 +82,53 @@ async function store(cache, key, response) {
 }
 
 async function refresh(cache, key, request, env, ctx) {
-  const response = await handler.fetch(new Request(request), env, ctx);
+  const url = new URL(request.url);
+  const response = await withRealStatus(request, url, await handler.fetch(new Request(request), env, ctx));
   if (storable(response)) await store(cache, key, response);
+}
+
+// The real status of a page that turned out not to exist (22 Oct 2026).
+//
+// Every page sits under src/app/[locale]/loading.tsx, so Next starts
+// streaming — and commits to "200 OK" — before a page can find out that its
+// country or city does not exist. Its notFound() then arrives mid-stream: the
+// visitor sees the 404 page, but the status stays 200 with a noindex tag.
+// Google lists those as "Soft 404" (19 in Search Console on 22 Oct), and the
+// edge cache used to keep them as ordinary pages.
+//
+// For addresses that can be missing (anything below a section root: a
+// country, a city, a renamed page), the page is read whole here first; if
+// Next's not-found signal is in it (the NEXT_HTTP_ERROR_FALLBACK;404 digest
+// it streams in place of the page — the not-found page itself is drawn in
+// the browser), the answer is a real 404 and it is never stored. The section roots and the homepage
+// cannot be missing and keep streaming as before. Visitors on a cached page
+// are not affected; only the first render of such an address waits for the
+// whole page instead of the first bytes.
+const SECTION_ROOTS = new Set([
+  "attractions", "maps", "seasons", "visa", "currency", "services", "budget",
+  "itinerary", "about", "privacy", "terms", "account",
+  "results", "discover-results", "hotel-results", "multicity-results",
+]);
+
+function mayBeMissing(pathname) {
+  const parts = pathname.split("/").filter(Boolean);
+  if (parts.length <= 1) return false; // "/" redirects; /ar, /en are the homepages; /xx is a real 404 already.
+  return !(parts.length === 2 && (parts[0] === "ar" || parts[0] === "en") && SECTION_ROOTS.has(parts[1]));
+}
+
+async function withRealStatus(request, url, response) {
+  if (response.status !== 200 || request.method !== "GET" || request.headers.has("rsc")) return response;
+  if (!(response.headers.get("content-type") || "").includes("text/html")) return response;
+  if (!mayBeMissing(url.pathname)) return response;
+  const html = await response.text();
+  const headers = new Headers(response.headers);
+  headers.delete("content-length");
+  if (!html.includes("NEXT_HTTP_ERROR_FALLBACK;404")) {
+    return new Response(html, { status: 200, statusText: response.statusText, headers });
+  }
+  headers.set("x-robots-tag", "noindex");
+  headers.set("cache-control", "no-store");
+  return new Response(html, { status: 404, statusText: "Not Found", headers });
 }
 
 const worker = {
@@ -111,7 +156,7 @@ const worker = {
       return markApiResponse(await handler.fetch(request, env, ctx));
     }
     const cache = globalThis.caches?.default;
-    if (!cache || !cacheable(request, url)) return handler.fetch(request, env, ctx);
+    if (!cache || !cacheable(request, url)) return withRealStatus(request, url, await handler.fetch(request, env, ctx));
 
     let key;
     try {
@@ -132,7 +177,7 @@ const worker = {
       // A cache that fails is only a slower page.
     }
 
-    const response = await handler.fetch(request, env, ctx);
+    const response = await withRealStatus(request, url, await handler.fetch(request, env, ctx));
     if (key && storable(response)) {
       ctx.waitUntil(store(cache, key, response.clone()).catch(() => {}));
       const res = new Response(response.body, response);

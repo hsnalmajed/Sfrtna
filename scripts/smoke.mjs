@@ -170,6 +170,37 @@ await check("accounts: saved plans need sign-in", async () => {
   if (res.status !== 401) throw new Error(`expected 401, got ${res.status}`);
 });
 
+// Search Console (22 Oct 2026): every indexable page names its own canonical,
+// and an address that does not exist answers a real 404 — not a 200 page
+// that says "not found" (Soft 404) and not a copy of another page.
+async function status(path) {
+  const res = await fetch(`${BASE}${path}`, {
+    headers: { "User-Agent": UA, Accept: "text/html", "x-sfrtna-smoke": TOKEN },
+    redirect: "manual",
+    signal: AbortSignal.timeout(60_000),
+  });
+  return { status: res.status, html: await res.text() };
+}
+for (const [path, canonical] of [
+  ["/ar", "https://sfrtna.com/ar"],
+  ["/ar?from=RUH&to=IST", "https://sfrtna.com/ar"],
+  ["/en/visa/TR", "https://sfrtna.com/en/visa/TR"],
+  ["/ar/maps/TR", "https://sfrtna.com/ar/maps/TR"],
+  ["/ar/attractions/TR/istanbul", "https://sfrtna.com/ar/attractions/TR/istanbul"],
+]) {
+  await check(`seo: canonical of ${path}`, async () => {
+    const r = await status(path);
+    if (r.status !== 200) throw new Error(`status ${r.status}`);
+    if (!r.html.includes(`<link rel="canonical" href="${canonical}"`)) throw new Error(`no canonical ${canonical}`);
+  });
+}
+for (const path of ["/ar/attractions/TR/no-such-city", "/ar/visa/XX", "/en/maps/XX", "/fr/visa", "/ar/methodology/travel-seasons"]) {
+  await check(`seo: ${path} is a real 404`, async () => {
+    const r = await status(path);
+    if (r.status !== 404) throw new Error(`expected 404, got ${r.status}`);
+  });
+}
+
 // The protection must still hold.
 await check("protection: workers.dev without the key goes to sfrtna.com", async () => {
   const res = await fetch(`${BASE}/ar`, { headers: { "User-Agent": UA }, redirect: "manual" });

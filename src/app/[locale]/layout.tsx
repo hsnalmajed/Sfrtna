@@ -1,6 +1,7 @@
 import Stay22LinkSwap from "@/components/Stay22LinkSwap";
 import { preconnect } from "react-dom";
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import "../globals.css";
 import { getDictionary } from "@/lib/dictionaries";
 import type { Locale } from "@/lib/types";
@@ -50,6 +51,12 @@ export async function generateMetadata(
 
 export default async function LocaleLayout({ children, params }: LayoutProps<"/[locale]">) {
   const { locale } = await params;
+  // Only /ar and /en exist. Any other first segment (/fr/visa, /AR, a typo)
+  // used to render the Arabic site under that address — a second copy of
+  // every page for search engines (Search Console, 22 Oct 2026). The layout
+  // is the page's outer shell, so this 404 is decided before anything is
+  // streamed and the status is a real 404.
+  if (locale !== "ar" && locale !== "en") notFound();
   const loc = (locale === "en" ? "en" : "ar") as Locale;
   const dict = getDictionary(loc);
   // Every card photo comes from Pexels' image servers: opening the

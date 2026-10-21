@@ -18,10 +18,20 @@ import { monthName } from "@/lib/seasons";
 import HomeShowcase, { type ShowcaseCity } from "@/components/HomeShowcase";
 import { planFromParams } from "@/lib/planEvents";
 import Photo from "@/components/Photo";
-import { brandJsonLd } from "@/lib/seo";
+import { brandJsonLd, pageAlternates } from "@/lib/seo";
 import { preload } from "react-dom";
+import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
+
+// The layout's title and description stay (both spellings of the name);
+// this only names the real address. "Edit search" and a city's flight button
+// open this page as /ar?from=…&to=…, and without a canonical every one of
+// those was a separate copy of the homepage to Google.
+export async function generateMetadata({ params }: PageProps<"/[locale]">): Promise<Metadata> {
+  const { locale } = await params;
+  return { alternates: pageAlternates(locale === "en" ? "en" : "ar", "/") };
+}
 
 export default async function HomePage({ params, searchParams }: PageProps<"/[locale]">) {
   const { locale } = await params;

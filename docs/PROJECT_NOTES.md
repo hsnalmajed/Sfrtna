@@ -1083,6 +1083,21 @@ Counts 22 Oct: alternate+canonical 434, **duplicate without canonical 337**,
 redirect 0. Priority: 337 duplicates (likely ar/en or ?query variants
 missing a canonical/hreflang), then 403, soft 404, the 5xx.
 
+**Search Console fixes — 22 Oct (part 1, pushed):**
+- Duplicate without canonical: home (also opened as `/ar?from=…`), every
+  `/visa/XX` and `/maps/XX` and `/itinerary` had no canonical → now
+  `pageAlternates`/`pageMetadata` (`src/lib/seo.ts`) with per-country titles.
+  Unknown locale (`/fr/visa`, `/.well-known/…`) rendered the Arabic site →
+  layout now 404s anything but ar/en. Sitemap: no `/maps/XX/city` (its
+  canonical is the places page), adds `/maps/XX`, no `/visa/SA` (noindex).
+- Soft 404: `[locale]/loading.tsx` makes every page stream with 200 before
+  notFound() runs. `edge-worker.js` `withRealStatus`: below a section root
+  it reads the page whole and answers **404** when Next's
+  `NEXT_HTTP_ERROR_FALLBACK;404` digest is in it (never cached). Tested on a
+  local build: missing country/city/locale → 404, real pages 200 + cached.
+- Site check (`smoke.mjs`) now checks canonicals and real 404s.
+- Open: 403 (62) and 5xx (1) — waiting for the owner's URL lists.
+
 **▶ Start here (hand-off 21 Oct 23:50):** this conversation built the city
 guide (Wikidata + Gemini), the smart planner on our own engine (everywhere:
 /itinerary, city pages, app «المزيد»), the budget advisor's estimate mode
