@@ -62,6 +62,7 @@ export interface PlaceListItem {
     website?: string;
     kids?: boolean;
     free?: boolean;
+    outside?: boolean;
   };
 }
 
@@ -83,6 +84,7 @@ export interface GuideLabels {
   featured: string;
   all: string;
   visitors: string;
+  outside: string;
 }
 
 interface ExplorerDict {
@@ -329,7 +331,7 @@ export default function CityPlacesExplorer({
                     )}
                   </div>
 
-                  {p.guide && dict.guide && (p.guide.heritage || p.guide.minutes || p.guide.rank < 10) && (
+                  {p.guide && dict.guide && (p.guide.heritage || p.guide.minutes || p.guide.rank < 10 || p.guide.outside) && (
                     <div className="mt-1 flex flex-wrap gap-1">
                       {p.guide.heritage && (
                         <span className="rounded-full bg-sea-50 px-2 py-0.5 text-[10px] font-extrabold text-sea-800 ring-1 ring-sea-200 sm:text-[11px]">🏛️ {dict.guide.heritage}</span>
@@ -337,7 +339,10 @@ export default function CityPlacesExplorer({
                       {!p.guide.heritage && p.guide.rank < 10 && (
                         <span className="rounded-full bg-sun-50 px-2 py-0.5 text-[10px] font-extrabold text-sun-800 ring-1 ring-sun-200 sm:text-[11px]">⭐ {dict.guide.top}</span>
                       )}
-                      {p.guide.minutes && (
+                      {p.guide.outside && (
+                        <span className="rounded-full bg-mist-50 px-2 py-0.5 text-[10px] font-bold text-navy-600 ring-1 ring-mist-200 sm:text-[11px]">👀 {dict.guide.outside}</span>
+                      )}
+                      {p.guide.minutes && !p.guide.outside && (
                         <span className="rounded-full bg-mist-50 px-2 py-0.5 text-[10px] font-bold text-navy-700 ring-1 ring-mist-200 sm:text-[11px]">⏱ {visitLength(p.guide.minutes, dict.guide)}</span>
                       )}
                     </div>

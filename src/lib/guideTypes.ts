@@ -44,6 +44,8 @@ export interface GuidePlace {
   tpe?: string;
   /** Good with children. */
   kids?: boolean;
+  /** Seen from outside only (no visitors inside). */
+  out?: boolean;
   /** Date of the write-up. */
   wAt?: string;
 }

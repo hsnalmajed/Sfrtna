@@ -229,6 +229,7 @@ export default async function CityPlacesPageBody({
         website: g.web,
         kids: g.kids,
         free: g.fee === "no",
+        outside: g.out,
       };
     });
   }

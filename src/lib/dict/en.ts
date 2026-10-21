@@ -1484,6 +1484,7 @@ const en = {
       featured: "Highlights",
       all: "All",
       visitors: "{n} million visitors a year",
+      outside: "Seen from outside",
     },
     attractionsHeading: "Attractions",
     activitiesHeading: "Activities",

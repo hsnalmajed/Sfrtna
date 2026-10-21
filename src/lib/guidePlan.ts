@@ -167,7 +167,8 @@ export function buildGuidePlan(req: PlanRequest, guide: GuideFile, restaurants: 
   const kids = a.company === "family_kids" || a.interests.includes("kids_fun");
 
   // ── Choose ────────────────────────────────────────────────────────────
-  const pool = guide.places.filter(usable);
+  // Places visitors cannot enter are not stops in a plan.
+  const pool = guide.places.filter((p) => usable(p) && !p.out);
   const scored = pool.map((p, rank) => {
     let s = 0;
     if (want.has(p.g)) s += 100;

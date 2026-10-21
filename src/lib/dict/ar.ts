@@ -1510,6 +1510,7 @@ const ar = {
       featured: "الأبرز",
       all: "الكل",
       visitors: "{n} مليون زائر سنوياً",
+      outside: "يُشاهَد من الخارج",
     },
     attractionsHeading: "الأماكن السياحية",
     activitiesHeading: "الأنشطة",

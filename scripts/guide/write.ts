@@ -54,9 +54,10 @@ const SCHEMA = {
       tip_ar: { ...S, description: "one practical, specific tip in Arabic" },
       tip_en: S,
       kids: { type: "boolean" },
+      open_to_public: { type: "boolean", description: "false if visitors cannot go inside (a royal palace, an office, a closed site seen only from outside)" },
       known: { type: "boolean", description: "false if you do not know this exact place well" },
     },
-    required: ["q", "ar", "en", "minutes", "best_ar", "best_en", "dress_ar", "dress_en", "tip_ar", "tip_en", "kids", "known"],
+    required: ["q", "ar", "en", "minutes", "best_ar", "best_en", "dress_ar", "dress_en", "tip_ar", "tip_en", "kids", "open_to_public", "known"],
   },
 } as const;
 
@@ -72,6 +73,7 @@ type Answer = {
   tip_ar: string;
   tip_en: string;
   kids: boolean;
+  open_to_public: boolean;
   known: boolean;
 }[];
 
@@ -159,6 +161,7 @@ async function main() {
         p.dr = a.dress_ar.slice(0, 140) || undefined;
         p.dre = a.dress_en.slice(0, 140) || undefined;
         p.kids = a.kids;
+        if (a.known && a.open_to_public === false) p.out = true;
         p.wAt = at;
         written++;
       }
