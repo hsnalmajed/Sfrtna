@@ -1,6 +1,6 @@
 # Sfrtna — project notes for a new session
 
-Read this first. It replaces re-explaining the project. Last updated 13 Oct 2026.
+Read this first. It replaces re-explaining the project. Last updated 21 Oct 2026.
 
 ## Owner's standing rules (must follow)
 
@@ -1067,6 +1067,20 @@ Chrome), climate v2 after the owner's download, publishing staged cities.
   real-time search.
 
 ## Next, in order
+
+**▶ Start here (hand-off 21 Oct 23:50):** this conversation built the city
+guide (Wikidata + Gemini), the smart planner on our own engine (everywhere:
+/itinerary, city pages, app «المزيد»), the budget advisor's estimate mode
+(stored city costs `public/data/costs.json` + live prices where possible),
+membership/app sign-in, and Viator (live). Background jobs still filling in:
+`guide.yml` daily (write-ups for remaining cities; facts with kinds `kd`;
+costs). Check `scripts/guide/reports/*.txt` and counts first.
+Owner is doing payouts (bank details in each partner): Travelpayouts (PayPal
+limited → bank), GetYourGuide (add bank), Stay22 (upload national address as
+address proof); Viator ✅ bank, Expedia ✅, RateHawk ✅ (W-8BEN review).
+Open items for Claude: phone check of Viator offers + smart planner (owner's
+screenshots); learning layer (shared plan templates, 👍/👎, member memory —
+owner approved the order); budget advisor live activities from Viator.
 
 **▶ Start here (hand-off 20 Oct):** coverage section closed — 365 live cities /
 133 countries, all checks green (Site check, e2e, phone taps on 30565a7). The
