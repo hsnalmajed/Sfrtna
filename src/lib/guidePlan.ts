@@ -71,6 +71,11 @@ const WANTS: Record<Interest, { kinds: string[]; groups: Group[] }> = {
 /** Places under a roof: midday in the heat, first choice in the rain. */
 const INDOOR = new Set(["museum", "gallery", "mall", "aquarium", "theatre", "culture", "mosque", "church", "temple", "synagogue", "palace"]);
 const isIndoor = (p: GuidePlace) => (p.kd ? INDOOR.has(p.kd) : p.g === "museums" || p.g === "shopping" || p.g === "religion");
+/** Open in the evening (most museums, zoos, palaces and parks close by 17:00–18:00). */
+const EVENING = new Set(["observation", "tower", "mall", "market", "square", "street", "oldtown", "landmark", "beach", "bridge", "water", "theatre", "mosque"]);
+const eveningOk = (p: GuidePlace) => (p.kd ? EVENING.has(p.kd) : p.g === "views" || p.g === "shopping" || p.g === "markets");
+const LATE = 17 * 60;
+
 /** Rough ground for a stroller or a wheelchair. */
 const ROUGH = new Set(["mountain", "cave", "ancient", "waterfall", "reserve", "island"]);
 
@@ -146,6 +151,7 @@ const T = {
     early: "اذهب مع الافتتاح قبل الزحام.",
     outdoorHot: "مكان مكشوف: الأفضل صباحاً أو قبل الغروب.",
     friday: "صلاة الجمعة",
+    fridayInside: "🕌 صلاة الجمعة نحو {time}: اخرج قبلها بربع ساعة إلى أقرب جامع ثم أكمل.",
     fridayWhy: "في أقرب جامع إلى مكانك.",
     rest: "استراحة في الفندق",
     restWhy: "وقت الظهيرة الحار: راحة واستعداد لبقية اليوم.",
@@ -205,6 +211,7 @@ const T = {
     early: "Go at opening time, before the crowds.",
     outdoorHot: "Open-air: best in the morning or before sunset.",
     friday: "Friday prayer",
+    fridayInside: "🕌 Friday prayer at about {time}: leave a quarter of an hour before for the nearest mosque, then carry on.",
     fridayWhy: "At the mosque nearest to you.",
     rest: "Rest at the hotel",
     restWhy: "The hot midday hours: rest before the rest of the day.",
@@ -639,6 +646,15 @@ export function buildGuidePlan(req: PlanRequest, guide: GuideFile, restaurants: 
         it.fromPrevKm = Math.round(d * 10) / 10;
         it.gettingThere = travel(d, a.move, walkKm, t).how;
       }
+      // Friday prayer falls inside this visit: say when, and where to go.
+      if (friday && !fridayDone && prayers) {
+        const at = toMin(prayers.dhuhr);
+        if (roundTo(clock) < at - 20 && roundTo(clock) + it.durationMin > at) {
+          tips.push(t.fridayInside.replace("{time}", prayers.dhuhr));
+          it.tip = tips.filter(Boolean).join(" ");
+          fridayDone = true;
+        }
+      }
       // A long visit across midday: lunch is eaten there.
       if (roundTo(clock) <= 12 * 60 + 30 && roundTo(clock) + it.durationMin >= 14 * 60) lunchDone = true;
       clock = roundTo(clock) + it.durationMin;
@@ -647,6 +663,8 @@ export function buildGuidePlan(req: PlanRequest, guide: GuideFile, restaurants: 
     };
     for (const p of [...stops]) {
       if (prev && clock + (p.m ?? DEFAULT_MIN[p.g]) * 0.8 > dayEnd) break;
+      // Late in the day only what is open in the evening.
+      if (prev && clock + 30 >= LATE && !eveningOk(p)) continue;
       placeStop(p);
     }
     addFriday();
@@ -664,6 +682,7 @@ export function buildGuidePlan(req: PlanRequest, guide: GuideFile, restaurants: 
         .filter((c) => !closedOn(c.p.oh, wd) && (c.p.m ?? DEFAULT_MIN[c.p.g]) < FULL_DAY && km(here, c.p) < 4)
         .filter((c) => clock + travel(km(here, c.p), a.move, walkKm, t).min + (c.p.m ?? DEFAULT_MIN[c.p.g]) <= fillUntil)
         .filter((c) => !(c.p.g === "religion" && stops.some((x) => x.g === "religion")))
+        .filter((c) => clock < LATE - 60 || eveningOk(c.p))
         .sort((x, y) => y.s - x.s - (km(here, y.p) - km(here, x.p)) * 8)[0];
       if (!next) break;
       extras.splice(extras.indexOf(next), 1);
