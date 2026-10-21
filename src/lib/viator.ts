@@ -308,6 +308,9 @@ export async function viatorOffers(destinationId: number, q: string | undefined,
   const key = `viator-offers:v2:${destinationId}:${(q ?? "").toLowerCase()}:${count}`;
   return (
     (await cachedJson<ViatorTour[]>(key, 6 * 3600, async () => {
+      // A refusal (rate limit, outage) is not "no offers": not cached.
+      lastError = "";
+      const keep = (list: ViatorTour[]) => (list.length || !lastError ? list : null);
       if (q) {
         const data = await viatorFetch<{ products?: { results?: RawProduct[] } }>("/search/freetext", {
           method: "POST",
@@ -320,7 +323,7 @@ export async function viatorOffers(destinationId: number, q: string | undefined,
           }),
         });
         const list = (data?.products?.results ?? []).map((p) => toTour(p, currency)).filter((t): t is ViatorTour => t !== null);
-        return list;
+        return keep(list);
       }
       const data = await viatorFetch<{ products?: RawProduct[] }>("/products/search", {
         method: "POST",
@@ -333,7 +336,7 @@ export async function viatorOffers(destinationId: number, q: string | undefined,
         }),
       });
       const list = (data?.products ?? []).map((p) => toTour(p, currency)).filter((t): t is ViatorTour => t !== null);
-      return list;
+      return keep(list);
     })) ?? []
   );
 }

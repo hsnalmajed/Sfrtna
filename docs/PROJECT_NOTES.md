@@ -1051,6 +1051,15 @@ Chrome), climate v2 after the owner's download, publishing staged cities.
   before) set in Finance → Payment Methods; billing address = owner's national
   address; contact details filled. Account still named "iTravel" → owner to
   ask support to rename; ID verification: **Verified** (owner, 21 Oct 23:01).
+- **Live 21 Oct night:** `viatorDestinationFor()` maps a city by name within
+  60 km else nearest city-like within 25 km (Istanbul → 585, Riyadh → 50285),
+  cached a week; `/api/viator/offers?city=&q=&n=` (browser only; Viator's
+  content never in our HTML) → city tab «الأنشطة والتذاكر», «🎟️ عروض
+  التذاكر» on place cards and in the smart plan. Booking URLs carry our
+  pid/mcid (tracked). Viator rate-limits /destinations: ask it only through
+  the cached list (a 429 is never cached as "no offers"). Check from the
+  workspace: workflow `health-report.yml` (offers-*.json, `debug=1`).
+  Prices shown in USD as Viator gives them, label «السعر الآن».
 - Next: map our 365 cities to Viator destination ids; attraction cards with
   live ticket price + rating + book (client-side); tours per day in the smart
   plan; budget advisor activities from live prices. Ingestion
