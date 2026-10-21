@@ -1,7 +1,81 @@
-2026-10-21T18:30:06.006Z
-model: gemini-3.8-flash (then gemini-3.5-flash, gemini-3.5-flash-lite, gemini-3.1-flash-lite, gemini-2.5-flash-lite, gemma-4-31b-it, gemma-4-26b-a4b-it); cities: 3
+2026-10-21T21:01:51.203Z
+model: gemini-3.8-flash (then gemini-3.5-flash, gemini-3.5-flash-lite, gemini-3.1-flash-lite, gemini-2.5-flash-lite, gemma-4-31b-it, gemma-4-26b-a4b-it); cities: 365
 gemini-3.8-flash: daily quota reached after 0 calls — switching to gemini-3.5-flash
-makkah: done (2 written so far, 1 calls)
-gemini-3.5-flash: daily quota reached after 1 calls — switching to gemini-3.5-flash-lite
-cairo: done (4 written so far, 2 calls)
-all done; 4 places written in 2 calls
+gemini-3.5-flash: daily quota reached after 0 calls — switching to gemini-3.5-flash-lite
+rome: done (4 written so far, 1 calls)
+marrakesh: done (42 written so far, 4 calls)
+kazbegi: done (43 written so far, 5 calls)
+seattle: done (53 written so far, 6 calls)
+phnom-penh: done (74 written so far, 8 calls)
+bursa: done (95 written so far, 10 calls)
+cordoba: done (130 written so far, 13 calls)
+gemini-3.5-flash-lite: daily quota reached after 13 calls — switching to gemini-3.1-flash-lite
+mostar: done (153 written so far, 15 calls)
+mahe: done (179 written so far, 17 calls)
+kochi: done (219 written so far, 20 calls)
+nice: done (259 written so far, 23 calls)
+boston: done (299 written so far, 26 calls)
+varna: batch failed — Error: generate: gave up
+varna: done (306 written so far, 27 calls)
+vientiane: done (319 written so far, 28 calls)
+banff: batch failed — Error: generate: gave up
+banff: done (349 written so far, 30 calls)
+doha: done (369 written so far, 32 calls)
+monte-carlo: done (384 written so far, 33 calls)
+ottawa: done (424 written so far, 36 calls)
+penang: done (464 written so far, 39 calls)
+petra: batch failed — TimeoutError: The operation was aborted due to timeout
+petra: done (469 written so far, 40 calls)
+brno: done (509 written so far, 43 calls)
+tunis: done (549 written so far, 46 calls)
+bandar-seri-begawan: done (575 written so far, 48 calls)
+okinawa: batch failed — Error: generate: gave up
+okinawa: batch failed — Error: generate: gave up
+okinawa: done (590 written so far, 49 calls)
+bogota: done (626 written so far, 52 calls)
+manchester: done (666 written so far, 55 calls)
+macau: done (706 written so far, 58 calls)
+malaga: batch failed — Error: generate: gave up
+malaga: done (724 written so far, 60 calls)
+gothenburg: done (739 written so far, 61 calls)
+sharjah: batch failed — Error: generate: gave up
+sharjah: done (769 written so far, 63 calls)
+belfast: batch failed — Error: generate: gave up
+belfast: batch failed — Error: generate: gave up
+belfast: done (784 written so far, 64 calls)
+montevideo: batch failed — Error: generate: gave up
+montevideo: done (799 written so far, 65 calls)
+novi-sad: batch failed — Error: generate: gave up
+novi-sad: done (824 written so far, 67 calls)
+riyadh: batch failed — Error: generate: gave up
+riyadh: done (839 written so far, 68 calls)
+ubud: done (867 written so far, 70 calls)
+casablanca: done (889 written so far, 72 calls)
+auckland: batch failed — Error: generate: gave up
+auckland: done (919 written so far, 74 calls)
+nairobi: batch failed — Error: generate: gave up
+nairobi: batch failed — Error: generate: gave up
+nairobi: done (919 written so far, 74 calls)
+tashkent: batch failed — Error: generate: gave up
+tashkent: done (949 written so far, 76 calls)
+djerba: done (960 written so far, 77 calls)
+montreal: done (1000 written so far, 80 calls)
+gemini-3.1-flash-lite: daily quota reached after 80 calls — switching to gemini-2.5-flash-lite
+gemini-2.5-flash-lite: not available after 80 calls — switching to gemma-4-31b-it
+almaty: done (1040 written so far, 83 calls)
+vancouver: batch failed — TimeoutError: The operation was aborted due to timeout
+vancouver: batch failed — TimeoutError: The operation was aborted due to timeout
+vancouver: batch failed — TimeoutError: The operation was aborted due to timeout
+vancouver: done (1040 written so far, 83 calls)
+strasbourg: batch failed — TimeoutError: The operation was aborted due to timeout
+strasbourg: batch failed — Error: generate: gave up
+strasbourg: done (1055 written so far, 84 calls)
+addis-ababa: batch failed — TimeoutError: The operation was aborted due to timeout
+addis-ababa: done (1067 written so far, 85 calls)
+christchurch: batch failed — TimeoutError: The operation was aborted due to timeout
+christchurch: batch failed — Error: generate: gave up
+christchurch: done (1067 written so far, 85 calls)
+antalya: done (1083 written so far, 87 calls)
+chiang-mai: batch failed — TimeoutError: The operation was aborted due to timeout
+chiang-mai: done (1097 written so far, 88 calls)
+time budget reached; 1097 places written in 88 calls
