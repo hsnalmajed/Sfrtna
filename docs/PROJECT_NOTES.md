@@ -1037,6 +1037,26 @@ Chrome), climate v2 after the owner's download, publishing staged cities.
   (owner approved members' 👍/👎 later — the "learning layer": shared
   plan templates, aggregate signals, member memory with consent).
 
+## Viator — linked 21 Oct (owner)
+
+- Production API key (Basic Access) live as Cloudflare Secret `VIATOR_API_KEY`
+  (no `VIATOR_ENV`; set it to `sandbox` only for a sandbox key — `viator.ts`
+  switches host). `/api/health` → `viator` {status 200, destinations 3398}.
+  Read it from the workspace with workflow `health-report.yml` → branch
+  `health-report` (health.json).
+- Terms accepted: content only to drive affiliate traffic, own domain/app
+  only, no bidding on "Viator", **no indexing of Viator unique content**
+  (render it client-side / noindex), licence agreement.
+- Payout: bank transfer (USD, min $50, monthly for trips travelled the month
+  before) set in Finance → Payment Methods; billing address = owner's national
+  address; contact details filled. Account still named "iTravel" → owner to
+  ask support to rename; ID verification to confirm (commission needs it).
+- Next: map our 365 cities to Viator destination ids; attraction cards with
+  live ticket price + rating + book (client-side); tours per day in the smart
+  plan; budget advisor activities from live prices. Ingestion
+  (`/modified-since`) needs a request in the dashboard — not needed for
+  real-time search.
+
 ## Next, in order
 
 **▶ Start here (hand-off 20 Oct):** coverage section closed — 365 live cities /
