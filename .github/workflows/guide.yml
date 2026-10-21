@@ -1,0 +1,59 @@
+# Our own place guide (scripts/guide/): which places deserve a traveller's
+# time (Wikidata fame, World Heritage, visitors, OpenStreetMap facts) and a
+# short Arabic/English write-up for each (Gemini, free tier, in daily
+# batches). Stored in public/data/guide/ — the site never calls an AI.
+name: Guide
+
+on:
+  schedule:
+    - cron: "41 2 * * *"
+  workflow_dispatch:
+    inputs:
+      task:
+        description: "probe | facts | write | all"
+        type: string
+        default: all
+      only:
+        description: "Only these cities (comma list)"
+        type: string
+        default: ""
+
+permissions:
+  contents: write
+
+concurrency:
+  group: guide
+  cancel-in-progress: false
+
+jobs:
+  guide:
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    env:
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - name: Probe
+        if: inputs.task == 'probe'
+        run: npx --yes tsx@4 scripts/guide/probe.ts
+      - name: Facts (OpenStreetMap + Wikidata)
+        if: inputs.task == 'facts' || inputs.task == 'all' || github.event_name == 'schedule'
+        run: npx --yes tsx@4 scripts/guide/build-facts.ts ${{ inputs.only && format('--only {0}', inputs.only) || '' }}
+      - name: Write-ups (Gemini)
+        if: inputs.task == 'write' || inputs.task == 'all' || github.event_name == 'schedule'
+        run: npx --yes tsx@4 scripts/guide/write.ts ${{ inputs.only && format('--only {0}', inputs.only) || '' }}
+      - name: Commit
+        if: inputs.task != 'probe'
+        run: |
+          git add public/data/guide scripts/guide/reports || true
+          if git diff --cached --quiet; then echo "Nothing new."; exit 0; fi
+          git config user.name "Claude"
+          git config user.email "noreply@anthropic.com"
+          git commit -m "Guide: places checked and written up"
+          git pull --rebase origin main
+          git push
