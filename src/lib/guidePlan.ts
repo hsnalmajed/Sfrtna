@@ -146,6 +146,13 @@ function travel(d: number, move: PlanAnswers["move"], t: (typeof T)["ar"]): { mi
 /** Whether a guide place is usable for a plan. */
 const usable = (p: GuidePlace) => typeof p.y === "number" && typeof p.x === "number";
 
+/** A visit that fills a day by itself (theme parks, big parks with rides). */
+const FULL_DAY = 300;
+
+/** Chains and cafés are not a meal we would plan for someone. */
+const NOT_A_MEAL = /starbucks|mcdonald|kfc|burger king|subway|domino|pizza hut|costa|tim hortons|dunkin|doutor|tully|caffè nero|caffe nero|pret a manger|hardee|wendy|popeyes|krispy|baskin|cinnabon|seven|7-eleven|lawson|familymart/i;
+const isMeal = (r: StoredRestaurant) => !NOT_A_MEAL.test(`${r.n} ${r.e ?? ""}`) && !/coffee_shop|cafe|donut|ice_cream|bubble_tea|tea\b|juice|dessert|bakery|cake/.test(r.u ?? "");
+
 export function guidePlanReady(g: GuideFile | null): boolean {
   return Boolean(g && g.places.filter((p) => p.d && usable(p)).length >= 6);
 }
@@ -193,6 +200,10 @@ export function buildGuidePlan(req: PlanRequest, guide: GuideFile, restaurants: 
   for (let d = 0; d < days && left.length; d++) {
     const seed = left.shift() as GuidePlace; // the best-known left
     const day = [seed];
+    if ((seed.m ?? DEFAULT_MIN[seed.g]) >= FULL_DAY) {
+      dayStops.push(day);
+      continue;
+    }
     const size = Math.min(perDay, Math.ceil((left.length + 1) / (days - d)));
     while (day.length < size && left.length) {
       const last = day[day.length - 1];
@@ -201,8 +212,10 @@ export function buildGuidePlan(req: PlanRequest, guide: GuideFile, restaurants: 
       const ok = (p: GuidePlace) =>
         p.g !== last.g && !(p.g === "religion" && day.some((x) => x.g === "religion")) && day.filter((x) => x.g === p.g).length < 2;
       left.sort((x, y) => km(last, x) - km(last, y));
-      const i = left.findIndex(ok);
-      day.push(left.splice(i >= 0 ? i : 0, 1)[0]);
+      const fits = (p: GuidePlace) => (p.m ?? DEFAULT_MIN[p.g]) < FULL_DAY;
+      const i = left.findIndex((p) => ok(p) && fits(p)) >= 0 ? left.findIndex((p) => ok(p) && fits(p)) : left.findIndex(fits);
+      if (i < 0) break;
+      day.push(left.splice(i, 1)[0]);
     }
     dayStops.push(day);
   }
@@ -211,7 +224,10 @@ export function buildGuidePlan(req: PlanRequest, guide: GuideFile, restaurants: 
   const usedMeals = new Set<string>();
   const halalFirst = (rs: StoredRestaurant[]) => (a.halalOnly ? [...rs.filter((r) => r.h === 1), ...rs.filter((r) => r.h !== 1)] : rs);
   const meal = (at: { y: number; x: number }): StoredRestaurant | undefined => {
-    const near = restaurants.filter((r) => !usedMeals.has(r.i) && km(at, r) < 2.5).sort((p, q) => km(at, p) - km(at, q)).slice(0, 12);
+    // The best documented of the restaurants within a short walk (fame =
+    // how much the map knows about it), else the nearest farther out.
+    const close = restaurants.filter((r) => !usedMeals.has(r.i) && isMeal(r) && km(at, r) < 1.2).sort((p, q) => q.f - p.f);
+    const near = close.length ? close.slice(0, 12) : restaurants.filter((r) => !usedMeals.has(r.i) && isMeal(r) && km(at, r) < 3).sort((p, q) => km(at, p) - km(at, q)).slice(0, 12);
     const r = halalFirst(near)[0];
     if (r) usedMeals.add(r.i);
     return r;
@@ -268,7 +284,9 @@ export function buildGuidePlan(req: PlanRequest, guide: GuideFile, restaurants: 
       clock = roundTo(clock) + it.durationMin;
       items.push(it);
     };
+    const dayEnd = (a.lateNights ? 22 : 19) * 60 + 30;
     for (const p of stops) {
+      if (prev && clock + (p.m ?? DEFAULT_MIN[p.g]) * 0.8 > dayEnd) break;
       if (prev) {
         // Lunch near the stop just finished, once it is past noon.
         if (!lunchDone && clock >= 12 * 60) {
@@ -298,6 +316,8 @@ export function buildGuidePlan(req: PlanRequest, guide: GuideFile, restaurants: 
         it.fromPrevKm = Math.round(d * 10) / 10;
         it.gettingThere = travel(d, a.move, t).how;
       }
+      // A long visit across midday: lunch is eaten there.
+      if (roundTo(clock) <= 12 * 60 + 30 && roundTo(clock) + it.durationMin >= 14 * 60) lunchDone = true;
       clock = roundTo(clock) + it.durationMin;
       items.push(it);
       prev = p;

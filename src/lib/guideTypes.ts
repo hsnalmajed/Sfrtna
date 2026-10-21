@@ -58,15 +58,17 @@ export interface GuideFile {
 /** The group of an OpenStreetMap feature, or null when it is not an outing. */
 export function groupOf(t: Record<string, string>): Group | null {
   const tour = t.tourism;
+  // A bay, a cape or a stadium is a name on a map, not a visit.
+  if (t.natural === "bay" || t.natural === "cape" || t.leisure === "stadium") return null;
   if (tour === "museum" || tour === "gallery") return "museums";
   if (tour === "zoo" || tour === "aquarium" || tour === "theme_park" || t.leisure === "water_park" || t.amenity === "planetarium") return "family";
   if (tour === "viewpoint" || t.man_made === "tower" || t.man_made === "lighthouse" || t.natural === "peak") return "views";
-  if (t.natural === "beach" || t.natural === "bay" || t.natural === "cape" || t.leisure === "marina") return "beach";
+  if (t.natural === "beach" || t.leisure === "marina") return "beach";
   if (t.leisure === "park" || t.leisure === "garden" || t.leisure === "nature_reserve" || t.natural) return "nature";
   if (t.shop === "mall" || t.shop === "department_store") return "shopping";
   if (t.amenity === "marketplace") return "markets";
   if (t.amenity === "place_of_worship" || /^(mosque|church|cathedral|temple)$/.test(t.building ?? "")) return "religion";
-  if (t.amenity === "theatre" || t.amenity === "arts_centre" || t.amenity === "library" || t.leisure === "stadium") return "culture";
+  if (t.amenity === "theatre" || t.amenity === "arts_centre" || t.amenity === "library") return "culture";
   if (t.historic || /^(palace|castle)$/.test(t.building ?? "") || t.place === "square" || tour === "attraction" || tour === "artwork" || t.amenity === "fountain") return "history";
   return null;
 }
@@ -79,8 +81,9 @@ const DAYS_AR: Record<string, string> = { Mo: "الإثنين", Tu: "الثلا�
  */
 export function readableHours(oh: string, locale: "ar" | "en"): string {
   if (oh.trim() === "24/7") return locale === "ar" ? "مفتوح على مدار الساعة" : "Open 24/7";
+  // Month-by-month or holiday rules read badly in a card: left out.
+  if (/[a-z]{3,}|"|\[|week|easter|sunrise|sunset|\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\b/i.test(oh.replace(/\boff\b|\bclosed\b/g, "")) || oh.length > 90) return "";
   if (locale === "en") return oh.replace(/;\s*/g, "; ").replace(/\boff\b/g, "closed");
-  if (/[a-z]{3,}|"|\[|week|easter|sunrise|sunset/i.test(oh.replace(/\boff\b|\bclosed\b/g, ""))) return oh;
   return oh
     .replace(/\b(Mo|Tu|We|Th|Fr|Sa|Su|PH)\b/g, (d) => DAYS_AR[d])
     .replace(/(\S)-(\S)/g, "$1–$2")
