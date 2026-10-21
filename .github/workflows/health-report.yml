@@ -1,0 +1,30 @@
+# The site's own health report (/api/health), saved where the workspace can
+# read it: branch `health-report`, file health.json. By hand. The Worker is
+# reached at workers.dev with the SMOKE_TOKEN header (sfrtna.com's bot
+# protection refuses GitHub's machines).
+name: Health report
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch /api/health
+        env:
+          SMOKE_TOKEN: ${{ secrets.SMOKE_TOKEN }}
+        run: |
+          curl -s -m 120 -H "x-sfrtna-smoke: $SMOKE_TOKEN" -H "Sec-Fetch-Site: same-origin" https://sfrtna.almajedhsn.workers.dev/api/health -o health.json || true
+          head -c 300 health.json
+      - name: Save to branch
+        run: |
+          git init -q out && cd out
+          cp ../health.json .
+          git config user.name "Claude"; git config user.email "noreply@anthropic.com"
+          git checkout -q -b health-report
+          git add health.json && git commit -q -m "Health report"
+          git push -q -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" health-report
