@@ -970,8 +970,8 @@ Chrome), climate v2 after the owner's download, publishing staged cities.
   Cloud project** — test APKs are signed with a fresh debug key per build,
   so this waits for the Play upload (Play App Signing SHA-1).
 - DO logic tested in local workerd (code flow, wrong verifier, reuse, items,
-  search eviction, delete account). Email sign-in still needs
-  `RESEND_API_KEY` (owner).
+  search eviction, delete account). Email sign-in ON since 21–22 Oct
+  (`RESEND_API_KEY` set; owner's live test 22 Oct passed).
 
 ## AI planner + budget advisor — 21 Oct (owner: "our places DB is very bad"; "budget advisor for both cases")
 
@@ -1082,6 +1082,28 @@ Counts 22 Oct: alternate+canonical 434, **duplicate without canonical 337**,
 **403 = 62**, **soft 404 = 19**, **5xx = 1**, crawled-not-indexed 8,
 redirect 0. Priority: 337 duplicates (likely ar/en or ?query variants
 missing a canonical/hreflang), then 403, soft 404, the 5xx.
+
+**Owner's mail read 22 Oct (useful points only):**
+- **Sign-in is live:** Google sign-in on sfrtna.com worked 13 Oct (Google
+  shares name, picture, email only). Email sign-in: owner created Resend
+  (21 Oct) and set `RESEND_API_KEY`; 22 Oct 01:41 owner got the code on the
+  phone and reached the traveller profile. Both methods ON.
+- **Stay22 payout blocked = proof of address** (their mail 14 Oct: Tipalti
+  needs a document < 60 days old with name + address). Owner sent the
+  Saudi National Address certificate 22 Oct 01:33 on the support ticket
+  (opened 00:30). Support Mon–Fri 9–17 EST (16:00–24:00 KSA). Expect reply
+  22 Oct after 16:00; then "Missing payout method" should clear.
+- GetYourGuide: partner chat support 9–17 CET (10:00–18:00 KSA); analytics
+  shows earning links/placements (use once bookings start). Our GYG links
+  are searches (`/api/go/gyg?q=`), so deactivated activities can't break them.
+- HERE Platform Terms v3.0 take effect **14 Nov 2026** (auto-accepted by
+  use). Review before then: free tier/limits, and whether short caching of
+  results is allowed (we cache suggestions).
+- GitHub "Site check failed" mails: 9 of the last 36 runs failed — same
+  intermittent error 1102 (open item below), plus expected "no flights on
+  workers.dev" warnings.
+- Not ours: Supabase "Almajed Family" freeze notice; Gemini web welcome;
+  GYG newsletters.
 
 **Search Console fixes — 22 Oct (part 1, pushed):**
 - Duplicate without canonical: home (also opened as `/ar?from=…`), every
