@@ -4,16 +4,19 @@
  * organised, varied, accurate plan — hours, how to get there, what to wear,
  * the best dish, halal or not, booking — and more than I asked").
  *
- * What keeps it honest:
- *   - every place in the plan is one of OUR stored places or restaurants for
- *     the city (OpenStreetMap, with coordinates), passed in by id — the model
- *     orders and explains them, it does not invent places; any id it returns
- *     that we did not give is dropped;
- *   - facts that change (opening hours, booking, prices, dishes) come from
- *     web search, and the pages used are shown under the plan; what it could
- *     not confirm it must say so («غير مؤكد») instead of guessing;
+ * What keeps it good and honest (owner, 21 Oct: "our own place list gave me
+ * a 2-star place with 6 reviews — is that the best this country has?"):
+ *   - the model chooses the BEST places for this traveller — the city's
+ *     highly rated, well-reviewed sights and restaurants — and must verify
+ *     each one by web search (rating and review count as the source shows
+ *     them, hours, booking); our own stored list is passed only as a hint;
+ *   - every stop is then placed on the map here: by our stored place of the
+ *     same name, else OpenStreetMap search near the city centre; a stop we
+ *     cannot place keeps a "search on the map" link instead of a pin;
+ *   - what it could not confirm it must say so («غير مؤكد») — never guessed;
+ *     it states no prices; the pages it used are listed under the plan;
  *   - weather is our own climate normals for the dates, not a forecast;
- *   - distances between stops are computed here from the coordinates.
+ *   - distances between stops are computed here from the positions.
  */
 
 import { aiJson, type AiSource } from "@/lib/ai/provider";
@@ -21,6 +24,7 @@ import { readStoredPlaces, readStoredRestaurants, type StoredPlace, type StoredR
 import { seasonRecord } from "@/lib/travelSeason/site";
 import { findCity } from "@/lib/cities";
 import { findCountry } from "@/lib/countries";
+import { CITY_COORDS } from "@/data/cityCoords";
 
 // ── What the traveller tells us ─────────────────────────────────────────────
 
@@ -114,8 +118,12 @@ export function cleanPlanRequest(b: unknown): PlanRequest | null {
 export interface PlanItem {
   time: string;
   kind: "place" | "meal" | "break";
-  ref: string;
   name: string;
+  /** Name as written locally, area, rating as the source shows it. */
+  localName: string;
+  area: string;
+  rating: string;
+  website: string;
   durationMin: number;
   why: string;
   tip: string;
@@ -130,6 +138,8 @@ export interface PlanItem {
   lon?: number;
   fromPrevKm?: number;
   ticketQuery?: string;
+  /** The stop as a Google Maps search (name and city). */
+  mapQuery?: string;
 }
 
 export interface PlanDay {
@@ -186,12 +196,17 @@ const SCHEMA = {
             items: {
               type: "object",
               additionalProperties: false,
-              required: ["time", "kind", "ref", "name", "duration_min", "why", "tip", "hours", "booking", "dress", "dish", "halal", "getting_there"],
+              required: ["time", "kind", "name", "local_name", "area", "rating", "website", "lat", "lon", "duration_min", "why", "tip", "hours", "booking", "dress", "dish", "halal", "getting_there"],
               properties: {
                 time: str,
                 kind: { type: "string", enum: ["place", "meal", "break"] },
-                ref: str,
                 name: str,
+                local_name: str,
+                area: str,
+                rating: str,
+                website: str,
+                lat: { type: ["number", "null"] },
+                lon: { type: ["number", "null"] },
                 duration_min: { type: "integer" },
                 why: str,
                 tip: str,
@@ -256,16 +271,10 @@ export async function buildPlan(req: PlanRequest): Promise<SmartPlan | { error: 
   const country = findCountry(req.code);
   if (!city || !country) return { error: "unknown_city" };
   const [places, restaurants] = await Promise.all([readStoredPlaces(req.slug), readStoredRestaurants(req.slug)]);
-  if (!places?.length) return { error: "no_places" };
-
-  const pool = candidatePlaces(places, 70);
-  // Restaurants tagged halal first when it matters, then the best documented.
-  const eat: StoredRestaurant[] = [...restaurants]
-    .sort((a, b) => (b.h ?? 0) - (a.h ?? 0) || b.f - a.f)
-    .slice(0, 40);
-  const byId = new Map<string, { lat: number; lon: number; en: string; kind: string; meal: boolean }>();
-  pool.forEach((p, i) => byId.set(`p${i}`, { lat: p.y, lon: p.x, en: p.e ?? p.n, kind: p.k, meal: false }));
-  eat.forEach((r, i) => byId.set(`r${i}`, { lat: r.y, lon: r.x, en: r.e ?? r.n, kind: "restaurant", meal: true }));
+  const center = CITY_COORDS[req.slug];
+  // Our stored names are only a memory aid and a source of map positions.
+  const pool = candidatePlaces(places ?? [], 40);
+  const eat: StoredRestaurant[] = [...restaurants].sort((x, y) => (y.h ?? 0) - (x.h ?? 0) || y.f - x.f).slice(0, 25);
 
   const nights = Math.round((Date.parse(req.to) - Date.parse(req.from)) / 86_400_000);
   const dayCount = nights + 1;
@@ -291,23 +300,24 @@ export async function buildPlan(req: PlanRequest): Promise<SmartPlan | { error: 
     .filter(Boolean)
     .join("\n");
 
-  const placeLines = pool.map((p, i) => `p${i} | ${p.e ?? p.n}${p.a ? ` / ${p.a}` : ""} | ${p.k} | ${p.y.toFixed(4)},${p.x.toFixed(4)}`).join("\n");
-  const foodLines = eat.map((r, i) => `r${i} | ${r.e ?? r.n} | ${r.u ?? "?"}${r.h ? " | tagged halal" : ""} | ${r.y.toFixed(4)},${r.x.toFixed(4)}`).join("\n");
+  const hintLines = pool.map((p) => `${p.e ?? p.n} (${p.k})`).join("; ");
+  const foodHints = eat.map((r) => `${r.e ?? r.n}${r.u ? ` (${r.u})` : ""}${r.h ? " [tagged halal]" : ""}`).join("; ");
 
-  const system = `You are Sfrtna's trip planner — a meticulous local expert who plans for travellers from Saudi Arabia and the Gulf.
+  const system = `You are Sfrtna's trip planner — the best local expert a traveller from Saudi Arabia or the Gulf could ask, planning for THIS traveller.
 Write everything in ${lang}.
-Rules (strict):
-1. Use ONLY places from the PLACES and RESTAURANTS lists, by their id in "ref" (p… or r…). Never invent a place. A "break" item (rest at the hotel, a café pause) has ref "".
-2. Each day: varied — never two items of the same purpose on one day (no two parks, two museums or two malls the same day); group stops that are near each other (use the coordinates) and order them to avoid crossing the city back and forth; put sights at their best time (opening, sunset, before crowds).
-3. Respect the pace: relaxed 2–3 places, balanced 3–4, packed 5–6, plus meals. First and last day lighter (arrival/departure). Respect start time and evenings.
-4. Meals: lunch and dinner every full day from RESTAURANTS near that day's stops. ${a.halalOnly ? "Halal only: prefer restaurants tagged halal; for others say what web search confirms (halal certified / halal options / not halal) — never claim halal without a source; if unknown write that it is not confirmed." : "Mention halal status when known."}
-5. Use web search to confirm, for the main sights and every restaurant: opening hours on the travel dates (note weekly closing days and holidays), whether booking/tickets are needed and how (official site or our partners), the signature dish, dress code (e.g. modest dress and covered shoulders for mosques and churches, no shorts), and for a traveller with a car the nearest parking. Search at most about 12 times; prioritise what matters most. If something could not be confirmed, write "غير مؤكد"/"not confirmed" — never guess hours or prices. Do not state prices.
-6. "getting_there": how to reach this stop from the previous one with their transport (walk/metro line/taxi) and a realistic duration; the first stop of a day from the city centre.
-7. "weather" for each day comes from the CLIMATE lines (averages, not a forecast) — say so briefly; "wear" = what to wear that day for the weather AND the day's places/activities.
-8. "tip": one insider tip (best photo spot, quiet entrance, what to skip, kids' needs). "why": one line on why it fits THIS traveller.
-9. essentials: packing list for the season and activities; local etiquette (incl. for Muslim travellers: prayer, modesty, alcohol in restaurants); transport tips (cards/apps/airport transfer); money (currency, cards, tipping); 5–8 useful local phrases with meaning; safety; emergency numbers (only if confirmed).
-10. Times as 24h "HH:MM". Dates as YYYY-MM-DD, one day per date from ${req.from} to ${req.to} (${dayCount} days).
-Keep every text short and concrete.`;
+Choosing places (most important):
+1. Pick the city's genuinely best places for this traveller: iconic sights, top-rated attractions and experiences, and well-loved restaurants — places with high ratings and many reviews on Google Maps or Tripadvisor (as a rule ≥ 4.3/5 with hundreds of reviews for sights, ≥ 4.3 with 300+ for restaurants), plus a few outstanding lesser-known gems. Never fill a day with obscure, poorly rated or barely reviewed places.
+2. Verify every place by web search: it exists and is open on the travel dates; read its rating and number of reviews from the source and write them in "rating" as found, e.g. "4.7 (52,000 reviews, Google)"; "website" = its official site, else "". Give its coordinates in lat/lon only if you found them, else null. "local_name" = the name as signed locally (Latin or local script); "area" = its neighbourhood.
+3. Use the HINTS only as a memory aid; you are not limited to them.
+Building each day:
+4. Varied: never two items of the same purpose on one day (no two parks, two museums, two malls, two religious sites the same day); mix a highlight, an experience and a calmer stop. Group stops that are near each other and order them to avoid crossing the city; each at its best time (opening, sunset, before crowds, cooler hours in heat).
+5. Pace: relaxed 2–3 places, balanced 3–4, packed 5–6, plus meals. First and last day lighter. Respect start time and evenings.
+6. Meals: lunch and dinner every full day (a breakfast spot when it is part of the experience), near that day's stops. ${a.halalOnly ? "HALAL: choose restaurants confirmed halal (certified, Muslim-owned or clearly stated by the restaurant/source); write in \"halal\" exactly what the source says; if not confirmed, say so and prefer a confirmed alternative." : "Mention halal status when known."}${a.vegetarian ? " Vegetarian options required." : ""} "dish" = the dish the place is known for.
+7. For each stop: "hours" on the travel dates (note weekly closing days and holidays); "booking": whether tickets/reservation are needed or strongly advised, and how (official site, timed tickets, how far ahead); "dress": what to wear there (modest dress for mosques/churches/temples, comfortable shoes for long walks, swimwear rules, etc.); "getting_there": from the previous stop with their transport (walk / metro line / taxi) and realistic minutes${a.move === "car" ? ", plus the nearest parking" : ""}; "tip": one insider tip (best photo spot, quieter entrance, what to skip, kids' needs); "why": why it fits THIS traveller.
+8. "weather" from the CLIMATE lines (long-term averages, not a forecast) — say so briefly; "wear" = what to wear that day for the weather and the day's places.
+9. essentials: packing for the season and activities; customs and etiquette (incl. for Muslim travellers: prayer places, modesty, alcohol in restaurants); transport (cards, apps, airport transfer); money (currency, cards, tipping); 5–8 local phrases with meaning; safety; emergency numbers (only if confirmed).
+10. Search as much as needed to be right (about 15–25 searches). If something could not be confirmed write "غير مؤكد"/"not confirmed" — never guess. Do not state prices.
+11. Times as 24h "HH:MM". One day per date from ${req.from} to ${req.to} (${dayCount} days), dates as YYYY-MM-DD. Keep each text short and concrete.`;
 
   const user = `CITY: ${city.nameEn}, ${country.nameEn}. Dates ${req.from} to ${req.to} (${dayCount} days).
 CLIMATE (our long-term averages):
@@ -316,15 +326,18 @@ ${climate || "not available"}
 TRAVELLER:
 ${traveller}
 
-PLACES (id | name | kind | lat,lon):
-${placeLines}
-
-RESTAURANTS (id | name | cuisine | lat,lon):
-${foodLines || "none stored — use break items for meals and say to choose a nearby restaurant"}`;
+HINTS — some known places (not a limit): ${hintLines || "none"}
+HINTS — some restaurants: ${foodHints || "none"}`;
 
   const answer = await aiJson<{
     summary: string;
-    days: (Omit<PlanDay, "items"> & { items: (Omit<PlanItem, "durationMin" | "gettingThere"> & { duration_min: number; getting_there: string })[] })[];
+    days: (Omit<PlanDay, "items"> & {
+      items: {
+        time: string; kind: PlanItem["kind"]; name: string; local_name: string; area: string; rating: string; website: string;
+        lat: number | null; lon: number | null; duration_min: number; why: string; tip: string; hours: string; booking: string;
+        dress: string; dish: string; halal: string; getting_there: string;
+      }[];
+    })[];
     essentials: SmartPlan["essentials"];
   }>({
     system,
@@ -333,22 +346,44 @@ ${foodLines || "none stored — use break items for meals and say to choose a ne
     schema: SCHEMA as unknown as Record<string, unknown>,
     search: { country: req.code, city: city.nameEn },
     effort: "medium",
+    timeoutMs: 240_000,
   });
   if ("error" in answer) return answer;
 
-  // Keep only what we can stand behind: our own places, their positions, and
-  // the straight distance between consecutive stops.
-  const days: PlanDay[] = answer.data.days.slice(0, dayCount).map((d) => {
+  // Each stop on the map: our stored place of the same name, else an
+  // OpenStreetMap search near the city centre, else the model's own position
+  // when it lies in the city; failing all, a map-search link.
+  const stored = [...(places ?? []), ...restaurants];
+  const norm = (x: string) => x.toLowerCase().normalize("NFKD").replace(/[\u0300-\u036f]/g, "").replace(/[^\p{L}\p{N}]+/gu, " ").trim();
+  const near = (lat: number, lon: number, maxKm: number) => !center || km(center, { lat, lon }) <= maxKm;
+  let lookups = 0;
+  async function place(it: { name: string; local_name: string; lat: number | null; lon: number | null }): Promise<{ lat: number; lon: number } | null> {
+    const names = [it.local_name, it.name].filter(Boolean).map(norm);
+    const hit = stored.find((p) => names.includes(norm(p.e ?? p.n)) || names.includes(norm(p.n)));
+    if (hit) return { lat: hit.y, lon: hit.x };
+    if (lookups < 24 && center) {
+      lookups++;
+      const found = await photon(`${it.local_name || it.name} ${city!.nameEn}`, center);
+      if (found && near(found.lat, found.lon, 60)) return found;
+    }
+    if (typeof it.lat === "number" && typeof it.lon === "number" && near(it.lat, it.lon, 60)) return { lat: it.lat, lon: it.lon };
+    return null;
+  }
+
+  const days: PlanDay[] = [];
+  for (const d of answer.data.days.slice(0, dayCount)) {
     let prev: { lat: number; lon: number } | null = null;
     const items: PlanItem[] = [];
-    for (const it of d.items) {
-      const known = it.ref ? byId.get(it.ref) : undefined;
-      if (it.kind !== "break" && !known) continue;
+    const pos = await Promise.all(d.items.map((it) => (it.kind === "break" ? Promise.resolve(null) : place(it))));
+    d.items.forEach((it, k) => {
       const item: PlanItem = {
         time: /^\d{2}:\d{2}$/.test(it.time) ? it.time : "",
         kind: it.kind,
-        ref: known ? it.ref : "",
         name: it.name.slice(0, 120),
+        localName: it.local_name.slice(0, 120),
+        area: it.area.slice(0, 80),
+        rating: it.rating.slice(0, 80),
+        website: /^https:\/\//.test(it.website) ? it.website.slice(0, 300) : "",
         durationMin: Math.max(0, Math.min(600, Math.round(it.duration_min || 0))),
         why: it.why.slice(0, 300),
         tip: it.tip.slice(0, 300),
@@ -359,17 +394,19 @@ ${foodLines || "none stored — use break items for meals and say to choose a ne
         halal: it.halal.slice(0, 200),
         gettingThere: it.getting_there.slice(0, 300),
       };
-      if (known) {
-        item.lat = known.lat;
-        item.lon = known.lon;
-        if (prev) item.fromPrevKm = Math.round(km(prev, known) * 10) / 10;
-        prev = known;
-        if (!known.meal) item.ticketQuery = `${known.en} ${city.nameEn}`;
+      const p = pos[k];
+      if (p) {
+        item.lat = p.lat;
+        item.lon = p.lon;
+        if (prev) item.fromPrevKm = Math.round(km(prev, p) * 10) / 10;
+        prev = p;
       }
+      if (it.kind !== "break") item.mapQuery = `${it.local_name || it.name}, ${city.nameEn}`;
+      if (it.kind === "place") item.ticketQuery = `${it.local_name || it.name} ${city.nameEn}`;
       items.push(item);
-    }
-    return { date: d.date, title: d.title, area: d.area, weather: d.weather, wear: d.wear, items };
-  });
+    });
+    days.push({ date: d.date, title: d.title, area: d.area, weather: d.weather, wear: d.wear, items });
+  }
 
   return {
     summary: answer.data.summary,
@@ -381,6 +418,28 @@ ${foodLines || "none stored — use break items for meals and say to choose a ne
     to: req.to,
     generatedAt: new Date().toISOString(),
   };
+}
+
+/** One OpenStreetMap search (Photon) for a named place near the city, cached a month. */
+async function photon(q: string, at: { lat: number; lon: number }): Promise<{ lat: number; lon: number } | null> {
+  // Not cached on its own: each cache read/write is a subrequest too, and a
+  // Worker request has 50. The whole plan is cached instead.
+  {
+    try {
+      const u = new URL("https://photon.komoot.io/api/");
+      u.searchParams.set("q", q);
+      u.searchParams.set("limit", "1");
+      u.searchParams.set("lat", String(at.lat));
+      u.searchParams.set("lon", String(at.lon));
+      const res = await fetch(u.toString(), { headers: { "User-Agent": "sfrtna.com trip planner" }, signal: AbortSignal.timeout(4000) });
+      if (!res.ok) return null;
+      const j = (await res.json()) as { features?: { geometry?: { coordinates?: [number, number] } }[] };
+      const c = j.features?.[0]?.geometry?.coordinates;
+      return c ? { lat: c[1], lon: c[0] } : null;
+    } catch {
+      return null;
+    }
+  }
 }
 
 function km(a: { lat: number; lon: number }, b: { lat: number; lon: number }): number {

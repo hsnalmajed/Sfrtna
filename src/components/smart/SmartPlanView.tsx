@@ -9,6 +9,7 @@ import type { PlanItem, SmartPlan } from "@/lib/ai/plan";
 /** One stop's facts, each on its own line with its label — only those we have. */
 function Facts({ item, t }: { item: PlanItem; t: ReturnType<typeof useDictionary>["smart"] }) {
   const rows: [string, string, string][] = [];
+  if (item.rating) rows.push(["⭐", t.rating, item.rating]);
   if (item.hours) rows.push(["🕘", t.hours, item.hours]);
   if (item.booking) rows.push(["🎟️", t.booking, item.booking]);
   if (item.dish) rows.push(["🍽️", t.dish, item.dish]);
@@ -107,9 +108,31 @@ export default function SmartPlanView({ locale, plan, onNew }: { locale: Locale;
                 {it.durationMin > 0 && <span className="text-xs font-semibold text-navy-500">· {dur(it.durationMin)}</span>}
                 {it.kind !== "place" && <span className="text-xs font-semibold text-navy-500">· {it.kind === "meal" ? t.meal : t.rest}</span>}
               </div>
+              {(it.localName && it.localName !== it.name) || it.area ? (
+                <p className="mt-0.5 text-xs text-navy-500" dir="auto">
+                  {[it.localName !== it.name ? it.localName : "", it.area].filter(Boolean).join(" · ")}
+                </p>
+              ) : null}
               {typeof it.fromPrevKm === "number" && it.fromPrevKm > 0 && <p className="mt-0.5 text-[11px] font-semibold text-navy-400">↳ {t.km.replace("{n}", String(it.fromPrevKm))}</p>}
               {it.why && <p className="mt-1 text-[13px] leading-relaxed text-navy-700">{it.why}</p>}
               <Facts item={it} t={t} />
+              <div className="mt-2 flex flex-wrap gap-2 print:hidden">
+                {it.mapQuery && (
+                  <a
+                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(it.mapQuery)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex min-h-9 items-center rounded-full bg-white px-3.5 text-xs font-bold text-navy-800 ring-1 ring-mist-300"
+                  >
+                    📍 {t.onMap}
+                  </a>
+                )}
+                {it.website && (
+                  <a href={it.website} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-9 items-center rounded-full bg-white px-3.5 text-xs font-bold text-navy-800 ring-1 ring-mist-300">
+                    🌐 {t.website}
+                  </a>
+                )}
+              </div>
               {it.ticketQuery && /تذكر|ticket|book|حجز/i.test(it.booking) && (
                 <a
                   href={`/api/go/gyg?q=${encodeURIComponent(it.ticketQuery)}`}
