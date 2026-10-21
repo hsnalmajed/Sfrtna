@@ -49,58 +49,64 @@ interface El {
   tags?: Record<string, string>;
 }
 
-function query(lat: number, lon: number): string {
+/** The Overpass asks for one city, split in three so a big city's answer stays small. */
+function queries(lat: number, lon: number): string[] {
   const a = `(around:${RADIUS},${lat},${lon})`;
   const w = `["wikidata"]["name"]`;
-  return `[out:json][timeout:120];(
-nwr${a}["tourism"~"^(attraction|museum|gallery|viewpoint|zoo|aquarium|theme_park|artwork)$"]${w};
-nwr${a}["historic"]${w};
-nwr${a}["leisure"~"^(park|garden|nature_reserve|water_park|marina|stadium)$"]${w};
-nwr${a}["natural"~"^(beach|peak|waterfall|cave_entrance|bay|cape|volcano|spring)$"]${w};
-nwr${a}["amenity"~"^(place_of_worship|theatre|arts_centre|marketplace|planetarium|fountain|library)$"]${w};
-nwr${a}["shop"~"^(mall|department_store)$"]${w};
-nwr${a}["man_made"~"^(tower|lighthouse)$"]${w};
-nwr${a}["building"~"^(mosque|church|cathedral|temple|palace|castle)$"]${w};
-nwr${a}["place"="square"]${w};
-);out center tags;`;
+  const wrap = (clauses: string[]) => `[out:json][timeout:170];(\n${clauses.map((c) => `nwr${a}${c}${w};`).join("\n")}\n);out center tags;`;
+  return [
+    wrap(['["tourism"~"^(attraction|museum|gallery|viewpoint|zoo|aquarium|theme_park)$"]', '["shop"~"^(mall|department_store)$"]', '["place"="square"]']),
+    wrap(['["historic"~"^(castle|fort|citadel|palace|archaeological_site|ruins|city_gate|monument|tomb|manor|city_walls|building|church|mosque|temple|tower|bridge|aqueduct|district)$"]']),
+    wrap([
+      '["leisure"~"^(park|garden|nature_reserve|water_park|marina|stadium)$"]',
+      '["natural"~"^(beach|peak|waterfall|cave_entrance|bay|cape|volcano|spring)$"]',
+      '["amenity"~"^(place_of_worship|theatre|arts_centre|marketplace|planetarium|fountain)$"]',
+      '["man_made"~"^(tower|lighthouse)$"]',
+      '["building"~"^(mosque|church|cathedral|temple|palace|castle)$"]',
+    ]),
+  ];
 }
 
-async function overpass(
-  lat: number,
-  lon: number,
-  first = 0,
-): Promise<El[] | null> {
-  // Each worker starts at its own mirror, so three cities run side by side.
-  const mirrors = [
-    ...OVERPASS.slice(first % OVERPASS.length),
-    ...OVERPASS.slice(0, first % OVERPASS.length),
-  ];
-  const body = `data=${encodeURIComponent(query(lat, lon))}`;
-  for (let attempt = 0; attempt < 2; attempt++) {
+async function overpassOne(q: string, mirrors: string[]): Promise<El[] | null> {
+  const body = `data=${encodeURIComponent(q)}`;
+  for (let attempt = 0; attempt < 3; attempt++) {
     for (const url of mirrors) {
       try {
         const res = await fetch(url, {
           method: "POST",
           body,
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-            "User-Agent": UA,
-          },
-          signal: AbortSignal.timeout(150_000),
+          headers: { "Content-Type": "application/x-www-form-urlencoded", "User-Agent": UA },
+          signal: AbortSignal.timeout(200_000),
         });
         if (res.status === 429 || res.status === 504) {
-          await sleep(20_000);
+          await sleep(15_000);
           continue;
         }
         if (!res.ok) continue;
-        return ((await res.json()) as { elements?: El[] }).elements ?? [];
+        const j = (await res.json()) as { elements?: El[]; remark?: string };
+        // A timed-out query answers 200 with a remark and a partial list.
+        if (j.remark && /timed out|runtime error/i.test(j.remark)) continue;
+        return j.elements ?? [];
       } catch {
         // next mirror
       }
     }
-    await sleep(30_000);
+    await sleep(20_000);
   }
   return null;
+}
+
+async function overpass(lat: number, lon: number, first = 0): Promise<El[] | null> {
+  // Each worker starts at its own mirror, so three cities run side by side.
+  const n = OVERPASS.length;
+  const mirrors = [...OVERPASS.slice(first % n), ...OVERPASS.slice(0, first % n)];
+  const out: El[] = [];
+  for (const q of queries(lat, lon)) {
+    const part = await overpassOne(q, mirrors);
+    if (!part) return null;
+    out.push(...part);
+  }
+  return out;
 }
 
 interface WdEntity {
@@ -249,6 +255,13 @@ async function main() {
         if (!e || lat === undefined || lon === undefined) continue;
         const g = groupOf(tags);
         if (!g) continue;
+        // The OSM tag must name this place, not its subject: a statue tagged
+        // with the person it shows, an exhibit with its aircraft type, a
+        // museum with the family it is about. The item has to sit where the
+        // map does.
+        const at = e.claims?.P625?.[0]?.mainsnak?.datavalue?.value as { latitude?: number; longitude?: number } | undefined;
+        if (typeof at?.latitude !== "number" || typeof at?.longitude !== "number") continue;
+        if (Math.abs(at.latitude - lat) > 0.03 || Math.abs(at.longitude - lon) > 0.04) continue;
         const sl = links(e);
         const wh = Boolean(e.claims?.P757?.length);
         const vis = visitors(e);
