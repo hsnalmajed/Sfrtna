@@ -55,5 +55,6 @@ jobs:
           git config user.name "Claude"
           git config user.email "noreply@anthropic.com"
           git commit -m "Guide: places checked and written up"
-          git pull --rebase origin main
+          # This run's files win over an older run's (rebase: "theirs" = ours).
+          git pull --rebase -X theirs origin main
           git push
