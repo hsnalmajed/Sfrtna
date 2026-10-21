@@ -232,7 +232,11 @@ async function main() {
       // Tokyo's government building with its free observatories).
       const iconic = r.sl >= BIG_LINKS;
       const soft = (c: string) => ["Q27686", "Q1021645"].includes(neverClass.get(c) ?? (NEVER.has(c) ? c : ""));
-      const why = [...r.classes].find((c) => (NEVER.has(c) || (neverClass.has(c) && !r.wh)) && !(iconic && soft(c)));
+      // A mosque, museum or palace that is also listed as a teaching body
+      // (Al-Masjid al-Haram, Al-Azhar) is still the mosque.
+      const placeGroup = [...r.classes].some((c) => ["religion", "museums", "history"].includes(classGroup.get(c) ?? ""));
+      const school = (c: string) => (neverClass.get(c) ?? "") === "Q2385804";
+      const why = [...r.classes].find((c) => (NEVER.has(c) || (neverClass.has(c) && !r.wh)) && !(iconic && soft(c)) && !(placeGroup && school(c)));
       if (why) {
         if (r.sl >= 25) dropped.push(`${r.sl}|${r.en ?? r.q} ${r.sl} (${why}→${neverClass.get(why) ?? "never"})`);
         continue;
