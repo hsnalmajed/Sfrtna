@@ -50,7 +50,7 @@ jobs:
       - name: Commit
         if: always()
         run: |
-          git add public/data/guide scripts/guide/reports || true
+          for p in public/data/guide scripts/guide/reports; do if [ -e "$p" ]; then git add "$p"; fi; done
           if git diff --cached --quiet; then echo "Nothing new."; exit 0; fi
           git config user.name "Claude"
           git config user.email "noreply@anthropic.com"
