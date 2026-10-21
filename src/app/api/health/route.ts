@@ -1,3 +1,4 @@
+import { viatorProbe } from "@/lib/viator";
 import { readJson } from "@/lib/edgeCache";
 import { NextResponse } from "next/server";
 import { configuredProviders } from "@/lib/providers";
@@ -294,6 +295,7 @@ export async function GET(req: Request) {
       pexels,
       here,
       storedHotels,
+      viator: await viatorProbe(),
       configuredProviders: configured,
       keys: {
         travelpayoutsToken: Boolean(process.env.TRAVELPAYOUTS_TOKEN),

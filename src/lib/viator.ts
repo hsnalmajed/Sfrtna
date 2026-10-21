@@ -22,6 +22,23 @@ export function viatorConfigured(): boolean {
   return Boolean(process.env.VIATOR_API_KEY);
 }
 
+/** For /api/health: does the key answer, and how many destinations come back. */
+export async function viatorProbe(): Promise<{ key: boolean; env: string; status: number | null; destinations: number }> {
+  const key = process.env.VIATOR_API_KEY;
+  const env = process.env.VIATOR_ENV === "sandbox" ? "sandbox" : "production";
+  if (!key) return { key: false, env, status: null, destinations: 0 };
+  try {
+    const res = await fetch(`${BASE()}/destinations`, {
+      headers: { "exp-api-key": key, Accept: "application/json;version=2.0", "Accept-Language": "en-US" },
+    });
+    let n = 0;
+    if (res.ok) n = (((await res.json()) as { destinations?: unknown[] }).destinations ?? []).length;
+    return { key: true, env, status: res.status, destinations: n };
+  } catch {
+    return { key: true, env, status: 0, destinations: 0 };
+  }
+}
+
 // Viator serves content in a fixed set of languages and Arabic is not one of
 // them, so product titles/descriptions always come back in English. The
 // surrounding UI is still fully localised — we label the source rather than
