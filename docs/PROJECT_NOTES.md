@@ -1068,6 +1068,17 @@ Chrome), climate v2 after the owner's download, publishing staged cities.
 
 ## Next, in order
 
+**Search Console (owner's mail of 12 Oct, read 22 Oct):** new non-indexed
+reasons — Alternate page with proper canonical, Duplicate without
+user-selected canonical, Blocked due to access forbidden (403), Soft 404,
+Page with redirect. Normal ones: redirect (/ → /ar, workers.dev → sfrtna.com),
+alternate (our own canonical works, `src/lib/seo.ts`). To check: which URLs
+are 403 (robots.txt already closes /api/ and results pages, so a 403 is
+elsewhere — Bot Fight Mode / AI Labyrinth on Googlebot, or /data/*), which
+pages lack a canonical (pages without the seo.ts metadata, or address
+variants with ?query), and soft 404s (thin/empty pages). Owner to send the
+example URLs per reason from Indexing → Pages in the new conversation.
+
 **▶ Start here (hand-off 21 Oct 23:50):** this conversation built the city
 guide (Wikidata + Gemini), the smart planner on our own engine (everywhere:
 /itinerary, city pages, app «المزيد»), the budget advisor's estimate mode
