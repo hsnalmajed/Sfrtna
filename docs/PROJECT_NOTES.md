@@ -1078,6 +1078,10 @@ elsewhere — Bot Fight Mode / AI Labyrinth on Googlebot, or /data/*), which
 pages lack a canonical (pages without the seo.ts metadata, or address
 variants with ?query), and soft 404s (thin/empty pages). Owner to send the
 example URLs per reason from Indexing → Pages in the new conversation.
+Counts 22 Oct: alternate+canonical 434, **duplicate without canonical 337**,
+**403 = 62**, **soft 404 = 19**, **5xx = 1**, crawled-not-indexed 8,
+redirect 0. Priority: 337 duplicates (likely ar/en or ?query variants
+missing a canonical/hreflang), then 403, soft 404, the 5xx.
 
 **▶ Start here (hand-off 21 Oct 23:50):** this conversation built the city
 guide (Wikidata + Gemini), the smart planner on our own engine (everywhere:
