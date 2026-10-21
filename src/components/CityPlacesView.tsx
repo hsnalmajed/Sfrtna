@@ -203,6 +203,7 @@ export default function CityPlacesView({
           places={places}
           cityName={cityName}
           countryCode={countryCode}
+          citySlug={citySlug}
           countryName={countryName}
           dict={plannerDict}
           onShowOnMap={pins.length ? showOnMap : undefined}

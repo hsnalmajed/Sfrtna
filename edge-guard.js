@@ -48,6 +48,8 @@ export const ROUTES = {
   // Live fares when the flight partner cannot be reached (results page).
   "/api/flight-fallback": { methods: ["GET"], caller: "page", heavy: true },
   "/api/itinerary": { methods: ["POST"], caller: "page", heavy: true },
+  "/api/ai/plan": { methods: ["POST"], caller: "page", heavy: true },
+  "/api/ai/status": { methods: ["GET"], caller: "page" },
   "/api/go/expedia": { methods: ["GET"], caller: "link" },
   "/api/go/gyg": { methods: ["GET"], caller: "link" },
   "/api/go/tp": { methods: ["GET"], caller: "link" },

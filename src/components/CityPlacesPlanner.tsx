@@ -13,6 +13,7 @@ import CityPlacesExplorer, { score, type PlaceListItem } from "@/components/City
 import PrintHeader from "@/components/PrintHeader";
 import DateRangeInput from "@/components/DateRangeInput";
 import SavePlanButton from "@/components/SavePlanButton";
+import SmartPlanner from "@/components/smart/SmartPlanner";
 
 /**
  * More than this in one day and the day is travelling, not visiting.
@@ -201,11 +202,14 @@ export default function CityPlacesPlanner({
   places,
   cityName,
   countryCode,
+  citySlug,
   dict,
   onShowOnMap,
   showOnMapLabel,
   restaurants = [],
 }: {
+  /** The city's slug, for «خطتي الذكية» (src/components/smart). */
+  citySlug?: string;
   locale: Locale;
   places: PlaceListItem[];
   /** The city's stored restaurants, for each day's meals. */
@@ -339,6 +343,7 @@ export default function CityPlacesPlanner({
         <p className="font-display text-xl font-extrabold">🧳 {t.startTitle.replace("{city}", cityName)}</p>
         <p className="mt-1 max-w-2xl text-sm leading-relaxed text-white/70">{t.startBody}</p>
         <div className="mt-4 flex flex-col gap-3 sm:flex-row">
+          {citySlug && <SmartPlanner locale={locale} code={countryCode} slug={citySlug} cityName={cityName} />}
           <button
             type="button"
             onClick={() => setMode("pick")}

@@ -308,7 +308,7 @@ function fromStored(r: StoredPlace, locale: Locale): Place {
 type AssetsBinding = { fetch: (input: Request | string) => Promise<Response> };
 
 /** A city's stored places, or null when it has no file (or this is not a Worker). */
-async function readStoredPlaces(slug: string): Promise<StoredPlace[] | null> {
+export async function readStoredPlaces(slug: string): Promise<StoredPlace[] | null> {
   if (!/^[a-z0-9-]+$/.test(slug)) return null;
   try {
     const { getCloudflareContext } = await import("@opennextjs/cloudflare");
