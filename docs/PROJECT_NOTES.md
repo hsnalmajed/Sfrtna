@@ -1074,7 +1074,10 @@ guide (Wikidata + Gemini), the smart planner on our own engine (everywhere:
 (stored city costs `public/data/costs.json` + live prices where possible),
 membership/app sign-in, and Viator (live). Background jobs still filling in:
 `guide.yml` daily (write-ups for remaining cities; facts with kinds `kd`;
-costs). Check `scripts/guide/reports/*.txt` and counts first.
+costs). A run with task=all, only=all was queued 21 Oct ~21:00 UTC (facts
+with kinds for every city → costs → write-ups); a new dispatch while one is
+pending REPLACES it (same concurrency group) — check before dispatching.
+Check `scripts/guide/reports/*.txt`, `public/data/costs.json` and counts first.
 Owner is doing payouts (bank details in each partner): Travelpayouts (PayPal
 limited → bank), GetYourGuide (add bank), Stay22 (upload national address as
 address proof); Viator ✅ bank, Expedia ✅, RateHawk ✅ (W-8BEN review).
