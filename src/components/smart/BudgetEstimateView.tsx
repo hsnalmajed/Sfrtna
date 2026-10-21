@@ -10,6 +10,13 @@ function useMoney(locale: Locale) {
   return (n: number, currency: string) => `⁨${nf.format(Math.round(n))} ${currency}⁩`;
 }
 
+/** "120–220 SAR" as one left-to-right run, so Arabic text never flips it. */
+function useRange(locale: Locale) {
+  const nf = new Intl.NumberFormat(locale === "ar" ? "ar-SA-u-nu-latn" : "en-US", { maximumFractionDigits: 0 });
+  return (low: number, high: number, currency: string) =>
+    Math.round(low) === Math.round(high) ? `⁨${nf.format(Math.round(low))} ${currency}⁩` : `⁨${nf.format(Math.round(low))}–${nf.format(Math.round(high))} ${currency}⁩`;
+}
+
 /** No destination yet: the cheapest places for the dates, each one tap from its own estimate. */
 export function EstimatePicker({ locale, list, onPick }: { locale: Locale; list: EstimateList; onPick: (code: string) => void }) {
   const t = useDictionary().budgetAdvisor;
@@ -68,12 +75,13 @@ export default function BudgetEstimateView({
   const t = useDictionary().budgetAdvisor;
   const money = useMoney(locale);
   const m = (n: number) => money(n, est.currency);
-  const r = (x: Range) => `${m(x.low)}–${m(x.high)}`;
+  const range = useRange(locale);
+  const r = (x: Range) => range(x.low, x.high, est.currency);
   const city = locale === "ar" ? est.city.nameAr : est.city.nameEn;
   const nights = countLabel(est.nights, t.nightsShapes);
   const people = countLabel(est.travellers, t.peopleShapes);
   const d = est.daily;
-  const perDay = (x: Range) => t.perDay.replace("{low}", m(x.low)).replace("{high}", m(x.high));
+  const perDay = (x: Range) => t.perDay.replace("{range}", r(x));
   const dailyTrip = d
     ? {
         low: ((d.food.low + d.transport.low + d.activities.low) * est.nights + d.extras.reduce((s, e) => s + e.low, 0)) * est.travellers,
@@ -97,13 +105,13 @@ export default function BudgetEstimateView({
           <>
             <p className="text-sm font-bold text-white/70">{t.recommended}</p>
             <p className="mt-1 font-display text-3xl font-black text-sun-300">{m(est.total.recommended)}</p>
-            <p className="mt-1 text-sm text-white/85">{t.rangeLabel.replace("{low}", m(est.total.low)).replace("{high}", m(est.total.high))}</p>
+            <p className="mt-1 text-sm text-white/85">{t.rangeLabel.replace("{range}", r(est.total))}</p>
             <p className="mt-1 text-xs text-white/60">{t.recommendedHint}</p>
           </>
         ) : (
           <>
             <p className="text-sm font-bold text-white/70">{t.soFar}</p>
-            <p className="mt-1 font-display text-3xl font-black text-sun-300">{est.total.low === est.total.high ? m(est.total.high) : `${m(est.total.low)}–${m(est.total.high)}`}</p>
+            <p className="mt-1 font-display text-3xl font-black text-sun-300">{r(est.total)}</p>
             <p className="mt-2 text-xs font-bold text-amber-200">
               ⚠️ {t.notIncluded} {est.missing.map((k) => t.parts[k]).join(locale === "ar" ? " و" : ", ")}
             </p>
@@ -168,7 +176,7 @@ export default function BudgetEstimateView({
         {d && dailyTrip ? (
           <div className={row}>
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <p className="font-extrabold text-navy-950">🍽️ {t.foodRow} · 🚇 {t.transportRow} · 🎟️ {t.activitiesRow}</p>
+              <p className="font-extrabold text-navy-950">🧾 {t.dailyRow}</p>
             </div>
             <p className="mt-1 flex flex-wrap items-center gap-2 text-xs text-navy-600">
               <Tag live={false}>{t.estimateTag}</Tag>
@@ -180,7 +188,7 @@ export default function BudgetEstimateView({
                   ["🍽️", t.foodRow, perDay(d.food)],
                   ["🚇", t.transportRow, perDay(d.transport)],
                   ["🎟️", t.activitiesRow, perDay(d.activities)],
-                  ...d.extras.map((e) => ["➕", e.label, t.perPerson.replace("{low}", m(e.low)).replace("{high}", m(e.high))] as const),
+                  ...d.extras.map((e) => ["➕", e.label, t.perPerson.replace("{range}", r(e))] as const),
                 ] as const
               ).map(([icon, label, val]) => (
                 <div key={label} className="flex justify-between gap-3">

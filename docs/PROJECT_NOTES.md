@@ -973,6 +973,26 @@ Chrome), climate v2 after the owner's download, publishing staged cities.
   search eviction, delete account). Email sign-in still needs
   `RESEND_API_KEY` (owner).
 
+## AI planner + budget advisor — 21 Oct (owner: "our places DB is very bad"; "budget advisor for both cases")
+
+- Smart plan (`src/lib/ai/plan.ts`): the AI picks the city's best places and
+  restaurants itself via web search (>= 4.3 with many reviews, rating string,
+  website, local name, area); our stored lists are hints only. Stops placed by
+  stored-name match -> Photon (<= 24) -> model coordinates within 60 km.
+- Budget advisor, two modes (`BudgetAdvisor.tsx`): «كم أحتاج؟» (default) and
+  «أعرف ميزانيتي». Estimate = `POST /api/budget-estimate`
+  (`src/lib/ai/budgetEstimate.ts`): flight live (Travel Explore, else Google
+  Flights with pace "explore"), hotel live (Google Hotels list, well-rated, a
+  room per two adults), daily spending (food/transport/tickets + one-offs,
+  per traveller, AI web search, cached 14 days per city+level, labelled
+  «تقدير من مصادر منشورة»). Suggested budget = high end + 10 %, shown ONLY
+  when every part is priced; else «ما حسبناه حتى الآن» + what is left out +
+  hotel link. No destination -> cheapest 18 places for the dates (live fares).
+  AI text without a budget switches to estimate mode.
+- Live 21 Oct: flight part works (RUH->IST 23-28 Nov, 2 pax: 2,594 SAR);
+  hotel part empty because SerpApi has 47 left (reserve 40) until 6 Nov;
+  daily part waits for `OPENAI_API_KEY`. UI checked at 390 px (local, mocked).
+
 ## Next, in order
 
 **▶ Start here (hand-off 20 Oct):** coverage section closed — 365 live cities /
