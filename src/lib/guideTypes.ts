@@ -14,6 +14,8 @@ export interface GuidePlace {
   n: string;
   e?: string;
   a?: string;
+  /** Arabic name written by our write-up when Wikidata has none. */
+  an?: string;
   g: Group;
   y: number;
   x: number;

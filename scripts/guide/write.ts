@@ -44,6 +44,7 @@ const SCHEMA = {
     type: "object",
     properties: {
       q: S,
+      name_ar: { ...S, description: "the place's usual Arabic name (as Arabic media write it); empty if unsure" },
       ar: { ...S, description: "1–2 sentences in Modern Standard Arabic: what it is and why visit" },
       en: { ...S, description: "the same in English" },
       minutes: { type: "integer", description: "typical visit length in minutes" },
@@ -57,12 +58,13 @@ const SCHEMA = {
       open_to_public: { type: "boolean", description: "false if visitors cannot go inside (a royal palace, an office, a closed site seen only from outside)" },
       known: { type: "boolean", description: "false if you do not know this exact place well" },
     },
-    required: ["q", "ar", "en", "minutes", "best_ar", "best_en", "dress_ar", "dress_en", "tip_ar", "tip_en", "kids", "open_to_public", "known"],
+    required: ["q", "name_ar", "ar", "en", "minutes", "best_ar", "best_en", "dress_ar", "dress_en", "tip_ar", "tip_en", "kids", "open_to_public", "known"],
   },
 } as const;
 
 type Answer = {
   q: string;
+  name_ar: string;
   ar: string;
   en: string;
   minutes: number;
@@ -161,6 +163,7 @@ async function main() {
         p.dr = a.dress_ar.slice(0, 140) || undefined;
         p.dre = a.dress_en.slice(0, 140) || undefined;
         p.kids = a.kids;
+        if (!p.a && a.name_ar && /[\u0600-\u06FF]/.test(a.name_ar)) p.an = a.name_ar.slice(0, 80);
         if (a.known && a.open_to_public === false) p.out = true;
         p.wAt = at;
         written++;

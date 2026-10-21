@@ -237,7 +237,7 @@ export function buildGuidePlan(req: PlanRequest, guide: GuideFile, restaurants: 
     if (r) usedMeals.add(r.i);
     return r;
   };
-  const name = (p: { n: string; a?: string; e?: string }) => (ar ? p.a || p.e || p.n : p.e || p.n);
+  const name = (p: { n: string; a?: string; an?: string; e?: string }) => (ar ? p.a || p.an || p.e || p.n : p.e || p.n);
   const blankItem = (): PlanItem => ({
     time: "",
     kind: "place",

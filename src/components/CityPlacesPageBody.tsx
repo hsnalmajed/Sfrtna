@@ -195,7 +195,7 @@ export default async function CityPlacesPageBody({
         );
       // Two items of ours on one listed place: the better known keeps it.
       if (it?.guide) return;
-      const nameAr = g.a;
+      const nameAr = g.a ?? g.an;
       const nameEn = g.e ?? g.n;
       if (!it) {
         it = {
