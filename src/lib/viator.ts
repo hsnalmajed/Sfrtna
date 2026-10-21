@@ -46,6 +46,9 @@ export async function viatorProbe(): Promise<{ key: boolean; env: string; status
 // machine-translating names we can't verify.
 const VIATOR_LANG = "en-US";
 
+/** The last refusal or failure, for /api/viator/offers?debug=1. */
+let lastError = "";
+
 async function viatorFetch<T>(
   path: string,
   init: RequestInit & { revalidate?: number } = {}
@@ -53,7 +56,10 @@ async function viatorFetch<T>(
   const key = process.env.VIATOR_API_KEY;
   if (!key) return null;
 
-  const { revalidate = 3600, ...rest } = init;
+  // `revalidate` is kept in the signature for callers; caching is done with
+  // cachedJson (Next's fetch cache is not used on the Worker).
+  const { revalidate: _unused, ...rest } = init;
+  void _unused;
   try {
     const res = await fetch(`${BASE()}${path}`, {
       ...rest,
@@ -61,16 +67,17 @@ async function viatorFetch<T>(
         "exp-api-key": key,
         Accept: "application/json;version=2.0",
         "Accept-Language": VIATOR_LANG,
-        "Content-Type": "application/json",
+        ...(rest.body ? { "Content-Type": "application/json" } : {}),
         ...(rest.headers || {}),
       },
-      // Tours and prices change slowly enough that an hour of caching is
-      // safe, and it keeps us well inside the Worker's subrequest budget.
-      next: { revalidate },
     });
-    if (!res.ok) return null;
+    if (!res.ok) {
+      lastError = `${path} ${res.status} ${(await res.text()).slice(0, 200)}`;
+      return null;
+    }
     return (await res.json()) as T;
-  } catch {
+  } catch (e) {
+    lastError = `${path} ${String(e).slice(0, 200)}`;
     return null;
   }
 }
@@ -271,12 +278,12 @@ function kmBetween(aLat: number, aLon: number, bLat: number, bLon: number): numb
 }
 
 /** For checking the mapping: how many destinations, and a sample record. */
-export async function viatorDebug(): Promise<{ count: number; sample: unknown; types: Record<string, number> }> {
+export async function viatorDebug(): Promise<{ count: number; sample: unknown; types: Record<string, number>; lastError: string }> {
   const all = await viatorDestinations();
   const types: Record<string, number> = {};
   for (const d of all) types[d.type] = (types[d.type] ?? 0) + 1;
   const raw = await viatorFetch<{ destinations?: unknown[] }>("/destinations", { method: "GET" });
-  return { count: all.length, sample: raw?.destinations?.find((d) => JSON.stringify(d).includes("Istanbul")) ?? raw?.destinations?.[0], types };
+  return { count: all.length, sample: raw?.destinations?.find((d) => JSON.stringify(d).includes("Istanbul")) ?? raw?.destinations?.[0], types, lastError };
 }
 
 /**
