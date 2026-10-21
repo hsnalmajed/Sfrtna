@@ -245,7 +245,8 @@ async function main() {
   mkdirSync(DIR, { recursive: true });
   let slugs = process.argv.includes("--staged") ? stagedSlugs() : liveSlugs();
   const only = arg("--only");
-  if (only) slugs = only.split(",").map((s) => s.trim()).filter(Boolean);
+  // --only all: every city again now (after a change to the sorting).
+  if (only && only !== "all") slugs = only.split(",").map((s) => s.trim()).filter(Boolean);
   slugs = slugs.slice(0, Number(arg("--max") ?? Infinity));
   const fresh = (slug: string) => {
     if (only) return false;
