@@ -60,6 +60,8 @@ const START_MIN = { early: 8 * 60, normal: 10 * 60, late: 12 * 60 } as const;
 
 const T = {
   ar: {
+    free: "وقت حر",
+    freeWhy: "للراحة في الفندق، أو تجوّل في الحي، أو تسوّق قريب.",
     lunch: "غداء",
     dinner: "عشاء",
     lunchAt: "غداء في {name}",
@@ -90,6 +92,8 @@ const T = {
     packing: ["حذاء مشي مريح", "شاحن متنقل", "نسخة من جوازك وتأشيرتك"],
   },
   en: {
+    free: "Free time",
+    freeWhy: "Rest at the hotel, wander the area or shop nearby.",
     lunch: "Lunch",
     dinner: "Dinner",
     lunchAt: "Lunch at {name}",
@@ -324,6 +328,17 @@ export function buildGuidePlan(req: PlanRequest, guide: GuideFile, restaurants: 
       prev = p;
     }
     if (prev && !lunchDone && clock >= 12 * 60) addMeal("lunch", prev);
+    // An afternoon left open is said so, not left as a silent gap.
+    if (prev && clock <= 17 * 60 + 30) {
+      const it = blankItem();
+      it.kind = "break";
+      it.time = hhmm(roundTo(clock));
+      it.name = t.free;
+      it.durationMin = roundTo(19 * 60 - roundTo(clock), 15) - 30;
+      it.why = t.freeWhy;
+      items.push(it);
+      clock = 19 * 60 - 30;
+    }
     if (prev && (a.lateNights || clock <= 20 * 60)) {
       clock = Math.max(clock + 30, 19 * 60);
       addMeal("dinner", prev);
