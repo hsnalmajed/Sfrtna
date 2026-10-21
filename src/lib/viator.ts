@@ -270,6 +270,15 @@ function kmBetween(aLat: number, aLon: number, bLat: number, bLon: number): numb
   return 2 * 6371 * Math.asin(Math.sqrt(h));
 }
 
+/** For checking the mapping: how many destinations, and a sample record. */
+export async function viatorDebug(): Promise<{ count: number; sample: unknown; types: Record<string, number> }> {
+  const all = await viatorDestinations();
+  const types: Record<string, number> = {};
+  for (const d of all) types[d.type] = (types[d.type] ?? 0) + 1;
+  const raw = await viatorFetch<{ destinations?: unknown[] }>("/destinations", { method: "GET" });
+  return { count: all.length, sample: raw?.destinations?.find((d) => JSON.stringify(d).includes("Istanbul")) ?? raw?.destinations?.[0], types };
+}
+
 /**
  * Our city's Viator destination: a city-like destination of the same name
  * within 60 km of our centre, else the nearest city-like one within 25 km.

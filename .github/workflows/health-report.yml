@@ -24,6 +24,7 @@ jobs:
           curl -s -m 120 -H "x-sfrtna-smoke: $SMOKE_TOKEN" -H "Sec-Fetch-Site: same-origin" "$H/api/viator/offers?city=istanbul&n=3" -o offers-city.json || true
           curl -s -m 120 -H "x-sfrtna-smoke: $SMOKE_TOKEN" -H "Sec-Fetch-Site: same-origin" "$H/api/viator/offers?city=istanbul&q=Hagia%20Sophia%20Istanbul&n=3" -o offers-place.json || true
           curl -s -m 120 -H "x-sfrtna-smoke: $SMOKE_TOKEN" -H "Sec-Fetch-Site: same-origin" "$H/api/viator/offers?city=riyadh&n=3" -o offers-riyadh.json || true
+          curl -s -m 120 -H "x-sfrtna-smoke: $SMOKE_TOKEN" -H "Sec-Fetch-Site: same-origin" "$H/api/viator/offers?city=istanbul&debug=1" -o offers-debug.json || true
       - name: Save to branch
         run: |
           git init -q out && cd out

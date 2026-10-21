@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { COUNTRY_CITIES } from "@/lib/cities";
 import { CITY_COORDS } from "@/data/cityCoords";
-import { viatorConfigured, viatorDestinationFor, viatorOffers } from "@/lib/viator";
+import { viatorConfigured, viatorDebug, viatorDestinationFor, viatorOffers } from "@/lib/viator";
 
 export const dynamic = "force-dynamic";
 
@@ -23,6 +23,7 @@ export async function GET(request: Request) {
   if (!at || !name) return NextResponse.json({ ok: false, reason: "bad_request" }, { status: 400 });
   if (!viatorConfigured()) return NextResponse.json({ ok: true, offers: [] });
   const dest = await viatorDestinationFor(slug, name, at.lat, at.lon);
+  if (sp.get("debug") === "1") return NextResponse.json({ dest, debug: await viatorDebug() });
   if (!dest) return NextResponse.json({ ok: true, offers: [] });
   const offers = await viatorOffers(dest, q, n);
   return NextResponse.json({ ok: true, offers }, { headers: { "Cache-Control": "public, max-age=600" } });
