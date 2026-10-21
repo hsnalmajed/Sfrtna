@@ -1096,7 +1096,15 @@ missing a canonical/hreflang), then 403, soft 404, the 5xx.
   `NEXT_HTTP_ERROR_FALLBACK;404` digest is in it (never cached). Tested on a
   local build: missing country/city/locale → 404, real pages 200 + cached.
 - Site check (`smoke.mjs`) now checks canonicals and real 404s.
-- Open: 403 (62) and 5xx (1) — waiting for the owner's URL lists.
+- 403 (62): owner's list = ordinary pages (about, visa, maps, www home),
+  **all crawled 13 Oct** — no code path returns 403 on a page, so it was a
+  one-day block at Cloudflare's bot protection (13 Oct evening = many
+  speed/tap runs from GitHub machines). Check with URL Inspection → Test
+  live URL; then Validate fix. Same list showed http:// and www. copies →
+  edge-worker now 301s http://sfrtna.com and www.sfrtna.com to
+  https://sfrtna.com (www only if www is routed to the Worker; otherwise a
+  Cloudflare redirect rule).
+- Open: 5xx (1) — waiting for the URL.
 
 **▶ Start here (hand-off 21 Oct 23:50):** this conversation built the city
 guide (Wikidata + Gemini), the smart planner on our own engine (everywhere:

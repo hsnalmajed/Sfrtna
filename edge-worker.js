@@ -134,6 +134,16 @@ async function withRealStatus(request, url, response) {
 const worker = {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
+    // One address per page: http:// and www. are sent to https://sfrtna.com
+    // (Search Console 22 Oct 2026 listed http://sfrtna.com/… and
+    // http://www.sfrtna.com/… as separate pages). Other hosts (localhost,
+    // workers.dev below) are left alone.
+    if (
+      (url.hostname === "sfrtna.com" && url.protocol === "http:") ||
+      url.hostname === "www.sfrtna.com"
+    ) {
+      return Response.redirect(`https://sfrtna.com${url.pathname}${url.search}`, 301);
+    }
     // The Worker's own address (*.workers.dev) is not behind the zone's bot
     // protection, so left open it is a side door around everything the
     // site's Cloudflare settings refuse — and a second copy of every page for
