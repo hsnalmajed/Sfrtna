@@ -1083,6 +1083,18 @@ Counts 22 Oct: alternate+canonical 434, **duplicate without canonical 337**,
 redirect 0. Priority: 337 duplicates (likely ar/en or ?query variants
 missing a canonical/hreflang), then 403, soft 404, the 5xx.
 
+**Status email (owner 22 Oct: "twice a day, is the site and app working, how
+long each page takes"):** `.github/workflows/status-report.yml` (04:47 and
+16:47 UTC ≈ 8:00/20:00 KSA, and by hand) runs `scripts/status-report.mjs`:
+site check (smoke.mjs ✓/✗), 14 main pages timed (median of 3 after warm-up,
+first byte + whole page, size, edge HIT/MISS; from GitHub at workers.dev),
+3 pages with the app's user agent + last Android build, Site check pass/fail
+and failed jobs in the last 12 h, /api/health (flights, HERE, Viator,
+Pexels, sign-in, email sender error). Arabic RTL email via Resend from
+no-reply@sfrtna.com. Needs GitHub secrets `RESEND_API_KEY` + `REPORT_TO`
+(repo is public — no address in code). Every run also force-pushes
+`status-report.html` to branch `status-report` (readable from the workspace).
+
 **Owner's mail read 22 Oct (useful points only):**
 - **Sign-in is live:** Google sign-in on sfrtna.com worked 13 Oct (Google
   shares name, picture, email only). Email sign-in: owner created Resend

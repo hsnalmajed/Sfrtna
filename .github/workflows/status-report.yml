@@ -1,0 +1,53 @@
+# The owner's status email, twice a day (scripts/status-report.mjs): is the
+# site and the app working, how long each main page takes to open, the
+# partners' state, and any background job that failed since the last report.
+#
+# Runs at about 8:00 and 20:00 Riyadh time (04:47 and 16:47 UTC), and by hand.
+# Needs two repository secrets besides SMOKE_TOKEN:
+#   RESEND_API_KEY — a Resend key (sending access is enough)
+#   REPORT_TO      — the address the report goes to (kept out of this public
+#                    repository); several addresses separated by commas.
+# Without them the report is still built and kept on the branch
+# `status-report` (status-report.html), so it can be read from the workspace.
+name: Status report
+
+on:
+  schedule:
+    - cron: "47 4 * * *"
+    - cron: "47 16 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: status-report
+  cancel-in-progress: false
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Build and send the report
+        env:
+          SMOKE_TOKEN: ${{ secrets.SMOKE_TOKEN }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          REPORT_TO: ${{ secrets.REPORT_TO }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node scripts/status-report.mjs
+      - name: Keep the report on its branch
+        if: always()
+        run: |
+          [ -f status-report.html ] || exit 0
+          mkdir out && cp status-report.html out/ && cd out
+          git init -q
+          git config user.name "Claude"; git config user.email "noreply@anthropic.com"
+          git checkout -q -b status-report
+          git add . && git commit -q -m "Status report"
+          git push -q -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" status-report
