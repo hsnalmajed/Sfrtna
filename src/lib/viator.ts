@@ -14,7 +14,9 @@
 // Set the key as a Cloudflare secret:  npx wrangler secret put VIATOR_API_KEY
 // Get one free (instant, no approval) at https://www.viator.com/partner/
 
-const BASE = "https://api.viator.com/partner";
+// A sandbox key (test data, for building) works only against the sandbox
+// host: Cloudflare variable VIATOR_ENV=sandbox until the production key.
+const BASE = () => (process.env.VIATOR_ENV === "sandbox" ? "https://api.sandbox.viator.com/partner" : "https://api.viator.com/partner");
 
 export function viatorConfigured(): boolean {
   return Boolean(process.env.VIATOR_API_KEY);
@@ -35,7 +37,7 @@ async function viatorFetch<T>(
 
   const { revalidate = 3600, ...rest } = init;
   try {
-    const res = await fetch(`${BASE}${path}`, {
+    const res = await fetch(`${BASE()}${path}`, {
       ...rest,
       headers: {
         "exp-api-key": key,
