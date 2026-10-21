@@ -444,6 +444,8 @@ export default function CityPlacesPlanner({
         addedLabel={t.added}
         onShowOnMap={onShowOnMap}
         showOnMapLabel={showOnMapLabel}
+        citySlug={citySlug}
+        locale={locale}
       />
 
       {/* ---- My plan: the picks, the dates, build ---- */}

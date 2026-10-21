@@ -83,7 +83,7 @@ export default function TourCard({
             <div>
               <p className="text-[11px] font-semibold text-gray-400">{dict.fromPrice}</p>
               <p className="text-lg font-extrabold text-gray-900" dir="ltr">
-                {tour.priceFrom.toLocaleString(locale === "ar" ? "ar-SA" : "en-US", {
+                {tour.priceFrom.toLocaleString(locale === "ar" ? "ar-SA-u-nu-latn" : "en-US", {
                   style: "currency",
                   currency: tour.currency,
                   maximumFractionDigits: 0,
@@ -99,6 +99,7 @@ export default function TourCard({
             href={tour.url}
             target="_blank"
             rel="noopener noreferrer nofollow sponsored"
+            data-partner="viator"
             className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-brand-700 to-brand-900 px-5 py-2.5 text-sm font-bold text-white shadow-sm transition hover:shadow-md hover:-translate-y-0.5"
           >
             🎟️ {dict.bookNow}

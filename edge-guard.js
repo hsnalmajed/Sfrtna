@@ -52,6 +52,7 @@ export const ROUTES = {
   "/api/ai/status": { methods: ["GET"], caller: "page" },
   "/api/ai/understand": { methods: ["POST"], caller: "page", heavy: true },
   "/api/budget-estimate": { methods: ["POST"], caller: "page", heavy: true },
+  "/api/viator/offers": { methods: ["GET"], caller: "page" },
   "/api/go/expedia": { methods: ["GET"], caller: "link" },
   "/api/go/gyg": { methods: ["GET"], caller: "link" },
   "/api/go/tp": { methods: ["GET"], caller: "link" },

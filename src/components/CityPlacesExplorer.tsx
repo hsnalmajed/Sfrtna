@@ -1,5 +1,8 @@
 "use client";
 
+import ViatorOffers from "@/components/ViatorOffers";
+import { useDictionary } from "@/lib/dict/context";
+import type { Locale } from "@/lib/types";
 import PartnerLink from "@/components/PartnerLink";
 import { activityLinks } from "@/lib/activityLinks";
 import { useMemo, useState } from "react";
@@ -147,6 +150,8 @@ export default function CityPlacesExplorer({
   addedLabel,
   onShowOnMap,
   showOnMapLabel,
+  citySlug,
+  locale = "ar",
 }: {
   // Names and descriptions arrive already resolved to the reader's language,
   // so this component never needs to know which language that is.
@@ -165,6 +170,9 @@ export default function CityPlacesExplorer({
   /** Opens this place on the city's map, on the same page. */
   onShowOnMap?: (place: PlaceListItem) => void;
   showOnMapLabel?: string;
+  /** The city (our slug): Viator's ticket offers per place, on demand. */
+  citySlug?: string;
+  locale?: Locale;
 }) {
   const picking = Boolean(onToggleSelect && selectedKeys);
   const labels: Record<PinCategory, string> = {
@@ -184,6 +192,8 @@ export default function CityPlacesExplorer({
   const [active, setActive] = useState<PinCategory>(tabs[0] ?? "historic");
   const [query, setQuery] = useState("");
   const [shown, setShown] = useState(PAGE);
+  const [offersOpen, setOffersOpen] = useState<Set<string>>(new Set());
+  const ct = useDictionary().attractions;
   // «الأبرز»: only the places in our guide, when the tab has enough of them;
   // «الكل» keeps every mapped place one tap away (never a shorter list).
   const featuredCount = useMemo(() => places.filter((p) => p.category === active && p.guide).length, [places, active]);
@@ -405,6 +415,31 @@ export default function CityPlacesExplorer({
 
                   {p.englishOnly && (
                     <p className="mt-2 text-[11px] leading-snug text-amber-700">{dict.englishOnly}</p>
+                  )}
+
+                  {p.ticketQuery && citySlug && (
+                    <div className="mt-2">
+                      <button
+                        type="button"
+                        aria-expanded={offersOpen.has(p.key)}
+                        onClick={() =>
+                          setOffersOpen((cur) => {
+                            const next = new Set(cur);
+                            if (next.has(p.key)) next.delete(p.key);
+                            else next.add(p.key);
+                            return next;
+                          })
+                        }
+                        className="inline-flex min-h-9 items-center gap-1 rounded-full bg-sun-400 px-3 text-[11px] font-extrabold text-navy-950 sm:text-xs"
+                      >
+                        🎟️ {ct.ticketOffers} {offersOpen.has(p.key) ? "▴" : "▾"}
+                      </button>
+                      {offersOpen.has(p.key) && (
+                        <div className="mt-2">
+                          <ViatorOffers locale={locale} city={citySlug} q={p.ticketQuery} n={3} compact />
+                        </div>
+                      )}
+                    </div>
                   )}
 
                   {p.ticketQuery && dict.tickets && (

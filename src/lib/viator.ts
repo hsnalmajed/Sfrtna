@@ -1,3 +1,4 @@
+import { cachedJson } from "@/lib/edgeCache";
 // Viator Partner API (v2) client — the real source for bookable tours and
 // activities, their live prices, photos, ratings and booking links.
 //
@@ -208,6 +209,125 @@ function pickDuration(p: RawProduct): number | undefined {
   const d = p.duration;
   if (!d) return undefined;
   return d.fixedDurationInMinutes ?? d.variableDurationToMinutes ?? d.variableDurationFromMinutes;
+}
+
+/** One product from a search answer, or null when it cannot be booked. */
+function toTour(p: RawProduct, currency: string): ViatorTour | null {
+  const code = p.productCode;
+  const url = p.productUrl || p.webURL;
+  if (!code || !url || !p.title) return null;
+  return {
+    code,
+    title: p.title,
+    description: p.description || "",
+    photo: pickPhoto(p),
+    priceFrom: p.pricing?.summary?.fromPrice,
+    currency: p.pricing?.currency || currency,
+    rating: p.reviews?.combinedAverageRating,
+    reviewCount: p.reviews?.totalReviews,
+    durationMinutes: pickDuration(p),
+    url,
+  };
+}
+
+/* ------------------------------------------------------------------ */
+/* Our cities → Viator destinations                                     */
+/* ------------------------------------------------------------------ */
+
+interface Dest {
+  id: number;
+  name: string;
+  type: string;
+  lat?: number;
+  lon?: number;
+}
+
+/** Viator's destinations (v2), trimmed; cached a week at the edge. */
+async function viatorDestinations(): Promise<Dest[]> {
+  return (
+    (await cachedJson<Dest[]>("viator-dest:v1", 7 * 86_400, async () => {
+      const data = await viatorFetch<{ destinations?: { destinationId?: number; name?: string; type?: string; center?: { latitude?: number; longitude?: number } }[] }>("/destinations", { method: "GET" });
+      const list = (data?.destinations ?? [])
+        .filter((d) => typeof d.destinationId === "number" && d.name)
+        .map((d) => ({ id: d.destinationId as number, name: d.name as string, type: (d.type ?? "").toUpperCase(), lat: d.center?.latitude, lon: d.center?.longitude }));
+      return list.length ? list : null;
+    })) ?? []
+  );
+}
+
+const norm = (x: string) =>
+  x
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+
+function kmBetween(aLat: number, aLon: number, bLat: number, bLon: number): number {
+  const dLat = ((bLat - aLat) * Math.PI) / 180;
+  const dLon = ((bLon - aLon) * Math.PI) / 180;
+  const h = Math.sin(dLat / 2) ** 2 + Math.cos((aLat * Math.PI) / 180) * Math.cos((bLat * Math.PI) / 180) * Math.sin(dLon / 2) ** 2;
+  return 2 * 6371 * Math.asin(Math.sqrt(h));
+}
+
+/**
+ * Our city's Viator destination: a city-like destination of the same name
+ * within 60 km of our centre, else the nearest city-like one within 25 km.
+ * Never a guess farther away — Ankara's tours on Istanbul's page would be
+ * worse than none.
+ */
+export async function viatorDestinationFor(slug: string, nameEn: string, lat: number, lon: number): Promise<number | null> {
+  const key = `viator-city:v1:${slug}`;
+  const hit = await cachedJson<{ id: number | null }>(key, 7 * 86_400, async () => {
+    const all = await viatorDestinations();
+    if (!all.length) return null;
+    const cityLike = all.filter((d) => CITY_LIKE.has(d.type) && typeof d.lat === "number" && typeof d.lon === "number");
+    const near = cityLike.map((d) => ({ d, km: kmBetween(lat, lon, d.lat as number, d.lon as number) })).filter((x) => x.km < 60);
+    const want = norm(nameEn);
+    const named = near.filter((x) => norm(x.d.name) === want || norm(x.d.name).startsWith(`${want} `) || want.startsWith(`${norm(x.d.name)} `)).sort((a, b) => a.km - b.km)[0];
+    const nearest = near.filter((x) => x.km < 25).sort((a, b) => a.km - b.km)[0];
+    return { id: (named ?? nearest)?.d.id ?? null };
+  });
+  return hit?.id ?? null;
+}
+
+/**
+ * The best-rated tours and tickets in a destination, or — with `q` — the
+ * ones for one place in it ("Hagia Sophia"). Live prices from Viator, cached
+ * six hours at the edge.
+ */
+export async function viatorOffers(destinationId: number, q: string | undefined, count: number): Promise<ViatorTour[]> {
+  const currency = "USD";
+  const key = `viator-offers:v1:${destinationId}:${(q ?? "").toLowerCase()}:${count}`;
+  return (
+    (await cachedJson<ViatorTour[]>(key, 6 * 3600, async () => {
+      if (q) {
+        const data = await viatorFetch<{ products?: { results?: RawProduct[] } }>("/search/freetext", {
+          method: "POST",
+          body: JSON.stringify({
+            searchTerm: q,
+            currency,
+            productFiltering: { destination: String(destinationId) },
+            productSorting: { sort: "TRAVELER_RATING", order: "DESCENDING" },
+            searchTypes: [{ searchType: "PRODUCTS", pagination: { start: 1, count } }],
+          }),
+        });
+        const list = (data?.products?.results ?? []).map((p) => toTour(p, currency)).filter((t): t is ViatorTour => t !== null);
+        return list;
+      }
+      const data = await viatorFetch<{ products?: RawProduct[] }>("/products/search", {
+        method: "POST",
+        body: JSON.stringify({
+          filtering: { destination: String(destinationId) },
+          pagination: { start: 1, count },
+          currency,
+          sorting: { sort: "TRAVELER_RATING", order: "DESCENDING" },
+        }),
+      });
+      const list = (data?.products ?? []).map((p) => toTour(p, currency)).filter((t): t is ViatorTour => t !== null);
+      return list;
+    })) ?? []
+  );
 }
 
 export async function fetchToursForCity(

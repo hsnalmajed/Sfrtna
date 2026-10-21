@@ -19,12 +19,11 @@ import { bestMonths } from "@/lib/travelSeason/site";
 import { CITY_COORDS } from "@/data/cityCoords";
 import CountryQuickFacts, { type QuickFact } from "@/components/CountryQuickFacts";
 import { BOOKING_SHORT_LABELS } from "@/lib/countryGuides";
-import { fetchCitiesForCountry, fetchToursForCity } from "@/lib/viator";
 import { type PlaceListItem } from "@/components/CityPlacesExplorer";
 import TripServices from "@/components/TripServices";
 import { TICKETED_KINDS } from "@/lib/activityLinks";
 import CityPlacesView, { type CityView } from "@/components/CityPlacesView";
-import TourCard from "@/components/TourCard";
+import ViatorOffers from "@/components/ViatorOffers";
 import PageHero from "@/components/ui/PageHero";
 import FavButton from "@/components/member/FavButton";
 import BackLink from "@/components/BackLink";
@@ -87,12 +86,9 @@ export default async function CityPlacesPageBody({
   const cityEntry = findCity(country.code, city);
   if (!cityEntry) notFound();
 
-  const [places, overviews, viatorCities, highlights, guide] = await Promise.all([
+  const [places, overviews, highlights, guide] = await Promise.all([
     fetchPlacesAroundCities([cityEntry], { locale: loc }),
     fetchCityOverviews([cityEntry]),
-    // Empty (and instant) with no Viator key configured, so the guide below
-    // stands on its own until one is added.
-    fetchCitiesForCountry(country.code),
     // The country's hand-checked landmarks that actually sit in this city —
     // see guideHighlights.ts for why they now live here rather than a level up.
     fetchCityHighlights(country.code, cityEntry),
@@ -112,16 +108,7 @@ export default async function CityPlacesPageBody({
         near(h.lat, h.lon, p.lat, p.lon)
     );
 
-  // Viator names its destinations in English, same as our `nameEn`, so an
-  // exact case-insensitive match is a safe join. Anything short of an exact
-  // match is left unmatched rather than guessed — showing Ankara's tours on
-  // Istanbul's page would be worse than showing none.
-  const viatorCity = viatorCities.find(
-    (c) => c.name.trim().toLowerCase() === cityEntry.nameEn.trim().toLowerCase()
-  );
-  const tours = viatorCity
-    ? (await fetchToursForCity(viatorCity.id, { count: 12, currency: "USD" })).tours
-    : [];
+
 
   // Ticket and tour buttons go on places such things are sold for: a hand-
   // checked landmark booked online, or a well-known museum, palace, site…
@@ -408,13 +395,10 @@ export default async function CityPlacesPageBody({
               restaurants={restaurants}
               activities={
                 <div>
-                  {tours.length > 0 && (
-                    <div className="mb-6 flex flex-col gap-4">
-                      {tours.map((tour) => (
-                        <TourCard key={tour.code} tour={tour} locale={loc} dict={dict.attractions} />
-                      ))}
-                    </div>
-                  )}
+                  {/* Viator's tours and tickets, asked for by the browser (never in the indexed HTML). */}
+                  <div className="mb-6">
+                    <ViatorOffers locale={loc} city={cityEntry.slug} n={12} />
+                  </div>
                   <TripServices
                     locale={loc}
                     countryCode={country.code}

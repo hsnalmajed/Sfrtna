@@ -25,6 +25,7 @@ export const CLIENT_KEYS = {
   attractions: [
     "continents", "servicesTitle", "servicesSub", "serviceActivity", "serviceEsim", "serviceTransfer",
     "serviceCar", "serviceLuggage", "serviceCompensation",
+    "fromPrice", "perPerson", "reviews", "durationHours", "durationDays", "bookNow", "ticketOffers", "noOffers",
   ],
 } as const satisfies { [S in keyof Dictionary]?: readonly (keyof Dictionary[S])[] };
 

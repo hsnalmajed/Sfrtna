@@ -20,11 +20,15 @@ jobs:
         run: |
           curl -s -m 120 -H "x-sfrtna-smoke: $SMOKE_TOKEN" -H "Sec-Fetch-Site: same-origin" https://sfrtna.almajedhsn.workers.dev/api/health -o health.json || true
           head -c 300 health.json
+          H="https://sfrtna.almajedhsn.workers.dev"
+          curl -s -m 120 -H "x-sfrtna-smoke: $SMOKE_TOKEN" -H "Sec-Fetch-Site: same-origin" "$H/api/viator/offers?city=istanbul&n=3" -o offers-city.json || true
+          curl -s -m 120 -H "x-sfrtna-smoke: $SMOKE_TOKEN" -H "Sec-Fetch-Site: same-origin" "$H/api/viator/offers?city=istanbul&q=Hagia%20Sophia%20Istanbul&n=3" -o offers-place.json || true
+          curl -s -m 120 -H "x-sfrtna-smoke: $SMOKE_TOKEN" -H "Sec-Fetch-Site: same-origin" "$H/api/viator/offers?city=riyadh&n=3" -o offers-riyadh.json || true
       - name: Save to branch
         run: |
           git init -q out && cd out
-          cp ../health.json .
+          cp ../health.json ../offers-*.json . 2>/dev/null || cp ../health.json .
           git config user.name "Claude"; git config user.email "noreply@anthropic.com"
           git checkout -q -b health-report
-          git add health.json && git commit -q -m "Health report"
+          git add . && git commit -q -m "Health report"
           git push -q -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" health-report

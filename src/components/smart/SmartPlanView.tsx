@@ -4,6 +4,7 @@ import { useState } from "react";
 import type { Locale } from "@/lib/types";
 import { useDictionary } from "@/lib/dict/context";
 import { printPage } from "@/lib/nativeApp";
+import ViatorOffers from "@/components/ViatorOffers";
 import type { PlanItem, SmartPlan } from "@/lib/ai/plan";
 
 /** One stop's facts, each on its own line with its label — only those we have. */
@@ -36,6 +37,8 @@ export default function SmartPlanView({ locale, plan, onNew }: { locale: Locale;
   const t = useDictionary().smart;
   const isAr = locale === "ar";
   const [day, setDay] = useState(0);
+  const [openOffers, setOpenOffers] = useState<Set<string>>(new Set());
+  const ct = useDictionary().attractions;
   const d = plan.days[day];
   const fmt = (iso: string) =>
     /^\d{4}-\d{2}-\d{2}$/.test(iso)
@@ -157,6 +160,31 @@ export default function SmartPlanView({ locale, plan, onNew }: { locale: Locale;
                   </a>
                 )}
               </div>
+              {it.ticketQuery && (
+                <div className="mt-2 print:hidden">
+                  <button
+                    type="button"
+                    aria-expanded={openOffers.has(`${dd.date}-${k}`)}
+                    onClick={() =>
+                      setOpenOffers((cur) => {
+                        const next = new Set(cur);
+                        const id = `${dd.date}-${k}`;
+                        if (next.has(id)) next.delete(id);
+                        else next.add(id);
+                        return next;
+                      })
+                    }
+                    className="inline-flex min-h-9 items-center gap-1 rounded-full bg-sun-400 px-3.5 text-xs font-extrabold text-navy-950"
+                  >
+                    🎟️ {ct.ticketOffers} {openOffers.has(`${dd.date}-${k}`) ? "▴" : "▾"}
+                  </button>
+                  {openOffers.has(`${dd.date}-${k}`) && (
+                    <div className="mt-2">
+                      <ViatorOffers locale={locale} city={plan.city.slug} q={it.ticketQuery} n={3} compact />
+                    </div>
+                  )}
+                </div>
+              )}
               {it.ticketQuery && /تذكر|ticket|book|حجز/i.test(it.booking) && (
                 <a
                   href={`/api/go/gyg?q=${encodeURIComponent(it.ticketQuery)}`}
