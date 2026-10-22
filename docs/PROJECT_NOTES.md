@@ -1175,11 +1175,21 @@ check the 16:47 UTC one.
   checks. Owner: URL Inspection → Test live URL, then Validate fix on
   Duplicate, Soft 404, 403, 5xx (NOT on "Alternate page with proper
   canonical" — that one is normal).
-- **Open (Claude):** intermittent Cloudflare error 1102 (Worker over its
-  resource limit → 503) on many routes in the scheduled Site check — seen
-  21 Oct 11:55 and 22 Oct 00:45 (before and after these changes). A 503 to
-  Googlebot is the next 5xx; find which limit (CPU or memory, Workers Logs)
-  and the heavy route.
+- **Error 1102 = CPU limit (found 22 Oct 12:53):** Workers Metrics →
+  Errors by invocation status: Exceeded CPU Time Limits 53, Exceeded Memory
+  0 (24 h, 4.74k invocations ≈ 1 %). CPU per invocation P50 159 ms, P90
+  437, P99 620 vs the free plan's 10 ms. Only cache MISSes fail (searches,
+  /api/discover, day-fares, hotel-suggest, /account, new pages); cached
+  pages never. All 53 fell 21 Oct 19:00–22 Oct 03:00 = the hours of ~38
+  deploys (each deploy changes the edge cache key → everything re-renders);
+  03:00–12:00 with no deploys: 0. Memory P99 61 MB (fine).
+  Fix = Workers Paid ($5/month: CPU 30 s default, subrequests 10,000, bigger
+  Worker size; our ~23M CPU-ms/month fits the 30M included). **Owner
+  decision 22 Oct 14:44: wait** — watch the status email 3–5 quiet days;
+  subscribe if failures appear on days without deploys, or before launch.
+  Discover single = whole pool (2 bulk fare requests); multi-country routes
+  limited to 28 (2 stops) / 14 (3 stops) cities by the 50-subrequest limit
+  (`routeSuggest.ts` MAX_REQUESTS) — raise to ~100–150 after Paid.
 
 **▶ Start here (hand-off 21 Oct 23:50):** this conversation built the city
 guide (Wikidata + Gemini), the smart planner on our own engine (everywhere:
