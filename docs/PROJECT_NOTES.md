@@ -1270,6 +1270,16 @@ copy of accounts/feedback outside Cloudflare; relatives: features not
 discovered + too many tabs → proposed «رحلتي» trip page + first-visit tips +
 three entries (احجز / اكتشف / خطّط). Owner to choose the order.
 
+**Plan doc (23 Oct 00:50):** owner asked for a full cost plan + marketing
+plan + ranking first for «سفرتنا» in Google (today it shows low / page 2).
+Written as a Docs artifact «خطة سفرتنا: التكاليف والتسويق والظهور في جوجل»
+(https://claude.ai/artifact/4QyJ1ETEVW7yap7G3PAQFw). Brand-ranking causes:
+Googlebot blocked 7–22 Oct, sitemap read only 22 Oct, new site with no
+links, «سفرتنا» is a common word. My tasks there: sameAs social links in the
+Organization record (src/lib/seo.ts) once the owner opens the accounts,
+page titles for real queries, Bing, «رحلتي» + first-visit tips, UTM links per
+channel, weekly content kit, weekly numbers report + earnings table.
+
 **▶ Start here (hand-off 23 Oct 00:15):** owner opens a new conversation to
 create the **Google Play personal developer account** (decided 23 Oct; $25,
 ID check — may take hours to days). Step 1 for the owner (one step per
