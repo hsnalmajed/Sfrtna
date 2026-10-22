@@ -175,6 +175,40 @@ async function github() {
   return out;
 }
 
+// ── 6. Visitors' notes («شاركنا رأيك») ─────────────────────────────────────
+// Counts only: this page is also pushed to a public branch, so no note text
+// or address goes in it — each note reaches the owner's inbox in full.
+const FB_KIND = { problem: "مشكلة", wrong: "معلومة غير دقيقة", idea: "فكرة", opinion: "رأي", question: "سؤال" };
+const FB_AREA = {
+  flights: "الطيران", hotels: "الفنادق", discover: "اقترح لي وجهة", plan: "الخطة", destinations: "الوجهات",
+  visa: "التأشيرات", seasons: "المواسم", budget: "الميزانية", services: "خدمات الرحلة", account: "حسابي", app: "التطبيق", other: "أخرى",
+};
+async function feedback() {
+  try {
+    const res = await fetch(`${BASE}/api/feedback/recent?hours=${HOURS}`, {
+      headers: { "x-sfrtna-smoke": TOKEN, "User-Agent": UA_WEB },
+      signal: AbortSignal.timeout(30_000),
+    });
+    if (!res.ok) throw new Error(`status ${res.status}`);
+    const { items = [] } = await res.json();
+    const by = (key, names) => {
+      const m = new Map();
+      for (const it of items) m.set(names[it[key]] || it[key], (m.get(names[it[key]] || it[key]) || 0) + 1);
+      return [...m].sort((a, b) => b[1] - a[1]);
+    };
+    const rated = items.filter((i) => i.rating);
+    return {
+      count: items.length,
+      kinds: by("kind", FB_KIND),
+      areas: by("area", FB_AREA),
+      avg: rated.length ? rated.reduce((a, i) => a + i.rating, 0) / rated.length : null,
+      refs: items.slice(0, 20).map((i) => i.ref),
+    };
+  } catch (err) {
+    return { count: 0, kinds: [], areas: [], avg: null, refs: [], error: err.message };
+  }
+}
+
 // ── 5. The site's own health page ──────────────────────────────────────────
 async function health() {
   try {
@@ -232,7 +266,7 @@ function speedColor(t) {
   return "#067647";
 }
 
-function render({ check, timing, hub, hl, started }) {
+function render({ check, timing, hub, hl, fb, started }) {
   const ok = problems.length === 0;
   const avg = timing.web.filter((p) => Number.isFinite(p.total));
   const avgTotal = avg.length ? avg.reduce((a, p) => a + p.total, 0) / avg.length : NaN;
@@ -292,6 +326,12 @@ ${pageRows}</table>
 <h2 style="font-size:16px;margin:22px 0 8px">الشركاء والخدمات</h2>
 ${healthRows ? `<table style="width:100%;border-collapse:collapse;background:#fff;border:1px solid #eaecf0;font-size:13px">${healthRows}</table>` : "<p>لم تُقرأ.</p>"}
 
+<h2 style="font-size:16px;margin:22px 0 8px">ملاحظات الزوار</h2>
+${fb.error ? `<p style="color:#b42318">تعذّرت قراءتها: ${esc(fb.error)}</p>` : fb.count === 0 ? '<p style="margin:0">لم تصل ملاحظات خلال هذه الفترة.</p>' : `<p style="margin:0 0 6px"><b>${fb.count}</b> ملاحظة — ${fb.kinds.map(([k, n]) => `${esc(k)} ${n}`).join("، ")}</p>
+<p style="margin:0 0 6px">الأقسام: ${fb.areas.map(([k, n]) => `${esc(k)} ${n}`).join("، ")}</p>
+${fb.avg ? `<p style="margin:0 0 6px">متوسط التقييم: <b>${fb.avg.toFixed(1)} من 5</b></p>` : ""}
+<p style="margin:0;color:#667085;font-size:12px">نص كل ملاحظة وصلك في بريد مستقل. الأرقام: <span dir="ltr">${fb.refs.map(esc).join(" ")}</span></p>`}
+
 <h2 style="font-size:16px;margin:22px 0 8px">المهام الخلفية</h2>
 ${jobs ? `<p style="margin:0 0 4px;color:#b42318">فشلت:</p><ul style="margin:0;padding-inline-start:20px">${jobs}</ul>` : "<p style=\"margin:0\">لم تفشل أي مهمة.</p>"}
 ${running ? `<p style="margin:8px 0 4px">تعمل الآن:</p><ul style="margin:0;padding-inline-start:20px">${running}</ul>` : ""}
@@ -342,8 +382,9 @@ const check = siteCheck();
 const timing = await pages();
 const hub = await github();
 const hl = await health();
+const fb = await feedback();
 
-const html = render({ check, timing, hub, hl, started });
+const html = render({ check, timing, hub, hl, fb, started });
 writeFileSync("status-report.html", html);
 const when = new Date(started).toLocaleString("ar-SA-u-nu-latn", { timeZone: "Asia/Riyadh", weekday: "long", hour: "numeric" });
 const subject = problems.length

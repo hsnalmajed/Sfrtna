@@ -12,6 +12,7 @@ import FlightMetasearch, { warmFlightSearch } from "@/components/FlightMetasearc
 import FlightResultsGuide from "@/components/FlightResultsGuide";
 import NextStepTabs, { markStep } from "@/components/NextStepTabs";
 import MultiCityTabs from "@/components/MultiCityTabs";
+import QuickFeedback from "@/components/feedback/QuickFeedback";
 import VisaBadge from "@/components/VisaBadge";
 import VisaRequirementsDialog from "@/components/VisaRequirementsDialog";
 import { visaStatusFor } from "@/data/visaStatus";
@@ -575,6 +576,7 @@ function ResultsContent() {
           withCompensation
         />
       )}
+      <QuickFeedback area="flights" className="mt-8" />
       </div>
     </div>
   );

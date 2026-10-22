@@ -71,6 +71,32 @@ interface AccountsStub {
   itemPut(token: string, kind: string, key: string, data: unknown): Promise<{ ok: true } | Fail>;
   itemDelete(token: string, kind: string, key: string): Promise<{ ok: true } | Fail>;
   sessionMaxAge(): Promise<number>;
+  feedbackAdd(token: string, f: FeedbackInput): Promise<{ ok: true; id: number; ref: string; email: string | null; signedIn: boolean } | Fail>;
+  feedbackRecent(since: number): Promise<FeedbackRow[]>;
+}
+
+export interface FeedbackInput {
+  kind: string;
+  area: string;
+  rating: number | null;
+  text: string;
+  email: string | null;
+  contact: boolean;
+  ctx: Record<string, string>;
+  ip: string;
+}
+
+export interface FeedbackRow {
+  id: number;
+  ref: string;
+  created: number;
+  kind: string;
+  area: string;
+  rating: number | null;
+  text: string;
+  email: string | null;
+  contact: number;
+  ctx: Record<string, string>;
 }
 
 export interface StoredItem {
@@ -97,7 +123,7 @@ export async function accounts(): Promise<AccountsStub | null> {
 }
 
 export const googleClientId = (): string => process.env.GOOGLE_CLIENT_ID || "";
-const resendKey = (): string => process.env.RESEND_API_KEY || "";
+export const resendKey = (): string => process.env.RESEND_API_KEY || "";
 
 /** Which ways to sign in are switched on. */
 export function signInMethods(): { google: string | null; email: boolean } {

@@ -17,7 +17,13 @@
 //   appcodes  SHA-256 of a one-time code that carries a sign-in from the
 //             phone's browser back into the app (2 minutes, used once,
 //             bound to a PKCE challenge only the app knows the answer to)
-// Deleting an account deletes all of its rows.
+//   feedback  what visitors send through «شاركنا رأيك» (owner, 22 Oct): kind,
+//             section, rating, text, the page and device it came from, and
+//             an email only when the visitor typed one. A hash of the
+//             sender's address is kept one day for the hourly limit, then
+//             cleared. Screenshots are mailed to the owner, never stored.
+// Deleting an account deletes all of its rows (its feedback stays, with the
+// account and email removed from it).
 
 import { DurableObject } from "cloudflare:workers";
 
@@ -33,6 +39,7 @@ const APP_CODE_SECONDS = 120;
 const SESSION_RENEW_DAYS = 90;
 const ITEM_LIMITS = { profile: 1, fav: 200, search: 20, trip: 30 };
 const MAX_ITEM_BYTES = 4_000;
+const FEEDBACK_PER_HOUR = 6;
 
 const hex = (buf) => [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, "0")).join("");
 async function sha256(text) {
@@ -72,6 +79,9 @@ export class Accounts extends DurableObject {
       CREATE TABLE IF NOT EXISTS items (user TEXT NOT NULL, kind TEXT NOT NULL, key TEXT NOT NULL, data TEXT NOT NULL, created INTEGER NOT NULL, PRIMARY KEY (user, kind, key));
       CREATE INDEX IF NOT EXISTS items_user ON items(user, kind, created);
       CREATE TABLE IF NOT EXISTS appcodes (hash TEXT PRIMARY KEY, user TEXT NOT NULL, challenge TEXT NOT NULL, expires INTEGER NOT NULL);
+      CREATE TABLE IF NOT EXISTS feedback (id INTEGER PRIMARY KEY AUTOINCREMENT, created INTEGER NOT NULL, user TEXT, kind TEXT NOT NULL, area TEXT NOT NULL, rating INTEGER, text TEXT NOT NULL, email TEXT, contact INTEGER NOT NULL, ctx TEXT NOT NULL, ip TEXT);
+      CREATE INDEX IF NOT EXISTS feedback_created ON feedback(created);
+      CREATE INDEX IF NOT EXISTS feedback_ip ON feedback(ip, created);
     `);
   }
 
@@ -256,8 +266,37 @@ export class Accounts extends DurableObject {
     this.sql.exec("DELETE FROM appcodes WHERE user = ?", user.id);
     this.sql.exec("DELETE FROM sessions WHERE user = ?", user.id);
     if (user.email) this.sql.exec("DELETE FROM codes WHERE email = ?", user.email);
+    this.sql.exec("UPDATE feedback SET user = NULL, email = NULL WHERE user = ?", user.id);
     this.sql.exec("DELETE FROM users WHERE id = ?", user.id);
     return { ok: true };
+  }
+
+  /**
+   * One piece of feedback. `ip` is already a hash (src/lib/feedback.ts);
+   * at most FEEDBACK_PER_HOUR from one address, so a script cannot flood
+   * the owner's inbox. Returns the reference shown to the visitor.
+   */
+  async feedbackAdd(token, f) {
+    const now = Date.now();
+    this.sql.exec("UPDATE feedback SET ip = NULL WHERE created < ?", now - 864e5);
+    const recent = this.one("SELECT COUNT(*) AS n FROM feedback WHERE ip = ? AND created > ?", f.ip, now - 3600e3);
+    if (recent && recent.n >= FEEDBACK_PER_HOUR) return { ok: false, reason: "too_many" };
+    const user = token ? await this.userFor(token) : null;
+    const email = f.email || user?.email || null;
+    this.sql.exec(
+      "INSERT INTO feedback (created, user, kind, area, rating, text, email, contact, ctx, ip) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      now, user?.id ?? null, f.kind, f.area, f.rating ?? null, f.text, email, f.contact ? 1 : 0, JSON.stringify(f.ctx ?? {}), f.ip
+    );
+    const row = this.one("SELECT last_insert_rowid() AS id");
+    return { ok: true, id: row.id, ref: `F-${String(row.id).padStart(4, "0")}`, email, signedIn: Boolean(user) };
+  }
+
+  /** Feedback since a time, newest first — for the owner's status email. */
+  async feedbackRecent(since) {
+    return this.sql
+      .exec("SELECT id, created, kind, area, rating, text, email, contact, ctx FROM feedback WHERE created > ? ORDER BY id DESC LIMIT 100", since)
+      .toArray()
+      .map((r) => ({ ...r, ref: `F-${String(r.id).padStart(4, "0")}`, ctx: JSON.parse(r.ctx) }));
   }
 
   async plansList(token) {

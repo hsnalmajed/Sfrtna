@@ -1221,6 +1221,34 @@ Istanbul/London/Dubai.
 Viator on the phone (owner 22 Oct): Istanbul «Activities & tickets» shows
 photo, rating, duration, live price, «Book now» — works.
 
+**Feedback «شاركنا رأيك» — 22 Oct night (owner: "organised, complete, helps
+the customer share ideas, opinions and notes"; for testers and customers):**
+- Where: floating «💬 رأيك» button on every page (z-50, above the app tab
+  bar, under sheets), footer link, a row at the top of the app's «المزيد»
+  sheet, and «هل وجدت ما تبحث عنه؟ 👍/👎» under flight, hotel, discover
+  results and the plan (`QuickFeedback`, once per section per visit; 👎
+  opens the sheet on «مشكلة», 👍 offers «أخبرنا»).
+- Sheet (`feedback/FeedbackHost.tsx`, opened by `openFeedback()` event): step 1
+  kind (problem / wrong info / idea / opinion / question), step 2 section
+  (guessed from the page, `areaForPath`), stars for an opinion, note (10–3000),
+  optional screenshot (shrunk to 1600 px JPEG), optional email (member's
+  prefilled) + «رد عليّ». Page, language, device, screen and last search
+  are attached automatically. Done screen shows the number (F-0001…).
+- Server: `POST /api/feedback` (guard heavy; honeypot `website`; 6 per hour
+  per hashed address, hash kept a day) → Accounts DO table `feedback` →
+  email to info@sfrtna.com (reply goes to the visitor, screenshot attached)
+  + receipt to the visitor if asked. Deleting an account keeps its notes
+  without name/email. `GET /api/feedback/recent?hours=` = SMOKE_TOKEN only.
+- Status email: section «ملاحظات الزوار» = counts by kind/section, average
+  stars, numbers — never the text (that page is also pushed to a public
+  branch). Privacy: new section «الملاحظات التي ترسلها لنا» (date 22 Oct).
+- Tested locally (workerd): validation, bad email, honeypot, hourly limit,
+  recent with/without key; Pixel 7 ar/en site + app: open → kind → section
+  → note → send → number. Email sending not testable locally (no key) —
+  first live note checks it.
+- Next (owner, when he says "start publishing"): invitation message, post-
+  trial survey, periodic satisfaction (registered members).
+
 **▶ Start here (hand-off 21 Oct 23:50):** this conversation built the city
 guide (Wikidata + Gemini), the smart planner on our own engine (everywhere:
 /itinerary, city pages, app «المزيد»), the budget advisor's estimate mode

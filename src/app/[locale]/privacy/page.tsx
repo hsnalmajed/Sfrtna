@@ -5,7 +5,7 @@ import { ConsentSettingsButton } from "@/components/Analytics";
 import LegalPage from "@/components/LegalPage";
 import { pageMetadata } from "@/lib/seo";
 
-const LAST_UPDATED = "2026-10-13";
+const LAST_UPDATED = "2026-10-22";
 
 export async function generateMetadata({
   params,
@@ -49,6 +49,7 @@ export default async function PrivacyPage({ params }: PageProps<"/[locale]/priva
         },
         { heading: t.privacyLocationTitle, body: t.privacyLocationBody },
         { heading: t.privacyAccountTitle, body: t.privacyAccountBody },
+        { heading: t.privacyFeedbackTitle, body: t.privacyFeedbackBody },
         { heading: t.privacyPartnersTitle, body: t.privacyPartnersBody },
         { heading: t.privacyProtectTitle, body: t.privacyProtectBody },
         { heading: t.privacyChildrenTitle, body: t.privacyChildrenBody },

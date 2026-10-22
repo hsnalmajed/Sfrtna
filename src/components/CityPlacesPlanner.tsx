@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import QuickFeedback from "@/components/feedback/QuickFeedback";
 import { useDictionary } from "@/lib/dict/context";
 import type { Dictionary } from "@/lib/dictionaries";
 import type { Locale } from "@/lib/types";
@@ -914,6 +915,7 @@ function PlanView({
         </ol>
 
         <p className="mt-6 text-center text-xs font-bold text-navy-400">{t.printedFrom}</p>
+        <QuickFeedback area="plan" className="mt-8 print:hidden" />
       </div>
     </div>,
     document.body

@@ -70,6 +70,10 @@ export const ROUTES = {
   "/api/me/items/delete": { methods: ["POST"], caller: "page" },
   "/api/plans": { methods: ["GET", "POST"], caller: "page" },
   "/api/plans/delete": { methods: ["POST"], caller: "page" },
+  // «شاركنا رأيك» (src/lib/feedback.ts). The recent list answers only the
+  // site-check key, checked in the route itself.
+  "/api/feedback": { methods: ["POST"], caller: "page", heavy: true },
+  "/api/feedback/recent": { methods: ["GET"], caller: "link" },
   "/api/health": { methods: ["GET"], caller: "owner", heavy: true },
   "/api/serp-status": { methods: ["GET"], caller: "owner" },
 };

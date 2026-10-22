@@ -10,6 +10,7 @@ import { track } from "@/lib/analytics";
 import { saveLanguage } from "@/lib/langCookie";
 import type { Locale } from "@/lib/types";
 import { CONTACT_EMAIL } from "@/lib/contact";
+import { openFeedback } from "@/components/feedback/events";
 
 /**
  * The phone app's own navigation: a tab bar at the bottom of the screen.
@@ -162,7 +163,7 @@ export default function AppTabBar({ locale }: { locale: Locale }) {
 
         {/* The one action the site exists for, raised in the middle. */}
         <Link href={`${home}#plan`} onClick={onBook} className={`app-tab flex min-w-0 flex-1 flex-col items-center justify-end pb-1 text-[0.68rem] font-bold leading-tight ${bookActive ? "text-sun-400" : "text-white/80"}`}>
-          <span className={`-mt-5 mb-0.5 flex h-12 w-12 items-center justify-center rounded-full bg-sun-400 text-navy-990 shadow-[0_6px_18px_-6px_rgba(255,166,48,0.8)] ring-4 transition ${bookActive ? "ring-sea-400/80" : "ring-navy-990"}`}>
+          <span className={`-mt-5 mb-0.5 flex h-12 w-12 items-center justify-center rounded-full bg-sun-400 text-navy-900 shadow-[0_6px_18px_-6px_rgba(255,166,48,0.8)] ring-4 transition ${bookActive ? "ring-sea-400/80" : "ring-navy-990"}`}>
             <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z" />
             </svg>
@@ -199,7 +200,7 @@ export default function AppTabBar({ locale }: { locale: Locale }) {
                   type="button"
                   onClick={() => switchLanguage(l)}
                   className={`flex-1 rounded-xl py-2.5 text-sm font-bold transition ${
-                    locale === l ? "bg-white text-navy-990 shadow-sm ring-1 ring-navy-900/10" : "text-navy-900/55"
+                    locale === l ? "bg-white text-navy-900 shadow-sm ring-1 ring-navy-900/10" : "text-navy-900/55"
                   }`}
                 >
                   {l === "ar" ? "العربية" : "English"}
@@ -216,7 +217,7 @@ export default function AppTabBar({ locale }: { locale: Locale }) {
                   href={t.href}
                   onClick={(e) => go(e, t.href)}
                   className={`flex flex-col items-center gap-1.5 rounded-2xl px-2 py-3 text-center text-xs font-bold ring-1 transition active:scale-[0.98] ${
-                    isActive(t.href) ? "bg-sun-50 text-navy-990 ring-sun-300" : "bg-mist-50 text-navy-900 ring-navy-900/5"
+                    isActive(t.href) ? "bg-sun-50 text-navy-900 ring-sun-300" : "bg-mist-50 text-navy-900 ring-navy-900/5"
                   }`}
                 >
                   <span className="text-2xl leading-none" aria-hidden="true">{t.icon}</span>
@@ -225,7 +226,23 @@ export default function AppTabBar({ locale }: { locale: Locale }) {
               ))}
             </div>
 
-            <div className="mt-5 divide-y divide-navy-900/5 overflow-hidden rounded-2xl bg-mist-50 ring-1 ring-navy-900/5">
+            <button
+              type="button"
+              onClick={() => {
+                setMoreOpen(false);
+                openFeedback({ source: "app_menu" });
+              }}
+              className="mt-5 flex w-full items-center gap-3 rounded-2xl bg-sun-50 px-4 py-3.5 text-start ring-1 ring-sun-300 active:scale-[0.99]"
+            >
+              <span className="text-2xl leading-none" aria-hidden="true">💬</span>
+              <span className="flex-1">
+                <span className="block text-sm font-extrabold text-navy-900">{dict.feedback.open}</span>
+                <span className="block text-xs text-navy-900/60">{dict.feedback.subtitle}</span>
+              </span>
+              <span aria-hidden="true" className="text-navy-900/30 rtl:rotate-180">›</span>
+            </button>
+
+            <div className="mt-3 divide-y divide-navy-900/5 overflow-hidden rounded-2xl bg-mist-50 ring-1 ring-navy-900/5">
               {sitePages.map((p) => (
                 <Link
                   key={p.href}

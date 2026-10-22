@@ -3,6 +3,7 @@ import { getDictionary } from "@/lib/dictionaries";
 import type { Locale } from "@/lib/types";
 import Logo from "@/components/ui/Logo";
 import { CONTACT_EMAIL } from "@/lib/contact";
+import FeedbackLink from "@/components/feedback/FeedbackLink";
 
 /**
  * The footer closes the page the way the hero opened it — navy, an orange
@@ -91,6 +92,9 @@ export default function Footer({ locale }: { locale: Locale }) {
               {dict.footer.legalHeading}
             </p>
             <ul className="space-y-2.5">
+              <li>
+                <FeedbackLink source="footer" className="font-bold text-sun-300 transition hover:text-sun-200" />
+              </li>
               {legal.map((link) => (
                 <li key={link.href}>
                   <Link href={link.href} className="text-white/60 transition hover:text-sun-300">

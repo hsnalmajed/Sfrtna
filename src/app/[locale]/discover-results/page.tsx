@@ -11,6 +11,7 @@ import DestinationCard from "@/components/DestinationCard";
 import PricesUnavailable from "@/components/PricesUnavailable";
 import RouteCard from "@/components/RouteCard";
 import ResultsBand from "@/components/ResultsBand";
+import QuickFeedback from "@/components/feedback/QuickFeedback";
 import FilterPill, { FILTER_ROW } from "@/components/ui/FilterPill";
 import { VISA_ORDER, type VisaCategory } from "@/data/visaStatus";
 import { CLASS_DOT, CLASS_RANKING as CLASS_ORDER } from "@/lib/travelSeason/labels";
@@ -506,6 +507,7 @@ function DiscoverResultsContent() {
             )}
           </div>
         )}
+        <QuickFeedback area="discover" className="mt-10" />
       </div>
     </div>
   );
