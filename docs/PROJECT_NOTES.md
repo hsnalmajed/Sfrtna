@@ -5,6 +5,11 @@ Read this first. It replaces re-explaining the project. Last updated 21 Oct 2026
 ## Owner's standing rules (must follow)
 
 - **Always reply in Arabic.** Act as developer, reviewer, CX expert and designer.
+- **Steps for the owner (owner, 22 Oct, said several times):** ONE step per
+  message; every English word he must click/type on its **own line, bold**;
+  never chain screens with arrows (no «A ← B ← C») and never mix English
+  button names inside an Arabic sentence — RTL scrambles them and he cannot
+  follow. Wait for «تم» before the next step.
 - **Every price on the site = the partner's live price, or no number at all.**
   No «يبدأ من», no estimates, no cached fares presented as prices.
 - **Never fewer options or a wrong price than the market (owner, 13 Oct 16:01,
