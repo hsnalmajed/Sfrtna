@@ -1260,6 +1260,16 @@ the customer share ideas, opinions and notes"; for testers and customers):**
 - Next (owner, when he says "start publishing"): invitation message, post-
   trial survey, periodic satisfaction (registered members).
 
+**Owner's 35 questions (23 Oct 00:12) — answered in chat as a table.** Facts
+at that time: photos.json empty (Pexels resets 25 Oct 17:41 UTC, photos.yml
+fills after); guide 365 cities, 20,482 places, 9,357 written, 291 cities
+plan-ready (≥ 6 written); Site check last 30 runs: 9 ok, 5 failed (push
+times), 15 cancelled (newer push). Gaps found: no activities-only page; no
+single earnings view; partner-link tracking not in the status email; no
+copy of accounts/feedback outside Cloudflare; relatives: features not
+discovered + too many tabs → proposed «رحلتي» trip page + first-visit tips +
+three entries (احجز / اكتشف / خطّط). Owner to choose the order.
+
 **▶ Start here (hand-off 23 Oct 00:15):** owner opens a new conversation to
 create the **Google Play personal developer account** (decided 23 Oct; $25,
 ID check — may take hours to days). Step 1 for the owner (one step per
