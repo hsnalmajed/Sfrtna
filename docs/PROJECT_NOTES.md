@@ -1191,6 +1191,16 @@ check the 16:47 UTC one.
   limited to 28 (2 stops) / 14 (3 stops) cities by the 50-subrequest limit
   (`routeSuggest.ts` MAX_REQUESTS) — raise to ~100–150 after Paid.
 
+**Sideways rows (owner 22 Oct 14:49, "not acceptable"):** every row that
+scrolls sideways = `src/components/ui/ScrollRow.tsx` (fade on the side that
+continues + round arrow button + one small slide per page per session +
+selected tab in view; nothing when it fits; RTL-aware). Used by city tabs,
+home strip, TripServices pills, MultiCityTabs, RecentSearches.
+`scripts/check-rails.mjs` (prebuild) fails on `overflow-x-auto|scroll`
+anywhere else. Local Pixel 7 test ar/en/app/home OK (761f2384).
+Viator on the phone (owner 22 Oct): Istanbul «Activities & tickets» shows
+photo, rating, duration, live price, «Book now» — works.
+
 **▶ Start here (hand-off 21 Oct 23:50):** this conversation built the city
 guide (Wikidata + Gemini), the smart planner on our own engine (everywhere:
 /itinerary, city pages, app «المزيد»), the budget advisor's estimate mode
