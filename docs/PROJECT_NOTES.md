@@ -1301,7 +1301,7 @@ Google ranking work runs alongside. Google Play account in parallel.
 **23 Oct 01:40 — owner approved: start the dashboard section; he is opening
 the social accounts now.** Sent him profile/cover images (made from
 public/favicon-512.png and public/sfrtna-logo.png, off-white cleaned): 1080
-square mark, 1500×500 cover, 2560×1440 YouTube. Handle **sfrtnaapp** everywhere («sfrtna» taken; X allows no dots; owner 23 Oct 01:53: X @Sfrtnaapp and Instagram sfrtnaapp created),
+square mark, 1500×500 cover, 2560×1440 YouTube. Handle **sfrtnaapp** everywhere («sfrtna» taken; X allows no dots; owner 23 Oct 01:53: X @Sfrtnaapp and Instagram sfrtnaapp created; TikTok got @.sfrtna by mistake — locked until 22 Nov 2026, then rename to sfrtnaapp: put this in the dashboard reminders),
 display name «سفرتنا Sfrtna», sign up with info@sfrtna.com, UTM links per
 platform (utm_source=<platform>&utm_medium=social&utm_campaign=profile).
 When he sends the profile links → add them as `sameAs` in the Organization
