@@ -1251,6 +1251,12 @@ the customer share ideas, opinions and notes"; for testers and customers):**
   (the push run's pages job hit its 25-min limit once; manual re-run 6 min, OK).
 - Store accounts (owner 22 Oct): **none yet** for Google Play or Apple —
   personal vs organization (commercial registration + D-U-N-S) is his call.
+  **Decision 23 Oct: personal accounts** (a Saudi CR for a sole
+  proprietorship costs 500 SAR + 500 SAR yearly confirmation, M/83 law —
+  owner: organisation only if free). Google Play personal = $25 once, ID
+  check, then closed test ≥ 12 testers × 14 days before production — the
+  beta testers are that test. Apple personal = $99/year, seller shows the
+  owner's own name.
 - Next (owner, when he says "start publishing"): invitation message, post-
   trial survey, periodic satisfaction (registered members).
 
