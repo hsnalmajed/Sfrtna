@@ -16,7 +16,7 @@ for (const app of [false, true]) for (const path of pages) {
   const ctx = await browser.newContext({ ...devices["Pixel 7"], userAgent: devices["Pixel 7"].userAgent + (app ? " SfrtnaApp/Android" : "") });
   await ctx.addInitScript(() => { try { localStorage.setItem("sfr-welcome-v1","1"); localStorage.setItem("sfrtna-consent-v1","denied"); } catch {} });
   const page = await ctx.newPage();
-  try { await page.goto(B + path, { waitUntil: "load", timeout: 90000 }); } catch (e) { console.log("LOADFAIL", path); await ctx.close(); continue; }
+  try { await page.goto(B + path, { waitUntil: "load", timeout: 90000 }); } catch { console.log("LOADFAIL", path); await ctx.close(); continue; }
   await page.waitForTimeout(2500);
   const scanOnce = () => page.evaluate(() => {
     const out = [];
