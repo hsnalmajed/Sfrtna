@@ -10,6 +10,7 @@ import Icon, { type IconName } from "@/components/ui/Icon";
 import { PLAN_EVENT, HOME_TAB_EVENT, HOME_SEASON_EVENT, type PlanProduct } from "@/lib/planEvents";
 import TripPlanner from "@/components/TripPlanner";
 import RecentSearches from "@/components/RecentSearches";
+import ScrollRow from "@/components/ui/ScrollRow";
 import UpcomingTrip from "@/components/member/UpcomingTrip";
 import HotelPlanner from "@/components/HotelPlanner";
 import VisaBadge, { VISA_STYLES } from "@/components/VisaBadge";
@@ -537,7 +538,11 @@ export default function HomeShowcase({
         {/* ── The strip ─────────────────────────────────────────────── */}
         {/* Not in the phone app: there the bottom bar's "Home" and "Book"
             are these two tabs, and a second set here only repeats them. */}
-        <div className="web-only rail rail-fade flex items-center gap-2 overflow-x-auto rounded-t-[2rem] border-b border-white/10 bg-white/[0.04] px-3 py-3 sm:px-5">
+        <ScrollRow
+          tone="dark"
+          outerClassName="web-only rounded-t-[2rem] border-b border-white/10 bg-white/[0.04]"
+          className="flex items-center gap-2 px-3 py-3 sm:px-5"
+        >
           {tabs
             .filter((t) => !t.hidden)
             .map((t) => (
@@ -564,7 +569,7 @@ export default function HomeShowcase({
                 {t.key === "season" ? dict.seasonTitle : t.label}
               </button>
             ))}
-        </div>
+        </ScrollRow>
 
         {/* ── The panel ─────────────────────────────────────────────── */}
         <div className="p-4 sm:p-7">

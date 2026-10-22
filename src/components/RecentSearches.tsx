@@ -7,6 +7,7 @@ import { useDictionary } from "@/lib/dict/context";
 import { findAirport } from "@/lib/airports";
 import { readRecent, type RecentSearch } from "@/lib/recentSearches";
 import { useMember } from "@/lib/useMember";
+import ScrollRow from "@/components/ui/ScrollRow";
 
 /**
  * «عمليات بحثك الأخيرة»: the last searches, one tap each — from this
@@ -50,7 +51,7 @@ export default function RecentSearches({ locale }: { locale: Locale }) {
   return (
     <div className="mx-auto mb-4 max-w-4xl">
       <p className="mb-2 text-xs font-bold text-white/70">{t.title}</p>
-      <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none] sm:mx-0 sm:flex-wrap sm:px-0">
+      <ScrollRow tone="dark" outerClassName="-mx-4 sm:mx-0" className="flex gap-2 px-4 pb-1 sm:flex-wrap sm:px-0">
         {shown.map((r) => (
           <Link
             key={r.url}
@@ -73,7 +74,7 @@ export default function RecentSearches({ locale }: { locale: Locale }) {
             </span>
           </Link>
         ))}
-      </div>
+      </ScrollRow>
     </div>
   );
 }

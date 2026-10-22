@@ -7,6 +7,7 @@ import type { PlaceListItem } from "@/components/CityPlacesExplorer";
 import CityPlacesPlanner, { type PlanRestaurant } from "@/components/CityPlacesPlanner";
 import AttractionsMap from "@/components/AttractionsMap";
 import MapDownloads from "@/components/MapDownloads";
+import ScrollRow from "@/components/ui/ScrollRow";
 
 export type CityView = "list" | "map" | "activities" | "services";
 
@@ -151,7 +152,7 @@ export default function CityPlacesView({
           map, plan, activities, services, and the download of every
           location. On a phone it scrolls sideways instead of wrapping. */}
       <div className="sticky top-16 z-20 -mx-4 mb-5 bg-mist-50/95 px-4 py-2 backdrop-blur sm:static sm:mx-0 sm:bg-transparent sm:px-0 sm:py-0">
-        <div className="rail flex items-center gap-2 overflow-x-auto">
+        <ScrollRow className="flex items-center gap-2">
           <div role="tablist" aria-label={cityName} className="inline-flex shrink-0 rounded-full bg-white p-1 shadow-sm ring-1 ring-mist-200">
             <button type="button" role="tab" aria-selected={view === "list"} onClick={backToList} className={tab("list")}>
               <span aria-hidden="true">📍</span>
@@ -193,7 +194,7 @@ export default function CityPlacesView({
               <MapDownloads pins={pins} title={mapTitle} fileBase={fileBase} dict={downloadsDict} compactLabel={labels.downloadAll} />
             </div>
           )}
-        </div>
+        </ScrollRow>
       </div>
 
       {view === "activities" && activities}

@@ -1,6 +1,7 @@
 import PartnerLink from "@/components/PartnerLink";
 import { COMPENSATION_LINK, servicesFor, type ServiceKind } from "@/lib/tripEssentials";
 import type { Locale } from "@/lib/types";
+import ScrollRow from "@/components/ui/ScrollRow";
 
 /**
  * Everything around the trip in one compact panel — tours and tickets, mobile
@@ -71,7 +72,7 @@ export default function TripServices({
               </span>
               <span className="text-xs font-bold leading-tight text-navy-900 sm:text-sm">{r.title}</span>
             </div>
-            <div className="rail flex min-w-0 flex-1 gap-1.5 overflow-x-auto sm:flex-wrap sm:overflow-visible">
+            <ScrollRow outerClassName="min-w-0 flex-1" className="flex gap-1.5 sm:flex-wrap sm:overflow-visible">
               {r.links.map((l) => (
                 <PartnerLink
                   key={l.partner}
@@ -87,7 +88,7 @@ export default function TripServices({
                   </span>
                 </PartnerLink>
               ))}
-            </div>
+            </ScrollRow>
           </div>
         ))}
       </div>

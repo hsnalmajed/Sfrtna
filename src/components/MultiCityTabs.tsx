@@ -2,6 +2,7 @@
 
 import type { Locale, MultiCityLegInput } from "@/lib/types";
 import { useDictionary } from "@/lib/dict/context";
+import ScrollRow from "@/components/ui/ScrollRow";
 import { findAirport } from "@/lib/airports";
 import Icon from "@/components/ui/Icon";
 
@@ -72,7 +73,7 @@ export default function MultiCityTabs({
       </div>
 
       {/* One swipeable row on a phone; every tab in view on a wide screen. */}
-      <div role="tablist" className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:px-0">
+      <ScrollRow role="tablist" outerClassName="-mx-4 sm:mx-0" className="flex gap-2 px-4 pb-1 sm:px-0">
         {legs.map((leg, i) => {
           const on = i === active;
           const picked = picks[i];
@@ -118,7 +119,7 @@ export default function MultiCityTabs({
             </a>
           );
         })}
-      </div>
+      </ScrollRow>
 
       <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
         <p className="text-xs font-semibold text-navy-500">{t.tabHint}</p>

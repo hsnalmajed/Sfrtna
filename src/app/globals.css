@@ -497,24 +497,8 @@ html[lang="ar"] .eyebrow {
   display: none;
 }
 
-/* A rail that is wider than its box gives no sign of it — on a phone the
-   homepage's fourth tab simply was not there. Fading the trailing edge is
-   the whole hint: content that dissolves rather than stops is content that
-   continues. Logical direction, so it fades on the correct side in Arabic. */
-.rail-fade {
-  -webkit-mask-image: linear-gradient(to left, transparent 0, #000 2.25rem);
-  mask-image: linear-gradient(to left, transparent 0, #000 2.25rem);
-}
-[dir="rtl"] .rail-fade {
-  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 2.25rem);
-  mask-image: linear-gradient(to right, transparent 0, #000 2.25rem);
-}
-@media (min-width: 640px) {
-  .rail-fade {
-    -webkit-mask-image: none;
-    mask-image: none;
-  }
-}
+/* The hint that a rail continues (fade, arrow, first-time slide) lives in
+   src/components/ui/ScrollRow.tsx; scripts/check-rails.mjs enforces it. */
 
 @media (prefers-reduced-motion: reduce) {
   *,
