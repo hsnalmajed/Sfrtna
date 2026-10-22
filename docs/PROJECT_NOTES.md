@@ -1298,6 +1298,18 @@ with read access to GA4 + Search Console (one step per message). (2) «رحلت�
 activities page; (5) partner-link checks + backup; (6) full live test;
 Google ranking work runs alongside. Google Play account in parallel.
 
+**23 Oct 01:40 — owner approved: start the dashboard section; he is opening
+the social accounts now.** Sent him profile/cover images (made from
+public/favicon-512.png and public/sfrtna-logo.png, off-white cleaned): 1080
+square mark, 1500×500 cover, 2560×1440 YouTube. Handle «sfrtna» everywhere,
+display name «سفرتنا Sfrtna», sign up with info@sfrtna.com, UTM links per
+platform (utm_source=<platform>&utm_medium=social&utm_campaign=profile).
+When he sends the profile links → add them as `sameAs` in the Organization
+record (src/lib/seo.ts) and in the footer. Earnings: Travelpayouts has a
+booking-statistics API (support article 360019864079) — use it for the
+dashboard (needs TRAVELPAYOUTS_TOKEN as a GitHub secret too, or read it
+through a token-protected Worker route).
+
 **▶ Start here (hand-off 23 Oct 00:15):** owner opens a new conversation to
 create the **Google Play personal developer account** (decided 23 Oct; $25,
 ID check — may take hours to days). Step 1 for the owner (one step per
