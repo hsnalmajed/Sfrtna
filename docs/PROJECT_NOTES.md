@@ -1175,7 +1175,12 @@ check the 16:47 UTC one.
   Cloudflare Security → Events filtered on Googlebot to name the rule.
 - **Sitemap had never been submitted** (Sitemaps table empty; notes of 6 Oct
   said to). Owner submitted `https://sfrtna.com/sitemap.xml` 22 Oct 01:07
-  (Domain property → full URL needed). Check its status/discovered count.
+  (Domain property → full URL needed). That first fetch (01:07) was itself
+  blocked by Cloudflare (Events: Block /sitemap.xml 01:07:11) → "Couldn't
+  fetch". **Re-submitted 22 Oct 22:52 → read at once: 1,552 discovered
+  pages** (= every URL in our sitemap). Cloudflare Events checked 22 Oct
+  22:49: **no 66.249.x blocks since the 01:26 fix**; blocks/labyrinth now hit
+  only scrapers (SG, NL, CN, GCP 34.x).
 - Live Site check 22 Oct 00:55 (run 39682357142) all green incl. new SEO
   checks. Owner: URL Inspection → Test live URL, then Validate fix on
   Duplicate, Soft 404, 403, 5xx (NOT on "Alternate page with proper
