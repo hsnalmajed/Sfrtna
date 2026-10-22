@@ -1203,6 +1203,11 @@ transfer 4, car 5, luggage 1) — partner pills never scroll (owner: "4
 transfer sites, the visitor sees 2"). `scripts/hidden-rows-scan.mjs`: 20
 pages × site/app × every tab opened, at Pixel 7 width — 0 hidden rows
 (the scan was proven to catch a row with its arrow removed).
+City places list (owner 22 Oct 22:37, "why places on one line and
+activities on another?"): kinds of place = one even segmented row
+(grid, N columns, icon + name + count, `CityPlacesExplorer.tsx`);
+«الأبرز / الكل» + search share one line. Checked Pixel 7 ar/en/app,
+Istanbul/London/Dubai.
 Viator on the phone (owner 22 Oct): Istanbul «Activities & tickets» shows
 photo, rating, duration, live price, «Book now» — works.
 

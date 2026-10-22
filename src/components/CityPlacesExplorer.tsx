@@ -224,64 +224,78 @@ export default function CityPlacesExplorer({
 
   return (
     <div>
-      <div className="mb-4 flex flex-wrap gap-2">
-        {tabs.map((tab) => {
-          const isActive = tab === active;
-          return (
-            <button
-              key={tab}
-              type="button"
-              onClick={() => pick(tab)}
-              aria-pressed={isActive}
-              className={`inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-bold transition ${
-                isActive
-                  ? "bg-brand-800 text-white shadow-sm"
-                  : "bg-white text-gray-700 ring-1 ring-gray-200 hover:ring-brand-300"
-              }`}
-            >
-              <span
-                className="inline-flex h-5 w-5 items-center justify-center rounded-full text-[10px]"
-                style={{ backgroundColor: PIN_STYLES[tab].color }}
-                aria-hidden="true"
+      {/* The kinds of place as one row split evenly — every choice in view,
+          never a second line or a hidden swipe (owner, 22 Oct: «why are
+          places on one line and activities on another?»). */}
+      {tabs.length > 1 && (
+        <div
+          role="tablist"
+          className="mb-3 grid gap-1 rounded-2xl bg-white p-1 shadow-sm ring-1 ring-mist-200"
+          style={{ gridTemplateColumns: `repeat(${tabs.length}, minmax(0, 1fr))` }}
+        >
+          {tabs.map((tab) => {
+            const isActive = tab === active;
+            return (
+              <button
+                key={tab}
+                type="button"
+                role="tab"
+                onClick={() => pick(tab)}
+                aria-selected={isActive}
+                className={`flex min-h-12 min-w-0 flex-col items-center justify-center gap-0.5 rounded-xl px-1.5 py-1.5 text-center transition sm:flex-row sm:gap-2 ${
+                  isActive ? "bg-navy-900 text-white shadow-sm" : "text-navy-700 hover:bg-mist-50"
+                }`}
               >
-                {PIN_STYLES[tab].glyph}
-              </span>
-              {labels[tab]}
-              <span className={isActive ? "text-white/70" : "text-gray-400"}>({counts[tab]})</span>
-            </button>
-          );
-        })}
-      </div>
-
-      {dict.guide && featuredCount >= 4 && (
-        <div className="mb-3 inline-flex rounded-full bg-white p-1 ring-1 ring-mist-200" role="tablist">
-          {[true, false].map((f) => (
-            <button
-              key={String(f)}
-              type="button"
-              role="tab"
-              aria-selected={featuredOnly === f}
-              onClick={() => {
-                setFeaturedOnly(f);
-                setShown(PAGE);
-              }}
-              className={`min-h-9 rounded-full px-4 text-sm font-bold ${featuredOnly === f ? "bg-sun-400 text-navy-950" : "text-navy-600"}`}
-            >
-              {f ? `⭐ ${dict.guide?.featured} (${featuredCount})` : `${dict.guide?.all} (${counts[active] ?? 0})`}
-            </button>
-          ))}
+                <span className="flex min-w-0 items-center gap-1.5">
+                  <span
+                    className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[10px]"
+                    style={{ backgroundColor: PIN_STYLES[tab].color }}
+                    aria-hidden="true"
+                  >
+                    {PIN_STYLES[tab].glyph}
+                  </span>
+                  <span className="line-clamp-2 text-[13px] font-bold leading-tight sm:text-sm">{labels[tab]}</span>
+                </span>
+                <span className={`text-xs font-bold ${isActive ? "text-sun-300" : "text-navy-400"}`}>{counts[tab]}</span>
+              </button>
+            );
+          })}
         </div>
       )}
 
-      <input
-        value={query}
-        onChange={(e) => {
-          setQuery(e.target.value);
-          setShown(PAGE);
-        }}
-        placeholder={dict.searchPlaceholder}
-        className="mb-5 w-full max-w-sm rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-800 outline-none transition focus:border-brand-400 focus:ring-4 focus:ring-brand-100 placeholder:text-gray-400"
-      />
+      {/* «الأبرز / الكل» and the search on one line. */}
+      <div className="mb-5 flex items-center gap-2">
+        {dict.guide && featuredCount >= 4 && (
+          <div className="inline-flex shrink-0 rounded-full bg-white p-1 ring-1 ring-mist-200" role="tablist">
+            {[true, false].map((f) => (
+              <button
+                key={String(f)}
+                type="button"
+                role="tab"
+                aria-selected={featuredOnly === f}
+                onClick={() => {
+                  setFeaturedOnly(f);
+                  setShown(PAGE);
+                }}
+                className={`min-h-9 whitespace-nowrap rounded-full px-3 text-[13px] font-bold sm:px-4 sm:text-sm ${
+                  featuredOnly === f ? "bg-sun-400 text-navy-950" : "text-navy-600"
+                }`}
+              >
+                {f ? `⭐ ${dict.guide?.featured} ${featuredCount}` : `${dict.guide?.all} ${counts[active] ?? 0}`}
+              </button>
+            ))}
+          </div>
+        )}
+        <input
+          value={query}
+          onChange={(e) => {
+            setQuery(e.target.value);
+            setShown(PAGE);
+          }}
+          placeholder={dict.searchPlaceholder}
+          className="min-h-11 min-w-0 flex-1 rounded-full border border-gray-200 bg-white px-4 text-sm text-gray-800 outline-none transition focus:border-brand-400 focus:ring-4 focus:ring-brand-100 placeholder:text-gray-400 sm:max-w-sm"
+        />
+      </div>
 
       {visible.length === 0 ? (
         <p className="rounded-xl bg-gray-50 px-4 py-6 text-center text-sm text-gray-500">
