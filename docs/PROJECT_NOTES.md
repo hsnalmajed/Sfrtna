@@ -1246,6 +1246,11 @@ the customer share ideas, opinions and notes"; for testers and customers):**
   recent with/without key; Pixel 7 ar/en site + app: open → kind → section
   → note → send → number. Email sending not testable locally (no key) —
   first live note checks it.
+- **Live 22 Oct 23:50:** owner sent a test note on his phone — the email
+  arrived at info@sfrtna.com. Site check after the push: check + pages green
+  (the push run's pages job hit its 25-min limit once; manual re-run 6 min, OK).
+- Store accounts (owner 22 Oct): **none yet** for Google Play or Apple —
+  personal vs organization (commercial registration + D-U-N-S) is his call.
 - Next (owner, when he says "start publishing"): invitation message, post-
   trial survey, periodic satisfaction (registered members).
 
