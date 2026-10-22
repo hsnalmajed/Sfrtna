@@ -196,12 +196,14 @@ async function health() {
         !h.viator ? "—" : !h.viator.key ? "المفتاح غير موجود" : h.viator.lastError ? `آخر خطأ: ${String(h.viator.lastError).slice(0, 120)}` : `يعمل — ${h.viator.destinations ?? 0} وجهة`,
         Boolean(h.viator?.key && !h.viator.lastError),
       ],
-      ["الصور (Pexels)", `${h.pexels?.status ?? "—"}${h.pexels?.remaining ? ` — متبقٍ ${h.pexels.remaining}` : ""}`, h.pexels?.status === 200 || h.pexels?.status === "skipped"],
+      // Shown, not counted: the site's photos come from a stored file, so a
+      // spent Pexels allowance only slows the photo job, never a page.
+      ["الصور (Pexels) — للمهام الخلفية فقط", `${h.pexels?.status ?? "—"}${h.pexels?.remaining ? ` — متبقٍ ${h.pexels.remaining}` : ""}`, h.pexels?.status === 200 || h.pexels?.status === "skipped", false],
       ["الدخول بجوجل", h.keys?.googleSignIn ? "مفعّل" : "مطفأ", Boolean(h.keys?.googleSignIn)],
       ["الدخول بالبريد", h.keys?.emailSignIn ? "مفعّل" : "مطفأ", Boolean(h.keys?.emailSignIn)],
       ["آخر خطأ في إرسال البريد", h.emailLastError ? `${h.emailLastError.at}: ${h.emailLastError.message}` : "لا يوجد", !h.emailLastError],
     ];
-    for (const [name, value, ok] of rows) if (!ok) problems.push(`${name}: ${value}`);
+    for (const [name, value, ok, counts = true] of rows) if (!ok && counts) problems.push(`${name}: ${value}`);
     return { rows };
   } catch (err) {
     problems.push(`صفحة الصحة لم تُقرأ: ${err instanceof Error ? err.message : String(err)}`);
