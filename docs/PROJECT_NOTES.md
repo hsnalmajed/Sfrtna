@@ -1260,6 +1260,16 @@ the customer share ideas, opinions and notes"; for testers and customers):**
 - Next (owner, when he says "start publishing"): invitation message, post-
   trial survey, periodic satisfaction (registered members).
 
+**▶ Start here (hand-off 23 Oct 00:15):** owner opens a new conversation to
+create the **Google Play personal developer account** (decided 23 Oct; $25,
+ID check — may take hours to days). Step 1 for the owner (one step per
+message, English on its own bold line): open
+**play.google.com/console/signup** on a computer, signed in with the Google
+account he uses for Sfrtna; ask for a screenshot. Then: upload key → 4 GitHub
+secrets, closed test (≥ 12 testers × 14 days = the beta), store listing, Data
+safety, App Links. Apple ($99/yr) after Android is approved. Before that
+the owner may send something else first (said so 23 Oct 00:11).
+
 **▶ Start here (hand-off 21 Oct 23:50):** this conversation built the city
 guide (Wikidata + Gemini), the smart planner on our own engine (everywhere:
 /itinerary, city pages, app «المزيد»), the budget advisor's estimate mode
