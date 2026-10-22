@@ -1280,6 +1280,24 @@ Organization record (src/lib/seo.ts) once the owner opens the accounts,
 page titles for real queries, Bing, «رحلتي» + first-visit tips, UTM links per
 channel, weekly content kit, weekly numbers report + earnings table.
 
+**Owner 23 Oct 01:32 — work order + dashboard (proposed, awaiting his OK):**
+improve what exists AND build what is missing. Proposed sections: (1) «لوحة
+سفرتنا» = weekly email (Sunday morning) + private page: visitors (source,
+device, app/web, vs last week), searches (types, top destinations, top hotel
+cities/hotels, origins, budgets), partner clicks per partner + conversion,
+earnings per partner + total (Travelpayouts via its API with the existing
+token — verify endpoints; others via their APIs if any, else the owner types
+the month's figure), what earns most (service + destination), Google
+(impressions, clicks, position of «سفرتنا», top queries), visitor notes,
+3 suggested decisions; reminders (weekly video post, coming travel seasons);
+opportunities (monthly research run: new partners, data sources, partners
+whose terms we now meet, e.g. Travelpayouts' locked programs after 3 months
+of steady traffic). Needs from the owner: a Google Cloud service account
+with read access to GA4 + Search Console (one step per message). (2) «رحلتي»
++ first-visit tips; (3) three entries + one-scroll city page; (4)
+activities page; (5) partner-link checks + backup; (6) full live test;
+Google ranking work runs alongside. Google Play account in parallel.
+
 **▶ Start here (hand-off 23 Oct 00:15):** owner opens a new conversation to
 create the **Google Play personal developer account** (decided 23 Oct; $25,
 ID check — may take hours to days). Step 1 for the owner (one step per
