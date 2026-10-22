@@ -1094,6 +1094,11 @@ Pexels, sign-in, email sender error). Arabic RTL email via Resend from
 no-reply@sfrtna.com. Needs GitHub secrets `RESEND_API_KEY` + `REPORT_TO`
 (repo is public — no address in code). Every run also force-pushes
 `status-report.html` to branch `status-report` (readable from the workspace).
+**Live 22 Oct 12:47:** owner added GitHub secrets `REPORT_TO` and
+`RESEND_API_KEY` (new Resend key "github-status-report", Sending access,
+domain sfrtna.com only); test mail arrived in the Inbox (not Spam), layout
+fine. The 04:47 UTC scheduled run of 22 Oct did not fire (new workflow) —
+check the 16:47 UTC one.
 
 **Owner's mail read 22 Oct (useful points only):**
 - **Sign-in is live:** Google sign-in on sfrtna.com worked 13 Oct (Google

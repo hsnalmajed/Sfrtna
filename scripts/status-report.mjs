@@ -190,7 +190,15 @@ async function health() {
         h.flightProbe?.ok ? `يعمل — ${h.flightProbe.offers} عرض في بحث تجريبي` : `لا يعمل ${h.flightProbe?.error ? `(${h.flightProbe.error})` : ""}`,
         Boolean(h.flightProbe?.ok && h.flightProbe.offers > 0),
       ],
-      ["أسماء الفنادق (HERE)", `${h.here?.status ?? "—"}${h.here?.usage ? ` — ${JSON.stringify(h.here.usage)}` : ""}`, h.here?.status === 200],
+      [
+        "أسماء الفنادق (HERE)",
+        `${h.here?.status === 200 ? "يعمل" : `لا يعمل (${h.here?.status ?? "—"})`}${
+          h.here?.usage
+            ? ` — اليوم ${h.here.usage.today} من ${h.here.usage.dailyCap}، الشهر ${h.here.usage.month} من ${h.here.usage.monthlyCap}`
+            : ""
+        }`,
+        h.here?.status === 200,
+      ],
       [
         "الأنشطة (Viator)",
         !h.viator ? "—" : !h.viator.key ? "المفتاح غير موجود" : h.viator.lastError ? `آخر خطأ: ${String(h.viator.lastError).slice(0, 120)}` : `يعمل — ${h.viator.destinations ?? 0} وجهة`,
