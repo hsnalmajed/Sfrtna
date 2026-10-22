@@ -1,7 +1,6 @@
 import PartnerLink from "@/components/PartnerLink";
 import { COMPENSATION_LINK, servicesFor, type ServiceKind } from "@/lib/tripEssentials";
 import type { Locale } from "@/lib/types";
-import ScrollRow from "@/components/ui/ScrollRow";
 
 /**
  * Everything around the trip in one compact panel — tours and tickets, mobile
@@ -65,14 +64,17 @@ export default function TripServices({
       )}
       <div className="mt-3 divide-y divide-mist-100 overflow-hidden rounded-2xl bg-white ring-1 ring-black/5 shadow-sm">
         {rows.map((r) => (
-          <div key={r.key} className="flex items-center gap-2 px-3 py-2.5 sm:gap-3 sm:px-4">
-            <div className="flex w-[6.5rem] shrink-0 items-center gap-1.5 sm:w-44">
+          <div key={r.key} className="flex items-start gap-2 px-3 py-2.5 sm:items-center sm:gap-3 sm:px-4">
+            <div className="flex min-h-[1.875rem] w-[6.5rem] shrink-0 items-center gap-1.5 sm:w-44">
               <span className="text-base" aria-hidden="true">
                 {r.icon}
               </span>
               <span className="text-xs font-bold leading-tight text-navy-900 sm:text-sm">{r.title}</span>
             </div>
-            <ScrollRow outerClassName="min-w-0 flex-1" className="flex gap-1.5 sm:flex-wrap sm:overflow-visible">
+            {/* Every partner in view, on two lines if needed — never hidden off
+                the side of a phone (owner, 22 Oct: «4 transfer sites, the
+                visitor sees 2»). */}
+            <div className="flex min-w-0 flex-1 flex-wrap gap-1.5">
               {r.links.map((l) => (
                 <PartnerLink
                   key={l.partner}
@@ -88,7 +90,7 @@ export default function TripServices({
                   </span>
                 </PartnerLink>
               ))}
-            </ScrollRow>
+            </div>
           </div>
         ))}
       </div>

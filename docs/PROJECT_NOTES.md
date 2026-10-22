@@ -1198,6 +1198,11 @@ selected tab in view; nothing when it fits; RTL-aware). Used by city tabs,
 home strip, TripServices pills, MultiCityTabs, RecentSearches.
 `scripts/check-rails.mjs` (prebuild) fails on `overflow-x-auto|scroll`
 anywhere else. Local Pixel 7 test ar/en/app/home OK (761f2384).
+Trip services partners now **wrap** on phones (all visible: eSIM 3,
+transfer 4, car 5, luggage 1) — partner pills never scroll (owner: "4
+transfer sites, the visitor sees 2"). `scripts/hidden-rows-scan.mjs`: 20
+pages × site/app × every tab opened, at Pixel 7 width — 0 hidden rows
+(the scan was proven to catch a row with its arrow removed).
 Viator on the phone (owner 22 Oct): Istanbul «Activities & tickets» shows
 photo, rating, duration, live price, «Book now» — works.
 
