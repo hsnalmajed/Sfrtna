@@ -1,0 +1,83 @@
+{
+  "/api/stats/summary?days=7": {
+    "status": 200
+  },
+  "/api/admin/earnings?days=30": {
+    "status": 200
+  },
+  "/api/feedback/recent?hours=168": {
+    "status": 200
+  },
+  "earnings": {
+    "status": 200,
+    "fields": [
+      "campaign_id",
+      "redirects_count",
+      "clicks_count",
+      "paid_actions_count",
+      "processing_actions_count",
+      "paid_profit_usd_sum",
+      "processing_profit_usd_sum"
+    ],
+    "available": [
+      "actions_count",
+      "app_install_count",
+      "cancelled_actions_count",
+      "clicks_count",
+      "ecpc_eur",
+      "ecpc_rub",
+      "ecpc_usd",
+      "init_tools_count",
+      "inits_count",
+      "paid_actions_count",
+      "paid_profit_eur_sum",
+      "paid_profit_rub_sum",
+      "paid_profit_usd_sum",
+      "price_eur_sum",
+      "price_rub_sum",
+      "price_usd_sum",
+      "processing_actions_count",
+      "processing_profit_eur_sum",
+      "processing_profit_rub_sum",
+      "processing_profit_usd_sum",
+      "redirects_count",
+      "searches_count",
+      "visitors_count"
+    ],
+    "listShape": [
+      "fields"
+    ],
+    "rowKeys": [
+      "campaign_id",
+      "clicks_count",
+      "paid_actions_count",
+      "paid_profit_usd_sum",
+      "processing_actions_count",
+      "processing_profit_usd_sum",
+      "redirects_count"
+    ],
+    "campaigns": [
+      1,
+      10,
+      22,
+      87,
+      89,
+      100,
+      101,
+      111,
+      120,
+      137,
+      143,
+      147,
+      150,
+      172,
+      209,
+      222,
+      224,
+      541,
+      627,
+      629,
+      633
+    ]
+  }
+}
