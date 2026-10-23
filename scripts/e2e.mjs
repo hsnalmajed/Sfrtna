@@ -29,6 +29,12 @@ const notes = [];
 
 const browser = await chromium.launch();
 const context = await browser.newContext({ locale: "ar-SA", viewport: { width: 390, height: 844 } });
+// First-visit tips (FirstTips.tsx) sit over the bottom of the page: seen.
+await context.addInitScript(() => {
+  try {
+    localStorage.setItem("sfr-tips-v1", JSON.stringify(["home", "results", "hotels", "city", "discover", "trip"]));
+  } catch {}
+});
 await context.route("**/*", (route) => {
   const req = route.request();
   if (new URL(req.url()).host !== HOST) return route.continue();
