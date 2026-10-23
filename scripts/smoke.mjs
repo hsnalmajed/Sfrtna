@@ -202,6 +202,32 @@ for (const path of ["/ar/attractions/TR/no-such-city", "/ar/visa/XX", "/en/maps/
 }
 
 // The protection must still hold.
+// ── Partner links: every way out still carries our tag (owner, 23 Oct:
+// "a page that tells me whether each partner link still works") ─────────
+async function goLocation(path) {
+  const res = await fetch(`${BASE}${path}`, {
+    headers: { "User-Agent": UA, "x-sfrtna-smoke": TOKEN },
+    redirect: "manual",
+    signal: AbortSignal.timeout(60_000),
+  });
+  const loc = res.headers.get("location") || "";
+  if (res.status < 300 || res.status > 399 || !loc) throw new Error(`${path} → ${res.status}, no redirect`);
+  return loc;
+}
+for (const [name, path, mark] of [
+  ["GetYourGuide", "/api/go/gyg?q=Hagia%20Sophia%20Istanbul", /partner_id=/],
+  ["Klook", "/api/go/tp?b=klook&q=Hagia%20Sophia", /tp\.media|tp\.st|marker=|aff_pid=/],
+  ["Tiqets", "/api/go/tp?b=tiqets&q=Hagia%20Sophia", /tp\.media|tp\.st|marker=|partner=/],
+  ["Airalo", "/api/go/tp?b=airalo&c=TR", /tp\.media|tp\.st|marker=|irclickid=/],
+  ["Expedia", `/api/go/expedia?landing=${encodeURIComponent("https://www.expedia.com/Hotel-Search?destination=Istanbul")}`, /camref=/],
+]) {
+  await check(`partner link: ${name} carries our tag`, async () => {
+    const loc = await goLocation(path);
+    if (!mark.test(loc)) throw new Error(`${name} link left without our tag: ${new URL(loc).hostname}`);
+    return new URL(loc).hostname;
+  });
+}
+
 await check("protection: workers.dev without the key goes to sfrtna.com", async () => {
   const res = await fetch(`${BASE}/ar`, { headers: { "User-Agent": UA }, redirect: "manual" });
   if (res.status !== 301 || !(res.headers.get("location") || "").startsWith("https://sfrtna.com/")) {

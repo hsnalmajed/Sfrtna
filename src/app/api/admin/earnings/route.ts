@@ -55,5 +55,5 @@ export async function GET(request: Request) {
   } catch {
     data = text.slice(0, 500);
   }
-  return NextResponse.json({ status: res?.status ?? 0, from, to, fields, data }, { headers: { "cache-control": "no-store" } });
+  return NextResponse.json({ status: res?.status ?? 0, from, to, fields, available: [...names].slice(0, 200), listShape: list && typeof list === "object" ? Object.keys(list as object).slice(0, 20) : null, data }, { headers: { "cache-control": "no-store" } });
 }
