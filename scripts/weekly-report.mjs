@@ -105,7 +105,7 @@ const PROGRAMS = { 100: "Aviasales (طيران)" };
 function earnings(raw) {
   if (!raw) return { ok: false, note: "تعذّرت قراءة أرقام Travelpayouts." };
   const rows = raw?.data?.results || raw?.data?.rows || (Array.isArray(raw?.data) ? raw.data : null);
-  shape.earnings = { status: raw.status, fields: raw.fields, available: raw.available, listShape: raw.listShape, rowKeys: rows?.[0] ? Object.keys(rows[0]) : null, sample: typeof raw.data === "string" ? raw.data.slice(0, 200) : undefined };
+  shape.earnings = { status: raw.status, fields: raw.fields, available: raw.available, listShape: raw.listShape, rowKeys: rows?.[0] ? Object.keys(rows[0]) : null, campaigns: Array.isArray(rows) ? rows.map((r) => r.campaign_id).filter(Boolean) : null, sample: typeof raw.data === "string" ? raw.data.slice(0, 200) : undefined };
   if (raw.status !== 200 || !Array.isArray(rows)) return { ok: false, note: `Travelpayouts لم يُرجع الأرقام (الحالة ${raw.status}). سأضبط الطلب.` };
   const money = (r, k) => Number(r[`${k}_usd_sum`] ?? r[`${k}_eur_sum`] ?? 0);
   const cur = rows.some((r) => "paid_profit_usd_sum" in r) ? "$" : "€";
