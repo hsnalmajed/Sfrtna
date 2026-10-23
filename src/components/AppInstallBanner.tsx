@@ -33,7 +33,7 @@ export default function AppInstallBanner() {
     // Not over the first seconds of a visit, and never on top of the cookie
     // question: shown once the page has settled and that is answered.
     const id = window.setInterval(() => {
-      if (document.querySelector("[data-consent-banner]")) return;
+      if (document.querySelector("[data-consent-banner], [data-first-tip]")) return;
       window.clearInterval(id);
       setUrl(link);
     }, 2500);
@@ -48,7 +48,7 @@ export default function AppInstallBanner() {
     } catch {}
   };
   return (
-    <div role="dialog" aria-label={t.title} className="fixed inset-x-3 bottom-3 z-[70] mx-auto max-w-md rounded-2xl bg-navy-990 p-3.5 text-white shadow-2xl ring-1 ring-white/15 print:hidden">
+    <div data-install-banner role="dialog" aria-label={t.title} className="fixed inset-x-3 bottom-3 z-[70] mx-auto max-w-md rounded-2xl bg-navy-990 p-3.5 text-white shadow-2xl ring-1 ring-white/15 print:hidden">
       <div className="flex items-center gap-3">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/favicon-192.png" alt="" className="h-12 w-12 shrink-0 rounded-xl bg-white" />

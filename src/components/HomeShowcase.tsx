@@ -605,6 +605,8 @@ export default function HomeShowcase({
           <div key={active} className="tab-fade">
             {active === "season" && (
               <>
+                {/* The trip being got ready, on whichever panel opens first. */}
+                <UpcomingTrip locale={locale} />
                 {allCities || seasonCities.length <= 6 ? (
                   <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-6">
                     {seasonCities.map((c) => cityCard(c))}

@@ -11,6 +11,9 @@ import { saveLanguage } from "@/lib/langCookie";
 import type { Locale } from "@/lib/types";
 import { CONTACT_EMAIL } from "@/lib/contact";
 import { openFeedback } from "@/components/feedback/events";
+import { replayTips } from "@/components/FirstTips";
+import { useMyTrip } from "@/lib/myTrip";
+import { tripCityName } from "@/components/member/tripLinks";
 
 /**
  * The phone app's own navigation: a tab bar at the bottom of the screen.
@@ -80,6 +83,7 @@ export default function AppTabBar({ locale }: { locale: Locale }) {
     else setMoreOpen(false);
   };
 
+  const myTrip = useMyTrip();
   const home = `/${locale}`;
   const isActive = (href: string) =>
     href === home ? pathname === home : pathname === href || pathname.startsWith(`${href}/`);
@@ -208,6 +212,18 @@ export default function AppTabBar({ locale }: { locale: Locale }) {
               ))}
             </div>
 
+            <Link
+              href={`/${locale}/my-trip`}
+              onClick={(e) => go(e, `/${locale}/my-trip`)}
+              className="mt-3 flex w-full items-center gap-3 rounded-2xl bg-navy-990 px-4 py-3.5 text-start text-white active:scale-[0.99]"
+            >
+              <span className="text-2xl leading-none" aria-hidden="true">🧳</span>
+              <span className="min-w-0 flex-1">
+                <span className="block text-sm font-extrabold">{dict.myTrip.title}</span>
+                <span className="block truncate text-xs text-white/65">{myTrip ? tripCityName(myTrip, locale === "ar") : dict.myTrip.navSub}</span>
+              </span>
+              <span aria-hidden="true" className="text-white/40 rtl:rotate-180">›</span>
+            </Link>
             <AccountLink locale={locale} variant="sheet" onNavigate={go} />
             <p className="mt-5 px-1 pb-2 text-xs font-bold text-navy-900/50">{dict.nav.tools}</p>
             <div className="grid grid-cols-3 gap-2">
@@ -240,6 +256,18 @@ export default function AppTabBar({ locale }: { locale: Locale }) {
                 <span className="block text-xs text-navy-900/60">{dict.feedback.subtitle}</span>
               </span>
               <span aria-hidden="true" className="text-navy-900/30 rtl:rotate-180">›</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                setMoreOpen(false);
+                replayTips();
+              }}
+              className="mt-3 flex w-full items-center gap-3 rounded-2xl bg-mist-50 px-4 py-3 text-start text-sm font-semibold text-navy-900 ring-1 ring-navy-900/5"
+            >
+              <span className="text-xl leading-none" aria-hidden="true">💡</span>
+              <span className="flex-1">{dict.tips.replay}</span>
             </button>
 
             <div className="mt-3 divide-y divide-navy-900/5 overflow-hidden rounded-2xl bg-mist-50 ring-1 ring-navy-900/5">

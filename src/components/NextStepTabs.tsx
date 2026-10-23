@@ -1,5 +1,7 @@
 "use client";
 
+import { markMyTripForCity } from "@/lib/myTrip";
+import MyTripChip from "@/components/member/MyTripChip";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import type { Locale } from "@/lib/types";
@@ -66,6 +68,7 @@ export function markStep(slug: string, step: StepKey) {
   } catch {
     /* storage off: every tab stays offered */
   }
+  markMyTripForCity(slug, step);
 }
 
 export default function NextStepTabs({
@@ -160,7 +163,8 @@ export default function NextStepTabs({
   tabs.push({ key: "places", title: t.places, sub: t.placesSub, href: withBack(cityPath, placeParams()), art: <PlacesArt /> });
 
   const shown = tabs.filter((tab) => !opened.includes(tab.key));
-  if (shown.length === 0) return null;
+  // Every next step opened: the trip page still gathers them.
+  if (shown.length === 0) return <MyTripChip locale={locale} slug={city.slug} className="mt-8" />;
 
   const tile =
     "group flex h-full flex-col overflow-hidden rounded-2xl bg-white text-center shadow-sm ring-1 ring-mist-200 transition hover:-translate-y-0.5 hover:shadow-md hover:ring-sun-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400";
@@ -178,7 +182,10 @@ export default function NextStepTabs({
 
   return (
     <section className="mt-10" aria-label={t.title.replace("{city}", name)}>
-      <h2 className="mb-3 font-display text-lg font-extrabold text-navy-950 sm:text-xl">{t.title.replace("{city}", name)}</h2>
+      <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+        <h2 className="font-display text-lg font-extrabold text-navy-950 sm:text-xl">{t.title.replace("{city}", name)}</h2>
+        <MyTripChip locale={locale} slug={city.slug} />
+      </div>
       <div className={`grid gap-2 sm:gap-4 ${shown.length >= 4 ? "grid-cols-4" : shown.length === 3 ? "grid-cols-3" : "grid-cols-2"}`}>
         {shown.map((tab) =>
           tab.href ? (
@@ -191,7 +198,10 @@ export default function NextStepTabs({
               type="button"
               className={tile}
               aria-haspopup="dialog"
-              onClick={() => setServicesOpen(true)}
+              onClick={() => {
+                setServicesOpen(true);
+                markStep(city.slug, "services");
+              }}
             >
               {body(tab)}
             </button>

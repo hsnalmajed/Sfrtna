@@ -1362,6 +1362,27 @@ secrets `CF_API_TOKEN` (Account Analytics: Read) + `CF_ACCOUNT_ID`** (owner
 step); until then the row says it waits. Decision on Paid deferred to
 before launch (owner, 23 Oct).
 
+**«رحلتي» + first-visit tips — 23 Oct (relatives' notes 13, 14):**
+- `/[locale]/my-trip` (`member/MyTripView.tsx`, noindex): the trip being got
+  ready, for everyone, in this browser (`src/lib/myTrip.ts`, localStorage
+  `sfr-my-trip-v1`). Set by every single/round-trip flight search on
+  /results (combo too); same route+dates keep their ticks; past trips drop.
+  Steps: flight (prices now + «حجزتها»), hotel, visa (dialog in place),
+  services (TripServices opens in place), plan; progress bar «جاهزيتك».
+  `NextStepTabs.markStep` ticks the trip's steps for the same city; the
+  services tab now marks too. Saved account trips listed («اجعلها رحلتي»).
+- Entry points: header nav «رحلتي» (gold dot when a trip exists), app
+  «المزيد» row, home card (`UpcomingTrip`, now on the season and plan panels,
+  anyone), chip «رحلتي: N من M جاهزة» beside the next-step title on flight
+  and hotel results (`MyTripChip`).
+- `FirstTips.tsx` (layout): once per page kind (home, results, hotels, city,
+  discover, trip), a bottom card with 2–3 lines; waits for no consent
+  banner, install banner or open dialog; `sfr-tips-v1`; «أعد عرض النصائح» in
+  «المزيد». GA4 `tip_seen`, `my_trip_step`.
+- Local Pixel 7 test (ar/en/app): all steps, visa dialog, services, progress,
+  home card, no overflow, no page errors.
+- To propose to owner: a «رحلتي» tab in the app bar (replacing «المواسم»?).
+
 **▶ Start here (hand-off 23 Oct 00:15):** owner opens a new conversation to
 create the **Google Play personal developer account** (decided 23 Oct; $25,
 ID check — may take hours to days). Step 1 for the owner (one step per

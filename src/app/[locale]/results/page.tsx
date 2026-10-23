@@ -28,6 +28,7 @@ import { useMember } from "@/lib/useMember";
 import { openJoin, showToast } from "@/components/member/events";
 import { track } from "@/lib/analytics";
 import { comboParams, readCombo } from "@/lib/combo";
+import { setMyTrip } from "@/lib/myTrip";
 
 
 export default function ResultsPage() {
@@ -234,6 +235,26 @@ function ResultsContent() {
   // The money they leave with and the money they'll spend. Both have to
   // resolve, and to different currencies, for the strip to have anything to
   // say — a Riyadh-to-Dammam trip doesn't need an exchange rate.
+  // «رحلتي»: this search becomes the trip being got ready (this browser,
+  // everyone); the same route and dates keep their ticked steps.
+  useEffect(() => {
+    if (isMulti || !search.origin || !search.destination || !search.departDate) return;
+    setMyTrip({
+      origin: search.origin,
+      destination: search.destination,
+      depart: search.departDate,
+      back: search.returnDate || undefined,
+      code: destinationCountry?.code,
+      slug: destinationCity?.slug,
+      cityAr: destinationCity?.nameAr ?? destinationAirport?.cityAr,
+      cityEn: destinationCity?.nameEn ?? destinationAirport?.cityEn,
+      adults: Math.max(1, search.adults),
+      childrenAges: search.childrenAges ?? [],
+      infants: search.infants ?? 0,
+      flightUrl: window.location.pathname + window.location.search,
+    });
+  }, [isMulti, search.origin, search.destination, search.departDate, search.returnDate, search.adults, search.childrenAges, search.infants, destinationCountry, destinationCity, destinationAirport]);
+
   // «احجز» on a flight: a member's trip is kept in «رحلاتي» with the steps
   // left to get ready; a visitor is offered an account, once a visit.
   const member = useMember();

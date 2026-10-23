@@ -1,6 +1,7 @@
 "use client";
 
 import AccountLink from "@/components/AccountLink";
+import { useMyTrip } from "@/lib/myTrip";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -63,10 +64,13 @@ export default function Header({ locale }: { locale: Locale }) {
    *
    * A seven-item bar on a phone is a scroll; four fit.
    */
-  const navLinks = [
+  const hasTrip = Boolean(useMyTrip());
+  const navLinks: { href: string; label: string; dot?: boolean }[] = [
     { href: `/${locale}`, label: dict.nav.home },
     { href: `/${locale}/attractions`, label: dict.nav.destinations },
     { href: `/${locale}/seasons`, label: dict.nav.whenToTravel },
+    // «رحلتي»: the trip being got ready; a gold dot once there is one.
+    { href: `/${locale}/my-trip`, label: dict.nav.myTrip, dot: hasTrip },
   ];
 
   const toolLinks = [
@@ -124,6 +128,7 @@ export default function Header({ locale }: { locale: Locale }) {
                 }`}
               >
                 {link.label}
+                {link.dot && <span aria-hidden="true" className="ms-1 inline-block h-1.5 w-1.5 rounded-full bg-sun-400 align-super" />}
                 {isActive(link.href) && (
                   <span className="absolute inset-x-3 -bottom-0.5 h-[2px] rounded-full bg-sun-400" />
                 )}
@@ -221,6 +226,7 @@ export default function Header({ locale }: { locale: Locale }) {
                 }`}
               >
                 {link.label}
+                {link.dot && <span aria-hidden="true" className="ms-1.5 inline-block h-1.5 w-1.5 rounded-full bg-sun-400 align-middle" />}
               </Link>
             ))}
 
