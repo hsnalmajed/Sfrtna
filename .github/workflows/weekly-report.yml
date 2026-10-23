@@ -12,6 +12,10 @@ on:
   schedule:
     - cron: "17 5 * * 0"
   workflow_dispatch:
+    inputs:
+      send:
+        description: "Send the email (false = build and keep the shape only)"
+        default: "true"
 
 permissions:
   contents: write
@@ -34,6 +38,7 @@ jobs:
           SMOKE_TOKEN: ${{ secrets.SMOKE_TOKEN }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           REPORT_TO: ${{ secrets.REPORT_TO }}
+          REPORT_SEND: ${{ github.event.inputs.send || 'true' }}
         run: node scripts/weekly-report.mjs
       - name: Keep the shape (no numbers) on its branch
         if: always()

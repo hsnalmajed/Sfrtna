@@ -27,27 +27,35 @@ export async function GET(request: Request) {
   const names = new Set<string>(
     JSON.stringify(list ?? {}).match(/"name"\s*:\s*"([a-z_]+)"/g)?.map((m) => m.split('"')[3]) ?? []
   );
-  const group = ["campaign_name", "campaign_id"].filter((f) => names.size === 0 || names.has(f)).slice(0, 1);
-  const wanted = ["clicks_count", "redirect_count", "searches_count", "paid_actions_count", "processing_actions_count", "paid_profit_usd_sum", "processing_profit_usd_sum", "paid_profit_eur_sum", "processing_profit_eur_sum"];
-  const fields = [...group, ...wanted.filter((f) => names.size === 0 || names.has(f))];
+  const wanted = ["redirects_count", "clicks_count", "paid_actions_count", "processing_actions_count", "paid_profit_usd_sum", "processing_profit_usd_sum"];
+  const metrics = wanted.filter((f) => names.size === 0 || names.has(f));
 
   const days = Math.min(Math.max(Number(url.searchParams.get("days")) || 30, 1), 365);
   const to = day(Date.now() + 86400e3);
   const from = day(Date.now() - days * 86400e3);
-  const res = await fetch(`${TP}/execute_query`, {
-    method: "POST",
-    headers,
-    body: JSON.stringify({
-      fields,
-      filters: [
-        { field: "date", op: "ge", value: from },
-        { field: "date", op: "lt", value: to },
-      ],
-      group,
-      limit: 200,
-    }),
-    signal: AbortSignal.timeout(20_000),
-  }).catch(() => null);
+  const run = (group: string[]) =>
+    fetch(`${TP}/execute_query`, {
+      method: "POST",
+      headers,
+      body: JSON.stringify({
+        fields: [...group, ...metrics],
+        filters: [
+          { field: "date", op: "ge", value: from },
+          { field: "date", op: "lt", value: to },
+        ],
+        group,
+        limit: 200,
+      }),
+      signal: AbortSignal.timeout(20_000),
+    }).catch(() => null);
+  // Per program first; the field list does not name dimensions, so try it
+  // and fall back to the total when the API refuses the grouping.
+  let fields = ["campaign_id", ...metrics];
+  let res = await run(["campaign_id"]);
+  if (!res || !res.ok) {
+    fields = metrics;
+    res = await run([]);
+  }
   const text = res ? await res.text() : "";
   let data: unknown = null;
   try {

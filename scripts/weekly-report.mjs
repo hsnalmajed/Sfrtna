@@ -99,6 +99,9 @@ function change(now, before) {
 }
 
 // ── Earnings (Travelpayouts) ────────────────────────────────────────────────
+// Travelpayouts program ids we know by name (Aviasales = 100, from their
+// API article); others show their number until named here.
+const PROGRAMS = { 100: "Aviasales (طيران)" };
 function earnings(raw) {
   if (!raw) return { ok: false, note: "تعذّرت قراءة أرقام Travelpayouts." };
   const rows = raw?.data?.results || raw?.data?.rows || (Array.isArray(raw?.data) ? raw.data : null);
@@ -108,8 +111,8 @@ function earnings(raw) {
   const cur = rows.some((r) => "paid_profit_usd_sum" in r) ? "$" : "€";
   const list = rows
     .map((r) => ({
-      name: r.campaign_name || r.campaign_id || "—",
-      clicks: Number(r.redirect_count ?? r.clicks_count ?? 0),
+      name: PROGRAMS[r.campaign_id] || (r.campaign_id ? `برنامج رقم ${r.campaign_id}` : "كل البرامج"),
+      clicks: Number(r.redirects_count ?? r.clicks_count ?? 0),
       paid: money(r, "paid_profit"),
       pending: money(r, "processing_profit"),
       bookings: Number(r.paid_actions_count || 0) + Number(r.processing_actions_count || 0),
@@ -258,7 +261,9 @@ console.log(JSON.stringify(shape));
 
 const key = process.env.RESEND_API_KEY;
 const to = process.env.REPORT_TO;
-if (!key || !to) {
+if (process.env.REPORT_SEND === "false") {
+  console.log("REPORT_SEND=false — not sent.");
+} else if (!key || !to) {
   console.log("RESEND_API_KEY or REPORT_TO not set — report saved to weekly-report.html only.");
 } else {
   const res = await fetch("https://api.resend.com/emails", {
