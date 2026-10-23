@@ -1,3 +1,4 @@
+import { countUse } from "@/lib/usage";
 import { cachedJson } from "@/lib/edgeCache";
 
 /**
@@ -124,6 +125,7 @@ async function search(params: Record<string, string>, kind: "hotel" | "flight" |
   url.searchParams.set("api_key", key());
   try {
     const res = await fetch(url.toString());
+    countUse("serpapi");
     if (!res.ok) return null;
     const body = (await res.json()) as Record<string, unknown>;
     if (body.error) return null;

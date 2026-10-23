@@ -174,6 +174,7 @@ export async function sendCodeEmail(to: string, code: string, locale: "ar" | "en
       body: JSON.stringify({ from: process.env.EMAIL_FROM || "سفرتنا <no-reply@sfrtna.com>", to: [to], subject, text, html }),
       signal: AbortSignal.timeout(10_000),
     });
+    void import("@/lib/usage").then((m) => m.countUse("resend"));
     if (!res.ok) {
       // Why the sender refused (unverified domain, key without permission…),
       // kept a day for /api/health and the Workers logs — never the key.

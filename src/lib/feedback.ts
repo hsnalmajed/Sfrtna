@@ -1,3 +1,4 @@
+import { countUse } from "@/lib/usage";
 /**
  * «شاركنا رأيك» — what a visitor can send, and the email it becomes.
  *
@@ -52,6 +53,7 @@ async function send(body: Record<string, unknown>): Promise<boolean> {
       body: JSON.stringify({ from: process.env.EMAIL_FROM || "سفرتنا <no-reply@sfrtna.com>", ...body }),
       signal: AbortSignal.timeout(12_000),
     });
+    countUse("resend");
     if (!res.ok) console.error("feedback email refused", res.status, (await res.text().catch(() => "")).slice(0, 200));
     return res.ok;
   } catch (err) {

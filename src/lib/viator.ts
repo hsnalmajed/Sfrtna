@@ -1,3 +1,4 @@
+import { countUse } from "@/lib/usage";
 import { cachedJson } from "@/lib/edgeCache";
 // Viator Partner API (v2) client — the real source for bookable tours and
 // activities, their live prices, photos, ratings and booking links.
@@ -63,6 +64,7 @@ async function viatorFetch<T>(
         ...(rest.headers || {}),
       },
     });
+    countUse("viator");
     if (!res.ok) {
       lastError = `${path} ${res.status} ${(await res.text()).slice(0, 200)}`;
       return null;

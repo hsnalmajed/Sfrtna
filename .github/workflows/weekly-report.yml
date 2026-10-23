@@ -38,6 +38,8 @@ jobs:
           SMOKE_TOKEN: ${{ secrets.SMOKE_TOKEN }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           REPORT_TO: ${{ secrets.REPORT_TO }}
+          CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+          CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
           REPORT_SEND: ${{ github.event.inputs.send || 'true' }}
         run: node scripts/weekly-report.mjs
       - name: Keep the shape (no numbers) on its branch

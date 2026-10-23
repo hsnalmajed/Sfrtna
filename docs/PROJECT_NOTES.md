@@ -1350,6 +1350,18 @@ through a token-protected Worker route).
   monthly «فرص» research run (scheduled task), partner-link tracking in the
   daily status email, backup of the Accounts DO.
 
+**Free-allowance measurement — 23 Oct 11:30 (owner: "decide Cloudflare/SerpApi
+before launch from how much the testers consume"):** `countUse()`
+(`src/lib/usage.ts`) adds one to stats kind `ext` (key serpapi | here |
+resend | viator) on every outside call, via waitUntil (exempt from the
+3,000-key daily cap). Weekly report section «استهلاك الباقات المجانية»:
+used in the period, per 100 visits, and "visits a day the free plan
+carries"; Cloudflare requests/day + 1102 failures from its GraphQL
+analytics (`workersInvocationsAdaptive`, script sfrtna) — **needs GitHub
+secrets `CF_API_TOKEN` (Account Analytics: Read) + `CF_ACCOUNT_ID`** (owner
+step); until then the row says it waits. Decision on Paid deferred to
+before launch (owner, 23 Oct).
+
 **▶ Start here (hand-off 23 Oct 00:15):** owner opens a new conversation to
 create the **Google Play personal developer account** (decided 23 Oct; $25,
 ID check — may take hours to days). Step 1 for the owner (one step per

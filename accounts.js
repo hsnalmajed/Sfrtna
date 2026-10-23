@@ -312,7 +312,7 @@ export class Accounts extends DurableObject {
     const rows = this.sql.exec("SELECT COUNT(*) AS c FROM stats WHERE day = ?", day).one().c;
     for (const [kind, key] of pairs) {
       const hit = this.sql.exec("UPDATE stats SET n = n + 1 WHERE day = ? AND kind = ? AND key = ?", day, kind, key).rowsWritten;
-      if (!hit && rows < STATS_KEYS_PER_DAY) this.sql.exec("INSERT OR IGNORE INTO stats (day, kind, key, n) VALUES (?, ?, ?, 1)", day, kind, key);
+      if (!hit && (rows < STATS_KEYS_PER_DAY || kind === "ext")) this.sql.exec("INSERT OR IGNORE INTO stats (day, kind, key, n) VALUES (?, ?, ?, 1)", day, kind, key);
     }
     if (Math.random() < 0.01) {
       const cut = new Date(Date.now() - STATS_KEEP_DAYS * 86400e3).toISOString().slice(0, 10);

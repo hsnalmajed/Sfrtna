@@ -1,3 +1,4 @@
+import { countUse } from "@/lib/usage";
 /**
  * The daily cap on HERE searches (free tier: 5,000 a month).
  *
@@ -48,7 +49,9 @@ export async function takeHere(): Promise<boolean> {
   const c = await counter();
   if (!c) return process.env.NODE_ENV !== "production";
   try {
-    return (await c.take(HERE_DAILY_CAP, HERE_MONTHLY_CAP)).ok;
+    const ok = (await c.take(HERE_DAILY_CAP, HERE_MONTHLY_CAP)).ok;
+    if (ok) countUse("here");
+    return ok;
   } catch {
     return false;
   }

@@ -42,7 +42,7 @@ const shape = {};
 async function get(path) {
   try {
     const res = await fetch(`${BASE}${path}`, {
-      headers: { "x-sfrtna-smoke": TOKEN, "User-Agent": UA },
+      headers: { "x-sfrtna-smoke": TOKEN, "Sec-Fetch-Site": "same-origin", "User-Agent": UA },
       signal: AbortSignal.timeout(60_000),
     });
     const body = await res.json().catch(() => null);
@@ -137,10 +137,53 @@ function earningsHtml(e) {
 <tr><td ${td}><b>المجموع</b></td><td ${td}><b>${n(sum("clicks"))}</b></td><td ${td}><b>${n(sum("bookings"))}</b></td><td ${td}><b>${money(sum("pending"))}</b></td><td ${td}><b>${money(sum("paid"))}</b></td></tr></table>`;
 }
 
+// ── Free allowances: what the visitors use ───────────────────────────────
+// Owner, 23 Oct: "measure how much of each free plan the users consume" —
+// decide Cloudflare Paid and SerpApi from these numbers before launch.
+// Cloudflare numbers come from its analytics API (GitHub secrets
+// CF_API_TOKEN with "Account Analytics: Read", and CF_ACCOUNT_ID).
+async function cloudflare(days) {
+  const token = process.env.CF_API_TOKEN;
+  const account = process.env.CF_ACCOUNT_ID;
+  if (!token || !account) return { ok: false, why: "no_token" };
+  const iso = (ms) => new Date(ms).toISOString().slice(0, 10);
+  const query = `query($a: String!, $from: Date!, $to: Date!) { viewer { accounts(filter: { accountTag: $a }) {
+    workersInvocationsAdaptive(limit: 2000, filter: { scriptName: "sfrtna", date_geq: $from, date_leq: $to }) {
+      sum { requests errors subrequests } dimensions { date status } } } } }`;
+  try {
+    const res = await fetch("https://api.cloudflare.com/client/v4/graphql", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ query, variables: { a: account, from: iso(Date.now() - (days - 1) * 86400e3), to: iso(Date.now()) } }),
+      signal: AbortSignal.timeout(30_000),
+    });
+    const body = await res.json();
+    shape.cloudflare = { status: res.status, errors: (body.errors || []).map((x) => x.message).slice(0, 3) };
+    const rows = body?.data?.viewer?.accounts?.[0]?.workersInvocationsAdaptive;
+    if (!res.ok || !Array.isArray(rows)) return { ok: false, why: "refused" };
+    const byDay = new Map();
+    let cpu = 0;
+    for (const r of rows) {
+      const d = r.dimensions.date;
+      byDay.set(d, (byDay.get(d) || 0) + (r.sum.requests || 0));
+      if (r.dimensions.status === "exceededResources") cpu += r.sum.requests || 0;
+    }
+    const perDay = [...byDay.values()];
+    const sum = perDay.reduce((a, b) => a + b, 0);
+    shape.cloudflare.days = perDay.length;
+    return { ok: true, total: sum, avg: perDay.length ? sum / perDay.length : 0, max: Math.max(0, ...perDay), cpu };
+  } catch (err) {
+    shape.cloudflare = { error: err.message };
+    return { ok: false, why: "refused" };
+  }
+}
+
 // ── Build ───────────────────────────────────────────────────────────────────
 const stats = await get(`/api/stats/summary?days=${DAYS}`);
 const tp = await get("/api/admin/earnings?days=30");
 const fb = await get(`/api/feedback/recent?hours=${DAYS * 24}`);
+const cf = await cloudflare(DAYS);
+const serp = await get("/api/serp-status");
 
 const cur = group(stats?.current);
 const prev = group(stats?.previous);
@@ -165,6 +208,27 @@ const bars = daily
   })
   .join("");
 
+// Allowance rows: [service, free limit, used in the period, per 100 visits, visits a day the free plan carries].
+const ext = mapOf(k("ext"));
+const perVisit = (used) => (visits ? used / visits : 0);
+const carries = (limitPerDay, used) => (perVisit(used) > 0 ? Math.floor(limitPerDay / perVisit(used)) : null);
+const allowances = [
+  cf.ok
+    ? ["Cloudflare (الاستضافة) — الطلبات", "100,000 في اليوم", `${n(cf.avg)} في اليوم (أعلى يوم ${n(cf.max)})`, visits ? n((cf.total / visits) * 100) : "—", carries(100000, cf.total)]
+    : ["Cloudflare (الاستضافة) — الطلبات", "100,000 في اليوم", "ينتظر صلاحية القراءة من Cloudflare", "—", null],
+  cf.ok ? ["Cloudflare — صفحات تجاوزت حد المعالجة (خطأ 1102)", "10 ملّي ثانية لكل طلب", `${n(cf.cpu)} طلب فشل`, visits ? n((cf.cpu / visits) * 100) : "—", null] : null,
+  ["أسعار الفنادق وجوجل للطيران (SerpApi)", `${n(serp?.perMonth || 250)} في الشهر`, `${n(ext.get("serpapi") || 0)} بحث${serp?.connected ? ` · الشهر: ${n(serp.used)} من ${n(serp.perMonth)}` : ""}`, visits ? (perVisit(ext.get("serpapi") || 0) * 100).toFixed(1) : "—", carries((serp?.perMonth || 250) / 30, ext.get("serpapi") || 0)],
+  ["أسماء الفنادق (HERE)", "4,800 في الشهر (حدّنا)", `${n(ext.get("here") || 0)} طلب`, visits ? (perVisit(ext.get("here") || 0) * 100).toFixed(1) : "—", carries(160, ext.get("here") || 0)],
+  ["البريد (Resend)", "100 في اليوم · 3,000 في الشهر", `${n(ext.get("resend") || 0)} رسالة`, visits ? (perVisit(ext.get("resend") || 0) * 100).toFixed(1) : "—", carries(100, ext.get("resend") || 0)],
+  ["الأنشطة (Viator)", "بلا حد معلن", `${n(ext.get("viator") || 0)} طلب`, visits ? (perVisit(ext.get("viator") || 0) * 100).toFixed(1) : "—", null],
+].filter(Boolean);
+const allowanceHtml = `<table style="width:100%;border-collapse:collapse;background:#fff;border:1px solid #eaecf0;font-size:13px">
+<tr style="background:#f2f4f7"><th style="padding:6px;text-align:start">الخدمة</th><th style="padding:6px">المجاني</th><th style="padding:6px">استُهلك في الفترة</th><th style="padding:6px">لكل 100 زيارة</th><th style="padding:6px">يكفي زيارات يومياً</th></tr>
+${allowances.map(([a, b, c, d, cap]) => `<tr><td style="padding:6px;border-top:1px solid #eaecf0">${esc(a)}</td><td style="padding:6px;border-top:1px solid #eaecf0;text-align:center">${esc(b)}</td><td style="padding:6px;border-top:1px solid #eaecf0;text-align:center">${esc(c)}</td><td style="padding:6px;border-top:1px solid #eaecf0;text-align:center">${esc(d)}</td><td style="padding:6px;border-top:1px solid #eaecf0;text-align:center;font-weight:700">${cap === null ? "—" : n(cap)}</td></tr>`).join("")}
+</table>
+<p style="margin:6px 0 0;color:#667085;font-size:12px">«يكفي زيارات يومياً» = كم زيارة في اليوم تتحملها الباقة المجانية إذا بقي الاستهلاك لكل زائر كما هو هذا الأسبوع. البحث يُحفظ مؤقتاً، فكلما زاد الزوار قلّ الاستهلاك لكل زائر عادةً.</p>`;
+shape.allowances = { cloudflare: cf.ok, serp: Boolean(serp?.connected), ext: [...ext.keys()] };
+
 // Three suggestions, only from the numbers.
 const tips = [];
 const topDest = k("dest")[0];
@@ -172,6 +236,8 @@ if (topDest) tips.push(`أكثر وجهة بحثاً هذا الأسبوع: <b>$
 const topSource = k("source").find((s) => s.key !== "direct" && s.key !== "app");
 if (topSource) tips.push(`أكثر قناة جلبت زواراً: <b>${esc(SOURCE_AR[topSource.key] || topSource.key)}</b> (${n(topSource.n)} زيارة). ركّز النشر فيها.`);
 if (searches && clicks / searches < 0.15) tips.push(`من كل 100 بحث، ضغط ${Math.round((clicks / searches) * 100)} فقط على موقع حجز. نراجع صفحة النتائج لنقرّب زر الحجز.`);
+if (cf.ok && cf.cpu > 0) tips.push(`فشل ${n(cf.cpu)} طلب هذا الأسبوع لتجاوز حد المعالجة في باقة Cloudflare المجانية. إن تكرر في أيام بلا تحديثات فالاشتراك (5 دولارات) يحلّه.`);
+if (cf.ok && cf.max > 70000) tips.push(`أعلى يوم وصل ${n(cf.max)} طلب من 100,000 المجانية — قربنا من الحد.`);
 if (!visits) tips.push("لم تُسجَّل زيارات بعد — العدّ بدأ للتو، وستظهر الأرقام في تقرير الأسبوع القادم.");
 while (tips.length > 3) tips.pop();
 
@@ -241,6 +307,9 @@ ${earningsHtml(e)}
 
 ${h2("جوجل")}
 <p style="margin:0;color:#667085">أرقام البحث في جوجل (الظهور والنقرات ومركز «سفرتنا») تظهر هنا بعد أن تعطيني صلاحية القراءة في Search Console.</p>
+
+${h2("استهلاك الباقات المجانية")}
+${allowanceHtml}
 
 ${h2("ملاحظات الزوار")}
 <p style="margin:0">${fbItems.length ? `${n(fbItems.length)} ملاحظة — ${Object.entries(fbKinds).map(([kk, v]) => `${FB_AR[kk] || kk} ${v}`).join("، ")}` : "لم تصل ملاحظات هذا الأسبوع."}</p>
