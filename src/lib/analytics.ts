@@ -58,8 +58,47 @@ function clean(params: Params): Params {
   return out;
 }
 
+/**
+ * Anonymous count for the owner's weekly report (src/lib/statsShared.ts):
+ * a few words about the event, no identifier, no cookie. Sent whatever the
+ * cookie choice, because nothing in it points to a person.
+ */
+export function countStat(pairs: [string, unknown][]): void {
+  if (!isMeasuredHost()) return;
+  const p = pairs.filter(([, v]) => typeof v === "string" && v).slice(0, 6);
+  if (!p.length) return;
+  try {
+    const body = JSON.stringify({ p });
+    if (!navigator.sendBeacon?.("/api/stats", new Blob([body], { type: "application/json" }))) {
+      void fetch("/api/stats", { method: "POST", body, headers: { "Content-Type": "application/json" }, keepalive: true }).catch(() => undefined);
+    }
+  } catch {
+    /* counting must never break the page */
+  }
+}
+
+function countEvent(event: string, params: Params): void {
+  const s = (v: unknown) => (typeof v === "string" ? v : undefined);
+  if (event === "search") {
+    const type = s(params.search_type);
+    countStat([
+      ["search", type],
+      ["dest", type?.startsWith("hotel") ? undefined : s(params.destination)],
+      ["hotel_city", type?.startsWith("hotel") ? s(params.destination) : undefined],
+      ["origin", s(params.origin)],
+      ["hotel", s(params.hotel_name)],
+    ]);
+  } else if (event === "partner_click") {
+    countStat([
+      ["partner", s(params.partner) || s(params.link_domain)],
+      ["partner_page", s(params.page_type)],
+    ]);
+  }
+}
+
 export function track(event: string, params: Params = {}): void {
   if (!isMeasuredHost()) return;
+  countEvent(event, params);
   try {
     // gtag may not have loaded yet; the queue is read in order when it does.
     window.dataLayer = window.dataLayer || [];

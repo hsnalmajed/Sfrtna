@@ -1457,7 +1457,7 @@ const en = {
     privacyLead: "We respect your privacy. This policy explains what information we handle when you use Sfrtna — the website and the app — and how we use and protect it.",
     privacyCollectTitle: "Information we collect",
     privacyCollectBody:
-      "Using Sfrtna needs no account; an account is optional, for saving your trip plans (see “Your account” below). In a search we only handle what you enter — such as departure city, destination, dates, number of travellers and budget — plus the general technical information any browser or device sends, such as device type and language.",
+      "Using Sfrtna needs no account; an account is optional, for saving your trip plans (see “Your account” below). In a search we only handle what you enter — such as departure city, destination, dates, number of travellers and budget — plus the general technical information any browser or device sends, such as device type and language. We also keep anonymous daily totals — such as visits, searches per destination and clicks per partner — with no name, address or cookie, to learn what helps our visitors.",
     privacyUseTitle: "How we use information",
     privacyUseBody:
       "To show search results and available prices, to run and improve the service and understand its use in aggregate, and to protect it from abuse. We send booking partners only the search details needed to fetch prices. We never sell or rent your information, and we show no ads.",
@@ -1635,6 +1635,7 @@ const en = {
       "To show thousands of bookable tours with real prices for every city, add a Viator key as VIATOR_API_KEY. For now, the hand-curated guide is shown below.",
   },
   footer: {
+    followHeading: "Follow us",
     appsHeading: "Get the Sfrtna app",
     appsSoon: "Coming soon to",
     disclaimer:

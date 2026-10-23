@@ -73,6 +73,9 @@ interface AccountsStub {
   sessionMaxAge(): Promise<number>;
   feedbackAdd(token: string, f: FeedbackInput): Promise<{ ok: true; id: number; ref: string; email: string | null; signedIn: boolean } | Fail>;
   feedbackRecent(since: number): Promise<FeedbackRow[]>;
+  statsAdd(pairs: [string, string][]): Promise<{ ok: boolean }>;
+  statsRange(from: string, to: string): Promise<{ kind: string; key: string; n: number }[]>;
+  statsDaily(kind: string, from: string, to: string): Promise<{ day: string; n: number }[]>;
 }
 
 export interface FeedbackInput {

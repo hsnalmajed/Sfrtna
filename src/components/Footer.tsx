@@ -15,6 +15,7 @@ import FeedbackLink from "@/components/feedback/FeedbackLink";
  * print; it is the reason to trust the prices above it.
  */
 import AppStoreButtons from "@/components/AppStoreButtons";
+import { SOCIAL_PROFILES } from "@/lib/social";
 
 export default function Footer({ locale }: { locale: Locale }) {
   const dict = getDictionary(locale);
@@ -106,8 +107,25 @@ export default function Footer({ locale }: { locale: Locale }) {
           </div>
         </div>
 
-        <div className="border-t border-white/10 pt-6">
+        <div className="flex flex-col gap-6 border-t border-white/10 pt-6 sm:flex-row sm:items-start sm:justify-between">
           <AppStoreButtons locale={locale} title={dict.footer.appsHeading} soon={dict.footer.appsSoon} />
+          <div>
+            <p className="mb-2.5 text-xs font-bold text-white/50">{dict.footer.followHeading}</p>
+            <ul className="flex flex-wrap gap-2">
+              {SOCIAL_PROFILES.map((p) => (
+                <li key={p.id}>
+                  <a
+                    href={p.url}
+                    target="_blank"
+                    rel="noopener noreferrer me"
+                    className="inline-flex min-h-10 items-center rounded-full px-4 text-sm font-semibold text-white/80 ring-1 ring-white/20 transition hover:text-sun-300 hover:ring-sun-300/60"
+                  >
+                    {p.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
 
         <div className="flex flex-wrap items-center justify-between gap-3 pt-7 text-white/35">

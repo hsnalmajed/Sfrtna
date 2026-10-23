@@ -1310,6 +1310,37 @@ booking-statistics API (support article 360019864079) — use it for the
 dashboard (needs TRAVELPAYOUTS_TOKEN as a GitHub secret too, or read it
 through a token-protected Worker route).
 
+**Dashboard «لوحة سفرتنا», part 1 — 23 Oct 03:30 (pushed):**
+- Our own anonymous counts (no GA4 needed): `POST /api/stats` (≤ 6 pairs,
+  kinds in `src/lib/statsShared.ts`) → Accounts DO table `stats(day, kind,
+  key, n)`, cap 3,000 keys/day, kept 400 days. Sent by `countStat()` in
+  analytics.ts: every `search` (type, dest, hotel_city, origin, hotel) and
+  `partner_click` (partner, partner_page) via `track()`, plus one visit per
+  tab session from Analytics.tsx `countVisit` (web|app, mobile|desktop,
+  source = utm_source / referrer host / direct, lang, first page). Sent
+  regardless of cookie choice (nothing identifies a person); privacy
+  «المعلومات التي نجمعها» says so.
+- `GET /api/stats/summary?days=` and `GET /api/admin/earnings?days=` (+
+  `?fields=1` = Travelpayouts field list) answer only SMOKE_TOKEN.
+  Earnings = Travelpayouts statistics API (`execute_query`, grouped by
+  campaign_name when the field exists) with TRAVELPAYOUTS_TOKEN.
+- `scripts/weekly-report.mjs` + `.github/workflows/weekly-report.yml`
+  (Sunday 05:17 UTC + by hand): cards (visits, searches, clicks, 30-day
+  earnings), 3 suggested decisions from the numbers, daily visit bars,
+  web/app, device, sources, search types, top destinations (airport codes
+  → Arabic city names from airports.ts), hotel cities, hotels, origins,
+  partner clicks + pages, Travelpayouts table per program, Google
+  (waiting for access), visitor notes, dated reminders (HERE terms 14 Nov,
+  TikTok rename 22 Nov, SerpApi reset 6 Nov). Emailed to REPORT_TO; only a
+  shape file (statuses + field names, no numbers) goes to branch
+  `weekly-report-shape` — read it to tune the earnings query.
+- Footer «تابعنا»: Instagram, TikTok, Snapchat, X (`src/lib/social.ts`); the
+  same URLs as `sameAs` + email in the Organization record (seo.ts).
+- Still to do in this section: GA4 + Search Console (owner grants a service
+  account read access), other partners' earnings (APIs or monthly entry),
+  monthly «فرص» research run (scheduled task), partner-link tracking in the
+  daily status email, backup of the Accounts DO.
+
 **▶ Start here (hand-off 23 Oct 00:15):** owner opens a new conversation to
 create the **Google Play personal developer account** (decided 23 Oct; $25,
 ID check — may take hours to days). Step 1 for the owner (one step per

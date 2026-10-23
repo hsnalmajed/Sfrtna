@@ -22,6 +22,10 @@
 //             an email only when the visitor typed one. A hash of the
 //             sender's address is kept one day for the hourly limit, then
 //             cleared. Screenshots are mailed to the owner, never stored.
+//   stats     anonymous daily counts for the owner's weekly report (owner,
+//             23 Oct): visits by platform/device/source, searches by type,
+//             destination, origin and hotel, partner clicks by partner. Only
+//             (day, kind, key, count) — no person, address or session.
 // Deleting an account deletes all of its rows (its feedback stays, with the
 // account and email removed from it).
 
@@ -40,6 +44,8 @@ const SESSION_RENEW_DAYS = 90;
 const ITEM_LIMITS = { profile: 1, fav: 200, search: 20, trip: 30 };
 const MAX_ITEM_BYTES = 4_000;
 const FEEDBACK_PER_HOUR = 6;
+const STATS_KEYS_PER_DAY = 3000;
+const STATS_KEEP_DAYS = 400;
 
 const hex = (buf) => [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, "0")).join("");
 async function sha256(text) {
@@ -78,6 +84,7 @@ export class Accounts extends DurableObject {
       CREATE INDEX IF NOT EXISTS plans_user ON plans(user, created);
       CREATE TABLE IF NOT EXISTS items (user TEXT NOT NULL, kind TEXT NOT NULL, key TEXT NOT NULL, data TEXT NOT NULL, created INTEGER NOT NULL, PRIMARY KEY (user, kind, key));
       CREATE INDEX IF NOT EXISTS items_user ON items(user, kind, created);
+      CREATE TABLE IF NOT EXISTS stats (day TEXT NOT NULL, kind TEXT NOT NULL, key TEXT NOT NULL, n INTEGER NOT NULL, PRIMARY KEY (day, kind, key));
       CREATE TABLE IF NOT EXISTS appcodes (hash TEXT PRIMARY KEY, user TEXT NOT NULL, challenge TEXT NOT NULL, expires INTEGER NOT NULL);
       CREATE TABLE IF NOT EXISTS feedback (id INTEGER PRIMARY KEY AUTOINCREMENT, created INTEGER NOT NULL, user TEXT, kind TEXT NOT NULL, area TEXT NOT NULL, rating INTEGER, text TEXT NOT NULL, email TEXT, contact INTEGER NOT NULL, ctx TEXT NOT NULL, ip TEXT);
       CREATE INDEX IF NOT EXISTS feedback_created ON feedback(created);
@@ -297,6 +304,33 @@ export class Accounts extends DurableObject {
       .exec("SELECT id, created, kind, area, rating, text, email, contact, ctx FROM feedback WHERE created > ? ORDER BY id DESC LIMIT 100", since)
       .toArray()
       .map((r) => ({ ...r, ref: `F-${String(r.id).padStart(4, "0")}`, ctx: JSON.parse(r.ctx) }));
+  }
+
+  /** Add 1 to each (kind, key) for today. Unknown keys past the daily cap are dropped. */
+  async statsAdd(pairs) {
+    const day = new Date().toISOString().slice(0, 10);
+    const rows = this.sql.exec("SELECT COUNT(*) AS c FROM stats WHERE day = ?", day).one().c;
+    for (const [kind, key] of pairs) {
+      const hit = this.sql.exec("UPDATE stats SET n = n + 1 WHERE day = ? AND kind = ? AND key = ?", day, kind, key).rowsWritten;
+      if (!hit && rows < STATS_KEYS_PER_DAY) this.sql.exec("INSERT OR IGNORE INTO stats (day, kind, key, n) VALUES (?, ?, ?, 1)", day, kind, key);
+    }
+    if (Math.random() < 0.01) {
+      const cut = new Date(Date.now() - STATS_KEEP_DAYS * 86400e3).toISOString().slice(0, 10);
+      this.sql.exec("DELETE FROM stats WHERE day < ?", cut);
+    }
+    return { ok: true };
+  }
+
+  /** Totals per (kind, key) between two days (inclusive from, exclusive to). */
+  async statsRange(from, to) {
+    return this.sql
+      .exec("SELECT kind, key, SUM(n) AS n FROM stats WHERE day >= ? AND day < ? GROUP BY kind, key ORDER BY n DESC", from, to)
+      .toArray();
+  }
+
+  /** Daily totals of one kind (for a trend line). */
+  async statsDaily(kind, from, to) {
+    return this.sql.exec("SELECT day, SUM(n) AS n FROM stats WHERE kind = ? AND day >= ? AND day < ? GROUP BY day ORDER BY day", kind, from, to).toArray();
   }
 
   async plansList(token) {

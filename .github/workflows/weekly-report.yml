@@ -1,0 +1,47 @@
+# «لوحة سفرتنا» (scripts/weekly-report.mjs): the owner's weekly numbers email —
+# visitors, sources, searches, destinations, hotels, partner clicks,
+# Travelpayouts earnings, visitor notes, suggested decisions, reminders.
+#
+# Sunday about 8:20 Riyadh time (05:17 UTC), and by hand. Uses the same
+# secrets as the status email (SMOKE_TOKEN, RESEND_API_KEY, REPORT_TO).
+# Earnings are private: only a shape file without numbers is kept on the
+# branch `weekly-report-shape` (this repository is public).
+name: Weekly report
+
+on:
+  schedule:
+    - cron: "17 5 * * 0"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: weekly-report
+  cancel-in-progress: false
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Build and send the report
+        env:
+          SMOKE_TOKEN: ${{ secrets.SMOKE_TOKEN }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          REPORT_TO: ${{ secrets.REPORT_TO }}
+        run: node scripts/weekly-report.mjs
+      - name: Keep the shape (no numbers) on its branch
+        if: always()
+        run: |
+          [ -f weekly-report-shape.json ] || exit 0
+          mkdir out && cp weekly-report-shape.json out/ && cd out
+          git init -q
+          git config user.name "Claude"; git config user.email "noreply@anthropic.com"
+          git checkout -q -b weekly-report-shape
+          git add . && git commit -q -m "Weekly report shape"
+          git push -q -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" weekly-report-shape

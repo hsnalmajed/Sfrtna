@@ -74,6 +74,11 @@ export const ROUTES = {
   // site-check key, checked in the route itself.
   "/api/feedback": { methods: ["POST"], caller: "page", heavy: true },
   "/api/feedback/recent": { methods: ["GET"], caller: "link" },
+  // «لوحة سفرتنا»: anonymous daily counts from pages; summary + earnings
+  // answer only the site-check key (the weekly report).
+  "/api/stats": { methods: ["POST"], caller: "page" },
+  "/api/stats/summary": { methods: ["GET"], caller: "link" },
+  "/api/admin/earnings": { methods: ["GET"], caller: "link" },
   "/api/health": { methods: ["GET"], caller: "owner", heavy: true },
   "/api/serp-status": { methods: ["GET"], caller: "owner" },
 };

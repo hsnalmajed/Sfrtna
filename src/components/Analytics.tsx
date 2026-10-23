@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import {
   CONSENT_KEY,
   CONSENT_OPEN_EVENT,
+  countStat,
   GA_ID,
   isMeasuredHost,
   lastSearchContext,
@@ -105,6 +106,34 @@ function onClick(e: MouseEvent) {
   }
 }
 
+/** Once per visit (tab session): where it came from, on what, in which language. */
+function countVisit(locale: Locale): void {
+  try {
+    if (sessionStorage.getItem("sfr-visit")) return;
+    sessionStorage.setItem("sfr-visit", "1");
+  } catch {
+    return; // no session storage: we could not tell visits apart, so count nothing
+  }
+  const q = new URLSearchParams(window.location.search);
+  let source = q.get("utm_source") || "";
+  if (!source && document.referrer) {
+    try {
+      const h = new URL(document.referrer).hostname.replace(/^www\./, "");
+      if (!h.endsWith("sfrtna.com")) source = h;
+    } catch {
+      /* unreadable referrer */
+    }
+  }
+  const inApp = document.documentElement.classList.contains("in-app");
+  countStat([
+    ["visit", inApp ? "app" : "web"],
+    ["device", window.matchMedia("(max-width: 767px)").matches ? "mobile" : "desktop"],
+    ["source", source || (inApp ? "app" : "direct")],
+    ["lang", locale],
+    ["page", pageType(window.location.pathname)],
+  ]);
+}
+
 export default function Analytics({ locale }: { locale: Locale }) {
   const [measured, setMeasured] = useState(false);
   const [askConsent, setAskConsent] = useState(false);
@@ -116,6 +145,7 @@ export default function Analytics({ locale }: { locale: Locale }) {
     setMeasured(true);
     setAskConsent(readConsent() === null);
     document.addEventListener("click", onClick, { capture: true });
+    countVisit(locale);
     // Middle-click / ctrl-click on a partner link opens it too.
     document.addEventListener("auxclick", onClick, { capture: true });
     const reopen = () => setAskConsent(true);
@@ -148,7 +178,7 @@ export default function Analytics({ locale }: { locale: Locale }) {
       document.removeEventListener("auxclick", onClick, { capture: true });
       window.removeEventListener(CONSENT_OPEN_EVENT, reopen);
     };
-  }, []);
+  }, [locale]);
 
   function choose(choice: ConsentChoice) {
     saveConsent(choice);

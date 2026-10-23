@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { SOCIAL_PROFILES } from "@/lib/social";
 import type { Locale } from "@/lib/types";
 import { getDictionary } from "@/lib/dictionaries";
 
@@ -193,6 +194,8 @@ export function brandJsonLd(locale: Locale): object[] {
       alternateName: others,
       url: home,
       logo: absoluteUrl("/sfrtna-mark.png"),
+      email: "info@sfrtna.com",
+      sameAs: SOCIAL_PROFILES.map((p) => p.url),
     },
   ];
 }
