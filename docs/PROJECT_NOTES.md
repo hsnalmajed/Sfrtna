@@ -1336,6 +1336,15 @@ through a token-protected Worker route).
   `weekly-report-shape` — read it to tune the earnings query.
 - Footer «تابعنا»: Instagram, TikTok, Snapchat, X (`src/lib/social.ts`); the
   same URLs as `sameAs` + email in the Organization record (seo.ts).
+- Live 23 Oct ~04:00: report ran (2 test emails sent to the owner, then
+  dry runs with input send=false). Travelpayouts query grouped by
+  `campaign_id` works (status 200; fields redirects/clicks/actions/profit
+  USD); programs with activity in 30 days: 1, 10, 22, 87, 89, 100, 101,
+  111, 120, 137, 143, 147, 150, 172, 209, 222, 224, 541, 627, 629, 633 —
+  only 100 = Aviasales is named (`PROGRAMS` in weekly-report.mjs); name
+  the rest from the owner's Travelpayouts dashboard (do not guess).
+  Site check now also checks that GYG, Klook, Tiqets, Airalo and Expedia
+  redirects carry our tag (passed on 4a111f94).
 - Still to do in this section: GA4 + Search Console (owner grants a service
   account read access), other partners' earnings (APIs or monthly entry),
   monthly «فرص» research run (scheduled task), partner-link tracking in the
