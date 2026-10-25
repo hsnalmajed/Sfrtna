@@ -1,15 +1,13 @@
-2026-10-24T13:17:03.226Z
+2026-10-25T13:31:59.217Z
 model: gemini-3.8-flash (then gemini-3.5-flash, gemini-3.5-flash-lite, gemini-3.1-flash-lite, gemini-2.5-flash-lite, gemma-4-31b-it, gemma-4-26b-a4b-it); cities: 365
 auckland: batch failed — TimeoutError: The operation was aborted due to timeout
 auckland: done (0 written so far, 0 calls)
-busan: done (25 written so far, 2 calls)
 bordeaux: batch failed — TimeoutError: The operation was aborted due to timeout
-bordeaux: done (25 written so far, 2 calls)
-shenzhen: done (34 written so far, 3 calls)
-fukuoka: done (49 written so far, 4 calls)
-malacca: done (64 written so far, 5 calls)
+bordeaux: done (0 written so far, 0 calls)
+shenzhen: batch failed — Error: generate: gave up
+shenzhen: done (0 written so far, 0 calls)
 izmir: batch failed — TimeoutError: The operation was aborted due to timeout
-izmir: done (64 written so far, 5 calls)
+izmir: done (0 written so far, 0 calls)
 brasov: batch failed — TimeoutError: The operation was aborted due to timeout
-brasov: done (64 written so far, 5 calls)
-all done; 64 places written in 5 calls
+brasov: done (0 written so far, 0 calls)
+all done; 0 places written in 0 calls
