@@ -347,3 +347,97 @@ city:vancouver 1 9 4
 city:montreal 5 4
 city:banff 9 12 16
 city:calgary 9 8 3
+city:quebec-city 14 12 9
+city:ottawa 12 8 2
+country:BD 1 11
+city:dhaka 10 4
+country:HK 8 3 14
+city:hong-kong 7 2 9
+country:MO 9 1 12
+city:macau 9 3 7
+country:LA 4 13 8
+city:luang-prabang 11 5 3
+city:vientiane country:LA#13
+country:BN 4 3 1
+city:bandar-seri-begawan country:BN#4 country:BN#3
+country:SK 6 16 2
+city:bratislava 10 6 8
+country:LV 8 15 14
+city:riga 7 2 9
+country:LU 3 1 4
+city:luxembourg 1 2 7
+country:MC 2 6 12
+city:monte-carlo 9 13 12
+country:ET 1 5
+city:addis-ababa 12 1
+country:UG 8 6 11
+city:entebbe 6 1
+country:RW 2 1
+city:kigali 2 8
+country:SN 5 7 6
+city:dakar 3 country:SN#5
+country:BW 6 4
+city:gaborone country:BW#6
+country:ZM 4 2 8
+city:livingstone 5 2 9
+city:maputo 4
+country:DO 4 14 8
+city:punta-cana 9 11 7
+city:santo-domingo 8 5 12
+country:JM 1 4
+city:montego-bay 1
+city:kingston 4 1
+country:SV 4 3 9
+city:san-salvador 1
+country:BZ 4 5 6
+city:belize-city country:BZ#4 country:BZ#5
+country:BS 4 8 7
+city:nassau 1 5 6
+country:AR 4 3 14
+city:buenos-aires 9 4 3
+city:mendoza 9 4 11
+city:bariloche 4 8 9
+city:el-calafate 12 16 3
+country:CL 5 14 7
+city:santiago 1 8
+city:easter-island 5 10 4
+city:punta-arenas 8 10 5
+country:PE 5 1 8
+city:lima 8 5 4
+city:arequipa 7 4 2
+country:CO 6 15 5
+city:bogota 3 5
+city:medellin 6 4
+city:cartagena 10 12 9
+country:EC 14 13 16
+city:quito 4 2 8
+city:guayaquil 2 3
+city:galapagos 5 10
+country:UY 1 4
+city:montevideo 5 1 7
+city:punta-del-este country:UY#1 7 1
+country:BO 5 10 6
+city:la-paz 1 9 7
+city:santa-cruz 1 2
+country:NZ 6 1 13
+city:auckland 3 1 6
+city:christchurch 10 6
+city:queenstown 7 5 13
+city:wellington 2 11
+country:FJ 9 5 6
+city:nadi 12 11 14
+city:suva 2 4
+country:SB 1
+city:honiara 1
+country:TW 7 13 14
+city:taipei 12 5 6
+country:EE 4 5
+city:tallinn 1 8 10
+country:LT 1 2 3
+city:vilnius 1 9 3
+country:BG 2 10 7
+city:sofia 4 7 3
+city:varna 13 5
+country:NA 2 14 7
+city:windhoek country:NA#2 1 country:NA#14
+country:ZW 4 1 8
