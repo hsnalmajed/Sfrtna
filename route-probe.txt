@@ -36,3 +36,22 @@ repeat	Asia, 2 stops	200	954 ms	24 routes	24 within	11 cities
 repeat	Africa, 3 stops	200	478 ms	14 routes	14 within	11 cities
 repeat	North America, 2 stops	200	376 ms	0 routes	0 within	0 cities
 repeat	two months (Jan→Feb), 3 stops	200	1066 ms	24 routes	24 within	16 cities
+
+== stats
+route probe 2026-10-27T17:34:26.092Z https://sfrtna.almajedhsn.workers.dev
+first	all, 2 stops	200	3678 ms	24 routes	24 within	11 cities	{"pool":324,"candidates":120,"tables":121,"emptyTables":2,"priced":167}
+first	all, 3 stops	200	768 ms	24 routes	24 within	11 cities	{"pool":324,"candidates":40,"tables":41,"emptyTables":1,"priced":2708}
+first	Europe, 2 stops	200	1781 ms	0 routes	0 within	0 cities	{"pool":103,"candidates":103,"tables":104,"emptyTables":2,"priced":0}
+first	Europe, 3 stops	200	436 ms	21 routes	21 within	14 cities	{"pool":103,"candidates":40,"tables":41,"emptyTables":1,"priced":21}
+first	Asia, 2 stops	200	993 ms	24 routes	24 within	11 cities	{"pool":95,"candidates":95,"tables":96,"emptyTables":4,"priced":138}
+first	Africa, 3 stops	200	775 ms	14 routes	14 within	11 cities	{"pool":42,"candidates":40,"tables":41,"emptyTables":1,"priced":14}
+first	North America, 2 stops	200	414 ms	0 routes	0 within	0 cities	{"pool":38,"candidates":38,"tables":39,"emptyTables":1,"priced":0}
+first	two months (Jan→Feb), 3 stops	200	1237 ms	24 routes	24 within	16 cities	{"pool":324,"candidates":40,"tables":81,"emptyTables":2,"priced":1161}
+repeat	all, 2 stops	200	448 ms	24 routes	24 within	11 cities	{"pool":324,"candidates":120,"tables":121,"emptyTables":2,"priced":167}
+repeat	all, 3 stops	200	627 ms	24 routes	24 within	11 cities	{"pool":324,"candidates":40,"tables":41,"emptyTables":1,"priced":2708}
+repeat	Europe, 2 stops	200	407 ms	0 routes	0 within	0 cities	{"pool":103,"candidates":103,"tables":104,"emptyTables":2,"priced":0}
+repeat	Europe, 3 stops	200	265 ms	21 routes	21 within	14 cities	{"pool":103,"candidates":40,"tables":41,"emptyTables":1,"priced":21}
+repeat	Asia, 2 stops	200	412 ms	24 routes	24 within	11 cities	{"pool":95,"candidates":95,"tables":96,"emptyTables":4,"priced":138}
+repeat	Africa, 3 stops	200	299 ms	14 routes	14 within	11 cities	{"pool":42,"candidates":40,"tables":41,"emptyTables":1,"priced":14}
+repeat	North America, 2 stops	200	209 ms	0 routes	0 within	0 cities	{"pool":38,"candidates":38,"tables":39,"emptyTables":1,"priced":0}
+repeat	two months (Jan→Feb), 3 stops	200	560 ms	24 routes	24 within	16 cities	{"pool":324,"candidates":40,"tables":81,"emptyTables":2,"priced":1161}
