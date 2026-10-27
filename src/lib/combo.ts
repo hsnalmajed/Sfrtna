@@ -40,7 +40,7 @@ export const EMPTY_COMBO: ComboHotel = {
 export function readCombo(sp: URLSearchParams): ComboHotel {
   const name = sp.get("hn") || "";
   const prefSource = new URLSearchParams();
-  for (const k of ["place", "amen", "rating", "fc", "near"]) {
+  for (const k of ["place", "amen", "rating", "fc", "near", "nn", "ny", "nx"]) {
     const v = sp.get(`h${k}`);
     if (v) prefSource.set(k, v);
   }
@@ -78,7 +78,7 @@ export function writeCombo(c: ComboHotel, out: URLSearchParams) {
 /** Only the combo's own keys of an address, to carry them on to the next page. */
 export function comboParams(sp: URLSearchParams): URLSearchParams {
   const out = new URLSearchParams();
-  for (const [k, v] of sp) if (k === "combo" || /^h(n|a|l|al|b|s|bf|r|place|amen|rating|fc|near)$/.test(k)) out.set(k, v);
+  for (const [k, v] of sp) if (k === "combo" || /^h(n|a|l|al|b|s|bf|r|place|amen|rating|fc|near|nn|ny|nx)$/.test(k)) out.set(k, v);
   return out;
 }
 

@@ -33,6 +33,7 @@ export const ROUTES = {
   "/api/day-fares": { methods: ["GET"], caller: "page" },
   "/api/destination-photos": { methods: ["GET"], caller: "page" },
   "/api/hotel-suggest": { methods: ["GET"], caller: "page" },
+  "/api/anchors": { methods: ["GET"], caller: "page" },
   "/api/rates": { methods: ["GET"], caller: "page" },
   "/api/season-reasons": { methods: ["GET"], caller: "page" },
   "/api/origin": { methods: ["GET"], caller: "page" },

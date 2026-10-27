@@ -1,5 +1,6 @@
 "use client";
 
+import NearToPicker from "@/components/NearToPicker";
 import type { Locale } from "@/lib/types";
 import { useDictionary } from "@/lib/dict/context";
 import HotelNameInput from "@/components/HotelNameInput";
@@ -26,7 +27,10 @@ export default function ComboHotelFields({
   onCurrencyChange,
   errors,
   adults,
+  citySlug,
 }: {
+  /** The destination city, for «قريب من» (its best-known places). */
+  citySlug?: string;
   /** Adults on the trip: at most one room each. */
   adults: number;
   locale: Locale;
@@ -130,6 +134,7 @@ export default function ComboHotelFields({
           ...(value.prefs.rating ? [`${hp.ratingLabel} ${RATING_LABEL[value.prefs.rating]}`] : []),
           ...(value.prefs.freeCancel ? [hp.freeCancel] : []),
           ...(value.prefs.near ? [hp.nearKm.replace("{km}", String(value.prefs.near))] : []),
+            ...(value.prefs.nearTo ? [hp.nearToChip.replace("{place}", value.prefs.nearTo.n)] : []),
           ...value.prefs.amenities.map((a) => hp.amenity[a]),
         ]}
       >
@@ -174,6 +179,14 @@ export default function ComboHotelFields({
             onPick={(v) => setPref("rating", v)}
           />
         </div>
+        <NearToPicker
+          dark={dark}
+          citySlug={citySlug}
+          arabic={locale === "ar"}
+          value={value.prefs.nearTo}
+          onChange={(v) => setPref("nearTo", v)}
+          t={{ label: hp.nearToLabel, centre: hp.nearToCentre }}
+        />
         <div>
           <FieldLabel dark={dark} icon="pin">
             {hp.nearLabel}

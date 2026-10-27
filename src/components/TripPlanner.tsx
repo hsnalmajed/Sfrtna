@@ -1,8 +1,11 @@
 "use client";
 
+import { CABINS, type Cabin } from "@/lib/types";
+import { DEP_SLOTS, type DepSlot } from "@/lib/flightPrefs";
 import { SEASON_KINDS, SEASON_KIND_ICON, type SeasonKind } from "@/lib/travelSeason/kinds";
 import { useEffect, useRef, useState } from "react";
 import { warmFlightSearch } from "@/components/FlightMetasearch";
+import { tripCityFrom } from "@/lib/tripCity";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { DestinationCategory, FlightRoute, Locale, TravelerCounts } from "@/lib/types";
 import { useDictionary } from "@/lib/dict/context";
@@ -16,7 +19,7 @@ import { strictIata } from "@/lib/flights";
 import { CONTINENTS, type Continent } from "@/lib/countries";
 import { focusFirstError, hasErrors, type FieldErrors } from "@/lib/formErrors";
 import { formStyles, type FormTone } from "@/lib/formTone";
-import { BudgetInput, EdgeTabs, FieldLabel, PreferencesPanel, Toggle, nightsBetween, toDigits } from "@/components/PlannerFields";
+import { BudgetInput, ChoiceChips, EdgeTabs, FieldLabel, PreferencesPanel, Toggle, nightsBetween, toDigits } from "@/components/PlannerFields";
 import { useDefaultOrigin } from "@/lib/useOrigin";
 import { useProfileOnce } from "@/lib/useMember";
 import type { Profile } from "@/lib/memberItems";
@@ -155,6 +158,13 @@ export default function TripPlanner({
   const [currency, setCurrency] = useState(sp.get("currency") || "SAR");
   const [directOnly, setDirectOnly] = useState(sp.get("directOnly") === "true");
   const [baggageIncluded, setBaggageIncluded] = useState(sp.get("baggageIncluded") === "true");
+  // Cabin and departure time (owner, 27 Oct): on a flight to a place the
+  // traveller chose. "Suggest a destination" ranks by economy fares, so it
+  // does not ask.
+  const [cabin, setCabin] = useState<Cabin>(() => ((CABINS as string[]).includes(sp.get("cabin") || "") ? (sp.get("cabin") as Cabin) : "economy"));
+  const [depSlots, setDepSlots] = useState<DepSlot[]>(() =>
+    (sp.get("dep") || "").split(",").filter((x): x is DepSlot => (DEP_SLOTS as readonly string[]).includes(x))
+  );
   // Flights after the first. The first flight's "from" and date are the
   // form's own origin and departure date, so the rest of the planner (the
   // currency that follows the departure city, the edit-search round trip)
@@ -329,6 +339,8 @@ export default function TripPlanner({
       directOnly: String(directOnly),
       baggageIncluded: String(baggageIncluded),
       nights: String(stayNights),
+      ...(mode !== "discover" && cabin !== "economy" ? { cabin } : {}),
+      ...(mode !== "discover" && depSlots.length ? { dep: depSlots.join(",") } : {}),
     };
 
     if (listsLegs) {
@@ -744,6 +756,8 @@ export default function TripPlanner({
         chosen={[
           ...(directOnly ? [dict.form.directShort] : []),
           ...(baggageIncluded ? [dict.form.baggageShort] : []),
+          ...(mode !== "discover" && cabin !== "economy" ? [dict.form.cabins[cabin]] : []),
+          ...(mode !== "discover" ? depSlots.map((d) => dict.form.depSlots[d]) : []),
           ...(mode === "discover" ? continents.map((c) => dict.attractions.continents[c]) : []),
           ...(mode === "discover" ? preferenceCategories.map((c) => dict.categories[c]) : []),
           ...(mode === "discover" ? seasonKinds.map((k) => dict.filters.seasonKinds[k]) : []),
@@ -758,6 +772,35 @@ export default function TripPlanner({
               {dict.form.baggageShort}
             </Toggle>
           </div>
+
+          {mode !== "discover" && (
+            <div>
+              <p className={labelRow}>
+                <Icon name="takeoff" className={labelIcon} />
+                {dict.form.cabinLabel}
+              </p>
+              <ChoiceChips<Cabin>
+                dark={dark}
+                options={CABINS.map((c) => ({ value: c, label: dict.form.cabins[c] }))}
+                isOn={(v) => v === cabin}
+                onPick={setCabin}
+              />
+            </div>
+          )}
+          {mode !== "discover" && (
+            <div>
+              <p className={labelRow}>
+                <Icon name="clock" className={labelIcon} />
+                {dict.form.depLabel}
+              </p>
+              <ChoiceChips<DepSlot | "">
+                dark={dark}
+                options={[{ value: "" as const, label: dict.form.depAny }, ...DEP_SLOTS.map((d) => ({ value: d, label: dict.form.depSlots[d] }))]}
+                isOn={(v) => (v === "" ? depSlots.length === 0 : depSlots.includes(v))}
+                onPick={(v) => setDepSlots(v === "" ? [] : depSlots.includes(v) ? depSlots.filter((x) => x !== v) : [...depSlots, v])}
+              />
+            </div>
+          )}
 
           {/* Where in the world: any number of continents, or none. */}
           {mode === "discover" && (
@@ -869,6 +912,7 @@ export default function TripPlanner({
       {combo && (
         <ComboHotelFields
           adults={travelers.adults}
+          citySlug={mode === "known" ? tripCityFrom(destination)?.slug : undefined}
           locale={locale}
           dark={dark}
           inputClass={inputClass}

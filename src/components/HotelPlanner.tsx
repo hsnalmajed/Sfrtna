@@ -1,5 +1,6 @@
 "use client";
 
+import NearToPicker from "@/components/NearToPicker";
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { Locale, TravelerCounts } from "@/lib/types";
@@ -396,6 +397,7 @@ export default function HotelPlanner({
             ...(prefs.rating ? [`${hp.ratingLabel} ${RATING_LABEL[prefs.rating]}`] : []),
             ...(prefs.freeCancel ? [hp.freeCancel] : []),
             ...(prefs.near ? [hp.nearKm.replace("{km}", String(prefs.near))] : []),
+            ...(prefs.nearTo ? [hp.nearToChip.replace("{place}", prefs.nearTo.n)] : []),
             ...prefs.amenities.map((a) => hp.amenity[a]),
           ]}
         >
@@ -452,6 +454,14 @@ export default function HotelPlanner({
             />
           </div>
 
+          <NearToPicker
+            dark={dark}
+            citySlug={cityEntry?.slug}
+            arabic={locale === "ar"}
+            value={prefs.nearTo}
+            onChange={(v) => setPref("nearTo", v)}
+            t={{ label: hp.nearToLabel, centre: hp.nearToCentre }}
+          />
           <div>
             <FieldLabel dark={dark} icon="pin">
               {hp.nearLabel}

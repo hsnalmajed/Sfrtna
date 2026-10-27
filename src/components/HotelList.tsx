@@ -59,7 +59,9 @@ export default function HotelList({
   const { t, locale } = c;
   const hp = useDictionary().hotelPrefs;
   type Sort = "best" | "cheapest" | "expensive" | "rating" | "stars" | "reviews" | "near";
-  const [sort, setSort] = useState<Sort>("best");
+  const [sort, setSort] = useState<Sort>(prefs.nearTo ? "near" : "best");
+  // Booking-style: the price for the whole stay, or a night.
+  const [perNight, setPerNight] = useState(false);
   const prefsKey = `${prefs.place}|${prefs.amenities.join(",")}|${prefs.rating}|${prefs.freeCancel ? 1 : 0}|${breakfast ? 1 : 0}`;
   const url = useMemo(() => {
     const p = new URLSearchParams({ q: `hotels in ${cityQuery}`.slice(0, 120), checkIn: c.checkIn, checkOut: c.checkOut, adults: String(c.adults) });
@@ -143,7 +145,9 @@ export default function HotelList({
   }
   if (failed || !result) return null;
 
-  const centre = citySlug ? CITY_COORDS[citySlug] : undefined;
+  // Distances from the place the traveller chose («قريب من»), else the centre.
+  const centre = prefs.nearTo ? { lat: prefs.nearTo.y, lon: prefs.nearTo.x } : citySlug ? CITY_COORDS[citySlug] : undefined;
+  const fromName = prefs.nearTo?.n ?? null;
   const seen = new Set<string>();
   let hotels = [...result.hotels, ...extra.hotels].filter((h) => {
     const key = h.token || h.name;
@@ -212,6 +216,21 @@ export default function HotelList({
           locale={c.locale}
         />
         <span className="text-xs font-semibold text-navy-500">{t.hotelsCount.replace("{count}", String(hotels.length))}</span>
+        {c.nights > 1 && (
+          <div className="ms-auto flex rounded-full bg-mist-100 p-1 text-xs font-bold" role="group" aria-label={t.priceShowLabel}>
+            {[false, true].map((pn) => (
+              <button
+                key={String(pn)}
+                type="button"
+                aria-pressed={perNight === pn}
+                onClick={() => setPerNight(pn)}
+                className={`min-h-8 rounded-full px-3 ${perNight === pn ? "bg-navy-950 text-white" : "text-navy-700"}`}
+              >
+                {pn ? t.pricePerNight : t.priceWholeStay}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
       {note && <p className="text-sm font-semibold text-navy-700">{note}</p>}
       {hotels.map((h) => (
@@ -220,7 +239,9 @@ export default function HotelList({
           hotel={h}
           c={c}
           distance={centre && h.lat != null && h.lng != null ? km(centre, { lat: h.lat, lon: h.lng }) : null}
-          cityName={cityName}
+          cityName={fromName ?? cityName}
+          fromPlace={Boolean(fromName)}
+          perNight={perNight}
           cityQuery={cityQuery}
           locale={locale}
         />
@@ -248,7 +269,12 @@ function HotelCard({
   cityName,
   cityQuery,
   locale,
+  perNight = false,
+  fromPlace = false,
 }: {
+  perNight?: boolean;
+  /** The distance is from a place the traveller chose, not the centre. */
+  fromPlace?: boolean;
   hotel: HotelResult;
   c: Common;
   distance: number | null;
@@ -289,7 +315,7 @@ function HotelCard({
             {distance != null && (
               <li className="inline-flex items-center gap-1">
                 <Icon name="pin" className="h-3.5 w-3.5 text-navy-400" />
-                {t.fromCentre.replace("{km}", distance < 10 ? distance.toFixed(1) : String(Math.round(distance))).replace("{city}", cityName)}
+                {(fromPlace ? t.fromPlace : t.fromCentre).replace("{km}", distance < 10 ? distance.toFixed(1) : String(Math.round(distance))).replace("{city}", cityName)}
               </li>
             )}
             {hotel.checkInTime && (
@@ -318,8 +344,9 @@ function HotelCard({
           <div className="mt-auto flex flex-wrap items-end justify-between gap-3 pt-1">
             {total ? (
               <div>
-                <p className="text-[11px] font-bold text-navy-500">{t.lowestStay}</p>
-                <p className="font-display text-xl font-extrabold text-navy-950">{money(total, locale)}</p>
+                <p className="text-[11px] font-bold text-navy-500">{perNight && c.nights > 1 ? t.lowestNight : t.lowestStay}</p>
+                <p className="font-display text-xl font-extrabold text-navy-950">{money(perNight && c.nights > 1 ? total / c.nights : total, locale)}</p>
+                {perNight && c.nights > 1 && <p className="text-[11px] text-navy-500">{t.stayTotalShort.replace("{amount}", money(total, locale))}</p>}
                 {c.budget > 0 && (
                   <p className={`text-xs font-bold ${total > c.budget ? "text-rose-700" : "text-sea-700"}`}>
                     {total > c.budget ? t.overBudget.replace("{amount}", money(total - c.budget, locale)) : `✓ ${t.withinBudget}`}

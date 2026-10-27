@@ -352,7 +352,10 @@ export default function FlightResultsGuide({
   bagIncluded = false,
   onPicked,
   route,
+  initialOut = [],
 }: {
+  /** Departure slots chosen on the search form ("1,2"): the results open filtered. */
+  initialOut?: string[];
   locale: Locale;
   /** The flight budget for the whole party; 0 when none was given. */
   budget: number;
@@ -400,7 +403,10 @@ export default function FlightResultsGuide({
   const [showWithin, setShowWithin] = useState(false);
   const [showOver, setShowOver] = useState(false);
   const [sort, setSort] = useState<Sort>("cheapest");
-  const [filters, setFilters] = useState<Filters>(NO_FILTERS);
+  const [filters, setFilters] = useState<Filters>(() => ({
+    ...NO_FILTERS,
+    out: initialOut.filter((x): x is Slot => ["0", "1", "2", "3"].includes(x)),
+  }));
   const [limit, setLimit] = useState(10);
   const money = (n: number) => moneyIn(currency, n);
   const dur = (min: number) => {

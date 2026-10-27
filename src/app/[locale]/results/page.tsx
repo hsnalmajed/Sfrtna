@@ -6,7 +6,7 @@ import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useDictionary } from "@/lib/dict/context";
-import type { RoomType, Locale, MultiCityLegInput, SearchParams, TripType } from "@/lib/types";
+import { CABINS, type Cabin, type RoomType, type Locale, type MultiCityLegInput, type SearchParams, type TripType } from "@/lib/types";
 import TripCurrencyInline from "@/components/TripCurrencyInline";
 import FlightMetasearch, { warmFlightSearch } from "@/components/FlightMetasearch";
 import FlightResultsGuide from "@/components/FlightResultsGuide";
@@ -100,6 +100,7 @@ function ResultsContent() {
       childrenAges: parseChildrenAges(q.get("childrenAges")),
       infants: Number(q.get("infants") || 0),
       roomType: (q.get("roomType") || undefined) as RoomType | undefined,
+      cabin: (CABINS as string[]).includes(q.get("cabin") || "") ? (q.get("cabin") as Cabin) : undefined,
     }),
     [q]
   );
@@ -424,6 +425,9 @@ function ResultsContent() {
                 <span className="hidden whitespace-nowrap sm:inline">
                   {countLabel(travelers, { one: dict.results.travelersOne, two: dict.results.travelersTwo, few: dict.results.travelersFew, many: dict.results.travelersMany })}
                 </span>
+                {search.cabin && search.cabin !== "economy" && (
+                  <span className="whitespace-nowrap rounded-md bg-white/15 px-2 py-0.5 text-xs font-bold">💺 {dict.form.cabins[search.cabin]}</span>
+                )}
                 <span className="ms-auto inline-flex shrink-0 items-center gap-1 rounded-lg bg-sun-400 px-2.5 py-1 text-xs font-extrabold text-navy-950 transition group-hover:bg-sun-300 sm:ms-0">
                   <span aria-hidden="true">✎</span>
                   {dict.results.editSearch}
@@ -530,6 +534,7 @@ function ResultsContent() {
         cityName={destinationCityName ?? search.destination}
         editHref={`/${locale}?${editSearchParams}#plan`}
         directOnly={Boolean(search.directFlightsOnly)}
+        initialOut={(q.get("dep") || "").split(",").filter(Boolean)}
         bagIncluded={Boolean(search.baggageIncluded)}
         route={
           search.origin && search.destination && search.departDate

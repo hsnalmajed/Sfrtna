@@ -1,5 +1,5 @@
 import { strictIata } from "@/lib/flights";
-import type { SearchParams } from "@/lib/types";
+import type { Cabin, SearchParams } from "@/lib/types";
 
 /**
  * The trip, written the way the flight widget reads it.
@@ -71,8 +71,14 @@ export function flightSearchCode(search: SearchParams): string | null {
   const infants = Math.min(adults, 9 - adults - children, Math.max(0, search.infants ?? 0));
   const people = children || infants ? `${adults}${children}${infants}` : `${adults}`;
 
-  return `${from}${out}${to}${back ?? ""}${people}`;
+  // The cabin, as a letter between the dates and the travellers: w comfort
+  // (premium economy), c business, f first; economy has none (checked on
+  // aviasales.com, 27 Oct 2026: RUH1012IST1612c1 opens in Business).
+  const cabin = CABIN_LETTER[search.cabin ?? "economy"];
+  return `${from}${out}${to}${back ?? ""}${cabin}${people}`;
 }
+
+const CABIN_LETTER: Record<Cabin, string> = { economy: "", comfort: "w", business: "c", first: "f" };
 
 /**
  * The trip back out of a widget code — "RUH1110IST18102" → origin RUH,
@@ -85,9 +91,9 @@ export function flightSearchCode(search: SearchParams): string | null {
  * round, which is how the widget reads it too.
  */
 export function parseFlightSearchCode(code: string | null | undefined): URLSearchParams | null {
-  const m = /^([A-Z]{3})(\d{2})(\d{2})([A-Z]{3})(?:(\d{2})(\d{2}))?(\d)(\d)?(\d)?$/.exec((code || "").trim());
+  const m = /^([A-Z]{3})(\d{2})(\d{2})([A-Z]{3})(?:(\d{2})(\d{2}))?([wcf])?(\d)(\d)?(\d)?$/.exec((code || "").trim());
   if (!m) return null;
-  const [, from, d1, m1, to, d2, m2, seats, kids, babies] = m;
+  const [, from, d1, m1, to, d2, m2, cls, seats, kids, babies] = m;
 
   const today = new Date();
   const todayIso = `${today.getFullYear()}-${pad(today.getMonth() + 1)}-${pad(today.getDate())}`;
@@ -108,5 +114,6 @@ export function parseFlightSearchCode(code: string | null | undefined): URLSearc
     adults: seats,
     ...(kids && kids !== "0" ? { childrenAges: Array(Number(kids)).fill("8").join(",") } : {}),
     ...(babies && babies !== "0" ? { infants: babies } : {}),
+    ...(cls ? { cabin: cls === "w" ? "comfort" : cls === "c" ? "business" : "first" } : {}),
   });
 }

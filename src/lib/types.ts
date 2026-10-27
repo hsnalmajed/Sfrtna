@@ -37,7 +37,12 @@ export interface SearchParams {
   childrenAges?: number[];
   infants?: number;
   roomType?: RoomType; // undefined = no preference
+  /** Cabin: economy unless asked (owner, 27 Oct). */
+  cabin?: Cabin;
 }
+
+export type Cabin = "economy" | "comfort" | "business" | "first";
+export const CABINS: Cabin[] = ["economy", "comfort", "business", "first"];
 
 export interface FlightOffer {
   id: string;

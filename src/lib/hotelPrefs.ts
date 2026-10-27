@@ -46,6 +46,8 @@ export interface HotelPrefs {
   rating: RatingFloor;
   freeCancel: boolean;
   near: NearKm;
+  /** «قريب من»: the place the distance is measured from (else the city centre). */
+  nearTo?: { n: string; y: number; x: number };
 }
 
 /** Read from a results/search address; old links (`stay=apartment`) still work. */
@@ -59,7 +61,9 @@ export function readHotelPrefs(sp: URLSearchParams): HotelPrefs {
   const rating = (RATING_FLOORS as number[]).includes(r) ? (r as RatingFloor) : 0;
   const n = Number(sp.get("near"));
   const near = (NEAR_KMS as number[]).includes(n) ? (n as NearKm) : 0;
-  return { place, amenities, rating, freeCancel: sp.get("fc") === "1", near };
+  const ny = Number(sp.get("ny")), nx = Number(sp.get("nx"));
+  const nearTo = sp.get("nn") && Number.isFinite(ny) && Number.isFinite(nx) && sp.get("ny") ? { n: sp.get("nn")!.slice(0, 80), y: ny, x: nx } : undefined;
+  return { place, amenities, rating, freeCancel: sp.get("fc") === "1", near, nearTo };
 }
 
 export function writeHotelPrefs(p: HotelPrefs, out: URLSearchParams) {
@@ -68,6 +72,11 @@ export function writeHotelPrefs(p: HotelPrefs, out: URLSearchParams) {
   if (p.rating) out.set("rating", String(p.rating));
   if (p.freeCancel) out.set("fc", "1");
   if (p.near) out.set("near", String(p.near));
+  if (p.nearTo) {
+    out.set("nn", p.nearTo.n);
+    out.set("ny", p.nearTo.y.toFixed(5));
+    out.set("nx", p.nearTo.x.toFixed(5));
+  }
 }
 
 export const NO_HOTEL_PREFS: HotelPrefs = { place: "", amenities: [], rating: 0, freeCancel: false, near: 0 };

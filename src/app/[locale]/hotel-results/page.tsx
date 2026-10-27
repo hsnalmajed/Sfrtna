@@ -181,6 +181,7 @@ function HotelResultsContent() {
     if (prefs.rating) chips.push(`${hp.ratingLabel} ${RATING_LABEL[prefs.rating]}`);
     if (prefs.freeCancel) chips.push(hp.freeCancel);
     if (prefs.near) chips.push(hp.nearKm.replace("{km}", String(prefs.near)));
+    if (prefs.nearTo) chips.push(hp.nearToChip.replace("{place}", prefs.nearTo.n));
     for (const a of prefs.amenities) chips.push(hp.amenity[a]);
   }
 
