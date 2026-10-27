@@ -17,3 +17,22 @@ repeat	Asia, 2 stops	200	483 ms	24 routes	24 within	11 cities
 repeat	Africa, 3 stops	200	295 ms	0 routes	0 within	0 cities
 repeat	North America, 2 stops	200	432 ms	0 routes	0 within	0 cities
 repeat	two months (Jan→Feb), 3 stops	200	806 ms	24 routes	24 within	12 cities
+
+== after
+route probe 2026-10-27T17:25:56.151Z https://sfrtna.almajedhsn.workers.dev
+first	all, 2 stops	200	6430 ms	24 routes	24 within	11 cities
+first	all, 3 stops	200	1235 ms	24 routes	24 within	11 cities
+first	Europe, 2 stops	200	4947 ms	0 routes	0 within	0 cities
+first	Europe, 3 stops	200	798 ms	21 routes	21 within	14 cities
+first	Asia, 2 stops	200	2928 ms	24 routes	24 within	11 cities
+first	Africa, 3 stops	200	1177 ms	14 routes	14 within	11 cities
+first	North America, 2 stops	200	796 ms	0 routes	0 within	0 cities
+first	two months (Jan→Feb), 3 stops	200	3269 ms	24 routes	24 within	16 cities
+repeat	all, 2 stops	200	847 ms	24 routes	24 within	11 cities
+repeat	all, 3 stops	200	985 ms	24 routes	24 within	11 cities
+repeat	Europe, 2 stops	200	683 ms	0 routes	0 within	0 cities
+repeat	Europe, 3 stops	200	455 ms	21 routes	21 within	14 cities
+repeat	Asia, 2 stops	200	954 ms	24 routes	24 within	11 cities
+repeat	Africa, 3 stops	200	478 ms	14 routes	14 within	11 cities
+repeat	North America, 2 stops	200	376 ms	0 routes	0 within	0 cities
+repeat	two months (Jan→Feb), 3 stops	200	1066 ms	24 routes	24 within	16 cities
