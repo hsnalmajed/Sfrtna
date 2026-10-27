@@ -1361,6 +1361,11 @@ analytics (`workersInvocationsAdaptive`, script sfrtna) — **needs GitHub
 secrets `CF_API_TOKEN` (Account Analytics: Read) + `CF_ACCOUNT_ID`** (owner
 step); until then the row says it waits. Decision on Paid deferred to
 before launch (owner, 23 Oct).
+**Done 28 Oct 00:26:** owner rolled the «Read analytics and logs» token and
+added `CF_API_TOKEN` + `CF_ACCOUNT_ID`; weekly-report dry run → Cloudflare
+GraphQL 200, 7 days. Android upload key (alias `sfrtna-upload`) is in the 4
+`SFRTNA_*` GitHub secrets and the owner's Bitwarden; first signed .aab built
+27 Oct (run 40577117520).
 
 **«رحلتي» + first-visit tips — 23 Oct (relatives' notes 13, 14):**
 - `/[locale]/my-trip` (`member/MyTripView.tsx`, noindex): the trip being got
