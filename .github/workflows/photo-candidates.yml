@@ -1,0 +1,53 @@
+# Candidate photos per country and city for a hand-made choice
+# (scripts/photos/candidates.ts). Collects up to 190 Pexels searches a run
+# (hourly allowance 200), resuming from the branch `photo-review`, then
+# draws numbered contact sheets and pushes everything back to that branch.
+# Nothing here touches main (no deploy).
+name: Photo candidates
+
+on:
+  workflow_dispatch:
+    inputs:
+      sheets_only:
+        description: "Only redraw the sheets"
+        default: "false"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: photo-candidates
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - name: Bring back what earlier runs found
+        run: |
+          mkdir -p photo-review
+          if git fetch -q origin photo-review 2>/dev/null; then
+            git show origin/photo-review:candidates.json > photo-review/candidates.json 2>/dev/null || rm -f photo-review/candidates.json
+          fi
+      - name: Collect
+        if: github.event.inputs.sheets_only != 'true'
+        run: npx --yes tsx@4 scripts/photos/candidates.ts --max 190
+      - name: Sheets
+        run: npx --yes tsx@4 scripts/photos/candidates.ts --sheets
+      - name: Push to the review branch
+        run: |
+          cd photo-review
+          git init -q
+          git config user.name "Claude"; git config user.email "noreply@anthropic.com"
+          git checkout -q -b photo-review
+          git add . && git commit -q -m "Photo candidates"
+          git push -q -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" photo-review
