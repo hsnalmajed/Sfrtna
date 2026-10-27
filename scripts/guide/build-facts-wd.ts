@@ -117,6 +117,9 @@ const BIG_LINKS = 45;
  */
 const NEVER_ROOTS = ["Q486972" /* human settlement */, "Q2385804" /* educational institution */, "Q16917" /* hospital */, "Q1021645" /* office building */, "Q27686" /* hotel */, "Q55488" /* railway station */, "Q928830" /* metro station */, "Q483110" /* stadium */, "Q1248784" /* airport */];
 
+/** ISO codes of states that no longer exist (Wikidata keeps them on P17). */
+const FORMER_STATES = new Set(["DD", "YU", "SU", "CS", "ZR", "BU", "TP", "YD", "AN"]);
+
 async function sparql<T>(q: string): Promise<T[] | null> {
   for (let attempt = 0; attempt < 4; attempt++) {
     try {
@@ -357,7 +360,10 @@ async function main() {
       // Owner, 27 Oct: "a place shown in one city that belongs to another —
       // avoid at all costs". Not in this city's country (Kos for Bodrum), or
       // nearer another city we cover (Dubai's museum for Sharjah): not ours.
-      if (pt.code && r.iso.size && !r.iso.has(pt.code)) {
+      // Former states (East Germany, Yugoslavia, USSR…) still carry their old
+      // code on landmarks like the Berlin Wall: they say nothing about today.
+      const nowIso = [...r.iso].filter((c) => !FORMER_STATES.has(c));
+      if (pt.code && nowIso.length && !nowIso.includes(pt.code)) {
         if (r.sl >= 15) wrongPlace.push(`${r.en ?? r.q} (${[...r.iso].join(",")})`);
         continue;
       }
