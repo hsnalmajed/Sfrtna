@@ -114,6 +114,9 @@ export interface RouteStats {
   tables: number;
   emptyTables: number;
   priced: number;
+  /** Orderings that stopped at flight i (no fare, or not direct). */
+  failAt?: number[];
+  sameCountry?: number;
 }
 
 export async function suggestRoutes(q: RouteQuery, stats?: RouteStats): Promise<RouteSuggestion[]> {
@@ -201,13 +204,17 @@ export async function suggestRoutes(q: RouteQuery, stats?: RouteStats): Promise<
 
   const routes: RouteSuggestion[] = [];
   for (const perm of permutations<Candidate>(candidates, q.stops)) {
-    if (new Set(perm.map((d) => d.countryCode)).size < perm.length) continue;
+    if (new Set(perm.map((d) => d.countryCode)).size < perm.length) {
+      if (stats) stats.sameCountry = (stats.sameCountry ?? 0) + 1;
+      continue;
+    }
     const path = [q.origin, ...perm.map((d) => d.code), q.origin];
     const legs: RouteLeg[] = [];
     let ok = true;
     for (let i = 0; i < path.length - 1; i++) {
       const f = fare(path[i], path[i + 1], legDates[i]);
       if (!f || (q.directOnly && f.transfers !== 0)) {
+        if (stats) (stats.failAt ??= Array(path.length - 1).fill(0))[i]++;
         ok = false;
         break;
       }
