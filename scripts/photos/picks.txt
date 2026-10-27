@@ -441,3 +441,15 @@ city:varna 13 5
 country:NA 2 14 7
 city:windhoek country:NA#2 1 country:NA#14
 country:ZW 4 1 8
+city:victoria-falls 7 4 6
+country:MK 2 1 4
+city:skopje 9 1
+country:SM 3 4 1
+city:san-marino 3 2 10
+country:VA 13 5 15
+city:vatican-city 3 2 6
+country:AD 10 6 1
+city:andorra-la-vella country:AD#10 8
+country:DZ 2 12 9
+city:algiers 2 3 5
+city:oran 4
