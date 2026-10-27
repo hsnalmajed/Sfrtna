@@ -17,3 +17,27 @@ izmir v3 v4 v5 v6 v7 v8 v9 v10 v11 v14 v15 v16 v18 v20 v21 v22 v23 v24 v26 v27 v
 bursa v3 v4 v5 v6 v8 v9 v10 v12 v18 v20 v21 v27 v28 v29 l9 l11 l16 l17
 bodrum v5 v9 v10 v16 v19 v21 v25 v27
 abu-dhabi v3 v6 v10 v11 v18 v21 v24 v25 v28 l3 l4 l5 l7 l9
+sharjah v2 v3 v4 v5 v8 v11 v12 v14 v16 v18 v19 v21 v23 v25 v28 v30 l2 l6 l8 l10
+ras-al-khaimah v3 v5 v6 v7 v8 v9 v10 v12 v13 v14 v15 v17 v20 l5 l6 l7 l9 l10
+doha v1 v3 v5 v8 v9 v12 v15 v16 v17 v18 v19 v21 v24 v29 v30 l1 l6 l7
+al-wakrah *
+kuwait-city v3 v6 v7 v8 v9 v10 v11 v14 v16 v22 v23 v26 v27 v28 l1 l5 l6
+manama v3 l3 l5 l6 l7 l8 l9 l10 l12 l13 l16 l17
+muscat v3 v4 v6 v7 v9 v11 v14 v22 v23 v24 v26 v27 v28 v29 v30 l6 l7 l9 l11
+salalah *
+nizwa v3 v4 v6 v7 v8 v9
+cairo v5 v7 v8 v9 v13 v14 v17 v21 v23 v25 v27 v28 v29 v30 l12 l14 l19 l20 l22
+luxor v5 v6 v8 v10 v11 v13 v14 v16 v17 v18 v20 v24 v25 v29 l3 l4 l6 l9 l10 l11 l12 l13 l14 l15 l17 l18 l20 l21 l22 l23 l24 l25
+aswan v6 v15 v16 v19 l2 l3 l4 l7 l10 l12 l13 l14 l15
+alexandria v2 v3 v6 v7 v8 v11 v12 v13 v17 v21 v23 v24 v25 v29 v30 l1 l3 l4 l5 l6 l10 l11 l18 l19 l20 l23 l24 l25
+sharm-el-sheikh v4 v5 v7 v9 v13 v15
+giza v1 v6 v7 v8 v9 v10 v12 v15 v19 v21 v23 v24 v27 v29 l3 l4 l6 l10 l11 l12 l15 l16 l18 l19 l20 l21 l23 l24 l25
+hurghada l2 l3
+marrakesh v1 v2 v3 v4 v5 v7 v8 v9 v10 v11 v12 v13 v16 v17 v18 v19 v24 v26 v27 v30 l8 l11 l14 l16 l18 l19 l20 l24 l25
+casablanca v4 v5 v6 v8 v10 v12 v14 v16 v19 v20 v23 v26 v27 v29 v30 l2 l3 l4
+fes v1 v3 v7 l2 l6 l12 l13 l16 l17 l18
+chefchaouen v1 v3 v4 v8 v10 v12 v13 v14 v20 v23 v24 v27 v28 v29
+tangier v2 v3 v5 v8 v9 v10 v13 v18 l2 l3 l8 l9
+agadir *
+rabat v3 v6 v7 v9 v13 v16 v17 v18 v19 v20 v21 v22 v23 v25 l11 l12 l16 l18 l19 l22 l23 l25
+amman v2 v4 v5 v6 v7 v9 v12 v13 v15 v17 v18 v21 v23 v25 v28 l2 l3 l7 l8 l11 l13 l18 l21 l22 l23 l25
