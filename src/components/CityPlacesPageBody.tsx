@@ -121,6 +121,17 @@ export default async function CityPlacesPageBody({
   // "Basilica Cistern (Exit)" is a map's note, not part of what to search for.
   const ticketQueryFor = (nameEn: string) => `${nameEn.replace(/\s*\([^)]*\)/g, "").trim()} ${cityEntry.nameEn}`;
 
+  // A place with no photo of its own takes its checked photo from the city's
+  // gallery (src/lib/gallery.ts): same place = within ~200 m (owner, 27 Oct:
+  // "many landmarks have no photo — not acceptable").
+  const galleryPhotoFor = (lat: number, lon: number): string | undefined => {
+    for (const g of gallery) {
+      // The city's own views sit at its centre: they are not a landmark's photo.
+      if (g.en === cityEntry.nameEn) continue;
+      if (Math.abs(g.y - lat) < 0.002 && Math.abs(g.x - lon) < 0.0025) return `${g.o}?auto=compress&cs=tinysrgb&w=640`;
+    }
+    return undefined;
+  };
   const covered = new Set<string>();
   const items: PlaceListItem[] = places.map((p) => {
     const hit = highlightFor(p);
@@ -137,7 +148,7 @@ export default async function CityPlacesPageBody({
       // and it is in the reader's language.
       name: hit ? (loc === "ar" ? hit.landmark.nameAr : hit.landmark.nameEn) : p.name,
       description: p.description,
-      photo: hit?.photo,
+      photo: hit?.photo ?? galleryPhotoFor(p.lat, p.lon),
       category: p.category,
       kind: p.kind,
       fame: p.fame,
