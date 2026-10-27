@@ -1,0 +1,19 @@
+
+== before
+route probe 2026-10-27T17:16:58.474Z https://sfrtna.almajedhsn.workers.dev
+first	all, 2 stops	200	3467 ms	24 routes	24 within	11 cities
+first	all, 3 stops	200	570 ms	24 routes	24 within	8 cities
+first	Europe, 2 stops	200	1998 ms	0 routes	0 within	0 cities
+first	Europe, 3 stops	200	343 ms	0 routes	0 within	0 cities
+first	Asia, 2 stops	200	842 ms	24 routes	24 within	11 cities
+first	Africa, 3 stops	200	658 ms	0 routes	0 within	0 cities
+first	North America, 2 stops	200	902 ms	0 routes	0 within	0 cities
+first	two months (Jan→Feb), 3 stops	200	1143 ms	24 routes	24 within	12 cities
+repeat	all, 2 stops	200	611 ms	24 routes	24 within	11 cities
+repeat	all, 3 stops	200	519 ms	24 routes	24 within	8 cities
+repeat	Europe, 2 stops	200	455 ms	0 routes	0 within	0 cities
+repeat	Europe, 3 stops	200	375 ms	0 routes	0 within	0 cities
+repeat	Asia, 2 stops	200	483 ms	24 routes	24 within	11 cities
+repeat	Africa, 3 stops	200	295 ms	0 routes	0 within	0 cities
+repeat	North America, 2 stops	200	432 ms	0 routes	0 within	0 cities
+repeat	two months (Jan→Feb), 3 stops	200	806 ms	24 routes	24 within	12 cities
