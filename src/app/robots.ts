@@ -64,7 +64,8 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: AI_TRAINING_CRAWLERS, disallow: "/" },
       { userAgent: "*", allow: "/", disallow: CLOSED },
     ],
-    sitemap: `${SITE_URL}/sitemap.xml`,
+    // The second lists the city photo tours (written by scripts/photos/gallery2.ts build).
+    sitemap: [`${SITE_URL}/sitemap.xml`, `${SITE_URL}/sitemap-images.xml`],
     host: SITE_URL,
   };
 }

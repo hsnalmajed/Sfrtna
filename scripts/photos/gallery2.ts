@@ -384,6 +384,26 @@ function build(file: string) {
     photos += items.length;
   }
   console.log(`galleries ${n} · photos ${photos}`);
+  writeImageSitemap();
+}
+
+/** Every published gallery as Google image-sitemap entries, on both language pages. */
+function writeImageSitemap() {
+  const esc = (s: string) => s.replace(/[&<>"']/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&apos;" })[ch]!);
+  let body = "";
+  for (const c of cities()) {
+    const f = `public/data/gallery/${c.slug}.json`;
+    if (!existsSync(f)) continue;
+    const items = JSON.parse(readFileSync(f, "utf8")) as Photo[];
+    const urls = items.map((p) => (p.s === "c" ? commonsUrl(p.o, 1280, p.w) : `${p.o}?auto=compress&cs=tinysrgb&w=1280`));
+    for (const lang of ["ar", "en"]) {
+      body += `<url><loc>https://sfrtna.com/${lang}/attractions/${c.code}/${c.slug}</loc>${urls.map((u) => `<image:image><image:loc>${esc(u)}</image:loc></image:image>`).join("")}</url>\n`;
+    }
+  }
+  writeFileSync(
+    "public/sitemap-images.xml",
+    `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n${body}</urlset>\n`
+  );
 }
 
 const mode = process.argv[2];
