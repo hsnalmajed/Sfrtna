@@ -10,6 +10,7 @@
 //
 //   npx tsx scripts/photos/build-picks.ts <candidates.json> [candidates2.json]
 import { readFileSync, writeFileSync } from "node:fs";
+import { COUNTRY_CITIES } from "@/lib/cities";
 
 type C = Record<string, { o: string }[]>;
 const cands = JSON.parse(readFileSync(process.argv[2], "utf8")) as C;
@@ -33,6 +34,21 @@ for (const raw of readFileSync("scripts/photos/picks.txt", "utf8").split("\n")) 
     else urls.push(c.o);
   }
   if (urls.length) out[key] = urls;
+}
+// A country never shows one of its cities' photos (owner, 27 Oct).
+for (const [code, list] of Object.entries(COUNTRY_CITIES)) {
+  const key = `country:${code}`;
+  if (!out[key]) continue;
+  const used = new Set(list.flatMap((c) => out[`city:${c.slug}`] ?? []));
+  const own = out[key].filter((u) => !used.has(u));
+  if (own.length) out[key] = own;
+  else problems.push(`${key}: every photo is also one of its cities'`);
+}
+const firsts = new Map<string, string>();
+for (const [k, v] of Object.entries(out)) {
+  const other = firsts.get(v[0]);
+  if (other) problems.push(`${k} shows the same first photo as ${other}`);
+  firsts.set(v[0], k);
 }
 const sorted = Object.fromEntries(Object.entries(out).sort(([a], [b]) => a.localeCompare(b)));
 writeFileSync("src/data/photoPicks.json", JSON.stringify(sorted, null, 1) + "\n");

@@ -48,7 +48,7 @@ country:JO 7 2 15
 city:amman 14 13 6
 city:petra 15 9 6
 city:aqaba 2 4
-country:GB 8 16
+country:GB 8
 city:london 16 2 13
 city:edinburgh 15 9 16
 city:manchester 4 1
@@ -441,7 +441,7 @@ city:varna 13 5
 country:NA 2 14 7
 city:windhoek country:NA#2 1 country:NA#14
 country:ZW 4 1 8
-city:victoria-falls 7 4 6
+city:victoria-falls 6 7 4
 country:MK 2 1 4
 city:skopje 9 1
 country:SM 3 4 1
@@ -537,3 +537,12 @@ city:port-moresby c2:9
 city:roatan c2:5 c2:2
 city:accra c2:7 c2:6
 city:kingston c2:1
+# Owner 27 Oct: a country's photo must differ from every one of its cities'.
+country:SA 9 6
+country:TR 9 13 12
+country:AE 1 7
+country:KW 9 4
+country:GB 4 5
+country:DK 13 12
+country:UY 4 9
+country:PY 2

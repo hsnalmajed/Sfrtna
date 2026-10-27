@@ -7,7 +7,7 @@ import { BudgetInput, ChoiceChips, FieldLabel, PreferencesPanel, RoomsStepper, T
 import { MAX_ROOMS } from "@/lib/rooms";
 import Icon from "@/components/ui/Icon";
 import type { ComboHotel } from "@/lib/combo";
-import { AMENITIES, PLACE_KINDS, RATING_FLOORS, RATING_LABEL, type Amenity, type PlaceKind, type RatingFloor } from "@/lib/hotelPrefs";
+import { AMENITIES, NEAR_KMS, PLACE_KINDS, RATING_FLOORS, RATING_LABEL, type Amenity, type NearKm, type PlaceKind, type RatingFloor } from "@/lib/hotelPrefs";
 
 /**
  * The hotel half of «طيران + فندق», under the flight fields of the flight
@@ -128,6 +128,7 @@ export default function ComboHotelFields({
           ...(value.minStars ? ["★".repeat(value.minStars)] : []),
           ...(value.prefs.rating ? [`${hp.ratingLabel} ${RATING_LABEL[value.prefs.rating]}`] : []),
           ...(value.prefs.freeCancel ? [hp.freeCancel] : []),
+          ...(value.prefs.near ? [hp.nearKm.replace("{km}", String(value.prefs.near))] : []),
           ...value.prefs.amenities.map((a) => hp.amenity[a]),
         ]}
       >
@@ -170,6 +171,17 @@ export default function ComboHotelFields({
             options={RATING_FLOORS.map((r) => ({ value: r, label: r ? hp.ratingFloor.replace("{r}", RATING_LABEL[r]) : hp.ratingAny }))}
             isOn={(v) => v === value.prefs.rating}
             onPick={(v) => setPref("rating", v)}
+          />
+        </div>
+        <div>
+          <FieldLabel dark={dark} icon="pin">
+            {hp.nearLabel}
+          </FieldLabel>
+          <ChoiceChips<NearKm>
+            dark={dark}
+            options={NEAR_KMS.map((k) => ({ value: k, label: k ? hp.nearKm.replace("{km}", String(k)) : hp.nearAny }))}
+            isOn={(v) => v === value.prefs.near}
+            onPick={(v) => setPref("near", v)}
           />
         </div>
         <div>

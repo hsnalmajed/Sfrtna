@@ -1,5 +1,7 @@
 "use client";
 
+import PhotoTour from "@/components/PhotoTour";
+import type { GalleryPhoto } from "@/lib/gallery";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import QuickFeedback from "@/components/feedback/QuickFeedback";
@@ -209,7 +211,10 @@ export default function CityPlacesPlanner({
   onShowOnMap,
   showOnMapLabel,
   restaurants = [],
+  gallery = [],
 }: {
+  /** «استعرض صور المدينة»: the city's landmark and view photos (src/lib/gallery.ts). */
+  gallery?: GalleryPhoto[];
   /** The city's slug, for «خطتي الذكية» (src/components/smart). */
   citySlug?: string;
   /**
@@ -364,6 +369,13 @@ export default function CityPlacesPlanner({
               <span className={`mt-0.5 block text-xs ${mode === "pick" ? "text-navy-900/75" : "text-white/65"}`}>{t.pickModeHint}</span>
             </span>
           </button>
+          <PhotoTour
+            locale={locale}
+            cityName={cityName}
+            photos={gallery}
+            className={card}
+            t={{ open: t.tourOpen, openSub: t.tourOpenSub, close: t.tourClose, prev: t.tourPrev, next: t.tourNext, onMap: t.tourOnMap, of: t.tourOf }}
+          />
           {!smartReady && (
           <button type="button" onClick={() => setAutoOpen(true)} className={card}>
             <span className="text-2xl leading-none" aria-hidden="true">✨</span>

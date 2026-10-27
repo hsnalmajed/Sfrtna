@@ -1559,9 +1559,9 @@
   "https://images.pexels.com/photos/33317934/pexels-photo-33317934.jpeg"
  ],
  "city:victoria-falls": [
+  "https://images.pexels.com/photos/23232507/pexels-photo-23232507.jpeg",
   "https://images.pexels.com/photos/17435022/pexels-photo-17435022.jpeg",
-  "https://images.pexels.com/photos/30172599/pexels-photo-30172599.jpeg",
-  "https://images.pexels.com/photos/23232507/pexels-photo-23232507.jpeg"
+  "https://images.pexels.com/photos/30172599/pexels-photo-30172599.jpeg"
  ],
  "city:vienna": [
   "https://images.pexels.com/photos/38754695/pexels-photo-38754695.jpeg",
@@ -1638,8 +1638,8 @@
   "https://images.pexels.com/photos/15883734/pexels-photo-15883734.jpeg"
  ],
  "country:AE": [
-  "https://images.pexels.com/photos/12462486/pexels-photo-12462486.jpeg",
-  "https://images.pexels.com/photos/13256066/pexels-photo-13256066.jpeg"
+  "https://images.pexels.com/photos/5577693/pexels-photo-5577693.jpeg",
+  "https://images.pexels.com/photos/7168616/pexels-photo-7168616.jpeg"
  ],
  "country:AL": [
   "https://images.pexels.com/photos/20129842/pexels-photo-20129842.jpeg",
@@ -1648,11 +1648,9 @@
  ],
  "country:AM": [
   "https://images.pexels.com/photos/31389682/pexels-photo-31389682.jpeg",
-  "https://images.pexels.com/photos/39152783/pexels-photo-39152783.jpeg",
-  "https://images.pexels.com/photos/35863525/pexels-photo-35863525.jpeg"
+  "https://images.pexels.com/photos/39152783/pexels-photo-39152783.jpeg"
  ],
  "country:AR": [
-  "https://images.pexels.com/photos/12972109/pexels-photo-12972109.jpeg",
   "https://images.pexels.com/photos/26988244/pexels-photo-26988244.jpeg",
   "https://images.pexels.com/photos/20887392/pexels-photo-20887392.jpeg"
  ],
@@ -1662,22 +1660,16 @@
   "https://images.pexels.com/photos/33474414/pexels-photo-33474414.jpeg"
  ],
  "country:AU": [
-  "https://images.pexels.com/photos/33977176/pexels-photo-33977176.jpeg",
   "https://images.pexels.com/photos/11635664/pexels-photo-11635664.jpeg",
   "https://images.pexels.com/photos/26825286/pexels-photo-26825286.jpeg"
  ],
  "country:AZ": [
-  "https://images.pexels.com/photos/35418664/pexels-photo-35418664.jpeg",
-  "https://images.pexels.com/photos/29107329/pexels-photo-29107329.jpeg",
-  "https://images.pexels.com/photos/39215615/pexels-photo-39215615.jpeg"
+  "https://images.pexels.com/photos/29107329/pexels-photo-29107329.jpeg"
  ],
  "country:BA": [
-  "https://images.pexels.com/photos/37876108/pexels-photo-37876108.jpeg",
-  "https://images.pexels.com/photos/27489560/pexels-photo-27489560.jpeg",
   "https://images.pexels.com/photos/13538992/pexels-photo-13538992.jpeg"
  ],
  "country:BB": [
-  "https://images.pexels.com/photos/14250687/pexels-photo-14250687.jpeg",
   "https://images.pexels.com/photos/35010454/pexels-photo-35010454.jpeg"
  ],
  "country:BD": [
@@ -1685,7 +1677,6 @@
   "https://images.pexels.com/photos/33921948/pexels-photo-33921948.jpeg"
  ],
  "country:BE": [
-  "https://images.pexels.com/photos/19907877/pexels-photo-19907877.jpeg",
   "https://images.pexels.com/photos/5612504/pexels-photo-5612504.jpeg",
   "https://images.pexels.com/photos/5612487/pexels-photo-5612487.jpeg"
  ],
@@ -1695,12 +1686,9 @@
   "https://images.pexels.com/photos/31789117/pexels-photo-31789117.jpeg"
  ],
  "country:BH": [
-  "https://images.pexels.com/photos/6188071/pexels-photo-6188071.jpeg",
   "https://images.pexels.com/photos/6658659/pexels-photo-6658659.jpeg"
  ],
  "country:BN": [
-  "https://images.pexels.com/photos/35851017/pexels-photo-35851017.jpeg",
-  "https://images.pexels.com/photos/32151384/pexels-photo-32151384.jpeg",
   "https://images.pexels.com/photos/34787043/pexels-photo-34787043.jpeg"
  ],
  "country:BO": [
@@ -1714,22 +1702,18 @@
   "https://images.pexels.com/photos/30337556/pexels-photo-30337556.jpeg"
  ],
  "country:BS": [
-  "https://images.pexels.com/photos/28443536/pexels-photo-28443536.jpeg",
   "https://images.pexels.com/photos/15925413/pexels-photo-15925413.jpeg",
   "https://images.pexels.com/photos/8307449/pexels-photo-8307449.jpeg"
  ],
  "country:BW": [
-  "https://images.pexels.com/photos/3055544/pexels-photo-3055544.jpeg",
-  "https://images.pexels.com/photos/17662677/pexels-photo-17662677.jpeg"
+  "https://images.pexels.com/photos/3055544/pexels-photo-3055544.jpeg"
  ],
  "country:BZ": [
-  "https://images.pexels.com/photos/15228087/pexels-photo-15228087.jpeg",
   "https://images.pexels.com/photos/11602919/pexels-photo-11602919.jpeg",
   "https://images.pexels.com/photos/38399120/pexels-photo-38399120.jpeg"
  ],
  "country:CA": [
   "https://images.pexels.com/photos/7054236/pexels-photo-7054236.jpeg",
-  "https://images.pexels.com/photos/33730307/pexels-photo-33730307.jpeg",
   "https://images.pexels.com/photos/32194155/pexels-photo-32194155.jpeg"
  ],
  "country:CH": [
@@ -1738,9 +1722,7 @@
   "https://images.pexels.com/photos/922978/pexels-photo-922978.jpeg"
  ],
  "country:CL": [
-  "https://images.pexels.com/photos/7499998/pexels-photo-7499998.jpeg",
-  "https://images.pexels.com/photos/21533323/pexels-photo-21533323.jpeg",
-  "https://images.pexels.com/photos/29176039/pexels-photo-29176039.jpeg"
+  "https://images.pexels.com/photos/21533323/pexels-photo-21533323.jpeg"
  ],
  "country:CN": [
   "https://images.pexels.com/photos/6187742/pexels-photo-6187742.jpeg",
@@ -1748,22 +1730,18 @@
   "https://images.pexels.com/photos/4445241/pexels-photo-4445241.jpeg"
  ],
  "country:CO": [
-  "https://images.pexels.com/photos/10833921/pexels-photo-10833921.jpeg",
   "https://images.pexels.com/photos/6758257/pexels-photo-6758257.jpeg",
   "https://images.pexels.com/photos/6381087/pexels-photo-6381087.jpeg"
  ],
  "country:CR": [
   "https://images.pexels.com/photos/4807058/pexels-photo-4807058.jpeg",
-  "https://images.pexels.com/photos/33312531/pexels-photo-33312531.jpeg",
-  "https://images.pexels.com/photos/919494/pexels-photo-919494.jpeg"
+  "https://images.pexels.com/photos/33312531/pexels-photo-33312531.jpeg"
  ],
  "country:CU": [
-  "https://images.pexels.com/photos/7748907/pexels-photo-7748907.jpeg",
   "https://images.pexels.com/photos/17377217/pexels-photo-17377217.jpeg",
   "https://images.pexels.com/photos/16716960/pexels-photo-16716960.jpeg"
  ],
  "country:CV": [
-  "https://images.pexels.com/photos/28486941/pexels-photo-28486941.png",
   "https://images.pexels.com/photos/1133540/pexels-photo-1133540.jpeg"
  ],
  "country:CY": [
@@ -1772,7 +1750,6 @@
   "https://images.pexels.com/photos/29022020/pexels-photo-29022020.jpeg"
  ],
  "country:CZ": [
-  "https://images.pexels.com/photos/29986005/pexels-photo-29986005.jpeg",
   "https://images.pexels.com/photos/2253620/pexels-photo-2253620.jpeg"
  ],
  "country:DE": [
@@ -1781,12 +1758,10 @@
   "https://images.pexels.com/photos/37792607/pexels-photo-37792607.jpeg"
  ],
  "country:DK": [
-  "https://images.pexels.com/photos/7877270/pexels-photo-7877270.jpeg",
-  "https://images.pexels.com/photos/11064539/pexels-photo-11064539.jpeg",
-  "https://images.pexels.com/photos/39337679/pexels-photo-39337679.jpeg"
+  "https://images.pexels.com/photos/18134308/pexels-photo-18134308.jpeg",
+  "https://images.pexels.com/photos/33624630/pexels-photo-33624630.jpeg"
  ],
  "country:DO": [
-  "https://images.pexels.com/photos/5850781/pexels-photo-5850781.jpeg",
   "https://images.pexels.com/photos/7184629/pexels-photo-7184629.jpeg",
   "https://images.pexels.com/photos/10956539/pexels-photo-10956539.jpeg"
  ],
@@ -1801,7 +1776,6 @@
   "https://images.pexels.com/photos/9791408/pexels-photo-9791408.jpeg"
  ],
  "country:EE": [
-  "https://images.pexels.com/photos/39281349/pexels-photo-39281349.jpeg",
   "https://images.pexels.com/photos/37516011/pexels-photo-37516011.jpeg"
  ],
  "country:EG": [
@@ -1824,21 +1798,16 @@
   "https://images.pexels.com/photos/28811165/pexels-photo-28811165.jpeg"
  ],
  "country:FJ": [
-  "https://images.pexels.com/photos/33715462/pexels-photo-33715462.jpeg",
-  "https://images.pexels.com/photos/33732034/pexels-photo-33732034.jpeg",
-  "https://images.pexels.com/photos/33732037/pexels-photo-33732037.jpeg"
+  "https://images.pexels.com/photos/33715462/pexels-photo-33715462.jpeg"
  ],
  "country:FR": [
-  "https://images.pexels.com/photos/29667766/pexels-photo-29667766.jpeg",
   "https://images.pexels.com/photos/24973465/pexels-photo-24973465.jpeg"
  ],
  "country:GB": [
-  "https://images.pexels.com/photos/11567961/pexels-photo-11567961.jpeg"
+  "https://images.pexels.com/photos/34583777/pexels-photo-34583777.jpeg"
  ],
  "country:GE": [
-  "https://images.pexels.com/photos/40340311/pexels-photo-40340311.jpeg",
-  "https://images.pexels.com/photos/36043181/pexels-photo-36043181.jpeg",
-  "https://images.pexels.com/photos/9407207/pexels-photo-9407207.jpeg"
+  "https://images.pexels.com/photos/36043181/pexels-photo-36043181.jpeg"
  ],
  "country:GH": [
   "https://images.pexels.com/photos/3635029/pexels-photo-3635029.jpeg",
@@ -1846,7 +1815,6 @@
  ],
  "country:GR": [
   "https://images.pexels.com/photos/15532995/pexels-photo-15532995.jpeg",
-  "https://images.pexels.com/photos/38464216/pexels-photo-38464216.jpeg",
   "https://images.pexels.com/photos/16511635/pexels-photo-16511635.jpeg"
  ],
  "country:GT": [
@@ -1860,14 +1828,10 @@
   "https://images.pexels.com/photos/30138587/pexels-photo-30138587.jpeg"
  ],
  "country:HN": [
-  "https://images.pexels.com/photos/30219384/pexels-photo-30219384.jpeg",
-  "https://images.pexels.com/photos/7005963/pexels-photo-7005963.jpeg",
-  "https://images.pexels.com/photos/7483078/pexels-photo-7483078.jpeg"
+  "https://images.pexels.com/photos/30219384/pexels-photo-30219384.jpeg"
  ],
  "country:HR": [
-  "https://images.pexels.com/photos/9038831/pexels-photo-9038831.jpeg",
-  "https://images.pexels.com/photos/4994643/pexels-photo-4994643.jpeg",
-  "https://images.pexels.com/photos/7201438/pexels-photo-7201438.jpeg"
+  "https://images.pexels.com/photos/4994643/pexels-photo-4994643.jpeg"
  ],
  "country:HU": [
   "https://images.pexels.com/photos/37921193/pexels-photo-37921193.jpeg",
@@ -1885,8 +1849,6 @@
   "https://images.pexels.com/photos/6006081/pexels-photo-6006081.jpeg"
  ],
  "country:IN": [
-  "https://images.pexels.com/photos/27970036/pexels-photo-27970036.jpeg",
-  "https://images.pexels.com/photos/18722577/pexels-photo-18722577.jpeg",
   "https://images.pexels.com/photos/1007426/pexels-photo-1007426.jpeg"
  ],
  "country:IS": [
@@ -1900,11 +1862,9 @@
   "https://images.pexels.com/photos/31117323/pexels-photo-31117323.jpeg"
  ],
  "country:JM": [
-  "https://images.pexels.com/photos/9158428/pexels-photo-9158428.jpeg",
   "https://images.pexels.com/photos/10586591/pexels-photo-10586591.jpeg"
  ],
  "country:JO": [
-  "https://images.pexels.com/photos/18717386/pexels-photo-18717386.jpeg",
   "https://images.pexels.com/photos/11195786/pexels-photo-11195786.jpeg",
   "https://images.pexels.com/photos/13806469/pexels-photo-13806469.jpeg"
  ],
@@ -1920,34 +1880,28 @@
  ],
  "country:KG": [
   "https://images.pexels.com/photos/18516844/pexels-photo-18516844.jpeg",
-  "https://images.pexels.com/photos/6305498/pexels-photo-6305498.jpeg",
-  "https://images.pexels.com/photos/5111084/pexels-photo-5111084.jpeg"
+  "https://images.pexels.com/photos/6305498/pexels-photo-6305498.jpeg"
  ],
  "country:KH": [
-  "https://images.pexels.com/photos/17980012/pexels-photo-17980012.jpeg",
   "https://images.pexels.com/photos/15890491/pexels-photo-15890491.jpeg",
   "https://images.pexels.com/photos/15890578/pexels-photo-15890578.jpeg"
  ],
  "country:KR": [
-  "https://images.pexels.com/photos/37968751/pexels-photo-37968751.jpeg",
   "https://images.pexels.com/photos/33125408/pexels-photo-33125408.jpeg"
  ],
  "country:KW": [
-  "https://images.pexels.com/photos/37745766/pexels-photo-37745766.jpeg",
-  "https://images.pexels.com/photos/38096102/pexels-photo-38096102.jpeg"
+  "https://images.pexels.com/photos/3414922/pexels-photo-3414922.jpeg",
+  "https://images.pexels.com/photos/37749465/pexels-photo-37749465.jpeg"
  ],
  "country:KZ": [
-  "https://images.pexels.com/photos/33731541/pexels-photo-33731541.jpeg",
   "https://images.pexels.com/photos/39859805/pexels-photo-39859805.jpeg",
   "https://images.pexels.com/photos/33452166/pexels-photo-33452166.jpeg"
  ],
  "country:LA": [
-  "https://images.pexels.com/photos/31504654/pexels-photo-31504654.jpeg",
   "https://images.pexels.com/photos/6642093/pexels-photo-6642093.jpeg",
   "https://images.pexels.com/photos/35661072/pexels-photo-35661072.jpeg"
  ],
  "country:LB": [
-  "https://images.pexels.com/photos/14636665/pexels-photo-14636665.jpeg",
   "https://images.pexels.com/photos/12311816/pexels-photo-12311816.jpeg"
  ],
  "country:LK": [
@@ -1962,7 +1916,6 @@
  ],
  "country:LU": [
   "https://images.pexels.com/photos/14849557/pexels-photo-14849557.jpeg",
-  "https://images.pexels.com/photos/32224979/pexels-photo-32224979.jpeg",
   "https://images.pexels.com/photos/27659285/pexels-photo-27659285.jpeg"
  ],
  "country:LV": [
@@ -1971,7 +1924,6 @@
   "https://images.pexels.com/photos/16648581/pexels-photo-16648581.jpeg"
  ],
  "country:MA": [
-  "https://images.pexels.com/photos/8860874/pexels-photo-8860874.jpeg",
   "https://images.pexels.com/photos/33912198/pexels-photo-33912198.jpeg"
  ],
  "country:MC": [
@@ -1981,8 +1933,7 @@
  ],
  "country:ME": [
   "https://images.pexels.com/photos/18037877/pexels-photo-18037877.jpeg",
-  "https://images.pexels.com/photos/19174720/pexels-photo-19174720.jpeg",
-  "https://images.pexels.com/photos/33301426/pexels-photo-33301426.jpeg"
+  "https://images.pexels.com/photos/19174720/pexels-photo-19174720.jpeg"
  ],
  "country:MK": [
   "https://images.pexels.com/photos/31489787/pexels-photo-31489787.jpeg",
@@ -1990,19 +1941,15 @@
   "https://images.pexels.com/photos/1346132/pexels-photo-1346132.jpeg"
  ],
  "country:MO": [
-  "https://images.pexels.com/photos/28939966/pexels-photo-28939966.jpeg",
-  "https://images.pexels.com/photos/33859392/pexels-photo-33859392.jpeg",
   "https://images.pexels.com/photos/28462077/pexels-photo-28462077.jpeg"
  ],
  "country:MT": [
-  "https://images.pexels.com/photos/19670563/pexels-photo-19670563.jpeg",
   "https://images.pexels.com/photos/17583396/pexels-photo-17583396.jpeg",
   "https://images.pexels.com/photos/39782691/pexels-photo-39782691.jpeg"
  ],
  "country:MU": [
   "https://images.pexels.com/photos/6789841/pexels-photo-6789841.jpeg",
-  "https://images.pexels.com/photos/27138360/pexels-photo-27138360.jpeg",
-  "https://images.pexels.com/photos/36267905/pexels-photo-36267905.jpeg"
+  "https://images.pexels.com/photos/27138360/pexels-photo-27138360.jpeg"
  ],
  "country:MV": [
   "https://images.pexels.com/photos/9080918/pexels-photo-9080918.jpeg",
@@ -2019,12 +1966,9 @@
   "https://images.pexels.com/photos/130576/pexels-photo-130576.jpeg"
  ],
  "country:MZ": [
-  "https://images.pexels.com/photos/18424823/pexels-photo-18424823.jpeg",
-  "https://images.pexels.com/photos/33955329/pexels-photo-33955329.jpeg"
+  "https://images.pexels.com/photos/18424823/pexels-photo-18424823.jpeg"
  ],
  "country:NA": [
-  "https://images.pexels.com/photos/35220465/pexels-photo-35220465.jpeg",
-  "https://images.pexels.com/photos/28818785/pexels-photo-28818785.jpeg",
   "https://images.pexels.com/photos/35220463/pexels-photo-35220463.jpeg"
  ],
  "country:NG": [
@@ -2053,12 +1997,10 @@
   "https://images.pexels.com/photos/14788649/pexels-photo-14788649.jpeg"
  ],
  "country:OM": [
-  "https://images.pexels.com/photos/27222917/pexels-photo-27222917.jpeg",
   "https://images.pexels.com/photos/5457081/pexels-photo-5457081.jpeg",
   "https://images.pexels.com/photos/36471615/pexels-photo-36471615.jpeg"
  ],
  "country:PA": [
-  "https://images.pexels.com/photos/14465475/pexels-photo-14465475.jpeg",
   "https://images.pexels.com/photos/2146686/pexels-photo-2146686.jpeg",
   "https://images.pexels.com/photos/7629244/pexels-photo-7629244.jpeg"
  ],
@@ -2073,28 +2015,23 @@
  ],
  "country:PH": [
   "https://images.pexels.com/photos/35649530/pexels-photo-35649530.jpeg",
-  "https://images.pexels.com/photos/31533421/pexels-photo-31533421.jpeg",
   "https://images.pexels.com/photos/31533425/pexels-photo-31533425.jpeg"
  ],
  "country:PK": [
-  "https://images.pexels.com/photos/12912453/pexels-photo-12912453.jpeg",
   "https://images.pexels.com/photos/35171324/pexels-photo-35171324.jpeg",
   "https://images.pexels.com/photos/186985/pexels-photo-186985.jpeg"
  ],
  "country:PL": [
-  "https://images.pexels.com/photos/46273/pexels-photo-46273.jpeg",
-  "https://images.pexels.com/photos/32906971/pexels-photo-32906971.jpeg",
-  "https://images.pexels.com/photos/37722818/pexels-photo-37722818.jpeg"
+  "https://images.pexels.com/photos/32906971/pexels-photo-32906971.jpeg"
  ],
  "country:PT": [
   "https://images.pexels.com/photos/20433015/pexels-photo-20433015.jpeg",
   "https://images.pexels.com/photos/33672677/pexels-photo-33672677.jpeg"
  ],
  "country:PY": [
-  "https://images.pexels.com/photos/8469339/pexels-photo-8469339.jpeg"
+  "https://images.pexels.com/photos/19774989/pexels-photo-19774989.jpeg"
  ],
  "country:QA": [
-  "https://images.pexels.com/photos/34933278/pexels-photo-34933278.jpeg",
   "https://images.pexels.com/photos/10919605/pexels-photo-10919605.jpeg"
  ],
  "country:RO": [
@@ -2108,16 +2045,14 @@
  ],
  "country:RU": [
   "https://images.pexels.com/photos/29852367/pexels-photo-29852367.jpeg",
-  "https://images.pexels.com/photos/8405430/pexels-photo-8405430.jpeg",
   "https://images.pexels.com/photos/8757207/pexels-photo-8757207.jpeg"
  ],
  "country:RW": [
-  "https://images.pexels.com/photos/19755751/pexels-photo-19755751.jpeg",
   "https://images.pexels.com/photos/11612743/pexels-photo-11612743.jpeg"
  ],
  "country:SA": [
-  "https://images.pexels.com/photos/10960881/pexels-photo-10960881.jpeg",
-  "https://images.pexels.com/photos/24415233/pexels-photo-24415233.jpeg"
+  "https://images.pexels.com/photos/10961006/pexels-photo-10961006.jpeg",
+  "https://images.pexels.com/photos/39590211/pexels-photo-39590211.jpeg"
  ],
  "country:SB": [
   "https://images.pexels.com/photos/4550335/pexels-photo-4550335.png",
@@ -2126,21 +2061,17 @@
  ],
  "country:SC": [
   "https://images.pexels.com/photos/32544178/pexels-photo-32544178.jpeg",
-  "https://images.pexels.com/photos/5048621/pexels-photo-5048621.jpeg",
   "https://images.pexels.com/photos/5044865/pexels-photo-5044865.jpeg"
  ],
  "country:SE": [
-  "https://images.pexels.com/photos/19391718/pexels-photo-19391718.jpeg",
   "https://images.pexels.com/photos/32442889/pexels-photo-32442889.jpeg",
   "https://images.pexels.com/photos/20531281/pexels-photo-20531281.jpeg"
  ],
  "country:SG": [
   "https://images.pexels.com/photos/15480459/pexels-photo-15480459.jpeg",
-  "https://images.pexels.com/photos/15480502/pexels-photo-15480502.jpeg",
   "https://images.pexels.com/photos/11903704/pexels-photo-11903704.jpeg"
  ],
  "country:SI": [
-  "https://images.pexels.com/photos/258136/pexels-photo-258136.jpeg",
   "https://images.pexels.com/photos/1660993/pexels-photo-1660993.jpeg",
   "https://images.pexels.com/photos/17164966/pexels-photo-17164966.jpeg"
  ],
@@ -2150,13 +2081,10 @@
   "https://images.pexels.com/photos/14000243/pexels-photo-14000243.jpeg"
  ],
  "country:SM": [
-  "https://images.pexels.com/photos/33086313/pexels-photo-33086313.jpeg",
-  "https://images.pexels.com/photos/18876845/pexels-photo-18876845.jpeg",
-  "https://images.pexels.com/photos/5312111/pexels-photo-5312111.jpeg"
+  "https://images.pexels.com/photos/33086313/pexels-photo-33086313.jpeg"
  ],
  "country:SN": [
   "https://images.pexels.com/photos/31450206/pexels-photo-31450206.jpeg",
-  "https://images.pexels.com/photos/18189706/pexels-photo-18189706.jpeg",
   "https://images.pexels.com/photos/39533337/pexels-photo-39533337.jpeg"
  ],
  "country:SR": [
@@ -2170,31 +2098,26 @@
  ],
  "country:TH": [
   "https://images.pexels.com/photos/9625358/pexels-photo-9625358.jpeg",
-  "https://images.pexels.com/photos/35981279/pexels-photo-35981279.jpeg",
   "https://images.pexels.com/photos/18223260/pexels-photo-18223260.jpeg"
  ],
  "country:TN": [
   "https://images.pexels.com/photos/20190776/pexels-photo-20190776.jpeg",
-  "https://images.pexels.com/photos/27637106/pexels-photo-27637106.jpeg",
   "https://images.pexels.com/photos/15934846/pexels-photo-15934846.jpeg"
  ],
  "country:TR": [
-  "https://images.pexels.com/photos/13433940/pexels-photo-13433940.jpeg",
-  "https://images.pexels.com/photos/28121019/pexels-photo-28121019.jpeg"
+  "https://images.pexels.com/photos/37759093/pexels-photo-37759093.jpeg",
+  "https://images.pexels.com/photos/9150211/pexels-photo-9150211.jpeg",
+  "https://images.pexels.com/photos/38133008/pexels-photo-38133008.jpeg"
  ],
  "country:TT": [
-  "https://images.pexels.com/photos/30826607/pexels-photo-30826607.jpeg",
   "https://images.pexels.com/photos/30871804/pexels-photo-30871804.jpeg",
   "https://images.pexels.com/photos/30826590/pexels-photo-30826590.jpeg"
  ],
  "country:TW": [
-  "https://images.pexels.com/photos/16705976/pexels-photo-16705976.jpeg",
   "https://images.pexels.com/photos/33344135/pexels-photo-33344135.jpeg",
   "https://images.pexels.com/photos/40002703/pexels-photo-40002703.jpeg"
  ],
  "country:TZ": [
-  "https://images.pexels.com/photos/8427984/pexels-photo-8427984.jpeg",
-  "https://images.pexels.com/photos/15993990/pexels-photo-15993990.jpeg",
   "https://images.pexels.com/photos/11568395/pexels-photo-11568395.jpeg"
  ],
  "country:UG": [
@@ -2207,18 +2130,13 @@
   "https://images.pexels.com/photos/7758569/pexels-photo-7758569.jpeg"
  ],
  "country:UY": [
-  "https://images.pexels.com/photos/18013781/pexels-photo-18013781.jpeg",
-  "https://images.pexels.com/photos/17895952/pexels-photo-17895952.jpeg"
+  "https://images.pexels.com/photos/36947421/pexels-photo-36947421.jpeg"
  ],
  "country:UZ": [
-  "https://images.pexels.com/photos/19439126/pexels-photo-19439126.jpeg",
-  "https://images.pexels.com/photos/39662648/pexels-photo-39662648.jpeg",
   "https://images.pexels.com/photos/35220187/pexels-photo-35220187.jpeg"
  ],
  "country:VA": [
-  "https://images.pexels.com/photos/27530585/pexels-photo-27530585.jpeg",
-  "https://images.pexels.com/photos/12044711/pexels-photo-12044711.jpeg",
-  "https://images.pexels.com/photos/29761657/pexels-photo-29761657.jpeg"
+  "https://images.pexels.com/photos/12044711/pexels-photo-12044711.jpeg"
  ],
  "country:VN": [
   "https://images.pexels.com/photos/38100494/pexels-photo-38100494.jpeg",
@@ -2226,22 +2144,16 @@
   "https://images.pexels.com/photos/38093102/pexels-photo-38093102.jpeg"
  ],
  "country:WS": [
-  "https://images.pexels.com/photos/3423152/pexels-photo-3423152.jpeg",
-  "https://images.pexels.com/photos/17131058/pexels-photo-17131058.jpeg"
+  "https://images.pexels.com/photos/3423152/pexels-photo-3423152.jpeg"
  ],
  "country:ZA": [
   "https://images.pexels.com/photos/38194011/pexels-photo-38194011.jpeg",
-  "https://images.pexels.com/photos/8470660/pexels-photo-8470660.jpeg",
-  "https://images.pexels.com/photos/4599095/pexels-photo-4599095.jpeg"
+  "https://images.pexels.com/photos/8470660/pexels-photo-8470660.jpeg"
  ],
  "country:ZM": [
-  "https://images.pexels.com/photos/757142/pexels-photo-757142.jpeg",
-  "https://images.pexels.com/photos/17435022/pexels-photo-17435022.jpeg",
-  "https://images.pexels.com/photos/30172599/pexels-photo-30172599.jpeg"
+  "https://images.pexels.com/photos/17435022/pexels-photo-17435022.jpeg"
  ],
  "country:ZW": [
-  "https://images.pexels.com/photos/23232512/pexels-photo-23232512.jpeg",
-  "https://images.pexels.com/photos/17435022/pexels-photo-17435022.jpeg",
-  "https://images.pexels.com/photos/30172599/pexels-photo-30172599.jpeg"
+  "https://images.pexels.com/photos/23232512/pexels-photo-23232512.jpeg"
  ]
 }

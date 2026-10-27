@@ -1,0 +1,1 @@
+# Gallery rows checked by eye: "<slug> 3 7" drops those photos; "<slug> *" = no gallery yet. Every reviewed city is listed.

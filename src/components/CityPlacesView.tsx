@@ -42,7 +42,9 @@ export default function CityPlacesView({
   activities,
   services,
   restaurants,
+  gallery,
 }: {
+  gallery?: React.ComponentProps<typeof CityPlacesPlanner>["gallery"];
   locale: Locale;
   initialView: CityView;
   places: PlaceListItem[];
@@ -213,6 +215,7 @@ export default function CityPlacesView({
           dict={plannerDict}
           onShowOnMap={pins.length ? showOnMap : undefined}
           restaurants={restaurants}
+          gallery={gallery}
           showOnMapLabel={labels.showOnMap}
         />
       </div>

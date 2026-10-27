@@ -233,6 +233,12 @@ const en = {
       "This is an overview of the country's best-known landmarks. For hundreds of places in detail, open a city map below.",
   },
   travelers: {
+    rooms: "Rooms",
+    roomsHint: "Up to one room per adult",
+    roomOne: "1 room",
+    roomTwo: "2 rooms",
+    roomFew: "{count} rooms",
+    roomMany: "{count} rooms",
     label: "Travelers",
     adults: "Adults",
     adultsHint: "Age 13+",
@@ -313,6 +319,9 @@ const en = {
     bookHotel: "🏨 Hotels in {city}",
   },
   hotelPrefs: {
+    nearLabel: "Distance from the centre",
+    nearAny: "Any distance",
+    nearKm: "Within {km} km",
     placeLabel: "Kind of place",
     place: { "": "All hotels", aparthotel: "Apartment hotels", resort: "Resorts", boutique: "Boutique hotels", beach: "Beach hotels", rental: "Apartments, villas & chalets" },
     ratingLabel: "Guest rating",
@@ -375,6 +384,7 @@ const en = {
     hotelsHint: "A place to stay",
   },
   hotelForm: {
+    budgetOptional: "Stay budget (optional)",
     rooms: "Rooms",
     roomsLess: "One room less",
     roomsMore: "One room more",
@@ -797,6 +807,7 @@ const en = {
     savedMissing: "We could not find this plan in your account.",
   },
   hotelResults: {
+    listNoNear: "No hotel in these results is within {km} km of the centre, so the nearest are shown.",
     sortSites: "Sort the sites",
     sortCheapestFirst: "Cheapest first",
     sortExpensiveFirst: "Most expensive first",
@@ -1108,6 +1119,13 @@ const en = {
       "Set the length of your trip, then pick the places you like from the list below with \"Add to my interests\" — and we'll build the plan.",
   },
   tripPlan: {
+    tourOpen: "Browse city photos",
+    tourOpenSub: "Top landmarks and views ({count} photos)",
+    tourClose: "Close",
+    tourPrev: "Previous photo",
+    tourNext: "Next photo",
+    tourOnMap: "On the map",
+    tourOf: "{n} of {total}",
     startTitle: "Your trip plan for {city}",
     startBody: "Pick the places yourself and we'll arrange them over your days — or let us build a whole plan from your interests.",
     pickMode: "Build a plan from my picks",

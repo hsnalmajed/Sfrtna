@@ -1,5 +1,6 @@
 import { readGuide } from "@/lib/guide";
 import { guidePlanReady } from "@/lib/guidePlan";
+import { readGallery } from "@/lib/gallery";
 import { readableHours, type Group } from "@/lib/guideTypes";
 import type { PinCategory } from "@/lib/pinStyles";
 import Link from "next/link";
@@ -86,7 +87,7 @@ export default async function CityPlacesPageBody({
   const cityEntry = findCity(country.code, city);
   if (!cityEntry) notFound();
 
-  const [places, overviews, highlights, guide] = await Promise.all([
+  const [places, overviews, highlights, guide, gallery] = await Promise.all([
     fetchPlacesAroundCities([cityEntry], { locale: loc }),
     fetchCityOverviews([cityEntry]),
     // The country's hand-checked landmarks that actually sit in this city —
@@ -94,6 +95,9 @@ export default async function CityPlacesPageBody({
     fetchCityHighlights(country.code, cityEntry),
     // Our own guide: the places the world knows, with a write-up of ours.
     readGuide(cityEntry.slug),
+    // «استعرض صور المدينة»: a small list of photo addresses; no photo is
+    // loaded until the traveller opens it.
+    readGallery(cityEntry.slug),
   ]);
 
   // A stored place and a curated landmark are the same thing when their
@@ -328,6 +332,7 @@ export default async function CityPlacesPageBody({
               countryCode={country.code}
               citySlug={cityEntry.slug}
               smartReady={guidePlanReady(guide)}
+              gallery={gallery}
               cityName={cityName}
               countryName={loc === "ar" ? country.nameAr : country.nameEn}
               mapTitle={dict.maps.cityMapTitle.replace("{city}", cityName)}

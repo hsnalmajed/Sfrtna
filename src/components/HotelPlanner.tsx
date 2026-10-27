@@ -18,15 +18,17 @@ import {
   RATING_LABEL,
   readHotelPrefs,
   writeHotelPrefs,
+  NEAR_KMS,
   type Amenity,
   type HotelPrefs,
+  type NearKm,
   type PlaceKind,
   type RatingFloor,
 } from "@/lib/hotelPrefs";
 import { parseChildrenAges, serializeChildrenAges } from "@/lib/searchParamsUtil";
 import { focusFirstError, hasErrors, type FieldErrors } from "@/lib/formErrors";
 import { formStyles, type FormTone } from "@/lib/formTone";
-import { BudgetInput, ChoiceChips, EdgeTabs, FieldLabel, PreferencesPanel, RoomsStepper, Toggle } from "@/components/PlannerFields";
+import { BudgetInput, ChoiceChips, EdgeTabs, FieldLabel, PreferencesPanel, Toggle } from "@/components/PlannerFields";
 import { MAX_ROOMS, cleanRooms } from "@/lib/rooms";
 import { trackSearchUrl } from "@/lib/analytics";
 import { useProfileOnce } from "@/lib/useMember";
@@ -174,6 +176,10 @@ export default function HotelPlanner({
     });
     if (rooms > 1) params.set("rooms", String(rooms));
     if (mode === "known") {
+      if (Number(budget) > 0) {
+        params.set("budget", String(Number(budget)));
+        params.set("currency", currency);
+      }
       params.set("hotel", hotel.trim());
       if (hotelArea) params.set("hotelArea", hotelArea);
       if (hotelLabel && hotelLabel !== hotel) params.set("label", hotelLabel);
@@ -342,25 +348,24 @@ export default function HotelPlanner({
 
         <div>
           <FieldLabel dark={dark} icon="users">{dict.travelers.label}</FieldLabel>
-          <TravelersPicker locale={locale} value={travelers} onChange={setTravelers} tone={tone} />
+          <TravelersPicker
+            locale={locale}
+            value={travelers}
+            onChange={setTravelers}
+            tone={tone}
+            rooms={{ value: rooms, max: Math.min(MAX_ROOMS, Math.max(1, travelers.adults)), onChange: setRooms }}
+          />
         </div>
 
-        <RoomsStepper
-          dark={dark}
-          value={rooms}
-          max={Math.min(MAX_ROOMS, Math.max(1, travelers.adults))}
-          onChange={setRooms}
-          label={dict.hotelForm.rooms}
-          less={dict.hotelForm.roomsLess}
-          more={dict.hotelForm.roomsMore}
-        />
-
-        {mode === "discover" && (
+        {/* The stay's budget: required when we suggest hotels; optional for
+            a hotel the traveller names — then its prices say whether they
+            fit (owner, 27 Oct: the field had gone from «فندق أو مدينة»). */}
+        {(
           <BudgetInput
             id="hotel-budget"
             locale={locale}
             dark={dark}
-            label={dict.hotelForm.budget}
+            label={mode === "known" ? dict.hotelForm.budgetOptional : dict.hotelForm.budget}
             placeholder={dict.hotelForm.budgetPlaceholder}
             currencyLabel={dict.form.currency}
             value={budget}
@@ -389,6 +394,7 @@ export default function HotelPlanner({
             ...(minStars ? ["★".repeat(minStars)] : []),
             ...(prefs.rating ? [`${hp.ratingLabel} ${RATING_LABEL[prefs.rating]}`] : []),
             ...(prefs.freeCancel ? [hp.freeCancel] : []),
+            ...(prefs.near ? [hp.nearKm.replace("{km}", String(prefs.near))] : []),
             ...prefs.amenities.map((a) => hp.amenity[a]),
           ]}
         >
@@ -445,6 +451,17 @@ export default function HotelPlanner({
             />
           </div>
 
+          <div>
+            <FieldLabel dark={dark} icon="pin">
+              {hp.nearLabel}
+            </FieldLabel>
+            <ChoiceChips<NearKm>
+              dark={dark}
+              options={NEAR_KMS.map((k) => ({ value: k, label: k ? hp.nearKm.replace("{km}", String(k)) : hp.nearAny }))}
+              isOn={(v) => v === prefs.near}
+              onPick={(v) => setPref("near", v)}
+            />
+          </div>
           <div>
             <FieldLabel dark={dark} icon="check">
               {hp.amenitiesLabel}

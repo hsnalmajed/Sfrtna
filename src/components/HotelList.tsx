@@ -157,6 +157,17 @@ export default function HotelList({
     if (withBreakfast.length) hotels = withBreakfast;
     else note = t.listNoBreakfast;
   }
+  // «قريب من المركز» (owner, 27 Oct: preferences as on Booking): only hotels
+  // whose position we know and that are within the chosen distance.
+  if (prefs.near && centre) {
+    const near = hotels.filter((h) => h.lat != null && h.lng != null && km(centre, { lat: h.lat, lon: h.lng }) <= prefs.near);
+    if (near.length) hotels = near;
+    else {
+      note = [note, t.listNoNear.replace("{km}", String(prefs.near))].filter(Boolean).join(" ");
+      const d = (h: HotelResult) => (h.lat != null && h.lng != null ? km(centre, { lat: h.lat, lon: h.lng }) : Infinity);
+      hotels = [...hotels].sort((a, b) => d(a) - d(b));
+    }
+  }
   if (!hotels.length) {
     return <p className="rounded-2xl bg-white p-6 text-center text-sm font-semibold text-navy-700 shadow-sm ring-1 ring-black/5">{t.listEmpty}</p>;
   }

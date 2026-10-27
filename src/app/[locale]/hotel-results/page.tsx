@@ -166,6 +166,9 @@ function HotelResultsContent() {
 
   // The filters the traveller set, read back under the search.
   const chips: string[] = [];
+  // A named hotel with a budget: the budget is read back too.
+  if (mode === "known" && budget > 0) chips.push(t.budgetTotal.replace("{amount}", money(budget)));
+  if (mode === "known" && rooms > 1) chips.push(t.roomsPriced.replaceAll("{count}", String(rooms)));
   if (mode === "discover") {
     if (budget > 0) {
       chips.push(t.budgetTotal.replace("{amount}", money(budget)));
@@ -177,6 +180,7 @@ function HotelResultsContent() {
     if (breakfast) chips.push(t.breakfast);
     if (prefs.rating) chips.push(`${hp.ratingLabel} ${RATING_LABEL[prefs.rating]}`);
     if (prefs.freeCancel) chips.push(hp.freeCancel);
+    if (prefs.near) chips.push(hp.nearKm.replace("{km}", String(prefs.near)));
     for (const a of prefs.amenities) chips.push(hp.amenity[a]);
   }
 
@@ -292,7 +296,7 @@ function HotelResultsContent() {
               <HotelPrices
                 query={query}
                 priceQuery={hotelArea ? `${query} ${hotelArea}` : query}
-                budget={0}
+                budget={budget}
                 checkIn={checkIn}
                 checkOut={checkOut}
                 adults={share.adults}

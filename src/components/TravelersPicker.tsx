@@ -103,7 +103,13 @@ export default function TravelersPicker({
   value,
   onChange,
   tone = "light",
+  rooms,
 }: {
+  /**
+   * Hotels: the rooms count lives with the party, as on Booking ("2 adults ·
+   * 1 room"), at most one room per adult.
+   */
+  rooms?: { value: number; max: number; onChange: (n: number) => void };
   /** Kept for callers; the words come from useDictionary(). */
   locale: Locale;
   value: TravelerCounts;
@@ -137,7 +143,11 @@ export default function TravelersPicker({
         onClick={() => setOpen((o) => !o)}
         className={`${inputClass} flex items-center justify-between text-start`}
       >
-        <span>{summarize(value, dict)}</span>
+        <span className="truncate">
+          {summarize(value, dict)}
+          {rooms &&
+            ` · ${countLabel(rooms.value, { one: dict.travelers.roomOne, two: dict.travelers.roomTwo, few: dict.travelers.roomFew, many: dict.travelers.roomMany })}`}
+        </span>
         <Icon
           name="chevron"
           className={`h-4 w-4 transition ${open ? "rotate-180" : ""} ${tone === "dark" ? "text-white/55" : "text-navy-400"}`}
@@ -206,6 +216,16 @@ export default function TravelersPicker({
             max={MAX_INFANTS}
             onChange={(infants) => onChange({ ...value, infants })}
           />
+          {rooms && (
+            <Counter
+              label={dict.travelers.rooms}
+              hint={dict.travelers.roomsHint}
+              value={Math.min(rooms.value, rooms.max)}
+              min={1}
+              max={rooms.max}
+              onChange={rooms.onChange}
+            />
+          )}
           <button
             type="button"
             onClick={() => setOpen(false)}

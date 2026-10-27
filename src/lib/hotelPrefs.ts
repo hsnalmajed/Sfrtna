@@ -36,11 +36,16 @@ export type RatingFloor = 0 | 7 | 8 | 9;
 export const RATING_FLOORS: RatingFloor[] = [0, 7, 8, 9];
 export const RATING_LABEL: Record<Exclude<RatingFloor, 0>, string> = { 7: "3.5+", 8: "4+", 9: "4.5+" };
 
+/** Furthest from the city centre, in km (0 = anywhere); applied to the list on our side. */
+export type NearKm = 0 | 1 | 3 | 5 | 10;
+export const NEAR_KMS: NearKm[] = [0, 1, 3, 5, 10];
+
 export interface HotelPrefs {
   place: PlaceKind;
   amenities: Amenity[];
   rating: RatingFloor;
   freeCancel: boolean;
+  near: NearKm;
 }
 
 /** Read from a results/search address; old links (`stay=apartment`) still work. */
@@ -52,7 +57,9 @@ export function readHotelPrefs(sp: URLSearchParams): HotelPrefs {
     .filter((a): a is Amenity => (AMENITIES as string[]).includes(a));
   const r = Number(sp.get("rating"));
   const rating = (RATING_FLOORS as number[]).includes(r) ? (r as RatingFloor) : 0;
-  return { place, amenities, rating, freeCancel: sp.get("fc") === "1" };
+  const n = Number(sp.get("near"));
+  const near = (NEAR_KMS as number[]).includes(n) ? (n as NearKm) : 0;
+  return { place, amenities, rating, freeCancel: sp.get("fc") === "1", near };
 }
 
 export function writeHotelPrefs(p: HotelPrefs, out: URLSearchParams) {
@@ -60,6 +67,7 @@ export function writeHotelPrefs(p: HotelPrefs, out: URLSearchParams) {
   if (p.amenities.length) out.set("amen", p.amenities.join(","));
   if (p.rating) out.set("rating", String(p.rating));
   if (p.freeCancel) out.set("fc", "1");
+  if (p.near) out.set("near", String(p.near));
 }
 
-export const NO_HOTEL_PREFS: HotelPrefs = { place: "", amenities: [], rating: 0, freeCancel: false };
+export const NO_HOTEL_PREFS: HotelPrefs = { place: "", amenities: [], rating: 0, freeCancel: false, near: 0 };

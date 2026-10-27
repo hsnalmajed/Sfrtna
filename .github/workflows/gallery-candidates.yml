@@ -1,0 +1,49 @@
+# City gallery photos (scripts/photos/gallery-candidates.ts): up to 190
+# Pexels searches a run, resumable, with sheets for the eye check. Lives on
+# the branch `photo-review` (gallery.json, g-NN.jpg); never touches main.
+# Runs every hour until every city is collected, and by hand.
+name: Gallery candidates
+
+on:
+  schedule:
+    - cron: "41 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: photo-candidates
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - name: Bring back the review branch
+        run: |
+          mkdir -p photo-review
+          if git fetch -q origin photo-review 2>/dev/null; then
+            for f in $(git ls-tree --name-only origin/photo-review); do git show origin/photo-review:$f > photo-review/$f; done
+          fi
+      - name: Collect
+        run: npx --yes tsx@4 scripts/photos/gallery-candidates.ts --max 190
+      - name: Sheets
+        run: npx --yes tsx@4 scripts/photos/gallery-candidates.ts --sheets
+      - name: Push to the review branch
+        run: |
+          cd photo-review
+          git init -q
+          git config user.name "Claude"; git config user.email "noreply@anthropic.com"
+          git checkout -q -b photo-review
+          git add . && git commit -q -m "Gallery candidates"
+          git push -q -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" photo-review

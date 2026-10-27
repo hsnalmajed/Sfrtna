@@ -243,6 +243,12 @@ const ar = {
       "هذه نظرة عامة على أبرز معالم الدولة. للحصول على مئات المواقع بالتفصيل، افتح خريطة المدينة أدناه.",
   },
   travelers: {
+    rooms: "الغرف",
+    roomsHint: "غرفة لكل بالغ كحد أقصى",
+    roomOne: "غرفة واحدة",
+    roomTwo: "غرفتان",
+    roomFew: "{count} غرف",
+    roomMany: "{count} غرفة",
     label: "المسافرون",
     adults: "البالغون",
     adultsHint: "13 سنة فأكثر",
@@ -328,6 +334,9 @@ const ar = {
     bookHotel: "🏨 فنادق {city}",
   },
   hotelPrefs: {
+    nearLabel: "القرب من مركز المدينة",
+    nearAny: "أي مسافة",
+    nearKm: "حتى {km} كم",
     placeLabel: "نوع المكان",
     place: { "": "كل الفنادق", aparthotel: "شقق فندقية", resort: "منتجعات", boutique: "فنادق بوتيك", beach: "فنادق على الشاطئ", rental: "شقق وفلل وشاليهات" },
     ratingLabel: "تقييم الضيوف",
@@ -391,6 +400,7 @@ const ar = {
     hotelsHint: "إقامة في وجهتك",
   },
   hotelForm: {
+    budgetOptional: "ميزانية الإقامة (اختياري)",
     rooms: "عدد الغرف",
     roomsLess: "غرفة أقل",
     roomsMore: "غرفة أكثر",
@@ -813,6 +823,7 @@ const ar = {
     savedMissing: "لم نجد هذه الخطة في حسابك.",
   },
   hotelResults: {
+    listNoNear: "لا يوجد في هذه النتائج فندق على بعد {km} كم من المركز، فعرضنا الأقرب.",
     sortSites: "ترتيب المواقع",
     sortCheapestFirst: "الأرخص أولاً",
     sortExpensiveFirst: "الأغلى أولاً",
@@ -1127,6 +1138,13 @@ const ar = {
       "حدّد أيام رحلتك، واختر الأماكن التي تعجبك من القائمة أدناه عن طريق «أضف إلى اهتمامي» — ونعمل لك الخطة.",
   },
   tripPlan: {
+    tourOpen: "استعرض صور المدينة",
+    tourOpenSub: "أشهر المعالم والمناظر ({count} صورة)",
+    tourClose: "إغلاق",
+    tourPrev: "الصورة السابقة",
+    tourNext: "الصورة التالية",
+    tourOnMap: "الموقع",
+    tourOf: "{n} من {total}",
     startTitle: "خطتك السياحية في {city}",
     startBody: "اختر الأماكن بنفسك ونرتّبها لك على أيام رحلتك، أو دعنا ننشئ لك خطة كاملة حسب اهتماماتك.",
     pickMode: "أنشئ خطة من اختياري",
