@@ -1393,6 +1393,12 @@ free, app), upload key → 4 GitHub secrets (android.yml), first .aab to the
 closed test (≥ 12 testers × 14 days), store listing ar+en, Data safety,
 App Links (assetlinks.json with Play's SHA-256), Android OAuth client.
 
+**Workers Paid — owner subscribed 27 Oct 19:55** ($5/month, cancel any time;
+after Search Console showed 104 pages "Server error (5xx)" crawled 23 Oct =
+1102 CPU limit on cache misses during deploys; all 104 answer 200 now).
+Owner presses Validate fix on 5xx again. To do: raise the subrequest-bound
+limits (routeSuggest MAX_REQUESTS / MAX_CITIES) now that 10,000 are allowed.
+
 **▶ Start here (hand-off 23 Oct 00:15):** owner opens a new conversation to
 create the **Google Play personal developer account** (decided 23 Oct; $25,
 ID check — may take hours to days). Step 1 for the owner (one step per
