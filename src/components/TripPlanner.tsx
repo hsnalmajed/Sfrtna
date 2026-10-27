@@ -281,11 +281,18 @@ export default function TripPlanner({
     }
     if (!departDate) next.departDate = dict.form.errorDepartDate;
     if (showReturnDate && !returnDate) next.returnDate = dict.form.errorReturnDate;
-    if (!budget) next.budget = dict.form.errorBudget;
-    else if (Number(budget) <= 0) next.budget = dict.form.errorBudgetPositive;
+    // The budget is needed only when we choose for the traveller (owner, 27
+    // Oct): «اقترح لي وجهة» ranks places by it. A flight to a place they
+    // chose shows every live fare anyway; a budget only marks what fits.
+    if (mode === "discover") {
+      if (!budget) next.budget = dict.form.errorBudget;
+      else if (Number(budget) <= 0) next.budget = dict.form.errorBudgetPositive;
+    }
     if (combo) {
       if (mode === "known" && comboHotel.name.trim() && !comboHotel.picked) next.hotel = dict.hotelForm.errorPickHotel;
-      if (!(Number(comboHotel.budget) > 0)) next.hotelBudget = dict.combo.errorHotelBudget;
+      // Hotels we suggest need the hotel budget; a hotel they named does not.
+      const namedHotel = mode === "known" && comboHotel.picked;
+      if (!namedHotel && !(Number(comboHotel.budget) > 0)) next.hotelBudget = dict.combo.errorHotelBudget;
     }
     return next;
   }
@@ -317,7 +324,7 @@ export default function TripPlanner({
       adults: String(travelers.adults),
       childrenAges: serializeChildrenAges(travelers.childrenAges),
       infants: String(travelers.infants),
-      budget: String(Number(budget)),
+      budget: String(Number(budget) || 0),
       currency: effectiveCurrency,
       directOnly: String(directOnly),
       baggageIncluded: String(baggageIncluded),
@@ -568,8 +575,9 @@ export default function TripPlanner({
           id="plan-budget"
           locale={locale}
           dark={dark}
-          label={dict.form.budgetFlightShort}
+          label={mode === "discover" ? dict.form.budgetFlightShort : dict.form.budgetFlightOptional}
           placeholder={dict.form.budgetForAll}
+          hint={mode === "discover" ? undefined : dict.form.budgetOptionalHint}
           currencyLabel={dict.form.currency}
           value={budget}
           onChange={(v) => {

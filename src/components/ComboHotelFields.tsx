@@ -106,7 +106,8 @@ export default function ComboHotelFields({
             id="combo-hotel-budget"
             locale={locale}
             dark={dark}
-            label={c.hotelBudget}
+            label={!discover && value.picked ? dict.hotelForm.budgetOptional : c.hotelBudget}
+            hint={!discover && value.picked ? dict.form.budgetOptionalHint : undefined}
             placeholder={dict.hotelForm.budgetPlaceholder}
             currencyLabel={dict.form.currency}
             value={value.budget}

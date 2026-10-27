@@ -1040,6 +1040,8 @@ const en = {
     backToSearch: "Edit search",
   },
   form: {
+    budgetFlightOptional: "Flight budget (optional)",
+    budgetOptionalHint: "Add it and we will show you what fits your budget",
     tripRoute: "Trip route",
     tripRouteRoundtrip: "Round-trip",
     tripRouteOneway: "One-way",

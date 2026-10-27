@@ -493,7 +493,7 @@ function ResultsContent() {
         <nav className="sticky top-20 z-20 mb-5 grid grid-cols-2 gap-2 rounded-2xl bg-white/95 p-2 shadow-sm ring-1 ring-black/5 backdrop-blur" aria-label={dict.combo.productTitle}>
           <a href="#combo-flight" className="rounded-xl bg-navy-950 px-3 py-2 text-center text-white">
             <span className="block text-sm font-extrabold">{dict.combo.jumpFlight}</span>
-            <span className="block text-[11px] font-semibold text-white/75">{dict.combo.budgetFlight.replace("{amount}", money(search.budgetTotal))}</span>
+            <span className="block text-[11px] font-semibold text-white/75">{search.budgetTotal > 0 ? dict.combo.budgetFlight.replace("{amount}", money(search.budgetTotal)) : "—"}</span>
           </a>
           <a href="#combo-hotel" className="rounded-xl bg-sun-400 px-3 py-2 text-center text-navy-950">
             <span className="block text-sm font-extrabold">{dict.combo.jumpHotel}</span>

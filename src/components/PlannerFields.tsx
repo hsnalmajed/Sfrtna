@@ -131,7 +131,10 @@ export function BudgetInput({
   currency,
   onCurrencyChange,
   error,
+  hint,
 }: {
+  /** Under an optional budget: why it is worth filling in. */
+  hint?: string;
   id: string;
   locale: Locale;
   dark: boolean;
@@ -196,10 +199,12 @@ export function BudgetInput({
           label={currencyLabel}
         />
       </div>
-      {error && (
+      {error ? (
         <p role="alert" className={`mt-1.5 text-xs font-semibold ${dark ? "text-rose-300" : "text-red-600"}`}>
           {error}
         </p>
+      ) : (
+        hint && <p className={`mt-1.5 text-xs ${dark ? "text-white/60" : "text-navy-500"}`}>{hint}</p>
       )}
     </div>
   );

@@ -366,6 +366,7 @@ export default function HotelPlanner({
             locale={locale}
             dark={dark}
             label={mode === "known" ? dict.hotelForm.budgetOptional : dict.hotelForm.budget}
+            hint={mode === "known" ? dict.form.budgetOptionalHint : undefined}
             placeholder={dict.hotelForm.budgetPlaceholder}
             currencyLabel={dict.form.currency}
             value={budget}

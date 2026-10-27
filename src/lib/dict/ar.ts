@@ -1057,6 +1057,8 @@ const ar = {
     backToSearch: "تعديل البحث",
   },
   form: {
+    budgetFlightOptional: "ميزانية الطيران (اختياري)",
+    budgetOptionalHint: "اكتبها لنُظهر لك ما يناسب ميزانيتك",
     tripRoute: "طريقة الرحلة",
     tripRouteRoundtrip: "ذهاب وعودة",
     tripRouteOneway: "ذهاب فقط",
