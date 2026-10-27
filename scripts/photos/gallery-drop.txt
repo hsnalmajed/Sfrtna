@@ -37,3 +37,15 @@ tangier 2 3 4 6 9
 agadir
 rabat 5 6 7 8
 amman 4 6 7
+petra 3 6
+aqaba 1 3
+london 2
+edinburgh 9
+manchester 1 4 6 7
+oxford 6 8 9
+glasgow 1 2 4 5 6
+belfast 2 5
+birmingham 2 6 7 8
+paris 6
+nice 1 2 3
+lyon 3 4
