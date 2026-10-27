@@ -1,0 +1,37 @@
+# Times multi-country route suggestions on the live Worker (by hand).
+# Report goes to branch `route-probe` (route-probe.txt; counts and times only).
+name: Route probe
+on:
+  workflow_dispatch:
+    inputs:
+      label:
+        description: "before | after"
+        type: string
+        default: run
+permissions:
+  contents: write
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          check-latest: true
+      - name: Probe
+        env:
+          SMOKE_TOKEN: ${{ secrets.SMOKE_TOKEN }}
+        run: node scripts/route-probe.mjs > "$RUNNER_TEMP/out.txt"; cat "$RUNNER_TEMP/out.txt"
+      - name: Save report
+        run: |
+          git fetch origin route-probe || true
+          git checkout -B route-probe origin/route-probe 2>/dev/null || git checkout --orphan route-probe
+          git rm -rfq . 2>/dev/null || true
+          git show origin/route-probe:route-probe.txt > old.txt 2>/dev/null || : > old.txt
+          { cat old.txt; echo; echo "== ${{ inputs.label }}"; cat "$RUNNER_TEMP/out.txt"; } > route-probe.txt
+          rm old.txt
+          git add route-probe.txt
+          git -c user.name="github-actions" -c user.email="github-actions@users.noreply.github.com" commit -qm "route probe ${{ inputs.label }}"
+          git push -q -f origin route-probe
