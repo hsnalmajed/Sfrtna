@@ -1,6 +1,7 @@
 import { COUNTRY_GUIDES } from "@/lib/countryGuides";
 import { findCountry } from "@/lib/countries";
 import { searchPexelsPhotos, type PexelsQuery } from "@/lib/pexels";
+import { cityPhotoQueries, countryPhotoQueries } from "@/lib/photoSubjects";
 
 /**
  * One photograph per country, for the destination cards.
@@ -16,16 +17,18 @@ export async function fetchCountryPhotos(
   { full = false }: { full?: boolean } = {}
 ): Promise<Map<string, string>> {
   const wanted = new Map<string, PexelsQuery[]>();
+  const legacy = new Map<string, PexelsQuery[]>();
   for (const code of codes) {
     const country = findCountry(code)?.nameEn;
     if (!country) continue;
+    wanted.set(code, countryPhotoQueries(code));
     const landmarks = (COUNTRY_GUIDES[code]?.attractions ?? []).slice(0, 2);
-    wanted.set(code, [
+    legacy.set(code, [
       ...landmarks.map((a) => ({ query: `${a.nameEn} ${country}`, mention: [a.nameEn, country] })),
       { query: `${country} travel`, mention: [country] },
     ]);
   }
-  const found = await searchPexelsPhotos(wanted);
+  const found = await searchPexelsPhotos(wanted, legacy);
   const photos = new Map<string, string>();
   for (const [code, p] of found) photos.set(code, full ? p.url : p.small);
   return photos;
@@ -43,14 +46,16 @@ export async function fetchCityPhotos(
   cities: { code: string; slug: string; nameEn: string }[]
 ): Promise<Map<string, string>> {
   const wanted = new Map<string, PexelsQuery[]>();
+  const legacy = new Map<string, PexelsQuery[]>();
   for (const c of cities) {
     const country = findCountry(c.code)?.nameEn ?? "";
-    wanted.set(`${c.code}/${c.slug}`, [
+    wanted.set(`${c.code}/${c.slug}`, cityPhotoQueries(c.code, c.slug, c.nameEn));
+    legacy.set(`${c.code}/${c.slug}`, [
       { query: `${c.nameEn} ${country}`.trim(), mention: [c.nameEn] },
       { query: `${c.nameEn} city`, mention: [c.nameEn] },
     ]);
   }
-  const found = await searchPexelsPhotos(wanted);
+  const found = await searchPexelsPhotos(wanted, legacy);
   const photos = new Map<string, string>();
   for (const [key, p] of found) photos.set(key, p.small);
   return photos;

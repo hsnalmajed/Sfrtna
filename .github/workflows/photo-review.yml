@@ -1,0 +1,31 @@
+# Contact sheets of every country's and city's stored photos
+# (scripts/photos/contact-sheet.ts), pushed to the branch `photo-review` so
+# they can be looked at from the workspace (which cannot reach Pexels).
+name: Photo review
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sheets:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - run: npx --yes tsx@4 scripts/photos/contact-sheet.ts
+      - name: Push the sheets
+        run: |
+          cd photo-review
+          git init -q
+          git config user.name "Claude"; git config user.email "noreply@anthropic.com"
+          git checkout -q -b photo-review
+          git add . && git commit -q -m "Photo review sheets"
+          git push -q -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" photo-review

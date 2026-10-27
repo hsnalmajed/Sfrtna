@@ -17,6 +17,7 @@ import { cachedJson, readJson, writeJson } from "@/lib/edgeCache";
 import { findCountry } from "@/lib/countries";
 import PLACE_COUNTS from "@/data/placeCounts.json";
 import { searchPexelsPhotos, type PexelsQuery } from "@/lib/pexels";
+import { cityPhotoQueries } from "@/lib/photoSubjects";
 import type { PinCategory } from "@/lib/pinStyles";
 import type { Locale } from "@/lib/types";
 
@@ -497,14 +498,15 @@ export async function fetchCityOverviews(
 ): Promise<Map<string, { photo?: string; photoLarge?: string; count: number }>> {
   const result = new Map<string, { photo?: string; photoLarge?: string; count: number }>();
   const wanted = new Map<string, PexelsQuery[]>();
+  const legacy = new Map<string, PexelsQuery[]>();
   for (const c of centres) {
     const code = CITY_COORDS[c.slug]?.code;
     const country = code ? findCountry(code)?.nameEn : undefined;
-    wanted.set(c.slug, [
-      { query: country ? `${c.nameEn} ${country}` : c.nameEn, mention: [c.nameEn] },
-    ]);
+    // The same searches as every other card of this city (photoSubjects.ts).
+    wanted.set(c.slug, code ? cityPhotoQueries(code, c.slug, c.nameEn) : [{ query: c.nameEn, mention: [c.nameEn] }]);
+    legacy.set(c.slug, [{ query: country ? `${c.nameEn} ${country}` : c.nameEn, mention: [c.nameEn] }]);
   }
-  const photos = await searchPexelsPhotos(wanted);
+  const photos = await searchPexelsPhotos(wanted, legacy);
   for (const c of centres) {
     // No count: knowing how many places a city has would mean one Overpass
     // query per card, and a country page has a dozen cards. The card shows

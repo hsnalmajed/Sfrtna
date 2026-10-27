@@ -92,6 +92,14 @@ function fold(s: string): string {
   return s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 }
 
+/**
+ * Captions that mean the photo is not a picture of the place (owner, 27
+ * Oct): people in it, aircraft, a view from above, or a close-up of
+ * something else. Matched on whole words of the folded caption.
+ */
+export const UNFIT =
+  /\b(man|men|woman|women|person|people|couple|couples|kiss|kissing|girl|girls|boy|boys|child|children|kid|kids|baby|lady|guy|bride|groom|wedding|model|posing|portrait|selfie|tourist|tourists|crowd|friends|family|smiling|smile|hijab|face|silhouette|walking|sitting|standing|holding|wearing|dancer|dancing|musician|vendor|worker|airplane|aeroplane|aircraft|plane|planes|airport|airline|jet|aerial|drone|overhead|bird's eye|birds eye|from above|top view|rooftop view|map|flag|passport|money|banknote|coin|food|dish|plate|meal|coffee|cup|drink|car|cars|taxi|bus|traffic|logo|close up|closeup|interior|inside|indoor|room|bed|hotel room)\b/;
+
 /** One search, uncached: `{ photo }` (null photo = nothing fitting), or null if the call failed. */
 /** How many photos are kept per place; the page shows one of them, changing weekly. */
 export const PHOTOS_PER_PLACE = 3;
@@ -112,7 +120,7 @@ export async function rawSearch({ query, mention }: PexelsQuery): Promise<{ phot
     const body = (await res.json()) as { photos?: PexelsApiPhoto[] };
     const words = mention.map(fold).filter(Boolean);
     const photos = (body.photos ?? [])
-      .filter((ph) => ph.src?.original && words.some((w) => fold(ph.alt ?? "").includes(w)))
+      .filter((ph) => ph.src?.original && words.some((w) => fold(ph.alt ?? "").includes(w)) && !UNFIT.test(fold(ph.alt ?? "")))
       .slice(0, PHOTOS_PER_PLACE)
       .map((p) => ({
         ...pexelsSizes(p.src.original),
@@ -244,13 +252,24 @@ function lookup(queries: PexelsQuery[], stored: Record<string, StoredPhoto>): Pe
  * its navy tile until the next run of the script fills it in.
  */
 export async function searchPexelsPhotos(
-  wanted: Map<string, PexelsQuery[]>
+  wanted: Map<string, PexelsQuery[]>,
+  /**
+   * The searches a subject used before (27 Oct): shown only until the new
+   * searches have been run for it, so no card goes blank in between. Never
+   * collected, so the photo job never searches them again.
+   */
+  legacy?: Map<string, PexelsQuery[]>
 ): Promise<Map<string, PexelsPhoto>> {
   const out = new Map<string, PexelsPhoto>();
   const stored = collector ? {} : await storedPhotos();
   for (const [k, queries] of wanted) {
     const p = lookup(queries, stored);
     if (p) out.set(k, p);
+    else if (!collector && legacy?.has(k) && !(subjectKey(queries) in stored)) {
+      const old = legacy.get(k)!;
+      const lp = fromStored(subjectKey(old), stored[subjectKey(old)]);
+      if (lp) out.set(k, lp);
+    }
   }
   return out;
 }
