@@ -1,6 +1,6 @@
 import { readGuide } from "@/lib/guide";
 import { guidePlanReady } from "@/lib/guidePlan";
-import { readGallery } from "@/lib/gallery";
+import { readGallery, galleryUrl, commonsUrl } from "@/lib/gallery";
 import { readableHours, type Group } from "@/lib/guideTypes";
 import type { PinCategory } from "@/lib/pinStyles";
 import Link from "next/link";
@@ -26,6 +26,7 @@ import { TICKETED_KINDS } from "@/lib/activityLinks";
 import CityPlacesView, { type CityView } from "@/components/CityPlacesView";
 import ViatorOffers from "@/components/ViatorOffers";
 import PageHero from "@/components/ui/PageHero";
+import CityPhotos from "@/components/CityPhotos";
 import FavButton from "@/components/member/FavButton";
 import BackLink from "@/components/BackLink";
 
@@ -97,7 +98,7 @@ export default async function CityPlacesPageBody({
     readGuide(cityEntry.slug),
     // «استعرض صور المدينة»: a small list of photo addresses; no photo is
     // loaded until the traveller opens it.
-    readGallery(cityEntry.slug),
+    readGallery(cityEntry.slug, cityEntry.nameEn),
   ]);
 
   // A stored place and a curated landmark are the same thing when their
@@ -127,8 +128,8 @@ export default async function CityPlacesPageBody({
   const galleryPhotoFor = (lat: number, lon: number): string | undefined => {
     for (const g of gallery) {
       // The city's own views sit at its centre: they are not a landmark's photo.
-      if (g.en === cityEntry.nameEn) continue;
-      if (Math.abs(g.y - lat) < 0.002 && Math.abs(g.x - lon) < 0.0025) return `${g.o}?auto=compress&cs=tinysrgb&w=640`;
+      if (g.k === "v") continue;
+      if (Math.abs(g.y - lat) < 0.002 && Math.abs(g.x - lon) < 0.0025) return galleryUrl(g, 640);
     }
     return undefined;
   };
@@ -223,8 +224,8 @@ export default async function CityPlacesPageBody({
       // No photo yet: the place's own photograph on Wikimedia Commons, with
       // its author and licence on the card (owner, 27 Oct, agreed).
       if (!it.photo && g.im) {
-        const file = g.im.split("/").pop()!;
-        it.photo = `https://upload.wikimedia.org/wikipedia/commons/thumb/${g.im}/640px-${file}`;
+        // 500 px: Wikimedia refuses non-standard thumbnail widths (640 failed).
+        it.photo = commonsUrl(g.im, 500);
         it.photoCredit = [g.ia, g.il].filter(Boolean).join(" · ");
       }
       it.guide = {
@@ -327,6 +328,25 @@ export default async function CityPlacesPageBody({
 
       <div className="mx-auto max-w-6xl px-4 sm:px-6 py-10">
         <CountryQuickFacts locale={loc} facts={facts} heading={dict.attractions.quickFactsHeading} />
+        <CityPhotos
+          locale={loc}
+          cityName={cityName}
+          countryName={loc === "ar" ? country.nameAr : country.nameEn}
+          photos={gallery}
+          t={{
+            title: dict.tripPlan.photosTitle,
+            sub: dict.tripPlan.photosSub,
+            open: dict.tripPlan.photosOpen,
+            views: dict.tripPlan.photosViews,
+            landmarks: dict.tripPlan.photosLandmarks,
+            close: dict.tripPlan.tourClose,
+            prev: dict.tripPlan.tourPrev,
+            next: dict.tripPlan.tourNext,
+            onMap: dict.tripPlan.tourOnMap,
+            of: dict.tripPlan.tourOf,
+            more: dict.tripPlan.photosMore,
+          }}
+        />
         {items.length === 0 && (
           <TripServices
             locale={loc}
@@ -350,7 +370,6 @@ export default async function CityPlacesPageBody({
               countryCode={country.code}
               citySlug={cityEntry.slug}
               smartReady={guidePlanReady(guide)}
-              gallery={gallery}
               cityName={cityName}
               countryName={loc === "ar" ? country.nameAr : country.nameEn}
               mapTitle={dict.maps.cityMapTitle.replace("{city}", cityName)}

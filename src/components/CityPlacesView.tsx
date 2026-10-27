@@ -42,9 +42,7 @@ export default function CityPlacesView({
   activities,
   services,
   restaurants,
-  gallery,
 }: {
-  gallery?: React.ComponentProps<typeof CityPlacesPlanner>["gallery"];
   locale: Locale;
   initialView: CityView;
   places: PlaceListItem[];
@@ -133,26 +131,19 @@ export default function CityPlacesView({
     );
   }, [focusKey, switchTo]);
 
-  const tab = (v: CityView | "plan") =>
+  const tab = (v: CityView) =>
     `inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-3.5 py-2 text-sm font-bold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400 ${
       view === v
         ? "bg-navy-900 text-white shadow-sm"
         : "text-navy-600 hover:bg-mist-100"
     }`;
 
-  // «خطة سياحية»: the planner sits at the top of the list.
-  const openPlan = useCallback(() => {
-    switchTo("list");
-    requestAnimationFrame(() =>
-      requestAnimationFrame(() => document.getElementById("trip-plan")?.scrollIntoView({ behavior: "smooth", block: "start" })),
-    );
-  }, [switchTo]);
 
   return (
     <div ref={top} className="scroll-mt-28">
       {/* One row for everything about the city (owner, 13 Oct): places,
-          map, plan, activities, services, and the download of every
-          location. On a phone it scrolls sideways instead of wrapping. */}
+          map, plan, activities, services. The downloads of every location
+          sit with the map (owner, 27 Oct: "too many choices"). */}
       <div className="sticky top-16 z-20 -mx-4 mb-5 bg-mist-50/95 px-4 py-2 backdrop-blur sm:static sm:mx-0 sm:bg-transparent sm:px-0 sm:py-0">
         <ScrollRow className="flex items-center gap-2">
           <div role="tablist" aria-label={cityName} className="inline-flex shrink-0 rounded-full bg-white p-1 shadow-sm ring-1 ring-mist-200">
@@ -174,10 +165,6 @@ export default function CityPlacesView({
               <span aria-hidden="true">🗺️</span>
               {labels.viewMap}
             </button>
-            <button type="button" onClick={openPlan} className={tab("plan")}>
-              <span aria-hidden="true">🗓️</span>
-              {labels.plan}
-            </button>
             {activities && (
               <button type="button" role="tab" aria-selected={view === "activities"} onClick={() => switchTo("activities")} className={tab("activities")}>
                 <span aria-hidden="true">🎟️</span>
@@ -191,11 +178,6 @@ export default function CityPlacesView({
               </button>
             )}
           </div>
-          {pins.length > 0 && (
-            <div className="shrink-0">
-              <MapDownloads pins={pins} title={mapTitle} fileBase={fileBase} dict={downloadsDict} compactLabel={labels.downloadAll} />
-            </div>
-          )}
         </ScrollRow>
       </div>
 
@@ -215,7 +197,6 @@ export default function CityPlacesView({
           dict={plannerDict}
           onShowOnMap={pins.length ? showOnMap : undefined}
           restaurants={restaurants}
-          gallery={gallery}
           showOnMapLabel={labels.showOnMap}
         />
       </div>
@@ -223,6 +204,12 @@ export default function CityPlacesView({
       {/* The map is built when it is shown: Leaflet cannot size itself while hidden. */}
       {view === "map" && (
         <div>
+          {/* Taking every place to a maps app belongs with the map, not the page's tabs. */}
+          {pins.length > 0 && (
+            <div className="mb-3 flex justify-end">
+              <MapDownloads pins={pins} title={mapTitle} fileBase={fileBase} dict={downloadsDict} compactLabel={labels.downloadAll} />
+            </div>
+          )}
           <AttractionsMap
             key={focusKey ?? "all"}
             locale={locale}
