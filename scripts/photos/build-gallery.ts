@@ -23,12 +23,19 @@ if (existsSync("scripts/photos/gallery-drop.txt")) {
   }
 }
 const picks = PICKS as Record<string, string[]>;
+const v2 = new Set(
+  existsSync("scripts/photos/gallery2-drop.txt")
+    ? readFileSync("scripts/photos/gallery2-drop.txt", "utf8").split("\n").map((l) => l.trim().split(/\s+/)[0]).filter((s) => s && !s.startsWith("#"))
+    : []
+);
 mkdirSync("public/data/gallery", { recursive: true });
 let cities = 0, photos = 0;
 for (const list of Object.values(COUNTRY_CITIES)) {
   for (const c of list) {
     // Only rows that were looked at go live (every reviewed slug is in the drop file, even with nothing to drop).
     if (!drops.has(c.slug) || !(c.slug in store)) continue;
+    // Cities reviewed in v2 (scripts/photos/gallery2.ts) are written there.
+    if (v2.has(c.slug)) continue;
     const d = drops.get(c.slug)!;
     if (d === "all") continue;
     const centre = CITY_COORDS[c.slug];
