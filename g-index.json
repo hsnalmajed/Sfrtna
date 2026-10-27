@@ -1,0 +1,116 @@
+[
+ {
+  "sheet": 1,
+  "slugs": [
+   "riyadh",
+   "jeddah",
+   "makkah",
+   "madinah",
+   "alula",
+   "abha",
+   "dammam",
+   "taif"
+  ]
+ },
+ {
+  "sheet": 2,
+  "slugs": [
+   "istanbul",
+   "antalya",
+   "cappadocia",
+   "trabzon",
+   "izmir",
+   "bursa",
+   "bodrum",
+   "dubai"
+  ]
+ },
+ {
+  "sheet": 3,
+  "slugs": [
+   "abu-dhabi",
+   "sharjah",
+   "ras-al-khaimah",
+   "doha",
+   "al-wakrah",
+   "kuwait-city",
+   "manama",
+   "muscat"
+  ]
+ },
+ {
+  "sheet": 4,
+  "slugs": [
+   "salalah",
+   "nizwa",
+   "cairo",
+   "luxor",
+   "aswan",
+   "alexandria",
+   "sharm-el-sheikh",
+   "giza"
+  ]
+ },
+ {
+  "sheet": 5,
+  "slugs": [
+   "hurghada",
+   "marrakesh",
+   "casablanca",
+   "fes",
+   "chefchaouen",
+   "tangier",
+   "agadir",
+   "rabat"
+  ]
+ },
+ {
+  "sheet": 6,
+  "slugs": [
+   "amman",
+   "petra",
+   "aqaba",
+   "london",
+   "edinburgh",
+   "manchester",
+   "oxford",
+   "glasgow"
+  ]
+ },
+ {
+  "sheet": 7,
+  "slugs": [
+   "belfast",
+   "birmingham",
+   "paris",
+   "nice",
+   "lyon",
+   "marseille",
+   "bordeaux",
+   "strasbourg"
+  ]
+ },
+ {
+  "sheet": 8,
+  "slugs": [
+   "barcelona",
+   "madrid",
+   "granada",
+   "seville",
+   "cordoba",
+   "malaga",
+   "ibiza",
+   "palma"
+  ]
+ },
+ {
+  "sheet": 9,
+  "slugs": [
+   "valencia",
+   "rome",
+   "venice",
+   "florence",
+   "milan"
+  ]
+ }
+]

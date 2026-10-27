@@ -1,0 +1,114 @@
+[
+ {
+  "sheet": 1,
+  "keys": [
+   "city:abha",
+   "city:al-wakrah",
+   "city:salalah",
+   "city:taif",
+   "city:agadir",
+   "city:yogyakarta",
+   "city:lombok",
+   "city:gabala"
+  ]
+ },
+ {
+  "sheet": 2,
+  "keys": [
+   "city:adelaide",
+   "city:sousse",
+   "city:djerba",
+   "city:hammamet",
+   "city:cairns",
+   "city:podgorica",
+   "city:larnaca",
+   "city:limassol"
+  ]
+ },
+ {
+  "sheet": 3,
+  "keys": [
+   "city:almaty",
+   "city:bishkek",
+   "city:brasov",
+   "city:cebu",
+   "city:dar-es-salaam",
+   "city:montreal",
+   "city:port-louis",
+   "city:vientiane"
+  ]
+ },
+ {
+  "sheet": 4,
+  "keys": [
+   "city:dhaka",
+   "city:addis-ababa",
+   "country:ET",
+   "city:kigali",
+   "city:dakar",
+   "city:gaborone",
+   "country:BW",
+   "country:MZ"
+  ]
+ },
+ {
+  "sheet": 5,
+  "keys": [
+   "city:maputo",
+   "city:montego-bay",
+   "country:JM",
+   "city:san-salvador",
+   "city:belize-city",
+   "city:galapagos",
+   "city:guayaquil",
+   "city:christchurch"
+  ]
+ },
+ {
+  "sheet": 6,
+  "keys": [
+   "city:suva",
+   "country:SB",
+   "country:GH",
+   "city:oran",
+   "city:skopje",
+   "city:andorra-la-vella",
+   "city:san-jose",
+   "city:guatemala-city"
+  ]
+ },
+ {
+  "sheet": 7,
+  "keys": [
+   "country:TO",
+   "city:nukualofa",
+   "country:VU",
+   "city:port-vila",
+   "country:PW",
+   "city:koror",
+   "country:GY",
+   "city:georgetown"
+  ]
+ },
+ {
+  "sheet": 8,
+  "keys": [
+   "city:paramaribo",
+   "country:CV",
+   "city:port-of-spain",
+   "country:PY",
+   "city:asuncion",
+   "country:PG",
+   "city:port-moresby",
+   "city:roatan"
+  ]
+ },
+ {
+  "sheet": 9,
+  "keys": [
+   "city:accra",
+   "city:kingston",
+   "city:santa-cruz"
+  ]
+ }
+]
