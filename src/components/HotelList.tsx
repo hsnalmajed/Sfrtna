@@ -5,7 +5,8 @@ import type { HotelResult, HotelSearch } from "@/lib/providers/serpapi";
 import { amenityLabels } from "@/lib/hotelAmenities";
 import { CITY_COORDS } from "@/data/cityCoords";
 import Icon from "@/components/ui/Icon";
-import { PriceRows, Photo, Rating, Shimmer, Stars, money, type Common } from "@/components/HotelPrices";
+import FilterPill from "@/components/ui/FilterPill";
+import { PriceRows, Photo, Rating, Shimmer, Stars, money, forRooms, type Common } from "@/components/HotelPrices";
 import { AMENITY_CODE, BREAKFAST_CODE, NO_HOTEL_PREFS, PLACE_TYPE_CODE, type HotelPrefs } from "@/lib/hotelPrefs";
 import { useDictionary } from "@/lib/dict/context";
 import { track } from "@/lib/analytics";
@@ -57,7 +58,7 @@ export default function HotelList({
 }) {
   const { t, locale } = c;
   const hp = useDictionary().hotelPrefs;
-  type Sort = "best" | "cheapest" | "rating" | "reviews" | "near";
+  type Sort = "best" | "cheapest" | "expensive" | "rating" | "stars" | "reviews" | "near";
   const [sort, setSort] = useState<Sort>("best");
   const prefsKey = `${prefs.place}|${prefs.amenities.join(",")}|${prefs.rating}|${prefs.freeCancel ? 1 : 0}|${breakfast ? 1 : 0}`;
   const url = useMemo(() => {
@@ -160,12 +161,18 @@ export default function HotelList({
     return <p className="rounded-2xl bg-white p-6 text-center text-sm font-semibold text-navy-700 shadow-sm ring-1 ring-black/5">{t.listEmpty}</p>;
   }
   const dist = (h: HotelResult) => (centre && h.lat != null && h.lng != null ? km(centre, { lat: h.lat, lon: h.lng }) : Infinity);
-  const price = (h: HotelResult) => h.total ?? (h.perNight ? h.perNight * c.nights : Infinity);
+  const price = (h: HotelResult) => forRooms(h.total ?? (h.perNight ? h.perNight * c.nights : Infinity), c);
+  // The most expensive first, hotels with no price at the end.
+  const priceDown = (h: HotelResult) => (Number.isFinite(price(h)) ? price(h) : -1);
   if (sort !== "best") {
     hotels = [...hotels].sort((a, b) =>
       sort === "cheapest"
         ? price(a) - price(b)
-        : sort === "rating"
+        : sort === "expensive"
+          ? priceDown(b) - priceDown(a)
+          : sort === "stars"
+            ? (b.stars ?? 0) - (a.stars ?? 0) || (b.rating ?? 0) - (a.rating ?? 0)
+            : sort === "rating"
           ? (b.rating ?? 0) - (a.rating ?? 0) || (b.reviews ?? 0) - (a.reviews ?? 0)
           : sort === "reviews"
             ? (b.reviews ?? 0) - (a.reviews ?? 0)
@@ -175,26 +182,25 @@ export default function HotelList({
   const sorts: [Sort, string][] = [
     ["best", hp.sortBest],
     ["cheapest", hp.sortCheapest],
+    ["expensive", hp.sortExpensive],
     ["rating", hp.sortRating],
+    ["stars", hp.sortStars],
     ["reviews", hp.sortReviews],
     ...(centre ? ([["near", hp.sortNear]] as [Sort, string][]) : []),
   ];
   return (
     <div className="space-y-3">
-      <div className="flex flex-wrap gap-2" role="group" aria-label={hp.sortLabel}>
-        {sorts.map(([k, label]) => (
-          <button
-            key={k}
-            type="button"
-            aria-pressed={sort === k}
-            onClick={() => setSort(k)}
-            className={`shrink-0 rounded-full px-4 py-2 text-sm font-bold transition ${
-              sort === k ? "bg-navy-950 text-white" : "bg-white text-navy-800 ring-1 ring-mist-300 hover:ring-navy-300"
-            }`}
-          >
-            {label}
-          </button>
-        ))}
+      {/* One control, like Booking's "Sort by" (owner, 27 Oct): the chosen order on the pill, every order in its sheet. */}
+      <div className="flex items-center gap-2">
+        <FilterPill<Sort>
+          icon="↕️"
+          label={hp.sortLabel}
+          options={sorts.map(([value, label]) => ({ value, label }))}
+          value={sort}
+          onChange={(v) => setSort(v === "all" ? "best" : v)}
+          locale={c.locale}
+        />
+        <span className="text-xs font-semibold text-navy-500">{t.hotelsCount.replace("{count}", String(hotels.length))}</span>
       </div>
       {note && <p className="text-sm font-semibold text-navy-700">{note}</p>}
       {hotels.map((h) => (
@@ -241,7 +247,8 @@ function HotelCard({
 }) {
   const { t } = c;
   const [open, setOpen] = useState(false);
-  const total = hotel.total ?? (hotel.perNight ? hotel.perNight * c.nights : null);
+  const one = hotel.total ?? (hotel.perNight ? hotel.perNight * c.nights : null);
+  const total = one === null ? null : forRooms(one, c);
   const amenities = amenityLabels(hotel.amenities.filter((a) => !/free breakfast/i.test(a)), locale, 4);
   const img = hotel.images[0];
   return (

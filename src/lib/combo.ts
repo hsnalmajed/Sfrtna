@@ -19,6 +19,8 @@ export interface ComboHotel {
   minStars: number;
   breakfast: boolean;
   prefs: HotelPrefs;
+  /** Rooms for the stay (src/lib/rooms.ts). */
+  rooms: number;
 }
 
 export const EMPTY_COMBO: ComboHotel = {
@@ -31,6 +33,7 @@ export const EMPTY_COMBO: ComboHotel = {
   minStars: 0,
   breakfast: false,
   prefs: NO_HOTEL_PREFS,
+  rooms: 1,
 };
 
 /** The hotel half of a combo search, from an address. */
@@ -51,6 +54,7 @@ export function readCombo(sp: URLSearchParams): ComboHotel {
     minStars: Number(sp.get("hs")) || 0,
     breakfast: sp.get("hbf") === "1",
     prefs: readHotelPrefs(prefSource),
+    rooms: Math.min(8, Math.max(1, Number(sp.get("hr")) || 1)),
   };
 }
 
@@ -65,6 +69,7 @@ export function writeCombo(c: ComboHotel, out: URLSearchParams) {
   if (Number(c.budget) > 0) out.set("hb", String(Number(c.budget)));
   if (c.minStars) out.set("hs", String(c.minStars));
   if (c.breakfast) out.set("hbf", "1");
+  if (c.rooms > 1) out.set("hr", String(c.rooms));
   const p = new URLSearchParams();
   writeHotelPrefs(c.prefs, p);
   for (const [k, v] of p) out.set(`h${k}`, v);
@@ -73,13 +78,14 @@ export function writeCombo(c: ComboHotel, out: URLSearchParams) {
 /** Only the combo's own keys of an address, to carry them on to the next page. */
 export function comboParams(sp: URLSearchParams): URLSearchParams {
   const out = new URLSearchParams();
-  for (const [k, v] of sp) if (k === "combo" || /^h(n|a|l|al|b|s|bf|place|amen|rating|fc)$/.test(k)) out.set(k, v);
+  for (const [k, v] of sp) if (k === "combo" || /^h(n|a|l|al|b|s|bf|r|place|amen|rating|fc)$/.test(k)) out.set(k, v);
   return out;
 }
 
 /** The hotel-results address for a combo's hotel half in a city. */
 export function comboHotelHref(locale: string, c: ComboHotel, city: { nameEn: string; label: string }, checkIn: string, checkOut: string, party: Record<string, string>) {
   const p = new URLSearchParams({ checkIn, checkOut, ...party });
+  if (c.rooms > 1) p.set("rooms", String(c.rooms));
   if (c.name && c.picked) {
     p.set("hmode", "known");
     p.set("hotel", c.name);

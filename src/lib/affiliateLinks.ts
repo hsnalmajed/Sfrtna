@@ -77,6 +77,7 @@ export function hotelAllezUrl(
     checkOut: string;
     adults: number;
     childrenAges: number[];
+    rooms?: number;
     locale?: "ar" | "en";
   }
 ): string {
@@ -92,6 +93,7 @@ export function hotelAllezUrl(
   p.set("checkin", h.checkIn);
   p.set("checkout", h.checkOut);
   p.set("adults", String(Math.max(1, h.adults)));
+  if (h.rooms && h.rooms > 1) p.set("rooms", String(h.rooms));
   if (h.childrenAges.length) {
     p.set("children", String(h.childrenAges.length));
     p.set("childrenAges", h.childrenAges.map((a) => Math.min(17, Math.max(0, Math.round(a)))).join(","));
@@ -120,6 +122,16 @@ export interface HotelSearchQuery {
   lng?: number | null;
   /** The traveller's language, for partners whose page can follow it. */
   locale?: "ar" | "en";
+  /** Rooms booked (1 when not said); adults and children are the whole party. */
+  rooms?: number;
+}
+
+/** The party spread over the rooms, the first rooms taking the extra: [adults per room], [room of each child]. */
+function perRoom(adults: number, childrenAges: number[], rooms: number) {
+  const r = Math.max(1, Math.min(rooms, adults));
+  const a = Array.from({ length: r }, (_, i) => Math.floor(adults / r) + (i < adults % r ? 1 : 0));
+  const kids = childrenAges.map((age, i) => ({ room: (i % r) + 1, age }));
+  return { r, a, kids };
 }
 
 /**
@@ -137,12 +149,13 @@ export interface HotelSearchQuery {
  * silently hide hotels the traveller can afford.
  */
 export function hotelPartnerLinks(q: HotelSearchQuery): BookingHandoff[] {
+  const rooms = perRoom(Math.max(1, q.adults), q.childrenAges, q.rooms ?? 1);
   const booking = new URL("https://www.booking.com/searchresults.html");
   booking.searchParams.set("ss", q.query);
   booking.searchParams.set("checkin", q.checkIn);
   booking.searchParams.set("checkout", q.checkOut);
   booking.searchParams.set("group_adults", String(Math.max(1, q.adults)));
-  booking.searchParams.set("no_rooms", "1");
+  booking.searchParams.set("no_rooms", String(rooms.r));
   booking.searchParams.set("group_children", String(q.childrenAges.length));
   for (const age of q.childrenAges) booking.searchParams.append("age", String(age));
 
@@ -161,13 +174,14 @@ export function hotelPartnerLinks(q: HotelSearchQuery): BookingHandoff[] {
   expedia.searchParams.set("destination", q.query);
   expedia.searchParams.set("startDate", q.checkIn);
   expedia.searchParams.set("endDate", q.checkOut);
-  expedia.searchParams.set("adults", String(Math.max(1, q.adults)));
-  expedia.searchParams.set("rooms", "1");
+  // Several rooms: adults per room, comma-separated; a child's prefix is its room.
+  expedia.searchParams.set("adults", rooms.a.join(","));
+  expedia.searchParams.set("rooms", String(rooms.r));
   // A hotel's name alone lands on its city's full list; the name filter
   // narrows that list to the hotel itself (checked on expedia.com).
   if (q.isHotel) expedia.searchParams.set("hotelName", q.query);
   if (q.childrenAges.length) {
-    expedia.searchParams.set("children", q.childrenAges.map((a) => `1_${a}`).join(","));
+    expedia.searchParams.set("children", rooms.kids.map((k) => `${k.room}_${k.age}`).join(","));
   }
 
   // ZenHotels (RateHawk) only links cities it has a confirmed page for; a
@@ -189,7 +203,7 @@ export function hotelPartnerLinks(q: HotelSearchQuery): BookingHandoff[] {
   agoda.searchParams.set("textToSearch", q.query);
   agoda.searchParams.set("checkIn", q.checkIn);
   agoda.searchParams.set("checkOut", q.checkOut);
-  agoda.searchParams.set("rooms", "1");
+  agoda.searchParams.set("rooms", String(rooms.r));
   agoda.searchParams.set("adults", String(Math.max(1, q.adults)));
   if (q.childrenAges.length) {
     agoda.searchParams.set("children", String(q.childrenAges.length));
@@ -199,15 +213,17 @@ export function hotelPartnerLinks(q: HotelSearchQuery): BookingHandoff[] {
   hotelsCom.searchParams.set("destination", q.query);
   hotelsCom.searchParams.set("startDate", q.checkIn);
   hotelsCom.searchParams.set("endDate", q.checkOut);
-  hotelsCom.searchParams.set("adults", String(Math.max(1, q.adults)));
+  hotelsCom.searchParams.set("adults", rooms.a.join(","));
+  if (rooms.r > 1) hotelsCom.searchParams.set("rooms", String(rooms.r));
   if (q.childrenAges.length) {
-    hotelsCom.searchParams.set("children", q.childrenAges.map((a) => `1_${a}`).join(","));
+    hotelsCom.searchParams.set("children", rooms.kids.map((k) => `${k.room}_${k.age}`).join(","));
   }
   const trip = new URL("https://www.trip.com/hotels/list");
   trip.searchParams.set("keyword", q.query);
   trip.searchParams.set("checkin", q.checkIn);
   trip.searchParams.set("checkout", q.checkOut);
   trip.searchParams.set("adult", String(Math.max(1, q.adults)));
+  if (rooms.r > 1) trip.searchParams.set("room", String(rooms.r));
   if (q.childrenAges.length) {
     trip.searchParams.set("children", String(q.childrenAges.length));
     trip.searchParams.set("ages", q.childrenAges.join(","));
@@ -226,6 +242,7 @@ export function hotelPartnerLinks(q: HotelSearchQuery): BookingHandoff[] {
       checkOut: q.checkOut,
       adults: q.adults,
       childrenAges: q.childrenAges,
+      rooms: rooms.r,
       locale: q.locale,
     };
     return [

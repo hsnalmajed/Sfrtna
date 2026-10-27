@@ -3,6 +3,7 @@ import { getDictionary } from "@/lib/dictionaries";
 import type { Locale } from "@/lib/types";
 import { notFound } from "next/navigation";
 import { CONTACT_EMAIL } from "@/lib/contact";
+import SocialLinks from "@/components/SocialLinks";
 import LegalPage from "@/components/LegalPage";
 import { pageMetadata } from "@/lib/seo";
 
@@ -43,6 +44,10 @@ export default async function ContactPage({ params }: PageProps<"/[locale]/conta
           </a>
         </div>
       ) : null}
+      <div className="card mb-8 px-5 py-5">
+        <p className="eyebrow mb-3">{dict.footer.followHeading}</p>
+        <SocialLinks tone="light" />
+      </div>
     </LegalPage>
   );
 }

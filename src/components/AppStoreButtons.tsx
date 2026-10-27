@@ -1,11 +1,12 @@
 import type { Locale } from "@/lib/types";
 import { ANDROID_APP_URL, IOS_APP_URL } from "@/lib/appLinks";
+import { AppleIcon, GooglePlayIcon } from "@/components/ui/BrandIcons";
 
 /** The two store buttons (footer). A store with no listing yet says "coming soon". */
 export default function AppStoreButtons({ locale, title, soon }: { locale: Locale; title: string; soon: string }) {
   const stores = [
-    { key: "android", url: ANDROID_APP_URL, top: locale === "ar" ? "احصل عليه من" : "Get it on", name: "Google Play", icon: "▶" },
-    { key: "ios", url: IOS_APP_URL, top: locale === "ar" ? "حمّله من" : "Download on the", name: "App Store", icon: "📱" },
+    { key: "android", url: ANDROID_APP_URL, top: locale === "ar" ? "احصل عليه من" : "Get it on", name: "Google Play", icon: <GooglePlayIcon className="h-7 w-7" /> },
+    { key: "ios", url: IOS_APP_URL, top: locale === "ar" ? "حمّله من" : "Download on the", name: "App Store", icon: <AppleIcon className="h-7 w-7" /> },
   ];
   return (
     <div>
@@ -14,7 +15,7 @@ export default function AppStoreButtons({ locale, title, soon }: { locale: Local
         {stores.map((s) => {
           const body = (
             <>
-              <span aria-hidden="true" className="text-xl leading-none">
+              <span aria-hidden="true" className="shrink-0">
                 {s.icon}
               </span>
               <span className="text-start leading-tight">
@@ -38,7 +39,7 @@ export default function AppStoreButtons({ locale, title, soon }: { locale: Local
               {body}
             </a>
           ) : (
-            <span key={s.key} aria-disabled="true" className={`${cls} cursor-default bg-white/[0.04] text-white/60 ring-white/10`}>
+            <span key={s.key} aria-disabled="true" className={`${cls} cursor-default bg-black text-white ring-white/20`}>
               {body}
             </span>
           );

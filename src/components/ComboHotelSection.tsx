@@ -3,6 +3,7 @@
 import { useCallback, useMemo, useState } from "react";
 import Link from "next/link";
 import type { Locale } from "@/lib/types";
+import { cleanRooms, roomShare } from "@/lib/rooms";
 import { useDictionary } from "@/lib/dict/context";
 import HotelList from "@/components/HotelList";
 import HotelPrices from "@/components/HotelPrices";
@@ -41,10 +42,11 @@ export default function ComboHotelSection({
   const c = dict.combo;
   const nights = checkIn && checkOut ? nightsBetween(checkIn, checkOut) : 0;
   const budget = Number(combo.budget) || 0;
-  const common = useMemo(
-    () => ({ checkIn, checkOut, adults, childrenAges, nights, locale, t, budget }),
-    [checkIn, checkOut, adults, childrenAges, nights, locale, t, budget]
-  );
+  const rooms = cleanRooms(combo.rooms, adults);
+  const common = useMemo(() => {
+    const share = roomShare(adults, childrenAges, rooms);
+    return { checkIn, checkOut, adults: share.adults, childrenAges: share.childrenAges, rooms, party: { adults, childrenAges }, nights, locale, t, budget };
+  }, [checkIn, checkOut, adults, childrenAges, rooms, nights, locale, t, budget]);
   const named = Boolean(combo.name && combo.picked);
   const [down, setDown] = useState(false);
   const onDown = useCallback(() => setDown(true), []);

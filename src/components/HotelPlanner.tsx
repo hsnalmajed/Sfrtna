@@ -26,7 +26,8 @@ import {
 import { parseChildrenAges, serializeChildrenAges } from "@/lib/searchParamsUtil";
 import { focusFirstError, hasErrors, type FieldErrors } from "@/lib/formErrors";
 import { formStyles, type FormTone } from "@/lib/formTone";
-import { BudgetInput, ChoiceChips, EdgeTabs, FieldLabel, PreferencesPanel, Toggle } from "@/components/PlannerFields";
+import { BudgetInput, ChoiceChips, EdgeTabs, FieldLabel, PreferencesPanel, RoomsStepper, Toggle } from "@/components/PlannerFields";
+import { MAX_ROOMS, cleanRooms } from "@/lib/rooms";
 import { trackSearchUrl } from "@/lib/analytics";
 import { useProfileOnce } from "@/lib/useMember";
 import type { Profile } from "@/lib/memberItems";
@@ -109,6 +110,8 @@ export default function HotelPlanner({
     childrenAges: parseChildrenAges(sp.get("childrenAges")),
     infants: Number(sp.get("infants")) || 0,
   });
+  const [roomsRaw, setRooms] = useState(() => cleanRooms(sp.get("rooms"), 99));
+  const rooms = Math.min(roomsRaw, Math.max(1, travelers.adults));
   const [budget, setBudget] = useState(sp.get("budget") || "");
   const [currency, setCurrency] = useState(sp.get("currency") || "SAR");
   const [minStars, setMinStars] = useState(Number(sp.get("minStars")) || 0);
@@ -169,6 +172,7 @@ export default function HotelPlanner({
       childrenAges: serializeChildrenAges(travelers.childrenAges),
       infants: String(travelers.infants),
     });
+    if (rooms > 1) params.set("rooms", String(rooms));
     if (mode === "known") {
       params.set("hotel", hotel.trim());
       if (hotelArea) params.set("hotelArea", hotelArea);
@@ -225,6 +229,16 @@ export default function HotelPlanner({
               loadingText={dict.hotelForm.searchingHotels}
               arabic={locale === "ar"}
               onCityGuess={setCityGuess}
+              cityOption={{ title: dict.hotelForm.cityOptionTitle, subtitle: dict.hotelForm.cityOptionSub }}
+              onPickCity={(g) => {
+                const entry = findHotelCity(g.nameEn);
+                if (entry) {
+                  setCity(locale === "ar" ? entry.nameAr : entry.nameEn);
+                  setCityEntry(entry);
+                }
+                setMode("discover");
+                setErrors({});
+              }}
               emptyText={
                 <span>
                   {dict.hotelForm.noHotelMatch}{" "}
@@ -330,6 +344,16 @@ export default function HotelPlanner({
           <FieldLabel dark={dark} icon="users">{dict.travelers.label}</FieldLabel>
           <TravelersPicker locale={locale} value={travelers} onChange={setTravelers} tone={tone} />
         </div>
+
+        <RoomsStepper
+          dark={dark}
+          value={rooms}
+          max={Math.min(MAX_ROOMS, Math.max(1, travelers.adults))}
+          onChange={setRooms}
+          label={dict.hotelForm.rooms}
+          less={dict.hotelForm.roomsLess}
+          more={dict.hotelForm.roomsMore}
+        />
 
         {mode === "discover" && (
           <BudgetInput

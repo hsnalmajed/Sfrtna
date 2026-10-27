@@ -8,6 +8,7 @@ import type { Locale } from "@/lib/types";
 import { parseChildrenAges } from "@/lib/searchParamsUtil";
 import { hotelPartnerLinks } from "@/lib/affiliateLinks";
 import { nightsBetween } from "@/components/PlannerFields";
+import { cleanRooms, roomShare } from "@/lib/rooms";
 import Icon from "@/components/ui/Icon";
 import HotelPrices from "@/components/HotelPrices";
 import Stay22HotelMap from "@/components/Stay22HotelMap";
@@ -65,6 +66,10 @@ function HotelResultsContent() {
   const adults = Math.max(1, Number(sp.get("adults")) || 1);
   const childrenAges = useMemo(() => parseChildrenAges(sp.get("childrenAges")), [sp]);
   const guests = adults + childrenAges.length;
+  // Several rooms: prices are searched for one room's share of the party
+  // and every total is × rooms (src/lib/rooms.ts).
+  const rooms = cleanRooms(sp.get("rooms"), adults);
+  const share = useMemo(() => roomShare(adults, childrenAges, rooms), [adults, childrenAges, rooms]);
   const budget = Number(sp.get("budget")) || 0;
   const currency = sp.get("currency") || "SAR";
   const minStars = Number(sp.get("minStars")) || 0;
@@ -80,8 +85,19 @@ function HotelResultsContent() {
   const onListDown = useCallback(() => setListDown(true), []);
   const nights = complete ? nightsBetween(checkIn, checkOut) : 0;
   const listCommon = useMemo(
-    () => ({ checkIn, checkOut, adults, childrenAges, nights, locale, t, budget }),
-    [checkIn, checkOut, adults, childrenAges, nights, locale, t, budget]
+    () => ({
+      checkIn,
+      checkOut,
+      adults: share.adults,
+      childrenAges: share.childrenAges,
+      rooms,
+      party: { adults, childrenAges },
+      nights,
+      locale,
+      t,
+      budget,
+    }),
+    [checkIn, checkOut, adults, childrenAges, share, rooms, nights, locale, t, budget]
   );
   // Arabic counts nights like any noun: ليلة واحدة · ليلتان · 3–10 ليالٍ · 11+ ليلة.
   const nightsText =
@@ -100,6 +116,7 @@ function HotelResultsContent() {
             checkOut,
             adults,
             childrenAges,
+            rooms,
             minStars: mode === "discover" ? minStars : undefined,
             breakfast: mode === "discover" ? breakfast : undefined,
             stay: mode === "discover" ? stay : undefined,
@@ -108,7 +125,7 @@ function HotelResultsContent() {
             locale,
           })
         : [],
-    [complete, query, checkIn, checkOut, adults, childrenAges, mode, minStars, breakfast, stay, locale, hotelArea]
+    [complete, query, checkIn, checkOut, adults, childrenAges, rooms, mode, minStars, breakfast, stay, locale, hotelArea]
   );
 
   // The city of this stay, for the next-step tabs: the searched city, or
@@ -154,6 +171,7 @@ function HotelResultsContent() {
       chips.push(t.budgetTotal.replace("{amount}", money(budget)));
       if (nights > 1) chips.push(t.budgetPerNight.replace("{amount}", money(budget / nights)));
     }
+    if (rooms > 1) chips.push(t.roomsPriced.replaceAll("{count}", String(rooms)));
     chips.push(minStars ? t.stars.replace("{count}", String(minStars)) : t.anyStars);
     if (prefs.place) chips.push(hp.place[prefs.place]);
     if (breakfast) chips.push(t.breakfast);
@@ -232,6 +250,7 @@ function HotelResultsContent() {
               )}
               <Icon name="users" className="h-4 w-4 text-navy-500" />
               <span>{t.guests.replace("{count}", String(guests))}</span>
+              {rooms > 1 && <span>· {t.roomsCount.replace("{count}", String(rooms))}</span>}
               <span className="inline-flex items-center gap-1 rounded-full bg-sun-400 px-3 py-1 text-xs font-extrabold text-navy-950 transition group-hover:bg-sun-300">
                 <span aria-hidden="true">✎</span>
                 {t.backToSearch}
@@ -276,8 +295,10 @@ function HotelResultsContent() {
                 budget={0}
                 checkIn={checkIn}
                 checkOut={checkOut}
-                adults={adults}
-                childrenAges={childrenAges}
+                adults={share.adults}
+                childrenAges={share.childrenAges}
+                rooms={rooms}
+                party={{ adults, childrenAges }}
                 nights={nights}
                 locale={locale}
                 t={t}
@@ -295,6 +316,7 @@ function HotelResultsContent() {
                           adults: String(adults),
                           childrenAges: childrenAges.join(","),
                           infants: sp.get("infants") || "0",
+                          rooms: String(rooms),
                         })}`,
                       }
                     : undefined
@@ -312,7 +334,7 @@ function HotelResultsContent() {
                       citySlug={findHotelCity(query)?.slug}
                       cityName={label || query}
                       minStars={minStars}
-                      maxPerNight={budget > 0 && nights > 0 ? budget / nights : 0}
+                      maxPerNight={budget > 0 && nights > 0 ? budget / nights / rooms : 0}
                       breakfast={breakfast}
                       prefs={prefs}
                       c={listCommon}

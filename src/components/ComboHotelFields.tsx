@@ -3,7 +3,8 @@
 import type { Locale } from "@/lib/types";
 import { useDictionary } from "@/lib/dict/context";
 import HotelNameInput from "@/components/HotelNameInput";
-import { BudgetInput, ChoiceChips, FieldLabel, PreferencesPanel, Toggle } from "@/components/PlannerFields";
+import { BudgetInput, ChoiceChips, FieldLabel, PreferencesPanel, RoomsStepper, Toggle } from "@/components/PlannerFields";
+import { MAX_ROOMS } from "@/lib/rooms";
 import Icon from "@/components/ui/Icon";
 import type { ComboHotel } from "@/lib/combo";
 import { AMENITIES, PLACE_KINDS, RATING_FLOORS, RATING_LABEL, type Amenity, type PlaceKind, type RatingFloor } from "@/lib/hotelPrefs";
@@ -24,7 +25,10 @@ export default function ComboHotelFields({
   currency,
   onCurrencyChange,
   errors,
+  adults,
 }: {
+  /** Adults on the trip: at most one room each. */
+  adults: number;
   locale: Locale;
   dark: boolean;
   inputClass: string;
@@ -88,6 +92,15 @@ export default function ComboHotelFields({
             )}
           </div>
         )}
+        <RoomsStepper
+          dark={dark}
+          value={Math.min(value.rooms, Math.max(1, adults))}
+          max={Math.min(MAX_ROOMS, Math.max(1, adults))}
+          onChange={(n) => set("rooms", n)}
+          label={dict.hotelForm.rooms}
+          less={dict.hotelForm.roomsLess}
+          more={dict.hotelForm.roomsMore}
+        />
         <div data-field="hotelBudget">
           <BudgetInput
             id="combo-hotel-budget"

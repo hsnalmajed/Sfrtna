@@ -12,6 +12,7 @@ import type { Locale } from "@/lib/types";
 import { CONTACT_EMAIL } from "@/lib/contact";
 import { openFeedback } from "@/components/feedback/events";
 import { replayTips } from "@/components/FirstTips";
+import SocialLinks from "@/components/SocialLinks";
 import { useMyTrip } from "@/lib/myTrip";
 import { tripCityName } from "@/components/member/tripLinks";
 
@@ -257,6 +258,11 @@ export default function AppTabBar({ locale }: { locale: Locale }) {
               </span>
               <span aria-hidden="true" className="text-navy-900/30 rtl:rotate-180">›</span>
             </button>
+
+            <div className="mt-3 flex items-center justify-between gap-3 rounded-2xl bg-mist-50 px-4 py-3 ring-1 ring-navy-900/5">
+              <span className="text-sm font-extrabold text-navy-900">{dict.footer.followHeading}</span>
+              <SocialLinks tone="light" />
+            </div>
 
             <button
               type="button"

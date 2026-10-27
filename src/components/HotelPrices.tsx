@@ -45,6 +45,13 @@ export interface Common {
   t: T;
   /** The traveller's budget for the stay, 0 when none. */
   budget: number;
+  /**
+   * Rooms booked (src/lib/rooms.ts): `adults`/`childrenAges` above are then
+   * ONE room's share (what the price search asks), `party` the whole party
+   * (what partner links carry), and every total is a room's × rooms.
+   */
+  rooms?: number;
+  party?: { adults: number; childrenAges: number[] };
   /** Our own list of the city's hotels for these dates: where a hotel with no price sends the traveller. */
   alternatives?: { href: string; city: string };
 }
@@ -92,13 +99,17 @@ export interface SiteOffer {
 /** Names travellers book with out of habit or trust: always in view. */
 const KNOWN = /booking\.com|agoda|expedia|hotels\.com|(^|[^a-z])trip\.com|almosafer|المسافر|wego|tajawal|marriott|hilton|accor|ihg|hyatt|rotana|radisson/i;
 
+/** The whole stay's price from one room's: × the rooms booked. */
+export const forRooms = (total: number, c: Pick<Common, "rooms">) => total * Math.max(1, c.rooms ?? 1);
+
 export function siteOffers(hotel: HotelResult, c: Common): SiteOffer[] {
   const links = hotelPartnerLinks({
     query: hotel.name,
     checkIn: c.checkIn,
     checkOut: c.checkOut,
-    adults: c.adults,
-    childrenAges: c.childrenAges,
+    adults: c.party?.adults ?? c.adults,
+    childrenAges: c.party?.childrenAges ?? c.childrenAges,
+    rooms: c.rooms,
     isHotel: true,
     area: hotel.address,
     lat: hotel.lat,
@@ -107,8 +118,9 @@ export function siteOffers(hotel: HotelResult, c: Common): SiteOffer[] {
   });
   const out: SiteOffer[] = [];
   for (const o of hotel.offers) {
-    const total = o.total ?? (o.perNight ? o.perNight * c.nights : null);
-    if (!total) continue;
+    const one = o.total ?? (o.perNight ? o.perNight * c.nights : null);
+    if (!one) continue;
+    const total = forRooms(one, c);
     const p = PARTNERS.find((x) => x.match.test(o.source));
     const partnerLink = p ? links.find((l) => l.partner === p.partner) : undefined;
     out.push({
@@ -275,7 +287,8 @@ export function PriceRows({
         </button>
       )}
       <p className="text-[11px] leading-relaxed text-navy-500">
-        {c.nights === 1 ? t.stayTotalOne : t.stayTotal.replace("{nights}", nightsLabel(c.nights, t))} · {t.checkedAtAll.replace("{time}", time)}
+        {c.nights === 1 ? t.stayTotalOne : t.stayTotal.replace("{nights}", nightsLabel(c.nights, t))}
+        {(c.rooms ?? 1) > 1 && ` · ${t.roomsPriced.replace(/\{count\}/g, String(c.rooms))}`} · {t.checkedAtAll.replace("{time}", time)}
       </p>
     </div>
   );
@@ -291,6 +304,8 @@ function BookPanel({ hotel, c, checkedAt }: { hotel: HotelResult; c: Common; che
   const { t, locale } = c;
   const offers = siteOffers(hotel, c);
   const [open, setOpen] = useState(false);
+  // The compare list: cheapest first, or the most expensive first.
+  const [desc, setDesc] = useState(false);
   const time = new Date(checkedAt).toLocaleTimeString(nf(locale), { hour: "2-digit", minute: "2-digit" });
   const arrow = <span aria-hidden="true">{locale === "ar" ? "←" : "→"}</span>;
   if (!offers.length) {
@@ -325,6 +340,7 @@ function BookPanel({ hotel, c, checkedAt }: { hotel: HotelResult; c: Common; che
       <p className="mt-1 font-display text-3xl font-black text-navy-950">{money(best.total, locale)}</p>
       <p className="text-xs text-navy-600">
         {c.nights === 1 ? t.stayTotalOne : t.stayTotal.replace("{nights}", nightsLabel(c.nights, t))}
+        {(c.rooms ?? 1) > 1 && ` · ${t.roomsPriced.replace(/\{count\}/g, String(c.rooms))}`}
         {c.nights > 1 && ` · ${t.perNight.replace("{amount}", money(best.total / c.nights, locale))}`}
       </p>
       {c.budget > 0 && (
@@ -354,8 +370,23 @@ function BookPanel({ hotel, c, checkedAt }: { hotel: HotelResult; c: Common; che
             <span aria-hidden="true" className={`transition ${open ? "rotate-180" : ""}`}>▾</span>
           </button>
           {open && (
+            <div className="mt-2 flex gap-2" role="group" aria-label={t.sortSites}>
+              {[false, true].map((d) => (
+                <button
+                  key={String(d)}
+                  type="button"
+                  aria-pressed={desc === d}
+                  onClick={() => setDesc(d)}
+                  className={`min-h-9 rounded-full px-3.5 text-xs font-bold ${desc === d ? "bg-navy-950 text-white" : "bg-white text-navy-800 ring-1 ring-mist-300"}`}
+                >
+                  {d ? t.sortExpensiveFirst : t.sortCheapestFirst}
+                </button>
+              ))}
+            </div>
+          )}
+          {open && (
             <ul className="mt-2 divide-y divide-mist-100 rounded-xl ring-1 ring-mist-200">
-              {offers.map((o, i) => (
+              {(desc ? [...offers].reverse() : offers).map((o, i) => (
                 <li key={`${o.label}-${i}`} className="flex items-center justify-between gap-3 px-3.5 py-2.5">
                   <div className="min-w-0">
                     <p className="truncate text-sm font-bold text-navy-800">
@@ -368,7 +399,7 @@ function BookPanel({ hotel, c, checkedAt }: { hotel: HotelResult; c: Common; che
                       partner={o.partner}
                       href={o.url}
                       className={`inline-flex shrink-0 items-center gap-1 rounded-xl px-3.5 py-2 text-xs font-extrabold transition ${
-                        i === 0 ? "bg-sun-400 text-navy-950 hover:bg-sun-300" : "bg-white text-navy-900 ring-1 ring-mist-200 hover:ring-navy-300"
+                        o === offers[0] ? "bg-sun-400 text-navy-950 hover:bg-sun-300" : "bg-white text-navy-900 ring-1 ring-mist-200 hover:ring-navy-300"
                       }`}
                     >
                       {t.bookNow}
@@ -394,8 +425,9 @@ function PartnerSearchLinks({ hotel, c }: { hotel: HotelResult; c: Common }) {
     query: hotel.name,
     checkIn: c.checkIn,
     checkOut: c.checkOut,
-    adults: c.adults,
-    childrenAges: c.childrenAges,
+    adults: c.party?.adults ?? c.adults,
+    childrenAges: c.party?.childrenAges ?? c.childrenAges,
+    rooms: c.rooms,
     isHotel: true,
     area: hotel.address,
     lat: hotel.lat,

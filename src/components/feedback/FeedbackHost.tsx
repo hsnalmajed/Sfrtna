@@ -49,7 +49,9 @@ export default function FeedbackHost({ locale }: { locale: Locale }) {
   const [kind, setKind] = useState<FeedbackKind | null>(null);
   const [area, setArea] = useState<FeedbackArea>("other");
   const [rating, setRating] = useState(0);
-  const [text, setText] = useState("");
+  // Several points in one note (owner, 27 Oct): a box per point, «أضف نقطة
+  // أخرى» under them; sent as one numbered note.
+  const [points, setPoints] = useState<string[]>([""]);
   // null = not typed yet → the signed-in member's address is offered.
   const [typedEmail, setEmail] = useState<string | null>(null);
   const [contact, setContact] = useState(true);
@@ -70,7 +72,7 @@ export default function FeedbackHost({ locale }: { locale: Locale }) {
       setStep(k ? "details" : "kind");
       setArea(detail?.area ?? areaForPath(pathname, inApp()));
       setRating(0);
-      setText("");
+      setPoints([""]);
       setShot(null);
       setShotErr(false);
       setErr(null);
@@ -124,10 +126,14 @@ export default function FeedbackHost({ locale }: { locale: Locale }) {
     }
   }
 
+  const filled = points.map((p) => p.trim()).filter(Boolean);
+  const text = filled.length > 1 ? filled.map((p, i) => `${i + 1}. ${p}`).join("\n") : filled[0] ?? "";
   const email = typedEmail ?? account.user?.email ?? "";
   const emailTrim = email.trim();
   const emailOk = !emailTrim || /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(emailTrim);
-  const textOk = text.trim().length >= FEEDBACK_TEXT_MIN;
+  const textOk = text.trim().length >= FEEDBACK_TEXT_MIN && text.length <= FEEDBACK_TEXT_MAX;
+  const MAX_POINTS = 10;
+  const setPoint = (i: number, v: string) => setPoints((ps) => ps.map((p, j) => (j === i ? v : p)));
 
   async function submit() {
     setTried(true);
@@ -286,19 +292,50 @@ export default function FeedbackHost({ locale }: { locale: Locale }) {
                   )}
 
                   <label htmlFor="fb-text" className="mb-2 block text-sm font-extrabold text-navy-900">{t.textLabel}</label>
-                  <textarea
-                    id="fb-text"
-                    ref={textRef}
-                    value={text}
-                    onChange={(e) => setText(e.target.value)}
-                    maxLength={FEEDBACK_TEXT_MAX}
-                    rows={5}
-                    placeholder={t.placeholders[kind]}
-                    aria-invalid={tried && !textOk}
-                    className={`w-full resize-y rounded-2xl border bg-white px-4 py-3 text-[15px] leading-relaxed text-navy-950 outline-none transition placeholder:text-navy-400 focus:ring-4 ${
-                      tried && !textOk ? "border-red-400 focus:ring-red-100" : "border-mist-300 focus:border-sun-400 focus:ring-sun-400/25"
-                    }`}
-                  />
+                  <ol className="space-y-2.5">
+                    {points.map((p, i) => (
+                      <li key={i} className="relative">
+                        {points.length > 1 && (
+                          <span className="mb-1 flex items-center justify-between text-xs font-bold text-navy-500">
+                            {t.pointN.replace("{n}", String(i + 1))}
+                            <button
+                              type="button"
+                              onClick={() => setPoints((ps) => ps.filter((_, j) => j !== i))}
+                              className="rounded-full px-2.5 py-1 text-xs font-bold text-navy-600 hover:bg-mist-100"
+                            >
+                              {t.removePoint}
+                            </button>
+                          </span>
+                        )}
+                        <textarea
+                          id={i === 0 ? "fb-text" : `fb-text-${i}`}
+                          ref={i === 0 ? textRef : undefined}
+                          value={p}
+                          onChange={(e) => setPoint(i, e.target.value)}
+                          maxLength={FEEDBACK_TEXT_MAX}
+                          rows={points.length > 1 ? 3 : 5}
+                          placeholder={i === 0 ? t.placeholders[kind] : t.morePlaceholder}
+                          aria-invalid={tried && !textOk}
+                          className={`w-full resize-y rounded-2xl border bg-white px-4 py-3 text-[15px] leading-relaxed text-navy-950 outline-none transition placeholder:text-navy-400 focus:ring-4 ${
+                            tried && !textOk ? "border-red-400 focus:ring-red-100" : "border-mist-300 focus:border-sun-400 focus:ring-sun-400/25"
+                          }`}
+                        />
+                      </li>
+                    ))}
+                  </ol>
+                  {points.length < MAX_POINTS && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setPoints((ps) => [...ps, ""]);
+                        window.setTimeout(() => document.getElementById(`fb-text-${points.length}`)?.focus(), 50);
+                      }}
+                      className="mt-2.5 inline-flex min-h-10 items-center gap-1.5 rounded-full bg-sun-50 px-4 text-sm font-extrabold text-navy-900 ring-1 ring-sun-300 hover:bg-sun-100"
+                    >
+                      <span aria-hidden="true">＋</span>
+                      {t.addPoint}
+                    </button>
+                  )}
                   {tried && !textOk && <p className="mt-1.5 text-xs font-bold text-red-600">{t.textTooShort}</p>}
 
                   <div className="mt-4">

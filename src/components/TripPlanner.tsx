@@ -860,6 +860,7 @@ export default function TripPlanner({
 
       {combo && (
         <ComboHotelFields
+          adults={travelers.adults}
           locale={locale}
           dark={dark}
           inputClass={inputClass}

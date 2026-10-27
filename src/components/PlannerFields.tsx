@@ -397,3 +397,49 @@ export function ChoiceChips<T extends string | number>({
     </div>
   );
 }
+
+/**
+ * How many rooms (owner, 27 Oct): a − / + stepper after the travellers. One
+ * room per adult at most — every room needs a grown-up to book it.
+ */
+export function RoomsStepper({
+  dark,
+  value,
+  max,
+  onChange,
+  label,
+  less,
+  more,
+}: {
+  dark: boolean;
+  value: number;
+  max: number;
+  onChange: (n: number) => void;
+  label: string;
+  less: string;
+  more: string;
+}) {
+  const btn = `grid h-10 w-10 place-items-center rounded-full text-lg font-black transition disabled:opacity-35 ${
+    dark ? "bg-white/10 text-white ring-1 ring-white/20 hover:bg-white/20" : "bg-white text-navy-900 ring-1 ring-mist-300 hover:ring-navy-400"
+  }`;
+  return (
+    <div>
+      <FieldLabel dark={dark} icon="bed">
+        {label}
+      </FieldLabel>
+      <div
+        className={`flex h-12 items-center justify-between rounded-xl px-2 ring-1 ${dark ? "bg-white/[0.06] ring-white/15" : "bg-white ring-mist-200"}`}
+      >
+        <button type="button" className={btn} aria-label={less} disabled={value <= 1} onClick={() => onChange(Math.max(1, value - 1))}>
+          −
+        </button>
+        <output aria-live="polite" className={`font-display text-lg font-extrabold ${dark ? "text-white" : "text-navy-950"}`}>
+          {value}
+        </output>
+        <button type="button" className={btn} aria-label={more} disabled={value >= max} onClick={() => onChange(Math.min(max, value + 1))}>
+          +
+        </button>
+      </div>
+    </div>
+  );
+}
