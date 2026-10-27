@@ -47,3 +47,19 @@ city:rabat 13 4
 country:JO 7 2 15
 city:amman 14 13 6
 city:petra 15 9 6
+city:aqaba 2 4
+country:GB 8 16
+city:london 16 2 13
+city:edinburgh 15 9 16
+city:manchester 4 1
+city:oxford 3 8
+city:glasgow 4 7
+city:belfast 9 1
+city:birmingham 11 7
+country:FR 7 8
+city:paris 15 9 6
+city:nice 7 5 6
+city:lyon 4 2
+city:marseille 10 1
+city:bordeaux 3 5
+city:strasbourg 8 4
