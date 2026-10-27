@@ -36,6 +36,7 @@ jobs:
         if: env.PEXELS_API_KEY != ''
         with:
           node-version: "22"
+          check-latest: true
           cache: npm
 
       - name: Search the missing photos

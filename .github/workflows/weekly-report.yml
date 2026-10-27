@@ -33,6 +33,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
+          check-latest: true
       - name: Build and send the report
         env:
           SMOKE_TOKEN: ${{ secrets.SMOKE_TOKEN }}
