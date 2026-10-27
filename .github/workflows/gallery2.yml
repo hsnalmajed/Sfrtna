@@ -12,6 +12,10 @@ on:
         description: "Only these cities (comma list)"
         type: string
         default: ""
+      redo:
+        description: "Collect the listed cities again"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -41,7 +45,7 @@ jobs:
             git show origin/photo-review-v2:gallery2.json > photo-review/gallery2.json 2>/dev/null || true
           fi
       - name: Collect
-        run: npx --yes tsx@4 scripts/photos/gallery2.ts collect --max 180 ${{ inputs.only && format('--only {0}', inputs.only) || '' }}
+        run: npx --yes tsx@4 scripts/photos/gallery2.ts collect --max 180 ${{ inputs.only && format('--only {0}', inputs.only) || '' }} ${{ inputs.redo && '--redo' || '' }}
       - name: Sheets
         run: npx --yes tsx@4 scripts/photos/gallery2.ts sheets
       - name: Push to the review branch

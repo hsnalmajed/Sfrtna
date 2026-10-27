@@ -25,11 +25,12 @@ import { COUNTRY_CITIES } from "@/lib/cities";
 import { findCountry } from "@/lib/countries";
 import { CITY_COORDS } from "@/data/cityCoords";
 import { UNFIT } from "@/lib/pexels";
+import { commonsUrl } from "@/lib/gallery";
 
 const DIR = "photo-review";
 const FILE = `${DIR}/gallery2.json`;
 const DROP = "scripts/photos/gallery2-drop.txt";
-const MAX_VIEWS = 15;
+const MAX_VIEWS = 16;
 const MAX_LANDMARKS = 25;
 const UA = "SfrtnaBot/1.0 (https://sfrtna.com; info@sfrtna.com)";
 const ANIMALS =
@@ -71,13 +72,6 @@ function guide(slug: string): GuidePlace[] {
 /** Commons file page title from the stored "a/ab/File.jpg" path. */
 const fileTitle = (im: string) => `File:${decodeURIComponent(im.split("/").slice(2).join("/")).replace(/_/g, " ")}`;
 
-/** Thumbnail URL of a Commons file at `w` px (never wider than the file). */
-export function commonsThumb(im: string, width: number, w: number): string {
-  const file = im.split("/").slice(2).join("/");
-  const px = Math.min(w, width);
-  if (px >= width) return `https://upload.wikimedia.org/wikipedia/commons/${im}`;
-  return `https://upload.wikimedia.org/wikipedia/commons/thumb/${im}/${px}px-${file}${/\.tiff?$/i.test(file) ? ".jpg" : ""}`;
-}
 
 type Info = { width: number; height: number; quality: number };
 /** Size and Commons' own quality marks for up to 50 files at a time. */
@@ -136,6 +130,8 @@ async function collect() {
   mkdirSync(DIR, { recursive: true });
   const store: Store = existsSync(FILE) ? JSON.parse(readFileSync(FILE, "utf8")) : {};
   let budget = Number(arg("--max") ?? 180);
+  // --redo: collect the --only cities again from scratch.
+  if (process.argv.includes("--redo")) for (const s of only) delete store[s];
   for (const c of cities()) {
     if (only.size && !only.has(c.slug)) continue;
     if (c.slug in store) continue;
@@ -143,14 +139,14 @@ async function collect() {
     const country = findCountry(c.code)?.nameEn ?? "";
     const centre = CITY_COORDS[c.slug];
     if (!centre) continue;
-    if (budget < 3) break;
+    if (budget < 4) break;
 
     // Views: the city named in the caption, never people, animals or interiors.
     const views: Photo[] = [];
     const seen = new Set<string>();
     const cityWord = fold(city.split(/[\s-]/).sort((a, b) => b.length - a.length)[0]);
     let stopped = false;
-    for (const q of [`${city} ${country}`, `${city} skyline`, `${city} landscape`]) {
+    for (const q of [`${city} ${country}`, `${city} skyline`, `${city} sunset`, `${city} landscape`]) {
       budget--;
       const res = await pexels(q);
       if (res === null) {
@@ -208,7 +204,7 @@ function reviewed(): Map<string, Set<string> | "all"> {
   return drops;
 }
 
-const thumb = (p: Photo, w: number) => (p.s === "p" ? `${p.o}?auto=compress&w=${w}` : commonsThumb(p.o, p.w, w));
+const thumb = (p: Photo, w: number) => (p.s === "p" ? `${p.o}?auto=compress&w=${w}` : commonsUrl(p.o, w, p.w));
 
 async function sheets() {
   const sharp = (await import("sharp")).default;
@@ -229,7 +225,7 @@ async function sheets() {
       all.map(async ({ p, tag }, j) => {
         const x = GAP + (j % PER_ROW) * (W + GAP), y = 34 + Math.floor(j / PER_ROW) * (H + 22);
         try {
-          const res = await fetch(thumb(p, 400), { headers: { "User-Agent": UA } });
+          const res = await fetch(thumb(p, 500), { headers: { "User-Agent": UA } });
           layers.push({ input: await sharp(Buffer.from(await res.arrayBuffer())).resize(W, H, { fit: "cover" }).jpeg().toBuffer(), left: x, top: y });
         } catch {
           /* blank */
