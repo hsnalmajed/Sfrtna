@@ -2,3 +2,18 @@
 istanbul v1 v3 v9 v10 v11 v15 v18 v19 v20 v21 v25 v27 v28 v29 l9 l10 l12 l17 l20
 paris v1 v3 v5 v6 v8 v13 v14 v17 v20 v21 v24 v25 v26 v28 v29 l8 l13 l16 l17 l21
 dubai v1 v7 v12 v20 v21 v22 v24 v28 l3 l4 l6 l8 l9 l10 l11 l12 l14 l15 l16 l17 l18 l19 l20 l22 l23
+riyadh v3 l2 l6 l7 l11
+jeddah v4 v5 v6 v15 v20 v21 l5
+makkah v4 v5 v13 v16 v22 v23 l1 l3 l4 l7
+madinah v3 v11 v12 v13 v14 v16 v23 v24 v25 v27 v28 v29 v30 l7 l10 l11 l14 l17 l18
+alula v3 v4
+abha *
+dammam *
+taif *
+antalya v4 v10 v18 v19 v22 v23 v27 v29 l1 l6
+cappadocia v2 v13 v15 v22 v26 l2
+trabzon v1 v2 v3 v4 v12 v14 v16 v18 v19 v20 v22 v27 v28 l4 l6
+izmir v3 v4 v5 v6 v7 v8 v9 v10 v11 v14 v15 v16 v18 v20 v21 v22 v23 v24 v26 v27 v28 v29 v30 l6 l7 l11 l12 l16
+bursa v3 v4 v5 v6 v8 v9 v10 v12 v18 v20 v21 v27 v28 v29 l9 l11 l16 l17
+bodrum v5 v9 v10 v16 v19 v21 v25 v27
+abu-dhabi v3 v6 v10 v11 v18 v21 v24 v25 v28 l3 l4 l5 l7 l9
