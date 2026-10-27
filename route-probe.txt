@@ -55,3 +55,22 @@ repeat	Asia, 2 stops	200	412 ms	24 routes	24 within	11 cities	{"pool":95,"candid
 repeat	Africa, 3 stops	200	299 ms	14 routes	14 within	11 cities	{"pool":42,"candidates":40,"tables":41,"emptyTables":1,"priced":14}
 repeat	North America, 2 stops	200	209 ms	0 routes	0 within	0 cities	{"pool":38,"candidates":38,"tables":39,"emptyTables":1,"priced":0}
 repeat	two months (Jan→Feb), 3 stops	200	560 ms	24 routes	24 within	16 cities	{"pool":324,"candidates":40,"tables":81,"emptyTables":2,"priced":1161}
+
+== failat
+route probe 2026-10-27T17:42:54.602Z https://sfrtna.almajedhsn.workers.dev
+first	all, 2 stops	200	4371 ms	24 routes	24 within	11 cities	{"pool":324,"candidates":120,"tables":121,"emptyTables":2,"priced":167,"failAt":[10835,2069,923],"sameCountry":286}
+first	all, 3 stops	200	1031 ms	24 routes	24 within	11 cities	{"pool":324,"candidates":40,"tables":41,"emptyTables":1,"priced":2715,"failAt":[14850,18723,8003,6841],"sameCountry":8148}
+first	Europe, 2 stops	200	1916 ms	0 routes	0 within	0 cities	{"pool":103,"candidates":103,"tables":104,"emptyTables":2,"priced":0,"failAt":[9753,217,180],"sameCountry":356}
+first	Europe, 3 stops	200	590 ms	21 routes	21 within	14 cities	{"pool":103,"candidates":40,"tables":41,"emptyTables":1,"priced":21,"failAt":[33692,2934,1552,621],"sameCountry":20460}
+first	Asia, 2 stops	200	913 ms	24 routes	24 within	11 cities	{"pool":95,"candidates":95,"tables":96,"emptyTables":4,"priced":138,"failAt":[6909,954,643],"sameCountry":286}
+first	Africa, 3 stops	200	931 ms	14 routes	14 within	11 cities	{"pool":42,"candidates":40,"tables":41,"emptyTables":1,"priced":14,"sameCountry":11856,"failAt":[45452,1047,682,229]}
+first	North America, 2 stops	200	500 ms	0 routes	0 within	0 cities	{"pool":38,"candidates":38,"tables":39,"emptyTables":1,"priced":0,"sameCountry":168,"failAt":[1238,0,0]}
+first	two months (Jan→Feb), 3 stops	200	1502 ms	24 routes	24 within	16 cities	{"pool":324,"candidates":40,"tables":81,"emptyTables":2,"priced":1161,"failAt":[14850,18723,10094,6304],"sameCountry":8148}
+repeat	all, 2 stops	200	645 ms	24 routes	24 within	11 cities	{"pool":324,"candidates":120,"tables":121,"emptyTables":2,"priced":167,"failAt":[10835,2069,923],"sameCountry":286}
+repeat	all, 3 stops	200	1127 ms	24 routes	24 within	11 cities	{"pool":324,"candidates":40,"tables":41,"emptyTables":1,"priced":2715,"failAt":[14850,18723,8003,6841],"sameCountry":8148}
+repeat	Europe, 2 stops	200	565 ms	0 routes	0 within	0 cities	{"pool":103,"candidates":103,"tables":104,"emptyTables":2,"priced":0,"failAt":[9753,217,180],"sameCountry":356}
+repeat	Europe, 3 stops	200	567 ms	21 routes	21 within	14 cities	{"pool":103,"candidates":40,"tables":41,"emptyTables":1,"priced":21,"failAt":[33692,2934,1552,621],"sameCountry":20460}
+repeat	Asia, 2 stops	200	496 ms	24 routes	24 within	11 cities	{"pool":95,"candidates":95,"tables":96,"emptyTables":4,"priced":138,"failAt":[6909,954,643],"sameCountry":286}
+repeat	Africa, 3 stops	200	405 ms	14 routes	14 within	11 cities	{"pool":42,"candidates":40,"tables":41,"emptyTables":1,"priced":14,"sameCountry":11856,"failAt":[45452,1047,682,229]}
+repeat	North America, 2 stops	200	274 ms	0 routes	0 within	0 cities	{"pool":38,"candidates":38,"tables":39,"emptyTables":1,"priced":0,"sameCountry":168,"failAt":[1238,0,0]}
+repeat	two months (Jan→Feb), 3 stops	200	743 ms	24 routes	24 within	16 cities	{"pool":324,"candidates":40,"tables":81,"emptyTables":2,"priced":1161,"failAt":[14850,18723,10094,6304],"sameCountry":8148}
