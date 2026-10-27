@@ -1399,6 +1399,13 @@ after Search Console showed 104 pages "Server error (5xx)" crawled 23 Oct =
 Owner presses Validate fix on 5xx again. To do: raise the subrequest-bound
 limits (routeSuggest MAX_REQUESTS / MAX_CITIES) now that 10,000 are allowed.
 
+**Stay22 payout, 27 Oct:** National Address certificate is NOT an accepted
+type (Madeleine, 22 Oct: Tipalti accepts bank/credit-card statement,
+insurance, lease, phone/utility/cable bill, < 60 days, name + address).
+Owner sent a bank statement (Sept 2026) on the ticket 27 Oct 20:09 KSA.
+Wait for her confirmation; then check the dashboard no longer says
+"Missing payout method".
+
 **▶ Start here (hand-off 23 Oct 00:15):** owner opens a new conversation to
 create the **Google Play personal developer account** (decided 23 Oct; $25,
 ID check — may take hours to days). Step 1 for the owner (one step per
