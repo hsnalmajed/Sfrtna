@@ -1383,6 +1383,16 @@ before launch (owner, 23 Oct).
   home card, no overflow, no page errors.
 - To propose to owner: a «رحلتي» tab in the app bar (replacing «المواسم»?).
 
+**Google Play account — 27 Oct 19:40 (owner):** personal developer account
+created and paid ($25; developer name «Sfrtna | سفرتنا», public email
+info@sfrtna.com, contact = owner's Gmail). Identity document uploaded →
+Google reviewing (days; email to owner). Android device check done (Play
+Console app). Phone check unlocks after identity. «Create app» is blocked
+until verification completes. Next: create app (default language Arabic,
+free, app), upload key → 4 GitHub secrets (android.yml), first .aab to the
+closed test (≥ 12 testers × 14 days), store listing ar+en, Data safety,
+App Links (assetlinks.json with Play's SHA-256), Android OAuth client.
+
 **▶ Start here (hand-off 23 Oct 00:15):** owner opens a new conversation to
 create the **Google Play personal developer account** (decided 23 Oct; $25,
 ID check — may take hours to days). Step 1 for the owner (one step per
