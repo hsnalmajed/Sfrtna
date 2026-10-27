@@ -1,3 +1,4 @@
+import PICKS from "@/data/photoPicks.json";
 /**
  * Photographs from Pexels — the site's one source of pictures.
  *
@@ -272,4 +273,18 @@ export async function searchPexelsPhotos(
     }
   }
   return out;
+}
+
+// ── Hand-chosen photos ─────────────────────────────────────────────────
+//
+// Owner, 27 Oct: the automatic picks were not good enough for a travel site.
+// Every live country and city now has its photo chosen by eye from numbered
+// candidates (scripts/photos/candidates.ts) — its most beautiful view, or its
+// world-famous symbol. Keys "country:XX" / "city:<slug>"; read before
+// anything automatic.
+
+export function pickedPhoto(key: string): PexelsPhoto | null {
+  const list = (PICKS as Record<string, string[]>)[key];
+  if (!list?.length) return null;
+  return fromStored(key, list.map((o) => ({ o, n: "" })));
 }

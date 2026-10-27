@@ -16,7 +16,7 @@ import { CITY_COORDS } from "@/data/cityCoords";
 import { cachedJson, readJson, writeJson } from "@/lib/edgeCache";
 import { findCountry } from "@/lib/countries";
 import PLACE_COUNTS from "@/data/placeCounts.json";
-import { searchPexelsPhotos, type PexelsQuery } from "@/lib/pexels";
+import { pickedPhoto, searchPexelsPhotos, type PexelsQuery } from "@/lib/pexels";
 import { cityPhotoQueries } from "@/lib/photoSubjects";
 import type { PinCategory } from "@/lib/pinStyles";
 import type { Locale } from "@/lib/types";
@@ -511,9 +511,10 @@ export async function fetchCityOverviews(
     // No count: knowing how many places a city has would mean one Overpass
     // query per card, and a country page has a dozen cards. The card shows
     // the photograph and the name, and the city page does the counting.
+    const photo = pickedPhoto(`city:${c.slug}`) ?? photos.get(c.slug);
     result.set(c.slug, {
-      photo: photos.get(c.slug)?.small,
-      photoLarge: photos.get(c.slug)?.url,
+      photo: photo?.small,
+      photoLarge: photo?.url,
       count: 0,
     });
   }

@@ -1,0 +1,49 @@
+country:SA 7 12
+city:riyadh 4 5
+city:jeddah 9 6
+city:makkah 2 3
+city:madinah 13 6
+city:alula country:SA#7
+city:dammam 1
+city:taif 4
+country:TR 8 5
+city:istanbul 6 8
+city:antalya 6 9 14
+city:cappadocia 16 13 11
+city:trabzon 14 11
+city:izmir 6 4
+city:bursa 7 4
+city:bodrum 2 11 8
+country:AE 4 6
+city:dubai 2 6 12
+city:abu-dhabi 16 15 2
+city:sharjah 11 4
+city:ras-al-khaimah 2 5
+country:QA 8 7
+city:doha 4 16 2
+country:KW 1 12
+city:kuwait-city 6 9
+country:BH 1 6
+city:manama 1 4
+country:OM 2 9 12
+city:muscat 2 5 1
+city:salalah 2
+city:nizwa 1
+country:EG 4 9 7
+city:cairo 1 3 13
+city:luxor 8 7 12
+city:aswan 4 9 7
+city:alexandria 11 8
+city:sharm-el-sheikh 9 11
+city:giza 6 4 9
+city:hurghada 4 5
+country:MA 3 4
+city:marrakesh 4 10
+city:casablanca 12 8 5
+city:fes 5 7
+city:chefchaouen 1 4 5
+city:tangier 11 3
+city:rabat 13 4
+country:JO 7 2 15
+city:amman 14 13 6
+city:petra 15 9 6

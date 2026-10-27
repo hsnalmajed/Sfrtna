@@ -1,6 +1,6 @@
 import { COUNTRY_GUIDES } from "@/lib/countryGuides";
 import { findCountry } from "@/lib/countries";
-import { searchPexelsPhotos, type PexelsQuery } from "@/lib/pexels";
+import { pickedPhoto, searchPexelsPhotos, type PexelsQuery } from "@/lib/pexels";
 import { cityPhotoQueries, countryPhotoQueries } from "@/lib/photoSubjects";
 
 /**
@@ -31,6 +31,10 @@ export async function fetchCountryPhotos(
   const found = await searchPexelsPhotos(wanted, legacy);
   const photos = new Map<string, string>();
   for (const [code, p] of found) photos.set(code, full ? p.url : p.small);
+  for (const code of codes) {
+    const pick = pickedPhoto(`country:${code}`);
+    if (pick) photos.set(code, full ? pick.url : pick.small);
+  }
   return photos;
 }
 
@@ -58,5 +62,9 @@ export async function fetchCityPhotos(
   const found = await searchPexelsPhotos(wanted, legacy);
   const photos = new Map<string, string>();
   for (const [key, p] of found) photos.set(key, p.small);
+  for (const c of cities) {
+    const pick = pickedPhoto(`city:${c.slug}`);
+    if (pick) photos.set(`${c.code}/${c.slug}`, pick.small);
+  }
   return photos;
 }
