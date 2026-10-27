@@ -252,3 +252,98 @@ city:saranda 1 2
 country:ME 15 4 6
 city:kotor 13 2 10
 city:budva 1 4 8
+city:podgorica 4 3
+country:RS 14 5
+city:belgrade 9 1 10
+city:novi-sad 1 7 6
+country:HR 2 11 8
+city:zagreb 9 2
+city:split 14 9 4
+city:dubrovnik 2 7 14
+country:CZ 3 1
+city:prague 8 2 11
+city:karlovy-vary 4 12
+city:brno 4 6
+country:HU 2 4 7
+city:budapest 7 10 6
+country:PL 3 14 8
+city:warsaw 3 5
+city:krakow 9 12 10
+city:zakopane 10 8 6
+city:gdansk 2 7 1
+country:IE 5 4 13
+city:dublin 14 11 10
+city:galway 7 4 11
+city:cork 8 3
+country:BE 1 6 4
+city:brussels 14 10 3
+city:bruges 4 9 8
+country:SE 1 16 15
+city:stockholm 6 5 12
+city:gothenburg 2 5
+country:NO 2 1 8
+city:oslo 6 10 4
+city:bergen 1 2 7
+city:tromso 2 1
+country:DK 8 7 3
+city:copenhagen 16 15 11
+country:FI 6 11 10
+city:helsinki 3 6
+city:rovaniemi 2 8 6
+country:SI 3 5 12
+city:ljubljana 6 4
+city:bled 9 12 1
+country:CY 8 1 4
+city:larnaca 4 5
+city:limassol 1 10
+city:paphos 6 11 10
+country:MT 8 6 11
+city:valletta 3 4 6
+country:RO 5 4 11
+city:bucharest 8 1
+city:brasov 4 3
+country:IS 1 3 7
+city:reykjavik 9 4 7
+country:AM 6 4 7
+city:yerevan 7 8
+country:KZ 6 1 8
+city:almaty 3 1
+city:astana 9 6 12
+country:UZ 8 5 6
+city:tashkent 9 2 12
+city:samarkand 16 13 15
+city:bukhara 11 9 6
+country:KG 8 11 16
+city:bishkek 3 2
+city:karakol 1 3
+city:osh 1 2
+country:PK 3 13 9
+city:islamabad 8 10 6
+city:lahore 1 6 8
+country:NP 5 2 16
+city:kathmandu 9 13 10
+city:pokhara 12 6 14
+country:PH 3 6 4
+city:manila 11 13 8
+city:cebu 2 10
+city:boracay 3 1 5
+city:puerto-princesa 6 7 2
+country:KH 2 9 3
+city:siem-reap 7 9 6
+city:phnom-penh 9 2 4
+country:TZ 3 5 13
+city:zanzibar 10 15 16
+city:arusha 9 5 7
+city:dar-es-salaam 1 6
+country:MU 4 6 10
+city:port-louis 3 1
+city:grand-baie 5 1 6
+country:SC 2 13 8
+city:mahe 5 7 3
+city:praslin country:SC#3 country:SC#14
+country:CA 7 1 13
+city:toronto 2 9 8
+city:vancouver 1 9 4
+city:montreal 5 4
+city:banff 9 12 16
+city:calgary 9 8 3
