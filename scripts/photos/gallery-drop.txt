@@ -49,3 +49,9 @@ birmingham 2 6 7 8
 paris 6
 nice 1 2 3
 lyon 3 4
+marseille 1 6
+bordeaux 2 3 6 8
+strasbourg 3 5
+barcelona 2 4 6
+madrid 4 9
+granada 6 8
