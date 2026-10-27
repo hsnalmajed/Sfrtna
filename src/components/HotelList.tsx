@@ -6,6 +6,22 @@ import { amenityLabels } from "@/lib/hotelAmenities";
 import { CITY_COORDS } from "@/data/cityCoords";
 import Icon from "@/components/ui/Icon";
 import FilterPill from "@/components/ui/FilterPill";
+import FilterSheet, { type SheetGroup } from "@/components/ui/FilterSheet";
+import {
+  FACILITIES,
+  NEAR_BANDS,
+  NO_FACETS,
+  RATING_FLOORS_5,
+  activeCount,
+  brandOf,
+  hasFacility,
+  nearbyText,
+  passes,
+  priceBands,
+  type FacetInput,
+  type Facets,
+  type Facility,
+} from "@/lib/hotelFacets";
 import { PriceRows, Photo, Rating, Shimmer, Stars, money, forRooms, type Common } from "@/components/HotelPrices";
 import { AMENITY_CODE, BREAKFAST_CODE, NO_HOTEL_PREFS, PLACE_TYPE_CODE, type HotelPrefs } from "@/lib/hotelPrefs";
 import { useDictionary } from "@/lib/dict/context";
@@ -62,6 +78,8 @@ export default function HotelList({
   const [sort, setSort] = useState<Sort>(prefs.nearTo ? "near" : "best");
   // Booking-style: the price for the whole stay, or a night.
   const [perNight, setPerNight] = useState(false);
+  // Booking-style filters on the list we hold: instant, no extra search.
+  const [facets, setFacets] = useState<Facets>(NO_FACETS);
   const prefsKey = `${prefs.place}|${prefs.amenities.join(",")}|${prefs.rating}|${prefs.freeCancel ? 1 : 0}|${breakfast ? 1 : 0}`;
   const url = useMemo(() => {
     const p = new URLSearchParams({ q: `hotels in ${cityQuery}`.slice(0, 120), checkIn: c.checkIn, checkOut: c.checkOut, adults: String(c.adults) });
@@ -177,6 +195,132 @@ export default function HotelList({
   }
   const dist = (h: HotelResult) => (centre && h.lat != null && h.lng != null ? km(centre, { lat: h.lat, lon: h.lng }) : Infinity);
   const price = (h: HotelResult) => forRooms(h.total ?? (h.perNight ? h.perNight * c.nights : Infinity), c);
+
+  // Facets: every option shows how many hotels it would keep, given the
+  // other filters already chosen (as Booking counts them).
+  const inputs: FacetInput[] = hotels.map((h) => ({ hotel: h, perNight: price(h) / Math.max(1, c.nights), km: dist(h) }));
+  const bands = priceBands(inputs.map((x) => x.perNight));
+  const count = (skip: keyof Facets, test: (x: FacetInput) => boolean) =>
+    inputs.filter((x) => passes(x, facets, bands, skip) && test(x)).length;
+  const fx = hp.facets;
+  const totalHeld = hotels.length;
+  hotels = inputs.filter((x) => passes(x, facets, bands)).map((x) => x.hotel);
+  const set = (patch: Partial<Facets>) => {
+    setFacets((f) => ({ ...f, ...patch }));
+    track("hotel_filter", { filter: Object.keys(patch)[0] });
+  };
+  const amount = (n: number) => money(n, locale);
+  const priceOpts = bands.map((top, i) => {
+    const low = i > 0 ? bands[i - 1] : 0;
+    return {
+      value: Number.isFinite(top) ? top : -1,
+      label: !Number.isFinite(top) ? fx.priceOver.replace("{a}", amount(low)) : i === 0 ? fx.priceUpTo.replace("{b}", amount(top)) : fx.priceBetween.replace("{a}", amount(low)).replace("{b}", amount(top)),
+      count: count("price", (x) => x.perNight > low && x.perNight <= top),
+    };
+  });
+  const brandCounts = new Map<string, number>();
+  for (const x of inputs) {
+    const b = brandOf(x.hotel.name);
+    if (b && passes(x, facets, bands, "brands")) brandCounts.set(b, (brandCounts.get(b) ?? 0) + 1);
+  }
+  for (const b of facets.brands) if (!brandCounts.has(b)) brandCounts.set(b, 0);
+  const facilityOpts = FACILITIES.map((f) => ({ value: f, label: fx.facility[f], count: count("facilities", (x) => hasFacility(x.hotel, f) && facets.facilities.every((g) => hasFacility(x.hotel, g))) })).filter(
+    (o) => o.count > 0 || facets.facilities.includes(o.value)
+  );
+  const starOpts = [5, 4, 3, 2].map((n) => ({ value: n, label: fx.starsN.replace("{n}", String(n)), count: count("stars", (x) => x.hotel.stars === n) })).filter((o) => o.count > 0 || facets.stars.includes(o.value));
+  const anyEco = inputs.some((x) => x.hotel.eco);
+  // Every group in one sheet behind «الفلاتر» (Booking's phone layout); the
+  // chosen ones stay in sight as chips that remove themselves on a tap.
+  const groups: SheetGroup[] = [
+    ...(priceOpts.length
+      ? [{ key: "price", title: fx.price, icon: "💰", multi: true, options: priceOpts, value: facets.price.map((p) => (Number.isFinite(p) ? p : -1)), onChange: (v: (string | number)[]) => set({ price: v.map((n) => (n === -1 ? Infinity : Number(n))) }) }]
+      : []),
+    {
+      key: "rating",
+      title: fx.rating,
+      icon: "⭐",
+      options: RATING_FLOORS_5.map((r) => ({ value: r, label: fx.ratingFloor.replace("{r}", String(r)), count: count("rating", (x) => (x.hotel.rating ?? 0) >= r) })),
+      value: facets.rating,
+      onChange: (v) => set({ rating: v.map(Number) }),
+    },
+    ...(starOpts.length ? [{ key: "stars", title: fx.stars, icon: "🏨", multi: true, options: starOpts, value: facets.stars, onChange: (v: (string | number)[]) => set({ stars: v.map(Number) }) }] : []),
+    ...(facilityOpts.length
+      ? [{ key: "facilities", title: fx.facilities, icon: "🛎️", multi: true, options: facilityOpts, value: facets.facilities, onChange: (v: (string | number)[]) => set({ facilities: v as Facility[] }) }]
+      : []),
+    ...(centre
+      ? [
+          {
+            key: "near",
+            title: fromName ? fx.nearFromPlace.replace("{place}", fromName) : fx.near,
+            icon: "📍",
+            options: NEAR_BANDS.map((k) => ({ value: k, label: fx.nearBand.replace("{km}", String(k)), count: count("near", (x) => x.km <= k) })),
+            value: facets.near ? [facets.near] : [],
+            onChange: (v: (string | number)[]) => set({ near: v.length ? Number(v[0]) : 0 }),
+          },
+        ]
+      : []),
+    ...(brandCounts.size
+      ? [
+          {
+            key: "brands",
+            title: fx.brands,
+            icon: "🏷️",
+            multi: true,
+            options: [...brandCounts].sort((a, b) => b[1] - a[1]).map(([b, n]) => ({ value: b, label: b, count: n })),
+            value: facets.brands,
+            onChange: (v: (string | number)[]) => set({ brands: v.map(String) }),
+          },
+        ]
+      : []),
+    ...(anyEco ? [{ key: "eco", title: fx.eco, icon: "🌿", options: [{ value: 1, label: fx.eco, count: count("eco", (x) => Boolean(x.hotel.eco)) }], value: facets.eco ? [1] : [], onChange: (v: (string | number)[]) => set({ eco: v.length > 0 }) }] : []),
+  ];
+  const chosen = groups.flatMap((g) =>
+    g.value.map((v) => ({
+      key: `${g.key}:${v}`,
+      label: g.options.find((o) => o.value === v)?.label ?? String(v),
+      drop: () => g.onChange(g.value.filter((x) => x !== v)),
+    }))
+  );
+  const filterBar = (
+    <FilterSheet
+      label={fx.button}
+      groups={groups}
+      results={fx.showResults.replace("{n}", String(hotels.length))}
+      onClear={() => setFacets(NO_FACETS)}
+    />
+  );
+  const chips =
+    chosen.length > 0 ? (
+      <ul className="flex flex-wrap gap-1.5">
+        {chosen.map((ch) => (
+          <li key={ch.key}>
+            <button type="button" onClick={ch.drop} className="inline-flex min-h-8 items-center gap-1 rounded-full bg-navy-900 px-3 text-xs font-bold text-white">
+              {ch.label}
+              <span aria-hidden="true">✕</span>
+            </button>
+          </li>
+        ))}
+        <li>
+          <button type="button" onClick={() => setFacets(NO_FACETS)} className="min-h-8 rounded-full px-2 text-xs font-extrabold text-sea-800 hover:underline">
+            {fx.clear}
+          </button>
+        </li>
+      </ul>
+    ) : null;
+  if (!hotels.length) {
+    return (
+      <div className="space-y-3">
+        <div className="flex items-center gap-2">{filterBar}</div>
+        {chips}
+        <div className="rounded-2xl bg-white p-6 text-center shadow-sm ring-1 ring-black/5">
+          <p className="text-sm font-semibold text-navy-700">{fx.none}</p>
+          <button type="button" onClick={() => setFacets(NO_FACETS)} className="mt-3 min-h-10 rounded-full bg-sun-400 px-5 text-sm font-extrabold text-navy-950">
+            {fx.clear}
+          </button>
+        </div>
+      </div>
+    );
+  }
   // The most expensive first, hotels with no price at the end.
   const priceDown = (h: HotelResult) => (Number.isFinite(price(h)) ? price(h) : -1);
   if (sort !== "best") {
@@ -206,7 +350,8 @@ export default function HotelList({
   return (
     <div className="space-y-3">
       {/* One control, like Booking's "Sort by" (owner, 27 Oct): the chosen order on the pill, every order in its sheet. */}
-      <div className="flex items-center gap-2">
+      <div className="flex flex-wrap items-center gap-2">
+        {filterBar}
         <FilterPill<Sort>
           icon="↕️"
           label={hp.sortLabel}
@@ -215,7 +360,9 @@ export default function HotelList({
           onChange={(v) => setSort(v === "all" ? "best" : v)}
           locale={c.locale}
         />
-        <span className="text-xs font-semibold text-navy-500">{t.hotelsCount.replace("{count}", String(hotels.length))}</span>
+        <span className="text-xs font-semibold text-navy-500">
+          {activeCount(facets) ? fx.showing.replace("{n}", String(hotels.length)).replace("{m}", String(totalHeld)) : t.hotelsCount.replace("{count}", String(hotels.length))}
+        </span>
         {c.nights > 1 && (
           <div className="ms-auto flex rounded-full bg-mist-100 p-1 text-xs font-bold" role="group" aria-label={t.priceShowLabel}>
             {[false, true].map((pn) => (
@@ -232,6 +379,7 @@ export default function HotelList({
           </div>
         )}
       </div>
+      {chips}
       {note && <p className="text-sm font-semibold text-navy-700">{note}</p>}
       {hotels.map((h) => (
         <HotelCard
@@ -283,6 +431,7 @@ function HotelCard({
   locale: "ar" | "en";
 }) {
   const { t } = c;
+  const hp = useDictionary().hotelPrefs;
   const [open, setOpen] = useState(false);
   const one = hotel.total ?? (hotel.perNight ? hotel.perNight * c.nights : null);
   const total = one === null ? null : forRooms(one, c);
@@ -318,6 +467,15 @@ function HotelCard({
                 {(fromPlace ? t.fromPlace : t.fromCentre).replace("{km}", distance < 10 ? distance.toFixed(1) : String(Math.round(distance))).replace("{city}", cityName)}
               </li>
             )}
+            {hotel.locationRating != null && hotel.locationRating > 0 && (
+              <li className="font-bold text-sea-800">{hp.locationScore.replace("{r}", hotel.locationRating.toFixed(1))}</li>
+            )}
+            {hotel.nearby?.[0] && (
+              <li className="inline-flex items-center gap-1">
+                <span aria-hidden="true">🚶</span>
+                {nearbyText(hotel.nearby[0], hp.nearbyLine, locale)}
+              </li>
+            )}
             {hotel.checkInTime && (
               <li>
                 {t.checkInLabel}: <bdi>{hotel.checkInTime}</bdi>
@@ -329,8 +487,9 @@ function HotelCard({
               </li>
             )}
           </ul>
-          {(hasBreakfast(hotel) || amenities.length > 0) && (
+          {(hasBreakfast(hotel) || hotel.eco || amenities.length > 0) && (
             <ul className="flex flex-wrap gap-1.5">
+              {hotel.eco && <li className="rounded-full bg-sea-50 px-2.5 py-1 text-[11px] font-extrabold text-sea-800 ring-1 ring-sea-200">{hp.ecoBadge}</li>}
               {hasBreakfast(hotel) && (
                 <li className="rounded-full bg-sea-50 px-2.5 py-1 text-[11px] font-extrabold text-sea-800 ring-1 ring-sea-200">☕ {t.freeBreakfast}</li>
               )}

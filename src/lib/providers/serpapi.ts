@@ -175,6 +175,18 @@ export interface HotelResult {
   /** Where it is: lets a partner link land on this hotel, not its area. */
   lat: number | null;
   lng: number | null;
+  /** Places near the hotel and how long it takes to reach them (Google's own). */
+  nearby?: { name: string; how: { type: string; duration: string }[] }[];
+  /** How many guests gave 5, 4, 3, 2, 1 stars. */
+  ratingsHist?: { stars: number; count: number }[];
+  /** What reviews talk about: each topic with its positive/negative mentions. */
+  topics?: { name: string; total: number; positive: number; negative: number }[];
+  /** Amenities Google says the hotel does NOT have. */
+  excluded?: string[];
+  /** Eco-certified, as Google marks it. */
+  eco?: boolean;
+  /** Holiday rentals: "Entire villa", "Sleeps 6", "3 bedrooms"… */
+  essential?: string[];
 }
 
 export interface HotelSearch {
@@ -213,7 +225,15 @@ interface GhProperty {
   check_in_time?: string;
   check_out_time?: string;
   gps_coordinates?: { latitude?: number; longitude?: number };
+  nearby_places?: { name?: string; transportations?: { type?: string; duration?: string }[] }[];
+  ratings?: { stars?: number; count?: number }[];
+  reviews_breakdown?: { name?: string; total_mentioned?: number; positive?: number; negative?: number }[];
+  excluded_amenities?: string[];
+  eco_certified?: boolean;
+  essential_info?: string[];
 }
+
+const str = (v: unknown, max = 80) => (typeof v === "string" ? v.trim().slice(0, max) : "");
 
 const num = (n: unknown) => (typeof n === "number" && Number.isFinite(n) && n > 0 ? Math.round(n) : null);
 
@@ -259,6 +279,23 @@ function hotelOf(p: GhProperty): HotelResult {
     checkOutTime: (p.check_out_time || "").trim(),
     lat: typeof p.gps_coordinates?.latitude === "number" ? p.gps_coordinates.latitude : null,
     lng: typeof p.gps_coordinates?.longitude === "number" ? p.gps_coordinates.longitude : null,
+    nearby: (p.nearby_places ?? [])
+      .map((n) => ({
+        name: str(n.name),
+        how: (n.transportations ?? []).map((x) => ({ type: str(x.type, 30), duration: str(x.duration, 20) })).filter((x) => x.type && x.duration).slice(0, 3),
+      }))
+      .filter((n) => n.name && n.how.length)
+      .slice(0, 8),
+    ratingsHist: (p.ratings ?? [])
+      .filter((r) => typeof r.stars === "number" && typeof r.count === "number" && r.stars >= 1 && r.stars <= 5)
+      .map((r) => ({ stars: r.stars as number, count: Math.max(0, Math.round(r.count as number)) })),
+    topics: (p.reviews_breakdown ?? [])
+      .map((r) => ({ name: str(r.name, 40), total: num(r.total_mentioned) ?? 0, positive: num(r.positive) ?? 0, negative: num(r.negative) ?? 0 }))
+      .filter((r) => r.name && r.total > 0)
+      .slice(0, 12),
+    excluded: (p.excluded_amenities ?? []).map((a) => str(a, 60)).filter(Boolean).slice(0, 20),
+    eco: p.eco_certified === true || undefined,
+    essential: (p.essential_info ?? []).map((a) => str(a, 60)).filter(Boolean).slice(0, 8),
   };
 }
 

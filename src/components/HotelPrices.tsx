@@ -10,6 +10,8 @@ import type { Dictionary } from "@/lib/dictionaries";
 import { amenityLabels, keyAmenities } from "@/lib/hotelAmenities";
 import Icon from "@/components/ui/Icon";
 import PartnerLink from "@/components/PartnerLink";
+import { useDictionary } from "@/lib/dict/context";
+import { TRANSPORT_AR, durationLabel, topicLabel } from "@/lib/hotelFacets";
 
 /**
  * One hotel in full: photos, what it offers, and its price on every site.
@@ -583,8 +585,126 @@ function HotelDetail({ hotel, c, checkedAt }: { hotel: HotelResult; c: Common; c
             <p className="mt-5 text-sm leading-relaxed text-navy-700">{hotel.description}</p>
           )}
         </section>
+        <HotelInsights hotel={hotel} locale={locale} />
       </div>
     </div>
+  );
+}
+
+/**
+ * What Booking shows under a hotel and Google gives us in the same answer:
+ * what guests say per topic, how the ratings spread, what is around the
+ * hotel and how long it takes to get there, and what it does not have.
+ */
+function HotelInsights({ hotel, locale }: { hotel: HotelResult; locale: "ar" | "en" }) {
+  const hp = useDictionary().hotelPrefs;
+  const topics = (hotel.topics ?? []).filter((x) => x.positive + x.negative > 0);
+  const hist = [...(hotel.ratingsHist ?? [])].sort((a, b) => b.stars - a.stars);
+  const histTotal = hist.reduce((n, r) => n + r.count, 0);
+  const nearby = hotel.nearby ?? [];
+  const excluded = amenityLabels(hotel.excluded ?? [], locale, 12);
+  const essential = locale === "en" ? hotel.essential ?? [] : [];
+  if (!topics.length && !histTotal && !nearby.length && !excluded.length && !essential.length && !hotel.eco) return null;
+  const box = "mt-5 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-black/5 sm:p-6";
+  const h3 = "font-display text-lg font-extrabold text-navy-950";
+  return (
+    <>
+      {(topics.length > 0 || histTotal > 0) && (
+        <section className={box}>
+          <h3 className={h3}>{hp.topicsTitle}</h3>
+          {hotel.reviews ? <p className="mt-1 text-xs font-semibold text-navy-500">{hp.topicsSub.replace("{n}", hotel.reviews.toLocaleString(locale === "ar" ? "ar-SA-u-nu-latn" : "en-US"))}</p> : null}
+          {topics.length > 0 && (
+            <ul className="mt-4 grid gap-x-6 gap-y-3 sm:grid-cols-2">
+              {topics.map((x) => {
+                const share = Math.round((x.positive / (x.positive + x.negative)) * 100);
+                return (
+                  <li key={x.name}>
+                    <div className="flex items-baseline justify-between gap-2 text-sm">
+                      <span className="font-bold text-navy-900">
+                        <bdi>{topicLabel(x.name, locale)}</bdi>
+                      </span>
+                      <span className="flex items-baseline gap-2">
+                        <span className="text-[11px] font-semibold text-navy-500">{hp.topicMentions.replace("{n}", String(x.total))}</span>
+                        <bdi className="font-extrabold text-navy-950" dir="ltr">{share}%</bdi>
+                      </span>
+                    </div>
+                    <div className="mt-1 h-2 overflow-hidden rounded-full bg-rose-100" aria-hidden="true">
+                      <div className={`h-full rounded-full ${share >= 80 ? "bg-sea-600" : share >= 60 ? "bg-sun-400" : "bg-rose-500"}`} style={{ width: `${share}%` }} />
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+          {histTotal > 0 && (
+            <div className="mt-5">
+              <p className="mb-2 text-sm font-bold text-navy-900">{hp.histTitle}</p>
+              <ul className="space-y-1.5">
+                {hist.map((r) => (
+                  <li key={r.stars} className="grid grid-cols-[2.5rem_minmax(0,1fr)_3rem] items-center gap-2 text-xs font-bold text-navy-700">
+                    <span dir="ltr">{r.stars} ★</span>
+                    <span className="h-2 overflow-hidden rounded-full bg-mist-200" aria-hidden="true">
+                      <span className="block h-full rounded-full bg-sun-400" style={{ width: `${(r.count / histTotal) * 100}%` }} />
+                    </span>
+                    <span className="text-end">{Math.round((r.count / histTotal) * 100)}%</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </section>
+      )}
+      {nearby.length > 0 && (
+        <section className={box}>
+          <h3 className={h3}>{hp.nearbyTitle}</h3>
+          <ul className="mt-3 divide-y divide-mist-200">
+            {nearby.map((n) => (
+              <li key={n.name} className="flex items-center justify-between gap-3 py-2.5 text-sm">
+                <span className="flex min-w-0 items-center gap-2 font-bold text-navy-900">
+                  <Icon name="pin" className="h-4 w-4 shrink-0 text-navy-400" />
+                  <bdi className="truncate">{n.name}</bdi>
+                </span>
+                <span className="shrink-0 text-xs font-semibold text-navy-600">
+                  {n.how
+                    .map((w) => `${durationLabel(w.duration, locale)} ${locale === "ar" ? TRANSPORT_AR[w.type.toLowerCase()] ?? "" : w.type.toLowerCase()}`.trim())
+                    .join(" · ")}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+      {(excluded.length > 0 || essential.length > 0 || hotel.eco) && (
+        <section className={box}>
+          {hotel.eco && <p className="mb-3 inline-flex rounded-full bg-sea-50 px-3 py-1.5 text-xs font-extrabold text-sea-800 ring-1 ring-sea-200">{hp.ecoBadge}</p>}
+          {essential.length > 0 && (
+            <>
+              <h3 className={h3}>{hp.essentialTitle}</h3>
+              <ul className="mt-2 flex flex-wrap gap-2">
+                {essential.map((e) => (
+                  <li key={e} className="rounded-full bg-mist-100 px-3 py-1.5 text-xs font-bold text-navy-800">
+                    {e}
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+          {excluded.length > 0 && (
+            <>
+              <h3 className={`${h3} ${essential.length ? "mt-4" : ""}`}>{hp.excludedTitle}</h3>
+              <ul className="mt-2 flex flex-wrap gap-2">
+                {excluded.map((a) => (
+                  <li key={a} className="inline-flex items-center gap-1.5 rounded-full bg-rose-50 px-3 py-1.5 text-xs font-bold text-rose-800 ring-1 ring-rose-200">
+                    <span aria-hidden="true">✕</span>
+                    {a}
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+        </section>
+      )}
+    </>
   );
 }
 

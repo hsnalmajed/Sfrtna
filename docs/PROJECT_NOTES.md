@@ -1650,3 +1650,27 @@ Previous hand-off state (still true):
 4. Owner asked for: a glossary of technical terms (offered as a doc) and a full
    map of every system used (front end, data, analytics) explained for a data
    analyst.
+
+**Hotels like Booking — 28 Oct (owner: "check Booking's fields, filters and
+hotel info, mirror them, add what is better"):** compared live on
+booking.com (Istanbul list + Swissotel page). Pre-search fields: ours already
+cover them (+ budget, breakfast, stars, kind, near a landmark).
+- `src/lib/hotelFacets.ts`: filters on the list already loaded (no extra
+  SerpApi search): price a night (4 bands cut from the list), guest rating,
+  stars, facilities & meals (15, matched on Google's amenity names), distance
+  (from centre or the chosen place), chain (brand from the name), eco.
+  Counts per option exclude their own group (Booking-style).
+- `ui/FilterSheet.tsx`: one «الفلاتر · n» button → sheet of all groups,
+  footer «اعرض N فندق» + clear; chosen filters as removable chips under the
+  sort row (HotelList). GA4 `hotel_filter`.
+- Google fields now kept (serpapi.ts `hotelOf`): nearby_places
+  (+ transport, duration), ratings histogram, reviews_breakdown (topics),
+  excluded_amenities, eco_certified, essential_info. Card: location score,
+  nearest place with time, eco badge. Named hotel page (`HotelInsights`):
+  «ماذا يقول الضيوف» (positive share per topic + histogram), «ما حول
+  الفندق», «غير متوفر في الفندق», essential info (en). Cache key unchanged
+  → fields appear as 6 h cache entries renew.
+- Not available from our source: room types with their own prices, house
+  rules, FAQ — the per-site price links cover rooms.
+- Tested locally with mocked data, Pixel 7, ar web + app UA: no overflow,
+  no page errors.
