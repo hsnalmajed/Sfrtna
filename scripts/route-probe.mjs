@@ -39,7 +39,7 @@ for (const pass of ["first", "repeat"]) {
       const routes = j?.routes ?? [];
       const within = routes.filter((r) => r.withinBudget).length;
       const countries = new Set(routes.flatMap((r) => r.stops.map((s) => s.code))).size;
-      console.log(`${pass}\t${name}\t${res.status}\t${Date.now() - t} ms\t${routes.length} routes\t${within} within\t${countries} cities`);
+      console.log(`${pass}\t${name}\t${res.status}\t${Date.now() - t} ms\t${routes.length} routes\t${within} within\t${countries} cities\t${j?.stats ? JSON.stringify(j.stats) : ""}`);
     } catch (e) {
       console.log(`${pass}\t${name}\tERR\t${Date.now() - t} ms\t${e.message}`);
     }

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { resolveIata, searchFlights } from "@/lib/flights";
-import { suggestRoutes } from "@/lib/routeSuggest";
+import { suggestRoutes, type RouteStats } from "@/lib/routeSuggest";
 import { placeForDestination } from "@/lib/destinationPlace";
 import { tripFaresFrom, CITY_OF_AIRPORT, type TripFare } from "@/lib/providers/travelpayouts";
 import { exploreFares } from "@/lib/providers/serpapi";
@@ -264,6 +264,9 @@ export async function POST(req: NextRequest) {
     typeof body.returnDate === "string" && /^\d{4}-\d{2}-\d{2}$/.test(body.returnDate)
       ? body.returnDate
       : addDays(params.departDate, params.nights);
+  const token = process.env.SMOKE_TOKEN;
+  const stats: RouteStats | undefined =
+    token && req.headers.get("x-sfrtna-smoke") === token ? { pool: 0, candidates: 0, tables: 0, emptyTables: 0, priced: 0 } : undefined;
   const routes = await suggestRoutes({
     origin: resolveIata(params.origin),
     startDate: params.departDate,
@@ -276,7 +279,7 @@ export async function POST(req: NextRequest) {
     categories: params.preferenceCategories,
     continents: params.continents,
     seasonKinds: params.seasonKinds,
-  });
-  return NextResponse.json({ mode: "routes", routes });
+  }, stats);
+  return NextResponse.json({ mode: "routes", routes, ...(stats ? { stats } : {}) });
 }
 

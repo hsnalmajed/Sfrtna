@@ -107,7 +107,16 @@ function devFares(origin: string, month: string, codes: string[]): Map<string, O
   return out;
 }
 
-export async function suggestRoutes(q: RouteQuery): Promise<RouteSuggestion[]> {
+/** What one search did, for the site check (never shown to visitors). */
+export interface RouteStats {
+  pool: number;
+  candidates: number;
+  tables: number;
+  emptyTables: number;
+  priced: number;
+}
+
+export async function suggestRoutes(q: RouteQuery, stats?: RouteStats): Promise<RouteSuggestion[]> {
   const totalNights = Math.max(q.stops, daysBetween(q.startDate, q.endDate));
   const nights = splitNights(totalNights, q.stops);
   // The day of each flight: out, between each stop, home.
@@ -180,6 +189,13 @@ export async function suggestRoutes(q: RouteQuery): Promise<RouteSuggestion[]> {
     batch.forEach((r, j) => table.set(r.key, loaded[j]));
   }
 
+  if (stats) {
+    stats.pool = pool.length;
+    stats.candidates = candidates.length;
+    stats.tables = table.size;
+    stats.emptyTables = [...table.values()].filter((t) => t.size === 0).length;
+  }
+
   const fare = (from: string, to: string, date: string): OneWayFare | undefined =>
     table.get(`${from}|${month(date)}`)?.get(to);
 
@@ -229,6 +245,7 @@ export async function suggestRoutes(q: RouteQuery): Promise<RouteSuggestion[]> {
     });
   }
 
+  if (stats) stats.priced = routes.length;
   // One ordering per set of countries — the cheapest — so the list is
   // different trips, not the same trip backwards.
   const bestPerSet = new Map<string, RouteSuggestion>();
