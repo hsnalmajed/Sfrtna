@@ -17,7 +17,12 @@ import { COUNTRY_LANDMARKS, CITY_LANDMARKS } from "@/data/countryLandmarks";
 import { UNFIT } from "@/lib/pexels";
 
 const DIR = "photo-review";
-const FILE = `${DIR}/candidates.json`;
+// --redo: a second search with hand-written queries for the places whose
+// first candidates were weak or empty (scripts/photos/redo.json) → its own
+// file and sheets (c2-NN).
+const REDO = process.argv.includes("--redo");
+const FILE = REDO ? `${DIR}/candidates2.json` : `${DIR}/candidates.json`;
+const SHEET = REDO ? "c2" : "c";
 const ANIMALS = /\b(animal|animals|bird|birds|pelican|gorilla|monkey|monkeys|elephant|elephants|lion|lions|giraffe|zebra|dog|dogs|cat|cats|horse|horses|camel|camels|cow|cows|sheep|goat|deer|bear|fish|seagull|seagulls|pigeon|pigeons|duck|ducks|wildlife|insect|butterfly|flower close)\b/;
 const fold = (s: string) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
 const arg = (n: string) => {
@@ -29,6 +34,10 @@ type Cand = { o: string; alt: string; n: string };
 type Subject = { key: string; label: string; queries: { q: string; mention: string[] }[] };
 
 function subjects(): Subject[] {
+  if (REDO) {
+    const redo = JSON.parse(readFileSync("scripts/photos/redo.json", "utf8")) as Record<string, [string, ...string[]][]>;
+    return Object.entries(redo).map(([key, qs]) => ({ key, label: key, queries: qs.map(([q, ...mention]) => ({ q, mention })) }));
+  }
   const out: Subject[] = [];
   for (const [code, list] of Object.entries(COUNTRY_CITIES)) {
     const country = findCountry(code)?.nameEn ?? code;
@@ -69,7 +78,7 @@ async function search(q: string, mention: string[]): Promise<Cand[] | null> {
   return (body.photos ?? [])
     .filter((p) => {
       const alt = fold(p.alt ?? "");
-      return p.width >= p.height * 1.25 && p.width >= 2400 && !UNFIT.test(alt) && !ANIMALS.test(alt) && words.some((w) => alt.includes(w));
+      return p.width >= p.height * 1.25 && p.width >= (REDO ? 1600 : 2400) && !UNFIT.test(alt) && !ANIMALS.test(alt) && words.some((w) => alt.includes(w));
     })
     .slice(0, 8)
     .map((p) => ({ o: p.src.original.split("?")[0], alt: (p.alt ?? "").slice(0, 120), n: p.photographer }));
@@ -132,10 +141,10 @@ async function sheets() {
     }
     layers.unshift({ input: Buffer.from(`<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg"></svg>`), left: 0, top: 0 });
     layers.push({ input: Buffer.from(`<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">${svg}</svg>`), left: 0, top: 0 });
-    await sharp({ create: { width, height, channels: 3, background: "#fff" } }).composite(layers).jpeg({ quality: 72 }).toFile(`${DIR}/c-${String(s + 1).padStart(2, "0")}.jpg`);
+    await sharp({ create: { width, height, channels: 3, background: "#fff" } }).composite(layers).jpeg({ quality: 72 }).toFile(`${DIR}/${SHEET}-${String(s + 1).padStart(2, "0")}.jpg`);
     index.push({ sheet: s + 1, keys: part.map((p) => p.key) });
   }
-  writeFileSync(`${DIR}/c-index.json`, JSON.stringify(index, null, 1));
+  writeFileSync(`${DIR}/${SHEET}-index.json`, JSON.stringify(index, null, 1));
   console.log(`sheets ${index.length}`);
 }
 

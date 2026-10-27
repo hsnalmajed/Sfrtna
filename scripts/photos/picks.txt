@@ -453,3 +453,29 @@ city:andorra-la-vella country:AD#10 8
 country:DZ 2 12 9
 city:algiers 2 3 5
 city:oran 4
+city:accra 3 2
+country:NG 3 6 2
+city:lagos 1 4
+country:CV 2
+city:sal 3 4
+country:CU 1 11 14
+city:havana 6 8 7
+city:varadero 3 4 1
+country:CR 4 12 9
+city:liberia 4 6 8
+country:PA 10 12 4
+city:panama-city 3 1 5
+country:GT 7 6 2
+country:HN 1 2 6
+city:roatan country:HN#1 country:HN#2
+country:BB 1 3
+city:bridgetown 3 2
+country:TT 5 2 10
+city:port-of-spain 1
+country:PY 1
+city:asuncion 1
+country:PG 8
+city:port-moresby 1
+country:WS 1 2
+city:apia 1
+country:SR 2 1
