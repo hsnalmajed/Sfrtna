@@ -16,8 +16,10 @@
 // narrowed by the traveller's continent and kind of place, then ranked
 // with the one table already needed — fares from home — so the cities
 // actually flown to from home, in season, come first. Only the top ones get
-// a table of their own: MAX_REQUESTS keeps the search inside the Worker's
-// subrequest limit (50 on the free plan) with room to spare.
+// a table of their own. On Workers Paid (since 27 Oct; 10,000 subrequests a
+// request) MAX_REQUESTS is set by time, not by the limit: the tables are
+// loaded 16 at a time and kept at the edge for six hours, so a repeat search
+// for the same month answers from the cache.
 
 import type { SeasonKind } from "@/lib/travelSeason/kinds";
 import { DESTINATIONS } from "@/lib/destinations";
@@ -27,15 +29,21 @@ import { oneWayFaresFrom, type OneWayFare } from "@/lib/providers/travelpayouts"
 import type { DestinationCategory, RouteLeg, RouteStop, RouteSuggestion } from "@/lib/types";
 import { findCountryByEnglishName, type Continent } from "@/lib/countries";
 import { findAirport } from "@/lib/airports";
+import { cachedJson } from "@/lib/edgeCache";
 
 /** Fare tables one search may load: home's, plus one per city and month. */
-const MAX_REQUESTS = 29;
+const MAX_REQUESTS = 121;
 /**
- * Cities whose orderings are tried. Three stops from 28 cities is ~20,000
- * orderings — more work than a Worker may do for one request (seen live:
- * 503) — so three-stop routes are built from fewer.
+ * Cities whose orderings are tried: 120 × 119 two-stop orderings, and
+ * 40 × 39 × 38 ≈ 59,000 three-stop ones (each a few map lookups). On the
+ * free plan 28 cities × 3 stops ran out of CPU (503); the paid plan allows
+ * 30 s, and this stays well under a second.
  */
-const MAX_CITIES: Record<2 | 3, number> = { 2: 28, 3: 14 };
+const MAX_CITIES: Record<2 | 3, number> = { 2: 120, 3: 40 };
+/** Fare tables fetched at the same time. */
+const PARALLEL = 16;
+/** How long a month's fare table from one city is reused. */
+const TABLE_TTL = 6 * 3600;
 
 export interface RouteQuery {
   origin: string; // IATA
@@ -126,7 +134,12 @@ export async function suggestRoutes(q: RouteQuery): Promise<RouteSuggestion[]> {
   const laterMonths = [...new Set(legDates.slice(1).map(month))];
   const useDev = process.env.NODE_ENV === "development";
   const load = async (from: string, m: string) => {
-    const fares = await oneWayFaresFrom(from, m, q.currency);
+    const rows = await cachedJson<OneWayFare[]>(`ow:v1:${from}:${m}:${q.currency.toLowerCase()}`, TABLE_TTL, async () => {
+      const fares = await oneWayFaresFrom(from, m, q.currency);
+      // An empty table may be a refused call: never remembered.
+      return fares.size ? [...fares.entries()].map(([k, f]) => ({ ...f, destination: k })) : null;
+    });
+    const fares = new Map((rows ?? []).map((f) => [f.destination, f]));
     return fares.size === 0 && useDev ? devFares(from, m, pool.map((c) => c.code)) : fares;
   };
 
@@ -161,8 +174,11 @@ export async function suggestRoutes(q: RouteQuery): Promise<RouteSuggestion[]> {
 
   const requests: { key: string; from: string; m: string }[] = [];
   for (const c of candidates) for (const m of laterMonths) requests.push({ key: `${c.code}|${m}`, from: c.code, m });
-  const loaded = await Promise.all(requests.map((r) => load(r.from, r.m)));
-  requests.forEach((r, i) => table.set(r.key, loaded[i]));
+  for (let i = 0; i < requests.length; i += PARALLEL) {
+    const batch = requests.slice(i, i + PARALLEL);
+    const loaded = await Promise.all(batch.map((r) => load(r.from, r.m)));
+    batch.forEach((r, j) => table.set(r.key, loaded[j]));
+  }
 
   const fare = (from: string, to: string, date: string): OneWayFare | undefined =>
     table.get(`${from}|${month(date)}`)?.get(to);
