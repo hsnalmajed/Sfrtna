@@ -1043,6 +1043,7 @@ const en = {
     hotelShort: "Hotel in {city}",
     flightsHeading: "Flights",
     noResults: "No destinations found within this budget. Try increasing it or adjusting filters.",
+    noRoutes: "We found no fares linking cities of this choice on your dates. Try three countries instead of two, another continent, or nearby dates.",
     multiNotice:
       "Multi-city prices are estimates (the sum of two separate destination costs) and may differ from an actual multi-city fare — confirm the final price when booking.",
     leg: "Destination",

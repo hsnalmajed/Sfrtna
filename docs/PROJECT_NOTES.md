@@ -1398,6 +1398,15 @@ after Search Console showed 104 pages "Server error (5xx)" crawled 23 Oct =
 1102 CPU limit on cache misses during deploys; all 104 answer 200 now).
 Owner presses Validate fix on 5xx again. To do: raise the subrequest-bound
 limits (routeSuggest MAX_REQUESTS / MAX_CITIES) now that 10,000 are allowed.
+✅ Done 27 Oct: MAX_REQUESTS 121, MAX_CITIES {2:120, 3:40}, tables cached 6 h
+(`ow:v1:` keys), 16 at a time. `scripts/route-probe.mjs` + workflow
+`route-probe.yml` → branch `route-probe` (stats via SMOKE_TOKEN header:
+pool, candidates, tables, emptyTables, priced, failAt per flight). Live RUH
+Jan 2027 6 pax: Europe×3 0→21, Africa×3 0→14, all×3 cities 8→11, two
+months 12→16; first search 1–6 s, repeat < 1 s. Europe×2 and N. America×2
+still 0: failAt shows the cached fares lack RUH→Europe (only ~4 cities)
+and city→RUH for mid-January — data, not limits. Routes with 0 now say
+«جرّب ثلاث دول… أو قارة أخرى…» (`discoverResults.noRoutes`).
 
 **Stay22 payout, 27 Oct:** National Address certificate is NOT an accepted
 type (Madeleine, 22 Oct: Tipalti accepts bank/credit-card statement,

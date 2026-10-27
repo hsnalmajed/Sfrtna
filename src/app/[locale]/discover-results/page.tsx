@@ -432,7 +432,7 @@ function DiscoverResultsContent() {
         )}
 
         {!loading && !error && !pricesUnavailable && !hasResults && (
-          <p className="py-10 text-center text-navy-500">{d.noResults}</p>
+          <p className="py-10 text-center text-navy-500">{mode === "routes" ? d.noRoutes : d.noResults}</p>
         )}
 
         {/* Within budget: the answer. */}
