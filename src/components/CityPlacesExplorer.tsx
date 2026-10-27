@@ -15,6 +15,8 @@ export interface PlaceListItem {
   name: string;
   description?: string;
   photo?: string;
+  /** The photographer and licence, when the photo's licence asks to be named (Wikimedia Commons). */
+  photoCredit?: string;
   category: PinCategory;
   /** What OpenStreetMap calls it ("mall", "museum"), when it came from there. */
   kind?: string;
@@ -330,6 +332,11 @@ export default function CityPlacesExplorer({
                     </div>
                   }
                 />
+                {p.photo && p.photoCredit && (
+                  <span dir="ltr" className="-mt-5 h-5 truncate bg-black/45 px-2 text-[9px] leading-5 text-white/85">
+                    📷 {p.photoCredit}
+                  </span>
+                )}
 
                 <div className="flex flex-1 flex-col p-3 sm:p-4">
                   <div className="flex items-start justify-between gap-2">

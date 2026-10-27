@@ -28,6 +28,10 @@ export interface GuidePlace {
   /** Visitors a year (latest figure). */
   vis?: number;
   web?: string;
+  /** Wikimedia Commons photo: path under upload.wikimedia.org/wikipedia/commons, author, licence. */
+  im?: string;
+  ia?: string;
+  il?: string;
   /** OpenStreetMap opening_hours, as mapped. */
   oh?: string;
   fee?: "yes" | "no";

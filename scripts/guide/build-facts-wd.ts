@@ -202,10 +202,14 @@ interface Row {
   wh: boolean;
   vis?: number;
   web?: string;
+  /** ISO codes of the countries Wikidata puts it in. */
+  iso: Set<string>;
+  /** Its photograph on Wikimedia Commons (P18), file name. */
+  img?: string;
 }
 
 async function cityItems(lat: number, lon: number): Promise<Row[] | null> {
-  const rows = await sparql<B>(`SELECT ?item ?sl ?coord ?class ?ar ?en ?whs ?vis ?web WHERE {
+  const rows = await sparql<B>(`SELECT ?item ?sl ?coord ?class ?ar ?en ?whs ?vis ?web ?iso ?img WHERE {
     SERVICE wikibase:around {
       ?item wdt:P625 ?coord .
       bd:serviceParam wikibase:center "Point(${lon} ${lat})"^^geo:wktLiteral ;
@@ -218,6 +222,8 @@ async function cityItems(lat: number, lon: number): Promise<Row[] | null> {
     OPTIONAL { ?item wdt:P757 ?whs }
     OPTIONAL { ?item wdt:P1174 ?vis }
     OPTIONAL { ?item wdt:P856 ?web }
+    OPTIONAL { ?item wdt:P17 ?cty . ?cty wdt:P297 ?iso }
+    OPTIONAL { ?item wdt:P18 ?img }
   }`);
   if (!rows) return null;
   const by = new Map<string, Row>();
@@ -227,18 +233,86 @@ async function cityItems(lat: number, lon: number): Promise<Row[] | null> {
     if (!q || !m) continue;
     let row = by.get(q);
     if (!row) {
-      row = { q, sl: Number(r.sl?.value ?? 0), lon: Number(m[1]), lat: Number(m[2]), classes: new Set(), wh: false };
+      row = { q, sl: Number(r.sl?.value ?? 0), lon: Number(m[1]), lat: Number(m[2]), classes: new Set(), wh: false, iso: new Set() };
       by.set(q, row);
     }
     if (r.class) row.classes.add(r.class.value.split("/").pop() as string);
     if (r.ar && !row.ar) row.ar = r.ar.value;
     if (r.en && !row.en) row.en = r.en.value;
     if (r.whs) row.wh = true;
+    if (r.iso) row.iso.add(r.iso.value.toUpperCase());
+    if (r.img && !row.img) row.img = decodeURIComponent(r.img.value.split("/Special:FilePath/").pop() ?? "").replace(/ /g, "_");
     const v = Number(r.vis?.value);
     if (Number.isFinite(v) && v > 0) row.vis = Math.max(row.vis ?? 0, Math.round(v));
     if (r.web && !row.web && /^https?:\/\//.test(r.web.value)) row.web = r.web.value.slice(0, 200);
   }
   return [...by.values()];
+}
+
+const LIVE = liveSlugs();
+/** The live city whose centre is nearest — a place belongs to that one only. */
+function nearestCity(lat: number, lon: number): string | undefined {
+  let best: string | undefined;
+  let d = Infinity;
+  for (const s of LIVE) {
+    const c = cityPoint(s);
+    if (!c) continue;
+    const x = (c.lon - lon) * Math.cos(((c.lat + lat) / 2) * (Math.PI / 180));
+    const y = c.lat - lat;
+    const k = x * x + y * y;
+    if (k < d) {
+      d = k;
+      best = s;
+    }
+  }
+  return best;
+}
+
+/**
+ * Each kept place's Commons photo, with its author and licence (shown on the
+ * card, as the licence requires). Only free licences are kept; a file with
+ * none we can name is dropped. `im` becomes the file's path on
+ * upload.wikimedia.org ("a/ab/Name.jpg") so the page needs no hashing.
+ */
+async function commonsCredits(places: GuidePlace[]) {
+  const { createHash } = await import("node:crypto");
+  const files = places.filter((p) => p.im && !p.im.includes("/"));
+  for (let i = 0; i < files.length; i += 40) {
+    const part = files.slice(i, i + 40);
+    const url = new URL("https://commons.wikimedia.org/w/api.php");
+    url.search = new URLSearchParams({
+      action: "query",
+      format: "json",
+      prop: "imageinfo",
+      iiprop: "extmetadata|size",
+      titles: part.map((p) => `File:${p.im}`).join("|"),
+    }).toString();
+    let pages: Record<string, { title?: string; imageinfo?: { width?: number; extmetadata?: Record<string, { value?: string }> }[] }> = {};
+    try {
+      const res = await fetch(url, { headers: { "User-Agent": UA } });
+      const body = (await res.json()) as { query?: { pages?: typeof pages; normalized?: { from: string; to: string }[] } };
+      pages = body.query?.pages ?? {};
+    } catch {
+      continue;
+    }
+    const byTitle = new Map(Object.values(pages).map((pg) => [(pg.title ?? "").replace(/^File:/, "").replace(/ /g, "_"), pg]));
+    for (const p of part) {
+      const pg = byTitle.get(p.im!);
+      const meta = pg?.imageinfo?.[0]?.extmetadata;
+      const lic = meta?.LicenseShortName?.value ?? "";
+      const width = pg?.imageinfo?.[0]?.width ?? 0;
+      if (!/^(CC BY|CC0|Public domain|PD)/i.test(lic) || width < 800 || !/\.(jpe?g|png|webp)$/i.test(p.im!)) {
+        delete p.im;
+        continue;
+      }
+      const artist = (meta?.Artist?.value ?? "").replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim().slice(0, 50);
+      const md5 = createHash("md5").update(p.im!).digest("hex");
+      p.im = `${md5[0]}/${md5.slice(0, 2)}/${p.im}`;
+      p.ia = artist || undefined;
+      p.il = lic.slice(0, 20);
+    }
+    await sleep(300);
+  }
 }
 
 async function main() {
@@ -278,7 +352,20 @@ async function main() {
     const oldByQ = new Map((old?.places ?? []).map((p) => [p.q, p]));
     const places: GuidePlace[] = [];
     const dropped: string[] = [];
+    const wrongPlace: string[] = [];
     for (const r of items) {
+      // Owner, 27 Oct: "a place shown in one city that belongs to another —
+      // avoid at all costs". Not in this city's country (Kos for Bodrum), or
+      // nearer another city we cover (Dubai's museum for Sharjah): not ours.
+      if (pt.code && r.iso.size && !r.iso.has(pt.code)) {
+        if (r.sl >= 15) wrongPlace.push(`${r.en ?? r.q} (${[...r.iso].join(",")})`);
+        continue;
+      }
+      const home = nearestCity(r.lat, r.lon);
+      if (home && home !== slug) {
+        if (r.sl >= 15) wrongPlace.push(`${r.en ?? r.q} (→ ${home})`);
+        continue;
+      }
       // A World Heritage old town or medina stays even though it is a "settlement".
       // An icon is kept even when it is a hotel or an office (Burj Al Arab,
       // Tokyo's government building with its free observatories).
@@ -318,15 +405,18 @@ async function main() {
         wh: r.wh || undefined,
         vis: r.vis,
         web: r.web ?? prev?.web,
+        im: r.img,
       });
     }
     const score = (p: GuidePlace) => p.sl + (p.wh ? 40 : 0) + (p.vis ? Math.min(30, Math.log10(p.vis) * 4) : 0);
     places.sort((a, b) => score(b) - score(a));
     const kept = places.slice(0, KEEP);
+    await commonsCredits(kept);
     const file: GuideFile = { v: 1, src: "wd", city: slug, factsAt: new Date().toISOString(), places: kept };
     writeFileSync(path, JSON.stringify(file));
     const by = Object.fromEntries(GROUPS.map((gr) => [gr, kept.filter((p) => p.g === gr).length]).filter(([, n]) => n));
     report.push(`${slug}: ${Math.round((Date.now() - t0) / 1000)}s, ${items.length} known → ${kept.length} kept ${JSON.stringify(by)}; top: ${kept.slice(0, 6).map((p) => p.e || p.n).join(" | ")}`);
+    if (wrongPlace.length) report.push(`   other city/country: ${wrongPlace.slice(0, 30).join("; ")}`);
     if (dropped.length) report.push(`   dropped (famous): ${dropped.sort((a, b) => Number(b.split("|")[0]) - Number(a.split("|")[0])).slice(0, 30).map((d) => d.split("|")[1]).join("; ")}`);
     console.log(report[report.length - 1]);
     await sleep(1500);

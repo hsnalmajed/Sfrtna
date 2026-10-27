@@ -220,6 +220,13 @@ export default async function CityPlacesPageBody({
       if (!it.ticketQuery && (g.fee === "yes" || ((g.g === "museums" || g.g === "history" || g.g === "family") && g.sl >= 15))) {
         it.ticketQuery = ticketQueryFor(nameEn);
       }
+      // No photo yet: the place's own photograph on Wikimedia Commons, with
+      // its author and licence on the card (owner, 27 Oct, agreed).
+      if (!it.photo && g.im) {
+        const file = g.im.split("/").pop()!;
+        it.photo = `https://upload.wikimedia.org/wikipedia/commons/thumb/${g.im}/640px-${file}`;
+        it.photoCredit = [g.ia, g.il].filter(Boolean).join(" · ");
+      }
       it.guide = {
         rank,
         heritage: g.wh,

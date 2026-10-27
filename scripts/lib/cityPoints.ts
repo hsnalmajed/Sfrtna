@@ -12,6 +12,8 @@ import { CITY_COORDS } from "@/data/cityCoords";
 interface Point {
   lat: number;
   lon: number;
+  /** ISO country code, when known (live cities). */
+  code?: string;
 }
 
 const STAGED_FILE = join(process.cwd(), "scripts/geo/out/batch2.staged.json");
