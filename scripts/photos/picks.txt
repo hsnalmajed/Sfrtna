@@ -63,3 +63,98 @@ city:lyon 4 2
 city:marseille 10 1
 city:bordeaux 3 5
 city:strasbourg 8 4
+country:ES 16 9
+city:barcelona 16 15 5
+city:madrid 15 6 8
+city:granada 1 5 11
+city:seville 12 14 4
+city:cordoba 4 1
+city:malaga 2 6
+city:ibiza 11 7 6
+city:palma 7 5 4
+city:valencia 3 4 6
+country:IT 13 15 16
+city:rome 2 9 5
+city:venice 1 14 12
+city:florence 5 6 4
+city:milan 9 14 13
+city:naples 6 5
+city:pisa 2 12 9
+city:bologna 4 7
+city:palermo 1 8
+country:GR 4 1 3
+city:athens 12 9 7
+city:santorini 11 10 12
+city:mykonos 14 12 5
+city:thessaloniki 9 5
+city:heraklion 5 3
+city:rhodes 2 5 10
+city:corfu 13 1
+country:CH 1 4 12
+city:zurich 5 12 14
+city:geneva 9 1
+city:interlaken 12 9 3
+city:lucerne 10 11 1
+city:lausanne 1 7
+city:zermatt 11 9 14
+country:AT 2 12 4
+city:vienna 13 12 4
+city:salzburg 3 4 10
+city:innsbruck 8 5 2
+country:NL 8 2 16
+city:amsterdam 8 1 14
+city:rotterdam 8 1 6
+city:the-hague 5 10
+country:DE 1 2 8
+city:berlin 13 3 16
+city:munich 14 3 9
+city:hamburg 6 5
+city:frankfurt 7 2 4
+city:dusseldorf 4 2
+city:cologne 6 7 3
+country:PT 15 10
+city:lisbon 2 9 6
+city:porto 13 9 5
+city:madeira 9 15 14
+city:faro 11 2
+country:MV 3 7 9
+city:male 3 6
+city:maafushi 5 7 6
+country:LK 6 13 10
+city:colombo 1 3
+city:kandy 5 9
+city:galle 11 9 2
+city:ella 7 8 5
+country:ID 1 12 16
+city:bali 13 15 16
+city:ubud 5 1
+city:jakarta 1 9
+city:yogyakarta 11 2
+city:lombok 3
+city:labuan-bajo 4 5 10
+country:TH 16 2 14
+city:bangkok 10 9 4
+city:phuket 11 15 16
+city:chiang-mai 7 9 13
+city:pattaya 3 4
+city:krabi 12 16 10
+city:koh-samui 4 2
+country:MY 3 10
+city:kuala-lumpur 3 12 1
+city:penang 4 10
+city:langkawi 9 11
+city:malacca 11 3
+city:kota-kinabalu 2
+country:SG 1 6 14
+city:singapore 1 13 7
+country:JP 6 2 12
+city:tokyo 9 4 7
+city:kyoto 4 15 1
+city:osaka 14 11 2
+city:hiroshima 13 10 16
+city:fukuoka 4 10
+city:okinawa 2 3 7
+city:sapporo 4 10
+country:KR 8 9
+city:seoul 8 14 1
+city:busan 11 6 14
