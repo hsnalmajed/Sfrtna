@@ -6,10 +6,14 @@
 //   city:istanbul 6 8          the 6th and 8th candidates, in that order
 //   city:alula =country:SA#7   another place's candidate
 //
-//   npx tsx scripts/photos/build-picks.ts <path to candidates.json>
+//   city:abha c2:1             the 1st candidate of the second search
+//
+//   npx tsx scripts/photos/build-picks.ts <candidates.json> [candidates2.json]
 import { readFileSync, writeFileSync } from "node:fs";
 
-const cands = JSON.parse(readFileSync(process.argv[2], "utf8")) as Record<string, { o: string }[]>;
+type C = Record<string, { o: string }[]>;
+const cands = JSON.parse(readFileSync(process.argv[2], "utf8")) as C;
+const cands2 = (process.argv[3] ? JSON.parse(readFileSync(process.argv[3], "utf8")) : {}) as C;
 const out: Record<string, string[]> = {};
 const problems: string[] = [];
 for (const raw of readFileSync("scripts/photos/picks.txt", "utf8").split("\n")) {
@@ -18,13 +22,13 @@ for (const raw of readFileSync("scripts/photos/picks.txt", "utf8").split("\n")) 
   const [key, ...refs] = line.split(/\s+/);
   const urls: string[] = [];
   for (const ref of refs) {
-    const m = ref.match(/^=?(?:([a-z]+:[\w-]+)#)?(\d+)$/i);
+    const m = ref.match(/^(c2:)?(?:([a-z]+:[\w-]+)#)?(\d+)$/i);
     if (!m) {
       problems.push(`${key}: bad ref ${ref}`);
       continue;
     }
-    const from = m[1] ?? key;
-    const c = cands[from]?.[Number(m[2]) - 1];
+    const from = m[2] ?? key;
+    const c = (m[1] ? cands2 : cands)[from]?.[Number(m[3]) - 1];
     if (!c) problems.push(`${key}: no candidate ${ref}`);
     else urls.push(c.o);
   }

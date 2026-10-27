@@ -14,6 +14,9 @@ on:
       redo:
         description: "Second search for weak places (scripts/photos/redo.json)"
         default: "false"
+      sample:
+        description: "Only draw the chosen photos (sample.jpg, all-NN.jpg)"
+        default: "false"
 
 permissions:
   contents: write
@@ -43,10 +46,14 @@ jobs:
             git show origin/photo-review:candidates2.json > photo-review/candidates2.json 2>/dev/null || rm -f photo-review/candidates2.json
             for f in $(git ls-tree --name-only origin/photo-review | grep -E '^c-|^c2-'); do git show origin/photo-review:$f > photo-review/$f; done
           fi
+      - name: Chosen photos
+        if: github.event.inputs.sample == 'true'
+        run: npx --yes tsx@4 scripts/photos/sample-sheet.ts
       - name: Collect
-        if: github.event.inputs.sheets_only != 'true'
+        if: github.event.inputs.sheets_only != 'true' && github.event.inputs.sample != 'true'
         run: npx --yes tsx@4 scripts/photos/candidates.ts --max 190 ${{ github.event.inputs.redo == 'true' && '--redo' || '' }}
       - name: Sheets
+        if: github.event.inputs.sample != 'true'
         run: npx --yes tsx@4 scripts/photos/candidates.ts --sheets ${{ github.event.inputs.redo == 'true' && '--redo' || '' }}
       - name: Push to the review branch
         run: |

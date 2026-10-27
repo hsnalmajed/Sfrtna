@@ -479,3 +479,61 @@ city:port-moresby 1
 country:WS 1 2
 city:apia 1
 country:SR 2 1
+# Second search (scripts/photos/redo.json): c2:N = Nth candidate in candidates2.json; a later line replaces an earlier one.
+city:abha c2:1 c2:7
+city:al-wakrah c2:7 c2:13 c2:15
+city:salalah c2:1 c2:11
+city:taif c2:6 c2:3
+city:agadir c2:15 c2:11
+city:yogyakarta c2:14 c2:10 c2:6
+city:lombok c2:1 c2:9 c2:5
+city:gabala c2:10 c2:2
+city:adelaide c2:6 1
+city:sousse c2:3 c2:6
+city:djerba c2:8 c2:7
+city:hammamet c2:7 c2:9
+city:cairns c2:14 c2:10 c2:6
+city:podgorica c2:9 c2:11
+city:larnaca c2:15 c2:8
+city:limassol c2:6 c2:2
+city:almaty c2:14 c2:5
+city:bishkek c2:3 c2:8
+city:brasov c2:5 c2:6
+city:cebu c2:15 c2:12
+city:dar-es-salaam c2:7 c2:1
+city:montreal c2:5 c2:9
+city:port-louis c2:1 c2:7
+city:vientiane c2:1 c2:2
+city:dhaka c2:8 c2:4
+city:addis-ababa c2:7 c2:13
+country:ET c2:8 c2:7 c2:3
+city:kigali c2:8 c2:2
+city:dakar c2:4 c2:3
+city:gaborone country:BW#6 c2:2
+country:BW c2:6 c2:7
+country:MZ c2:2 c2:1
+city:maputo c2:1
+city:montego-bay c2:3 1
+country:JM 1 4
+city:san-salvador c2:8 c2:7
+city:belize-city c2:3 c2:8 c2:7
+city:galapagos c2:9 c2:6
+city:guayaquil c2:5 c2:7
+city:christchurch c2:11 c2:15
+city:suva c2:4 c2:10
+country:SB c2:9 c2:13 c2:8
+country:GH c2:7 c2:9
+city:oran c2:10 c2:6
+city:skopje c2:6 c2:8
+city:andorra-la-vella c2:11 c2:9
+city:san-jose c2:5 c2:8
+city:guatemala-city c2:4 c2:14
+country:CV c2:5 c2:3
+city:port-of-spain c2:6 c2:13
+country:PY c2:1
+city:asuncion c2:1
+country:PG c2:7 c2:9
+city:port-moresby c2:9
+city:roatan c2:5 c2:2
+city:accra c2:7 c2:6
+city:kingston c2:1
