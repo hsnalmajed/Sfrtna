@@ -28,3 +28,12 @@ nizwa
 cairo
 luxor 3 4
 aswan 1
+hurghada
+marrakesh 2
+casablanca 2 3 4 6
+fes
+chefchaouen *
+tangier 2 3 4 6 9
+agadir
+rabat 5 6 7 8
+amman 4 6 7
