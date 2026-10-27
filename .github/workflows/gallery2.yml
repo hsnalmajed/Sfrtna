@@ -1,0 +1,57 @@
+# City photo tour v2 (scripts/photos/gallery2.ts): views (Pexels) + landmarks
+# (Wikimedia Commons) per city, with a contact sheet per city for the eye
+# check. Lives on branch `photo-review-v2`; never touches main.
+name: Gallery v2 candidates
+
+on:
+  schedule:
+    - cron: "23 * * * *"
+  workflow_dispatch:
+    inputs:
+      only:
+        description: "Only these cities (comma list)"
+        type: string
+        default: ""
+
+permissions:
+  contents: write
+
+concurrency:
+  group: photo-candidates
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    env:
+      PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          check-latest: true
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - name: Bring back the review branch
+        run: |
+          mkdir -p photo-review
+          if git fetch -q origin photo-review-v2 2>/dev/null; then
+            git show origin/photo-review-v2:gallery2.json > photo-review/gallery2.json 2>/dev/null || true
+          fi
+      - name: Collect
+        run: npx --yes tsx@4 scripts/photos/gallery2.ts collect --max 180 ${{ inputs.only && format('--only {0}', inputs.only) || '' }}
+      - name: Sheets
+        run: npx --yes tsx@4 scripts/photos/gallery2.ts sheets
+      - name: Push to the review branch
+        run: |
+          cd photo-review
+          rm -f g-*.jpg c-*.jpg c2-*.jpg *.json.bak 2>/dev/null || true
+          ls
+          git init -q
+          git config user.name "Claude"; git config user.email "noreply@anthropic.com"
+          git checkout -q -b photo-review-v2
+          git add gallery2.json v2-*.jpg v2-index.json 2>/dev/null || git add gallery2.json
+          git commit -q -m "Gallery v2 candidates"
+          git push -q -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" photo-review-v2

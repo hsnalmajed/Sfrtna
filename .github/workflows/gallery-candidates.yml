@@ -5,8 +5,6 @@
 name: Gallery candidates
 
 on:
-  schedule:
-    - cron: "41 * * * *"
   workflow_dispatch:
 
 permissions:

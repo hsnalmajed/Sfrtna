@@ -1,0 +1,1 @@
+# City photo tour v2: reviewed cities (see scripts/photos/gallery2.ts)
