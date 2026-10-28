@@ -292,3 +292,48 @@ luxembourg v1 v3 v6 v11 v12 v14 v15 v16 v19 v20 v22 v26 v27 v28 v29 v30 l4 l5 l7
 monte-carlo v1 v2 v5 v6 v7 v10 v14 v15 l5 l8 l10 l11 l12 l13 l14
 addis-ababa v1 v3 v4 v5 v6 v8 v9 v10 v11 v12 v13 v15 v16 v17 v18 l1 l3 l4 l7 l8 l9 l10
 kigali v2 v6 v7 v8 v9 l1 l2 l3 l4 l7 l8 l9 l10
+dakar v2 v3 v4 v5 l2 l4 l5 l7 l9
+gaborone *
+livingstone *
+maputo *
+punta-cana v2 v4 v5 v7 v8 v12 v15 v16 v22 v23 v25 v26 v27 v28 v29
+santo-domingo v2 v3 v4 v5 v6 v7 v9 v10 l5
+montego-bay *
+kingston *
+san-salvador v3
+belize-city v3 v4 v5 v6 v10 v13 v15 v17 v18 v19 v20 l3
+nassau v6 v9 v11 v12 l1 l2 l7
+buenos-aires v2 v3 v4 v5 v8 v9 v10 v12 v15 v16 v18 v21 v22 v23 v24 v25 v26 v27 v29 l2 l3 l6 l9 l11 l15 l16 l17 l18 l22 l24 l25
+mendoza v3 v5 v6 v8 v10 v11 v12 v18 v20 v21 v22 v24 v25 v26 v29 v30 l5
+bariloche v2 v3 v5 v6 v10 v12 v13 v15 v18 v21 v23 v24 v25 v26 v28 v29 v30 l5
+el-calafate v2 v12 v13
+santiago v2 v3 v5 v6 v7 v8 v10 v12 v13 v14 v16 v17 v18 v19 v20 v21 v22 v26 v27 v28 v29 v30 l3 l6 l7 l8 l11 l12 l14 l15 l16 l18 l19 l20 l22 l23 l24 l25
+easter-island v2 v3 v5 v7 v9 v10 v14 v15 v16 v18 v19 v22 v23 v25 v26 v28 v29 l3 l5 l7 l9 l10 l11 l12 l13 l14
+punta-arenas *
+lima v1 v4 v6 v8 v10 v14 v16 v17 v19 v20 v21 v22 v23 v24 v26 v27 v29 v30 l1 l3 l6 l7 l8 l11 l12 l14 l15 l17 l18 l20 l22 l23 l25
+arequipa v2 v5 v7 v10 v12 v13 v16 v17 v18 v19 v20 v22 v25 v26 v27 v30 l2
+bogota v6 v7 v8 v10 v13 l1 l3 l5 l6 l7 l8 l10 l11 l13 l14 l15 l16 l17 l18 l19 l21 l22 l23 l24 l25
+medellin v2 v3 v4 v6 v7 v9 v10 v11 v12 v14 v15 v16 l3 l5 l11 l12 l13 l14 l15 l16
+cartagena v3 v6 v7 v9 v12 v13 v15 v16 v19 v20 v23 v24 v26 v27 v28 v29
+quito v1 v5 v7 v9 v11 v16 v17 v19 v22 v23 v24 v25 v26 v27 l7 l8 l9 l10 l11 l12 l13 l15
+guayaquil v1 v3 v5 v7 v8 v9 v10 v11 v12 v13 v14 v15 v17 v18 l1
+galapagos v2 v3 v4 v5 v6 v7 v8 v10 v11 v13 v14 v15 v17 v18 v19
+montevideo v3 v7 v10 v13 v14 v17 v18 v20 v21 v23 v25 v26 v27 v29 v30 l2 l3 l4 l5 l7 l9 l11 l12 l13 l16 l18 l19 l20 l21 l23 l24 l25
+punta-del-este v1 v2 v5 v7 v8 v11 v12 v13 v14 v15 v16 v19 v21 v22 v25 v26 l1 l4 l5 l6
+la-paz v2 v3 v5 v8 v12 v14 v15 v16 v17 v18 v19 l1 l2 l5 l8 l10 l11 l12 l13
+santa-cruz *
+auckland v1 v2 v5 v6 v7 v11 v12 v13 v14 v16 v17 v19 v20 v21 v23 v24 v25 v28 v29 v30 l1 l3 l4 l5 l7 l8 l9 l10 l11 l12 l13 l14 l15 l16 l17 l18 l19 l20 l21 l22 l23 l25
+christchurch v1 v2 v6 v7 v8 v11 v12 v14 v15 v16 v18 v19 v20 v21 v22 v24 v26 v27 l1 l3 l5 l7 l8 l9 l11 l12 l13 l14 l15 l18 l19 l20 l21 l22 l23
+queenstown v1 v3 v5 v7 v8 v9 v12 v15 v16 v17 v18 v20 v21 v22 v23 v26 l1 l3
+wellington v1 v4 v6 v8 v9 v10 v12 v13 v14 v15 v16 v17 v18 v20 v23 l2 l5 l8 l9 l11 l13 l14
+nadi *
+suva *
+honiara *
+taipei v4 v7 v9 v12 v13 v14 v17 v18 v20 v23 v24 v25 v26 v27 v28 v29 l4 l5 l7 l11 l14 l15 l18 l19 l21 l22 l23 l25
+tallinn v1 v5 v6 v9 v12 v13 v15 v16 v17 v18 v19 v20 v21 v22 v23 v25 v26 v27 v29 l1 l5 l6 l7 l9 l11 l12 l14 l16 l18 l19 l20 l21 l23 l24 l25
+vilnius v3 v4 v6 v7 v9 v10 v11 v13 v14 v15 v16 v17 v18 v19 v20 v21 v22 v23 l3 l6 l8 l11 l13 l16 l17 l18 l19 l20 l22 l25
+sofia v3 v4 v6 v9 v11 v13 v14 v17 v18 v19 v21 v22 v24 v26 l2 l4 l7 l10 l11 l12 l13 l14 l17 l18 l19 l20 l23 l24
+varna v1 v3 v5 v6 v7 v9 v13 v14 v15 v16 v17 v18 v19 v20 v22 v23 l1 l5 l6 l7 l9 l11 l12 l13
+windhoek l5 l7
+victoria-falls v9 v10 v11 l1
+skopje v2 v3 v5 v6 v7 v8 v10 v11 v12 v13 v15 v19 v22 v23 v25 v27 v28 v29 l2 l6 l11 l12 l13 l15 l17 l18 l19 l20 l23 l25
