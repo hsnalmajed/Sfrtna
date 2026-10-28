@@ -1700,6 +1700,17 @@ cover them (+ budget, breakfast, stars, kind, near a landmark).
   splash_icon on #F8F8F8.
 - `.github/workflows/ios.yml` (macos-15): simulator build every run (first
   run e38a65f1 passed); archive + TestFlight upload when the ASC secrets exist.
+- **29 Oct 02:53 KSA: first build uploaded to App Store Connect** (ios.yml
+  run on macos-26 with Xcode 26 — Apple refuses the iOS 18 SDK). Secrets:
+  ASC_KEY_ID, ASC_ISSUER_ID, ASC_KEY_P8 (the .p8 pasted as text; also in the
+  owner's Bitwarden note «Sfrtna Apple App Store Connect key»), APPLE_TEAM_ID.
+  The key must be **Admin** (App Manager → "Cloud signing permission error");
+  the first App Manager key «GitHub TestFlight» is unused → owner may revoke it.
+  Archive is built unsigned (a development profile needs a registered device);
+  export signs it with Apple's cloud-managed distribution certificate. Logs are
+  not readable from the workspace → the Report step sends the error lines as
+  annotations (IDs blanked): `gh api repos/.../check-runs/<job>/annotations`.
+  Build number = run number.
 - **Sign-in hidden on iOS** (`features` lacks "auth"): rule 4.8 requires
   Sign in with Apple when Google sign-in is offered → add Apple sign-in
   (Services ID + key, /api/auth/apple, button) after the account is approved.
