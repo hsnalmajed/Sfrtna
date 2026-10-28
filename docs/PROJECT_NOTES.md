@@ -1685,6 +1685,10 @@ cover them (+ budget, breakfast, stars, kind, near a landmark).
   (bundle com.sfrtna.app, Arabic primary), API key (Admin/App Manager) → 4
   GitHub secrets ASC_KEY_ID, ASC_ISSUER_ID, ASC_KEY_P8_BASE64, APPLE_TEAM_ID →
   ios.yml uploads to TestFlight.
+- 29 Oct: Apple approved (App Store Connect access). Bundle ID com.sfrtna.app
+  registered (Associated Domains + Sign In with Apple on); app created in App
+  Store Connect: name «Sfrtna | سفرتنا» (Android listing uses the same),
+  primary language Arabic, SKU sfrtna-ios, iOS only. Next: API key → secrets.
 - Shell: `mobile/ios` (Capacitor 8, SPM). All native code in
   `ios/App/App/AppDelegate.swift` (no new pbxproj entries): MainViewController
   (registers SfrtnaAppPlugin, navy background, swipe back, offline overlay via

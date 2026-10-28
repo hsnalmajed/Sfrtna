@@ -4,7 +4,7 @@ Copy each block into Play Console as it is. Character limits are Play's.
 
 ## App details
 
-- App name (30): **سفرتنا Sfrtna**
+- App name (30): **Sfrtna | سفرتنا** (same name as the iPhone app in App Store Connect, 29 Oct)
 - Default language: **Arabic (ar)**; add **English (en-US)** as a translation.
 - App or game: **App** · Free or paid: **Free**
 - Category: **Travel & Local**
