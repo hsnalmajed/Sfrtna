@@ -203,3 +203,48 @@ baalbek l1 l5
 moscow v3 v5 v7 v8 v9 v10 v12 v13 v20 v24 v25 v26 v28 v30 l5 l8 l9 l10 l11 l12 l15 l16 l17 l18 l20 l22 l24
 saint-petersburg v1 v3 v4 v5 v8 v10 v12 v15 v16 v19 v20 v21 v23 v24 v26 v28 v29 l4 l5 l9 l10 l11 l13 l17 l19 l20 l21 l23 l24
 kazan v1 v8 v11 v13 v17 v18 v19 v20 v21 l2 l6 l8 l9 l10 l11 l12 l14 l15 l16 l18 l19 l20 l21 l22 l23 l24 l25
+sochi v1 v3 v6 v8 v12 v14 v16 v20 v21 v22 v24 v26 v27 v29 v30 l3 l4 l5 l7 l8
+sarajevo v3 v5 v6 v7 v9 v10 v12 v15 v16 v20 v22 v24 v25 v26 v27 v28 v30 l2 l5 l6 l8 l9 l10 l11 l12 l13 l14 l16 l17 l18 l20 l22 l23 l24
+mostar v2 v4 v5 v6 v8 v11 v12 v14 v15 v16 v18 v19 v21 v22 v26 v28 v29 l1 l4 l6 l7 l9 l10 l11 l12 l13
+tirana v1 v5 v6 v8 v9 v14 v16 v17 v18 v20 l1 l3 l5 l8 l11 l12 l14 l16 l17 l18 l19 l20 l21 l23 l24 l25
+durres v1 v2 v3 v5 v7 v9 v11 l2 l6 l7 l8
+saranda v3 l3 l7 l10
+kotor v2 v5 v6 v10 v11 v13 v16 v17 v18 v20 v21 v24 v26 v27 v28 v29 v30 l4 l6
+budva v1 v3 v4 v9 v11 v14 v15 v16 v17 v19 v21 v22 v23 v24 v25 v26 v27 v29 l1 l4 l5 l7 l8
+podgorica v1 v2 v5 v6 v7 v8 v10 v11 l2 l4 l5 l9 l10 l11 l12 l13 l15
+belgrade v1 v4 v7 v8 v9 v11 v12 v13 v14 v16 v17 v19 v20 v21 v23 v25 l4 l5 l6 l8 l9 l11 l15 l16 l17 l18 l19 l20 l21 l22 l23 l24 l25
+novi-sad v8 v9 v10 v11 v12 v13 l2 l3 l6 l7 l8 l10 l11 l12 l13 l14 l15 l16 l17 l18 l20 l21 l22 l23 l24 l25
+zagreb v2 v3 v4 v5 v7 v8 v9 v11 v12 v13 v14 v17 v19 v20 v21 v23 v24 v25 v27 v29 l2 l4 l6 l7 l8 l9 l11 l13 l15 l16 l18 l19 l20 l21 l23 l25
+split v3 v4 v10 v11 v14 v15 v16 v19 v21 v22 v23 v28 v30 l1 l2 l3 l8 l9 l10 l11 l12 l15 l16 l17 l19 l20 l21 l22 l24 l25
+dubrovnik v1 v3 v5 v6 v8 v12 v16 v19 v20 v21 v25 v26 v27 v30 l1 l3 l7 l10 l11 l12 l14 l15 l16 l19 l20 l21 l22 l24 l25
+prague v2 v3 v6 v7 v10 v12 v13 v16 v18 v20 v21 v23 v25 v26 v27 v28 l2 l4 l6 l9 l10 l12 l15 l16 l17 l18 l20 l21 l23 l25
+karlovy-vary v1 v4 v7 v10 v11 v14 v15 v16 v18 v20 v21 l2 l5 l6 l8 l9 l10 l11 l14 l16 l17
+brno v1 v2 v4 v5 v7 v9 v11 v12 v13 l2 l6 l8 l9 l12 l13 l14 l16 l19 l20 l21 l22 l23
+budapest v2 v4 v9 v10 v11 v12 v15 v17 v19 v21 v22 v26 v28 v29 l6 l8 l11 l14 l15 l18 l19 l20 l21 l22 l24 l25
+warsaw v1 v3 v5 v6 v9 v11 v13 v14 v15 v17 v20 v21 v22 v23 v24 v25 v26 v27 v29 l2 l3 l4 l6 l8 l10 l11 l12 l14 l17 l19 l20 l21 l25
+krakow v1 v2 v3 v5 v8 v9 v11 v12 v13 v14 v16 v17 v18 v19 v21 v25 v26 v27 v28 v29 l1 l2 l5 l8 l9 l10 l12 l16 l17 l18 l19 l24
+zakopane v2 v3 v6 v7 v9 v10 v12 v16 v19 v20 v21 v22 v23 v25 v26 v29 v30 l2 l6 l7 l12 l14 l16 l17 l18 l19 l20 l23 l24 l25
+gdansk v2 v5 v6 v7 v8 v10 v11 v13 v15 v18 v19 v22 v24 v25 v27 v29 v30 l2 l3 l6 l7 l10 l12 l13 l14 l15 l18 l19 l20 l21 l22 l24
+dublin v3 v5 v8 v10 v11 v14 v15 v16 v18 v19 v20 v21 v23 v24 v28 v29 v30 l3 l4 l5 l6 l7 l9 l10 l11 l12 l13 l14 l19 l21 l22 l23 l24 l25
+galway v2 v3 v5 v6 v7 v11 v12 v13 v15 v16 v17 v18 v20 v22 v23 v24 v28 v29 v30 l3 l4 l5 l6
+cork v5 v6 v7 v8 v10 v12 v13 v14 v15 v16 v17 v18 v19 v20 v21 v22 v23 v24 v25 v26 v27 v28 v29 v30 l3 l4 l5 l6 l7 l8 l10 l11 l12 l13
+brussels v1 v4 v5 v6 v7 v10 v11 v14 v17 v18 v19 v20 v23 v24 v26 v27 v28 v29 v30 l2 l4 l5 l9 l11 l13 l15 l16 l18 l19 l21 l22 l25
+bruges v2 v5 v6 v8 v11 v12 v13 v17 v18 v20 v21 v24 v26 v28 v30 l1 l5 l6 l9 l10 l11 l12 l13 l15 l17 l18 l19 l20 l21 l22 l25
+stockholm v2 v3 v4 v10 v12 v15 v17 v18 v19 v20 v23 v24 v27 v28 v29 l7 l10 l11 l12 l14 l15 l17 l18 l19 l20 l21 l22 l25
+gothenburg v1 v2 v5 v10 v11 v12 v13 v14 v17 v18 v20 v21 v22 v25 v26 v27 v29 l2 l3 l4 l7 l11 l12 l13 l16 l17 l18 l19 l20 l21 l22 l23 l25
+oslo v2 v6 v9 v10 v13 v15 v17 v19 v21 v23 v24 v28 v29 l1 l2 l6 l8 l11 l14 l15 l16 l17 l18 l19 l21 l22 l23 l24 l25
+bergen v3 v4 v6 v8 v12 v14 v15 v16 v17 v21 v22 v23 v25 v26 v29 l1 l3 l4 l5 l8 l9 l10 l11 l12 l13 l14 l15 l16 l17 l18 l19 l20 l21 l22 l23 l24 l25
+tromso v2 v5 v7 v10 v11 l2 l3 l4 l6 l8 l9 l11 l12 l13 l14 l15 l16 l17 l18 l19
+copenhagen v1 v4 v8 v10 v12 v13 v16 v17 v18 v19 v22 v24 v25 v26 v28 v29 v30 l1 l2 l5 l6 l8 l9 l10 l11 l12 l15 l16 l17 l18 l19 l20 l21 l23 l24 l25
+helsinki v4 v6 v7 v11 v12 v13 v14 v16 v17 v18 v19 v20 v23 v24 v25 v27 v29 l2 l3 l4 l5 l6 l7 l8 l10 l12 l13 l14 l17 l18 l19 l20 l21 l22 l24 l25
+rovaniemi v2 v4 v6 v9 l3 l4 l5 l6 l7 l8 l9 l10 l11 l12 l13 l14 l15 l16 l17
+ljubljana v1 v4 v5 v7 v8 v10 v13 v14 v16 v17 v18 v20 v21 v22 v24 v26 v27 v28 v29 l1 l2 l5 l6 l8 l9 l11 l12 l14 l16 l17 l18 l19 l20 l21 l22 l23 l25
+bled v1 v8 v9 v10 v11 v14 v16 v17 v19 v20 v21 v22 v24 v27 v29 v30 l1 l3 l4 l5 l6 l7 l8 l9 l10 l11 l12 l14 l15 l16 l17 l18 l19 l20 l21 l22 l23 l24 l25
+larnaca v1 v6 v8 v11 v12 l2 l3 l4 l5 l7 l8
+limassol v1 v3 v4 v6 v7 l4
+paphos v3 v4 v5 v9 v17 v19 v21 l1 l3 l5 l8 l10 l12 l13 l14 l15
+valletta v3 v5 v8 v9 v10 v12 v13 v15 v17 v18 v19 v21 v23 v24 v26 v27 l1 l3 l4 l5 l6 l7 l8 l9 l10 l11 l12 l16 l18 l19 l20 l22 l24 l25
+bucharest v3 v4 v7 v8 v9 v10 v12 v13 v14 v15 v16 v17 v18 v19 v20 v22 v24 v26 v27 v28 v29 l2 l3 l5 l8 l10 l11 l12 l14 l16 l17 l18 l19 l20 l22 l23 l24 l25
+brasov v3 v4 v6 v7 l1 l5 l6 l7 l8 l11 l12 l13 l14 l15 l16 l17 l18 l19
+reykjavik v1 v3 v5 v6 v7 v9 v10 v11 v15 v19 v20 v22 l1 l3 l4 l7 l8 l9 l10 l11 l12 l13 l14 l15 l16 l18 l19 l20 l21 l22 l23 l24 l25
+yerevan v2 v3 v4 v5 v7 v11 v15 v16 v18 v20 v21 v22 v23 v24 v26 v27 v28 l2 l4 l7 l9 l11 l12 l15 l17 l18 l19 l20 l21 l22 l23
