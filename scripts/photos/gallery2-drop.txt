@@ -362,3 +362,5 @@ port-vila *
 koror *
 georgetown v1 v2 v3 v4 v5 v6 l1 l4
 paramaribo l1 l4 l8 l10
+entebbe *
+los-cabos *
