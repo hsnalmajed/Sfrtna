@@ -131,3 +131,75 @@ osaka v1 v2 v6 v8 v9 v12 v14 v15 v16 v18 v19 v20 v22 v23 v24 v25 v26 v27 v29 v30
 hiroshima v2 v5 v6 v7 v8 v9 v11 v12 v14 v15 v16 v18 v20 v21 v23 v25 v28 l1 l4 l5 l8 l11 l12 l13 l15 l17 l18 l22 l23 l24 l25
 fukuoka v1 v2 v3 v6 v7 v9 v10 v11 v12 l1 l4 l5 l7 l8 l10 l11 l16 l17 l18 l19 l23 l25
 okinawa v1 v4 v7 v10 v11 v12 v13 v14 v15 v16 v17 v18 v20 v22 l2 l4 l6 l8 l9 l11 l13 l14 l16 l18 l19 l20 l21 l23 l25
+sapporo v2 v3 v4 v5 v6 v8 v9 v10 v12 l4 l7 l8 l12 l13 l15 l17 l18 l19 l22
+seoul v1 v2 v7 v8 v9 v13 v14 v15 v16 v18 v20 v25 v26 v29 l2 l3 l5 l7 l8 l9 l10 l12 l13 l17 l18 l19 l20 l22 l24 l25
+busan v2 v3 v4 v8 v9 v11 v12 v14 v16 v19 v21 v25 v26 v27 l1 l2 l7 l8 l9 l10 l12 l13 l14 l16 l17 l18 l19 l20 l22 l24 l25
+jeju v2 v4 v5 v8 v11 v12 v13 v16 v17 v20 v21 v22 v26 v27 v28 l2 l3 l4 l5
+beijing v1 v3 v6 v7 v10 v12 v14 v16 v21 v22 v23 v24 v26 v28 v29 l6 l7 l9 l11 l13 l14 l15 l17 l19 l20 l22 l24
+shanghai v1 v2 v5 v7 v9 v10 v11 v13 v14 v15 v18 v19 v22 v24 v26 v28 v29 l1 l4 l5 l6 l7 l10 l12 l13 l14 l15 l18 l19 l20 l21 l22 l23 l25
+xian v3 v5 v6 v9 v10 l6 l8 l10 l11 l13 l14 l15 l16 l17 l18 l20
+guangzhou v6 v7 v8 v10 v12 v13 v15 v17 v18 v19 v20 v23 v24 v25 v26 v28 l2 l3 l6 l7 l8 l9 l10 l11 l13 l14 l15 l17 l20 l21 l23 l24
+chengdu v1 v4 v6 v7 v8 v9 v10 v12 v13 v15 v16 v17 v18 l1 l2 l4 l5 l6 l8 l10 l11 l12 l13 l14 l15 l16 l18 l20 l21 l22 l23
+shenzhen v2 v4 v8 v13 v14 v15 v17 v18 v19 v20 v21 v23 v25 v26 v28 l1 l2 l3 l4 l5 l6 l7 l8 l9 l12 l13 l14 l15 l16 l17 l18 l19 l20 l21 l23 l24 l25
+hanoi v2 v4 v6 v7 v8 v9 v10 v13 v14 v16 v17 v18 v19 v20 v24 v26 l3 l5 l8 l9 l11 l13 l15 l17 l19 l20 l22 l23 l25
+ho-chi-minh-city v1 v2 v3 v4 v7 v8 v10 v14 v16 v17 v18 v22 v24 v25 v26 v27 l1 l3 l5 l6 l8 l10 l11 l12 l13 l15 l16 l18 l19 l20 l21 l23 l24 l25
+da-nang v1 v3 v8 v9 v12 v13 v15 v16 v17 v18 v19 v22 v23 v24 v27 v29 v30 l3 l5
+hoi-an v4 v6 v8 v10 v12 v16 v17 v18 v20 v23 l2 l3 l4
+nha-trang v1 v3 v5 v7 v8 v9 v10 v12 v14 v15 v16 v17 v18 v19 v21 v24 l2
+phu-quoc v1 v4 v5 v6 v9 v10 v11 v12 v19
+delhi v3 v4 v6 v7 v8 v9 v12 v14 v15 v16 v18 v20 v25 v26 v28 v29 v30 l2 l4 l5 l8 l9 l10 l14 l15 l16 l17 l18 l19 l23 l25
+agra v1 v3 v4 v6 v10 v11 v13 v15 v16 v17 v18 v19 v21 v22 v25 v26 v28 v29 l6 l8 l10 l11 l12 l14
+jaipur v1 v2 v3 v4 v7 v11 v13 v15 v16 v17 v18 v19 v20 v23 v25 v26 v28 v30 l3 l7 l8 l9 l12 l15 l16
+mumbai v3 v5 v6 v7 v8 v9 v10 v11 v12 v13 v15 v19 v20 v21 v22 v23 v24 v25 v26 v27 v28 l1 l3 l4 l5 l8 l9 l10 l11 l13 l14 l15 l18 l19 l20 l21 l22 l23 l24 l25
+goa v2 v3 v4 v5 v6 v9 v10 v15 v17 v18 v19 v23 l2 l4 l5
+kochi v1 v4 v5 v6 v7 v8 v10 v12 v13 v14 v15 v16 v17 v19 v21 v22 v23 v26 l1 l4 l5 l6 l7 l9 l10 l11 l12 l13 l15 l17 l18 l19 l20
+bengaluru v3 v4 v5 v7 v8 v10 v11 v12 v13 v15 v16 v17 v18 v19 v20 v21 v22 v23 v25 v27 l1 l3 l4 l5 l8 l10 l12 l13 l14 l15 l16 l18 l19 l20 l21 l22 l23 l24 l25
+new-york v1 v5 v7 v8 v12 v16 v20 v21 v23 v24 v27 v28 v30 l5 l6 l9 l10 l13 l16 l17 l18 l19 l20 l22 l25
+los-angeles v3 v4 v5 v6 v7 v8 v9 v10 v11 v13 v16 v17 v18 v19 v21 v24 v29 v30 l1 l3 l7 l8 l10 l11 l12 l14 l15 l16 l17 l18 l19 l20 l22 l23 l25
+las-vegas v1 v2 v5 v6 v7 v8 v9 v10 v11 v12 v14 v16 v18 v21 v22 v24 v27 l1 l2 l5 l6 l7 l8 l9 l10 l11 l13 l14 l16 l18 l20
+san-francisco v1 v2 v3 v4 v5 v6 v11 v13 v14 v16 v20 v21 v24 v25 v26 v27 v30 l2 l7 l8 l9 l10 l11 l12 l13 l14 l15 l17 l19 l20 l21 l22 l23
+miami v1 v5 v6 v10 v11 v12 v13 v15 v17 v19 v20 v22 v24 v26 v29 v30 l1 l2 l3 l5 l6 l8 l11 l12 l13 l14 l15 l16 l17 l18 l19 l20 l21 l22 l23 l25
+orlando v5 v6 v8 v9 v10 v12 v13 v14 v15 v17 v18 v20 v21 v22 v24 v25 v28 v29 l1 l3 l5 l6 l7 l8 l9 l10 l14 l15 l16 l17 l18 l20 l21 l22 l23 l24 l25
+chicago v1 v2 v3 v8 v9 v12 v15 v16 v19 v20 v23 v25 v29 l3 l7 l8 l9 l12 l14 l16 l19 l20 l21 l22 l23 l25
+honolulu v2 v4 v6 v7 v8 v12 v13 v14 v16 v17 v18 v21 v22 l1 l2 l3 l5 l6 l8 l9 l10 l13 l14 l16 l17 l19 l24 l25
+boston v3 v4 v7 v8 v9 v13 v16 v17 v20 v21 v24 v26 v28 v30 l2 l3 l5 l7 l9 l10 l11 l12 l13 l14 l15 l17 l18 l20 l22 l23 l25
+washington-dc v3 v4 v5 v6 v7 l2 l3 l4 l9 l10 l11 l12 l13 l14 l15 l16 l17 l18 l20 l22 l23 l24 l25
+seattle v5 v6 v8 v10 v11 v14 v15 v16 v18 v19 v20 v24 v25 v26 v30 l1 l2 l3 l5 l6 l7 l9 l10 l11 l13 l14 l15 l17 l18 l20 l21 l22 l23
+baku v2 v3 v4 v5 v6 v11 v12 v13 v14 v16 v18 v19 v21 v22 v26 v28 v29 l1 l3 l4 l5 l9 l11 l13 l14 l16 l18 l19 l20 l22 l24
+gabala l1 l2 l3 l5 l6
+guba v2 v4 v5 v6 l4 l5 l6 l9 l10
+tbilisi v3 v4 v5 v8 v11 v16 v18 v19 v24 v26 v27 v30 l2 l4 l8 l9 l10 l11 l13 l14 l16 l17 l18 l19 l20 l21 l22 l24 l25
+batumi v2 v6 v10 v11 v12 v16 v18 v19 v20 v22 v25 v27 v28 v29 v30 l4 l5 l6 l7
+kazbegi v1 v5 v6 v7 l5 l6 l8 l11
+kutaisi v1 v2 v3 v6 v8 v9 v10 l5 l6 l11 l13 l14 l16
+cape-town v3 v4 v6 v8 v9 v10 v13 v15 v19 v20 v21 v22 v24 v25 v26 v27 v28 l1 l3 l5 l7 l9 l11 l12 l13 l15 l16 l18 l19 l20 l21 l22 l23 l24 l25
+johannesburg v6 v7 v8 v9 v10 v11 v12 v13 v14 v15 v16 v17 l1 l3 l4 l6 l7 l8 l9 l10 l11 l12 l14
+durban v3 v4 v6 v9 v11 v12 v13 v15 v16 v17 l1 l3 l7
+nairobi v2 v5 v6 v9 v10 v11 v12 v13 v14 v15 v16 v17 v18 v19 v20 v21 v22 v23 v24 v25 v26 v27 l2 l4 l5 l7 l8 l9 l10
+mombasa v1 v3 v9 v10 v11 v12 v13 v14 l1 l3 l4 l5
+mexico-city v2 v6 v7 v8 v9 v10 v12 v13 v15 v17 v19 v20 v22 v23 v24 v26 v27 v29 l3 l5 l7 l9 l12 l13 l14 l15 l17 l18 l19 l20 l21 l22 l24
+cancun v4 v5 v6 v7 v9 v10 v13 l4
+guadalajara v1 v2 v3 v5 v6 v10 v12 v13 v14 v16 v17 v18 v19 v20 v21 v22 l3 l5 l6 l8 l9 l11
+puerto-vallarta v1 v3 v4 v7 v8 v14 v16 v17 v18 v19 v20 v21 v23 v24 v26 v28 v29 l1
+rio-de-janeiro v3 v4 v6 v9 v10 v11 v12 v14 v17 v20 v21 v23 v25 v27 v29 v30 l1 l4 l5 l8 l12 l14 l16 l19 l20 l21 l22 l23 l24 l25
+sao-paulo v3 v4 v5 v6 v7 v10 v12 v14 v15 v18 v19 v20 v21 v23 v24 v25 v26 v27 v28 l4 l7 l10 l15 l17 l18 l19 l20 l22 l24 l25
+salvador v3 v8 v9 v13 v16 v17 v18 v21 v22 v24 l1 l4 l5 l8 l9 l11 l14 l15 l16 l18 l19 l20 l22 l23
+foz-do-iguacu v2 v6 v7 v8 v9 v10 v11 v12 v13 v14 v15 v16 l1 l3
+florianopolis v3 v8 l2 l7 l8 l11 l13 l14 l17
+sydney v2 v4 v5 v8 v10 v11 v14 v17 v18 v20 v22 v23 v24 v25 v30 l3 l4 l6 l8 l10 l11 l14 l15 l18 l20 l21 l22 l24
+melbourne v1 v6 v9 v10 v11 v16 v17 v18 v19 v20 v23 v24 v26 v28 v29 l1 l3 l5 l6 l8 l9 l10 l11 l12 l13 l14 l16 l17 l19 l20 l22 l23
+brisbane v2 v4 v6 v9 v12 v13 v16 v18 v19 v20 v24 v25 v26 v27 v28 v30 l1 l2 l3 l4 l5 l6 l9 l10 l11 l13 l14 l16 l17 l18 l19 l20 l21 l22
+gold-coast v3 v5 v6 v8 v9 v10 v11 v12 v14 v18 v20 v21 v23 v26 v28 v30 l1 l2 l3 l4 l5 l6 l8 l9 l10 l11
+perth v3 v6 v9 v11 v12 v14 v16 v17 v18 v20 v21 v22 v24 v25 v26 v28 l1 l2 l4 l6 l7 l9 l10 l11 l12 l13 l16 l17 l18 l19 l20 l21 l22 l23 l25
+adelaide v2 v5 v6 v7 v8 v9 v10 v11 v13 v15 l2 l6 l7 l11 l12 l13 l14 l15 l16 l17 l18 l21 l24
+cairns v1 v3 v5 v6 v7 v8 v9 v10 v11 v12 v13 v14 v15 v16 v18 v20 v21 v22 v23 v24 v25 v26 v27 l2 l3 l4
+tunis v1 v4 v6 v8 v10 v13 v19 v22 v29 l1 l2 l3 l5 l9 l11 l12 l15 l16 l18 l19 l20 l21 l22 l23 l25
+sousse v1 l1 l3 l4 l5 l6 l8
+djerba *
+hammamet *
+beirut v2 v3 v5 v6 v7 v8 l5 l6 l7 l8 l11 l12
+byblos v3 l1 l3 l7
+baalbek l1 l5
+moscow v3 v5 v7 v8 v9 v10 v12 v13 v20 v24 v25 v26 v28 v30 l5 l8 l9 l10 l11 l12 l15 l16 l17 l18 l20 l22 l24
+saint-petersburg v1 v3 v4 v5 v8 v10 v12 v15 v16 v19 v20 v21 v23 v24 v26 v28 v29 l4 l5 l9 l10 l11 l13 l17 l19 l20 l21 l23 l24
+kazan v1 v8 v11 v13 v17 v18 v19 v20 v21 l2 l6 l8 l9 l10 l11 l12 l14 l15 l16 l18 l19 l20 l21 l22 l23 l24 l25
