@@ -68,6 +68,10 @@ jobs:
         run: |
           set -o pipefail
           LOG="$RUNNER_TEMP/ios.log"
+          # A pasted secret may carry a stray space or line break.
+          ASC_KEY_ID=$(printf '%s' "$ASC_KEY_ID" | tr -d '[:space:]')
+          ASC_ISSUER_ID=$(printf '%s' "$ASC_ISSUER_ID" | tr -d '[:space:]')
+          APPLE_TEAM_ID=$(printf '%s' "$APPLE_TEAM_ID" | tr -d '[:space:]')
           KEY="$RUNNER_TEMP/AuthKey_$ASC_KEY_ID.p8"
           if [ -n "$ASC_KEY_P8" ]; then printf '%s\n' "$ASC_KEY_P8" > "$KEY"; else echo "$ASC_KEY_P8_BASE64" | base64 --decode > "$KEY"; fi
           AUTH=(-allowProvisioningUpdates -authenticationKeyPath "$KEY" -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID")
@@ -100,10 +104,13 @@ jobs:
           ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
           ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
         run: |
           rm -f "$RUNNER_TEMP"/AuthKey_*.p8
+          t() { printf '%s' "$1" | tr -d '[:space:]' | wc -c | tr -d ' '; }
+          echo "::warning::lengths key=$(t "$ASC_KEY_ID") issuer=$(t "$ASC_ISSUER_ID") team=$(t "$APPLE_TEAM_ID") p8lines=$(printf '%s\n' "$ASC_KEY_P8" | grep -c .)"
           LOG="$RUNNER_TEMP/ios.log"
           [ -f "$LOG" ] || { echo "::warning::no log"; exit 0; }
           grep -E "error|FAILED|SUCCEEDED|Upload|uploaded|Provisioning|certificate|Signing" "$LOG" | tail -25 > "$RUNNER_TEMP/r.txt" || true
-          for v in "$ASC_KEY_ID" "$ASC_ISSUER_ID" "$APPLE_TEAM_ID"; do if [ -n "$v" ]; then sed -i "s|$v|[hidden]|g" "$RUNNER_TEMP/r.txt"; fi; done
+          for v in "$ASC_KEY_ID" "$ASC_ISSUER_ID" "$APPLE_TEAM_ID"; do v=$(printf '%s' "$v" | tr -d '[:space:]'); if [ -n "$v" ]; then sed -i.bak "s|$v|[hidden]|g" "$RUNNER_TEMP/r.txt"; fi; done
           while IFS= read -r l; do echo "::warning::${l:0:400}"; done < "$RUNNER_TEMP/r.txt"
