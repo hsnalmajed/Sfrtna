@@ -1391,7 +1391,9 @@ GraphQL 200, 7 days. Android upload key (alias `sfrtna-upload`) is in the 4
 **Google Play account — 27 Oct 19:40 (owner):** personal developer account
 created and paid ($25; developer name «Sfrtna | سفرتنا», public email
 info@sfrtna.com, contact = owner's Gmail). Identity document uploaded →
-Google reviewing (days; email to owner). Android device check done (Play
+Google reviewing (days; email to owner). 28 Oct: Google refused (front side
+only) → owner re-submitted front + back from his phone 28 Oct 18:45 KSA; wait
+for Google's email (attempts are limited). Android device check done (Play
 Console app). Phone check unlocks after identity. «Create app» is blocked
 until verification completes. Next: create app (default language Arabic,
 free, app), upload key → 4 GitHub secrets (android.yml), first .aab to the
