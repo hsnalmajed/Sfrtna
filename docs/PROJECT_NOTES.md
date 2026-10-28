@@ -1674,3 +1674,26 @@ cover them (+ budget, breakfast, stars, kind, near a landmark).
   rules, FAQ — the per-site price links cover rooms.
 - Tested locally with mocked data, Pixel 7, ar web + app UA: no overflow,
   no page errors.
+
+**iPhone app — 28 Oct (owner: "start the Apple app"):**
+- Apple Developer **individual** account: owner enrolled from the Apple
+  Developer app on his iPhone 28 Oct 12:31 KSA → "Enrollment Pending, you'll
+  receive an email soon". Price shown 429.99 SAR/yr (local price incl. 15 %
+  VAT, Apple tier). Next after Apple's email: App Store Connect → create app
+  (bundle com.sfrtna.app, Arabic primary), API key (Admin/App Manager) → 4
+  GitHub secrets ASC_KEY_ID, ASC_ISSUER_ID, ASC_KEY_P8_BASE64, APPLE_TEAM_ID →
+  ios.yml uploads to TestFlight.
+- Shell: `mobile/ios` (Capacitor 8, SPM). All native code in
+  `ios/App/App/AppDelegate.swift` (no new pbxproj entries): MainViewController
+  (registers SfrtnaAppPlugin, navy background, swipe back, offline overlay via
+  NWPathMonitor, new-window proxy), SfrtnaAppPlugin (shouldOverrideLoad: other
+  sites → SFSafariViewController, tel/mailto/whatsapp → apps; info/shareFile/
+  print). UA `SfrtnaApp/iOS` (site already handles it). iPhone only
+  (TARGETED_DEVICE_FAMILY 1), portrait, arm64, ITSAppUsesNonExemptEncryption
+  false, Arabic location string. Icon 1024 from favicon-512; splash = Android
+  splash_icon on #F8F8F8.
+- `.github/workflows/ios.yml` (macos-15): simulator build every run (first
+  run e38a65f1 passed); archive + TestFlight upload when the ASC secrets exist.
+- **Sign-in hidden on iOS** (`features` lacks "auth"): rule 4.8 requires
+  Sign in with Apple when Google sign-in is offered → add Apple sign-in
+  (Services ID + key, /api/auth/apple, button) after the account is approved.
