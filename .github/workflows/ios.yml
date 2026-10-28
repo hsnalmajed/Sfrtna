@@ -25,7 +25,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: ios-app
@@ -66,13 +66,16 @@ jobs:
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
           BUILD_NUMBER: ${{ github.run_number }}
         run: |
+          set -o pipefail
+          LOG="$RUNNER_TEMP/ios.log"
           KEY="$RUNNER_TEMP/AuthKey_$ASC_KEY_ID.p8"
           if [ -n "$ASC_KEY_P8" ]; then printf '%s\n' "$ASC_KEY_P8" > "$KEY"; else echo "$ASC_KEY_P8_BASE64" | base64 --decode > "$KEY"; fi
           AUTH=(-allowProvisioningUpdates -authenticationKeyPath "$KEY" -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID")
           xcodebuild -project ios/App/App.xcodeproj -scheme App -configuration Release \
             -destination 'generic/platform=iOS' -archivePath "$RUNNER_TEMP/Sfrtna.xcarchive" \
             DEVELOPMENT_TEAM="$APPLE_TEAM_ID" CODE_SIGN_STYLE=Automatic CURRENT_PROJECT_VERSION="$BUILD_NUMBER" \
-            "${AUTH[@]}" archive | tail -40
+            "${AUTH[@]}" archive > "$LOG" 2>&1 || { tail -60 "$LOG"; exit 1; }
+          tail -20 "$LOG"
           cat > "$RUNNER_TEMP/export.plist" <<EOF
           <?xml version="1.0" encoding="UTF-8"?>
           <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -85,5 +88,24 @@ jobs:
           EOF
           xcodebuild -exportArchive -archivePath "$RUNNER_TEMP/Sfrtna.xcarchive" \
             -exportOptionsPlist "$RUNNER_TEMP/export.plist" -exportPath "$RUNNER_TEMP/export" \
-            "${AUTH[@]}" | tail -40
+            "${AUTH[@]}" >> "$LOG" 2>&1 || { tail -60 "$LOG"; exit 1; }
+          tail -20 "$LOG"
           rm -f "$KEY"
+
+      # The workspace cannot read Actions logs: the error lines (IDs blanked)
+      # go to branch ios-report.
+      - name: Report
+        if: always() && env.HAS_ASC_KEY == 'true'
+        env:
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          rm -f "$RUNNER_TEMP"/AuthKey_*.p8
+          LOG="$RUNNER_TEMP/ios.log"; OUT="$RUNNER_TEMP/report.txt"
+          { echo "run ${{ github.run_number }} ${{ job.status }}"
+            [ -f "$LOG" ] && grep -E "error|Error|FAILED|SUCCEEDED|Upload|upload|warning: .*sign|Provisioning|certificate" "$LOG" | tail -80; } > "$OUT" || true
+          for v in "$ASC_KEY_ID" "$ASC_ISSUER_ID" "$APPLE_TEAM_ID"; do [ -n "$v" ] && sed -i "s/$v/[hidden]/g" "$OUT"; done
+          cd "$RUNNER_TEMP" && rm -rf rep && mkdir rep && cd rep && git init -q && cp "$OUT" report.txt
+          git -c user.name=ci -c user.email=ci@sfrtna.com commit -qam x 2>/dev/null || { git add report.txt; git -c user.name=ci -c user.email=ci@sfrtna.com commit -qm "iOS build report"; }
+          git push -qf "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" HEAD:ios-report
