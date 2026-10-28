@@ -25,7 +25,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: ios-app
@@ -92,8 +92,8 @@ jobs:
           tail -20 "$LOG"
           rm -f "$KEY"
 
-      # The workspace cannot read Actions logs: the error lines (IDs blanked)
-      # go to branch ios-report.
+      # The workspace cannot read Actions logs, but it can read annotations:
+      # the archive's error lines are sent as annotations (IDs blanked).
       - name: Report
         if: always() && env.HAS_ASC_KEY == 'true'
         env:
@@ -102,10 +102,8 @@ jobs:
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
         run: |
           rm -f "$RUNNER_TEMP"/AuthKey_*.p8
-          LOG="$RUNNER_TEMP/ios.log"; OUT="$RUNNER_TEMP/report.txt"
-          { echo "run ${{ github.run_number }} ${{ job.status }}"
-            [ -f "$LOG" ] && grep -E "error|Error|FAILED|SUCCEEDED|Upload|upload|warning: .*sign|Provisioning|certificate" "$LOG" | tail -80; } > "$OUT" || true
-          for v in "$ASC_KEY_ID" "$ASC_ISSUER_ID" "$APPLE_TEAM_ID"; do [ -n "$v" ] && sed -i "s/$v/[hidden]/g" "$OUT"; done
-          cd "$RUNNER_TEMP" && rm -rf rep && mkdir rep && cd rep && git init -q && cp "$OUT" report.txt
-          git -c user.name=ci -c user.email=ci@sfrtna.com commit -qam x 2>/dev/null || { git add report.txt; git -c user.name=ci -c user.email=ci@sfrtna.com commit -qm "iOS build report"; }
-          git push -qf "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" HEAD:ios-report
+          LOG="$RUNNER_TEMP/ios.log"
+          [ -f "$LOG" ] || { echo "::warning::no log"; exit 0; }
+          grep -E "error|FAILED|SUCCEEDED|Upload|uploaded|Provisioning|certificate|Signing" "$LOG" | tail -25 > "$RUNNER_TEMP/r.txt" || true
+          for v in "$ASC_KEY_ID" "$ASC_ISSUER_ID" "$APPLE_TEAM_ID"; do if [ -n "$v" ]; then sed -i "s|$v|[hidden]|g" "$RUNNER_TEMP/r.txt"; fi; done
+          while IFS= read -r l; do echo "::warning::${l:0:400}"; done < "$RUNNER_TEMP/r.txt"
