@@ -1,0 +1,87 @@
+# Builds the iPhone app (mobile/ios) on GitHub's macOS machines — the cloud
+# workspace has no Xcode, and the owner has no Mac.
+#
+# Every run: a simulator build (no signing) to prove the app compiles.
+#
+# When the App Store Connect API key is set (repository secrets below), a
+# signed archive is built with automatic signing and uploaded to
+# TestFlight. The key never enters the repository.
+#   ASC_KEY_ID        the key's ID (App Store Connect → Users and Access → Integrations)
+#   ASC_ISSUER_ID     the issuer ID shown on the same page
+#   ASC_KEY_P8_BASE64 the downloaded AuthKey_XXXX.p8, base64
+#   APPLE_TEAM_ID     the team ID (Membership details)
+#
+# Pushes outside mobile/ios and this file do not run it; it never deploys the site.
+name: iOS app
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "mobile/ios/**"
+      - "mobile/capacitor.config.json"
+      - ".github/workflows/ios.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ios-app
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: macos-15
+    timeout-minutes: 60
+    env:
+      HAS_ASC_KEY: ${{ secrets.ASC_KEY_P8_BASE64 != '' }}
+    defaults:
+      run:
+        working-directory: mobile
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          check-latest: true
+      - run: npm ci
+      - run: npx cap sync ios
+
+      - name: Simulator build (no signing)
+        run: |
+          xcodebuild -project ios/App/App.xcodeproj -scheme App \
+            -configuration Debug -sdk iphonesimulator \
+            -destination 'generic/platform=iOS Simulator' \
+            CODE_SIGNING_ALLOWED=NO build | tail -40
+
+      - name: Archive and upload to TestFlight
+        if: env.HAS_ASC_KEY == 'true'
+        env:
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          ASC_KEY_P8_BASE64: ${{ secrets.ASC_KEY_P8_BASE64 }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          BUILD_NUMBER: ${{ github.run_number }}
+        run: |
+          KEY="$RUNNER_TEMP/AuthKey_$ASC_KEY_ID.p8"
+          echo "$ASC_KEY_P8_BASE64" | base64 --decode > "$KEY"
+          AUTH=(-allowProvisioningUpdates -authenticationKeyPath "$KEY" -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID")
+          xcodebuild -project ios/App/App.xcodeproj -scheme App -configuration Release \
+            -destination 'generic/platform=iOS' -archivePath "$RUNNER_TEMP/Sfrtna.xcarchive" \
+            DEVELOPMENT_TEAM="$APPLE_TEAM_ID" CODE_SIGN_STYLE=Automatic CURRENT_PROJECT_VERSION="$BUILD_NUMBER" \
+            "${AUTH[@]}" archive | tail -40
+          cat > "$RUNNER_TEMP/export.plist" <<EOF
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0"><dict>
+            <key>method</key><string>app-store-connect</string>
+            <key>destination</key><string>upload</string>
+            <key>teamID</key><string>$APPLE_TEAM_ID</string>
+            <key>signingStyle</key><string>automatic</string>
+          </dict></plist>
+          EOF
+          xcodebuild -exportArchive -archivePath "$RUNNER_TEMP/Sfrtna.xcarchive" \
+            -exportOptionsPlist "$RUNNER_TEMP/export.plist" -exportPath "$RUNNER_TEMP/export" \
+            "${AUTH[@]}" | tail -40
+          rm -f "$KEY"

@@ -20,5 +20,11 @@
     "CapacitorHttp": {
       "enabled": false
     }
+  },
+  "ios": {
+    "appendUserAgent": "SfrtnaApp/iOS",
+    "contentInset": "never",
+    "scrollEnabled": true,
+    "limitsNavigationsToAppBoundDomains": false
   }
 }
