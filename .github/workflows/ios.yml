@@ -83,7 +83,8 @@ jobs:
           xcrun simctl io "$UDID" recordVideo --codec=h264 --force "$OUT/launch.mp4" > "$OUT/rec.txt" 2>&1 &
           REC=$!
           sleep 3
-          t 60 xcrun simctl launch "$UDID" com.sfrtna.app > "$OUT/launch.txt" 2>&1 || echo "launch failed $?" >> "$OUT/launch.txt"
+          t 90 xcrun simctl launch "$UDID" com.sfrtna.app > "$OUT/launch.txt" 2>&1 \
+            || { echo "launch failed $?, retrying" >> "$OUT/launch.txt"; sleep 15; t 90 xcrun simctl launch "$UDID" com.sfrtna.app >> "$OUT/launch.txt" 2>&1; }
           sleep 18
           kill -INT $REC || true
           for i in 1 2 3 4 5 6 7 8 9 10; do kill -0 $REC 2>/dev/null || break; sleep 1; done
@@ -93,11 +94,9 @@ jobs:
           ls "$HOME/Library/Logs/DiagnosticReports" 2>/dev/null | tail -5 > "$OUT/crashes.txt" || true
           t 30 xcrun simctl terminate "$UDID" com.sfrtna.app || true
           # A second launch: no welcome cards, so the home page and its top bar show.
-          t 60 xcrun simctl launch "$UDID" com.sfrtna.app || true
+          t 90 xcrun simctl launch "$UDID" com.sfrtna.app || { sleep 15; t 90 xcrun simctl launch "$UDID" com.sfrtna.app; } || true
           sleep 1; t 30 xcrun simctl io "$UDID" screenshot "$OUT/second-1s.png" || true
           sleep 11; t 30 xcrun simctl io "$UDID" screenshot "$OUT/second-12s.png" || true
-          t 30 xcrun simctl openurl "$UDID" "https://sfrtna.com/ar/about" || true
-          sleep 8; t 30 xcrun simctl io "$UDID" screenshot "$OUT/second-about.png" || true
           t 30 xcrun simctl terminate "$UDID" com.sfrtna.app || true
           cd "$OUT" && git init -q && git add . && git -c user.name=ci -c user.email=ci@sfrtna.com commit -qm "iOS simulator shots ${{ github.run_number }}"
           git push -qf "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" HEAD:ios-shots
