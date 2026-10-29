@@ -1,90 +1,93 @@
 
 ## Pixel 7 /ar
-  buttons 40, tapped 8
+  buttons 41, tapped 9
   NO EFFECT: أفضل الوجهات في أكتوبر
 
 ## Pixel 7 /ar/attractions
-  buttons 5, tapped 5
+  buttons 7, tapped 7
 
 ## Pixel 7 /ar/attractions/TR
-  buttons 5, tapped 5
+  buttons 7, tapped 7
 
 ## Pixel 7 /ar/attractions/TR/istanbul
-  buttons 39, tapped 30
+  buttons 65, tapped 29
+  COVERED: إسطنبول، تركيا ← - <img alt="" sizes="100vw" loading="eager" decoding="async" fetchpriority="high" class="absolute inset-0 -z-10 h-full w-full object-cover" src="https://images.
 
 ## Pixel 7 /ar/seasons
-  buttons 5, tapped 5
+  buttons 201, tapped 30
+  NO EFFECT: 🗓 حسب الشهر
 
 ## Pixel 7 /ar/visa
-  buttons 5, tapped 5
+  buttons 7, tapped 7
 
 ## Pixel 7 /ar/visa/TR
-  buttons 3, tapped 3
+  buttons 5, tapped 5
 
 ## Pixel 7 /ar/currency
-  buttons 10, tapped 10
+  buttons 12, tapped 12
   NO EFFECT: 100
 
 ## Pixel 7 /ar/services
-  buttons 3, tapped 3
+  buttons 5, tapped 5
 
 ## Pixel 7 /ar/services?code=TR&city=istanbul
-  buttons 3, tapped 3
+  buttons 5, tapped 5
 
 ## Pixel 7 /ar/itinerary
-  buttons 6, tapped 6
+  buttons 6, tapped 5
 
 ## Pixel 7 /ar/account
-  buttons 3, tapped 3
-  NO EFFECT: عربي
+  buttons 6, tapped 6
 
-## Pixel 7 /ar/results?tripType=flight&tripRoute=oneway&origin=RUH&destination=IST&departDate=2026-11-24&returnDate=&adults=1&childrenAges=&infants=0&budget=0&currency=SAR&directOnly=false&baggageIncluded=false&nights=0
-  buttons 10, tapped 8
+## Pixel 7 /ar/results?tripType=flight&tripRoute=oneway&origin=RUH&destination=IST&departDate=2026-12-08&returnDate=&adults=1&childrenAges=&infants=0&budget=0&currency=SAR&directOnly=false&baggageIncluded=false&nights=0
+  buttons 10, tapped 7
 
-## Pixel 7 /ar/hotel-results?hmode=discover&checkIn=2026-11-24&checkOut=2026-11-28&adults=2&childrenAges=&infants=0&city=Istanbul&label=%D8%A5%D8%B3%D8%B7%D9%86%D8%A8%D9%88%D9%84&budget=0&currency=SAR
-  buttons 27, tapped 19
+## Pixel 7 /ar/hotel-results?hmode=discover&checkIn=2026-12-08&checkOut=2026-12-12&adults=2&childrenAges=&infants=0&city=Istanbul&label=%D8%A5%D8%B3%D8%B7%D9%86%D8%A8%D9%88%D9%84&budget=0&currency=SAR
+  buttons 11, tapped 8
+  NO EFFECT: مشاركة | ☰ قائمة الفنادق
 
 ## iPhone 13 /ar
-  buttons 40, tapped 8
+  buttons 41, tapped 9
   NO EFFECT: أفضل الوجهات في أكتوبر
 
 ## iPhone 13 /ar/attractions
-  buttons 5, tapped 5
+  buttons 7, tapped 7
 
 ## iPhone 13 /ar/attractions/TR
-  buttons 5, tapped 5
+  buttons 7, tapped 7
 
 ## iPhone 13 /ar/attractions/TR/istanbul
-  buttons 39, tapped 30
+  buttons 65, tapped 30
 
 ## iPhone 13 /ar/seasons
-  buttons 5, tapped 5
+  buttons 201, tapped 30
+  NO EFFECT: 🗓 حسب الشهر
 
 ## iPhone 13 /ar/visa
-  buttons 5, tapped 5
+  buttons 7, tapped 7
 
 ## iPhone 13 /ar/visa/TR
-  buttons 3, tapped 3
+  buttons 5, tapped 5
 
 ## iPhone 13 /ar/currency
-  buttons 10, tapped 10
+  buttons 12, tapped 12
   NO EFFECT: 100
 
 ## iPhone 13 /ar/services
-  buttons 3, tapped 3
+  buttons 5, tapped 5
 
 ## iPhone 13 /ar/services?code=TR&city=istanbul
-  buttons 3, tapped 3
+  buttons 5, tapped 5
 
 ## iPhone 13 /ar/itinerary
-  buttons 6, tapped 6
+  buttons 6, tapped 5
 
 ## iPhone 13 /ar/account
-  buttons 3, tapped 3
-  NO EFFECT: عربي
-
-## iPhone 13 /ar/results?tripType=flight&tripRoute=oneway&origin=RUH&destination=IST&departDate=2026-11-24&returnDate=&adults=1&childrenAges=&infants=0&budget=0&currency=SAR&directOnly=false&baggageIncluded=false&nights=0
   buttons 6, tapped 6
 
-## iPhone 13 /ar/hotel-results?hmode=discover&checkIn=2026-11-24&checkOut=2026-11-28&adults=2&childrenAges=&infants=0&city=Istanbul&label=%D8%A5%D8%B3%D8%B7%D9%86%D8%A8%D9%88%D9%84&budget=0&currency=SAR
-  buttons 27, tapped 16
+## iPhone 13 /ar/results?tripType=flight&tripRoute=oneway&origin=RUH&destination=IST&departDate=2026-12-08&returnDate=&adults=1&childrenAges=&infants=0&budget=0&currency=SAR&directOnly=false&baggageIncluded=false&nights=0
+  buttons 10, tapped 7
+
+## iPhone 13 /ar/hotel-results?hmode=discover&checkIn=2026-12-08&checkOut=2026-12-12&adults=2&childrenAges=&infants=0&city=Istanbul&label=%D8%A5%D8%B3%D8%B7%D9%86%D8%A8%D9%88%D9%84&budget=0&currency=SAR
+  buttons 11, tapped 8
+  NO EFFECT: مشاركة | ☰ قائمة الفنادق
