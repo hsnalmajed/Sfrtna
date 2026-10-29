@@ -1719,6 +1719,20 @@ cover them (+ budget, breakfast, stars, kind, near a landmark).
   Island. Internal TestFlight group «Sfrtna Team» (owner added). Workflow
   `ios-status.yml` (by hand) reads build/TestFlight state from App Store
   Connect → annotations.
+- **29 Oct, root cause of "nothing iOS-specific works" (builds 9–16):**
+  Capacitor 8's template `SceneDelegate.swift` set
+  `rootViewController = CAPBridgeViewController()` — our MainViewController
+  never ran (no opening, no insets, no Safari sheet, no share/print). Now
+  `MainViewController()`. Also: overlays added in `capacitorDidLoad` run
+  inside loadView (0×0 view) → pin with constraints; React drops a <style>
+  added to <head> → the inset sheet is `document.adoptedStyleSheets`;
+  insets = max(env(), numbers sent after each load). Verified on the
+  simulator (iPhone 17 Pro, ios.yml step → branch `ios-shots`: launch.mp4,
+  second-*.png; app log line `SFR insets …`): opening + plane, logo below
+  the Dynamic Island, tab bar above the home bar. CI launch argument
+  `-sfrSkipWelcome` marks the welcome cards seen (tests only).
+  Back arrow in the app top bar on iOS (`AppBackButton.tsx`, navHistory);
+  back from a «المزيد» page reopens «المزيد» (AppTabBar, `sfr-more-return`).
 - **English on phones (owner 29 Oct: the form tabs spilled):** EdgeTabs
   wrap; card badges, names, filter pills and map place names wrap instead
   of truncating. `ux-audit.yml` now takes `lang=en` and `devices`, and
