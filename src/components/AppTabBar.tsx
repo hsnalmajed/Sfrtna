@@ -1,7 +1,7 @@
 "use client";
 
 import AccountLink from "@/components/AccountLink";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useDictionary } from "@/lib/dict/context";
@@ -34,6 +34,8 @@ import { tripCityName } from "@/components/member/tripLinks";
  * "More" holds what the footer held: the remaining tools, the language, the
  * pages that say who runs the site and the partner note.
  */
+const MORE_RETURN_KEY = "sfr-more-return";
+
 export default function AppTabBar({ locale }: { locale: Locale }) {
   const dict = useDictionary();
   const pathname = usePathname() ?? `/${locale}`;
@@ -78,6 +80,36 @@ export default function AppTabBar({ locale }: { locale: Locale }) {
     window.addEventListener("popstate", onPop);
     return () => window.removeEventListener("popstate", onPop);
   }, [moreOpen]);
+
+  // Back from a page chosen in «المزيد» returns to the «المزيد» list (owner,
+  // 29 Oct: "I opened Contact from More and could not get back to the
+  // list"): the sheet opens again over the page underneath.
+  const popped = useRef(false);
+  const prevPath = useRef<string | null>(null);
+  useEffect(() => {
+    const onPop = () => {
+      popped.current = true;
+    };
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, []);
+  useEffect(() => {
+    const prev = prevPath.current;
+    prevPath.current = pathname;
+    let from: string | null = null;
+    try {
+      from = sessionStorage.getItem(MORE_RETURN_KEY);
+    } catch {}
+    const wasBack = popped.current;
+    popped.current = false;
+    if (!from || prev === null || prev === pathname) return;
+    if (prev === from) {
+      try {
+        sessionStorage.removeItem(MORE_RETURN_KEY);
+      } catch {}
+      if (wasBack) setMoreOpen(true);
+    }
+  }, [pathname]);
 
   const closeMore = () => {
     if (history.state?.sfrtnaSheet) history.back();
@@ -139,6 +171,9 @@ export default function AppTabBar({ locale }: { locale: Locale }) {
   const go = (e: React.MouseEvent, href: string) => {
     e.preventDefault();
     setMoreOpen(false);
+    try {
+      sessionStorage.setItem(MORE_RETURN_KEY, href.split("?")[0].split("#")[0]);
+    } catch {}
     router.replace(href);
   };
 

@@ -10,6 +10,7 @@ import { openPlanner } from "@/lib/planEvents";
 import type { Locale } from "@/lib/types";
 import LanguageSwitcher from "./LanguageSwitcher";
 import Logo from "@/components/ui/Logo";
+import AppBackButton from "@/components/AppBackButton";
 
 /**
  * The header sits *on* the photograph, not above it.
@@ -105,10 +106,11 @@ export default function Header({ locale }: { locale: Locale }) {
         }`}
       >
         <div
-          className={`site-header-row mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 transition-all duration-300 sm:px-6 ${
+          className={`site-header-row relative mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 transition-all duration-300 sm:px-6 ${
             solid ? "py-2" : "py-3.5"
           }`}
         >
+          <AppBackButton locale={locale} />
           {/* The full logo on a white card — see the note in Logo.tsx for why
               it is not recoloured for the dark bar. */}
           <Link
