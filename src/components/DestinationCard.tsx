@@ -146,7 +146,7 @@ export default function DestinationCard({
         )}
         {place?.classification && (
           <span
-            className={`absolute start-2 top-2 max-w-[calc(100%-3.5rem)] truncate rounded-full px-2 py-0.5 text-[11px] font-bold shadow-sm sm:start-3 sm:top-3 sm:px-2.5 sm:py-1 sm:text-xs ${
+            className={`absolute start-2 top-2 max-w-[calc(100%-3.5rem)] leading-tight [text-wrap:balance] break-words rounded-full px-2 py-0.5 text-[11px] font-bold shadow-sm sm:start-3 sm:top-3 sm:px-2.5 sm:py-1 sm:text-xs ${
               place.inSeason ? "bg-emerald-100 text-emerald-900" : "bg-white/90 text-navy-700"
             }`}
           >
@@ -157,17 +157,17 @@ export default function DestinationCard({
       </div>
 
       <div className="flex flex-1 flex-col p-3 sm:p-4">
-        <p className="truncate font-display text-base font-extrabold text-navy-900 sm:text-xl">{name}</p>
-        {countryName && <p className="truncate text-xs font-semibold text-navy-500 sm:text-sm">{countryName}</p>}
+        <p className="line-clamp-2 break-words leading-tight font-display text-base font-extrabold text-navy-900 sm:text-xl">{name}</p>
+        {countryName && <p className="line-clamp-2 break-words leading-tight text-xs font-semibold text-navy-500 sm:text-sm">{countryName}</p>}
         {/* Weather that month and the visa, side by side. */}
         <div className="mt-2 flex flex-wrap items-center gap-1 sm:mt-3 sm:gap-1.5">
           {place?.seasonName && (
-            <span className="max-w-full truncate rounded-full bg-sun-50 px-2 py-0.5 text-[11px] font-bold text-sun-900 ring-1 ring-sun-200 sm:px-2.5 sm:py-1 sm:text-xs">
+            <span className="max-w-full leading-tight [text-wrap:balance] break-words rounded-full bg-sun-50 px-2 py-0.5 text-[11px] font-bold text-sun-900 ring-1 ring-sun-200 sm:px-2.5 sm:py-1 sm:text-xs">
               {place.seasonName.icon} {isAr ? place.seasonName.ar : place.seasonName.en}
             </span>
           )}
           {place?.highlight && (
-            <span className="max-w-full truncate rounded-full bg-violet-50 px-2 py-0.5 text-[11px] font-extrabold text-violet-900 ring-1 ring-violet-200 sm:px-2.5 sm:py-1 sm:text-xs">
+            <span className="max-w-full leading-tight [text-wrap:balance] break-words rounded-full bg-violet-50 px-2 py-0.5 text-[11px] font-extrabold text-violet-900 ring-1 ring-violet-200 sm:px-2.5 sm:py-1 sm:text-xs">
               {place.highlight.icon} {isAr ? place.highlight.ar : place.highlight.en}
             </span>
           )}

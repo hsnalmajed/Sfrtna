@@ -163,7 +163,7 @@ export default function FilterPill<T extends string | number>(
         className={`${pillBase} ${active ? pillOn : pillOff}`}
       >
         {props.icon && <span aria-hidden="true">{props.icon}</span>}
-        <span className="truncate">{chosen.length > 1 ? `${props.label} · ${chosen.length}` : summary}</span>
+        <span className="min-w-0 leading-tight [text-wrap:balance]">{chosen.length > 1 ? `${props.label} · ${chosen.length}` : summary}</span>
         <Chevron />
       </button>
       {open && createPortal(sheet, document.body)}

@@ -48,28 +48,28 @@ export default function CityGallery({
           {/* Top: this month's rating and the visa — what decides a trip. */}
           <div className="flex min-w-0 flex-col items-start gap-1 p-2">
             {c.facts?.classLabel && (
-              <span className="max-w-full truncate rounded-full bg-white/90 px-2.5 py-0.5 text-xs font-extrabold text-navy-900 shadow-sm">
+              <span className="max-w-full leading-tight [text-wrap:balance] break-words rounded-full bg-white/90 px-2.5 py-0.5 text-xs font-extrabold text-navy-900 shadow-sm">
                 {c.facts.classLabel}
               </span>
             )}
             {c.facts && (
               <span
-                className={`inline-flex max-w-full items-center gap-1 truncate rounded-full px-2.5 py-0.5 text-xs font-bold shadow-sm ring-1 ${
+                className={`inline-flex max-w-full items-center gap-1 leading-tight [text-wrap:balance] break-words rounded-full px-2.5 py-0.5 text-xs font-bold shadow-sm ring-1 ${
                   c.facts.visa ? VISA_STYLES[c.facts.visa.category].chip : "bg-white/85 text-navy-800 ring-white/40"
                 }`}
               >
                 <span aria-hidden="true">{c.facts.visa ? VISA_STYLES[c.facts.visa.category].icon : "🛂"}</span>
-                <span className="truncate">{c.facts.visa ? c.facts.visa.short : c.facts.visaUnknown}</span>
+                <span className="min-w-0 leading-tight [text-wrap:balance] break-words">{c.facts.visa ? c.facts.visa.short : c.facts.visaUnknown}</span>
               </span>
             )}
           </div>
           <div className="min-w-0 p-3 pt-2">
-            <p className="truncate font-display text-base font-extrabold text-white drop-shadow-sm">{c.name}</p>
-            {c.subtitle && <p className="truncate text-xs text-white/75">{c.subtitle}</p>}
+            <p className="line-clamp-2 break-words leading-tight font-display text-base font-extrabold text-white drop-shadow-sm">{c.name}</p>
+            {c.subtitle && <p className="line-clamp-2 break-words leading-tight text-xs text-white/75">{c.subtitle}</p>}
             {(c.facts?.season || c.facts?.temps) && (
               <div className="mt-1.5 flex flex-wrap items-center gap-1">
                 {c.facts.season && (
-                  <span className="inline-flex max-w-full truncate rounded-full bg-navy-990/65 px-2 py-0.5 text-xs font-bold text-sun-200 backdrop-blur-sm">
+                  <span className="inline-flex max-w-full leading-tight [text-wrap:balance] break-words rounded-full bg-navy-990/65 px-2 py-0.5 text-xs font-bold text-sun-200 backdrop-blur-sm">
                     {c.facts.season}
                   </span>
                 )}

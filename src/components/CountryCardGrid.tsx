@@ -129,11 +129,11 @@ export default function CountryCardGrid({
                     aria-hidden="true"
                   />
                   <div className="absolute inset-x-0 bottom-0 p-3">
-                    <p className="truncate font-display text-sm font-extrabold text-white drop-shadow-sm sm:text-base">
+                    <p className="line-clamp-2 break-words leading-tight font-display text-sm font-extrabold text-white drop-shadow-sm sm:text-base">
                       {locale === "ar" ? c.nameAr : c.nameEn}
                     </p>
                     {c.subtitle && (
-                      <p className="mt-0.5 truncate text-2xs font-semibold text-sun-300">
+                      <p className="mt-0.5 line-clamp-2 break-words leading-tight text-2xs font-semibold text-sun-300">
                         {c.subtitle}
                       </p>
                     )}

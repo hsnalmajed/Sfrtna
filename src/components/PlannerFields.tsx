@@ -247,7 +247,7 @@ export function EdgeTabs<T extends string>({
             role="tab"
             aria-selected={active}
             onClick={() => onChange(t.value)}
-            className={`flex min-w-0 items-center justify-center gap-2.5 rounded-xl px-3 py-2.5 text-center transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400 sm:px-4 ${
+            className={`flex min-w-0 items-center justify-center gap-2.5 rounded-xl px-2 py-2.5 text-center min-[360px]:px-3 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400 sm:px-4 ${
               active
                 ? "bg-sun-400 text-navy-950 shadow-[var(--shadow-sun)]"
                 : dark
@@ -266,7 +266,7 @@ export function EdgeTabs<T extends string>({
               {/* On a phone the title may take two lines: "I know my
                   destination" ran out of its tab in English (owner, 29 Oct). */}
               <span className="flex items-center justify-center gap-1.5 text-sm font-extrabold leading-tight [text-wrap:balance] sm:whitespace-nowrap sm:text-base">
-                <Icon name={t.icon} className="h-4 w-4 shrink-0 sm:hidden" />
+                <Icon name={t.icon} className="h-4 w-4 shrink-0 max-[359px]:hidden sm:hidden" />
                 <span className="min-w-0">{t.title}</span>
               </span>
               <span
