@@ -73,8 +73,6 @@ class MainViewController: CAPBridgeViewController {
     private let uiProxy = NewWindowProxy()
     private var intro: IntroOverlay?
     private var loadingWatch: NSKeyValueObservation?
-    private var insetsScript = false
-    private var lastInsets: UIEdgeInsets = .zero
 
     func openOutside(_ url: URL) {
         let safari = SFSafariViewController(url: url)
@@ -95,6 +93,7 @@ class MainViewController: CAPBridgeViewController {
             uiProxy.host = self
             wv.uiDelegate = uiProxy
         }
+        installSafeArea()
         startIntro()
         monitor.pathUpdateHandler = { [weak self] path in
             DispatchQueue.main.async { self?.network(up: path.status == .satisfied) }
@@ -149,37 +148,33 @@ class MainViewController: CAPBridgeViewController {
 
     // MARK: Safe area
 
-    override func viewSafeAreaInsetsDidChange() {
-        super.viewSafeAreaInsetsDidChange()
-        pushInsets()
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        pushInsets()
-    }
-
-    private func pushInsets() {
-        let i = view.window?.safeAreaInsets ?? view.safeAreaInsets
-        guard i != lastInsets, i.top > 0 || i.bottom > 0 else { return }
-        lastInsets = i
-        // A <style> of its own rather than the <html> element's style
-        // attribute, which React may rewrite; it is put back if removed.
-        let css = ":root{--safe-area-inset-top:\(Int(i.top))px;--safe-area-inset-bottom:\(Int(i.bottom))px;"
-            + "--safe-area-inset-left:\(Int(i.left))px;--safe-area-inset-right:\(Int(i.right))px}"
-        let js = "(function(){var css='\(css)';function put(){var d=document,s=d.getElementById('sfr-insets');"
-            + "if(!s){s=d.createElement('style');s.id='sfr-insets';(d.head||d.documentElement).appendChild(s);}"
-            + "if(s.textContent!==css)s.textContent=css;}put();"
-            + "if(!window.__sfrInsets){window.__sfrInsets=1;new MutationObserver(put).observe(document.documentElement,{childList:true,subtree:true});"
-            + "document.addEventListener('DOMContentLoaded',put);}})();"
-        // Every page from now on gets them before it draws (the app is
-        // portrait only, so they do not change)…
-        if !insetsScript, let ucc = webView?.configuration.userContentController {
-            ucc.addUserScript(WKUserScript(source: js, injectionTime: .atDocumentStart, forMainFrameOnly: true))
-            insetsScript = true
-        }
-        // …and the page already open gets them now.
-        webView?.evaluateJavaScript(js, completionHandler: nil)
+    /// The notch / Dynamic Island and the home bar, handed to the page as
+    /// --safe-area-inset-* (the variables Android's SystemBars plugin sets,
+    /// which the app's header and tab bar already use). WebKit gives the
+    /// real values through env() once the page's viewport says
+    /// viewport-fit=cover, so the script adds that to the page's viewport
+    /// tag and maps env() onto the variables. Installed here, before the
+    /// first page loads (build 11 measured the window afterwards and sent
+    /// numbers — the first page missed them). Kept in a <style> of its own
+    /// and put back if React rewrites the head.
+    private func installSafeArea() {
+        let js = """
+        (function(){
+          var css=':root{--safe-area-inset-top:env(safe-area-inset-top,0px);--safe-area-inset-bottom:env(safe-area-inset-bottom,0px);--safe-area-inset-left:env(safe-area-inset-left,0px);--safe-area-inset-right:env(safe-area-inset-right,0px)}';
+          function put(){
+            var d=document,s=d.getElementById('sfr-insets');
+            if(!s){s=d.createElement('style');s.id='sfr-insets';(d.head||d.documentElement).appendChild(s);}
+            if(s.textContent!==css)s.textContent=css;
+            var m=d.querySelector('meta[name=viewport]');
+            if(m&&m.content.indexOf('viewport-fit')===-1)m.content=m.content+', viewport-fit=cover';
+          }
+          put();
+          new MutationObserver(put).observe(document.documentElement,{childList:true,subtree:true});
+          document.addEventListener('DOMContentLoaded',put);
+        })();
+        """
+        webView?.configuration.userContentController.addUserScript(
+            WKUserScript(source: js, injectionTime: .atDocumentStart, forMainFrameOnly: true))
     }
 
     private func network(up: Bool) {

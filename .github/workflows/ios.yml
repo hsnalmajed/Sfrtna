@@ -76,11 +76,15 @@ jobs:
           APP=$(find "$RUNNER_TEMP/dd" -name App.app -path "*iphonesimulator*" | head -1)
           xcrun simctl install "$UDID" "$APP"
           OUT="$RUNNER_TEMP/shots"; mkdir -p "$OUT"
+          # A video of the launch (the opening lasts about 1.5 s; separate
+          # screenshots on a cold simulator come too late to catch it).
+          xcrun simctl io "$UDID" recordVideo --codec=h264 --force "$OUT/launch.mp4" &
+          REC=$!
+          sleep 2
           xcrun simctl launch "$UDID" com.sfrtna.app
-          for t in 0.4 0.8 1.2 2 4 10 20; do
-            sleep $(echo "$t" | awk '{print $1 - p}' p="${prev:-0}"); prev=$t
-            xcrun simctl io "$UDID" screenshot "$OUT/t$t.png"
-          done
+          sleep 16
+          kill -INT $REC; wait $REC || true
+          xcrun simctl io "$UDID" screenshot "$OUT/t20.png"
           xcrun simctl terminate "$UDID" com.sfrtna.app || true
           cd "$OUT" && git init -q && git add . && git -c user.name=ci -c user.email=ci@sfrtna.com commit -qm "iOS simulator shots ${{ github.run_number }}"
           git push -qf "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" HEAD:ios-shots
