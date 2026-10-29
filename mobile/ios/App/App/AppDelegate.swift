@@ -172,19 +172,31 @@ class MainViewController: CAPBridgeViewController {
         // --safe-area-inset-* = the larger of WebKit's env() and the window's
         // own insets sent from here after each load (window.__sfrNative):
         // build 12 on the simulator showed env() alone still 0.
+        // The sheet is adopted by the document (document.adoptedStyleSheets),
+        // not a <style> in <head>: React rewrites the head when it renders
+        // and dropped the element (seen 29 Oct, build 13). A <style> kept
+        // alive by an observer is the fallback for iOS before 16.4.
         let js = """
         (function(){
           var base=':root{--safe-area-inset-top:max(env(safe-area-inset-top,0px),var(--sfr-nt,0px));--safe-area-inset-bottom:max(env(safe-area-inset-bottom,0px),var(--sfr-nb,0px));--safe-area-inset-left:max(env(safe-area-inset-left,0px),var(--sfr-nl,0px));--safe-area-inset-right:max(env(safe-area-inset-right,0px),var(--sfr-nr,0px))}';
+          var sheet=null;
+          try{sheet=new CSSStyleSheet();document.adoptedStyleSheets=document.adoptedStyleSheets.concat([sheet]);}catch(e){sheet=null;}
           function put(){
-            var d=document,s=d.getElementById('sfr-insets'),css=base+(window.__sfrNative||'');
-            if(!s){s=d.createElement('style');s.id='sfr-insets';(d.head||d.documentElement).appendChild(s);}
-            if(s.textContent!==css)s.textContent=css;
+            var d=document,css=base+(window.__sfrNative||'');
+            if(sheet){
+              if(sheet.__css!==css){sheet.replaceSync(css);sheet.__css=css;}
+              if(d.adoptedStyleSheets.indexOf(sheet)===-1)d.adoptedStyleSheets=d.adoptedStyleSheets.concat([sheet]);
+            }else{
+              var s=d.getElementById('sfr-insets');
+              if(!s){s=d.createElement('style');s.id='sfr-insets';(d.head||d.documentElement).appendChild(s);}
+              if(s.textContent!==css)s.textContent=css;
+            }
             var m=d.querySelector('meta[name=viewport]');
             if(m&&m.content.indexOf('viewport-fit')===-1)m.content=m.content+', viewport-fit=cover';
           }
           window.__sfrPut=put;
           put();
-          new MutationObserver(put).observe(document.documentElement,{childList:true,subtree:true});
+          new MutationObserver(put).observe(document,{childList:true,subtree:true});
           document.addEventListener('DOMContentLoaded',put);
         })();
         """
@@ -202,7 +214,7 @@ class MainViewController: CAPBridgeViewController {
         let i = view.window?.safeAreaInsets ?? view.safeAreaInsets
         let native = ":root{--sfr-nt:\(Int(i.top))px;--sfr-nb:\(Int(i.bottom))px;--sfr-nl:\(Int(i.left))px;--sfr-nr:\(Int(i.right))px}"
         let js = "window.__sfrNative='\(native)';if(window.__sfrPut)window.__sfrPut();"
-            + "getComputedStyle(document.documentElement).getPropertyValue('--safe-area-inset-top')+'|'+(!!document.getElementById('sfr-insets'))+'|'+((document.querySelector('meta[name=viewport]')||{}).content)+'|'+location.pathname"
+            + "getComputedStyle(document.documentElement).getPropertyValue('--safe-area-inset-top')+'|'+(document.adoptedStyleSheets.length)+'|'+((document.querySelector('meta[name=viewport]')||{}).content)+'|'+location.pathname"
         wv.evaluateJavaScript(js) { result, error in
             NSLog("SFR insets native=%@ page=%@ err=%@", "\(i)", "\(result ?? "nil")", "\(error?.localizedDescription ?? "")")
         }
