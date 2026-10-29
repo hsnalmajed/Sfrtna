@@ -123,15 +123,20 @@ class MainViewController: CAPBridgeViewController {
         // The line in the language the visitor last read the site in (the
         // site's sfrtna_lang cookie, see src/components/NavTracker.tsx);
         // before any visit, the phone's own language.
+        // The cookie store can be slow to answer on a cold start, so the
+        // opening never waits more than a moment for it.
         let phoneEnglish = !(Locale.preferredLanguages.first?.hasPrefix("ar") ?? true)
-        if let store = webView?.configuration.websiteDataStore.httpCookieStore {
-            store.getAllCookies { cookies in
-                let lang = cookies.first { $0.name == "sfrtna_lang" && $0.domain.hasSuffix("sfrtna.com") }?.value
-                DispatchQueue.main.async { o.start(english: lang.map { $0 == "en" } ?? phoneEnglish) }
-            }
-        } else {
-            o.start(english: phoneEnglish)
+        var started = false
+        let begin: (Bool) -> Void = { english in
+            if started { return }
+            started = true
+            o.start(english: english)
         }
+        webView?.configuration.websiteDataStore.httpCookieStore.getAllCookies { cookies in
+            let lang = cookies.first { $0.name == "sfrtna_lang" && $0.domain.hasSuffix("sfrtna.com") }?.value
+            DispatchQueue.main.async { begin(lang.map { $0 == "en" } ?? phoneEnglish) }
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) { begin(phoneEnglish) }
         // Leaves once the first page has loaded (and the line has been read).
         loadingWatch = webView?.observe(\.isLoading, options: [.new]) { [weak self] wv, _ in
             if !wv.isLoading { DispatchQueue.main.async { self?.endIntro() } }
