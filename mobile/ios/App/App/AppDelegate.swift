@@ -95,6 +95,14 @@ class MainViewController: CAPBridgeViewController {
             wv.uiDelegate = uiProxy
         }
         installSafeArea()
+        // Only for the simulator check in CI (ios.yml launches with this
+        // argument): the welcome cards are marked seen, so the home page
+        // and its top bar can be photographed. Users never pass arguments.
+        if ProcessInfo.processInfo.arguments.contains("-sfrSkipWelcome") {
+            webView?.configuration.userContentController.addUserScript(WKUserScript(
+                source: "try{localStorage.setItem('sfr-welcome-v1','1');localStorage.setItem('sfrtna-consent-v1','denied');}catch(e){}",
+                injectionTime: .atDocumentStart, forMainFrameOnly: true))
+        }
         startIntro()
         monitor.pathUpdateHandler = { [weak self] path in
             DispatchQueue.main.async { self?.network(up: path.status == .satisfied) }

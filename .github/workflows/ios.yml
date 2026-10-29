@@ -94,7 +94,7 @@ jobs:
           ls "$HOME/Library/Logs/DiagnosticReports" 2>/dev/null | tail -5 > "$OUT/crashes.txt" || true
           t 30 xcrun simctl terminate "$UDID" com.sfrtna.app || true
           # A second launch: no welcome cards, so the home page and its top bar show.
-          t 90 xcrun simctl launch "$UDID" com.sfrtna.app || { sleep 15; t 90 xcrun simctl launch "$UDID" com.sfrtna.app; } || true
+          t 90 xcrun simctl launch "$UDID" com.sfrtna.app -sfrSkipWelcome || { sleep 15; t 90 xcrun simctl launch "$UDID" com.sfrtna.app -sfrSkipWelcome; } || true
           sleep 1; t 30 xcrun simctl io "$UDID" screenshot "$OUT/second-1s.png" || true
           sleep 11; t 30 xcrun simctl io "$UDID" screenshot "$OUT/second-12s.png" || true
           t 30 xcrun simctl terminate "$UDID" com.sfrtna.app || true
