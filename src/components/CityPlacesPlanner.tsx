@@ -462,7 +462,7 @@ export default function CityPlacesPlanner({
               {picked.map((p) => (
                 <li key={p.key} className="flex items-center gap-3 px-3 py-2.5">
                   <span aria-hidden="true">{PIN_STYLES[p.category].glyph}</span>
-                  <span className="min-w-0 flex-1 truncate text-sm font-bold text-navy-900" dir={p.englishOnly ? "ltr" : undefined}>
+                  <span className="min-w-0 flex-1 line-clamp-2 break-words leading-snug text-sm font-bold text-navy-900" dir={p.englishOnly ? "ltr" : undefined}>
                     {p.name}
                   </span>
                   <button type="button" onClick={() => toggle(p)} className="text-xs font-bold text-rose-600 hover:underline">
