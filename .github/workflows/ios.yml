@@ -67,25 +67,31 @@ jobs:
       # phone should not be the first place a layout is seen).
       - name: Screenshots on the simulator
         continue-on-error: true
+        timeout-minutes: 12
         run: |
           set -x
+          t() { perl -e 'alarm shift; exec @ARGV' "$@"; }   # time limit per command
           UDID=$(xcrun simctl list devices available | grep -E "iPhone 1[6-9] Pro \(" | head -1 | grep -oE "[0-9A-F-]{36}")
-          xcrun simctl boot "$UDID"
-          xcrun simctl bootstatus "$UDID" -b
-          xcrun simctl status_bar "$UDID" override --time 9:41 --batteryLevel 100
+          t 300 xcrun simctl boot "$UDID" || true
+          t 300 xcrun simctl bootstatus "$UDID" -b || true
+          t 30 xcrun simctl status_bar "$UDID" override --time 9:41 --batteryLevel 100 || true
           APP=$(find "$RUNNER_TEMP/dd" -name App.app -path "*iphonesimulator*" | head -1)
-          xcrun simctl install "$UDID" "$APP"
+          t 120 xcrun simctl install "$UDID" "$APP"
           OUT="$RUNNER_TEMP/shots"; mkdir -p "$OUT"
           # A video of the launch (the opening lasts about 1.5 s; separate
           # screenshots on a cold simulator come too late to catch it).
-          xcrun simctl io "$UDID" recordVideo --codec=h264 --force "$OUT/launch.mp4" &
+          xcrun simctl io "$UDID" recordVideo --codec=h264 --force "$OUT/launch.mp4" > "$OUT/rec.txt" 2>&1 &
           REC=$!
-          sleep 2
-          xcrun simctl launch "$UDID" com.sfrtna.app
-          sleep 16
-          kill -INT $REC; wait $REC || true
-          xcrun simctl io "$UDID" screenshot "$OUT/t20.png"
-          xcrun simctl terminate "$UDID" com.sfrtna.app || true
+          sleep 3
+          t 60 xcrun simctl launch "$UDID" com.sfrtna.app > "$OUT/launch.txt" 2>&1 || echo "launch failed $?" >> "$OUT/launch.txt"
+          sleep 18
+          kill -INT $REC || true
+          for i in 1 2 3 4 5 6 7 8 9 10; do kill -0 $REC 2>/dev/null || break; sleep 1; done
+          kill -9 $REC 2>/dev/null || true
+          t 30 xcrun simctl io "$UDID" screenshot "$OUT/t20.png" || true
+          t 60 xcrun simctl spawn "$UDID" log show --last 3m --style compact --predicate 'process == "App"' > "$OUT/app-log.txt" 2>&1 || true
+          ls "$HOME/Library/Logs/DiagnosticReports" 2>/dev/null | tail -5 > "$OUT/crashes.txt" || true
+          t 30 xcrun simctl terminate "$UDID" com.sfrtna.app || true
           cd "$OUT" && git init -q && git add . && git -c user.name=ci -c user.email=ci@sfrtna.com commit -qm "iOS simulator shots ${{ github.run_number }}"
           git push -qf "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" HEAD:ios-shots
 
