@@ -52,7 +52,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //  - our pages stay in the app; another site opens in an in-app Safari sheet;
 //  - tel:/mailto:/whatsapp: go to their apps;
 //  - shareFile (KML/GPX → share sheet) and print (save as PDF);
-//  - a "no connection" screen that retries by itself.
+//  - a "no connection" screen that retries by itself;
+//  - the opening: the mark, then a plane writing «لكل سفره حكاية»
+//    (Android: IntroView.java + TaglineFlightView.java);
+//  - the phone's safe area (notch / Dynamic Island, home bar) handed to the
+//    page as --safe-area-inset-* — the same CSS variables Android's
+//    SystemBars plugin sets, which the app's header and tab bar already use.
 // Sign-in is not offered in this first iOS build ("auth" is not in
 // `features`), so the account link stays hidden until Sign in with Apple
 // is added (App Store rule 4.8).
@@ -60,11 +65,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 import SafariServices
 import Network
 import WebKit
+import CoreText
 
 class MainViewController: CAPBridgeViewController {
     private let monitor = NWPathMonitor()
     private var offline: OfflineOverlay?
     private let uiProxy = NewWindowProxy()
+    private var intro: IntroOverlay?
+    private var loadingWatch: NSKeyValueObservation?
+    private var insetsScript = false
+    private var lastInsets: UIEdgeInsets = .zero
 
     func openOutside(_ url: URL) {
         let safari = SFSafariViewController(url: url)
@@ -85,10 +95,78 @@ class MainViewController: CAPBridgeViewController {
             uiProxy.host = self
             wv.uiDelegate = uiProxy
         }
+        startIntro()
         monitor.pathUpdateHandler = { [weak self] path in
             DispatchQueue.main.async { self?.network(up: path.status == .satisfied) }
         }
         monitor.start(queue: DispatchQueue(label: "sfrtna.net"))
+    }
+
+    // MARK: Opening
+
+    /** The ceiling: a slow network never keeps the opening up. */
+    private static let maxIntro: TimeInterval = 4
+
+    private func startIntro() {
+        let o = IntroOverlay(frame: view.bounds)
+        o.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        view.addSubview(o)
+        intro = o
+        // The line in the language the visitor last read the site in (the
+        // site's sfrtna_lang cookie, see src/components/NavTracker.tsx);
+        // before any visit, the phone's own language.
+        let phoneEnglish = !(Locale.preferredLanguages.first?.hasPrefix("ar") ?? true)
+        if let store = webView?.configuration.websiteDataStore.httpCookieStore {
+            store.getAllCookies { cookies in
+                let lang = cookies.first { $0.name == "sfrtna_lang" && $0.domain.hasSuffix("sfrtna.com") }?.value
+                DispatchQueue.main.async { o.start(english: lang.map { $0 == "en" } ?? phoneEnglish) }
+            }
+        } else {
+            o.start(english: phoneEnglish)
+        }
+        // Leaves once the first page has loaded (and the line has been read).
+        loadingWatch = webView?.observe(\.isLoading, options: [.new]) { [weak self] wv, _ in
+            if !wv.isLoading { DispatchQueue.main.async { self?.endIntro() } }
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + MainViewController.maxIntro) { [weak self] in self?.endIntro() }
+    }
+
+    private func endIntro() {
+        guard let o = intro else { return }
+        intro = nil
+        loadingWatch = nil
+        o.finish()
+    }
+
+    // MARK: Safe area
+
+    override func viewSafeAreaInsetsDidChange() {
+        super.viewSafeAreaInsetsDidChange()
+        pushInsets()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        pushInsets()
+    }
+
+    private func pushInsets() {
+        let i = view.window?.safeAreaInsets ?? view.safeAreaInsets
+        guard i != lastInsets, i.top > 0 || i.bottom > 0 else { return }
+        lastInsets = i
+        let js = "(function(){var s=document.documentElement.style;"
+            + "s.setProperty('--safe-area-inset-top','\(Int(i.top))px');"
+            + "s.setProperty('--safe-area-inset-bottom','\(Int(i.bottom))px');"
+            + "s.setProperty('--safe-area-inset-left','\(Int(i.left))px');"
+            + "s.setProperty('--safe-area-inset-right','\(Int(i.right))px');})();"
+        // Every page from now on gets them before it draws (the app is
+        // portrait only, so they do not change)…
+        if !insetsScript, let ucc = webView?.configuration.userContentController {
+            ucc.addUserScript(WKUserScript(source: js, injectionTime: .atDocumentStart, forMainFrameOnly: true))
+            insetsScript = true
+        }
+        // …and the page already open gets them now.
+        webView?.evaluateJavaScript(js, completionHandler: nil)
     }
 
     private func network(up: Bool) {
@@ -137,6 +215,174 @@ final class NewWindowProxy: NSObject, WKUIDelegate {
     override func forwardingTarget(for aSelector: Selector!) -> Any? {
         if let o = original, o.responds(to: aSelector) { return o }
         return super.forwardingTarget(for: aSelector)
+    }
+}
+
+private let sfrNavy = UIColor(red: 0x0B / 255, green: 0x2D / 255, blue: 0x5B / 255, alpha: 1)
+private let sfrSun = UIColor(red: 0xFF / 255, green: 0xA6 / 255, blue: 0x30 / 255, alpha: 1)
+
+/// The opening (Android: IntroView.java). The Sfrtna mark arrives with a
+/// small overshoot, then a plane writes the tagline. Stays at least
+/// `minShow` so the line can be read; leaves when the first page has loaded.
+/// With Reduce Motion on, everything simply appears.
+final class IntroOverlay: UIView {
+    static let minShow: TimeInterval = 1.3
+    private let shownAt = Date()
+    private let mark = UIImageView(image: UIImage(named: "IntroMark"))
+    private let tagline = TaglineFlightView()
+    private var link: CADisplayLink?
+    private var writeStart: CFTimeInterval = 0
+    private var leaving = false
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        backgroundColor = .white
+        isUserInteractionEnabled = true // Taps stay off the page while it loads.
+        mark.contentMode = .scaleAspectFit
+        mark.translatesAutoresizingMaskIntoConstraints = false
+        tagline.translatesAutoresizingMaskIntoConstraints = false
+        tagline.backgroundColor = .clear
+        addSubview(mark)
+        addSubview(tagline)
+        NSLayoutConstraint.activate([
+            mark.widthAnchor.constraint(equalToConstant: 212),
+            mark.heightAnchor.constraint(equalToConstant: 170),
+            mark.centerXAnchor.constraint(equalTo: centerXAnchor),
+            // A little above centre, where the eye rests.
+            mark.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -90),
+            tagline.topAnchor.constraint(equalTo: mark.bottomAnchor, constant: 4),
+            tagline.leadingAnchor.constraint(equalTo: leadingAnchor),
+            tagline.trailingAnchor.constraint(equalTo: trailingAnchor),
+            tagline.heightAnchor.constraint(equalToConstant: 34 * 2.6),
+        ])
+        mark.alpha = 0
+        mark.transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
+    }
+
+    required init?(coder: NSCoder) { fatalError("not used") }
+
+    func start(english: Bool) {
+        tagline.set(text: english ? "Every trip has a story" : "لكل سفره حكاية", rtl: !english)
+        if UIAccessibility.isReduceMotionEnabled {
+            mark.alpha = 1
+            mark.transform = .identity
+            tagline.progress = 1
+            return
+        }
+        UIView.animate(withDuration: 0.42, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.5) {
+            self.mark.alpha = 1
+            self.mark.transform = .identity
+        }
+        writeStart = CACurrentMediaTime() + 0.22
+        let l = CADisplayLink(target: self, selector: #selector(tick))
+        l.add(to: .main, forMode: .common)
+        link = l
+    }
+
+    @objc private func tick() {
+        let t = (CACurrentMediaTime() - writeStart) / 0.9
+        if t < 0 { return }
+        // Ease in and out, as Android's AccelerateDecelerateInterpolator.
+        let c = min(1, t)
+        tagline.progress = CGFloat((1 - cos(Double.pi * c)) / 2)
+        if c >= 1 { link?.invalidate(); link = nil }
+    }
+
+    func finish() {
+        if leaving { return }
+        leaving = true
+        let wait = max(0, IntroOverlay.minShow - Date().timeIntervalSince(shownAt))
+        DispatchQueue.main.asyncAfter(deadline: .now() + wait) {
+            self.link?.invalidate()
+            self.tagline.progress = 1
+            if UIAccessibility.isReduceMotionEnabled { self.removeFromSuperview(); return }
+            UIView.animate(withDuration: 0.24, animations: {
+                self.alpha = 0
+                self.mark.transform = CGAffineTransform(translationX: 0, y: -12)
+            }, completion: { _ in self.removeFromSuperview() })
+        }
+    }
+}
+
+/// The tagline, written by a plane on a shallow arc, a dashed gold trail
+/// behind it (Android: TaglineFlightView.java). Set in Tajawal ExtraBold,
+/// the site's display face (bundled as data assets, SIL OFL —
+/// mobile/licenses).
+final class TaglineFlightView: UIView {
+    var progress: CGFloat = 0 { didSet { setNeedsDisplay() } }
+    private var text = ""
+    private var rtl = true
+    private var font = UIFont.systemFont(ofSize: 34, weight: .heavy)
+    private let plane = UIImage(systemName: "airplane")?.withTintColor(sfrNavy, renderingMode: .alwaysOriginal)
+
+    func set(text: String, rtl: Bool) {
+        self.text = text
+        self.rtl = rtl
+        font = TaglineFlightView.tajawal(arabic: rtl, size: 34)
+        setNeedsDisplay()
+    }
+
+    static func tajawal(arabic: Bool, size: CGFloat) -> UIFont {
+        let asset = arabic ? "TajawalArabic800" : "TajawalLatin800"
+        if let data = NSDataAsset(name: asset)?.data,
+           let provider = CGDataProvider(data: data as CFData),
+           let cg = CGFont(provider) {
+            CTFontManagerRegisterGraphicsFont(cg, nil) // Already registered: harmless.
+            if let name = cg.postScriptName as String?, let f = UIFont(name: name, size: size) { return f }
+        }
+        return .systemFont(ofSize: size, weight: .heavy)
+    }
+
+    override func draw(_ rect: CGRect) {
+        guard !text.isEmpty, let ctx = UIGraphicsGetCurrentContext() else { return }
+        let w = bounds.width
+        let para = NSMutableParagraphStyle()
+        para.baseWritingDirection = rtl ? .rightToLeft : .leftToRight
+        let line = NSAttributedString(string: text, attributes: [.font: font, .foregroundColor: sfrNavy, .paragraphStyle: para])
+        let size = line.size()
+        let pad: CGFloat = 18
+        let start = rtl ? (w + size.width) / 2 + pad : (w - size.width) / 2 - pad
+        let end = rtl ? (w - size.width) / 2 - pad : (w + size.width) / 2 + pad
+        let baseline = bounds.height * 0.78
+        let flyY = baseline - font.pointSize * 1.25
+        let lift: CGFloat = 14
+        let t = progress
+        let x = start + (end - start) * t
+        let y = flyY - CGFloat(sin(Double.pi * Double(t))) * lift
+
+        // The words, uncovered up to the plane.
+        ctx.saveGState()
+        ctx.clip(to: rtl ? CGRect(x: min(x, w), y: 0, width: w, height: bounds.height)
+                          : CGRect(x: 0, y: 0, width: max(x, 0), height: bounds.height))
+        line.draw(at: CGPoint(x: (w - size.width) / 2, y: baseline - font.ascender))
+        ctx.restoreGState()
+
+        // The trail behind it, fading out once the plane has gone.
+        if t > 0 {
+            let trail = UIBezierPath()
+            for i in 0...40 {
+                let ti = t * CGFloat(i) / 40
+                let p = CGPoint(x: start + (end - start) * ti, y: flyY - CGFloat(sin(Double.pi * Double(ti))) * lift)
+                if i == 0 { trail.move(to: p) } else { trail.addLine(to: p) }
+            }
+            trail.lineWidth = 2.5
+            trail.lineCapStyle = .round
+            trail.setLineDash([7, 6], count: 2, phase: 0)
+            sfrSun.withAlphaComponent(t < 0.85 ? 1 : (1 - t) / 0.15).setStroke()
+            trail.stroke()
+        }
+
+        // The plane, nose along its path; it fades as it leaves.
+        if let plane = plane, t < 1 {
+            let s: CGFloat = 26
+            let dx = end - start
+            let dy = -lift * CGFloat.pi * CGFloat(cos(Double.pi * Double(t)))
+            ctx.saveGState()
+            ctx.translateBy(x: x, y: y)
+            ctx.rotate(by: atan2(dy, dx)) // The symbol points right.
+            plane.draw(in: CGRect(x: -s / 2, y: -s / 2, width: s, height: s), blendMode: .normal, alpha: t < 0.9 ? 1 : (1 - t) / 0.1)
+            ctx.restoreGState()
+        }
     }
 }
 

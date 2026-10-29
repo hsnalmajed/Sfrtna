@@ -57,9 +57,13 @@ const PAGES = [
   `/ar/discover-results?${qs({ ...flight, mode: "discover", tripRoute: "roundtrip", departDate: day(50), returnDate: day(57), budget: "6000", nights: "7", multiDestination: "false", stops: "2", oneWayOnly: "false", preferenceCategory: "", continents: "" })}`,
   `/ar/hotel-results?${qs({ hmode: "discover", checkIn: day(40), checkOut: day(44), adults: "2", childrenAges: "", infants: "0", city: "Istanbul", label: "إسطنبول", budget: "4000", currency: "SAR" })}`,
   `/ar/hotel-results?${qs({ hmode: "known", hotel: "Hilton Riyadh Olaya", hotelArea: "Riyadh, Saudi Arabia", label: "هيلتون الرياض العليا", checkIn: day(40), checkOut: day(43), adults: "2", childrenAges: "", infants: "0" })}`,
-  "/en",
-  "/en/attractions/TR/istanbul",
 ];
+// LANG_AUDIT=en runs the same pages in English (owner, 29 Oct: the English
+// form tabs spilled out of their buttons and nothing caught it).
+const LANG = process.env.LANG_AUDIT === "en" ? "en" : "ar";
+if (LANG === "en") for (let i = 0; i < PAGES.length; i++) PAGES[i] = PAGES[i].replace(/^\/ar/, "/en").replace(/label=[^&]*/, "label=Istanbul");
+else PAGES.push("/en", "/en/attractions/TR/istanbul");
+const DEVICES = (process.env.DEVICES || "iPhone 13,Pixel 7").split(",").map((x) => x.trim()).filter(Boolean);
 
 // Words that leave the traveller without our answer (owner, 20 Oct).
 const DEAD_END = [/لا تتوفر أسعار/, /ابحث عن الرحلة نفسها/, /ابحث في (Booking|Expedia|Agoda)/, /أو ابحث لدى/, /لم نرصد لها سعر/, /افتح السعر الحي/, /No live fares/i, /Search the same trip/i];
@@ -70,12 +74,12 @@ const browser = await chromium.launch();
 const report = [];
 let shot = 0;
 
-for (const device of ["iPhone 13", "Pixel 7"]) {
+for (const device of DEVICES) {
   for (const mode of ["web", "app"]) {
     const d = devices[device];
     const context = await browser.newContext({
       ...d,
-      locale: "ar-SA",
+      locale: LANG === "en" ? "en-US" : "ar-SA",
       // The app's WebView adds this to the user agent; the page then draws the app's look.
       userAgent: mode === "app" ? `${d.userAgent} SfrtnaApp/Android` : d.userAgent,
     });
@@ -102,7 +106,7 @@ for (const device of ["iPhone 13", "Pixel 7"]) {
         await page.waitForTimeout(path.includes("results") ? 14_000 : 3_000);
         const found = await page.evaluate((deadEnd) => {
           const W = window.innerWidth;
-          const out = { overflow: document.documentElement.scrollWidth - W, offscreen: [], wrapped: [], cut: [], blurry: [], tiny: [], deadEnd: [], empty: [], imgs: [] };
+          const out = { overflow: document.documentElement.scrollWidth - W, spill: [], offscreen: [], wrapped: [], cut: [], blurry: [], tiny: [], deadEnd: [], empty: [], imgs: [] };
           const visible = (el) => {
             const r = el.getBoundingClientRect();
             const s = getComputedStyle(el);
@@ -131,6 +135,14 @@ for (const device of ["iPhone 13", "Pixel 7"]) {
             // Icon-over-label tiles (tab bar, plan choices) are tall by design.
             const stacked = el.querySelector("img, svg") && getComputedStyle(el).flexDirection.startsWith("column");
             if (text && text.length <= 24 && lines === 1 && !stacked && el.scrollHeight > lh * 2.2 && r.height < 140 && !el.querySelector("img, svg + span + span")) out.wrapped.push(`${label(el)} (${Math.round(r.width)}×${Math.round(r.height)})`);
+            // Words running out of their own button or tab (clipped or not).
+            if (text) {
+              for (const c of el.querySelectorAll("span, p, strong, b")) {
+                if (!visible(c) || c.children.length > 1 || !(c.innerText || "").trim()) continue;
+                const cr = c.getBoundingClientRect();
+                if (cr.right > r.right + 2 || cr.left < r.left - 2) { out.spill.push(`${label(el)} (${Math.round(cr.width)} > ${Math.round(r.width)})`); break; }
+              }
+            }
             if ((el.tagName === "BUTTON" || el.getAttribute("role")) && (r.width < 32 || r.height < 32) && !el.closest(".leaflet-container")) out.tiny.push(`${label(el) || el.className.slice(0, 30)} (${Math.round(r.width)}×${Math.round(r.height)})`);
           }
           for (const el of document.querySelectorAll("p, span, h1, h2, h3, a, button, input")) {
@@ -214,6 +226,7 @@ for (const r of report) {
   }
   const add = (k, v) => v && v.length && lines.push(`  ${k}: ${[...new Set(v)].slice(0, 12).join(" | ")}`);
   if (r.overflow > 2) lines.push(`  OVERFLOW: ${r.overflow}px sideways`);
+  add("SPILL", r.spill);
   add("OFFSCREEN", r.offscreen);
   add("WRAPPED", r.wrapped);
   add("CUT", r.cut);

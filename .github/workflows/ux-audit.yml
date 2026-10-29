@@ -5,6 +5,13 @@ name: UX audit
 
 on:
   workflow_dispatch:
+    inputs:
+      lang:
+        description: "ar or en"
+        default: "ar"
+      devices:
+        description: "Comma list of Playwright devices"
+        default: "iPhone 13,Pixel 7"
 
 permissions:
   contents: write
@@ -26,6 +33,8 @@ jobs:
       - name: Audit every page
         env:
           SMOKE_TOKEN: ${{ secrets.SMOKE_TOKEN }}
+          LANG_AUDIT: ${{ inputs.lang }}
+          DEVICES: ${{ inputs.devices }}
         run: node scripts/ux-audit.mjs
       # On a branch of their own (never main, so nothing is deployed): the
       # report and the screenshots, replaced on every run.
