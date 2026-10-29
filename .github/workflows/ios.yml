@@ -92,6 +92,13 @@ jobs:
           t 60 xcrun simctl spawn "$UDID" log show --last 3m --style compact --predicate 'process == "App"' > "$OUT/app-log.txt" 2>&1 || true
           ls "$HOME/Library/Logs/DiagnosticReports" 2>/dev/null | tail -5 > "$OUT/crashes.txt" || true
           t 30 xcrun simctl terminate "$UDID" com.sfrtna.app || true
+          # A second launch: no welcome cards, so the home page and its top bar show.
+          t 60 xcrun simctl launch "$UDID" com.sfrtna.app || true
+          sleep 1; t 30 xcrun simctl io "$UDID" screenshot "$OUT/second-1s.png" || true
+          sleep 11; t 30 xcrun simctl io "$UDID" screenshot "$OUT/second-12s.png" || true
+          t 30 xcrun simctl openurl "$UDID" "https://sfrtna.com/ar/about" || true
+          sleep 8; t 30 xcrun simctl io "$UDID" screenshot "$OUT/second-about.png" || true
+          t 30 xcrun simctl terminate "$UDID" com.sfrtna.app || true
           cd "$OUT" && git init -q && git add . && git -c user.name=ci -c user.email=ci@sfrtna.com commit -qm "iOS simulator shots ${{ github.run_number }}"
           git push -qf "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" HEAD:ios-shots
 
