@@ -73,6 +73,7 @@ class MainViewController: CAPBridgeViewController {
     private let uiProxy = NewWindowProxy()
     private var intro: IntroOverlay?
     private var loadingWatch: NSKeyValueObservation?
+    private var loadsWatch: NSKeyValueObservation?
 
     func openOutside(_ url: URL) {
         let safari = SFSafariViewController(url: url)
@@ -104,7 +105,7 @@ class MainViewController: CAPBridgeViewController {
     // MARK: Opening
 
     /** The ceiling: a slow network never keeps the opening up. */
-    private static let maxIntro: TimeInterval = 4
+    private static let maxIntro: TimeInterval = 6
 
     private func startIntro() {
         // Pinned with constraints: this runs inside loadView, before the
@@ -139,7 +140,12 @@ class MainViewController: CAPBridgeViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) { begin(phoneEnglish) }
         // Leaves once the first page has loaded (and the line has been read).
         loadingWatch = webView?.observe(\.isLoading, options: [.new]) { [weak self] wv, _ in
-            if !wv.isLoading { DispatchQueue.main.async { self?.endIntro() } }
+            // "/" only forwards to /ar or /en: wait for that page, or the
+            // forwarding page shows white between the opening and the site.
+            let path = wv.url?.path ?? ""
+            if !wv.isLoading, path.hasPrefix("/ar") || path.hasPrefix("/en") {
+                DispatchQueue.main.async { self?.endIntro() }
+            }
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + MainViewController.maxIntro) { [weak self] in self?.endIntro() }
     }
@@ -163,16 +169,20 @@ class MainViewController: CAPBridgeViewController {
     /// numbers — the first page missed them). Kept in a <style> of its own
     /// and put back if React rewrites the head.
     private func installSafeArea() {
+        // --safe-area-inset-* = the larger of WebKit's env() and the window's
+        // own insets sent from here after each load (window.__sfrNative):
+        // build 12 on the simulator showed env() alone still 0.
         let js = """
         (function(){
-          var css=':root{--safe-area-inset-top:env(safe-area-inset-top,0px);--safe-area-inset-bottom:env(safe-area-inset-bottom,0px);--safe-area-inset-left:env(safe-area-inset-left,0px);--safe-area-inset-right:env(safe-area-inset-right,0px)}';
+          var base=':root{--safe-area-inset-top:max(env(safe-area-inset-top,0px),var(--sfr-nt,0px));--safe-area-inset-bottom:max(env(safe-area-inset-bottom,0px),var(--sfr-nb,0px));--safe-area-inset-left:max(env(safe-area-inset-left,0px),var(--sfr-nl,0px));--safe-area-inset-right:max(env(safe-area-inset-right,0px),var(--sfr-nr,0px))}';
           function put(){
-            var d=document,s=d.getElementById('sfr-insets');
+            var d=document,s=d.getElementById('sfr-insets'),css=base+(window.__sfrNative||'');
             if(!s){s=d.createElement('style');s.id='sfr-insets';(d.head||d.documentElement).appendChild(s);}
             if(s.textContent!==css)s.textContent=css;
             var m=d.querySelector('meta[name=viewport]');
             if(m&&m.content.indexOf('viewport-fit')===-1)m.content=m.content+', viewport-fit=cover';
           }
+          window.__sfrPut=put;
           put();
           new MutationObserver(put).observe(document.documentElement,{childList:true,subtree:true});
           document.addEventListener('DOMContentLoaded',put);
@@ -180,6 +190,22 @@ class MainViewController: CAPBridgeViewController {
         """
         webView?.configuration.userContentController.addUserScript(
             WKUserScript(source: js, injectionTime: .atDocumentStart, forMainFrameOnly: true))
+        loadsWatch = webView?.observe(\.isLoading, options: [.new]) { [weak self] wv, _ in
+            if !wv.isLoading { DispatchQueue.main.async { self?.sendInsets() } }
+        }
+    }
+
+    /// The window's insets as numbers, after every load (and logged, so a
+    /// simulator run shows what the page received).
+    private func sendInsets() {
+        guard let wv = webView else { return }
+        let i = view.window?.safeAreaInsets ?? view.safeAreaInsets
+        let native = ":root{--sfr-nt:\(Int(i.top))px;--sfr-nb:\(Int(i.bottom))px;--sfr-nl:\(Int(i.left))px;--sfr-nr:\(Int(i.right))px}"
+        let js = "window.__sfrNative='\(native)';if(window.__sfrPut)window.__sfrPut();"
+            + "getComputedStyle(document.documentElement).getPropertyValue('--safe-area-inset-top')+'|'+(!!document.getElementById('sfr-insets'))+'|'+((document.querySelector('meta[name=viewport]')||{}).content)+'|'+location.pathname"
+        wv.evaluateJavaScript(js) { result, error in
+            NSLog("SFR insets native=%@ page=%@ err=%@", "\(i)", "\(result ?? "nil")", "\(error?.localizedDescription ?? "")")
+        }
     }
 
     private func network(up: Bool) {
