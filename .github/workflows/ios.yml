@@ -25,7 +25,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: ios-app
@@ -59,8 +59,31 @@ jobs:
         run: |
           xcodebuild -project ios/App/App.xcodeproj -scheme App \
             -configuration Debug -sdk iphonesimulator \
-            -destination 'generic/platform=iOS Simulator' \
+            -destination 'generic/platform=iOS Simulator' -derivedDataPath "$RUNNER_TEMP/dd" \
             CODE_SIGNING_ALLOWED=NO build | tail -40
+
+      # The app run on an iPhone with a Dynamic Island: screenshots of the
+      # opening and of the first page go to branch ios-shots (the owner's
+      # phone should not be the first place a layout is seen).
+      - name: Screenshots on the simulator
+        continue-on-error: true
+        run: |
+          set -x
+          UDID=$(xcrun simctl list devices available | grep -E "iPhone 1[6-9] Pro \(" | head -1 | grep -oE "[0-9A-F-]{36}")
+          xcrun simctl boot "$UDID"
+          xcrun simctl bootstatus "$UDID" -b
+          xcrun simctl status_bar "$UDID" override --time 9:41 --batteryLevel 100
+          APP=$(find "$RUNNER_TEMP/dd" -name App.app -path "*iphonesimulator*" | head -1)
+          xcrun simctl install "$UDID" "$APP"
+          OUT="$RUNNER_TEMP/shots"; mkdir -p "$OUT"
+          xcrun simctl launch "$UDID" com.sfrtna.app
+          for t in 0.4 0.8 1.2 2 4 10 20; do
+            sleep $(echo "$t" | awk '{print $1 - p}' p="${prev:-0}"); prev=$t
+            xcrun simctl io "$UDID" screenshot "$OUT/t$t.png"
+          done
+          xcrun simctl terminate "$UDID" com.sfrtna.app || true
+          cd "$OUT" && git init -q && git add . && git -c user.name=ci -c user.email=ci@sfrtna.com commit -qm "iOS simulator shots ${{ github.run_number }}"
+          git push -qf "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" HEAD:ios-shots
 
       - name: Archive and upload to TestFlight
         if: env.HAS_ASC_KEY == 'true'

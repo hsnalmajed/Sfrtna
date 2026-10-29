@@ -108,9 +108,18 @@ class MainViewController: CAPBridgeViewController {
     private static let maxIntro: TimeInterval = 4
 
     private func startIntro() {
-        let o = IntroOverlay(frame: view.bounds)
-        o.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        // Pinned with constraints: this runs inside loadView, before the
+        // view has a size, and an autoresizing child of a 0×0 view stays
+        // 0×0 (build 10 never showed the opening for that reason).
+        let o = IntroOverlay(frame: UIScreen.main.bounds)
+        o.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(o)
+        NSLayoutConstraint.activate([
+            o.topAnchor.constraint(equalTo: view.topAnchor),
+            o.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            o.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            o.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+        ])
         intro = o
         // The line in the language the visitor last read the site in (the
         // site's sfrtna_lang cookie, see src/components/NavTracker.tsx);
@@ -154,11 +163,15 @@ class MainViewController: CAPBridgeViewController {
         let i = view.window?.safeAreaInsets ?? view.safeAreaInsets
         guard i != lastInsets, i.top > 0 || i.bottom > 0 else { return }
         lastInsets = i
-        let js = "(function(){var s=document.documentElement.style;"
-            + "s.setProperty('--safe-area-inset-top','\(Int(i.top))px');"
-            + "s.setProperty('--safe-area-inset-bottom','\(Int(i.bottom))px');"
-            + "s.setProperty('--safe-area-inset-left','\(Int(i.left))px');"
-            + "s.setProperty('--safe-area-inset-right','\(Int(i.right))px');})();"
+        // A <style> of its own rather than the <html> element's style
+        // attribute, which React may rewrite; it is put back if removed.
+        let css = ":root{--safe-area-inset-top:\(Int(i.top))px;--safe-area-inset-bottom:\(Int(i.bottom))px;"
+            + "--safe-area-inset-left:\(Int(i.left))px;--safe-area-inset-right:\(Int(i.right))px}"
+        let js = "(function(){var css='\(css)';function put(){var d=document,s=d.getElementById('sfr-insets');"
+            + "if(!s){s=d.createElement('style');s.id='sfr-insets';(d.head||d.documentElement).appendChild(s);}"
+            + "if(s.textContent!==css)s.textContent=css;}put();"
+            + "if(!window.__sfrInsets){window.__sfrInsets=1;new MutationObserver(put).observe(document.documentElement,{childList:true,subtree:true});"
+            + "document.addEventListener('DOMContentLoaded',put);}})();"
         // Every page from now on gets them before it draws (the app is
         // portrait only, so they do not change)…
         if !insetsScript, let ucc = webView?.configuration.userContentController {
