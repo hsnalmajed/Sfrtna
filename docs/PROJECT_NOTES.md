@@ -1711,6 +1711,19 @@ cover them (+ budget, breakfast, stars, kind, near a landmark).
   not readable from the workspace → the Report step sends the error lines as
   annotations (IDs blanked): `gh api repos/.../check-runs/<job>/annotations`.
   Build number = run number.
+- **29 Oct (owner's first look on his iPhone):** build 10 adds the opening
+  (IntroOverlay + TaglineFlightView in AppDelegate.swift, mark/fonts as
+  asset-catalog image + data sets) and the safe area: the shell pushes the
+  window's insets as `--safe-area-inset-*` (user script at document start +
+  now) — iOS WKWebView had none, so the header sat under the Dynamic
+  Island. Internal TestFlight group «Sfrtna Team» (owner added). Workflow
+  `ios-status.yml` (by hand) reads build/TestFlight state from App Store
+  Connect → annotations.
+- **English on phones (owner 29 Oct: the form tabs spilled):** EdgeTabs
+  wrap; card badges, names, filter pills and map place names wrap instead
+  of truncating. `ux-audit.yml` now takes `lang=en` and `devices`, and
+  flags SPILL (text out of its button). Run it in English too after every
+  section (iPhone SE + iPhone 13).
 - **Sign-in hidden on iOS** (`features` lacks "auth"): rule 4.8 requires
   Sign in with Apple when Google sign-in is offered → add Apple sign-in
   (Services ID + key, /api/auth/apple, button) after the account is approved.
