@@ -1,9 +1,7 @@
-2026-10-31T14:36:02.994Z
+2026-11-01T15:16:59.953Z
 model: gemini-3.8-flash (then gemini-3.5-flash, gemini-3.5-flash-lite, gemini-3.1-flash-lite, gemini-2.5-flash-lite, gemma-4-31b-it, gemma-4-26b-a4b-it); cities: 365
-giza: batch failed — Error: generate: gave up
-giza: done (0 written so far, 0 calls)
-moscow: batch failed — Error: generate: gave up
-moscow: done (0 written so far, 0 calls)
-zermatt: batch failed — Error: generate: gave up
-zermatt: done (0 written so far, 0 calls)
-all done; 0 places written in 0 calls
+giza: done (14 written so far, 1 calls)
+moscow: done (15 written so far, 2 calls)
+zermatt: batch failed — TimeoutError: The operation was aborted due to timeout
+zermatt: done (15 written so far, 2 calls)
+all done; 15 places written in 2 calls
