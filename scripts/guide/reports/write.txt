@@ -1,7 +1,4 @@
-2026-11-01T15:16:59.953Z
+2026-11-02T18:24:16.523Z
 model: gemini-3.8-flash (then gemini-3.5-flash, gemini-3.5-flash-lite, gemini-3.1-flash-lite, gemini-2.5-flash-lite, gemma-4-31b-it, gemma-4-26b-a4b-it); cities: 365
-giza: done (14 written so far, 1 calls)
-moscow: done (15 written so far, 2 calls)
-zermatt: batch failed — TimeoutError: The operation was aborted due to timeout
-zermatt: done (15 written so far, 2 calls)
-all done; 15 places written in 2 calls
+zermatt: done (2 written so far, 1 calls)
+all done; 2 places written in 1 calls
