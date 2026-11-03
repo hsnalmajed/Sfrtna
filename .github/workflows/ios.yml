@@ -119,7 +119,7 @@ jobs:
           APP=$(find "$RUNNER_TEMP/dd" -name App.app -path "*iphonesimulator*" | head -1)
           t 120 xcrun simctl install "$UDID" "$APP"
           D1=$(date -v+40d +%F); D2=$(date -v+47d +%F); H2=$(date -v+44d +%F)
-          FLIGHTS="/ar/results?tripType=flight&adults=1&currency=SAR&origin=RUH&destination=IST&departDate=$D1&returnDate=$D2"
+          FLIGHTS="/ar/results?tripType=flight&adults=1&currency=SAR&origin=JED&destination=IST&departDate=$D1&returnDate=$D2"
           HOTELS="/ar/hotel-results?hmode=discover&checkIn=$D1&checkOut=$H2&adults=2&childrenAges=&infants=0&city=Istanbul&label=%D8%A5%D8%B3%D8%B7%D9%86%D8%A8%D9%88%D9%84&budget=0&currency=SAR"
           DISCOVER="/ar/discover-results?tripType=flight&adults=1&currency=SAR&mode=discover&tripRoute=roundtrip&origin=RUH&departDate=$D1&returnDate=$D2&budget=8000&nights=7"
           en() { printf '%s' "$1" | sed 's#^/ar#/en#'; }   # the English page
