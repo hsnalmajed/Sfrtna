@@ -1791,6 +1791,30 @@ cover them (+ budget, breakfast, stars, kind, near a landmark).
 - 31 Oct 13:12 KSA: owner signed the updated Apple Developer Program
   License Agreement (email to almajedhsn@hotmail.com) — uploads/submission
   not blocked by it. Free app → no Paid Apps agreement needed.
+- **3 Nov — simulator checks + store listing (builds 20–27):**
+  - AppDelegate: CI-only launch args `-sfrPath <path>` (open a page) and
+    `-sfrDo partner|print|share` (run one native action); `-sfrSkipWelcome`
+    also marks the tips seen. ios.yml step «App checks on the simulator»
+    (iPhone 17 Pro Max, 1320×2868): store-*.png (ar), store-en-*.png,
+    check-partner/print/share.png → branch ios-shots (files > 90 MB skipped).
+    All pass on build 27: Arabic + English pages, live fares, print sheet,
+    share sheet, partner link in the Safari sheet.
+  - **Bug fixed:** `/api/go/*` partner links (our redirect, e.g. Expedia)
+    loaded the partner site inside the app's web view; now
+    `SfrtnaAppPlugin.isOutLink` sends them to the Safari sheet (both the
+    new-window proxy and shouldOverrideLoad).
+  - Listing via API: `scripts/ios/asc-store.mjs` + `ios-store.yml` (by hand,
+    input `only` = run one step, e.g. `build`; GitHub shows only 10
+    annotations a step). Texts in `mobile/ios/store/listing.json` (ar-SA +
+    en-US; Apple refuses emoji in descriptions). Done: category Travel,
+    name/subtitle/privacy URL, description/keywords/promo/URLs, age rating
+    (all none), review notes, Free, 175 territories, 4+4 screenshots,
+    build 27 attached to version 1.0.
+  - Owner did: App Privacy (published) — Email Address, Photos or Videos,
+    Customer Support (feedback form; App Functionality, linked, no tracking);
+    Search History, Product Interaction (Analytics, not linked); Other
+    Diagnostic Data (App Functionality, not linked). Location not collected
+    (IP-based origin is per request, not stored). Review contact filled.
 - **29 Oct, root cause of "nothing iOS-specific works" (builds 9–16):**
   Capacitor 8's template `SceneDelegate.swift` set
   `rootViewController = CAPBridgeViewController()` — our MainViewController

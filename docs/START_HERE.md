@@ -112,11 +112,12 @@ homeExact / routes > 0, then Site check until green. Optional meanwhile:
 point the e2e «suggest a route» check at JED to see the rest of the flow
 works (owner's OK first — it would hide the RUH problem).
 
-Then, in order: iPhone app checks on the simulator (Arabic, flight search,
-partner link in Safari sheet, share/print) → App Store submission via the
-ASC API key (listing ar+en, 6.9" screenshots, review notes; owner does App
-Privacy + «Add for Review») → Android once Google verifies the owner's
-identity (closed test 12 testers × 14 days).
+iPhone app (3 Nov): simulator checks pass (build 27), listing + screenshots
++ build 27 set via the ASC API, App Privacy and review contact done by the
+owner (PROJECT_NOTES «simulator checks + store listing»). Last owner step:
+«Add for Review» → «Submit». Then watch Apple's review email; on a
+rejection, read the reason and fix. Next: Android once Google verifies the
+owner's identity (closed test 12 testers × 14 days).
 
 Stay22 (3 Nov): address set to match the statement, all 4 payout steps
 Done, owner replied to Madeleine — wait for her clearance, then check the
