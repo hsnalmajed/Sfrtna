@@ -128,8 +128,13 @@ prevent, don't just detect.** Details: PROJECT_NOTES «Release gate».
    Git build of `sfrtna` (repo shown there: old name `hsnalmajed/itravel`;
    NOT disconnected — undo = switch it off). Release is now the only way to
    production; (f) DONE: `push` trigger removed from `smoke.yml` (schedule
-   every 2 h + manual stay). Gate section CLOSED once the first push run
-   (4 Nov, commit after 2bece7f) is green and shows one deploy only.
+   every 2 h + manual stay). **GATE CLOSED 4 Nov:** first push run 41722144217
+   (commit 483da18) green end to end; only GitHub Actions built that commit
+   (no Cloudflare build). If a gate run ever fails, production stays on the
+   last good version and the owner gets the GitHub mail; read the annotations.
+   Still open in this section: item 1 («next-step tabs» flake — watch the
+   next scheduled Site checks) and the owner's decision on the Google-fares
+   plan (SerpApi allowance resets 6 Nov → then measure, propose the plan).
 3. Riyadh «suggest a route» is now «known external» in `e2e.mjs`
    (warning in the mail, does not block); remove the flag when RUH fares return.
 Recommended model: Sonnet 5.5 for the owner steps (a)–(f); Opus 5.5 only if
