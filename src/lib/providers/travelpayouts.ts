@@ -643,7 +643,7 @@ export async function probeCodesFor(airport: string, froms: string[], month: str
   await Promise.all(
     froms.map(async (o) => {
       const url = new URL(`${BASE}/aviasales/v3/prices_for_dates`);
-      for (const [k, v] of Object.entries({ origin: o, departure_at: month, one_way: "true", unique: "false", sorting: "price", limit: "1000", currency: "sar" }))
+      for (const [k, v] of Object.entries({ origin: o, departure_at: month, one_way: "true", unique: "true", sorting: "price", limit: "1000", currency: "sar" }))
         url.searchParams.set(k, v);
       try {
         const res = await fetch(url.toString(), { headers: { "X-Access-Token": token(), Accept: "application/json" } });
