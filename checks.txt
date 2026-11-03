@@ -1,0 +1,4 @@
+device:     iPhone 17 Pro Max (DCA2A4ED-7625-458E-B4A3-EA3CF230C9AB) (Shutdown) 
+warm-up ok
+store-2-flights ok
+store-en-2-flights ok
