@@ -29,11 +29,23 @@ setInterval(() => (tok = token()), 15 * 60_000).unref();
 
 const note = (s) => console.log(`::warning::${String(s).replace(/\n/g, " ").slice(0, 500)}`);
 async function api(method, p, body) {
-  const r = await fetch(`https://api.appstoreconnect.apple.com${p}`, {
-    method,
-    headers: { Authorization: `Bearer ${tok}`, "Content-Type": "application/json" },
-    body: body ? JSON.stringify(body) : undefined,
-  });
+  let r;
+  for (let attempt = 1; ; attempt++) {
+    try {
+      r = await fetch(`https://api.appstoreconnect.apple.com${p}`, {
+        method,
+        headers: { Authorization: `Bearer ${tok}`, "Content-Type": "application/json" },
+        body: body ? JSON.stringify(body) : undefined,
+        signal: AbortSignal.timeout(90_000),
+      });
+      if (r.status >= 500 && attempt < 4) throw new Error(`HTTP ${r.status}`);
+      break;
+    } catch (e) {
+      // Apple's API sometimes stalls or answers 5xx: wait and try again.
+      if (attempt >= 4) throw e;
+      await new Promise((ok) => setTimeout(ok, attempt * 10_000));
+    }
+  }
   const j = r.status === 204 ? {} : await r.json().catch(() => ({}));
   if (!r.ok) {
     const e = (j.errors || []).map((x) => `${x.code}: ${x.detail || x.title}${x.source?.pointer ? ` (${x.source.pointer})` : ""}`).join(" | ");
