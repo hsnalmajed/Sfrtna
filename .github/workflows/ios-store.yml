@@ -1,5 +1,5 @@
 # By hand: fills the App Store listing (scripts/ios/asc-store.mjs) — texts
-# from mobile/ios/store/listing.json, 6.9" screenshots from branch ios-shots,
+# from docs/app-store/listing.json, 6.9" screenshots from branch ios-shots,
 # the newest valid build. Output = annotations of the run.
 name: iOS store listing
 on:

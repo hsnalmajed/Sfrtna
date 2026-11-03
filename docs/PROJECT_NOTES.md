@@ -1805,7 +1805,7 @@ cover them (+ budget, breakfast, stars, kind, near a landmark).
     new-window proxy and shouldOverrideLoad).
   - Listing via API: `scripts/ios/asc-store.mjs` + `ios-store.yml` (by hand,
     input `only` = run one step, e.g. `build`; GitHub shows only 10
-    annotations a step). Texts in `mobile/ios/store/listing.json` (ar-SA +
+    annotations a step). Texts in `docs/app-store/listing.json` (ar-SA +
     en-US; Apple refuses emoji in descriptions). Done: category Travel,
     name/subtitle/privacy URL, description/keywords/promo/URLs, age rating
     (all none), review notes, Free, 175 territories, 4+4 screenshots,

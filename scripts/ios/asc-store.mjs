@@ -9,7 +9,7 @@ import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 
-const listing = JSON.parse(fs.readFileSync(new URL("../../mobile/ios/store/listing.json", import.meta.url), "utf8"));
+const listing = JSON.parse(fs.readFileSync(new URL("../../docs/app-store/listing.json", import.meta.url), "utf8"));
 const SHOTS = process.env.SHOTS_DIR || "";
 const LOCALES = Object.keys(listing.name); // ar-SA, en-US, en-GB (Saudi and UAE stores also search en-GB)
 
@@ -234,9 +234,9 @@ async function uploadSet(loc, files) {
   }
   return `${files.length} screenshots`;
 }
-// Captioned store images (mobile/ios/store/screenshots: ar-1-….png, en-1-….png)
+// Captioned store images (docs/app-store/screenshots: ar-1-….png, en-1-….png)
 // win over the raw simulator shots (SHOTS_DIR: store-….png, store-en-….png).
-const ART = new URL("../../mobile/ios/store/screenshots/", import.meta.url).pathname;
+const ART = new URL("../../docs/app-store/screenshots/", import.meta.url).pathname;
 function pick(lang) {
   if (fs.existsSync(ART)) {
     const art = fs.readdirSync(ART).filter((f) => f.startsWith(`${lang}-`) && f.endsWith(".png")).sort();
