@@ -23,6 +23,10 @@ on:
       - "mobile/capacitor.config.json"
       - ".github/workflows/ios.yml"
   workflow_dispatch:
+    inputs:
+      shots:
+        description: "Only these store/check shots, space-separated (e.g. store-2-flights store-en-2-flights); no TestFlight upload"
+        default: ""
 
 permissions:
   contents: write
@@ -66,6 +70,7 @@ jobs:
       # opening and of the first page go to branch ios-shots (the owner's
       # phone should not be the first place a layout is seen).
       - name: Screenshots on the simulator
+        if: inputs.shots == '' || inputs.shots == null
         continue-on-error: true
         timeout-minutes: 12
         run: |
@@ -124,8 +129,10 @@ jobs:
           DISCOVER="/ar/discover-results?tripType=flight&adults=1&currency=SAR&mode=discover&tripRoute=roundtrip&origin=RUH&departDate=$D1&returnDate=$D2&budget=8000&nights=7"
           en() { printf '%s' "$1" | sed 's#^/ar#/en#'; }   # the English page
           # shot <file> <seconds> [app arguments…]
+          ONLY="${{ inputs.shots }}"
           shot() {
             f=$1; w=$2; shift 2
+            if [ -n "$ONLY" ] && [[ " $ONLY " != *" $f "* ]]; then return 0; fi
             t 30 xcrun simctl terminate "$UDID" com.sfrtna.app 2>/dev/null || true
             t 90 xcrun simctl launch "$UDID" com.sfrtna.app -sfrSkipWelcome "$@" > /dev/null 2>&1 \
               || { sleep 10; t 90 xcrun simctl launch "$UDID" com.sfrtna.app -sfrSkipWelcome "$@" > /dev/null 2>&1; } || true
@@ -162,12 +169,12 @@ jobs:
         run: |
           OUT="$RUNNER_TEMP/shots"; [ -d "$OUT" ] || exit 0
           # GitHub refuses files over 100 MB (an unfinished launch video).
-          find "$OUT" -type f \( -name "*.sb-*" -o -size +90M \) -print -delete
+          find "$OUT" -type f \( -name "*.sb-*" -o -size +20M \) -print -delete
           cd "$OUT" && git init -q && git add . && git -c user.name=ci -c user.email=ci@sfrtna.com commit -qm "iOS simulator shots ${{ github.run_number }}"
           git push -qf "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" HEAD:ios-shots
 
       - name: Archive and upload to TestFlight
-        if: env.HAS_ASC_KEY == 'true'
+        if: env.HAS_ASC_KEY == 'true' && (inputs.shots == '' || inputs.shots == null)
         env:
           ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
           ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
