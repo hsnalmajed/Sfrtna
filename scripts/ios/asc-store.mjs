@@ -208,6 +208,10 @@ await step("available in all countries", async () => {
 
 // Screenshots: store-*.png (Arabic) and store-en-*.png (English), 1320×2868.
 async function uploadSet(loc, files) {
+  if (!vlocs[loc]) {
+    const have = (await get(`/v1/appStoreVersions/${version.id}/appStoreVersionLocalizations`)).data || [];
+    vlocs[loc] = have.find((h) => h.attributes.locale === loc);
+  }
   const vl = vlocs[loc];
   if (!vl) throw new Error("no version localization");
   const sets = (await get(`/v1/appStoreVersionLocalizations/${vl.id}/appScreenshotSets`)).data || [];
