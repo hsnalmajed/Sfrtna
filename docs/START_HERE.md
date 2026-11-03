@@ -101,8 +101,10 @@ one-way fares from the Google source — idle until that plan has searches
 (2 left this month; gate needs > 40). Site check `pages` stays red on
 «suggest a route» (RUH) until one of these happens.
 
-**Next step: waiting on the owner's decision** (asked 3 Nov): contact the
-flight partner's support about Riyadh, and/or raise the Google-fares plan.
+**Next step: waiting on the partner.** Owner sent the support ticket to
+Travelpayouts (API > Data API > Error report) on 3 Nov 08:15 KSA, email
+confirmed. RUH table was 0 that morning. Still open: raise the
+Google-fares plan (owner's decision).
 When either lands: dispatch route-probe (label `after`), check homeSize /
 homeExact / routes > 0, then Site check until green. Optional meanwhile:
 point the e2e «suggest a route» check at JED to see the rest of the flow
