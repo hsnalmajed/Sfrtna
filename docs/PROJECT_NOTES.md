@@ -1815,6 +1815,20 @@ cover them (+ budget, breakfast, stars, kind, near a landmark).
     Search History, Product Interaction (Analytics, not linked); Other
     Diagnostic Data (App Functionality, not linked). Location not collected
     (IP-based origin is per request, not stored). Review contact filled.
+- **3 Nov afternoon — listing rebuilt with the owner (ASO):** name «سفرتنا |
+  Sfrtna» (owner's choice, all locales); subtitle ar «طيران وفنادق ضمن
+  ميزانيتك»; locales ar-SA + en-US + **en-GB** (the Saudi/UAE/Kuwait stores
+  also index en-GB, the US store also indexes Arabic). Description built
+  from the site's own copy (hero, three steps, every service: search modes,
+  suggest destination/route, budget advisor, seasons, attractions, maps,
+  visa, currency, tours, eSIM, transfers, car rental, luggage, delay
+  compensation, my trip). No competitor names in keywords (guideline
+  2.3.7). Texts: `docs/app-store/listing.json` (outside mobile/ios, so
+  edits do not rebuild the app). 8 captioned slides per language
+  (`docs/app-store/screenshots`, made with Playwright from the simulator
+  shots; Riyadh as origin, flight results from Jeddah because Riyadh fares
+  are missing at the partner). ios.yml dispatch input `shots` retakes only
+  some shots (no upload). All uploaded; build 27 attached.
 - **29 Oct, root cause of "nothing iOS-specific works" (builds 9–16):**
   Capacitor 8's template `SceneDelegate.swift` set
   `rootViewController = CAPBridgeViewController()` — our MainViewController

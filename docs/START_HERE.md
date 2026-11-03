@@ -114,7 +114,8 @@ works (owner's OK first — it would hide the RUH problem).
 
 iPhone app (3 Nov): simulator checks pass (build 27), listing + screenshots
 + build 27 set via the ASC API, App Privacy and review contact done by the
-owner (PROJECT_NOTES «simulator checks + store listing»). Last owner step:
+owner (PROJECT_NOTES «simulator checks + store listing», «listing rebuilt
+with the owner»). Last owner step:
 «Add for Review» → «Submit». Then watch Apple's review email; on a
 rejection, read the reason and fix. Next: Android once Google verifies the
 owner's identity (closed test 12 testers × 14 days).
