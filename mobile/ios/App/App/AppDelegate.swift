@@ -141,6 +141,11 @@ class MainViewController: CAPBridgeViewController {
           var all = Array.prototype.filter.call(document.querySelectorAll('a[data-partner]:not([data-partner^="app"])'),
             function (x) { return x.offsetParent !== null && /^https?:/.test(x.href); });
           var a = all.filter(function (x) { return x.href.indexOf("/api/go/") > 0; })[0] || all[0];
+          // None on screen after 15 s: the same kind of link the site builds.
+          if (!a && n >= 15) {
+            a = document.createElement("a");
+            a.href = "/api/go/expedia?landing=" + encodeURIComponent("https://www.expedia.com/Hotel-Search?destination=Istanbul");
+          }
           var tag = document.getElementById("sfr-check") || document.body.appendChild(document.createElement("div"));
           tag.id = "sfr-check";
           tag.style.cssText = "position:fixed;left:8px;right:8px;bottom:140px;z-index:2147483647;background:#c00;color:#fff;font:14px/1.4 monospace;padding:6px;direction:ltr";
