@@ -154,9 +154,12 @@ export default function ScrollRow({ children, className = "", outerClassName = "
           tabIndex={-1}
           onClick={() => go(false)}
           aria-label={ar ? "السابق" : "Previous"}
-          className={`absolute inset-y-0 start-0 z-10 my-auto flex h-8 w-8 items-center justify-center rounded-full shadow-md ring-1 transition ${btn}`}
+          className="absolute inset-y-0 start-0 z-10 my-auto flex h-[40px] w-[40px] items-center justify-center"
         >
-          <Chevron flip={!ar} />
+          {/* 40 px to tap (ux-audit TINY TAP); the circle drawn stays 32 px. */}
+          <span className={`flex h-8 w-8 items-center justify-center rounded-full shadow-md ring-1 transition ${btn}`}>
+            <Chevron flip={!ar} />
+          </span>
         </button>
       )}
       {more.end && (
@@ -165,9 +168,12 @@ export default function ScrollRow({ children, className = "", outerClassName = "
           tabIndex={-1}
           onClick={() => go(true)}
           aria-label={ar ? "عرض المزيد" : "Show more"}
-          className={`absolute inset-y-0 end-0 z-10 my-auto flex h-8 w-8 items-center justify-center rounded-full shadow-md ring-1 transition ${btn}`}
+          className="absolute inset-y-0 end-0 z-10 my-auto flex h-[40px] w-[40px] items-center justify-center"
         >
-          <Chevron flip={ar} />
+          {/* 40 px to tap (ux-audit TINY TAP); the circle drawn stays 32 px. */}
+          <span className={`flex h-8 w-8 items-center justify-center rounded-full shadow-md ring-1 transition ${btn}`}>
+            <Chevron flip={ar} />
+          </span>
         </button>
       )}
     </div>

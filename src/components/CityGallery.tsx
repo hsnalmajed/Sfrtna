@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Photo from "@/components/Photo";
+import { cardSrcSet, TALL_CARD_GRID } from "@/lib/photoSizes";
 import { VISA_STYLES } from "@/components/VisaBadge";
 import type { CityCardFacts } from "@/lib/cityCardFacts";
 
@@ -40,6 +41,8 @@ export default function CityGallery({
             <Photo
               placeholder
               src={c.photo}
+              srcSet={cardSrcSet(c.photo)}
+              sizes={TALL_CARD_GRID}
               className="absolute inset-0 h-full w-full object-cover transition duration-300 group-hover:scale-105"
               fallback={<div className="absolute inset-0 bg-gradient-to-br from-brand-800 to-brand-950" />}
             />

@@ -9,6 +9,7 @@ import { CONTINENT_ORDER } from "@/components/DestinationFilters";
 import { searchMatches } from "@/lib/search";
 import { CLASS_DOT } from "@/lib/travelSeason/labels";
 import Photo from "@/components/Photo";
+import { cardSrcSet, TALL_CARD_GRID } from "@/lib/photoSizes";
 import FilterPill, { FilterToggle } from "@/components/ui/FilterPill";
 import { useDictionary } from "@/lib/dict/context";
 import { VISA_STYLES } from "@/components/VisaBadge";
@@ -328,6 +329,8 @@ export default function CitySeasons({
                             <Photo
                               placeholder
                               src={c.photo}
+                              srcSet={cardSrcSet(c.photo)}
+                              sizes={TALL_CARD_GRID}
                               className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-[1.05]"
                               fallback={<div className="absolute inset-0 bg-gradient-to-br from-navy-700 to-navy-990" />}
                             />

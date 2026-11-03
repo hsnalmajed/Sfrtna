@@ -94,7 +94,7 @@ export default function Footer({ locale }: { locale: Locale }) {
             </p>
             <ul className="space-y-2.5">
               <li>
-                <FeedbackLink source="footer" className="font-bold text-sun-300 transition hover:text-sun-200" />
+                <FeedbackLink source="footer" className="-my-2 inline-flex min-h-[40px] items-center font-bold text-sun-300 transition hover:text-sun-200" />
               </li>
               {legal.map((link) => (
                 <li key={link.href}>

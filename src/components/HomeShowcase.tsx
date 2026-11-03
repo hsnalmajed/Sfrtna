@@ -5,6 +5,7 @@ import Link from "next/link";
 import { createPortal } from "react-dom";
 import type { Locale } from "@/lib/types";
 import Photo from "@/components/Photo";
+import { cardSrcSet, TALL_CARD_GRID, TALL_CARD_STRIP } from "@/lib/photoSizes";
 import { countLabel } from "@/lib/format";
 import Icon, { type IconName } from "@/components/ui/Icon";
 import { PLAN_EVENT, HOME_TAB_EVENT, HOME_SEASON_EVENT, type PlanProduct } from "@/lib/planEvents";
@@ -311,7 +312,7 @@ export default function HomeShowcase({
   // A season city is a question — "should I go there?" — so tapping it
   // opens its summary rather than leaving the page: weather, visa, currency,
   // sights, and the way into booking it.
-  const cityCard = (c: ShowcaseCity) => (
+  const cityCard = (c: ShowcaseCity, photoSizes: string = TALL_CARD_GRID) => (
     <button
       key={`${c.code}-${c.slug}`}
       type="button"
@@ -330,6 +331,8 @@ export default function HomeShowcase({
         <Photo
           placeholder
           src={c.photo}
+          srcSet={cardSrcSet(c.photo)}
+          sizes={photoSizes}
           className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-[1.06]"
           fallback={<div className="absolute inset-0 bg-gradient-to-br from-navy-700 to-navy-990" />}
         />
@@ -635,7 +638,7 @@ export default function HomeShowcase({
                         >
                           {marqueeCities.map((c) => (
                             <div key={`${c.code}-${c.slug}`} className="w-44 shrink-0 sm:w-48">
-                              {cityCard(c)}
+                              {cityCard(c, TALL_CARD_STRIP)}
                             </div>
                           ))}
                         </div>
@@ -720,7 +723,7 @@ export default function HomeShowcase({
                           <Icon name={c.icon} className={compact ? "h-[1.125rem] w-[1.125rem]" : "h-6 w-6 sm:h-7 sm:w-7"} />
                         </span>
                         <span className="min-w-0">
-                          <span className={`block whitespace-nowrap font-display font-extrabold ${compact ? "text-sm sm:text-base" : "text-base sm:text-h3"}`}>
+                          <span className={`block whitespace-nowrap font-display font-extrabold max-[359px]:whitespace-normal max-[359px]:leading-tight max-[359px]:text-balance ${compact ? "text-sm sm:text-base" : "text-base sm:text-h3"}`}>
                             {c.title}
                           </span>
                         </span>
