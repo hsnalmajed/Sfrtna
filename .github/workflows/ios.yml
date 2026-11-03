@@ -150,6 +150,8 @@ jobs:
         continue-on-error: true
         run: |
           OUT="$RUNNER_TEMP/shots"; [ -d "$OUT" ] || exit 0
+          # GitHub refuses files over 100 MB (an unfinished launch video).
+          find "$OUT" -type f \( -name "*.sb-*" -o -size +90M \) -print -delete
           cd "$OUT" && git init -q && git add . && git -c user.name=ci -c user.email=ci@sfrtna.com commit -qm "iOS simulator shots ${{ github.run_number }}"
           git push -qf "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" HEAD:ios-shots
 
