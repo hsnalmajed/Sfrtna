@@ -1,6 +1,7 @@
 # Sfrtna — project notes for a new session
 
-Read this first. It replaces re-explaining the project. Last updated 3 Nov 2026.
+ARCHIVE (not auto-loaded since 3 Nov 2026). Start with docs/START_HERE.md;
+open only the section you need here (Grep a heading). Last updated 3 Nov 2026.
 
 ## Owner's standing rules (must follow)
 

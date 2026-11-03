@@ -1,2 +1,2 @@
 @AGENTS.md
-@docs/PROJECT_NOTES.md
+@docs/START_HERE.md
