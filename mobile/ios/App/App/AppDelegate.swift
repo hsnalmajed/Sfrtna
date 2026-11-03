@@ -137,7 +137,12 @@ class MainViewController: CAPBridgeViewController {
         n++;
         var app = window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.SfrtnaApp;
         if (todo === "partner") {
-          var a = document.querySelector("a[data-partner]");
+          var a = Array.prototype.find.call(document.querySelectorAll('a[data-partner]:not([data-partner^="app"])'),
+            function (x) { return x.offsetParent !== null && /^https?:/.test(x.href); });
+          var tag = document.getElementById("sfr-check") || document.body.appendChild(document.createElement("div"));
+          tag.id = "sfr-check";
+          tag.style.cssText = "position:fixed;left:8px;right:8px;bottom:140px;z-index:2147483647;background:#c00;color:#fff;font:14px/1.4 monospace;padding:6px;direction:ltr";
+          tag.textContent = a ? "CHECK partner -> " + a.hostname : "CHECK no partner link yet (" + n + "s)";
           // A script cannot open a new window without a tap, so the link is
           // followed in the page itself: the same in-app Safari sheet opens.
           if (a) { clearInterval(timer); s.setItem("sfrCheckDone", "1"); location.href = a.href; }

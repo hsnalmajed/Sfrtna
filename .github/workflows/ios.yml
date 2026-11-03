@@ -122,12 +122,14 @@ jobs:
           FLIGHTS="/ar/results?tripType=flight&adults=1&currency=SAR&origin=JED&destination=IST&departDate=$D1&returnDate=$D2"
           HOTELS="/ar/hotel-results?hmode=discover&checkIn=$D1&checkOut=$H2&adults=2&childrenAges=&infants=0&city=Istanbul&label=%D8%A5%D8%B3%D8%B7%D9%86%D8%A8%D9%88%D9%84&budget=0&currency=SAR"
           DISCOVER="/ar/discover-results?tripType=flight&adults=1&currency=SAR&mode=discover&tripRoute=roundtrip&origin=JED&departDate=$D1&returnDate=$D2&budget=8000&nights=7"
+          en() { printf '%s' "$1" | sed 's#^/ar#/en#'; }   # the English page
           # shot <file> <seconds> [app arguments…]
           shot() {
             f=$1; w=$2; shift 2
             t 30 xcrun simctl terminate "$UDID" com.sfrtna.app 2>/dev/null || true
             t 90 xcrun simctl launch "$UDID" com.sfrtna.app -sfrSkipWelcome "$@" > /dev/null 2>&1 \
               || { sleep 10; t 90 xcrun simctl launch "$UDID" com.sfrtna.app -sfrSkipWelcome "$@" > /dev/null 2>&1; } || true
+            t 20 xcrun simctl status_bar "$UDID" override --time 9:41 --batteryState charged --batteryLevel 100 --cellularMode active --cellularBars 4 --wifiBars 3 > /dev/null 2>&1 || true
             sleep "$w"
             t 30 xcrun simctl io "$UDID" screenshot "$OUT/$f.png" > /dev/null 2>&1 && echo "$f ok" >> "$OUT/checks.txt" || echo "$f failed" >> "$OUT/checks.txt"
           }
@@ -136,9 +138,9 @@ jobs:
           shot store-3-hotels 30 -sfrPath "$HOTELS"
           shot store-4-discover 35 -sfrPath "$DISCOVER"
           shot store-en-1-home 14 -sfrPath "/en"
-          shot store-en-2-flights 35 -sfrPath "${FLIGHTS/#\/ar/\/en}"
-          shot store-en-3-hotels 30 -sfrPath "$(printf '%s' "${HOTELS/#\/ar/\/en}" | sed 's/label=[^&]*/label=Istanbul/')"
-          shot store-en-4-discover 35 -sfrPath "${DISCOVER/#\/ar/\/en}"
+          shot store-en-2-flights 35 -sfrPath "$(en "$FLIGHTS")"
+          shot store-en-3-hotels 30 -sfrPath "$(en "$HOTELS" | sed 's/label=[^&]*/label=Istanbul/')"
+          shot store-en-4-discover 35 -sfrPath "$(en "$DISCOVER")"
           shot check-partner 40 -sfrPath "$HOTELS" -sfrDo partner
           shot check-print 20 -sfrPath "/ar" -sfrDo print
           shot check-share 20 -sfrPath "/ar" -sfrDo share
