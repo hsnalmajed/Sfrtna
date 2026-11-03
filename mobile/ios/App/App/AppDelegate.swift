@@ -100,7 +100,7 @@ class MainViewController: CAPBridgeViewController {
         // and its top bar can be photographed. Users never pass arguments.
         if ProcessInfo.processInfo.arguments.contains("-sfrSkipWelcome") {
             webView?.configuration.userContentController.addUserScript(WKUserScript(
-                source: "try{localStorage.setItem('sfr-welcome-v1','1');localStorage.setItem('sfrtna-consent-v1','denied');localStorage.setItem('sfr-tips-v1','[\"home\",\"results\",\"hotels\",\"city\",\"discover\",\"trip\"]');}catch(e){}",
+                source: "try{localStorage.setItem('sfr-welcome-v1','1');localStorage.setItem('sfrtna-consent-v1','denied');document.cookie='sfrtna_origin=RUH; path=/; max-age=86400';localStorage.setItem('sfr-tips-v1','[\"home\",\"results\",\"hotels\",\"city\",\"discover\",\"trip\"]');}catch(e){}",
                 injectionTime: .atDocumentStart, forMainFrameOnly: true))
         }
         // Also CI only: -sfrPath opens one of our pages, -sfrDo then runs one
