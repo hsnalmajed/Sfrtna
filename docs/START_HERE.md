@@ -92,6 +92,27 @@ iPhone app.
 
 ## ▶ Hand-off (3 Nov 2026, 14:45 KSA) — current state
 
+**▶ NEXT SECTION (owner, 3 Nov 15:13): no error may reach visitors —
+prevent, don't just detect (launch is near).** Failure history since 13 Oct
+(68 Site check failures): until 27 Oct the free Workers plan (seo, accounts,
+calendar fares, hotel names… — gone since Workers Paid); since 30 Oct
+«suggest a route» (Riyadh data at the partner, external); since 29 Oct
+**«next-step tabs under flight and hotel results» fails now and then**
+(`locator.click: Timeout 30000ms` on the first «أكمل رحلتك» button —
+something may cover it: feedback button / bottom bar; find out whether
+visitors hit it too, fix the page or the test). Plan, in order:
+1. Fix the «next-step tabs» flake at its root (real overlap → fix the page).
+2. **Gate releases:** push to main → upload a Cloudflare *version* (not
+   deployed), run Site check (check + pages) against that version's preview
+   URL, promote to 100 % only when green; red → stays on the old version and
+   the owner gets the failure mail. Read `wrangler versions` docs and the
+   current deploy workflow first.
+3. Keep every failure alert (owner wants them). Riyadh stays red until the
+   partner fixes it — the gate must not block every release on that one
+   known external failure: mark it «known external» so it alerts but does
+   not block (owner's OK given 3 Nov: alerts stay, errors prevented).
+Recommended model: **Opus 5.5**.
+
 **iPhone app submitted to App Review** (3 Nov 14:45, version 1.0, build
 27, status «Waiting for Review», up to 48 h). Listing, 8+8 captioned
 screenshots, App Privacy, content rights and review contact are done
@@ -120,6 +141,5 @@ Waiting on the owner: Apple review email; Travelpayouts reply / Google-fares
 plan; Google Play identity check (owner sent his ID, waiting — may take days); Stay22 clearance; Android APK on a real
 phone.
 
-**Recommended model for the next chat: Sonnet 5.5** (Apple review result,
-owner guidance); Opus 5.5 if Apple rejects for code reasons or the Riyadh
-data returns and routes still fail.
+**Recommended model for the next chat: Opus 5.5** (release gate + flaky
+check above); Sonnet 5.5 for owner guidance only (Apple review email).
