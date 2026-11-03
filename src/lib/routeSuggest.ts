@@ -25,7 +25,8 @@ import type { SeasonKind } from "@/lib/travelSeason/kinds";
 import { DESTINATIONS } from "@/lib/destinations";
 import { discoverCandidates, type Candidate } from "@/lib/discoverPool";
 import { placeForDestination } from "@/lib/destinationPlace";
-import { oneWayFaresFrom, tripFaresFrom, type OneWayFare } from "@/lib/providers/travelpayouts";
+import { CITY_OF_AIRPORT, oneWayFaresFrom, tripFaresFrom, type OneWayFare } from "@/lib/providers/travelpayouts";
+import { exploreFares } from "@/lib/providers/serpapi";
 import type { DestinationCategory, RouteLeg, RouteStop, RouteSuggestion } from "@/lib/types";
 import { findCountryByEnglishName, type Continent } from "@/lib/countries";
 import { findAirport } from "@/lib/airports";
@@ -54,6 +55,10 @@ export interface RouteQuery {
   currency: string;
   /** Adults and children: the seats that are paid for. */
   paying: number;
+  /** The party, for the exact-day price of the first flight. */
+  adults: number;
+  children: number;
+  infants: number;
   directOnly: boolean;
   /** Any of these kinds of place; empty = any. */
   categories?: DestinationCategory[];
@@ -120,6 +125,10 @@ export interface RouteStats {
   /** Places in the home table (month ask) and how many are in the pool. */
   homeSize?: number;
   homeInPool?: number;
+  /** Exact-day prices for the first flight, and the merged home table. */
+  homeExact?: number;
+  homeMerged?: number;
+  homeMergedInPool?: number;
   /** Median size of the other tables. */
   medianSize?: number;
   /** Site check only: the same home ask by the exact day (±2), for comparison. */
@@ -165,7 +174,43 @@ export async function suggestRoutes(q: RouteQuery, stats?: RouteStats): Promise<
 
   const table = new Map<string, Map<string, OneWayFare>>();
   const homeKey = `${q.origin}|${month(legDates[0])}`;
-  const home = await load(q.origin, month(legDates[0]));
+  // The first flight: the partner's month table, completed with the exact
+  // day's one-way prices for this party (the same source "suggest a
+  // destination" uses). Since 30 Oct 2026 the partner's table from home has
+  // held only a handful of places (route-probe 3 Nov: Riyadh, January — 4,
+  // and 0 by the day), so every ordering failed at flight 1. Same rule as
+  // there: the partner's fare stays when it is for that day and no dearer.
+  const [partnerHome, exact] = await Promise.all([
+    load(q.origin, month(legDates[0])),
+    useDev
+      ? Promise.resolve(null)
+      : exploreFares({
+          origin: q.origin,
+          departDate: legDates[0],
+          adults: q.adults,
+          children: q.children,
+          infants: q.infants,
+          currency: q.currency.toUpperCase(),
+          directOnly: q.directOnly,
+        }),
+  ]);
+  const home = new Map(partnerHome);
+  for (const g of exact ?? []) {
+    const fare: OneWayFare = {
+      destination: g.airport,
+      // Google's price covers the whole party; a fare here is per seat.
+      price: Math.round(g.price / Math.max(1, q.paying)),
+      airline: g.airline || "—",
+      airlineCode: "",
+      departureAt: legDates[0],
+      transfers: g.stops,
+    };
+    for (const k of [g.airport, CITY_OF_AIRPORT[g.airport]]) {
+      if (!k) continue;
+      const prev = home.get(k);
+      if (!prev || prev.departureAt.slice(0, 10) !== legDates[0] || prev.price > fare.price) home.set(k, { ...fare, destination: k });
+    }
+  }
   table.set(homeKey, home);
 
   // Which cities get a table: flown to from home first, in season in the
@@ -205,7 +250,10 @@ export async function suggestRoutes(q: RouteQuery, stats?: RouteStats): Promise<
     stats.candidates = candidates.length;
     stats.tables = table.size;
     stats.emptyTables = [...table.values()].filter((t) => t.size === 0).length;
-    stats.homeSize = home.size;
+    stats.homeSize = partnerHome.size;
+    stats.homeExact = exact?.length ?? 0;
+    stats.homeMerged = home.size;
+    stats.homeMergedInPool = pool.filter((c) => home.has(c.code)).length;
     stats.homeInPool = pool.filter((c) => home.has(c.code)).length;
     const sizes = [...table.entries()].filter(([k]) => k !== homeKey).map(([, t]) => t.size).sort((a, b) => a - b);
     stats.medianSize = sizes.length ? sizes[Math.floor(sizes.length / 2)] : 0;
