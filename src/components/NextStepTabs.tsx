@@ -147,8 +147,11 @@ export default function NextStepTabs({
   // Every next step opened: the trip page still gathers them.
   if (shown.length === 0) return <MyTripChip locale={locale} slug={city.slug} className="mt-8" />;
 
+  // scroll-mb/mt: when the browser (or a test) scrolls a tab into view it
+  // stops clear of the fixed banners at the bottom (consent, install, join)
+  // and the header at the top, so nothing lies on top of it.
   const tile =
-    "group flex h-full flex-col overflow-hidden rounded-2xl bg-white text-center shadow-sm ring-1 ring-mist-200 transition hover:-translate-y-0.5 hover:shadow-md hover:ring-sun-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400";
+    "group scroll-mb-44 scroll-mt-24 flex h-full flex-col overflow-hidden rounded-2xl bg-white text-center shadow-sm ring-1 ring-mist-200 transition hover:-translate-y-0.5 hover:shadow-md hover:ring-sun-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400";
   const body = (tab: (typeof tabs)[number]) => (
     <>
       <span className="relative block aspect-[16/10] overflow-hidden bg-gradient-to-br from-navy-800 to-navy-990" aria-hidden="true">

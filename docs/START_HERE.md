@@ -92,26 +92,23 @@ iPhone app.
 
 ## ▶ Hand-off (3 Nov 2026, 14:45 KSA) — current state
 
-**▶ NEXT SECTION (owner, 3 Nov 15:13): no error may reach visitors —
-prevent, don't just detect (launch is near).** Failure history since 13 Oct
-(68 Site check failures): until 27 Oct the free Workers plan (seo, accounts,
-calendar fares, hotel names… — gone since Workers Paid); since 30 Oct
-«suggest a route» (Riyadh data at the partner, external); since 29 Oct
-**«next-step tabs under flight and hotel results» fails now and then**
-(`locator.click: Timeout 30000ms` on the first «أكمل رحلتك» button —
-something may cover it: feedback button / bottom bar; find out whether
-visitors hit it too, fix the page or the test). Plan, in order:
-1. Fix the «next-step tabs» flake at its root (real overlap → fix the page).
-2. **Gate releases:** push to main → upload a Cloudflare *version* (not
-   deployed), run Site check (check + pages) against that version's preview
-   URL, promote to 100 % only when green; red → stays on the old version and
-   the owner gets the failure mail. Read `wrangler versions` docs and the
-   current deploy workflow first.
-3. Keep every failure alert (owner wants them). Riyadh stays red until the
-   partner fixes it — the gate must not block every release on that one
-   known external failure: mark it «known external» so it alerts but does
-   not block (owner's OK given 3 Nov: alerts stay, errors prevented).
-Recommended model: **Opus 5.5**.
+**▶ CURRENT SECTION (owner, 3 Nov 15:13): no error may reach visitors —
+prevent, don't just detect.** Details: PROJECT_NOTES «Release gate».
+1. «next-step tabs» flake: tests now name the cause on failure and the tabs
+   have scroll margins (pushed 3 Nov). **Next step:** after the next Site
+   check, if it fails again read the cause in the annotation and fix the
+   page (banner over the tab) or the test; no failure in ~10 runs = closed.
+2. **Release gate — waiting for the owner's choice (A or B).** Version
+   preview URLs don't exist for Workers with Durable Objects (ours has two),
+   and the deploy is Cloudflare's Git build, not a workflow here. A) upload
+   a version, set it at 0 %, test it with the version-override header,
+   promote at 100 % (DO behaviour with two versions unverified); B) a second
+   Worker `sfrtna-staging`: deploy there, run Site check, then production.
+   Either needs a Cloudflare API token as a GitHub secret and the Git build
+   switched off (owner steps, one at a time).
+3. Keep every alert; Riyadh «suggest a route» is marked «known external»
+   (alerts, does not block) once the gate exists.
+Recommended model: **Opus 5.5** (gate build); Sonnet 5.5 for the owner steps.
 
 **iPhone app submitted to App Review** (3 Nov 14:45, version 1.0, build
 27, status «Waiting for Review», up to 48 h). Listing, 8+8 captioned

@@ -41,6 +41,18 @@ await context.route("**/*", (route) => {
   return route.continue({ headers: { ...req.headers(), "x-sfrtna-smoke": TOKEN } });
 });
 
+/**
+ * One line for the failure mail. Playwright's call log says what stopped a
+ * click ("<div …> intercepts pointer events", "element is not stable"):
+ * keep that line too, so a flaky failure names its cause.
+ */
+function why(err) {
+  if (!(err instanceof Error)) return String(err);
+  const lines = err.message.split("\n");
+  const hint = lines.slice(1).find((l) => /intercepts pointer events|not stable|detached|not visible|not enabled|outside of the viewport/i.test(l));
+  return hint ? `${lines[0]} — ${hint.trim().slice(0, 220)}` : lines[0];
+}
+
 async function check(name, fn) {
   const page = await context.newPage();
   const errors = [];
@@ -51,7 +63,7 @@ async function check(name, fn) {
     if (errors.length) throw new Error(`page error: ${errors[0]}`);
     passes.push(`✓ ${name} (${Date.now() - t} ms)${note ? ` — ${note}` : ""}`);
   } catch (err) {
-    failures.push(`✗ ${name}: ${err instanceof Error ? err.message.split("\n")[0] : String(err)}`);
+    failures.push(`✗ ${name}: ${why(err)}`);
   } finally {
     await page.close();
   }
@@ -200,7 +212,22 @@ await check("next-step tabs under flight and hotel results", async (p) => {
   const hotelHref = await p.locator('section[aria-label^="أكمل رحلتك"] a[href*="/hotel-results"]').getAttribute("href");
   if (!hotelHref?.includes("checkIn=") || !hotelHref.includes("back=")) throw new Error("hotel tab misses dates or back");
   // Services open as a sheet.
-  await p.locator('section[aria-label^="أكمل رحلتك"] button').first().click();
+  const servicesTab = p.locator('section[aria-label^="أكمل رحلتك"] button').first();
+  try {
+    await servicesTab.click({ timeout: 15_000 });
+  } catch (err) {
+    // Say what sits on top of the tab (a banner over it stops visitors too).
+    const cover = await servicesTab
+      .evaluate((el) => {
+        const r = el.getBoundingClientRect();
+        const top = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
+        if (!top || el.contains(top)) return "";
+        const own = top.closest("[data-consent-banner],[data-install-banner],[role=dialog],[class*=fixed]") || top;
+        return `${own.tagName.toLowerCase()} ${(own.getAttribute("class") || "").slice(0, 60)} «${(own.textContent || "").trim().slice(0, 40)}»`;
+      })
+      .catch(() => "");
+    throw new Error(cover ? `services tab is covered by ${cover}` : why(err));
+  }
   await p.locator('[role="dialog"]').waitFor({ timeout: 10_000 });
   // The hotel page offers a flight instead of a hotel.
   await p.goto(`${BASE}${hotelHref.startsWith("/") ? hotelHref : new URL(hotelHref).pathname + new URL(hotelHref).search}`, {

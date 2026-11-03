@@ -1878,3 +1878,39 @@ flights on the workers.dev host (noted, not a failure).
 Owner decisions needed: (1) report to the flight partner's support that
 Riyadh vanished from their cached prices since ~30 Oct (JED/DMM fine);
 (2) or raise the Google-fares plan so the exact-day fallback runs.
+
+## Release gate — "no error may reach visitors" (3 Nov 2026, owner 15:13)
+
+**Step 1 — «next-step tabs» flake (`locator.click: Timeout 30000ms`).**
+Failed 3 of the last 12 Site checks (runs on 3 Nov: 41615044202,
+41598149722, 41595557315). Root cause NOT proven: `e2e.mjs` printed only the
+first line of the Playwright error, so the call log ("<div> intercepts
+pointer events" / "not stable") was thrown away. Suspects: the consent
+banner (`Analytics.tsx`, fixed bottom, z-60, shown to every first visit; the
+test only dismisses FirstTips), the install banner (z-70), the join sheet
+(z-70), the feedback button (z-50). Done: (a) `check()` now keeps the
+call-log line (`why()` in `scripts/e2e.mjs`); (b) the services-tab click
+reports what covers the tab (`elementFromPoint`); (c) tabs got
+`scroll-mb-44 scroll-mt-24` in `NextStepTabs.tsx` so a scroll-into-view stops
+clear of bottom banners and the header. Verify: next failure names its cause.
+
+**Step 2 — gate: findings before building.**
+- The deploy is Cloudflare's Git build (nothing in `.github/workflows`
+  deploys), so a gate means changing that build or replacing it.
+- **Version preview URLs do not exist for Workers with Durable Objects**
+  (Cloudflare docs, "Preview URLs"); ours has HERE_QUOTA and ACCOUNTS, so
+  "test the version's preview URL" is impossible as planned.
+- Possible routes: (A) upload the version, put it in the deployment at 0 %
+  (`wrangler versions deploy`), test it with the header
+  `Cloudflare-Workers-Version-Overrides: sfrtna="<version-id>"` (docs: works
+  for a version in the current deployment, even at 0 %), promote to 100 %
+  when green. Unverified: how Durable Objects behave while two versions are
+  in the deployment ("only one version of each Durable Object can run at a
+  time"; wrangler ≥ 4.131.0 for `versions upload` with DOs) — an untested
+  version could take over a DO. (B) a second Worker `sfrtna-staging`
+  (own DO state, own workers.dev URL): build once, deploy there, run Site
+  check, then deploy production only if green. Needs the Worker secrets set
+  on the staging Worker too (owner steps).
+- Either route needs a Cloudflare API token as a GitHub secret (owner step)
+  and the Cloudflare Git build switched off (the workflow builds and deploys).
+- Owner's decision needed (A or B) before building.
