@@ -39,6 +39,11 @@ interface Account {
 }
 
 /** The account's usage, read at most every two minutes. Free: not a search. */
+/** Searches left this month (site check only). */
+export async function searchesLeft(): Promise<number | null> {
+  return (await account())?.left ?? null;
+}
+
 async function account(): Promise<Account | null> {
   if (!key()) return null;
   return cachedJson<Account>("serpapi-account", 120, async () => {
@@ -531,9 +536,11 @@ export async function exploreFares(q: {
   infants: number;
   currency: string;
   directOnly: boolean;
-}): Promise<ExploreFare[] | null> {
+},
+/** Site check only: what the search answered before filtering (filled on a cache miss). */
+debug?: { rows?: number; kept?: number; dates?: string[] }): Promise<ExploreFare[] | null> {
   const round = Boolean(q.returnDate);
-  const key = `serp-explore1:${q.origin}:${q.departDate}:${q.returnDate || "-"}:${q.adults}:${q.children}:${q.infants}:${q.currency}:${q.directOnly ? 1 : 0}`;
+  const key = `serp-explore2:${q.origin}:${q.departDate}:${q.returnDate || "-"}:${q.adults}:${q.children}:${q.infants}:${q.currency}:${q.directOnly ? 1 : 0}`;
   return cachedJson<ExploreFare[]>(key, 6 * 3600, async () => {
     const params: Record<string, string> = {
       engine: "google_travel_explore",
@@ -561,6 +568,10 @@ export async function exploreFares(q: {
       destination_airport?: { code?: string };
     };
     const rows = (body.destinations as Row[] | undefined) ?? [];
+    if (debug) {
+      debug.rows = rows.length;
+      debug.dates = [...new Set(rows.map((r) => `${r.start_date ?? "-"}/${r.end_date ?? "-"}`))].slice(0, 5);
+    }
     return rows
       .filter(
         (r) =>

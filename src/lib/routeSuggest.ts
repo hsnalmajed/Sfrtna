@@ -26,7 +26,7 @@ import { DESTINATIONS } from "@/lib/destinations";
 import { discoverCandidates, type Candidate } from "@/lib/discoverPool";
 import { placeForDestination } from "@/lib/destinationPlace";
 import { CITY_OF_AIRPORT, oneWayFaresFrom, tripFaresFrom, type OneWayFare } from "@/lib/providers/travelpayouts";
-import { exploreFares } from "@/lib/providers/serpapi";
+import { exploreFares, searchesLeft } from "@/lib/providers/serpapi";
 import type { DestinationCategory, RouteLeg, RouteStop, RouteSuggestion } from "@/lib/types";
 import { findCountryByEnglishName, type Continent } from "@/lib/countries";
 import { findAirport } from "@/lib/airports";
@@ -129,6 +129,9 @@ export interface RouteStats {
   homeExact?: number;
   homeMerged?: number;
   homeMergedInPool?: number;
+  exploreRows?: number;
+  exploreDates?: string[];
+  searchesLeft?: number;
   /** Median size of the other tables. */
   medianSize?: number;
   /** Site check only: the same home ask by the exact day (±2), for comparison. */
@@ -180,6 +183,7 @@ export async function suggestRoutes(q: RouteQuery, stats?: RouteStats): Promise<
   // held only a handful of places (route-probe 3 Nov: Riyadh, January — 4,
   // and 0 by the day), so every ordering failed at flight 1. Same rule as
   // there: the partner's fare stays when it is for that day and no dearer.
+  const exploreDebug: { rows?: number; dates?: string[] } = {};
   const [partnerHome, exact] = await Promise.all([
     load(q.origin, month(legDates[0])),
     useDev
@@ -192,7 +196,7 @@ export async function suggestRoutes(q: RouteQuery, stats?: RouteStats): Promise<
           infants: q.infants,
           currency: q.currency.toUpperCase(),
           directOnly: q.directOnly,
-        }),
+        }, stats ? exploreDebug : undefined),
   ]);
   const home = new Map(partnerHome);
   for (const g of exact ?? []) {
@@ -251,7 +255,11 @@ export async function suggestRoutes(q: RouteQuery, stats?: RouteStats): Promise<
     stats.tables = table.size;
     stats.emptyTables = [...table.values()].filter((t) => t.size === 0).length;
     stats.homeSize = partnerHome.size;
-    stats.homeExact = exact?.length ?? 0;
+    // -1: the search was refused or failed (null); rows: before the day filter.
+    stats.homeExact = exact === null ? -1 : exact.length;
+    stats.exploreRows = exploreDebug.rows;
+    stats.exploreDates = exploreDebug.dates;
+    stats.searchesLeft = (await searchesLeft()) ?? undefined;
     stats.homeMerged = home.size;
     stats.homeMergedInPool = pool.filter((c) => home.has(c.code)).length;
     stats.homeInPool = pool.filter((c) => home.has(c.code)).length;
