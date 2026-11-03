@@ -105,6 +105,8 @@ one-way fares from the Google source — idle until that plan has searches
 Travelpayouts (API > Data API > Error report) on 3 Nov 08:15 KSA, email
 confirmed. RUH table was 0 that morning. Still open: raise the
 Google-fares plan (owner's decision).
+Probe 3 Nov 08:17 KSA (`after`): homeSize 4, homeExact -1, routes 0 in all
+9 cases — data not back yet.
 When either lands: dispatch route-probe (label `after`), check homeSize /
 homeExact / routes > 0, then Site check until green. Optional meanwhile:
 point the e2e «suggest a route» check at JED to see the rest of the flow
@@ -116,9 +118,12 @@ ASC API key (listing ar+en, 6.9" screenshots, review notes; owner does App
 Privacy + «Add for Review») → Android once Google verifies the owner's
 identity (closed test 12 testers × 14 days).
 
+Stay22 (3 Nov): address set to match the statement, all 4 payout steps
+Done, owner replied to Madeleine — wait for her clearance, then check the
+Payments page no longer says "Missing payout method".
+
 Waiting on the owner: Riyadh/partner decision above; Google Play identity
-email; Stay22 address question; one «احجز الرحلة» seen in Travelpayouts;
-Android APK on a real phone.
+email; one «احجز الرحلة» seen in Travelpayouts; Android APK on a real phone.
 
 **Recommended model for the next chat: Sonnet 5.5** (owner guidance:
 partner support message / plan upgrade); Opus 5.5 if the data is back and

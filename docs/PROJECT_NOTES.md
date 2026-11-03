@@ -1422,6 +1422,13 @@ insurance, lease, phone/utility/cable bill, < 60 days, name + address).
 Owner sent a bank statement (Sept 2026) on the ticket 27 Oct 20:09 KSA.
 Wait for her confirmation; then check the dashboard no longer says
 "Missing payout method".
+**3 Nov:** Stay22 verified the documents (29 Oct); Madeleine asked to set
+the payment-profile address to match the statement exactly. The statement's
+only address line is «حسن الماجد العام سكن الكليه الجام» (no street/city/
+postcode). Owner set Address to it, re-uploaded the same statement as Bank
+statement, finished all 4 steps (Done), and replied to Madeleine 3 Nov ~08:28
+KSA. Next: her confirmation, then the Payments page must no longer say
+"Missing payout method".
 
 **▶ Start here (hand-off 3 Nov 2026):**
 - **Owner's decision (29 Oct):** publish the iPhone app straight to the App
