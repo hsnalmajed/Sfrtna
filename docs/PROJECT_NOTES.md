@@ -1788,6 +1788,9 @@ cover them (+ budget, breakfast, stars, kind, near a landmark).
   Island. Internal TestFlight group «Sfrtna Team» (owner added). Workflow
   `ios-status.yml` (by hand) reads build/TestFlight state from App Store
   Connect → annotations.
+- 31 Oct 13:12 KSA: owner signed the updated Apple Developer Program
+  License Agreement (email to almajedhsn@hotmail.com) — uploads/submission
+  not blocked by it. Free app → no Paid Apps agreement needed.
 - **29 Oct, root cause of "nothing iOS-specific works" (builds 9–16):**
   Capacitor 8's template `SceneDelegate.swift` set
   `rootViewController = CAPBridgeViewController()` — our MainViewController
