@@ -1955,3 +1955,15 @@ clear of bottom banners and the header. Verify: next failure names its cause.
   two `NEXT_PUBLIC_*` vars (both have in-code defaults).
 - No automatic rollback after the production deploy (a rollback with Durable
   Objects needs care); a red «Quick check of production» mails the owner.
+- **First staging runs (3 Nov, ~16:45–16:55).** Run 41646698516: build +
+  `wrangler deploy --config wrangler.staging.jsonc` OK (8308 assets), then
+  «Wait until staging answers» failed: HTTP 301 for 5 min = workers.dev
+  protection redirecting to sfrtna.com because staging had no `SMOKE_TOKEN`
+  (proves staging exists and runs our edge-worker). Fix pushed (0e53de3):
+  step «Give staging the Site check key» pipes the GitHub `SMOKE_TOKEN` into
+  `wrangler secret put` on every run. Run 41647903785: staging answers 200,
+  smoke fails only «partner link: Klook / Tiqets / Airalo carries our tag»
+  (`/api/go/tp` needs `TRAVELPAYOUTS_TOKEN`, smoke.mjs lines 217–228);
+  GetYourGuide and Expedia link checks and all other smoke checks passed;
+  e2e skipped. Dashboard-set Worker *secrets* survive `wrangler deploy`
+  (only plain-text variables could be dropped), so the owner sets them once.

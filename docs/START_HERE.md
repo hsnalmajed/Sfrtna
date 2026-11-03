@@ -98,18 +98,23 @@ prevent, don't just detect.** Details: PROJECT_NOTES «Release gate».
    have scroll margins (pushed 3 Nov). **Next step:** after the next Site
    check, if it fails again read the cause in the annotation and fix the
    page (banner over the tab) or the test; no failure in ~10 runs = closed.
-2. **Release gate — route B (second Worker `sfrtna-staging`): BUILT 3 Nov,
-   not yet run.** `.github/workflows/release.yml` (build once → deploy to
+2. **Release gate — route B (second Worker `sfrtna-staging`): BUILT, runs on
+   staging since 3 Nov 16:50; production not gated yet.** `.github/workflows/release.yml` (build once → deploy to
    staging → smoke + e2e on it → same build to production if green; skips
    itself, green, until the secrets exist), `scripts/make-staging-config.mjs`
    (staging config from `wrangler.jsonc`, own rate-limit ids). Details +
    secret names: PROJECT_NOTES «Release gate» → Step 2 built.
-   **Next steps, owner ONE at a time:** (a) GitHub secrets
-   `CLOUDFLARE_API_TOKEN` + `CLOUDFLARE_ACCOUNT_ID` (`SMOKE_TOKEN` exists);
-   (b) Worker secrets on `sfrtna-staging` (names in PROJECT_NOTES, never
-   values in chat; the Worker exists only after the first deploy → run
-   Release with «production» unticked first, it will fail the checks until
-   the secrets are in, that is expected); (c) first green staging run;
+   **Done 3 Nov:** (a) GitHub secrets `CLOUDFLARE_API_TOKEN` +
+   `CLOUDFLARE_ACCOUNT_ID` set; staging Worker exists; the workflow copies
+   `SMOKE_TOKEN` to it itself. Run 41647903785: smoke on staging fails ONLY
+   the 3 partner-link checks (Klook/Tiqets/Airalo) = staging lacks
+   `TRAVELPAYOUTS_TOKEN` (`/api/go/tp`); e2e not reached yet.
+   **Next steps, owner ONE at a time:** (b) add `TRAVELPAYOUTS_TOKEN` as a
+   *Secret* on `sfrtna-staging` in the Cloudflare dashboard (value from the
+   Travelpayouts dashboard, never in chat), then re-dispatch Release with
+   production unticked: `gh api -X POST repos/hsnalmajed/sfrtna/actions/workflows/release.yml/dispatches -f ref=main -F 'inputs[production]=false'`;
+   add other staging secrets only if smoke/e2e then name them (the 14 names
+   in PROJECT_NOTES are the full candidate list); (c) first green staging run;
    (d) check Cloudflare's build settings don't override `NEXT_PUBLIC_SITE_URL`
    / `NEXT_PUBLIC_TRAVELPAYOUTS_MARKER`; (e) switch Cloudflare Git build off;
    (f) drop the `push` trigger of `smoke.yml` (avoid paying for two runs).
