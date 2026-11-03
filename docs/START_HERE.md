@@ -90,43 +90,36 @@ City guide / Viator / Search Console / Status email / Feedback / Dashboard /
 «رحلتي» / Google Play account / Workers Paid / Hotels like Booking /
 iPhone app.
 
-## ▶ Hand-off (3 Nov 2026, 04:45 KSA) — current state
+## ▶ Hand-off (3 Nov 2026, 14:45 KSA) — current state
 
-Done 3 Nov: pre-launch round 1 fixed; route-suggestion blocker diagnosed
-(PROJECT_NOTES «Route suggestions — Riyadh missing at the partner»).
-Root cause: the flight partner has (almost) no cached fares from or to
-**Riyadh** since ~30 Oct (Dec/Jan: 4 places; JED 128–317, DMM 43–144 fine).
-Not our code. Shipped: the first flight is also priced with exact-day
-one-way fares from the Google source — idle until that plan has searches
-(2 left this month; gate needs > 40). Site check `pages` stays red on
-«suggest a route» (RUH) until one of these happens.
+**iPhone app submitted to App Review** (3 Nov 14:45, version 1.0, build
+27, status «Waiting for Review», up to 48 h). Listing, 8+8 captioned
+screenshots, App Privacy, content rights and review contact are done
+(PROJECT_NOTES «iPhone app» → 3 Nov entries). Store texts:
+`docs/app-store/listing.json`; upload: `ios-store.yml` (input `only`).
+**Next step:** when Apple's email arrives — approved: point the site's
+«حمّل التطبيق» banner / AppStoreButtons at the App Store link, then add
+the native rating prompt (SKStoreReviewController, once after a good
+moment, e.g. 3rd search); rejected: read the reason and fix.
+Offered to the owner (his decision): Apple Search Ads.
 
-**Next step: waiting on the partner.** Owner sent the support ticket to
-Travelpayouts (API > Data API > Error report) on 3 Nov 08:15 KSA, email
-confirmed. RUH table was 0 that morning. Still open: raise the
-Google-fares plan (owner's decision).
-Probe 3 Nov 08:17 KSA (`after`): homeSize 4, homeExact -1, routes 0 in all
-9 cases — data not back yet.
-When either lands: dispatch route-probe (label `after`), check homeSize /
-homeExact / routes > 0, then Site check until green. Optional meanwhile:
-point the e2e «suggest a route» check at JED to see the rest of the flow
-works (owner's OK first — it would hide the RUH problem).
+Riyadh fares still missing at the flight partner (PROJECT_NOTES «Route
+suggestions — Riyadh missing at the partner»; probe 3 Nov 08:17: homeSize
+4, routes 0). Owner's Travelpayouts ticket sent 3 Nov 08:15. Site check
+`pages` stays red on «suggest a route» (RUH) until data returns or the
+owner raises the Google-fares plan. When it lands: route-probe (`after`),
+then Site check. The store's flight screenshot uses Jeddah for this reason
+(retake from Riyadh later: ios.yml dispatch input `shots`).
 
-iPhone app (3 Nov): simulator checks pass (build 27), listing + screenshots
-+ build 27 set via the ASC API, App Privacy and review contact done by the
-owner (PROJECT_NOTES «simulator checks + store listing», «listing rebuilt
-with the owner»). Last owner step:
-«Add for Review» → «Submit». Then watch Apple's review email; on a
-rejection, read the reason and fix. Next: Android once Google verifies the
-owner's identity (closed test 12 testers × 14 days).
+Stay22: payout address fixed and all steps Done 3 Nov; waiting for
+Madeleine's clearance («Missing payout method» should disappear).
+Cloudflare Observability pricing (1 Dec): usage ≈1 % of the allowance,
+nothing to do.
 
-Stay22 (3 Nov): address set to match the statement, all 4 payout steps
-Done, owner replied to Madeleine — wait for her clearance, then check the
-Payments page no longer says "Missing payout method".
+Waiting on the owner: Apple review email; Travelpayouts reply / Google-fares
+plan; Google Play identity email; Stay22 clearance; Android APK on a real
+phone.
 
-Waiting on the owner: Riyadh/partner decision above; Google Play identity
-email; one «احجز الرحلة» seen in Travelpayouts; Android APK on a real phone.
-
-**Recommended model for the next chat: Sonnet 5.5** (owner guidance:
-partner support message / plan upgrade); Opus 5.5 if the data is back and
-routes still fail.
+**Recommended model for the next chat: Sonnet 5.5** (Apple review result,
+owner guidance); Opus 5.5 if Apple rejects for code reasons or the Riyadh
+data returns and routes still fail.
