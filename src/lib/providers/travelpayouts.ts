@@ -635,3 +635,25 @@ export async function probeOriginShapes(origin: string, month: string, day: stri
   );
   return out;
 }
+
+/** Site check only: under which city/airport codes Riyadh appears in other cities' tables. */
+export async function probeCodesFor(airport: string, froms: string[], month: string): Promise<Record<string, string>> {
+  const out: Record<string, string> = {};
+  if (!token()) return out;
+  await Promise.all(
+    froms.map(async (o) => {
+      const url = new URL(`${BASE}/aviasales/v3/prices_for_dates`);
+      for (const [k, v] of Object.entries({ origin: o, departure_at: month, one_way: "true", unique: "false", sorting: "price", limit: "1000", currency: "sar" }))
+        url.searchParams.set(k, v);
+      try {
+        const res = await fetch(url.toString(), { headers: { "X-Access-Token": token(), Accept: "application/json" } });
+        const rows = ((await res.json()) as { data?: TpV3Row[] }).data ?? [];
+        const hits = rows.filter((r) => r.destination_airport === airport || r.destination === airport || /riyadh/i.test(JSON.stringify(r)));
+        out[o] = [...new Set(hits.map((r) => `${r.destination}/${r.destination_airport}`))].join(",") || `none of ${rows.length}`;
+      } catch (e) {
+        out[o] = `ERR:${String(e).slice(0, 30)}`;
+      }
+    })
+  );
+  return out;
+}
