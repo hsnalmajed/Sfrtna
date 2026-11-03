@@ -137,12 +137,14 @@ class MainViewController: CAPBridgeViewController {
         n++;
         var app = window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.SfrtnaApp;
         if (todo === "partner") {
-          var a = Array.prototype.find.call(document.querySelectorAll('a[data-partner]:not([data-partner^="app"])'),
+          // Prefer a link through our /api/go/ redirect (the harder case).
+          var all = Array.prototype.filter.call(document.querySelectorAll('a[data-partner]:not([data-partner^="app"])'),
             function (x) { return x.offsetParent !== null && /^https?:/.test(x.href); });
+          var a = all.filter(function (x) { return x.href.indexOf("/api/go/") > 0; })[0] || all[0];
           var tag = document.getElementById("sfr-check") || document.body.appendChild(document.createElement("div"));
           tag.id = "sfr-check";
           tag.style.cssText = "position:fixed;left:8px;right:8px;bottom:140px;z-index:2147483647;background:#c00;color:#fff;font:14px/1.4 monospace;padding:6px;direction:ltr";
-          tag.textContent = a ? "CHECK partner -> " + a.hostname : "CHECK no partner link yet (" + n + "s)";
+          tag.textContent = a ? "CHECK partner -> " + a.hostname + a.pathname.slice(0, 20) : "CHECK no partner link yet (" + n + "s)";
           // A script cannot open a new window without a tap, so the link is
           // followed in the page itself: the same in-app Safari sheet opens.
           if (a) { clearInterval(timer); s.setItem("sfrCheckDone", "1"); location.href = a.href; }
@@ -304,7 +306,7 @@ final class NewWindowProxy: NSObject, WKUIDelegate {
                  for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
         guard let url = navigationAction.request.url else { return nil }
         let scheme = url.scheme?.lowercased() ?? ""
-        if let h = url.host?.lowercased(), h == "sfrtna.com" || h == "www.sfrtna.com" {
+        if let h = url.host?.lowercased(), h == "sfrtna.com" || h == "www.sfrtna.com", !SfrtnaAppPlugin.isOutLink(url) {
             webView.load(URLRequest(url: url))
         } else if scheme == "https" || scheme == "http" {
             host?.openOutside(url)
@@ -545,7 +547,13 @@ public class SfrtnaAppPlugin: CAPPlugin, CAPBridgedPlugin {
         CAPPluginMethod(name: "print", returnType: CAPPluginReturnPromise),
     ]
 
-    private static let ourHosts: Set<String> = ["sfrtna.com", "www.sfrtna.com"]
+    static let ourHosts: Set<String> = ["sfrtna.com", "www.sfrtna.com"]
+
+    /// Our /api/go/… links only redirect to a partner site: they open in the
+    /// in-app Safari sheet like any partner link, never inside the app.
+    static func isOutLink(_ url: URL) -> Bool {
+        url.path.hasPrefix("/api/go/")
+    }
     private static let appSchemes: Set<String> = ["tel", "mailto", "sms", "whatsapp", "maps", "comgooglemaps", "itms-apps"]
 
     /// Our pages stay in the app; a link to another site (partner, visa
@@ -560,7 +568,9 @@ public class SfrtnaAppPlugin: CAPPlugin, CAPBridgedPlugin {
         guard scheme == "https" || scheme == "http" else { return nil }
         let mainFrame = navigationAction.targetFrame?.isMainFrame ?? true
         if !mainFrame { return nil }
-        if let host = url.host?.lowercased(), SfrtnaAppPlugin.ourHosts.contains(host) { return NSNumber(value: false) }
+        if let host = url.host?.lowercased(), SfrtnaAppPlugin.ourHosts.contains(host), !SfrtnaAppPlugin.isOutLink(url) {
+            return NSNumber(value: false)
+        }
         DispatchQueue.main.async { [weak self] in
             (self?.bridge?.viewController as? MainViewController)?.openOutside(url)
         }
