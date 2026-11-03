@@ -42,7 +42,9 @@ async function api(method, p, body) {
   return j;
 }
 const get = (p) => api("GET", p);
+const ONLY = (process.env.ONLY || "").trim();
 async function step(name, fn) {
+  if (ONLY && !name.includes(ONLY)) return;
   try {
     const r = await fn();
     note(`✓ ${name}${r ? ` — ${r}` : ""}`);
@@ -155,7 +157,8 @@ await step("review notes (no sign-in needed)", async () => {
   } catch {
     d = null;
   }
-  if (d) await api("PATCH", `/v1/appStoreReviewDetails/${d.id}`, { data: { type: "appStoreReviewDetails", id: d.id, attributes } });
+  // Once added, Apple wants the contact with every change: the owner edits it.
+  if (d) return "already added";
   else await api("POST", "/v1/appStoreReviewDetails", { data: { type: "appStoreReviewDetails", attributes, relationships: { appStoreVersion: { data: { type: "appStoreVersions", id: version.id } } } } });
   return d ? "updated" : "added";
 });
@@ -231,7 +234,9 @@ async function uploadSet(loc, files) {
   }
   return `${files.length} screenshots`;
 }
-if (SHOTS && fs.existsSync(SHOTS)) {
+if (ONLY && !"screenshots".includes(ONLY)) {
+  /* skipped */
+} else if (SHOTS && fs.existsSync(SHOTS)) {
   const all = fs.readdirSync(SHOTS).filter((f) => /^store-.*\.png$/.test(f)).sort();
   const ar = all.filter((f) => !f.startsWith("store-en-")).map((f) => path.join(SHOTS, f));
   const en = all.filter((f) => f.startsWith("store-en-")).map((f) => path.join(SHOTS, f));
