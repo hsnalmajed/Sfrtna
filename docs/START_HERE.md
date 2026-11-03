@@ -114,9 +114,15 @@ prevent, don't just detect.** Details: PROJECT_NOTES «Release gate».
    Travelpayouts dashboard, never in chat), then re-dispatch Release with
    production unticked: `gh api -X POST repos/hsnalmajed/sfrtna/actions/workflows/release.yml/dispatches -f ref=main -F 'inputs[production]=false'`;
    add other staging secrets only if smoke/e2e then name them (the 14 names
-   in PROJECT_NOTES are the full candidate list); (c) first green staging run;
+   in PROJECT_NOTES are the full candidate list); (c) DONE 3 Nov 19:30 — run 41673807379 green
+   on staging (`TRAVELPAYOUTS_TOKEN` set by the owner was the only secret
+   needed). Gate does NOT cover: the live flight widget (returns no flights on
+   the workers.dev host → warning «check by hand on sfrtna.com») and RUH
+   «suggest a route» (known external);
    (d) check Cloudflare's build settings don't override `NEXT_PUBLIC_SITE_URL`
-   / `NEXT_PUBLIC_TRAVELPAYOUTS_MARKER`; (e) switch Cloudflare Git build off;
+   / `NEXT_PUBLIC_TRAVELPAYOUTS_MARKER` (owner, dashboard) — **next**;
+   (d2) one dispatch of Release WITH production ticked to prove the production
+   deploy step before relying on it; (e) switch Cloudflare Git build off;
    (f) drop the `push` trigger of `smoke.yml` (avoid paying for two runs).
 3. Riyadh «suggest a route» is now «known external» in `e2e.mjs`
    (warning in the mail, does not block); remove the flag when RUH fares return.
