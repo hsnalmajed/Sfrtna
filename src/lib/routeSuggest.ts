@@ -25,7 +25,7 @@ import type { SeasonKind } from "@/lib/travelSeason/kinds";
 import { DESTINATIONS } from "@/lib/destinations";
 import { discoverCandidates, type Candidate } from "@/lib/discoverPool";
 import { placeForDestination } from "@/lib/destinationPlace";
-import { oneWayFaresFrom, type OneWayFare } from "@/lib/providers/travelpayouts";
+import { oneWayFaresFrom, tripFaresFrom, type OneWayFare } from "@/lib/providers/travelpayouts";
 import type { DestinationCategory, RouteLeg, RouteStop, RouteSuggestion } from "@/lib/types";
 import { findCountryByEnglishName, type Continent } from "@/lib/countries";
 import { findAirport } from "@/lib/airports";
@@ -117,6 +117,14 @@ export interface RouteStats {
   /** Orderings that stopped at flight i (no fare, or not direct). */
   failAt?: number[];
   sameCountry?: number;
+  /** Places in the home table (month ask) and how many are in the pool. */
+  homeSize?: number;
+  homeInPool?: number;
+  /** Median size of the other tables. */
+  medianSize?: number;
+  /** Site check only: the same home ask by the exact day (±2), for comparison. */
+  homeDaySize?: number;
+  homeDayInPool?: number;
 }
 
 export async function suggestRoutes(q: RouteQuery, stats?: RouteStats): Promise<RouteSuggestion[]> {
@@ -197,6 +205,13 @@ export async function suggestRoutes(q: RouteQuery, stats?: RouteStats): Promise<
     stats.candidates = candidates.length;
     stats.tables = table.size;
     stats.emptyTables = [...table.values()].filter((t) => t.size === 0).length;
+    stats.homeSize = home.size;
+    stats.homeInPool = pool.filter((c) => home.has(c.code)).length;
+    const sizes = [...table.entries()].filter(([k]) => k !== homeKey).map(([, t]) => t.size).sort((a, b) => a - b);
+    stats.medianSize = sizes.length ? sizes[Math.floor(sizes.length / 2)] : 0;
+    const byDay = await tripFaresFrom(q.origin, q.startDate, undefined, q.currency);
+    stats.homeDaySize = byDay.size;
+    stats.homeDayInPool = pool.filter((c) => byDay.has(c.code)).length;
   }
 
   const fare = (from: string, to: string, date: string): OneWayFare | undefined =>
