@@ -106,7 +106,7 @@ jobs:
       # The app's -sfrPath / -sfrDo arguments (CI only) open the page and act.
       - name: App checks on the simulator
         continue-on-error: true
-        timeout-minutes: 20
+        timeout-minutes: 30
         run: |
           t() { perl -e 'alarm shift; exec @ARGV' "$@"; }
           OUT="$RUNNER_TEMP/shots"; mkdir -p "$OUT"
@@ -140,12 +140,16 @@ jobs:
           shot store-4-discover 35 -sfrPath "$DISCOVER"
           shot store-5-city 30 -sfrPath "/ar/attractions/TR/istanbul"
           shot store-6-seasons 25 -sfrPath "/ar/seasons"
+          shot store-7-visa 25 -sfrPath "/ar/visa/TR"
+          shot store-8-currency 25 -sfrPath "/ar/currency"
           shot store-en-1-home 14 -sfrPath "/en"
           shot store-en-2-flights 35 -sfrPath "$(en "$FLIGHTS")"
           shot store-en-3-hotels 30 -sfrPath "$(en "$HOTELS" | sed 's/label=[^&]*/label=Istanbul/')"
           shot store-en-4-discover 35 -sfrPath "$(en "$DISCOVER")"
           shot store-en-5-city 30 -sfrPath "/en/attractions/TR/istanbul"
           shot store-en-6-seasons 25 -sfrPath "/en/seasons"
+          shot store-en-7-visa 25 -sfrPath "/en/visa/TR"
+          shot store-en-8-currency 25 -sfrPath "/en/currency"
           shot check-partner 40 -sfrPath "$HOTELS" -sfrDo partner
           shot check-print 20 -sfrPath "/ar" -sfrDo print
           shot check-share 20 -sfrPath "/ar" -sfrDo share
