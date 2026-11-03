@@ -1,0 +1,141 @@
+# Release gate (owner, 3 Nov 2026: "no error may reach visitors").
+#
+# One build, tested before visitors see it:
+#   1. build once (opennext)
+#   2. deploy that build to the second Worker `sfrtna-staging`
+#      (own Durable Objects, own counters, own workers.dev address)
+#   3. run the Site check (smoke) and the search pages (e2e) against staging
+#   4. only if both are green: deploy the SAME build to production (`sfrtna`)
+# Red at step 3 → production stays on the last good version, GitHub mails the
+# owner, nothing reaches visitors.
+#
+# Needs (owner steps, see docs/START_HERE.md): repository secrets
+# CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID, SMOKE_TOKEN; the Worker secrets
+# set on `sfrtna-staging`. Until CLOUDFLARE_API_TOKEN exists this workflow does
+# nothing (green, with a notice), so it can sit in main safely.
+#
+# Cloudflare's own Git build must be switched OFF once this has deployed
+# once — otherwise two systems deploy production and the gate is bypassed.
+#
+# First run: Actions → Release → Run workflow with "production" UNticked:
+# builds and tests staging only, production untouched.
+name: Release
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      production:
+        description: "Deploy to production when the staging checks are green"
+        type: boolean
+        default: true
+
+# Queue, never cancel: stopping a run halfway through a deploy is worse than
+# waiting. GitHub keeps only the newest waiting run.
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+env:
+  STAGING_URL: https://sfrtna-staging.almajedhsn.workers.dev
+  PRODUCTION_URL: https://sfrtna.almajedhsn.workers.dev
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    # `bash` (not the default `bash -e`) turns pipefail on: without it,
+    # `wrangler deploy | tail` would hide a failed deploy and the gate would
+    # carry on to production.
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Are the Cloudflare secrets set?
+        id: guard
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SMOKE_TOKEN: ${{ secrets.SMOKE_TOKEN }}
+        run: |
+          if [ -z "$CLOUDFLARE_API_TOKEN" ] || [ -z "$CLOUDFLARE_ACCOUNT_ID" ] || [ -z "$SMOKE_TOKEN" ]; then
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "::notice title=Release gate::Cloudflare secrets are not all set — gate skipped (Cloudflare's Git build still deploys)."
+          else
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/setup-node@v4
+        if: steps.guard.outputs.ready == 'true'
+        with:
+          node-version: "22"
+          check-latest: true
+          cache: npm
+
+      - name: Install
+        if: steps.guard.outputs.ready == 'true'
+        run: npm ci --no-audit --no-fund
+
+      - name: Build once
+        if: steps.guard.outputs.ready == 'true'
+        run: npx opennextjs-cloudflare build 2>&1 | tail -n 40
+
+      - name: Staging config
+        if: steps.guard.outputs.ready == 'true'
+        run: node scripts/make-staging-config.mjs
+
+      - name: Deploy the build to staging
+        if: steps.guard.outputs.ready == 'true'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx wrangler deploy --config wrangler.staging.jsonc 2>&1 | tail -n 30
+
+      - name: Wait until staging answers
+        if: steps.guard.outputs.ready == 'true'
+        env:
+          SMOKE_TOKEN: ${{ secrets.SMOKE_TOKEN }}
+        run: |
+          for i in $(seq 1 30); do
+            code=$(curl -s -o /dev/null -w "%{http_code}" -H "x-sfrtna-smoke: $SMOKE_TOKEN" "$STAGING_URL/ar" || true)
+            if [ "$code" = "200" ]; then echo "staging answers (attempt $i)"; exit 0; fi
+            echo "attempt $i: HTTP $code"; sleep 10
+          done
+          echo "::error title=Release gate::staging did not answer 200 within 5 minutes — production NOT deployed."
+          exit 1
+
+      - name: Site check on staging
+        if: steps.guard.outputs.ready == 'true'
+        env:
+          SMOKE_TOKEN: ${{ secrets.SMOKE_TOKEN }}
+        run: node scripts/smoke.mjs "$STAGING_URL"
+
+      - name: Install the browser
+        if: steps.guard.outputs.ready == 'true'
+        run: |
+          npm install --no-save --no-audit --no-fund playwright@1
+          npx playwright install --with-deps chromium 2>&1 | tail -n 5
+
+      - name: Search pages on staging
+        if: steps.guard.outputs.ready == 'true'
+        env:
+          SMOKE_TOKEN: ${{ secrets.SMOKE_TOKEN }}
+        run: node scripts/e2e.mjs "$STAGING_URL"
+
+      - name: Deploy the same build to production
+        if: steps.guard.outputs.ready == 'true' && (github.event_name == 'push' || inputs.production)
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx wrangler deploy 2>&1 | tail -n 30
+
+      - name: Quick check of production
+        if: steps.guard.outputs.ready == 'true' && (github.event_name == 'push' || inputs.production)
+        env:
+          SMOKE_TOKEN: ${{ secrets.SMOKE_TOKEN }}
+        run: |
+          sleep 60
+          node scripts/smoke.mjs "$PRODUCTION_URL"

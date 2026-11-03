@@ -1918,3 +1918,40 @@ clear of bottom banners and the header. Verify: next failure names its cause.
   Build once, deploy to staging, Site check against it, deploy production
   only if green. Not built yet; next chat (Opus) builds the workflow and
   guides the owner through the secrets/token steps.
+
+**Step 2 — built (3 Nov 2026, evening; not yet run).**
+- Files: `.github/workflows/release.yml`, `scripts/make-staging-config.mjs`
+  (writes `wrangler.staging.jsonc`, not committed; production `wrangler.jsonc`
+  untouched). Staging config = production config with `name: sfrtna-staging`,
+  rate-limit `namespace_id` +1000 (3601/3602, own counters), no routes.
+  Durable Objects + `migrations` are copied: a new Worker name gets its own DO
+  storage and the migrations create `HereQuota` / `Accounts` on first deploy.
+- Flow (one job, so the tested build IS the deployed build): guard (skips,
+  green, if `CLOUDFLARE_API_TOKEN` / `CLOUDFLARE_ACCOUNT_ID` / `SMOKE_TOKEN`
+  missing) → `npm ci` → `opennextjs-cloudflare build` → staging config →
+  `wrangler deploy --config wrangler.staging.jsonc` → poll staging for 200
+  (replaces the 480 s sleep) → `smoke.mjs` + `e2e.mjs` with the staging URL
+  as argument → `wrangler deploy` (production) if push or «production»
+  ticked → 60 s later `smoke.mjs` on production. Job uses `shell: bash`
+  (pipefail) so `| tail` cannot hide a failed deploy. Concurrency queues,
+  never cancels.
+- `e2e.mjs`: `check(name, fn, { external: true })` turns a failure into a
+  «known external» warning; used for Riyadh «suggest a route».
+- Staging is at `sfrtna-staging.almajedhsn.workers.dev` (subdomain taken from
+  the production URL used by smoke). It needs these Worker secrets (names
+  found in code; values never in chat): `SMOKE_TOKEN` (same value as the
+  GitHub secret), `TRAVELPAYOUTS_TOKEN`, `HERE_API_KEY`, `PEXELS_API_KEY`,
+  `VIATOR_API_KEY`, `VIATOR_ENV`, `SERPAPI_KEY`, `RESEND_API_KEY`,
+  `OPENAI_API_KEY`, `OPENAI_MODEL`, `ANTHROPIC_API_KEY`, `ANTHROPIC_MODEL`,
+  `GOOGLE_CLIENT_ID`, `EMAIL_FROM`. Owner to confirm which are really set on
+  production (some may be unused; `AMADEUS_*` in the wrangler.jsonc comment
+  appear nowhere in code). `SFRTNA_LOCAL_PLACES` is a local-dev switch.
+- Cost note: staging shares the partners' real keys (SerpAPI, Travelpayouts,
+  HERE) → each gated run spends partner quota once more than before. Staging
+  has its own HERE daily-cap counter (own DO). Hence step (f): remove the
+  `push` trigger from `smoke.yml` once the gate runs, keep its schedule.
+- Not verified yet: first real run; that `smoke.mjs` checks have nothing that
+  only holds on the production hostname; Cloudflare build env overrides of the
+  two `NEXT_PUBLIC_*` vars (both have in-code defaults).
+- No automatic rollback after the production deploy (a rollback with Durable
+  Objects needs care); a red «Quick check of production» mails the owner.

@@ -98,19 +98,25 @@ prevent, don't just detect.** Details: PROJECT_NOTES «Release gate».
    have scroll margins (pushed 3 Nov). **Next step:** after the next Site
    check, if it fails again read the cause in the annotation and fix the
    page (banner over the tab) or the test; no failure in ~10 runs = closed.
-2. **Release gate — owner chose B (3 Nov): a second Worker
-   `sfrtna-staging`** (no preview URLs exist with Durable Objects).
-   **Next step (Opus):** read `wrangler.jsonc` (bindings, DO `migrations`,
-   secret names) and write a workflow: build once (opennext) → deploy to
-   `sfrtna-staging` → Site check/e2e against its workers.dev URL → deploy
-   production only if green; red → production stays, owner gets the mail.
-   Owner steps afterwards, ONE at a time: Cloudflare API token + account id
-   as GitHub secrets; the Worker secrets on staging (list the names first,
-   never values in chat); switch the Cloudflare Git build off only after the
-   workflow has deployed once.
-3. Keep every alert; Riyadh «suggest a route» is marked «known external»
-   (alerts, does not block) once the gate exists.
-Recommended model: **Opus 5.5** (gate build); Sonnet 5.5 for the owner steps.
+2. **Release gate — route B (second Worker `sfrtna-staging`): BUILT 3 Nov,
+   not yet run.** `.github/workflows/release.yml` (build once → deploy to
+   staging → smoke + e2e on it → same build to production if green; skips
+   itself, green, until the secrets exist), `scripts/make-staging-config.mjs`
+   (staging config from `wrangler.jsonc`, own rate-limit ids). Details +
+   secret names: PROJECT_NOTES «Release gate» → Step 2 built.
+   **Next steps, owner ONE at a time:** (a) GitHub secrets
+   `CLOUDFLARE_API_TOKEN` + `CLOUDFLARE_ACCOUNT_ID` (`SMOKE_TOKEN` exists);
+   (b) Worker secrets on `sfrtna-staging` (names in PROJECT_NOTES, never
+   values in chat; the Worker exists only after the first deploy → run
+   Release with «production» unticked first, it will fail the checks until
+   the secrets are in, that is expected); (c) first green staging run;
+   (d) check Cloudflare's build settings don't override `NEXT_PUBLIC_SITE_URL`
+   / `NEXT_PUBLIC_TRAVELPAYOUTS_MARKER`; (e) switch Cloudflare Git build off;
+   (f) drop the `push` trigger of `smoke.yml` (avoid paying for two runs).
+3. Riyadh «suggest a route» is now «known external» in `e2e.mjs`
+   (warning in the mail, does not block); remove the flag when RUH fares return.
+Recommended model: Sonnet 5.5 for the owner steps (a)–(f); Opus 5.5 only if
+the first staging run shows a real failure to debug.
 
 **iPhone app submitted to App Review** (3 Nov 14:45, version 1.0, build
 27, status «Waiting for Review», up to 48 h). Listing, 8+8 captioned
@@ -140,5 +146,5 @@ Waiting on the owner: Apple review email; Travelpayouts reply / Google-fares
 plan; Google Play identity check (owner sent his ID, waiting — may take days); Stay22 clearance; Android APK on a real
 phone.
 
-**Recommended model for the next chat: Opus 5.5** (release gate + flaky
-check above); Sonnet 5.5 for owner guidance only (Apple review email).
+**Recommended model for the next chat: Sonnet 5.5** (owner steps for the
+gate, Apple review email); Opus 5.5 if the first staging run needs debugging.
