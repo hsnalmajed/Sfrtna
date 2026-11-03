@@ -117,7 +117,7 @@ Cloudflare Observability pricing (1 Dec): usage ≈1 % of the allowance,
 nothing to do.
 
 Waiting on the owner: Apple review email; Travelpayouts reply / Google-fares
-plan; Google Play identity email; Stay22 clearance; Android APK on a real
+plan; Google Play identity check (owner sent his ID, waiting — may take days); Stay22 clearance; Android APK on a real
 phone.
 
 **Recommended model for the next chat: Sonnet 5.5** (Apple review result,
