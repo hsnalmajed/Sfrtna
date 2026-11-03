@@ -133,6 +133,7 @@ export interface RouteStats {
   exploreDates?: string[];
   searchesLeft?: number;
   shapes?: Record<string, string>;
+  scope?: Record<string, string>;
   /** Median size of the other tables. */
   medianSize?: number;
   /** Site check only: the same home ask by the exact day (±2), for comparison. */
@@ -262,6 +263,17 @@ export async function suggestRoutes(q: RouteQuery, stats?: RouteStats): Promise<
     stats.exploreDates = exploreDebug.dates;
     stats.searchesLeft = (await searchesLeft()) ?? undefined;
     stats.shapes = await probeOriginShapes(q.origin, month(legDates[0]), legDates[0], "IST");
+    // Is it this origin or every one? One-way places per month, by origin.
+    const scope: Record<string, string> = {};
+    const next = (m: number) => new Date(Date.UTC(new Date().getUTCFullYear(), new Date().getUTCMonth() + m, 1)).toISOString().slice(0, 7);
+    await Promise.all(
+      ["RUH", "JED", "DMM", "DXB", "CAI", "IST"].flatMap((o) =>
+        [next(0), next(1), next(2)].map(async (m) => {
+          scope[`${o}:${m}`] = String((await oneWayFaresFrom(o, m, "SAR")).size);
+        })
+      )
+    );
+    stats.scope = scope;
     stats.homeMerged = home.size;
     stats.homeMergedInPool = pool.filter((c) => home.has(c.code)).length;
     stats.homeInPool = pool.filter((c) => home.has(c.code)).length;
