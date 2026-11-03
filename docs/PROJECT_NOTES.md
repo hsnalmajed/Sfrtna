@@ -1416,6 +1416,13 @@ still 0: failAt shows the cached fares lack RUH→Europe (only ~4 cities)
 and city→RUH for mid-January — data, not limits. Routes with 0 now say
 «جرّب ثلاث دول… أو قارة أخرى…» (`discoverResults.noRoutes`).
 
+**Observability pricing from 1 Dec 2026 (Cloudflare notice 29 Oct):** Paid
+Observability auto-subscribed; 50 GB ingest + 10 GB-month storage included,
+then $0.25/GB, $0.10/GB-month. Measured 3 Nov (branch `cf-usage-probe`,
+telemetry API + 30-day invocations): ~1.05 log events/request, ~3.5 KB
+each → ~0.55 GB/month = ~1.1% of the allowance (busiest day ≈ 4× average).
+Keep `head_sampling_rate: 1`; recheck only if traffic grows ~50×.
+
 **Stay22 payout, 27 Oct:** National Address certificate is NOT an accepted
 type (Madeleine, 22 Oct: Tipalti accepts bank/credit-card statement,
 insurance, lease, phone/utility/cable bill, < 60 days, name + address).
