@@ -1,0 +1,38 @@
+{
+  "version": "1.0",
+  "copyright": "2026 Sfrtna",
+  "category": "TRAVEL",
+  "supportUrl": {
+    "ar-SA": "https://sfrtna.com/ar/contact",
+    "en-US": "https://sfrtna.com/en/contact"
+  },
+  "marketingUrl": {
+    "ar-SA": "https://sfrtna.com/ar",
+    "en-US": "https://sfrtna.com/en"
+  },
+  "privacyPolicyUrl": {
+    "ar-SA": "https://sfrtna.com/ar/privacy",
+    "en-US": "https://sfrtna.com/en/privacy"
+  },
+  "name": {
+    "ar-SA": "Sfrtna | سفرتنا",
+    "en-US": "Sfrtna | سفرتنا"
+  },
+  "subtitle": {
+    "ar-SA": "طيران وفنادق وخطة رحلتك",
+    "en-US": "Flights, hotels & trip plans"
+  },
+  "promotionalText": {
+    "ar-SA": "خطط رحلتك كاملة بالعربي: قارن أسعار الطيران والفنادق الحية، واعرف أفضل وقت للسفر، واحصل على خطة يومية لكل مدينة. بدون إعلانات.",
+    "en-US": "Plan your whole trip in one place: compare live flight and hotel prices, find the best time to go, and get a day-by-day city plan. No ads."
+  },
+  "keywords": {
+    "ar-SA": "طيران,فنادق,حجز,سفر,رحلات,تذاكر,سياحة,وجهات,تأشيرة,خطة سفر,طقس,عطلة,فندق,رحلة",
+    "en-US": "flights,hotels,travel,trip planner,booking,cheap flights,itinerary,vacation,visa,weather,arabic"
+  },
+  "description": {
+    "ar-SA": "سفرتنا يجمع لك كل ما تحتاجه لرحلتك في مكان واحد، بالعربي.\n\n✈️ الطيران: قارن أسعار رحلات الطيران الحية من شركات الطيران ومواقع الحجز، ذهاباً وعودة أو ذهاباً فقط أو بين عدة مدن، مع تصفية حسب التوقف والوقت والأمتعة وشركة الطيران.\n\n🏨 الفنادق: ابحث باسم الفندق أو بالمدينة، وقارن السعر عند أكثر من موقع، وحدد عدد الغرف والميزانية والقرب من معلم.\n\n🌍 اقترح لي وجهة: أدخل ميزانيتك وتواريخك، ونقترح لك وجهات تناسبها، أو مساراً بين دولتين أو ثلاث.\n\n☀️ أفضل وقت للسفر: تقييم الطقس لكل شهر في أكثر من 360 مدينة، من سجلات المناخ لكل شهر.\n\n🗺️ دليل المدينة: أشهر المعالم مع وصف بالعربي ووقت الزيارة المناسب واللباس المناسب، وخريطة، وصور المدينة.\n\n📅 خطتي الذكية: خطة يومية مرتبة حسب القرب، مع مطاعم قريبة، قابلة للتحميل PDF.\n\n🧳 رحلتي: تابع تجهيز رحلتك خطوة خطوة: الطيران، والفندق، والتأشيرة، والخدمات، والخطة.\n\n🛂 التأشيرة والعملة: متطلبات الدخول للمسافر السعودي لكل دولة، وتحويل العملة.\n\nالحجز يتم عند شركائنا مباشرة، ولا نضيف أي رسوم على السعر. بدون إعلانات.",
+    "en-US": "Sfrtna brings everything your trip needs into one place, in Arabic and English.\n\n✈️ Flights: compare live fares from airlines and booking sites — round trip, one way or multi-city — with filters for stops, times, bags and airlines.\n\n🏨 Hotels: search by hotel name or city, compare the price across sites, and choose rooms, budget and distance to a landmark.\n\n🌍 Suggest a destination: enter your budget and dates and get places that fit, or a route through two or three countries.\n\n☀️ Best time to go: a month-by-month weather rating for more than 360 cities, from climate records.\n\n🗺️ City guide: the best-known sights with descriptions, the right time to visit and what to wear, a map and a photo tour.\n\n📅 Smart plan: a day-by-day plan ordered by distance, with nearby restaurants, downloadable as a PDF.\n\n🧳 My trip: get your trip ready step by step — flight, hotel, visa, services and plan.\n\n🛂 Visa and currency: entry requirements for Saudi travellers to every country, and a currency converter.\n\nYou book directly with our partners; we add no fee to the price. No ads."
+  },
+  "reviewNotes": "Sfrtna is a travel planner for Arabic-speaking travellers (Arabic first, English too). No login is needed to review it; sign-in is hidden in the iOS app.\n\nNative parts of the app (not just a website):\n- A native opening animation and a native offline screen with a retry button (turn on Airplane Mode to see it).\n- Booking links to partner sites open in an in-app Safari sheet (SFSafariViewController); our own pages stay in the app.\n- The trip plan is printed or saved as PDF through the iOS print screen, and map files are shared through the iOS share sheet.\n- Phone, e-mail and WhatsApp links open the matching apps; swipe-back navigation; safe-area aware layout.\n\nHow to try it: on the home page choose a flight search (e.g. Jeddah to Istanbul), open the results, then the \"Continue your trip\" tabs for hotels and a day plan. Prices come live from booking partners; bookings are completed on the partner's site, and Sfrtna is paid a commission by the partner. There are no ads and no in-app purchases."
+}

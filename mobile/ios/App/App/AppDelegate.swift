@@ -100,7 +100,7 @@ class MainViewController: CAPBridgeViewController {
         // and its top bar can be photographed. Users never pass arguments.
         if ProcessInfo.processInfo.arguments.contains("-sfrSkipWelcome") {
             webView?.configuration.userContentController.addUserScript(WKUserScript(
-                source: "try{localStorage.setItem('sfr-welcome-v1','1');localStorage.setItem('sfrtna-consent-v1','denied');}catch(e){}",
+                source: "try{localStorage.setItem('sfr-welcome-v1','1');localStorage.setItem('sfrtna-consent-v1','denied');localStorage.setItem('sfr-tips-v1','[\"home\",\"results\",\"hotels\",\"city\",\"discover\",\"trip\"]');}catch(e){}",
                 injectionTime: .atDocumentStart, forMainFrameOnly: true))
         }
         // Also CI only: -sfrPath opens one of our pages, -sfrDo then runs one
@@ -114,7 +114,6 @@ class MainViewController: CAPBridgeViewController {
         if let path = arg("-sfrPath"), path.hasPrefix("/"),
            let data = try? JSONSerialization.data(withJSONObject: [path, arg("-sfrDo") ?? ""]),
            let json = String(data: data, encoding: .utf8) {
-            webView?.configuration.preferences.javaScriptCanOpenWindowsAutomatically = true
             webView?.configuration.userContentController.addUserScript(WKUserScript(
                 source: "window.__sfrCheck=\(json);" + MainViewController.checkScript,
                 injectionTime: .atDocumentEnd, forMainFrameOnly: true))
@@ -139,7 +138,9 @@ class MainViewController: CAPBridgeViewController {
         var app = window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.SfrtnaApp;
         if (todo === "partner") {
           var a = document.querySelector("a[data-partner]");
-          if (a) { clearInterval(timer); s.setItem("sfrCheckDone", "1"); a.click(); }
+          // A script cannot open a new window without a tap, so the link is
+          // followed in the page itself: the same in-app Safari sheet opens.
+          if (a) { clearInterval(timer); s.setItem("sfrCheckDone", "1"); location.href = a.href; }
         } else if (app && n >= 4) {
           clearInterval(timer); s.setItem("sfrCheckDone", "1");
           if (todo === "print") app.print({ title: "Sfrtna" });

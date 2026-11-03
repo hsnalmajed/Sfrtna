@@ -1,0 +1,26 @@
+# By hand: fills the App Store listing (scripts/ios/asc-store.mjs) — texts
+# from mobile/ios/store/listing.json, 6.9" screenshots from branch ios-shots,
+# the newest valid build. Output = annotations of the run.
+name: iOS store listing
+on: workflow_dispatch
+permissions:
+  contents: read
+jobs:
+  listing:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          ref: ios-shots
+          path: shots
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: node scripts/ios/asc-store.mjs
+        env:
+          SHOTS_DIR: shots
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}

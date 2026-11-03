@@ -131,10 +131,14 @@ jobs:
             sleep "$w"
             t 30 xcrun simctl io "$UDID" screenshot "$OUT/$f.png" > /dev/null 2>&1 && echo "$f ok" >> "$OUT/checks.txt" || echo "$f failed" >> "$OUT/checks.txt"
           }
-          shot store-1-home 14
+          shot store-1-home 14 -sfrPath "/ar"
           shot store-2-flights 35 -sfrPath "$FLIGHTS"
           shot store-3-hotels 30 -sfrPath "$HOTELS"
           shot store-4-discover 35 -sfrPath "$DISCOVER"
+          shot store-en-1-home 14 -sfrPath "/en"
+          shot store-en-2-flights 35 -sfrPath "${FLIGHTS/#\/ar/\/en}"
+          shot store-en-3-hotels 30 -sfrPath "$(printf '%s' "${HOTELS/#\/ar/\/en}" | sed 's/label=[^&]*/label=Istanbul/')"
+          shot store-en-4-discover 35 -sfrPath "${DISCOVER/#\/ar/\/en}"
           shot check-partner 40 -sfrPath "$HOTELS" -sfrDo partner
           shot check-print 20 -sfrPath "/ar" -sfrDo print
           shot check-share 20 -sfrPath "/ar" -sfrDo share
