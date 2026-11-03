@@ -1,6 +1,6 @@
 # Sfrtna — project notes for a new session
 
-Read this first. It replaces re-explaining the project. Last updated 21 Oct 2026.
+Read this first. It replaces re-explaining the project. Last updated 3 Nov 2026.
 
 ## Owner's standing rules (must follow)
 
@@ -1421,6 +1421,42 @@ insurance, lease, phone/utility/cable bill, < 60 days, name + address).
 Owner sent a bank statement (Sept 2026) on the ticket 27 Oct 20:09 KSA.
 Wait for her confirmation; then check the dashboard no longer says
 "Missing payout method".
+
+**▶ Start here (hand-off 3 Nov 2026):**
+- **Owner's decision (29 Oct):** publish the iPhone app straight to the App
+  Store (no TestFlight public link); Android to the store as soon as Google
+  allows (personal account → closed test 12 testers × 14 days is
+  mandatory; testers join from Play itself). Google identity still under
+  review on 29 Oct ("may take a few days"); phone check + Create app
+  unlock after it. Ignore Play's "SAR 1,300 Google Ads" offer (no ads).
+- **Pre-launch check, round 1 (29 Oct 13:52 UTC, all workflows green):**
+  smoke.yml ✓, mobile-taps.yml ✓, ux-audit.yml ar (iPhone SE, iPhone 13,
+  Pixel 7) ✓ with findings NOT yet fixed:
+  1. SPILL «طيران + فندق» (91 > 83 px) on the home product tabs at 320 px
+     (iPhone SE) — let the label wrap / shrink below 360 px.
+  2. TINY TAP: floating «شاركنا رأيك» button (72×, every page), «عرض
+     المزيد» on place cards (~30 px), «احسب مبلغاً آخر» (31 px tall) → 40 px.
+  3. BLURRY: some Pexels card photos ×1.6–1.9 (640w file shown too big on
+     3× screens) — serve a larger width for wide cards.
+  4. CUT (24): mostly photo credits + false positives (currency From/To);
+     re-check after 1–3.
+- **Still to test before launch:** iPhone app in Arabic on the simulator;
+  inside the iPhone app: a flight search, a partner link (should open in
+  the in-app Safari sheet), share/print of a plan; Android latest APK on a
+  real phone (owner). Simulator video/shots: ios.yml → branch `ios-shots`.
+- **Then App Store submission (Claude does most of it via the ASC API key
+  already in GitHub secrets):** listing ar + en (name «Sfrtna | سفرتنا»,
+  subtitle, description, keywords, support URL https://sfrtna.com/ar/contact,
+  privacy URL https://sfrtna.com/ar/privacy), screenshots 6.9" (iPhone 17
+  Pro Max 1320×2868, from the simulator), age rating, category Travel,
+  free, review notes stressing the native parts (opening, offline screen,
+  share/print, in-app Safari for partners; guideline 4.2 risk). Owner only:
+  App Privacy questionnaire (give him the answers one step per message) and
+  «Add for Review». Sign in stays hidden on iOS until Sign in with Apple.
+- Latest iOS build uploaded: run 19 (build 19), internal group «Sfrtna
+  Team». Old App Manager key «GitHub TestFlight» unused → may be revoked.
+- Stay22: address-mismatch mail (profile vs bank statement) — owner to say
+  which address is right, then reply / new document < 60 days.
 
 **▶ Start here (hand-off 23 Oct 00:15):** owner opens a new conversation to
 create the **Google Play personal developer account** (decided 23 Oct; $25,
