@@ -90,21 +90,23 @@ City guide / Viator / Search Console / Status email / Feedback / Dashboard /
 «رحلتي» / Google Play account / Workers Paid / Hotels like Booking /
 iPhone app.
 
-## ▶ Hand-off (3 Nov 2026, 03:45 KSA) — current state
+## ▶ Hand-off (3 Nov 2026, 04:45 KSA) — current state
 
-Done 3 Nov: pre-launch round 1 (SPILL / TINY TAP / BLURRY) fixed, ux-audit
-re-run clean (details: PROJECT_NOTES «Start here (hand-off 3 Nov 2026)»).
+Done 3 Nov: pre-launch round 1 fixed; route-suggestion blocker diagnosed
+(PROJECT_NOTES «Route suggestions — Riyadh missing at the partner»).
+Root cause: the flight partner has (almost) no cached fares from or to
+**Riyadh** since ~30 Oct (Dec/Jan: 4 places; JED 128–317, DMM 43–144 fine).
+Not our code. Shipped: the first flight is also priced with exact-day
+one-way fares from the Google source — idle until that plan has searches
+(2 left this month; gate needs > 40). Site check `pages` stays red on
+«suggest a route» (RUH) until one of these happens.
 
-**Next step (Claude): route suggestion blocker.** Since 30 Oct (no code
-change) «اقترح لي مسار» (multi-country) returns 0 routes for every search;
-Site check `pages` job red on «suggest a route». route-probe 3 Nov: the
-one-way home table (RUH, Travelpayouts `prices_for_dates` one_way, cached
-6 h as `ow:v1:`) holds ~1 pool city; every ordering fails at flight 1.
-Single «اقترح لي وجهة» still returns 24. Files: `src/lib/routeSuggest.ts`,
-`src/lib/providers/travelpayouts.ts` (`oneWayFaresFrom`). Plan: add table
-sizes to `RouteStats`, re-run route-probe, find thin data vs changed API
-answer, then fix (e.g. round-trip fares for the first/last flight), re-run
-Site check until green.
+**Next step: waiting on the owner's decision** (asked 3 Nov): contact the
+flight partner's support about Riyadh, and/or raise the Google-fares plan.
+When either lands: dispatch route-probe (label `after`), check homeSize /
+homeExact / routes > 0, then Site check until green. Optional meanwhile:
+point the e2e «suggest a route» check at JED to see the rest of the flow
+works (owner's OK first — it would hide the RUH problem).
 
 Then, in order: iPhone app checks on the simulator (Arabic, flight search,
 partner link in Safari sheet, share/print) → App Store submission via the
@@ -112,7 +114,10 @@ ASC API key (listing ar+en, 6.9" screenshots, review notes; owner does App
 Privacy + «Add for Review») → Android once Google verifies the owner's
 identity (closed test 12 testers × 14 days).
 
-Waiting on the owner: Google Play identity email; Stay22 address question;
-one «احجز الرحلة» seen in Travelpayouts; Android APK on a real phone.
+Waiting on the owner: Riyadh/partner decision above; Google Play identity
+email; Stay22 address question; one «احجز الرحلة» seen in Travelpayouts;
+Android APK on a real phone.
 
-**Recommended model for the next chat: Opus 5.5** (root-cause debugging).
+**Recommended model for the next chat: Sonnet 5.5** (owner guidance:
+partner support message / plan upgrade); Opus 5.5 if the data is back and
+routes still fail.

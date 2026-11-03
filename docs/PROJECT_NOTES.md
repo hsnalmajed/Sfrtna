@@ -1796,3 +1796,30 @@ cover them (+ budget, breakfast, stars, kind, near a landmark).
 - **Sign-in hidden on iOS** (`features` lacks "auth"): rule 4.8 requires
   Sign in with Apple when Google sign-in is offered → add Apple sign-in
   (Services ID + key, /api/auth/apple, button) after the account is approved.
+
+## Route suggestions — Riyadh missing at the partner (3 Nov 2026)
+
+«اقترح لي مسار» gives 0 routes since ~30 Oct. Root cause is on the flight
+partner's side, not our code (route-probe stats, 3 Nov, SAR):
+- One-way places from origin per month (prices_for_dates, unique):
+  RUH Nov 31 / Dec 4 / Jan 4 — JED 317/205/128 — DMM 144/68/43 —
+  DXB 732/460/376 — CAI 400/281/173 — IST 755/600/468.
+- Riyadh appears under no code in the December tables from JED (187
+  places), CAI (251), DXB (420), IST (560), BAH (70); to-RUH asks = 0.
+- Every ask shape answers 200: month/day/no-date, one-way/return, pair
+  RUH–IST, grouped_prices, v2 latest, v1 cheap, city-directions — all ~0
+  for Riyadh (no-date: 33). So: thin data, not a changed API.
+Change shipped (558a868): the first flight's table (home → stop 1) is
+completed with the exact day's one-way prices for the party from the
+source «اقترح لي وجهة» uses (`exploreFares`, type one-way), same merge rule
+as there. It does nothing yet: that source had **2 searches left this
+month** (`searchesLeft` in the site-check stats; the explore gate needs
+> 40). Cache key bumped to `serp-explore2`. Site-check stats added:
+homeExact (−1 = refused), homeMerged, homeMergedInPool, exploreRows,
+exploreDates, searchesLeft. The diagnostic probes used for the numbers
+above were removed afterwards (≈30 partner calls per check).
+Also seen in the same Site check: /ar/results flight widget returned no
+flights on the workers.dev host (noted, not a failure).
+Owner decisions needed: (1) report to the flight partner's support that
+Riyadh vanished from their cached prices since ~30 Oct (JED/DMM fine);
+(2) or raise the Google-fares plan so the exact-day fallback runs.

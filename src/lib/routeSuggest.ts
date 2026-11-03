@@ -25,7 +25,7 @@ import type { SeasonKind } from "@/lib/travelSeason/kinds";
 import { DESTINATIONS } from "@/lib/destinations";
 import { discoverCandidates, type Candidate } from "@/lib/discoverPool";
 import { placeForDestination } from "@/lib/destinationPlace";
-import { CITY_OF_AIRPORT, oneWayFaresFrom, probeCodesFor, probeOriginShapes, tripFaresFrom, type OneWayFare } from "@/lib/providers/travelpayouts";
+import { CITY_OF_AIRPORT, oneWayFaresFrom, tripFaresFrom, type OneWayFare } from "@/lib/providers/travelpayouts";
 import { exploreFares, searchesLeft } from "@/lib/providers/serpapi";
 import type { DestinationCategory, RouteLeg, RouteStop, RouteSuggestion } from "@/lib/types";
 import { findCountryByEnglishName, type Continent } from "@/lib/countries";
@@ -132,9 +132,6 @@ export interface RouteStats {
   exploreRows?: number;
   exploreDates?: string[];
   searchesLeft?: number;
-  shapes?: Record<string, string>;
-  scope?: Record<string, string>;
-  codes?: Record<string, string>;
   /** Median size of the other tables. */
   medianSize?: number;
   /** Site check only: the same home ask by the exact day (±2), for comparison. */
@@ -263,19 +260,6 @@ export async function suggestRoutes(q: RouteQuery, stats?: RouteStats): Promise<
     stats.exploreRows = exploreDebug.rows;
     stats.exploreDates = exploreDebug.dates;
     stats.searchesLeft = (await searchesLeft()) ?? undefined;
-    stats.shapes = await probeOriginShapes(q.origin, month(legDates[0]), legDates[0], "IST");
-    // Is it this origin or every one? One-way places per month, by origin.
-    const scope: Record<string, string> = {};
-    const next = (m: number) => new Date(Date.UTC(new Date().getUTCFullYear(), new Date().getUTCMonth() + m, 1)).toISOString().slice(0, 7);
-    await Promise.all(
-      ["RUH", "JED", "DMM", "DXB", "CAI", "IST"].flatMap((o) =>
-        [next(0), next(1), next(2)].map(async (m) => {
-          scope[`${o}:${m}`] = String((await oneWayFaresFrom(o, m, "SAR")).size);
-        })
-      )
-    );
-    stats.scope = scope;
-    stats.codes = await probeCodesFor(q.origin, ["DXB", "CAI", "IST", "JED", "BAH"], next(1));
     stats.homeMerged = home.size;
     stats.homeMergedInPool = pool.filter((c) => home.has(c.code)).length;
     stats.homeInPool = pool.filter((c) => home.has(c.code)).length;
