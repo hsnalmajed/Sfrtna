@@ -119,10 +119,13 @@ prevent, don't just detect.** Details: PROJECT_NOTES «Release gate».
    needed). Gate does NOT cover: the live flight widget (returns no flights on
    the workers.dev host → warning «check by hand on sfrtna.com») and RUH
    «suggest a route» (known external);
-   (d) check Cloudflare's build settings don't override `NEXT_PUBLIC_SITE_URL`
-   / `NEXT_PUBLIC_TRAVELPAYOUTS_MARKER` (owner, dashboard) — **next**;
-   (d2) one dispatch of Release WITH production ticked to prove the production
-   deploy step before relying on it; (e) switch Cloudflare Git build off;
+   (d) DONE 4 Nov: Cloudflare «Build variables and secrets» is empty, so no
+   override of `NEXT_PUBLIC_SITE_URL` / `NEXT_PUBLIC_TRAVELPAYOUTS_MARKER`
+   (build cmd there: `npx opennextjs-cloudflare build`, deploy `npx wrangler deploy`);
+   (d2) DONE 4 Nov: run 41719665474 (production ticked) green end to end —
+   staging checks → production deployed → quick check of production green;
+   (e) switch Cloudflare Git build off (owner, dashboard: sfrtna → Settings →
+   Builds → disconnect) — **next**; until then every push is deployed twice;
    (f) drop the `push` trigger of `smoke.yml` (avoid paying for two runs).
 3. Riyadh «suggest a route» is now «known external» in `e2e.mjs`
    (warning in the mail, does not block); remove the flag when RUH fares return.
