@@ -1967,3 +1967,14 @@ clear of bottom banners and the header. Verify: next failure names its cause.
   GetYourGuide and Expedia link checks and all other smoke checks passed;
   e2e skipped. Dashboard-set Worker *secrets* survive `wrangler deploy`
   (only plain-text variables could be dropped), so the owner sets them once.
+
+**Travelpayouts answer on missing Riyadh fares (owner's email, 4 Nov 00:24).**
+Ticket #254780 marked resolved by Viet (Travelpayouts), 3 Nov 2026 17:20
+GMT+3: "The limited availability of flight data is related to the current
+circumstances affecting the region. We expect the data to become available
+again as conditions improve, however I can't provide an exact timeframe."
+Meaning: the gap is at the partner and external; nothing in our code to fix.
+Open decision for the owner: raise the Google-fares plan for routes from
+Riyadh (cost/benefit not yet written up), or wait for the partner's data.
+Remove `{ external: true }` from the «suggest a route» check in
+`scripts/e2e.mjs` once RUH routes return.

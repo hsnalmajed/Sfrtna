@@ -145,9 +145,12 @@ Offered to the owner (his decision): Apple Search Ads.
 
 Riyadh fares still missing at the flight partner (PROJECT_NOTES «Route
 suggestions — Riyadh missing at the partner»; probe 3 Nov 08:17: homeSize
-4, routes 0). Owner's Travelpayouts ticket sent 3 Nov 08:15. Site check
-`pages` stays red on «suggest a route» (RUH) until data returns or the
-owner raises the Google-fares plan. When it lands: route-probe (`after`),
+4, routes 0). **Travelpayouts replied 3 Nov 17:20 (ticket #254780, closed):
+limited flight data is due to the regional situation; data expected back
+as conditions improve, NO date given → not a bug on our side, no fix to wait
+for.** «suggest a route» (RUH) is only a warning now (known external).
+**Owner's business decision pending: the Google-fares plan for Riyadh
+routes, or wait.** When data lands: route-probe (`after`),
 then Site check. The store's flight screenshot uses Jeddah for this reason
 (retake from Riyadh later: ios.yml dispatch input `shots`).
 
