@@ -135,7 +135,7 @@ jobs:
           }
           shot warm-up 10
           shot store-1-home 14 -sfrPath "/ar"
-          shot store-2-flights 35 -sfrPath "$FLIGHTS"
+          shot store-2-flights 90 -sfrPath "$FLIGHTS"
           shot store-3-hotels 30 -sfrPath "$HOTELS"
           shot store-4-discover 35 -sfrPath "$DISCOVER"
           shot store-5-city 30 -sfrPath "/ar/attractions/TR/istanbul"
@@ -143,7 +143,7 @@ jobs:
           shot store-7-visa 25 -sfrPath "/ar/visa/TR"
           shot store-8-currency 25 -sfrPath "/ar/currency"
           shot store-en-1-home 14 -sfrPath "/en"
-          shot store-en-2-flights 35 -sfrPath "$(en "$FLIGHTS")"
+          shot store-en-2-flights 90 -sfrPath "$(en "$FLIGHTS")"
           shot store-en-3-hotels 30 -sfrPath "$(en "$HOTELS" | sed 's/label=[^&]*/label=Istanbul/')"
           shot store-en-4-discover 35 -sfrPath "$(en "$DISCOVER")"
           shot store-en-5-city 30 -sfrPath "/en/attractions/TR/istanbul"
