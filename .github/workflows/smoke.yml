@@ -7,8 +7,8 @@
 # secret) and in Cloudflare (Worker secret). sfrtna.com itself refuses
 # GitHub's machines (bot protection), which is why.
 #
-# Runs every six hours, and after each push to main once the deploy has had
-# time to go out (Cloudflare takes about five minutes).
+# Runs every two hours (schedule) or by hand. After a push, release.yml runs
+# the same checks on staging first, then on production.
 #
 # Second job (13 Oct): scripts/e2e.mjs opens the search result pages in a
 # real browser and waits for an answer — one way, round trip with
@@ -16,8 +16,9 @@
 name: Site check
 
 on:
-  push:
-    branches: [main]
+  # No `push` trigger since 4 Nov 2026: every push is tested by the release
+  # gate (release.yml) before it reaches production, and checked once more
+  # there. This workflow now only watches the live site on a schedule.
   schedule:
     - cron: "17 */2 * * *"
   workflow_dispatch:

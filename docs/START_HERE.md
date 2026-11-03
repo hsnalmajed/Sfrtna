@@ -124,9 +124,12 @@ prevent, don't just detect.** Details: PROJECT_NOTES «Release gate».
    (build cmd there: `npx opennextjs-cloudflare build`, deploy `npx wrangler deploy`);
    (d2) DONE 4 Nov: run 41719665474 (production ticked) green end to end —
    staging checks → production deployed → quick check of production green;
-   (e) switch Cloudflare Git build off (owner, dashboard: sfrtna → Settings →
-   Builds → disconnect) — **next**; until then every push is deployed twice;
-   (f) drop the `push` trigger of `smoke.yml` (avoid paying for two runs).
+   (e) DONE 4 Nov 00:28: owner switched «Disable builds» ON for the Cloudflare
+   Git build of `sfrtna` (repo shown there: old name `hsnalmajed/itravel`;
+   NOT disconnected — undo = switch it off). Release is now the only way to
+   production; (f) DONE: `push` trigger removed from `smoke.yml` (schedule
+   every 2 h + manual stay). Gate section CLOSED once the first push run
+   (4 Nov, commit after 2bece7f) is green and shows one deploy only.
 3. Riyadh «suggest a route» is now «known external» in `e2e.mjs`
    (warning in the mail, does not block); remove the flag when RUH fares return.
 Recommended model: Sonnet 5.5 for the owner steps (a)–(f); Opus 5.5 only if
