@@ -1914,3 +1914,7 @@ clear of bottom banners and the header. Verify: next failure names its cause.
 - Either route needs a Cloudflare API token as a GitHub secret (owner step)
   and the Cloudflare Git build switched off (the workflow builds and deploys).
 - Owner's decision needed (A or B) before building.
+- **Decision (owner, 3 Nov): route B — a second Worker `sfrtna-staging`.**
+  Build once, deploy to staging, Site check against it, deploy production
+  only if green. Not built yet; next chat (Opus) builds the workflow and
+  guides the owner through the secrets/token steps.

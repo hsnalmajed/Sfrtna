@@ -90,7 +90,7 @@ City guide / Viator / Search Console / Status email / Feedback / Dashboard /
 «رحلتي» / Google Play account / Workers Paid / Hotels like Booking /
 iPhone app.
 
-## ▶ Hand-off (3 Nov 2026, 14:45 KSA) — current state
+## ▶ Hand-off (3 Nov 2026, evening) — current state
 
 **▶ CURRENT SECTION (owner, 3 Nov 15:13): no error may reach visitors —
 prevent, don't just detect.** Details: PROJECT_NOTES «Release gate».
@@ -98,14 +98,16 @@ prevent, don't just detect.** Details: PROJECT_NOTES «Release gate».
    have scroll margins (pushed 3 Nov). **Next step:** after the next Site
    check, if it fails again read the cause in the annotation and fix the
    page (banner over the tab) or the test; no failure in ~10 runs = closed.
-2. **Release gate — waiting for the owner's choice (A or B).** Version
-   preview URLs don't exist for Workers with Durable Objects (ours has two),
-   and the deploy is Cloudflare's Git build, not a workflow here. A) upload
-   a version, set it at 0 %, test it with the version-override header,
-   promote at 100 % (DO behaviour with two versions unverified); B) a second
-   Worker `sfrtna-staging`: deploy there, run Site check, then production.
-   Either needs a Cloudflare API token as a GitHub secret and the Git build
-   switched off (owner steps, one at a time).
+2. **Release gate — owner chose B (3 Nov): a second Worker
+   `sfrtna-staging`** (no preview URLs exist with Durable Objects).
+   **Next step (Opus):** read `wrangler.jsonc` (bindings, DO `migrations`,
+   secret names) and write a workflow: build once (opennext) → deploy to
+   `sfrtna-staging` → Site check/e2e against its workers.dev URL → deploy
+   production only if green; red → production stays, owner gets the mail.
+   Owner steps afterwards, ONE at a time: Cloudflare API token + account id
+   as GitHub secrets; the Worker secrets on staging (list the names first,
+   never values in chat); switch the Cloudflare Git build off only after the
+   workflow has deployed once.
 3. Keep every alert; Riyadh «suggest a route» is marked «known external»
    (alerts, does not block) once the gate exists.
 Recommended model: **Opus 5.5** (gate build); Sonnet 5.5 for the owner steps.
