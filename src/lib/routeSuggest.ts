@@ -25,7 +25,7 @@ import type { SeasonKind } from "@/lib/travelSeason/kinds";
 import { DESTINATIONS } from "@/lib/destinations";
 import { discoverCandidates, type Candidate } from "@/lib/discoverPool";
 import { placeForDestination } from "@/lib/destinationPlace";
-import { CITY_OF_AIRPORT, oneWayFaresFrom, tripFaresFrom, type OneWayFare } from "@/lib/providers/travelpayouts";
+import { CITY_OF_AIRPORT, oneWayFaresFrom, probeOriginShapes, tripFaresFrom, type OneWayFare } from "@/lib/providers/travelpayouts";
 import { exploreFares, searchesLeft } from "@/lib/providers/serpapi";
 import type { DestinationCategory, RouteLeg, RouteStop, RouteSuggestion } from "@/lib/types";
 import { findCountryByEnglishName, type Continent } from "@/lib/countries";
@@ -132,6 +132,7 @@ export interface RouteStats {
   exploreRows?: number;
   exploreDates?: string[];
   searchesLeft?: number;
+  shapes?: Record<string, string>;
   /** Median size of the other tables. */
   medianSize?: number;
   /** Site check only: the same home ask by the exact day (±2), for comparison. */
@@ -260,6 +261,7 @@ export async function suggestRoutes(q: RouteQuery, stats?: RouteStats): Promise<
     stats.exploreRows = exploreDebug.rows;
     stats.exploreDates = exploreDebug.dates;
     stats.searchesLeft = (await searchesLeft()) ?? undefined;
+    stats.shapes = await probeOriginShapes(q.origin, month(legDates[0]), legDates[0], "IST");
     stats.homeMerged = home.size;
     stats.homeMergedInPool = pool.filter((c) => home.has(c.code)).length;
     stats.homeInPool = pool.filter((c) => home.has(c.code)).length;

@@ -594,3 +594,44 @@ export async function routeDayFares(
   await Promise.all(jobs);
   return { fares, sources };
 }
+
+/**
+ * Site check only: how many places several ways of asking the partner for
+ * fares from `origin` answer, to tell thin data from a changed answer
+ * (3 Nov 2026: the one-way table from Riyadh fell to ~4 places). Counts and
+ * status codes only; never shown to visitors.
+ */
+export async function probeOriginShapes(origin: string, month: string, day: string, sample: string): Promise<Record<string, string>> {
+  const out: Record<string, string> = {};
+  if (!token()) return out;
+  const shapes: [string, string, Record<string, string>][] = [
+    ["v3month1w", "/aviasales/v3/prices_for_dates", { origin, departure_at: month, one_way: "true", unique: "true", sorting: "price", limit: "1000" }],
+    ["v3month2w", "/aviasales/v3/prices_for_dates", { origin, departure_at: month, one_way: "false", unique: "true", sorting: "price", limit: "1000" }],
+    ["v3monthNoUnique", "/aviasales/v3/prices_for_dates", { origin, departure_at: month, one_way: "true", unique: "false", sorting: "price", limit: "1000" }],
+    ["v3noDate", "/aviasales/v3/prices_for_dates", { origin, one_way: "true", unique: "true", sorting: "price", limit: "1000" }],
+    ["v3day", "/aviasales/v3/prices_for_dates", { origin, departure_at: day, one_way: "true", unique: "true", sorting: "price", limit: "1000" }],
+    ["v3pair", "/aviasales/v3/prices_for_dates", { origin, destination: sample, departure_at: month, one_way: "true", sorting: "price", limit: "1000" }],
+    ["v3toHome", "/aviasales/v3/prices_for_dates", { destination: origin, departure_at: month, one_way: "true", unique: "true", sorting: "price", limit: "1000" }],
+    ["v3grouped", "/aviasales/v3/grouped_prices", { origin, destination: sample, departure_at: month, group_by: "departure_at" }],
+    ["v2latest", "/v2/prices/latest", { origin, period_type: "month", beginning_of_period: `${month}-01`, one_way: "true", limit: "1000" }],
+    ["v1cheap", "/v1/prices/cheap", { origin, depart_date: month }],
+    ["v1directions", "/v1/city-directions", { origin }],
+  ];
+  await Promise.all(
+    shapes.map(async ([name, path, params]) => {
+      const url = new URL(`${BASE}${path}`);
+      for (const [k, v] of Object.entries(params)) url.searchParams.set(k, v);
+      url.searchParams.set("currency", "sar");
+      try {
+        const res = await fetch(url.toString(), { headers: { "X-Access-Token": token(), Accept: "application/json" } });
+        const body = (await res.json().catch(() => null)) as { data?: unknown; error?: unknown } | null;
+        const d = body?.data;
+        const n = Array.isArray(d) ? d.length : d && typeof d === "object" ? Object.keys(d).length : 0;
+        out[name] = `${res.status}:${n}${body?.error ? `:${String(body.error).slice(0, 60)}` : ""}`;
+      } catch (e) {
+        out[name] = `ERR:${String(e).slice(0, 40)}`;
+      }
+    })
+  );
+  return out;
+}
