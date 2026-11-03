@@ -1440,6 +1440,24 @@ Wait for her confirmation; then check the dashboard no longer says
      3× screens) — serve a larger width for wide cards.
   4. CUT (24): mostly photo credits + false positives (currency From/To);
      re-check after 1–3.
+- ✅ **Round-1 findings fixed 3 Nov (425e2f9), ux-audit re-run ar × iPhone SE /
+  iPhone 13 / Pixel 7 → 0 SPILL, 0 TINY TAP, 0 BLURRY.** Product tab label
+  wraps below 360 px; footer «شاركنا رأيك», ScrollRow arrows (40 px tap, 32 px
+  circle) and «احسب مبلغاً آخر» are 40 px; tall city cards (home grid + strip,
+  CityGallery, CitySeasons) get `cardSrcSet()` 640/960/1280 with sizes from
+  `src/lib/photoSizes.ts` (a 3:4 card shows a 3:2 photo ~2× its width). CUT
+  re-checked: photo-licence captions (ellipsis, by design), currency «من/إلى»
+  and «118 مكان» (1 px) false positives, one long Istanbul museum name. Left:
+  WRAPPED «احسب مبلغاً آخر» / «متطلبات السفر» (two lines inside 40 px).
+- **NEW blocker found 3 Nov:** Site check `pages` job red since 30 Oct 13:00
+  (no code change then): «suggest a route» returns **0 routes for every
+  search**. route-probe (branch `route-probe`, label 3nov-e2e-fail): RUH Jan
+  2027 all×2 failAt [13873,72,41] → the one-way home table (RUH, cached
+  `prices_for_dates` one_way) now holds ~1 pool city; Europe/Asia/N. America
+  fail every ordering at flight 1. Single «اقترح لي وجهة» still gives 24.
+  Next: add table sizes to RouteStats, confirm thin one-way data vs a
+  changed API answer, then fix (e.g. round-trip/other source for the first
+  and last flight).
 - **Still to test before launch:** iPhone app in Arabic on the simulator;
   inside the iPhone app: a flight search, a partner link (should open in
   the in-app Safari sheet), share/print of a plan; Android latest APK on a
