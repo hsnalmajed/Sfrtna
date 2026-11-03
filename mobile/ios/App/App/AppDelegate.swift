@@ -103,12 +103,53 @@ class MainViewController: CAPBridgeViewController {
                 source: "try{localStorage.setItem('sfr-welcome-v1','1');localStorage.setItem('sfrtna-consent-v1','denied');}catch(e){}",
                 injectionTime: .atDocumentStart, forMainFrameOnly: true))
         }
+        // Also CI only: -sfrPath opens one of our pages, -sfrDo then runs one
+        // native action there (partner sheet, print, share) so the simulator
+        // can photograph it. Users never pass arguments.
+        let args = ProcessInfo.processInfo.arguments
+        func arg(_ key: String) -> String? {
+            guard let i = args.firstIndex(of: key), i + 1 < args.count else { return nil }
+            return args[i + 1]
+        }
+        if let path = arg("-sfrPath"), path.hasPrefix("/"),
+           let data = try? JSONSerialization.data(withJSONObject: [path, arg("-sfrDo") ?? ""]),
+           let json = String(data: data, encoding: .utf8) {
+            webView?.configuration.preferences.javaScriptCanOpenWindowsAutomatically = true
+            webView?.configuration.userContentController.addUserScript(WKUserScript(
+                source: "window.__sfrCheck=\(json);" + MainViewController.checkScript,
+                injectionTime: .atDocumentEnd, forMainFrameOnly: true))
+        }
         startIntro()
         monitor.pathUpdateHandler = { [weak self] path in
             DispatchQueue.main.async { self?.network(up: path.status == .satisfied) }
         }
         monitor.start(queue: DispatchQueue(label: "sfrtna.net"))
     }
+
+    /** The CI check (see -sfrPath): go to the page once, then do the action once. */
+    private static let checkScript = #"""
+    (function () {
+      var c = window.__sfrCheck, path = c[0], todo = c[1], s = window.sessionStorage;
+      try {
+        if (!s.getItem("sfrCheckNav")) { s.setItem("sfrCheckNav", "1"); location.replace(path); return; }
+        if (!todo || s.getItem("sfrCheckDone")) return;
+      } catch (e) { return; }
+      var n = 0, timer = setInterval(function () {
+        n++;
+        var app = window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.SfrtnaApp;
+        if (todo === "partner") {
+          var a = document.querySelector("a[data-partner]");
+          if (a) { clearInterval(timer); s.setItem("sfrCheckDone", "1"); a.click(); }
+        } else if (app && n >= 4) {
+          clearInterval(timer); s.setItem("sfrCheckDone", "1");
+          if (todo === "print") app.print({ title: "Sfrtna" });
+          if (todo === "share") app.shareFile({ name: "sfrtna-plan.gpx", mimeType: "application/gpx+xml",
+            content: '<?xml version="1.0"?><gpx version="1.1" creator="Sfrtna"></gpx>' });
+        }
+        if (n > 60) clearInterval(timer);
+      }, 1000);
+    })();
+    """#
 
     // MARK: Opening
 

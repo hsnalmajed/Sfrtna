@@ -98,6 +98,54 @@ jobs:
           sleep 1; t 30 xcrun simctl io "$UDID" screenshot "$OUT/second-1s.png" || true
           sleep 11; t 30 xcrun simctl io "$UDID" screenshot "$OUT/second-12s.png" || true
           t 30 xcrun simctl terminate "$UDID" com.sfrtna.app || true
+          t 60 xcrun simctl shutdown "$UDID" || true
+
+      # Inside the app on the 6.9" iPhone (App Store size, 1320×2868): Arabic
+      # pages (store-*.png) and the native parts (check-*.png): a partner
+      # link in the in-app Safari sheet, the print screen, the share sheet.
+      # The app's -sfrPath / -sfrDo arguments (CI only) open the page and act.
+      - name: App checks on the simulator
+        continue-on-error: true
+        timeout-minutes: 20
+        run: |
+          t() { perl -e 'alarm shift; exec @ARGV' "$@"; }
+          OUT="$RUNNER_TEMP/shots"; mkdir -p "$OUT"
+          UDID=$(xcrun simctl list devices available | grep -E "iPhone 1[7-9] Pro Max \(" | head -1 | grep -oE "[0-9A-F-]{36}")
+          [ -n "$UDID" ] || UDID=$(xcrun simctl create "Store 6.9" com.apple.CoreSimulator.SimDeviceType.iPhone-17-Pro-Max)
+          echo "device: $(xcrun simctl list devices | grep "$UDID")" > "$OUT/checks.txt"
+          t 300 xcrun simctl boot "$UDID" || true
+          t 300 xcrun simctl bootstatus "$UDID" -b || true
+          t 30 xcrun simctl status_bar "$UDID" override --time 9:41 --batteryLevel 100 --cellularBars 4 --wifiBars 3 || true
+          APP=$(find "$RUNNER_TEMP/dd" -name App.app -path "*iphonesimulator*" | head -1)
+          t 120 xcrun simctl install "$UDID" "$APP"
+          D1=$(date -v+40d +%F); D2=$(date -v+47d +%F); H2=$(date -v+44d +%F)
+          FLIGHTS="/ar/results?tripType=flight&adults=1&currency=SAR&origin=JED&destination=IST&departDate=$D1&returnDate=$D2"
+          HOTELS="/ar/hotel-results?hmode=discover&checkIn=$D1&checkOut=$H2&adults=2&childrenAges=&infants=0&city=Istanbul&label=%D8%A5%D8%B3%D8%B7%D9%86%D8%A8%D9%88%D9%84&budget=0&currency=SAR"
+          DISCOVER="/ar/discover-results?tripType=flight&adults=1&currency=SAR&mode=discover&tripRoute=roundtrip&origin=JED&departDate=$D1&returnDate=$D2&budget=8000&nights=7"
+          # shot <file> <seconds> [app arguments…]
+          shot() {
+            f=$1; w=$2; shift 2
+            t 30 xcrun simctl terminate "$UDID" com.sfrtna.app 2>/dev/null || true
+            t 90 xcrun simctl launch "$UDID" com.sfrtna.app -sfrSkipWelcome "$@" > /dev/null 2>&1 \
+              || { sleep 10; t 90 xcrun simctl launch "$UDID" com.sfrtna.app -sfrSkipWelcome "$@" > /dev/null 2>&1; } || true
+            sleep "$w"
+            t 30 xcrun simctl io "$UDID" screenshot "$OUT/$f.png" > /dev/null 2>&1 && echo "$f ok" >> "$OUT/checks.txt" || echo "$f failed" >> "$OUT/checks.txt"
+          }
+          shot store-1-home 14
+          shot store-2-flights 35 -sfrPath "$FLIGHTS"
+          shot store-3-hotels 30 -sfrPath "$HOTELS"
+          shot store-4-discover 35 -sfrPath "$DISCOVER"
+          shot check-partner 40 -sfrPath "$HOTELS" -sfrDo partner
+          shot check-print 20 -sfrPath "/ar" -sfrDo print
+          shot check-share 20 -sfrPath "/ar" -sfrDo share
+          t 30 xcrun simctl terminate "$UDID" com.sfrtna.app || true
+          cat "$OUT/checks.txt"
+
+      - name: Keep the shots on branch ios-shots
+        if: always()
+        continue-on-error: true
+        run: |
+          OUT="$RUNNER_TEMP/shots"; [ -d "$OUT" ] || exit 0
           cd "$OUT" && git init -q && git add . && git -c user.name=ci -c user.email=ci@sfrtna.com commit -qm "iOS simulator shots ${{ github.run_number }}"
           git push -qf "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" HEAD:ios-shots
 
