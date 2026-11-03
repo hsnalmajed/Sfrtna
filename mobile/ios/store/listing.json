@@ -4,35 +4,43 @@
   "category": "TRAVEL",
   "supportUrl": {
     "ar-SA": "https://sfrtna.com/ar/contact",
-    "en-US": "https://sfrtna.com/en/contact"
+    "en-US": "https://sfrtna.com/en/contact",
+    "en-GB": "https://sfrtna.com/en/contact"
   },
   "marketingUrl": {
     "ar-SA": "https://sfrtna.com/ar",
-    "en-US": "https://sfrtna.com/en"
+    "en-US": "https://sfrtna.com/en",
+    "en-GB": "https://sfrtna.com/en"
   },
   "privacyPolicyUrl": {
     "ar-SA": "https://sfrtna.com/ar/privacy",
-    "en-US": "https://sfrtna.com/en/privacy"
+    "en-US": "https://sfrtna.com/en/privacy",
+    "en-GB": "https://sfrtna.com/en/privacy"
   },
   "name": {
     "ar-SA": "Sfrtna | سفرتنا",
-    "en-US": "Sfrtna | سفرتنا"
+    "en-US": "Sfrtna | سفرتنا",
+    "en-GB": "Sfrtna | سفرتنا"
   },
   "subtitle": {
-    "ar-SA": "طيران وفنادق وخطة رحلتك",
-    "en-US": "Flights, hotels & trip plans"
+    "ar-SA": "أسعار طيران وفنادق وخطة رحلة",
+    "en-US": "Flights, hotels & trip planner",
+    "en-GB": "Flights, hotels & city guides"
   },
   "promotionalText": {
-    "ar-SA": "خطط رحلتك كاملة بالعربي: قارن أسعار الطيران والفنادق الحية، واعرف أفضل وقت للسفر، واحصل على خطة يومية لكل مدينة. بدون إعلانات.",
-    "en-US": "Plan your whole trip in one place: compare live flight and hotel prices, find the best time to go, and get a day-by-day city plan. No ads."
+    "ar-SA": "قارن أسعار الطيران والفنادق الحية، واكتشف وجهات تناسب ميزانيتك، واحصل على خطة يومية لكل مدينة. بالعربي، بدون إعلانات وبدون رسوم إضافية.",
+    "en-US": "Compare live flight and hotel prices, find destinations that fit your budget and get a day-by-day plan for every city. In Arabic and English, no ads, no added fees.",
+    "en-GB": "Compare live flight and hotel prices, find destinations that fit your budget and get a day-by-day plan for every city. In Arabic and English, no ads, no added fees."
   },
   "keywords": {
-    "ar-SA": "طيران,فنادق,حجز,سفر,رحلات,تذاكر,سياحة,وجهات,تأشيرة,خطة سفر,طقس,عطلة,فندق,رحلة",
-    "en-US": "flights,hotels,travel,trip planner,booking,cheap flights,itinerary,vacation,visa,weather,arabic"
+    "ar-SA": "تذاكر,حجز,سفر,رحلات,سياحة,عروض,وجهات,تأشيرة,جدول,طقس,عطلة,فندق,شقق,مطار,رخيص,دليل,معالم,سفرة,اجازة",
+    "en-US": "travel,booking,cheap,airfare,tickets,flight,hotel,itinerary,vacation,holiday,visa,weather,arabic",
+    "en-GB": "trip,planner,travel,booking,airfare,istanbul,dubai,cairo,london,baku,bali,maldives,tbilisi,riyadh"
   },
   "description": {
-    "ar-SA": "سفرتنا يجمع لك كل ما تحتاجه لرحلتك في مكان واحد، بالعربي.\n\n• الطيران: قارن أسعار رحلات الطيران الحية من شركات الطيران ومواقع الحجز، ذهاباً وعودة أو ذهاباً فقط أو بين عدة مدن، مع تصفية حسب التوقف والوقت والأمتعة وشركة الطيران.\n\n• الفنادق: ابحث باسم الفندق أو بالمدينة، وقارن السعر عند أكثر من موقع، وحدد عدد الغرف والميزانية والقرب من معلم.\n\n• اقترح لي وجهة: أدخل ميزانيتك وتواريخك، ونقترح لك وجهات تناسبها، أو مساراً بين دولتين أو ثلاث.\n\n• أفضل وقت للسفر: تقييم الطقس لكل شهر في أكثر من 360 مدينة، من سجلات المناخ لكل شهر.\n\n• دليل المدينة: أشهر المعالم مع وصف بالعربي ووقت الزيارة المناسب واللباس المناسب، وخريطة، وصور المدينة.\n\n• خطتي الذكية: خطة يومية مرتبة حسب القرب، مع مطاعم قريبة، قابلة للتحميل PDF.\n\n• رحلتي: تابع تجهيز رحلتك خطوة خطوة: الطيران، والفندق، والتأشيرة، والخدمات، والخطة.\n\n• التأشيرة والعملة: متطلبات الدخول للمسافر السعودي لكل دولة، وتحويل العملة.\n\nالحجز يتم عند شركائنا مباشرة، ولا نضيف أي رسوم على السعر. بدون إعلانات.",
-    "en-US": "Sfrtna brings everything your trip needs into one place, in Arabic and English.\n\n• Flights: compare live fares from airlines and booking sites — round trip, one way or multi-city — with filters for stops, times, bags and airlines.\n\n• Hotels: search by hotel name or city, compare the price across sites, and choose rooms, budget and distance to a landmark.\n\n• Suggest a destination: enter your budget and dates and get places that fit, or a route through two or three countries.\n\n• Best time to go: a month-by-month weather rating for more than 360 cities, from climate records.\n\n• City guide: the best-known sights with descriptions, the right time to visit and what to wear, a map and a photo tour.\n\n• Smart plan: a day-by-day plan ordered by distance, with nearby restaurants, downloadable as a PDF.\n\n• My trip: get your trip ready step by step — flight, hotel, visa, services and plan.\n\n• Visa and currency: entry requirements for Saudi travellers to every country, and a currency converter.\n\nYou book directly with our partners; we add no fee to the price. No ads."
+    "ar-SA": "خطط رحلتك من الميزانية إلى الحجز في تطبيق واحد بالعربي: قارن أسعار الطيران والفنادق الحية، واكتشف وجهات تناسب ميزانيتك، واعرف أفضل وقت للسفر، واحصل على خطة يومية لكل مدينة.\n\nلماذا سفرتنا؟\n• أسعار حية من مواقع الحجز، ولا نضيف أي رسوم على السعر.\n• بالعربي أولاً، ومعه الإنجليزية.\n• بدون إعلانات.\n\nالطيران\n• ذهاب وعودة، أو ذهاب فقط، أو بين عدة مدن.\n• تصفية حسب التوقفات والأوقات والأمتعة وشركات الطيران.\n• نبرز لك الأفضل والأرخص والأسرع لتواريخك.\n\nالفنادق\n• ابحث بالمدينة أو باسم الفندق، في قائمة أو على الخريطة.\n• حدد عدد الغرف والميزانية والقرب من معلم.\n\nاقترح لي وجهة\n• أدخل ميزانيتك وتواريخك، ونقترح لك وجهات تناسبها، أو مساراً بين دولتين أو ثلاث.\n\nأفضل وقت للسفر\n• تقييم الطقس لكل شهر في 365 مدينة، من سجلات المناخ.\n\nدليل المدينة وخطتي الذكية\n• أشهر المعالم مع وصف بالعربي، ووقت الزيارة المناسب، وخريطة.\n• خطة يومية مرتبة حسب القرب مع مطاعم قريبة، تطبعها أو تحفظها PDF.\n\nرحلتي\n• تابع تجهيز رحلتك خطوة بخطوة: الطيران، والفندق، والتأشيرة، والخدمات، والخطة.\n\nالتأشيرة والعملة\n• متطلبات الدخول للمسافر السعودي لكل دولة، وتحويل العملات.\n\nالحجز يتم عند مواقع الحجز مباشرة.",
+    "en-US": "Plan your trip from budget to booking in one app: compare live flight and hotel prices, find destinations that fit your budget, see the best time to go, and get a day-by-day plan for every city.\n\nWhy Sfrtna?\n• Live prices from booking sites, with no fee added by us.\n• Arabic first, with full English.\n• No ads.\n\nFlights\n• Round trip, one way or multi-city.\n• Filter by stops, times, bags and airlines.\n• We highlight the best, cheapest and fastest for your dates.\n\nHotels\n• Search by city or hotel name, as a list or on the map.\n• Choose rooms, budget and distance to a landmark.\n\nSuggest a destination\n• Enter your budget and dates and get places that fit, or a route through two or three countries.\n\nBest time to travel\n• A month-by-month weather rating for 365 cities, from climate records.\n\nCity guide and smart plan\n• The best-known sights with descriptions, the right time to visit and a map.\n• A day plan ordered by distance with nearby restaurants, to print or save as PDF.\n\nMy trip\n• Get your trip ready step by step: flight, hotel, visa, services and plan.\n\nVisa and currency\n• Entry requirements for Saudi travellers to every country, and a currency converter.\n\nYou book directly with the booking site.",
+    "en-GB": "Plan your trip from budget to booking in one app: compare live flight and hotel prices, find destinations that fit your budget, see the best time to go, and get a day-by-day plan for every city.\n\nWhy Sfrtna?\n• Live prices from booking sites, with no fee added by us.\n• Arabic first, with full English.\n• No ads.\n\nFlights\n• Round trip, one way or multi-city.\n• Filter by stops, times, bags and airlines.\n• We highlight the best, cheapest and fastest for your dates.\n\nHotels\n• Search by city or hotel name, as a list or on the map.\n• Choose rooms, budget and distance to a landmark.\n\nSuggest a destination\n• Enter your budget and dates and get places that fit, or a route through two or three countries.\n\nBest time to travel\n• A month-by-month weather rating for 365 cities, from climate records.\n\nCity guide and smart plan\n• The best-known sights with descriptions, the right time to visit and a map.\n• A day plan ordered by distance with nearby restaurants, to print or save as PDF.\n\nMy trip\n• Get your trip ready step by step: flight, hotel, visa, services and plan.\n\nVisa and currency\n• Entry requirements for Saudi travellers to every country, and a currency converter.\n\nYou book directly with the booking site."
   },
   "reviewNotes": "Sfrtna is a travel planner for Arabic-speaking travellers (Arabic first, English too). No login is needed to review it; sign-in is hidden in the iOS app.\n\nNative parts of the app (not just a website):\n- A native opening animation and a native offline screen with a retry button (turn on Airplane Mode to see it).\n- Booking links to partner sites open in an in-app Safari sheet (SFSafariViewController); our own pages stay in the app.\n- The trip plan is printed or saved as PDF through the iOS print screen, and map files are shared through the iOS share sheet.\n- Phone, e-mail and WhatsApp links open the matching apps; swipe-back navigation; safe-area aware layout.\n\nHow to try it: on the home page choose a flight search (e.g. Jeddah to Istanbul), open the results, then the \"Continue your trip\" tabs for hotels and a day plan. Prices come live from booking partners; bookings are completed on the partner's site, and Sfrtna is paid a commission by the partner. There are no ads and no in-app purchases."
 }

@@ -11,7 +11,7 @@ import path from "node:path";
 
 const listing = JSON.parse(fs.readFileSync(new URL("../../mobile/ios/store/listing.json", import.meta.url), "utf8"));
 const SHOTS = process.env.SHOTS_DIR || "";
-const LOCALES = ["ar-SA", "en-US"];
+const LOCALES = Object.keys(listing.name); // ar-SA, en-US, en-GB (Saudi and UAE stores also search en-GB)
 
 const kid = (process.env.ASC_KEY_ID || "").trim();
 const iss = (process.env.ASC_ISSUER_ID || "").trim();
@@ -234,15 +234,24 @@ async function uploadSet(loc, files) {
   }
   return `${files.length} screenshots`;
 }
-if (ONLY && !"screenshots".includes(ONLY)) {
-  /* skipped */
-} else if (SHOTS && fs.existsSync(SHOTS)) {
-  const all = fs.readdirSync(SHOTS).filter((f) => /^store-.*\.png$/.test(f)).sort();
-  const ar = all.filter((f) => !f.startsWith("store-en-")).map((f) => path.join(SHOTS, f));
-  const en = all.filter((f) => f.startsWith("store-en-")).map((f) => path.join(SHOTS, f));
-  await step("screenshots ar-SA", () => uploadSet("ar-SA", ar));
-  await step("screenshots en-US", () => uploadSet("en-US", en.length ? en : ar));
-} else note("no screenshots folder");
+// Captioned store images (mobile/ios/store/screenshots: ar-1-….png, en-1-….png)
+// win over the raw simulator shots (SHOTS_DIR: store-….png, store-en-….png).
+const ART = new URL("../../mobile/ios/store/screenshots/", import.meta.url).pathname;
+function pick(lang) {
+  if (fs.existsSync(ART)) {
+    const art = fs.readdirSync(ART).filter((f) => f.startsWith(`${lang}-`) && f.endsWith(".png")).sort();
+    if (art.length) return art.map((f) => path.join(ART, f));
+  }
+  if (!SHOTS || !fs.existsSync(SHOTS)) return [];
+  const raw = fs.readdirSync(SHOTS).filter((f) => /^store-.*\.png$/.test(f)).sort();
+  return raw.filter((f) => (lang === "en") === f.startsWith("store-en-")).map((f) => path.join(SHOTS, f));
+}
+if (!ONLY || "screenshots".includes(ONLY)) {
+  for (const loc of LOCALES) {
+    const files = pick(loc.startsWith("ar") ? "ar" : "en");
+    await step(`screenshots ${loc}`, () => (files.length ? uploadSet(loc, files) : Promise.reject(new Error("no images"))));
+  }
+}
 
 await step("attach the newest build", async () => {
   const builds = (await get(`/v1/builds?filter[app]=${app.id}&filter[processingState]=VALID&filter[expired]=false&sort=-uploadedDate&limit=1`)).data || [];
