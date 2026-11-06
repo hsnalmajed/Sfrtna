@@ -147,14 +147,18 @@ filters as a checkbox side column on lg+ (`ui/FilterSidebar.tsx`, wired in
 `HotelList.tsx`; same groups/counts as the phone sheet; typegen/tsc/eslint
 clean). Still to add from Booking's list: budget slider + price histogram,
 small map card (anchor to the Stay22 map section).
-(b) TODO: «اختر» button + hotel page (reuse `Gallery`, `HotelDetail`,
-`HotelInsights`, `PriceRows` in `HotelPrices.tsx`; Booking order: gallery →
-map → highlights → popular facilities → prices (our version: each site's
-price + «احجز»; no room table) → review topics → nearby → facilities →
-check-in/out). We do NOT hold: room table, review quotes, FAQ, cancellation/
-children/payment policies → show nothing for them (or a deep link).
-Room types: SerpApi docs fetched 7 Nov do not confirm a rooms field; only a
-live property call (key is a Cloudflare var) can → test before promising.
+(b) DONE 7 Nov 02:40 on the same branch (commit e0ea5a6), staging release
+green (run 42310166194, production NOT touched): «اختر» on every list card
+(+ photo/title links) → hotel-results?hmode=known&hotel=…&token=…&hcity=…
+&back=… (by Google id = same cached search as «قارن الأسعار»; list facts
+kept in sessionStorage → page opens at once, stays if no search left).
+Hotel page: section tabs (overview/prices/amenities/location/reviews),
+full-screen photo viewer (all 8), framed «أبرز ما في الفندق», amenities grid,
+map (`HotelMap.tsx`, leaflet, hotel + centre) + nearby, note «room types on
+each site's booking page». **Next step:** owner checks staging
+https://sfrtna-staging.almajedhsn.workers.dev (city search → «اختر») on his
+phone → his OK → merge `hotel-page-pro` into main. Then: budget slider +
+histogram, small map card in the list; live property call for rooms.
 (c) Price gap vs Booking EXPLAINED 7 Nov 01:50: owner's screenshot of OUR page
 was the Stay22 widget (Booking only, English): Pege Hotel 1,956 SAR, 6 nights,
 2 adults, total incl. fees. Booking's own page 1,760 = 1,956 × 0.9 → the 10%
