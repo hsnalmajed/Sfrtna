@@ -112,6 +112,23 @@ budget; status report lists time-outs. Full hotels refresh dispatched 6 Nov
 the first runs on the new code (places 13 Nov, restaurants 14 Nov, hotels
 15 Nov): `fetched-at` files appear and grow; no «توقف عند المهلة».
 
+**▶ NEXT SECTION (owner, 6 Nov): are partner commissions tracked on every
+way out?** Checked 6 Nov (code only): Site check verifies the tag on 5
+exits only (GetYourGuide partner_id, Klook/Tiqets/Airalo via /api/go/tp,
+Expedia camref). NOT checked automatically: the flight widget (white label
+wl_id=22604 → marker 778874 is set in the Travelpayouts WL settings, not in
+our URL), Stay22 Allez links (aid=sfrtna) and LinkSwap (Booking/Agoda/
+Hotels.com/Trip.com search links are plain URLs rewritten in the browser by
+letmeallez.js, lazyOnload — a click before it loads, or an ad blocker,
+leaves untagged), ZenHotels (partner_slug), the 17 page brands of
+/api/go/tp (kiwitaxi, airhelp, localrent…), Viator productUrl. /api/go/tp
+falls back to an UNTAGGED partner search when the link API fails.
+Plan: (1) extend smoke.mjs to every exit (all tp brands, Allez, ZenHotels,
+Viator, widget wl_id on /ar/results); (2) owner checks clicks per program
+in Travelpayouts statistics and Stay22 Performance (proof the tags count);
+(3) decide on LinkSwap: give hotel search buttons their tag server-side
+(Allez/redirect) instead of relying on the script.
+
 «next-step tabs» flake: 7 green Site checks in a row since the fix (4 Nov);
 ~10 green = close it.
 
