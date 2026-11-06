@@ -126,13 +126,19 @@ falls back to an UNTAGGED partner search when the link API fails.
 Owner's rule (6 Nov): every partner whose terms we meet MUST carry our
 commission tag; programs locked today (Travelpayouts: GetYourGuide, Viator,
 Booking, Agoda, Trip.com… until 3 months of traffic) go on a watch list and
-get linked the day they open. Booking/Agoda/Hotels.com/Trip.com stay shown
-for choice + traffic; the owner thought they pay nothing — told him they DO
-pay through Stay22 (account cleared 3 Nov), so they must be tagged too.
-Site not launched or marketed yet → no visitor clicks to read.
+get linked the day they open. Verified in code 6 Nov: named-hotel buttons
+(HotelPrices.tsx) already go through Stay22 Allez with aid=sfrtna (Booking,
+Expedia, Agoda, Hotels.com); city search (hotel-results/page.tsx →
+hotelPartnerLinks) sends Booking/Agoda/Hotels.com/Trip.com as PLAIN links,
+paid only if Stay22 Lift (ex-LinkSwap) rewrites them in the browser.
+Stay22 FAQ (6 Nov): earns on Booking.com, Expedia, Hotels.com (+Vrbo);
+Agoda/Trip.com not confirmed ("depends on market"); Lift eligibility is
+confirmed by Stay22 at setup — unknown for us. Agoda direct: «pending
+manual site review» (check status). Site not launched yet → no clicks.
 Plan: (1) extend smoke.mjs to every exit (all tp brands, Allez, ZenHotels,
-Viator, widget wl_id on /ar/results); (2) give the hotel search buttons the
-Stay22 tag server-side (Allez/redirect) instead of the lazy script;
+Viator, widget wl_id on /ar/results); (2) city-search Booking + Hotels.com
+through Allez (address/lat-lng, server-side tag); Expedia stays direct
+(camref); Agoda/Trip.com plain until a paid route is confirmed;
 (3) owner clicks one link per partner himself, next day checks the click
 in Travelpayouts statistics / Stay22 Performance (proof the tag counts);
 (4) watch list of locked programs in PROJECT_NOTES «Partner audit».
