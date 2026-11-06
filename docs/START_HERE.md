@@ -141,6 +141,23 @@ property call returns before promising; else a «see rooms» deep link.
 Also owed: SerpApi measurement + plan numbers (searches needed/month, cost) —
 his decision, since the free allowance cannot carry a real city list.
 Build on a branch, Site check, then main. Open with Opus 5.5.
+**Progress 7 Nov (01:50):** owner sent Booking screenshots (list + hotel page).
+(a) DONE on branch `hotel-page-pro` (pushed, NOT in main, not seen live yet):
+filters as a checkbox side column on lg+ (`ui/FilterSidebar.tsx`, wired in
+`HotelList.tsx`; same groups/counts as the phone sheet; typegen/tsc/eslint
+clean). Still to add from Booking's list: budget slider + price histogram,
+small map card (anchor to the Stay22 map section).
+(b) TODO: «اختر» button + hotel page (reuse `Gallery`, `HotelDetail`,
+`HotelInsights`, `PriceRows` in `HotelPrices.tsx`; Booking order: gallery →
+map → highlights → popular facilities → prices (our version: each site's
+price + «احجز»; no room table) → review topics → nearby → facilities →
+check-in/out). We do NOT hold: room table, review quotes, FAQ, cancellation/
+children/payment policies → show nothing for them (or a deep link).
+Room types: SerpApi docs fetched 7 Nov do not confirm a rooms field; only a
+live property call (key is a Cloudflare var) can → test before promising.
+(c) OPEN: price gap vs Booking (Pege Hotel 1,760 SAR, 6 nights, 2 adults,
+Genius member price, 2,608 struck; Downtown Sirkeci 1,915): owner has not yet
+sent OUR price for the same dates → ask once, then compare.
 
 «next-step tabs» flake: 7 green Site checks in a row since the fix (4 Nov);
 ~10 green = close it.
