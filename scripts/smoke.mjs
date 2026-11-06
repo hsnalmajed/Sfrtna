@@ -243,6 +243,9 @@ for (const [name, path, mark] of [
   for (const brand of brands) {
     const country = Object.keys(pages.countries).find((c) => pages.countries[c]?.[brand]) || "";
     const city = Object.keys(pages.cities).find((c) => pages.cities[c]?.[brand]) || "";
+    // City/country brands with no checked page yet (e.g. gocity) are never
+    // offered to a visitor, and the route answers 400 — nothing to check.
+    if (["gocity", "radicalstorage", "localrent", "kiwitaxi", "welcomepickups", "airalo"].includes(brand) && !country && !city) continue;
     const path = `/api/go/tp?b=${brand}&c=${encodeURIComponent(country)}&p=${encodeURIComponent(city)}`;
     await check(`partner link: ${brand} (tp) carries our tag`, async () => {
       const loc = await goLocation(path);
