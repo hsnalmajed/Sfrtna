@@ -68,7 +68,11 @@ const STAY22_AID = "sfrtna";
 export function hotelAllezUrl(
   provider: AllezProvider,
   h: {
-    name: string;
+    /** The hotel's name; left out for a whole-city search (address only). */
+    name?: string;
+    /** A partner search URL to carry with its filters (Allez `link`). */
+    link?: string;
+    campaign?: string;
     /** Where it is, as text — used when the coordinates are not known. */
     area?: string;
     lat?: number | null;
@@ -84,7 +88,8 @@ export function hotelAllezUrl(
   const u = new URL(`https://www.stay22.com/allez/${provider}`);
   const p = u.searchParams;
   p.set("aid", STAY22_AID);
-  p.set("hotelname", h.name);
+  if (h.name) p.set("hotelname", h.name);
+  if (h.link) p.set("link", h.link);
   if (typeof h.lat === "number" && typeof h.lng === "number") {
     p.set("lat", h.lat.toFixed(5));
     p.set("lng", h.lng.toFixed(5));
@@ -100,7 +105,7 @@ export function hotelAllezUrl(
   }
   p.set("currency", "SAR");
   p.set("lang", h.locale ?? "ar");
-  p.set("campaign", "hotel_page");
+  p.set("campaign", h.campaign ?? "hotel_page");
   return u.toString();
 }
 
@@ -116,7 +121,8 @@ export interface HotelSearchQuery {
   stay?: "room" | "apartment";
   /** True when `query` names one hotel rather than a city. */
   isHotel?: boolean;
-  /** For a named hotel: where it is, so partner links land on it. */
+  /** For a named hotel: where it is, so partner links land on it. For a
+   *  city search: "City, Country" in English (Allez wants both). */
   area?: string;
   lat?: number | null;
   lng?: number | null;
@@ -197,8 +203,8 @@ export function hotelPartnerLinks(q: HotelSearchQuery): BookingHandoff[] {
         locale: q.locale ?? "ar",
       });
 
-  // Agoda, Hotels.com and Trip.com: plain searches that Stay22's LinkSwap
-  // turns into paid links on the page (checked on sfrtna.com, 6 Oct 2026).
+  // Agoda and Trip.com: plain searches that Stay22's LinkSwap may turn into
+  // paid links on the page (checked on sfrtna.com, 6 Oct 2026).
   const agoda = new URL("https://www.agoda.com/search");
   agoda.searchParams.set("textToSearch", q.query);
   agoda.searchParams.set("checkIn", q.checkIn);
@@ -208,15 +214,6 @@ export function hotelPartnerLinks(q: HotelSearchQuery): BookingHandoff[] {
   if (q.childrenAges.length) {
     agoda.searchParams.set("children", String(q.childrenAges.length));
     agoda.searchParams.set("childAges", q.childrenAges.join(","));
-  }
-  const hotelsCom = new URL("https://www.hotels.com/Hotel-Search");
-  hotelsCom.searchParams.set("destination", q.query);
-  hotelsCom.searchParams.set("startDate", q.checkIn);
-  hotelsCom.searchParams.set("endDate", q.checkOut);
-  hotelsCom.searchParams.set("adults", rooms.a.join(","));
-  if (rooms.r > 1) hotelsCom.searchParams.set("rooms", String(rooms.r));
-  if (q.childrenAges.length) {
-    hotelsCom.searchParams.set("children", rooms.kids.map((k) => `${k.room}_${k.age}`).join(","));
   }
   const trip = new URL("https://www.trip.com/hotels/list");
   trip.searchParams.set("keyword", q.query);
@@ -253,13 +250,33 @@ export function hotelPartnerLinks(q: HotelSearchQuery): BookingHandoff[] {
     ];
   }
 
+  // A city search: Booking and Hotels.com through Allez too, so the tag is
+  // set on our server and does not depend on LinkSwap loading in the browser
+  // (a click before it loads, or an ad blocker, left the link untagged).
+  // Allez needs a place: the city and country in English (`area`), or the
+  // typed text. Booking's filters (stars, breakfast, stay type) ride along as
+  // the original search in Allez's `link`. Agoda and Trip.com stay plain until
+  // a paid route is confirmed; Expedia stays on /api/go/expedia (camref).
+  const city = {
+    area: q.area || q.query,
+    checkIn: q.checkIn,
+    checkOut: q.checkOut,
+    adults: q.adults,
+    childrenAges: q.childrenAges,
+    rooms: rooms.r,
+    locale: q.locale,
+    campaign: "hotel_city",
+  };
+  const bookingUrl = hotelAllezUrl("booking", { ...city, link: filters.length ? booking.toString() : undefined });
+  const hotelsComUrl = hotelAllezUrl("hotelscom", city);
+
   return [
-    { partner: "Booking.com", url: booking.toString() },
+    { partner: "Booking.com", url: bookingUrl },
     // Through our own redirect, which adds the affiliate tag: a direct
     // Expedia link would be rewritten by Stay22 (see /api/go/expedia).
     { partner: "Expedia", url: `/api/go/expedia?landing=${encodeURIComponent(expedia.toString())}` },
     { partner: "Agoda", url: agoda.toString() },
-    { partner: "Hotels.com", url: hotelsCom.toString() },
+    { partner: "Hotels.com", url: hotelsComUrl },
     { partner: "Trip.com", url: trip.toString() },
     ...(zen ? [{ partner: "ZenHotels", url: zen }] : []),
   ];

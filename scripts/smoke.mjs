@@ -257,6 +257,49 @@ for (const [name, path, mark] of [
   }
 }
 
+// The other ways out are not redirects of ours (links built in the page, the
+// widget, the browser), so the tag is checked where it is written: a source
+// guard per exit, so deleting a tag turns the check red.
+{
+  const { readFileSync } = await import("node:fs");
+  const src = (f) => readFileSync(new URL(`../${f}`, import.meta.url), "utf8");
+  for (const [name, file, mark] of [
+    ["Stay22 Allez (hotels, city and named)", "src/lib/affiliateLinks.ts", /STAY22_AID = "sfrtna"/],
+    ["Stay22 Allez used for city search", "src/lib/affiliateLinks.ts", /hotelAllezUrl\("booking", \{ \.\.\.city/],
+    ["ZenHotels partner_slug", "src/lib/zenhotels.ts", /partner_slug", PARTNER_SLUG/],
+    ["Flights widget wl_id", "src/components/FlightMetasearch.tsx", /wl_id=22604/],
+    ["Travelpayouts marker", "src/lib/providers/travelpayouts.ts", /TRAVELPAYOUTS_MARKER = "778874"/],
+  ]) {
+    await check(`partner tag in code: ${name}`, async () => {
+      if (!mark.test(src(file))) throw new Error(`${name}: tag not found in ${file}`);
+    });
+  }
+}
+// Allez must still turn a city into a Booking / Hotels.com search. A Stay22
+// outage must not block a release, so only a wrong answer is red.
+for (const [name, provider, host] of [
+  ["Booking", "booking", /booking\.com/],
+  ["Hotels.com", "hotelscom", /hotels\.com|expedia/],
+]) {
+  await check(`partner link: Allez city search opens ${name}`, async () => {
+    let res;
+    try {
+      res = await fetch(
+        `https://www.stay22.com/allez/${provider}?aid=sfrtna&address=${encodeURIComponent("Istanbul, Turkey")}&checkin=2027-01-10&checkout=2027-01-12&adults=2&campaign=site_check`,
+        { headers: { "User-Agent": UA }, redirect: "manual", signal: AbortSignal.timeout(30_000) }
+      );
+    } catch {
+      return "Stay22 not reachable — skipped";
+    }
+    if (res.status >= 500) return `Stay22 answered ${res.status} — skipped`;
+    const loc = res.headers.get("location") || "";
+    if (res.status < 300 || res.status > 399 || !host.test(loc)) {
+      throw new Error(`Allez ${name}: expected a redirect to ${name}, got ${res.status} ${loc.slice(0, 80)}`);
+    }
+    return new URL(loc).hostname;
+  });
+}
+
 await check("protection: workers.dev without the key goes to sfrtna.com", async () => {
   const res = await fetch(`${BASE}/ar`, { headers: { "User-Agent": UA }, redirect: "manual" });
   if (res.status !== 301 || !(res.headers.get("location") || "").startsWith("https://sfrtna.com/")) {

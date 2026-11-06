@@ -107,6 +107,19 @@ function HotelResultsContent() {
         ? t.twoNights
         : (nights <= 10 ? t.nights : t.nightsMany).replace("{count}", String(nights));
 
+  // City searches: "City, Country" in English for the partners' place lookup.
+  const cityAddress = useMemo(() => {
+    const c = tripCityFrom(query) ?? tripCityFrom(label);
+    if (!c) return undefined;
+    let country = "";
+    try {
+      country = new Intl.DisplayNames(["en"], { type: "region" }).of(c.countryCode) ?? "";
+    } catch {
+      /* the city alone is still a usable place */
+    }
+    return country ? `${c.nameEn}, ${country}` : c.nameEn;
+  }, [query, label]);
+
   const links = useMemo(
     () =>
       complete
@@ -121,11 +134,11 @@ function HotelResultsContent() {
             breakfast: mode === "discover" ? breakfast : undefined,
             stay: mode === "discover" ? stay : undefined,
             isHotel: mode === "known",
-            area: hotelArea || undefined,
+            area: mode === "known" ? hotelArea || undefined : cityAddress,
             locale,
           })
         : [],
-    [complete, query, checkIn, checkOut, adults, childrenAges, rooms, mode, minStars, breakfast, stay, locale, hotelArea]
+    [complete, query, checkIn, checkOut, adults, childrenAges, rooms, mode, minStars, breakfast, stay, locale, hotelArea, cityAddress]
   );
 
   // The city of this stay, for the next-step tabs: the searched city, or

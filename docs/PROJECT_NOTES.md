@@ -2049,3 +2049,48 @@ list when Agoda API opens (Stay22 widget is English, mixes rentals);
 (6) travel insurance from a properly licensed insurer with an affiliate
 program (Schengen visa needs it) — owner's decision; (7) GA4 per-partner
 click events + monthly revenue page once access is granted.
+
+## Partner commission tracking on every exit (7 Nov 2026)
+
+Owner's question (6 Nov): is our commission tag on every way out?
+
+**Site check (smoke.mjs) now covers:**
+- Redirect exits: GetYourGuide (partner_id), Expedia (camref), Klook/Tiqets and
+  all 17 page brands of `/api/go/tp` (airalo, yesim, saily, kiwitaxi,
+  welcomepickups, intui, gettransfer, localrent, getrentacar, economybookings,
+  qeeq, autoeurope, radicalstorage, gocity, kkday, wegotrip, airhelp). A brand
+  with no checked place and no home page (today: gocity) is skipped — the route
+  answers 400 and the visitor is never offered it. If the Travelpayouts link API
+  fails, `/api/go/tp` falls back to the plain partner URL: that now shows as a
+  red check.
+- Source guards (tag must stay in the code): Stay22 `aid=sfrtna`, Allez used
+  for city search, ZenHotels `partner_slug`, flights widget `wl_id=22604`,
+  Travelpayouts marker 778874.
+- Live: Stay22 Allez with a city address opens Booking / Hotels.com (a Stay22
+  outage is skipped, never red).
+- NOT checkable from code: Viator (the tag is inside the API's `productUrl`);
+  the marker behind the white-label widget (set in the Travelpayouts WL
+  settings); LinkSwap rewriting of Agoda/Trip.com plain links in the browser.
+
+**City search changed:** Booking.com and Hotels.com now go through Stay22 Allez
+(`aid=sfrtna`, `address` = "City, Country" in English, `campaign=hotel_city`),
+so the tag is set in our link and no longer depends on LinkSwap loading.
+Booking's filters (stars, breakfast, stay type) travel in Allez's `link`
+parameter (documented by Stay22; how Allez treats it is UNVERIFIED — the
+container cannot reach stay22.com). Expedia stays on `/api/go/expedia`
+(camref). Agoda and Trip.com stay plain until a paid route is confirmed.
+Owner's click test below proves both the tag and the filters.
+
+**Owner click test (pending):** click one link per partner on the live site
+(Booking and Hotels.com city search with stars/breakfast ticked, Agoda,
+Trip.com, ZenHotels, one eSIM, one transfer, one car, one flight), then check
+next day: Stay22 Performance (clicks per campaign `hotel_city`), Travelpayouts
+statistics, Expedia/GetYourGuide dashboards. A partner with no click = the tag
+does not count → fix before launch.
+
+**Watch list — programs locked today (owner's rule: link them the day they
+open):** Travelpayouts-locked until 3 months of traffic: GetYourGuide, Viator,
+Booking, Agoda, Trip.com. Agoda direct: «pending manual site review» (check
+status). Stay22 Lift (ex-LinkSwap) eligibility for us: unknown, Stay22 confirms
+at setup; Stay22 FAQ names Booking, Expedia, Hotels.com (+Vrbo) as paid, Agoda
+and Trip.com unconfirmed.

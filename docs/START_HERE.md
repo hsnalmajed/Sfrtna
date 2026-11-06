@@ -132,35 +132,14 @@ server-side trip save (today «رحلتي» = localStorage only) + consent +
 mail schedule (Resend: check plan limits) + share + push.
 
 **▶ NEXT SECTION (owner, 6 Nov): are partner commissions tracked on every
-way out?** Checked 6 Nov (code only): Site check verifies the tag on 5
-exits only (GetYourGuide partner_id, Klook/Tiqets/Airalo via /api/go/tp,
-Expedia camref). NOT checked automatically: the flight widget (white label
-wl_id=22604 → marker 778874 is set in the Travelpayouts WL settings, not in
-our URL), Stay22 Allez links (aid=sfrtna) and LinkSwap (Booking/Agoda/
-Hotels.com/Trip.com search links are plain URLs rewritten in the browser by
-letmeallez.js, lazyOnload — a click before it loads, or an ad blocker,
-leaves untagged), ZenHotels (partner_slug), the 17 page brands of
-/api/go/tp (kiwitaxi, airhelp, localrent…), Viator productUrl. /api/go/tp
-falls back to an UNTAGGED partner search when the link API fails.
-Owner's rule (6 Nov): every partner whose terms we meet MUST carry our
-commission tag; programs locked today (Travelpayouts: GetYourGuide, Viator,
-Booking, Agoda, Trip.com… until 3 months of traffic) go on a watch list and
-get linked the day they open. Verified in code 6 Nov: named-hotel buttons
-(HotelPrices.tsx) already go through Stay22 Allez with aid=sfrtna (Booking,
-Expedia, Agoda, Hotels.com); city search (hotel-results/page.tsx →
-hotelPartnerLinks) sends Booking/Agoda/Hotels.com/Trip.com as PLAIN links,
-paid only if Stay22 Lift (ex-LinkSwap) rewrites them in the browser.
-Stay22 FAQ (6 Nov): earns on Booking.com, Expedia, Hotels.com (+Vrbo);
-Agoda/Trip.com not confirmed ("depends on market"); Lift eligibility is
-confirmed by Stay22 at setup — unknown for us. Agoda direct: «pending
-manual site review» (check status). Site not launched yet → no clicks.
-Plan: (1) extend smoke.mjs to every exit (all tp brands, Allez, ZenHotels,
-Viator, widget wl_id on /ar/results); (2) city-search Booking + Hotels.com
-through Allez (address/lat-lng, server-side tag); Expedia stays direct
-(camref); Agoda/Trip.com plain until a paid route is confirmed;
-(3) owner clicks one link per partner himself, next day checks the click
-in Travelpayouts statistics / Stay22 Performance (proof the tag counts);
-(4) watch list of locked programs in PROJECT_NOTES «Partner audit».
+way out?** 7 Nov: DONE in code — Site check covers all 17 tp brands + source
+guards (Allez, ZenHotels, widget, marker) + live Allez; city-search Booking and
+Hotels.com now go through Allez (`aid=sfrtna`). Details + watch list:
+PROJECT_NOTES «Partner commission tracking on every exit (7 Nov 2026)».
+**Next step (owner):** click one link per partner on the live site, next day
+check the click in Travelpayouts statistics / Stay22 Performance (campaign
+`hotel_city`). Check that Booking's filters survive Allez's `link` (unverified).
+Agoda/Trip.com stay plain until a paid route is confirmed.
 
 «next-step tabs» flake: 7 green Site checks in a row since the fix (4 Nov);
 ~10 green = close it.
