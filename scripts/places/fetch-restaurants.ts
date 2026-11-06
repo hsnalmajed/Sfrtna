@@ -15,9 +15,12 @@
 import { existsSync, mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { cityPoint, jobSlugs } from "../lib/cityPoints";
+import { markFetched, oldestFirst } from "../lib/refreshOrder";
 import { OVERPASS } from "@/lib/mapPins";
 
 const DIR = join(process.cwd(), "public/data/restaurants");
+/** When each city was last fetched (refresh order), see lib/refreshOrder. */
+const FETCHED_AT = join(process.cwd(), "scripts/places/restaurants-fetched-at.json");
 const RADIUS = 6000;
 const PER_CITY = 300;
 const PAUSE_MS = 2500;
@@ -109,10 +112,26 @@ async function main() {
   const onlyArg = process.argv.includes("--only") ? process.argv[process.argv.indexOf("--only") + 1] : "";
   const only = new Set(onlyArg ? onlyArg.split(",") : []);
   const missing = process.argv.includes("--missing");
-  const slugs = jobSlugs(process.argv).filter((s) => (!only.size || only.has(s)) && (!missing || !existsSync(join(DIR, `${s}.json`))));
+  const has = (s: string) => existsSync(join(DIR, `${s}.json`));
+  const slugs = oldestFirst(
+    jobSlugs(process.argv).filter((s) => (!only.size || only.has(s)) && (!missing || !has(s))),
+    FETCHED_AT,
+    has,
+  );
+  console.log(`cities to fetch: ${slugs.length}`);
   let ok = 0;
   const failed: string[] = [];
-  for (const slug of slugs) {
+  // 6 Nov 2026: this collector had no time budget, so the monthly run hit
+  // the job's 340-minute limit (13 Oct, 4 Nov), was cancelled and lost
+  // everything. Stop starting new cities in time; the next run continues
+  // with the cities fetched longest ago. STOP_AFTER_MIN, default 300.
+  const started = Date.now();
+  const stopAfterMs = Number(process.env.STOP_AFTER_MIN ?? 300) * 60_000;
+  for (const [n, slug] of slugs.entries()) {
+    if (Date.now() - started > stopAfterMs) {
+      console.log(`time budget reached after ${n} of ${slugs.length} cities — stopping`);
+      break;
+    }
     const c = cityPoint(slug);
     if (!c) continue;
     const els = await ask(c.lat, c.lon);
@@ -128,6 +147,7 @@ async function main() {
       .sort((a, b) => b.f - a.f)
       .slice(0, PER_CITY);
     writeFileSync(join(DIR, `${slug}.json`), JSON.stringify(list));
+    markFetched(FETCHED_AT, slug);
     ok++;
     console.log(`${slug}: ${list.length} restaurants`);
     await sleep(PAUSE_MS);

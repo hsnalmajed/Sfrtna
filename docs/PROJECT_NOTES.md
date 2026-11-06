@@ -2000,3 +2000,34 @@ deleted file paired with an identical new one was dropped; `pull --rebase
 --autostash` because the rest stays uncommitted). Tested on a local bare
 repo (450 new, 5 changed, 10 deleted → 470 files, nothing left over).
 New dispatch input `from_run`: restore that run's artifact and only commit.
+**6 Nov 2026 — audit of all data workflows (owner: "check everything
+similar").** 22 workflows push; 11 to main, the rest force-push their own
+report branches (safe). Found and fixed:
+1. Restaurants had NO time budget: monthly runs hit the 340-min limit and
+   were cancelled (13 Oct, 4 Nov) → whole run lost, and a time-out ends
+   "cancelled", so GitHub sent no mail. `fetch-restaurants.ts` now stops at
+   STOP_AFTER_MIN (300) like hotels/places. Data itself is complete (370
+   files from 15 + 27 Oct); only the refresh was lost.
+2. Hotels/places walked the cities in a fixed order and stop at the time
+   budget (hotels 128/365 on 5 Nov, places 156/365 on 3 Nov), so every
+   "monthly refresh" redid the same first cities; ~210–240 cities were never
+   refreshed. New `scripts/lib/refreshOrder.ts`: missing cities first, then
+   oldest fetch date (kept in scripts/hotels/fetched-at.json,
+   scripts/places/places-fetched-at.json, restaurants-fetched-at.json);
+   undated = oldest, tail of the list first. Schedules now 3× a month
+   (places 3/13/23, restaurants 4/14/24, hotels 5/15/25) so every city is
+   refreshed about monthly.
+3. One push helper for long jobs: `scripts/ci/push-to-main.sh` (retry 3×,
+   then ≤200-file commits; tested with a server hook that refuses >200-file
+   pushes, a concurrent push and `-X theirs`). Used by hotels, places,
+   restaurants, guide (PULL_ARGS="-X theirs"), partner-pages. Results saved
+   as artifacts (14 days) before the push: hotels (+ `from_run` input),
+   places, restaurants, guide (paid Gemini calls).
+4. Status report: runs cancelled after ≥60 min are listed as «توقف عند
+   المهلة الزمنية» (time-outs mail nobody).
+5. (Earlier today) release.yml hourly catch-up for GITHUB_TOKEN commits.
+Not changed (low risk, short jobs): photos, climate-stations, geo-stage,
+hero-photos, mobile-speed, mobile-taps already pull --rebase before push.
+Seen, not urgent: Node 20 actions deprecation warnings (checkout@v4,
+setup-node@v4 forced to Node 24 — still green); ubuntu-latest moves to
+Ubuntu 26 — watch the first runs after the switch.

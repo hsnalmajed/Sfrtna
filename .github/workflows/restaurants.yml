@@ -6,7 +6,7 @@ name: Restaurants
 
 on:
   schedule:
-    - cron: "17 3 4 * *"
+    - cron: "17 3 4,14,24 * *"
   push:
     branches: [main]
     paths:
@@ -50,15 +50,19 @@ jobs:
           if [ "${{ inputs.missing_only }}" = "true" ]; then FLAGS="--missing"; fi
           if [ "${{ inputs.staged }}" = "true" ]; then FLAGS="$FLAGS --staged"; fi
           npx --yes tsx@4 scripts/places/fetch-restaurants.ts $FLAGS
+      # 6 Nov 2026: saved before the push, so a failed push loses nothing
+      # (14 days; download it from the run page).
+      - name: Save the result
+        uses: actions/upload-artifact@v4
+        with:
+          name: restaurants-result
+          path: |
+            public/data/restaurants
+            scripts/places/restaurants-fetched-at.json
+          retention-days: 14
+          if-no-files-found: warn
+
       - name: Commit
+        # Retries the push, splits it if GitHub refuses a big one (6 Nov).
         run: |
-          git add public/data/restaurants
-          if git diff --cached --quiet; then
-            echo "Nothing new."
-            exit 0
-          fi
-          git config user.name "Claude"
-          git config user.email "noreply@anthropic.com"
-          git commit -m "Restaurants: stored from OpenStreetMap"
-          git pull --rebase origin main
-          git push
+          bash scripts/ci/push-to-main.sh "Restaurants: stored from OpenStreetMap (automatic run)" public/data/restaurants scripts/places/restaurants-fetched-at.json

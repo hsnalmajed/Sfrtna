@@ -21,6 +21,7 @@
 import { existsSync, readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
 import { cityPoint, jobSlugs } from "../lib/cityPoints";
+import { markFetched, oldestFirst } from "../lib/refreshOrder";
 import {
   OVERPASS,
   STORED_PER_CITY,
@@ -32,6 +33,8 @@ import {
 } from "@/lib/mapPins";
 
 const DIR = join(process.cwd(), "public/data/places");
+/** When each city was last fetched (refresh order), see lib/refreshOrder. */
+const FETCHED_AT = join(process.cwd(), "scripts/places/places-fetched-at.json");
 const COUNTS = join(process.cwd(), "src/data/placeCounts.json");
 const PAUSE_MS = 2500;
 
@@ -81,6 +84,7 @@ async function main() {
   if (only) slugs = only.split(",").map((s) => s.trim());
   if (process.argv.includes("--missing")) slugs = slugs.filter((s) => !existsSync(join(DIR, `${s}.json`)));
   const max = Number(arg("--max") ?? Infinity);
+  slugs = oldestFirst(slugs, FETCHED_AT, (s) => existsSync(join(DIR, `${s}.json`)));
   slugs = slugs.slice(0, max);
 
   console.log(`cities to fetch: ${slugs.length}`);
@@ -115,6 +119,7 @@ async function main() {
     places.sort((a, b) => b.f - a.f || a.n.localeCompare(b.n));
     const kept = places.slice(0, STORED_PER_CITY);
     writeFileSync(join(DIR, `${slug}.json`), JSON.stringify(kept));
+    markFetched(FETCHED_AT, slug);
     counts[slug] = kept.length;
     console.log(`${n + 1}/${slugs.length} ${slug}: ${places.length} found, ${kept.length} kept`);
     // Counts saved as we go, so a cancelled run keeps what it finished.

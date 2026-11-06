@@ -16,9 +16,12 @@
 import { existsSync, mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { cityPoint, jobSlugs } from "../lib/cityPoints";
+import { markFetched, oldestFirst } from "../lib/refreshOrder";
 import { OVERPASS, type OverpassElement } from "@/lib/mapPins";
 
 const DIR = join(process.cwd(), "scripts/hotels/cities");
+/** When each city was last fetched (refresh order), see lib/refreshOrder. */
+const FETCHED_AT = join(process.cwd(), "scripts/hotels/fetched-at.json");
 const RADIUS = 25_000;
 // A big city (London, Bangkok, Cairo) can time out at 25 km: asked again closer in.
 const SMALL_RADIUS = 10_000;
@@ -82,6 +85,7 @@ async function main() {
   const only = arg("--only");
   if (only) slugs = only.split(",").map((s) => s.trim());
   if (process.argv.includes("--missing")) slugs = slugs.filter((s) => !existsSync(join(DIR, `${s}.json`)));
+  slugs = oldestFirst(slugs, FETCHED_AT, (s) => existsSync(join(DIR, `${s}.json`)));
   slugs = slugs.slice(0, Number(arg("--max") ?? Infinity));
 
   console.log(`cities to fetch: ${slugs.length}`);
@@ -120,6 +124,7 @@ async function main() {
     }
     out.sort((a, b) => b[3] - a[3] || b[4] - a[4] || a[0].localeCompare(b[0]));
     writeFileSync(join(DIR, `${slug}.json`), JSON.stringify(out));
+    markFetched(FETCHED_AT, slug);
     console.log(`${n + 1}/${slugs.length} ${slug}: ${out.length} hotels`);
     await sleep(PAUSE_MS);
   }

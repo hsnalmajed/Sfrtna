@@ -12,7 +12,7 @@ name: Hotels
 
 on:
   schedule:
-    - cron: "17 3 5 * *"
+    - cron: "17 3 5,15,25 * *"
   push:
     branches: [main]
     paths:
@@ -80,6 +80,7 @@ jobs:
           name: hotels-result
           path: |
             scripts/hotels/cities
+            scripts/hotels/fetched-at.json
             public/data/hotels
             public/data/hotel-words
           retention-days: 14
@@ -95,43 +96,6 @@ jobs:
           path: .
 
       - name: Commit
+        # Retries the push, splits it if GitHub refuses a big one (6 Nov).
         run: |
-          git add scripts/hotels/cities public/data/hotels public/data/hotel-words
-          if git diff --cached --quiet; then
-            echo "Nothing new."
-            exit 0
-          fi
-          git config user.name "Claude"
-          git config user.email "noreply@anthropic.com"
-          MSG="Hotels: stored hotel names (automatic run)"
-          TRAILER="Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
-          git commit -m "$MSG" -m "$TRAILER"
-          # 5 Nov 2026: GitHub rejected one 750-file push ("fatal error in
-          # commit_refs_rules") after a 5-hour run, and the data was lost.
-          # So: retry the push; if it still fails, split it into small
-          # commits of at most 200 files each and push them one by one.
-          push_once() {
-            git pull --rebase --autostash origin main && git push origin HEAD:main
-          }
-          for n in 1 2 3; do
-            if push_once; then exit 0; fi
-            echo "Push failed (try $n of 3), waiting."
-            sleep $((n * 60))
-          done
-          echo "Splitting the push into small commits."
-          git reset --soft HEAD~1
-          git reset -q
-          git add -A scripts/hotels/cities public/data/hotels public/data/hotel-words
-          git diff --cached --no-renames --name-only > /tmp/hotel-files.txt
-          git reset -q
-          split -l 200 -d /tmp/hotel-files.txt /tmp/hotel-part-
-          for part in /tmp/hotel-part-*; do
-            xargs -a "$part" -d '\n' git add -A --
-            git commit -m "$MSG (part $(basename "$part"))" -m "$TRAILER"
-            ok=0
-            for n in 1 2 3; do
-              if push_once; then ok=1; break; fi
-              sleep $((n * 60))
-            done
-            [ "$ok" = 1 ] || { echo "Part $part could not be pushed."; exit 1; }
-          done
+          bash scripts/ci/push-to-main.sh "Hotels: stored hotel names (automatic run)" scripts/hotels/cities scripts/hotels/fetched-at.json public/data/hotels public/data/hotel-words

@@ -102,15 +102,15 @@ PROJECT_NOTES «Release gate» → 6 Nov.
 **Next step:** after the next data commit by a workflow, confirm a
 `schedule` Release run deployed it (notice «Catch-up» in the run).
 
-**Hotels data (6 Nov):** monthly run of 5 Nov collected 5 h then GitHub
-rejected its 750-file push («fatal error in commit_refs_rules») → data lost.
-`hotels.yml` now: saves the result as artifact `hotels-result` (14 days)
-BEFORE pushing; push retried 3×, then split into ≤200-file commits
-(`--no-renames`, `--autostash`; tested on a local repo). A failed push is
-finished without re-collecting: Run workflow → `from_run` = that run's ID.
-Full refresh dispatched 6 Nov ~04:30 KSA. **Next step:** read that run
-(≈5 h): green → hotel commit(s) on main, then the hourly catch-up deploys
-them; red at Commit → dispatch again with `from_run`.
+**Data workflows (6 Nov, audit):** see PROJECT_NOTES «6 Nov 2026 — audit
+of all data workflows». Long jobs (hotels, places, restaurants, guide,
+partner-pages) push via `scripts/ci/push-to-main.sh` (retry, then split)
+and save their result as an artifact first; hotels/places/restaurants
+refresh the oldest cities first, 3× a month; restaurants now has a time
+budget; status report lists time-outs. Full hotels refresh dispatched 6 Nov
+~04:30 KSA (run 42141827127, old code). **Next step:** check that run and
+the first runs on the new code (places 13 Nov, restaurants 14 Nov, hotels
+15 Nov): `fetched-at` files appear and grow; no «توقف عند المهلة».
 
 «next-step tabs» flake: 7 green Site checks in a row since the fix (4 Nov);
 ~10 green = close it.

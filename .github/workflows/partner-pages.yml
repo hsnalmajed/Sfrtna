@@ -45,15 +45,6 @@ jobs:
           npx --yes tsx@4 scripts/partners/check-pages.ts
 
       - name: Commit
+        # Retries the push, splits it if GitHub refuses a big one (6 Nov).
         run: |
-          git add src/data/partnerPages.json
-          if git diff --cached --quiet; then
-            echo "Nothing new."
-            exit 0
-          fi
-          git config user.name "Claude"
-          git config user.email "noreply@anthropic.com"
-          git commit -m "Partner pages: checked addresses (automatic run)" \
-            -m "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
-          git pull --rebase origin main
-          git push origin HEAD:main
+          bash scripts/ci/push-to-main.sh "Partner pages: checked addresses (automatic run)" src/data/partnerPages.json

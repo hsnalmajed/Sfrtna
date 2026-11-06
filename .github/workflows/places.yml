@@ -10,7 +10,7 @@ name: Places
 
 on:
   schedule:
-    - cron: "41 2 3 * *"
+    - cron: "41 2 3,13,23 * *"
   push:
     branches: [main]
     paths:
@@ -55,16 +55,20 @@ jobs:
           if [ "${{ inputs.staged }}" = "true" ]; then FLAGS="$FLAGS --staged"; fi
           npx --yes tsx@4 scripts/places/fetch-places.ts $FLAGS
 
+      # 6 Nov 2026: saved before the push, so a failed push loses nothing
+      # (14 days; download it from the run page).
+      - name: Save the result
+        uses: actions/upload-artifact@v4
+        with:
+          name: places-result
+          path: |
+            public/data/places
+            src/data/placeCounts.json
+            scripts/places/places-fetched-at.json
+          retention-days: 14
+          if-no-files-found: warn
+
       - name: Commit
+        # Retries the push, splits it if GitHub refuses a big one (6 Nov).
         run: |
-          git add public/data/places src/data/placeCounts.json
-          if git diff --cached --quiet; then
-            echo "Nothing new."
-            exit 0
-          fi
-          git config user.name "Claude"
-          git config user.email "noreply@anthropic.com"
-          git commit -m "Places: stored OpenStreetMap places (automatic run)" \
-            -m "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
-          git pull --rebase origin main
-          git push origin HEAD:main
+          bash scripts/ci/push-to-main.sh "Places: stored OpenStreetMap places (automatic run)" public/data/places src/data/placeCounts.json scripts/places/places-fetched-at.json

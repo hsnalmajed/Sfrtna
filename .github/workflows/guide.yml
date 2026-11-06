@@ -53,14 +53,25 @@ jobs:
       - name: Write-ups (Gemini)
         if: inputs.task == 'write' || inputs.task == 'all' || github.event_name == 'schedule'
         run: npx --yes tsx@4 scripts/guide/write.ts ${{ inputs.only && inputs.only != 'all' && format('--only {0}', inputs.only) || '' }}
+      # 6 Nov 2026: saved before the push, so a failed push loses nothing
+      # (14 days; download it from the run page).
+      - name: Save the result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: guide-result
+          path: |
+            public/data/guide
+            public/data/costs.json
+            scripts/guide/reports
+          retention-days: 14
+          if-no-files-found: warn
+
       - name: Commit
         if: always()
+        # Retries the push, splits it if GitHub refuses a big one (6 Nov).
+        # -X theirs: this run's files win over an older run's.
+        env:
+          PULL_ARGS: "-X theirs"
         run: |
-          for p in public/data/guide public/data/costs.json scripts/guide/reports; do if [ -e "$p" ]; then git add "$p"; fi; done
-          if git diff --cached --quiet; then echo "Nothing new."; exit 0; fi
-          git config user.name "Claude"
-          git config user.email "noreply@anthropic.com"
-          git commit -m "Guide: places checked and written up"
-          # This run's files win over an older run's (rebase: "theirs" = ours).
-          git pull --rebase -X theirs origin main
-          git push
+          bash scripts/ci/push-to-main.sh "Guide: places checked and written up" public/data/guide public/data/costs.json scripts/guide/reports

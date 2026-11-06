@@ -161,6 +161,13 @@ async function github() {
         }
       } else if (r.name !== "Status report" && r.conclusion === "failure") {
         out.jobs.push({ name: r.name, at: r.run_started_at, url: r.html_url });
+      } else if (r.name !== "Status report" && r.conclusion === "cancelled") {
+        // 6 Nov 2026: a job that hits its time limit ends "cancelled", not
+        // "failure", and GitHub sends no mail — restaurants lost its whole
+        // monthly run that way (13 Oct, 4 Nov). A run cancelled after an
+        // hour or more is a time-out, not a newer run replacing it.
+        const minutes = (Date.parse(r.updated_at) - Date.parse(r.run_started_at)) / 60_000;
+        if (minutes >= 60) out.jobs.push({ name: `${r.name} (توقف عند المهلة الزمنية)`, at: r.run_started_at, url: r.html_url });
       }
     }
     const running = runs.filter((r) => r.status === "in_progress" && r.name !== "Status report");
