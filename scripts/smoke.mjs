@@ -228,6 +228,32 @@ for (const [name, path, mark] of [
   });
 }
 
+// Every page brand of /api/go/tp (eSIM, transfers, cars, luggage, activities,
+// compensation): one check each, on a place we hold a checked page for (or
+// the partner's home). /api/go/tp falls back to the plain partner URL when the
+// Travelpayouts link API fails — that must show up here as a red check.
+{
+  const { readFileSync } = await import("node:fs");
+  const pages = JSON.parse(readFileSync(new URL("../src/data/partnerPages.json", import.meta.url), "utf8"));
+  const brands = [
+    "airalo", "yesim", "saily", "kiwitaxi", "welcomepickups", "intui", "gettransfer",
+    "localrent", "getrentacar", "economybookings", "qeeq", "autoeurope",
+    "radicalstorage", "gocity", "kkday", "wegotrip", "airhelp",
+  ];
+  for (const brand of brands) {
+    const country = Object.keys(pages.countries).find((c) => pages.countries[c]?.[brand]) || "";
+    const city = Object.keys(pages.cities).find((c) => pages.cities[c]?.[brand]) || "";
+    const path = `/api/go/tp?b=${brand}&c=${encodeURIComponent(country)}&p=${encodeURIComponent(city)}`;
+    await check(`partner link: ${brand} (tp) carries our tag`, async () => {
+      const loc = await goLocation(path);
+      if (!/tp\.media|tp\.st|marker=|travelpayouts/i.test(loc)) {
+        throw new Error(`${brand} link left without our tag: ${new URL(loc).hostname}`);
+      }
+      return new URL(loc).hostname;
+    });
+  }
+}
+
 await check("protection: workers.dev without the key goes to sfrtna.com", async () => {
   const res = await fetch(`${BASE}/ar`, { headers: { "User-Agent": UA }, redirect: "manual" });
   if (res.status !== 301 || !(res.headers.get("location") || "").startsWith("https://sfrtna.com/")) {
