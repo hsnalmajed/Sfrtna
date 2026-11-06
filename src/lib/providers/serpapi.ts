@@ -80,9 +80,12 @@ async function account(): Promise<Account | null> {
  */
 const FLIGHT_RESERVE = 40;
 
-async function maySearch(kind: "hotel" | "flight" | "explore" = "hotel"): Promise<boolean> {
+async function maySearch(kind: "hotel" | "flight" | "explore" | "probe" = "hotel"): Promise<boolean> {
   const a = await account();
   if (!a || a.left <= 0) return false;
+  // A site-check probe (by hand, two searches): outside the daily pace,
+  // never into the flight reserve.
+  if (kind === "probe") return a.left > FLIGHT_RESERVE;
   // "Suggest a destination": one search prices every place for the
   // traveller's own dates (cached per origin, dates and travellers), so it
   // may run whenever the flight reserve stays untouched.
@@ -123,7 +126,7 @@ export async function serpUsage(): Promise<(Account & { mayUse: boolean }) | nul
   return { ...a, mayUse: await maySearch() };
 }
 
-async function search(params: Record<string, string>, kind: "hotel" | "flight" | "explore" = "hotel"): Promise<Record<string, unknown> | null> {
+async function search(params: Record<string, string>, kind: "hotel" | "flight" | "explore" | "probe" = "hotel"): Promise<Record<string, unknown> | null> {
   if (!key() || !(await maySearch(kind))) return null;
   const url = new URL(`${BASE}/search.json`);
   for (const [k, v] of Object.entries(params)) url.searchParams.set(k, v);
@@ -449,7 +452,7 @@ export async function hotelPrices(q: {
       currency,
       hl: "en",
       gl: "sa",
-    });
+    }, q.probe ? "probe" : "hotel");
     if (!body) return null;
     const props = body.properties as GhProperty[] | undefined;
     const kind: HotelSearch["kind"] = Array.isArray(props) ? "list" : "hotel";

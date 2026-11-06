@@ -18,8 +18,8 @@ const pageHeaders = (base, path) => ({
 const headers = pageHeaders(BASE, "/ar/hotel-results");
 const day = (n) => new Date(Date.now() + n * 86_400_000).toISOString().slice(0, 10);
 const dates = { checkIn: day(30), checkOut: day(33), adults: "2" };
-for (const city of (process.env.CITIES || "Dubai, United Arab Emirates|Istanbul, Turkey").split("|")) {
-  const list = await fetch(`${BASE}/api/hotel-prices?${new URLSearchParams({ q: city, ...dates })}`, { headers }).then((r) => r.json()).catch((e) => ({ error: String(e) }));
+for (const city of (process.env.CITIES || "Dubai, United Arab Emirates").split("|")) {
+  const list = await fetch(`${BASE}/api/hotel-prices?${new URLSearchParams({ q: city, probe: "1", ...dates })}`, { headers }).then((r) => r.json()).catch((e) => ({ error: String(e) }));
   const hotels = list?.result?.hotels ?? [];
   const h = hotels.find((x) => x.token);
   if (list?.error) console.log(`PROBE ${city}: error ${JSON.stringify(list).slice(0, 200)}`);
@@ -47,5 +47,5 @@ for (const days of [7, 30]) {
     else if (/serp|hotel|search|visit|view|session|ext|users/i.test(p)) flat.push(`${p}=${v}`);
   };
   walk(sum.current ?? sum, "");
-  console.log(`PLAN summary ${days}d: ${flat.slice(0, 80).join(" | ")}`);
+  console.log(`PLAN summary ${days}d: ${flat.slice(0, 80).join(" | ") || JSON.stringify(sum).slice(0, 1500)}`);
 }
