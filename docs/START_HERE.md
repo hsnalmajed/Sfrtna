@@ -155,9 +155,11 @@ check-in/out). We do NOT hold: room table, review quotes, FAQ, cancellation/
 children/payment policies → show nothing for them (or a deep link).
 Room types: SerpApi docs fetched 7 Nov do not confirm a rooms field; only a
 live property call (key is a Cloudflare var) can → test before promising.
-(c) OPEN: price gap vs Booking (Pege Hotel 1,760 SAR, 6 nights, 2 adults,
-Genius member price, 2,608 struck; Downtown Sirkeci 1,915): owner has not yet
-sent OUR price for the same dates → ask once, then compare.
+(c) Price gap vs Booking EXPLAINED 7 Nov 01:50: owner's screenshot of OUR page
+was the Stay22 widget (Booking only, English): Pege Hotel 1,956 SAR, 6 nights,
+2 adults, total incl. fees. Booking's own page 1,760 = 1,956 × 0.9 → the 10%
+Genius member price (2,608 struck). Our price is the public one; do not show
+member prices. Not yet checked: same room type on both; our SerpApi list price.
 
 «next-step tabs» flake: 7 green Site checks in a row since the fix (4 Nov);
 ~10 green = close it.
