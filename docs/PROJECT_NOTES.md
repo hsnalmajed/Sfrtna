@@ -2094,3 +2094,20 @@ Booking, Agoda, Trip.com. Agoda direct: «pending manual site review» (check
 status). Stay22 Lift (ex-LinkSwap) eligibility for us: unknown, Stay22 confirms
 at setup; Stay22 FAQ names Booking, Expedia, Hotels.com (+Vrbo) as paid, Agoda
 and Trip.com unconfirmed.
+
+## Hotel page — owner's brief of 7 Nov 2026 (01:36 KSA)
+
+Owner screenshot: city hotel results showed only Stay22's English widget
+(«See accommodations») under the line «نعرض الآن فنادق شركائنا» = our own
+`HotelList` was down (SerpApi allowance paced out, by design — serpapi.ts rule 3).
+Owner's words, summarised: no «اختر» button under the hotel card; after it a
+page like the flight page, with the booking details and each provider's price
+with «احجز» beside it; every hotel in its own framed card (breakfast, internet,
+parking, distance from the centre…); several photos; at Booking, Agoda and the
+other sites too; after choosing: room types with a photo each, many details,
+and the hotel's place on a map. «تقصير كبير» on the hotel page.
+What we hold (`HotelResult`, serpapi.ts): up to 8 photos, lat/lng, amenities
+(+ excluded), description, check-in/out, nearby places, rating histogram,
+review topics, offers per site. NOT held: room types and their photos.
+Open decisions for the owner: SerpApi plan (measure searches/month first) or
+another source; room types only if a source provides them.

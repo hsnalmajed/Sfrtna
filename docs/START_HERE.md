@@ -115,43 +115,32 @@ the first runs on the new code (places 13 Nov, restaurants 14 Nov, hotels
 **Growth consultation (6 Nov):** owner's doc «استشارة نمو سفرتنا»
 https://claude.ai/artifact/PdyRGXJuakaAhJY3a6x1oa — 7 items in order;
 item 1 = the section below. Tick its checklist as items close.
-**Item 5 APPROVED by the owner 6 Nov 20:34 («طبّقها… جميلة، هادفة، أقصى
-ربح، العميل أفضل مسوّق لنا»)** — the traveller journey, scenario in the doc:
-no first-visit popup (Google intrusive-interstitial risk) → small content
-bar + «احفظ رحلتك» card after a search (Google one-tap, UNticked marketing
-consent) + «أرسل الخطة إلى بريدي»; on «احجز» click: return banner of what
-is left + email within 1 h «5 أشياء جهّزها الآن» (visa, hotel, eSIM,
-transfer, activities — all tagged partner links); reminders 7 d / 3 d
-before, arrival day, after return (AirHelp, next trip); app push later
-(iPhone after approval; needs consent, Apple 4.5.4). Sharing loop: share
-trip plan by WhatsApp to companions, shareable budget-result card. Rules:
-≤5 mails per trip, skip what is ticked in «رحلتي», monthly offers only with
-consent, unsubscribe in every mail (Saudi PDPL), no fixed prices in mail
-(buttons open live prices), beautiful Arabic design. Build after item 1:
-server-side trip save (today «رحلتي» = localStorage only) + consent +
-mail schedule (Resend: check plan limits) + share + push.
+**Item 5 APPROVED by the owner 6 Nov 20:34** — the traveller journey (scenario in
+the doc): no first-visit popup; «احفظ رحلتك» card after a search (Google
+one-tap, UNticked consent); on «احجز» click a return banner + email within
+1 h «5 أشياء جهّزها الآن» (tagged partner links); reminders 7 d / 3 d / arrival
+day / after return; WhatsApp share of the plan. Rules: ≤5 mails per trip, skip
+what is ticked in «رحلتي», unsubscribe in every mail (Saudi PDPL), no fixed
+prices in mail. Build after item 1: server-side trip save + consent + mail
+schedule (Resend: check plan limits) + share + push.
 
-**▶ NEXT SECTION (owner, 6 Nov): are partner commissions tracked on every
-way out?** 7 Nov: DONE in code — Site check covers all 17 tp brands + source
-guards (Allez, ZenHotels, widget, marker) + live Allez; city-search Booking and
-Hotels.com now go through Allez (`aid=sfrtna`). Details + watch list:
-PROJECT_NOTES «Partner commission tracking on every exit (7 Nov 2026)».
-**Next step (owner):** click one link per partner on the live site, next day
-check the click in Travelpayouts statistics / Stay22 Performance (campaign
-`hotel_city`). Check that Booking's filters survive Allez's `link` (unverified).
-Agoda/Trip.com stay plain until a paid route is confirmed.
-
-**▶ NEXT SECTION (owner, 7 Nov 01:34): hotel pages like flights.** Owner saw
-the city page showing ONLY Stay22's English widget («كل فنادق إسطنبول وشققها»,
-mixes rentals, no «اختر»): our own `HotelList` (cards with stars, rating,
-distance from centre, amenities, breakfast, lowest price) hides itself via
-`onUnavailable` → `listDown` (hotel-results/page.tsx) — cause NOT yet checked
-(likely the SerpApi allowance). Wants: (1) a framed card per hotel with
-breakfast / internet / parking / distance from centre; (2) a «اختر» button on
-each card → a details page like the flights one: booking details + each
-partner's price side by side + «احجز» per partner (today `HotelPrices`
-inline). Prices = live partner price or none (standing rule). First find why
-the list was down, then design; Opus 5.5.
+**▶ NEXT SECTION (owner, 7 Nov 01:36, «very very important»; he said the hotel
+page is far below the rest of the work): professional hotel page.**
+Found 7 Nov: owner saw only Stay22's English widget (our priced list =
+`HotelList`, SerpApi Google Hotels, pauses by design when the monthly search
+allowance is paced out → text «نعرض الآن فنادق شركائنا»). Owner wants:
+(1) «اختر» button under every card → a hotel page like the flight page: booking
+details + each provider's price with «احجز» beside it (Booking, Agoda, Expedia,
+Hotels.com, ZenHotels…); (2) a clear framed card per hotel: breakfast,
+internet, parking, distance from centre…; (3) several photos (we hold up to 8
+per hotel: `HotelResult.images`); (4) hotel page: map of its location (we hold
+lat/lng), description, amenities, check-in/out, nearby places, review topics;
+(5) room types with a photo per type — we do NOT hold this (not in our SerpApi
+fields; partner APIs: Agoda pending, Booking locked) → check what Google's
+property call returns before promising; else a «see rooms» deep link.
+Also owed: SerpApi measurement + plan numbers (searches needed/month, cost) —
+his decision, since the free allowance cannot carry a real city list.
+Build on a branch, Site check, then main. Open with Opus 5.5.
 
 «next-step tabs» flake: 7 green Site checks in a row since the fix (4 Nov);
 ~10 green = close it.
@@ -185,6 +174,5 @@ payout threshold $500 not met» (wire $500; PayPal/ACH $100).
 Waiting on the owner: Apple review; Google Play ticket reply; Google-fares
 decision after the 6 Nov measurement; Android APK on a real phone.
 
-**Recommended model for the next chat: Opus 5.5** (SerpApi measurement +
-Google-fares plan, check the hotels run and the catch-up); Sonnet 5.5 for
-store-console steps only.
+**Recommended model for the next chat: Opus 5.5** (hotel page build +
+SerpApi plan numbers); Sonnet 5.5 for store-console steps only.
