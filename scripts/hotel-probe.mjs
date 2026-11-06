@@ -18,10 +18,13 @@ const pageHeaders = (base, path) => ({
 const headers = pageHeaders(BASE, "/ar/hotel-results");
 const day = (n) => new Date(Date.now() + n * 86_400_000).toISOString().slice(0, 10);
 const dates = { checkIn: day(30), checkOut: day(33), adults: "2" };
+const stg = await fetch(`${BASE}/api/serp-status`, { headers: pageHeaders(BASE, "/ar") }).then((r) => r.text()).catch((e) => String(e));
+console.log(`PROBE serp-status on ${BASE}: ${stg.slice(0, 300)}`);
 for (const city of (process.env.CITIES || "Dubai, United Arab Emirates").split("|")) {
   const list = await fetch(`${BASE}/api/hotel-prices?${new URLSearchParams({ q: city, probe: "1", ...dates })}`, { headers }).then((r) => r.json()).catch((e) => ({ error: String(e) }));
   const hotels = list?.result?.hotels ?? [];
   const h = hotels.find((x) => x.token);
+  if (!list?.result) console.log(`PROBE ${city}: answer ${JSON.stringify(list).slice(0, 300)}`);
   if (list?.error) console.log(`PROBE ${city}: error ${JSON.stringify(list).slice(0, 200)}`);
   console.log(`PROBE ${city}: list ${hotels.length} hotels; ids ${hotels.filter((x) => x.token).length}; offers on first ${h?.offers?.length ?? 0}`);
   if (!h) continue;
