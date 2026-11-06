@@ -112,6 +112,10 @@ budget; status report lists time-outs. Full hotels refresh dispatched 6 Nov
 the first runs on the new code (places 13 Nov, restaurants 14 Nov, hotels
 15 Nov): `fetched-at` files appear and grow; no «توقف عند المهلة».
 
+**Growth consultation (6 Nov):** owner's doc «استشارة نمو سفرتنا»
+https://claude.ai/artifact/PdyRGXJuakaAhJY3a6x1oa — 7 items in order;
+item 1 = the section below. Tick its checklist as items close.
+
 **▶ NEXT SECTION (owner, 6 Nov): are partner commissions tracked on every
 way out?** Checked 6 Nov (code only): Site check verifies the tag on 5
 exits only (GetYourGuide partner_id, Klook/Tiqets/Airalo via /api/go/tp,
