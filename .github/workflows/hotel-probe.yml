@@ -1,0 +1,26 @@
+# Does Google's single-hotel answer carry room types? (by hand, staging).
+# Two hotel searches per city. Lines start with PROBE in the log.
+name: Hotel probe
+on:
+  workflow_dispatch:
+    inputs:
+      base:
+        description: "Worker to ask"
+        type: string
+        default: https://sfrtna-staging.almajedhsn.workers.dev
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Probe
+        env:
+          SMOKE_TOKEN: ${{ secrets.SMOKE_TOKEN }}
+          BASE: ${{ inputs.base }}
+        run: node scripts/hotel-probe.mjs
