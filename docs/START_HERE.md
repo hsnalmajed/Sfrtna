@@ -141,6 +141,18 @@ check the click in Travelpayouts statistics / Stay22 Performance (campaign
 `hotel_city`). Check that Booking's filters survive Allez's `link` (unverified).
 Agoda/Trip.com stay plain until a paid route is confirmed.
 
+**▶ NEXT SECTION (owner, 7 Nov 01:34): hotel pages like flights.** Owner saw
+the city page showing ONLY Stay22's English widget («كل فنادق إسطنبول وشققها»,
+mixes rentals, no «اختر»): our own `HotelList` (cards with stars, rating,
+distance from centre, amenities, breakfast, lowest price) hides itself via
+`onUnavailable` → `listDown` (hotel-results/page.tsx) — cause NOT yet checked
+(likely the SerpApi allowance). Wants: (1) a framed card per hotel with
+breakfast / internet / parking / distance from centre; (2) a «اختر» button on
+each card → a details page like the flights one: booking details + each
+partner's price side by side + «احجز» per partner (today `HotelPrices`
+inline). Prices = live partner price or none (standing rule). First find why
+the list was down, then design; Opus 5.5.
+
 «next-step tabs» flake: 7 green Site checks in a row since the fix (4 Nov);
 ~10 green = close it.
 
