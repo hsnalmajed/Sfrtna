@@ -1,5 +1,5 @@
 {
- "checked": "2026-10-27",
+ "checked": "2026-11-06",
  "countries": {
   "AD": {
    "airalo": "https://www.airalo.com/andorra-esim"
@@ -499,6 +499,7 @@
   },
   "belfast": {
    "kiwitaxi": "https://kiwitaxi.com/en/united-kingdom/belfast",
+   "welcomepickups": "https://www.welcomepickups.com/belfast/airport-transfer/",
    "radicalstorage": "https://radicalstorage.com/luggage-storage/belfast"
   },
   "belgrade": {
@@ -552,7 +553,6 @@
   },
   "brasov": {},
   "bratislava": {
-   "welcomepickups": "https://www.welcomepickups.com/bratislava/airport-transfer/",
    "radicalstorage": "https://radicalstorage.com/luggage-storage/bratislava"
   },
   "bridgetown": {
@@ -575,7 +575,6 @@
    "radicalstorage": "https://radicalstorage.com/luggage-storage/bucharest"
   },
   "budapest": {
-   "welcomepickups": "https://www.welcomepickups.com/budapest/airport-transfer/",
    "localrent": "https://localrent.com/en/hungary/budapest/",
    "radicalstorage": "https://radicalstorage.com/luggage-storage/budapest"
   },
@@ -666,8 +665,7 @@
    "radicalstorage": "https://radicalstorage.com/luggage-storage/cork"
   },
   "da-nang": {
-   "localrent": "https://localrent.com/en/vietnam/da-nang/",
-   "radicalstorage": "https://radicalstorage.com/luggage-storage/da-nang"
+   "localrent": "https://localrent.com/en/vietnam/da-nang/"
   },
   "dakar": {},
   "dammam": {
@@ -710,7 +708,6 @@
   "easter-island": {},
   "edinburgh": {
    "kiwitaxi": "https://kiwitaxi.com/en/united-kingdom/edinburgh",
-   "welcomepickups": "https://www.welcomepickups.com/edinburgh/airport-transfer/",
    "radicalstorage": "https://radicalstorage.com/luggage-storage/edinburgh"
   },
   "el-calafate": {
@@ -831,6 +828,7 @@
    "localrent": "https://localrent.com/en/egypt/hurghada/"
   },
   "ibiza": {
+   "welcomepickups": "https://www.welcomepickups.com/ibiza/airport-transfer/",
    "localrent": "https://localrent.com/en/spain/ibiza/",
    "radicalstorage": "https://radicalstorage.com/luggage-storage/ibiza"
   },
@@ -1024,7 +1022,6 @@
    "radicalstorage": "https://radicalstorage.com/luggage-storage/medellin"
   },
   "melbourne": {
-   "welcomepickups": "https://www.welcomepickups.com/melbourne/airport-transfer/",
    "radicalstorage": "https://radicalstorage.com/luggage-storage/melbourne"
   },
   "mendoza": {
@@ -1074,7 +1071,6 @@
    "localrent": "https://localrent.com/en/oman/muscat/"
   },
   "mykonos": {
-   "welcomepickups": "https://www.welcomepickups.com/mykonos/airport-transfer/",
    "radicalstorage": "https://radicalstorage.com/luggage-storage/mykonos"
   },
   "nadi": {
@@ -1100,7 +1096,9 @@
    "localrent": "https://localrent.com/en/france/nice/",
    "radicalstorage": "https://radicalstorage.com/luggage-storage/nice"
   },
-  "nizwa": {},
+  "nizwa": {
+   "kiwitaxi": "https://kiwitaxi.com/en/oman/nizwa"
+  },
   "novi-sad": {
    "localrent": "https://localrent.com/en/serbia/novi-sad/",
    "radicalstorage": "https://radicalstorage.com/luggage-storage/novi-sad"
@@ -1109,7 +1107,6 @@
   "okinawa": {},
   "oran": {},
   "orlando": {
-   "welcomepickups": "https://www.welcomepickups.com/orlando/airport-transfer/",
    "radicalstorage": "https://radicalstorage.com/luggage-storage/orlando"
   },
   "osaka": {
@@ -1142,7 +1139,6 @@
   "paramaribo": {},
   "paris": {
    "kiwitaxi": "https://kiwitaxi.com/en/france/paris",
-   "welcomepickups": "https://www.welcomepickups.com/paris/airport-transfer/",
    "localrent": "https://localrent.com/en/france/paris/",
    "radicalstorage": "https://radicalstorage.com/luggage-storage/paris"
   },
@@ -1155,6 +1151,7 @@
    "radicalstorage": "https://radicalstorage.com/luggage-storage/penang"
   },
   "perth": {
+   "welcomepickups": "https://www.welcomepickups.com/perth/airport-transfer/",
    "radicalstorage": "https://radicalstorage.com/luggage-storage/perth"
   },
   "petra": {
@@ -1168,6 +1165,7 @@
    "localrent": "https://localrent.com/en/vietnam/phu-quoc/"
   },
   "phuket": {
+   "welcomepickups": "https://www.welcomepickups.com/phuket/airport-transfer/",
    "localrent": "https://localrent.com/en/thailand/phuket/",
    "radicalstorage": "https://radicalstorage.com/luggage-storage/phuket"
   },
@@ -1188,7 +1186,6 @@
   "port-of-spain": {},
   "port-vila": {},
   "porto": {
-   "welcomepickups": "https://www.welcomepickups.com/porto/airport-transfer/",
    "localrent": "https://localrent.com/en/portugal/porto/",
    "radicalstorage": "https://radicalstorage.com/luggage-storage/porto"
   },
@@ -1236,6 +1233,7 @@
    "radicalstorage": "https://radicalstorage.com/luggage-storage/reykjavik"
   },
   "rhodes": {
+   "welcomepickups": "https://www.welcomepickups.com/rhodes/airport-transfer/",
    "localrent": "https://localrent.com/en/greece/rhodes/",
    "radicalstorage": "https://radicalstorage.com/luggage-storage/rhodes"
   },
@@ -1250,7 +1248,6 @@
   "riyadh": {},
   "roatan": {},
   "rome": {
-   "welcomepickups": "https://www.welcomepickups.com/rome/airport-transfer/",
    "localrent": "https://localrent.com/en/italy/rome/",
    "radicalstorage": "https://radicalstorage.com/luggage-storage/rome"
   },
@@ -1330,13 +1327,10 @@
    "localrent": "https://localrent.com/en/uae/sharjah/",
    "radicalstorage": "https://radicalstorage.com/luggage-storage/sharjah"
   },
-  "sharm-el-sheikh": {
-   "kiwitaxi": "https://kiwitaxi.com/en/egypt/sharm-el-sheikh"
-  },
+  "sharm-el-sheikh": {},
   "shenzhen": {},
   "siem-reap": {},
   "singapore": {
-   "welcomepickups": "https://www.welcomepickups.com/singapore/airport-transfer/",
    "radicalstorage": "https://radicalstorage.com/luggage-storage/singapore"
   },
   "skopje": {
@@ -1354,6 +1348,7 @@
    "radicalstorage": "https://radicalstorage.com/luggage-storage/sousse"
   },
   "split": {
+   "welcomepickups": "https://www.welcomepickups.com/split/airport-transfer/",
    "localrent": "https://localrent.com/en/croatia/split/",
    "radicalstorage": "https://radicalstorage.com/luggage-storage/split"
   },
@@ -1404,6 +1399,7 @@
    "radicalstorage": "https://radicalstorage.com/luggage-storage/tirana"
   },
   "tokyo": {
+   "welcomepickups": "https://www.welcomepickups.com/tokyo/airport-transfer/",
    "radicalstorage": "https://radicalstorage.com/luggage-storage/tokyo"
   },
   "toronto": {
