@@ -20,3 +20,19 @@ for (const city of (process.env.CITIES || "Dubai, United Arab Emirates|Istanbul,
   for (const line of r?.shape ?? ["no shape (token not accepted?)"]) console.log(`PROBE   ${line}`);
   for (const room of (x?.rooms ?? []).slice(0, 6)) console.log(`PROBE   room: ${room.source} | ${room.name} | guests ${room.guests} | photo ${room.image ? "yes" : "no"} | total ${room.total}`);
 }
+
+// The allowance and how much hotels/flights used it (production): for the
+// owner's SerpApi plan decision.
+const PROD = process.env.PROD || "https://sfrtna.almajedhsn.workers.dev";
+const status = await fetch(`${PROD}/api/serp-status`, { headers }).then((r) => r.json()).catch((e) => ({ error: String(e) }));
+console.log(`PLAN serp-status ${JSON.stringify(status)}`);
+for (const days of [7, 30]) {
+  const sum = await fetch(`${PROD}/api/stats/summary?days=${days}`, { headers }).then((r) => r.json()).catch((e) => ({ error: String(e) }));
+  const flat = [];
+  const walk = (v, p) => {
+    if (v && typeof v === "object") for (const [k, x] of Object.entries(v)) walk(x, p ? `${p}.${k}` : k);
+    else if (/serp|hotel|search|visit|view|session|ext|users/i.test(p)) flat.push(`${p}=${v}`);
+  };
+  walk(sum.current ?? sum, "");
+  console.log(`PLAN summary ${days}d: ${flat.slice(0, 80).join(" | ")}`);
+}
