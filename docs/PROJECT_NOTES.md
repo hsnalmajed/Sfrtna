@@ -2031,3 +2031,21 @@ hero-photos, mobile-speed, mobile-taps already pull --rebase before push.
 Seen, not urgent: Node 20 actions deprecation warnings (checkout@v4,
 setup-node@v4 forced to Node 24 — still green); ubuntu-latest moves to
 Ubuntu 26 — watch the first runs after the switch.
+
+## Growth plan proposed to the owner (6 Nov 2026, "the goal is money")
+Facts used: site not launched/marketed; 365 cities × attractions/maps/visa/
+seasons pages ar+en (sitemap); SEO fixes of 22 Oct done, Validate fix asked;
+GA4/Search Console access for Claude still pending; social handle
+`sfrtnaapp`; EKTA insurance refused by the owner (Comoros underwriter);
+Riyadh departures empty at Aviasales; Agoda direct pending review.
+Proposed order: (1) close commission leaks (current section); (2) launch:
+traffic from SEO (high-intent Arabic pages: visa for Saudis, best time,
+sights — each with eSIM/transfer/activity/hotel exits) + social posts from
+our own data (budget-based "where can 5,000 SAR take you in December",
+school holidays); (3) Riyadh flights decision (6 Nov measurement);
+(4) «رحلتي» email reminders before the trip (eSIM, transfer, luggage,
+compensation) with consent — more commissions per trip; (5) own Arabic hotel
+list when Agoda API opens (Stay22 widget is English, mixes rentals);
+(6) travel insurance from a properly licensed insurer with an affiliate
+program (Schengen visa needs it) — owner's decision; (7) GA4 per-partner
+click events + monthly revenue page once access is granted.
