@@ -61,6 +61,10 @@ function HotelResultsContent() {
   // added to the price search, so the right one of several namesakes is found.
   const hotelArea = mode === "known" ? sp.get("hotelArea")?.trim().slice(0, 120) || "" : "";
   const areaLabel = mode === "known" ? sp.get("areaLabel")?.trim().slice(0, 120) || "" : "";
+  // Picked from our list («اختر»): the hotel's Google id and our city slug.
+  const tokenRaw = mode === "known" ? sp.get("token") || "" : "";
+  const token = /^[A-Za-z0-9_=-]{8,300}$/.test(tokenRaw) ? tokenRaw : undefined;
+  const hcity = mode === "known" ? sp.get("hcity") || undefined : undefined;
   const checkIn = sp.get("checkIn") || "";
   const checkOut = sp.get("checkOut") || "";
   const adults = Math.max(1, Number(sp.get("adults")) || 1);
@@ -310,6 +314,8 @@ function HotelResultsContent() {
               <HotelPrices
                 query={query}
                 priceQuery={hotelArea ? `${query} ${hotelArea}` : query}
+                token={token}
+                citySlug={hcity}
                 budget={budget}
                 checkIn={checkIn}
                 checkOut={checkOut}

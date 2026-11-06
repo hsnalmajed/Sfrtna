@@ -3,7 +3,8 @@
 import FavButton from "@/components/member/FavButton";
 import { nightsLabel } from "@/lib/format";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import dynamic from "next/dynamic";
 import type { HotelResult, HotelSearch } from "@/lib/providers/serpapi";
 import { hotelPartnerLinks } from "@/lib/affiliateLinks";
 import type { Dictionary } from "@/lib/dictionaries";
@@ -12,6 +13,43 @@ import Icon from "@/components/ui/Icon";
 import PartnerLink from "@/components/PartnerLink";
 import { useDictionary } from "@/lib/dict/context";
 import { TRANSPORT_AR, durationLabel, topicLabel } from "@/lib/hotelFacets";
+import { CITY_COORDS } from "@/data/cityCoords";
+
+const HotelMap = dynamic(() => import("@/components/HotelMap"), {
+  ssr: false,
+  loading: () => <div className="h-64 w-full animate-pulse rounded-xl bg-mist-200/70 sm:h-80" />,
+});
+
+/**
+ * The list's own facts for a hotel, kept for the tab when «اختر» opens its
+ * page: the page shows them at once, then the full answer (by the hotel's
+ * Google id) replaces them — and they stay if no search is left.
+ */
+const SNAP = "sfrtna:hotel:";
+export function rememberHotel(h: HotelResult) {
+  if (!h.token) return;
+  try {
+    sessionStorage.setItem(SNAP + h.token, JSON.stringify(h));
+  } catch {
+    /* private mode / full: the page just loads without the preview */
+  }
+}
+function recallHotel(token: string | undefined): HotelResult | null {
+  if (!token) return null;
+  try {
+    const raw = sessionStorage.getItem(SNAP + token);
+    const h = raw ? (JSON.parse(raw) as HotelResult) : null;
+    return h && typeof h.name === "string" && Array.isArray(h.images) && Array.isArray(h.offers) ? h : null;
+  } catch {
+    return null;
+  }
+}
+
+function kmBetween(a: { lat: number; lon: number }, b: { lat: number; lon: number }) {
+  const r = Math.PI / 180;
+  const x = Math.sin(((b.lat - a.lat) * r) / 2) ** 2 + Math.cos(a.lat * r) * Math.cos(b.lat * r) * Math.sin(((b.lon - a.lon) * r) / 2) ** 2;
+  return 2 * 6371 * Math.asin(Math.sqrt(x));
+}
 
 /**
  * One hotel in full: photos, what it offers, and its price on every site.
@@ -455,138 +493,307 @@ function PartnerSearchLinks({ hotel, c }: { hotel: HotelResult; c: Common }) {
 
 /* ───────────────────────────── one hotel ───────────────────────────── */
 
-function Gallery({ hotel }: { hotel: HotelResult }) {
+function Gallery({ hotel, t }: { hotel: HotelResult; t: T }) {
   const imgs = hotel.images;
-  if (!imgs.length) return <NoPhoto className="aspect-[16/9] w-full rounded-2xl" />;
+  // Which photo is open full screen, or null.
+  const [open, setOpen] = useState<number | null>(null);
+  const count = imgs.length;
+  const step = useCallback((d: number) => setOpen((i) => (i === null ? i : (i + d + count) % count)), [count]);
+  useEffect(() => {
+    if (open === null) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(null);
+      // Arrows follow the page: in Arabic → is "previous".
+      const rtl = document.documentElement.dir === "rtl";
+      if (e.key === "ArrowRight") step(rtl ? -1 : 1);
+      if (e.key === "ArrowLeft") step(rtl ? 1 : -1);
+    };
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = prev;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [open, step]);
+  if (!count) return <NoPhoto className="aspect-[16/9] w-full rounded-2xl" />;
   const [main, ...rest] = imgs;
+  const tile = (i: number, node: React.ReactNode, cls: string) => (
+    <button key={i} type="button" onClick={() => setOpen(i)} className={`group relative block overflow-hidden ${cls}`} aria-label={t.photoOf.replace("{n}", String(i + 1)).replace("{count}", String(count))}>
+      {node}
+    </button>
+  );
+  const more =
+    count > 1 ? (
+      <button
+        type="button"
+        onClick={() => setOpen(0)}
+        className="absolute bottom-3 end-3 inline-flex items-center gap-1.5 rounded-full bg-white/95 px-3.5 py-2 text-xs font-extrabold text-navy-950 shadow-md ring-1 ring-black/5 hover:bg-white"
+      >
+        <span aria-hidden="true">🖼️</span>
+        {t.allPhotos.replace("{count}", String(count))}
+      </button>
+    ) : null;
   return (
     <div>
       {/* Phone: one large photo and a row of three under it. */}
       <div className="sm:hidden">
-        <Photo src={main.full} alt={hotel.name} eager className="aspect-[16/10] w-full rounded-2xl" />
+        <div className="relative">
+          {tile(0, <Photo src={main.full} alt={hotel.name} eager className="aspect-[16/10] w-full rounded-2xl" />, "w-full rounded-2xl")}
+          {more}
+        </div>
         {rest.length > 0 && (
           <div className="mt-2 grid grid-cols-3 gap-2">
-            {rest.slice(0, 3).map((im, i) => (
-              <Photo key={i} src={im.thumb} alt="" className="aspect-[4/3] w-full rounded-xl" />
-            ))}
+            {rest.slice(0, 3).map((im, i) => tile(i + 1, <Photo src={im.thumb} alt="" className="aspect-[4/3] w-full rounded-xl" />, "rounded-xl"))}
           </div>
         )}
       </div>
       {/* Wider: a mosaic, the large photo beside four small ones. */}
-      <div className="hidden h-[400px] grid-cols-4 grid-rows-2 gap-2 sm:grid">
-        <Photo
-          src={main.full}
-          alt={hotel.name}
-          eager
-          className={`h-full w-full rounded-2xl ${rest.length ? "col-span-2 row-span-2" : "col-span-4 row-span-2"}`}
-        />
-        {rest.slice(0, 4).map((im, i) => (
-          <Photo
-            key={i}
-            src={im.full}
-            alt=""
-            className={`h-full w-full rounded-2xl ${rest.length < 3 ? "col-span-2" : ""} ${rest.length === 1 ? "row-span-2" : ""}`}
-          />
-        ))}
+      <div className="relative hidden h-[400px] grid-cols-4 grid-rows-2 gap-2 sm:grid">
+        {tile(
+          0,
+          <Photo src={main.full} alt={hotel.name} eager className="h-full w-full rounded-2xl transition group-hover:brightness-95" />,
+          `h-full w-full rounded-2xl ${rest.length ? "col-span-2 row-span-2" : "col-span-4 row-span-2"}`
+        )}
+        {rest.slice(0, 4).map((im, i) =>
+          tile(
+            i + 1,
+            <Photo src={im.full} alt="" className="h-full w-full rounded-2xl transition group-hover:brightness-95" />,
+            `h-full w-full rounded-2xl ${rest.length < 3 ? "col-span-2" : ""} ${rest.length === 1 ? "row-span-2" : ""}`
+          )
+        )}
+        {more}
+      </div>
+
+      {open !== null && (
+        <div role="dialog" aria-modal="true" aria-label={hotel.name} className="fixed inset-0 z-[100] flex flex-col bg-navy-950/95 backdrop-blur-sm">
+          <div className="flex items-center justify-between gap-3 px-4 py-3 text-white">
+            <p className="text-sm font-bold">
+              <bdi>{t.photoOf.replace("{n}", String(open + 1)).replace("{count}", String(count))}</bdi>
+            </p>
+            <button type="button" onClick={() => setOpen(null)} autoFocus className="grid h-11 w-11 place-items-center rounded-full bg-white/10 text-xl hover:bg-white/20" aria-label={t.closePhotos}>
+              ✕
+            </button>
+          </div>
+          <div className="relative flex min-h-0 flex-1 items-center justify-center px-2 sm:px-16">
+            {/* eslint-disable-next-line @next/next/no-img-element -- remote hotel photos, sized by the browser */}
+            <img src={imgs[open].full} alt={open === 0 ? hotel.name : ""} className="max-h-full max-w-full rounded-xl object-contain" />
+            {count > 1 && (
+              <>
+                <button type="button" onClick={() => step(-1)} className="absolute start-2 top-1/2 grid h-12 w-12 -translate-y-1/2 place-items-center rounded-full bg-white/15 text-2xl text-white hover:bg-white/25" aria-label={t.prevPhoto}>
+                  <span aria-hidden="true" className="rtl:rotate-180">‹</span>
+                </button>
+                <button type="button" onClick={() => step(1)} className="absolute end-2 top-1/2 grid h-12 w-12 -translate-y-1/2 place-items-center rounded-full bg-white/15 text-2xl text-white hover:bg-white/25" aria-label={t.nextPhoto}>
+                  <span aria-hidden="true" className="rtl:rotate-180">›</span>
+                </button>
+              </>
+            )}
+          </div>
+          {count > 1 && (
+            <div className="flex justify-center gap-2 overflow-x-auto px-4 py-3">
+              {imgs.map((im, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  onClick={() => setOpen(i)}
+                  aria-label={t.photoOf.replace("{n}", String(i + 1)).replace("{count}", String(count))}
+                  aria-current={i === open}
+                  className={`shrink-0 overflow-hidden rounded-lg ring-2 ${i === open ? "ring-sun-400" : "ring-transparent opacity-60 hover:opacity-100"}`}
+                >
+                  <Photo src={im.thumb} alt="" className="h-14 w-20" />
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function HotelDetail({
+  hotel,
+  c,
+  checkedAt,
+  centre,
+  checking = false,
+}: {
+  hotel: HotelResult;
+  c: Common;
+  checkedAt: string;
+  /** The city centre, for «N كم من وسط المدينة» and the map. */
+  centre?: { lat: number; lon: number };
+  /** Showing the list's facts while the full answer loads. */
+  checking?: boolean;
+}) {
+  const { t, locale } = c;
+  const amenities = amenityLabels(hotel.amenities, locale, 40);
+  const key = keyAmenities(hotel.amenities, locale);
+  const hasMap = hotel.lat != null && hotel.lng != null;
+  const km = hasMap && centre ? kmBetween(centre, { lat: hotel.lat!, lon: hotel.lng! }) : null;
+  const kmText = km == null ? "" : km < 10 ? km.toFixed(1) : String(Math.round(km));
+  const nearby = hotel.nearby ?? [];
+  const hasReviews = Boolean((hotel.topics ?? []).some((x) => x.positive + x.negative > 0) || (hotel.ratingsHist ?? []).some((r) => r.count > 0));
+  const nav = [
+    { id: "hotel-overview", label: t.navOverview, show: true },
+    { id: "hotel-prices", label: t.navPrices, show: true },
+    { id: "hotel-facilities", label: t.navFacilities, show: amenities.length > 0 || key.length > 0 },
+    { id: "hotel-location", label: t.navLocation, show: hasMap || nearby.length > 0 },
+    { id: "hotel-reviews", label: t.navReviews, show: hasReviews },
+  ].filter((n) => n.show);
+  const box = "scroll-mt-32 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-black/5 sm:p-6";
+  const h3 = "font-display text-lg font-extrabold text-navy-950";
+  // The framed «أبرز ما في الفندق» card: only what Google says of this hotel.
+  const highlights: { icon: string; label: string; good?: boolean }[] = [
+    ...key.map((k) => ({ icon: k.icon, label: k.label, good: k.free })),
+    ...(km != null ? [{ icon: "📍", label: t.fromCentreShort.replace("{km}", kmText) }] : []),
+    ...(hotel.locationRating ? [{ icon: "🗺️", label: `${t.locationLabel}: ${hotel.locationRating.toFixed(1)} / 5`, good: hotel.locationRating >= 4.5 }] : []),
+    ...(hotel.checkInTime ? [{ icon: "🛎️", label: `${t.checkInLabel}: ${hotel.checkInTime}` }] : []),
+    ...(hotel.checkOutTime ? [{ icon: "🧳", label: `${t.checkOutLabel}: ${hotel.checkOutTime}` }] : []),
+  ];
+  return (
+    <div>
+      {/* Jump to a part of the page, as on the big booking sites. */}
+      <nav aria-label={t.navOverview} className="sticky top-16 z-20 -mx-4 mb-4 overflow-x-auto border-b border-mist-200 bg-mist-50/95 px-4 backdrop-blur sm:mx-0 sm:rounded-xl sm:border sm:bg-white/95">
+        <ul className="flex gap-1">
+          {nav.map((n) => (
+            <li key={n.id}>
+              <a href={`#${n.id}`} className="inline-flex min-h-11 items-center whitespace-nowrap px-3 text-sm font-bold text-navy-700 hover:text-navy-950">
+                {n.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_380px] lg:items-start lg:gap-6">
+        <div id="hotel-overview" className="min-w-0 scroll-mt-32 lg:col-start-1 lg:row-start-1">
+          <Gallery hotel={hotel} t={t} />
+        </div>
+
+        <aside id="hotel-prices" className="scroll-mt-32 lg:sticky lg:top-32 lg:col-start-2 lg:row-span-2 lg:row-start-1">
+          <div className="rounded-2xl bg-white p-5 shadow-[0_10px_40px_-15px_rgb(10_30_60/0.35)] ring-1 ring-black/5 sm:p-6">
+            <BookPanel hotel={hotel} c={c} checkedAt={checkedAt} />
+            {checking && (
+              <p className="mt-3 flex items-center gap-2 text-xs font-semibold text-navy-600">
+                <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-navy-200 border-t-sun-500" aria-hidden="true" />
+                {t.checking}
+              </p>
+            )}
+            <p className="mt-3 border-t border-mist-100 pt-3 text-[11px] leading-relaxed text-navy-500">{t.roomsAtSite}</p>
+          </div>
+        </aside>
+
+        <div className="flex min-w-0 flex-col gap-5 lg:col-start-1 lg:row-start-2">
+          <section className={box}>
+            <div className="flex flex-wrap items-start justify-between gap-3">
+              <div className="min-w-0">
+                <Stars count={hotel.stars} className="text-sm" />
+                <h2 className="font-display text-h3 font-extrabold text-navy-950">
+                  <bdi>{(locale === "ar" && hotel.nameAr) || hotel.name}</bdi>
+                </h2>
+                {locale === "ar" && hotel.nameAr && (
+                  <p className="text-sm font-semibold text-navy-500" dir="ltr">
+                    {hotel.name}
+                  </p>
+                )}
+                {hotel.address && (
+                  <p className="mt-1.5 flex items-start gap-1.5 text-sm text-navy-600">
+                    <Icon name="pin" className="mt-0.5 h-4 w-4 shrink-0 text-navy-400" />
+                    <bdi>{hotel.address}</bdi>
+                  </p>
+                )}
+              </div>
+              <div className="flex items-start gap-2">
+                <Rating hotel={hotel} c={c} size="lg" />
+                <FavButton locale={c.locale} fav={{ type: "hotel", name: hotel.name, area: "", label: hotel.nameAr || undefined }} />
+              </div>
+            </div>
+
+            {highlights.length > 0 && (
+              <div className="mt-5 rounded-2xl bg-sea-50/60 p-4 ring-1 ring-sea-200">
+                <p className="mb-3 text-sm font-extrabold text-navy-950">{t.highlightsTitle}</p>
+                <ul className="grid gap-2 sm:grid-cols-2">
+                  {highlights.map((x) => (
+                    <li key={x.label} className="flex items-center gap-2.5 text-sm font-bold text-navy-900">
+                      <span aria-hidden="true" className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-white text-base ring-1 ring-sea-200">
+                        {x.icon}
+                      </span>
+                      <bdi className={x.good ? "text-sea-800" : ""}>{x.label}</bdi>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {locale === "en" && hotel.description && <p className="mt-5 text-sm leading-relaxed text-navy-700">{hotel.description}</p>}
+          </section>
+
+          {amenities.length > 0 && (
+            <section id="hotel-facilities" className={box}>
+              <h3 className={h3}>{t.allAmenitiesTitle}</h3>
+              <ul className="mt-3 grid grid-cols-1 gap-x-4 gap-y-2 sm:grid-cols-2">
+                {amenities.map((a) => (
+                  <li key={a} className="flex items-center gap-2 text-sm font-semibold text-navy-800">
+                    <Icon name="check" className="h-4 w-4 shrink-0 text-sea-600" />
+                    {a}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+
+          {(hasMap || nearby.length > 0) && (
+            <section id="hotel-location" className={box}>
+              <div className="flex flex-wrap items-baseline justify-between gap-2">
+                <h3 className={h3}>{t.mapTitle}</h3>
+                {km != null && <p className="text-sm font-bold text-navy-600">{t.fromCentreShort.replace("{km}", kmText)}</p>}
+              </div>
+              {hasMap && (
+                <div className="mt-3">
+                  <HotelMap lat={hotel.lat!} lng={hotel.lng!} centre={centre} attribution={t.mapAttribution} />
+                  <a
+                    href={`https://www.google.com/maps/search/?api=1&query=${hotel.lat},${hotel.lng}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-3 inline-flex min-h-11 items-center gap-1.5 rounded-xl bg-white px-4 text-sm font-bold text-navy-900 ring-1 ring-mist-300 hover:ring-navy-400"
+                  >
+                    <Icon name="pin" className="h-4 w-4 text-navy-500" />
+                    {t.openInMaps}
+                  </a>
+                </div>
+              )}
+              {nearby.length > 0 && <NearbyList nearby={nearby} locale={locale} />}
+            </section>
+          )}
+
+          <HotelInsights hotel={hotel} locale={locale} />
+        </div>
       </div>
     </div>
   );
 }
 
-function HotelDetail({ hotel, c, checkedAt }: { hotel: HotelResult; c: Common; checkedAt: string }) {
-  const { t, locale } = c;
-  const amenities = amenityLabels(hotel.amenities, locale, 40);
-  const key = keyAmenities(hotel.amenities, locale);
+function NearbyList({ nearby, locale }: { nearby: NonNullable<HotelResult["nearby"]>; locale: "ar" | "en" }) {
+  const hp = useDictionary().hotelPrefs;
   return (
-    // Phone order: photos, then the prices, then the details — the price is
-    // what was asked for. Wide screens: photos and details on one side, the
-    // prices beside them, following the scroll.
-    <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_380px] lg:items-start lg:gap-6">
-      <div className="min-w-0 lg:col-start-1 lg:row-start-1">
-        <Gallery hotel={hotel} />
-      </div>
-
-      <aside className="lg:sticky lg:top-24 lg:col-start-2 lg:row-span-2 lg:row-start-1">
-        <div className="rounded-2xl bg-white p-5 shadow-[0_10px_40px_-15px_rgb(10_30_60/0.35)] ring-1 ring-black/5 sm:p-6">
-          <BookPanel hotel={hotel} c={c} checkedAt={checkedAt} />
-        </div>
-      </aside>
-
-      <div className="min-w-0 lg:col-start-1 lg:row-start-2">
-        <section className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-black/5 sm:p-6">
-          <div className="flex flex-wrap items-start justify-between gap-3">
-            <div className="min-w-0">
-              <Stars count={hotel.stars} className="text-sm" />
-              <h2 className="font-display text-h3 font-extrabold text-navy-950">
-                <bdi>{(locale === "ar" && hotel.nameAr) || hotel.name}</bdi>
-              </h2>
-              {locale === "ar" && hotel.nameAr && (
-                <p className="text-sm font-semibold text-navy-500" dir="ltr">
-                  {hotel.name}
-                </p>
-              )}
-              {hotel.address && (
-                <p className="mt-1.5 flex items-start gap-1.5 text-sm text-navy-600">
-                  <Icon name="pin" className="mt-0.5 h-4 w-4 shrink-0 text-navy-400" />
-                  <bdi>{hotel.address}</bdi>
-                </p>
-              )}
-            </div>
-            <div className="flex items-start gap-2">
-              <Rating hotel={hotel} c={c} size="lg" />
-              <FavButton locale={c.locale} fav={{ type: "hotel", name: hotel.name, area: "", label: hotel.nameAr || undefined }} />
-            </div>
-          </div>
-
-          {(hotel.locationRating || hotel.checkInTime || hotel.checkOutTime) && (
-            <dl className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3">
-              {hotel.locationRating ? (
-                <Fact label={t.locationLabel} value={`${hotel.locationRating.toFixed(1)} / 5`} />
-              ) : null}
-              {hotel.checkInTime && <Fact label={t.checkInLabel} value={hotel.checkInTime} />}
-              {hotel.checkOutTime && <Fact label={t.checkOutLabel} value={hotel.checkOutTime} />}
-            </dl>
-          )}
-
-          {key.length > 0 && (
-            <div className="mt-5">
-              <p className="mb-2.5 text-sm font-bold text-navy-900">{t.keyAmenitiesTitle}</p>
-              <ul className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-                {key.map((a) => (
-                  <li
-                    key={a.label}
-                    className={`flex items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-bold ring-1 ${
-                      a.free ? "bg-emerald-50 text-emerald-900 ring-emerald-200" : "bg-mist-50 text-navy-800 ring-mist-200"
-                    }`}
-                  >
-                    <span aria-hidden="true">{a.icon}</span>
-                    {a.label}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          {amenities.length > 0 && (
-            <div className="mt-5">
-              <p className="mb-2.5 text-sm font-bold text-navy-900">{t.allAmenitiesTitle}</p>
-              <ul className="flex flex-wrap gap-2">
-                {amenities.map((a) => (
-                  <li key={a} className="inline-flex items-center gap-1.5 rounded-full bg-mist-100 px-3 py-1.5 text-xs font-bold text-navy-800">
-                    <Icon name="check" className="h-3.5 w-3.5 text-sea-600" />
-                    {a}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          {locale === "en" && hotel.description && (
-            <p className="mt-5 text-sm leading-relaxed text-navy-700">{hotel.description}</p>
-          )}
-        </section>
-        <HotelInsights hotel={hotel} locale={locale} />
-      </div>
+    <div className="mt-5">
+      <p className="text-sm font-extrabold text-navy-950">{hp.nearbyTitle}</p>
+      <ul className="mt-2 divide-y divide-mist-200">
+        {nearby.map((n) => (
+          <li key={n.name} className="flex items-center justify-between gap-3 py-2.5 text-sm">
+            <span className="flex min-w-0 items-center gap-2 font-bold text-navy-900">
+              <Icon name="pin" className="h-4 w-4 shrink-0 text-navy-400" />
+              <bdi className="truncate">{n.name}</bdi>
+            </span>
+            <span className="shrink-0 text-xs font-semibold text-navy-600">
+              {n.how
+                .map((w) => `${durationLabel(w.duration, locale)} ${locale === "ar" ? TRANSPORT_AR[w.type.toLowerCase()] ?? "" : w.type.toLowerCase()}`.trim())
+                .join(" · ")}
+            </span>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
@@ -601,16 +808,15 @@ function HotelInsights({ hotel, locale }: { hotel: HotelResult; locale: "ar" | "
   const topics = (hotel.topics ?? []).filter((x) => x.positive + x.negative > 0);
   const hist = [...(hotel.ratingsHist ?? [])].sort((a, b) => b.stars - a.stars);
   const histTotal = hist.reduce((n, r) => n + r.count, 0);
-  const nearby = hotel.nearby ?? [];
   const excluded = amenityLabels(hotel.excluded ?? [], locale, 12);
   const essential = locale === "en" ? hotel.essential ?? [] : [];
-  if (!topics.length && !histTotal && !nearby.length && !excluded.length && !essential.length && !hotel.eco) return null;
-  const box = "mt-5 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-black/5 sm:p-6";
+  if (!topics.length && !histTotal && !excluded.length && !essential.length && !hotel.eco) return null;
+  const box = "rounded-2xl bg-white p-5 shadow-sm ring-1 ring-black/5 sm:p-6";
   const h3 = "font-display text-lg font-extrabold text-navy-950";
   return (
     <>
       {(topics.length > 0 || histTotal > 0) && (
-        <section className={box}>
+        <section id="hotel-reviews" className={`${box} scroll-mt-32`}>
           <h3 className={h3}>{hp.topicsTitle}</h3>
           {hotel.reviews ? <p className="mt-1 text-xs font-semibold text-navy-500">{hp.topicsSub.replace("{n}", hotel.reviews.toLocaleString(locale === "ar" ? "ar-SA-u-nu-latn" : "en-US"))}</p> : null}
           {topics.length > 0 && (
@@ -654,26 +860,6 @@ function HotelInsights({ hotel, locale }: { hotel: HotelResult; locale: "ar" | "
           )}
         </section>
       )}
-      {nearby.length > 0 && (
-        <section className={box}>
-          <h3 className={h3}>{hp.nearbyTitle}</h3>
-          <ul className="mt-3 divide-y divide-mist-200">
-            {nearby.map((n) => (
-              <li key={n.name} className="flex items-center justify-between gap-3 py-2.5 text-sm">
-                <span className="flex min-w-0 items-center gap-2 font-bold text-navy-900">
-                  <Icon name="pin" className="h-4 w-4 shrink-0 text-navy-400" />
-                  <bdi className="truncate">{n.name}</bdi>
-                </span>
-                <span className="shrink-0 text-xs font-semibold text-navy-600">
-                  {n.how
-                    .map((w) => `${durationLabel(w.duration, locale)} ${locale === "ar" ? TRANSPORT_AR[w.type.toLowerCase()] ?? "" : w.type.toLowerCase()}`.trim())
-                    .join(" · ")}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
       {(excluded.length > 0 || essential.length > 0 || hotel.eco) && (
         <section className={box}>
           {hotel.eco && <p className="mb-3 inline-flex rounded-full bg-sea-50 px-3 py-1.5 text-xs font-extrabold text-sea-800 ring-1 ring-sea-200">{hp.ecoBadge}</p>}
@@ -708,17 +894,6 @@ function HotelInsights({ hotel, locale }: { hotel: HotelResult; locale: "ar" | "
   );
 }
 
-function Fact({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="rounded-xl bg-mist-50 px-3.5 py-2.5 ring-1 ring-mist-200">
-      <dt className="text-[11px] font-bold text-navy-500">{label}</dt>
-      <dd className="mt-0.5 text-sm font-extrabold text-navy-900">
-        <bdi>{value}</bdi>
-      </dd>
-    </div>
-  );
-}
-
 function DetailSkeleton({ t }: { t: T }) {
   return (
     <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_380px]">
@@ -748,15 +923,24 @@ export default function HotelPrices(
     priceQuery?: string;
     /** Shown when nothing could be checked at all: the partner buttons. */
     fallback: React.ReactNode;
+    /** Google's id for the hotel, when it was picked from our list («اختر»). */
+    token?: string;
+    /** Our slug for the hotel's city: the centre for the distance and the map. */
+    citySlug?: string;
   }
 ) {
-  const { query, priceQuery, fallback, ...c } = props;
+  const { query, priceQuery, fallback, token, citySlug, ...c } = props;
   const url = useMemo(
-    () => apiUrl(c, { q: (priceQuery || query).slice(0, 120), one: "1" }),
+    // By its id: the same search (and cache) as the list's «قارن الأسعار».
+    () => apiUrl(c, token ? { q: (priceQuery || query).slice(0, 120), token } : { q: (priceQuery || query).slice(0, 120), one: "1" }),
     // c is rebuilt each render; its fields are what matter.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [query, priceQuery, c.checkIn, c.checkOut, c.adults, c.childrenAges]
+    [query, priceQuery, token, c.checkIn, c.checkOut, c.adults, c.childrenAges]
   );
+  const centre = citySlug ? CITY_COORDS[citySlug] : undefined;
+  // The list's facts for this hotel (same tab), shown while the answer loads.
+  // (This page renders in the browser only: it reads the query string.)
+  const snap = useMemo(() => (typeof window === "undefined" ? null : recallHotel(token)), [token]);
 
   const [state, setState] = useState<{ url: string; result: HotelSearch | null } | null>(null);
   useEffect(() => {
@@ -769,10 +953,15 @@ export default function HotelPrices(
     };
   }, [url]);
 
-  if (!state || state.url !== url) return <DetailSkeleton t={c.t} />;
+  if (!state || state.url !== url) {
+    return snap ? <HotelDetail hotel={snap} c={c} checkedAt={new Date().toISOString()} centre={centre} checking /> : <DetailSkeleton t={c.t} />;
+  }
 
   const result = state.result;
-  const hotel = result?.hotels.find((h) => h.name);
+  const found = result?.hotels.find((h) => h.name);
+  // No search left: the list's own facts and offers (checked minutes ago).
+  if (!found && snap) return <HotelDetail hotel={snap} c={c} checkedAt={new Date().toISOString()} centre={centre} />;
+  const hotel = found && snap ? { ...snap, ...found, lat: found.lat ?? snap.lat, lng: found.lng ?? snap.lng, nameAr: found.nameAr || snap.nameAr, images: found.images.length ? found.images : snap.images } : found;
   if (!result || !hotel) {
     return (
       <div className="rounded-2xl bg-white p-6 text-center shadow-sm ring-1 ring-black/5 sm:p-8">
@@ -802,5 +991,5 @@ export default function HotelPrices(
   }
   // A name Google read as several hotels: the first is the best match for
   // a name picked from its own suggestions.
-  return <HotelDetail hotel={hotel} c={c} checkedAt={result.checkedAt} />;
+  return <HotelDetail hotel={hotel} c={c} checkedAt={result.checkedAt} centre={centre} />;
 }

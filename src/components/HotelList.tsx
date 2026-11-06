@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
+import { usePathname, useSearchParams } from "next/navigation";
 import type { HotelResult, HotelSearch } from "@/lib/providers/serpapi";
 import { amenityLabels } from "@/lib/hotelAmenities";
 import { CITY_COORDS } from "@/data/cityCoords";
@@ -23,7 +24,7 @@ import {
   type Facets,
   type Facility,
 } from "@/lib/hotelFacets";
-import { PriceRows, Photo, Rating, Shimmer, Stars, money, forRooms, type Common } from "@/components/HotelPrices";
+import { PriceRows, Photo, Rating, Shimmer, Stars, money, forRooms, rememberHotel, type Common } from "@/components/HotelPrices";
 import { AMENITY_CODE, BREAKFAST_CODE, NO_HOTEL_PREFS, PLACE_TYPE_CODE, type HotelPrefs } from "@/lib/hotelPrefs";
 import { useDictionary } from "@/lib/dict/context";
 import { track } from "@/lib/analytics";
@@ -73,6 +74,26 @@ export default function HotelList({
   c: Common;
   onUnavailable: () => void;
 }) {
+  // «اختر»: the hotel's own page, same dates and party, with the way back
+  // to this list (and the list's facts, so it opens at once).
+  const sp = useSearchParams();
+  const pathname = usePathname();
+  const pageHref = useCallback(
+    (h: HotelResult) => {
+      const p = new URLSearchParams(sp.toString());
+      for (const k of ["city", "label", "minStars", "breakfast", "page"]) p.delete(k);
+      p.set("hmode", "known");
+      p.set("hotel", h.name);
+      if (c.locale === "ar" && h.nameAr) p.set("label", h.nameAr);
+      if (h.token) p.set("token", h.token);
+      p.set("hotelArea", cityQuery);
+      p.set("areaLabel", cityName);
+      if (citySlug) p.set("hcity", citySlug);
+      p.set("back", `${pathname}?${sp.toString()}`);
+      return `${pathname}?${p.toString()}`;
+    },
+    [sp, pathname, cityQuery, cityName, citySlug, c.locale]
+  );
   const { t, locale } = c;
   const hp = useDictionary().hotelPrefs;
   type Sort = "best" | "cheapest" | "expensive" | "rating" | "stars" | "reviews" | "near";
@@ -406,6 +427,7 @@ export default function HotelList({
           perNight={perNight}
           cityQuery={cityQuery}
           locale={locale}
+          href={pageHref(h)}
         />
       ))}
       {nextToken && !extra.ended && (
@@ -433,7 +455,10 @@ function HotelCard({
   locale,
   perNight = false,
   fromPlace = false,
+  href,
 }: {
+  /** The hotel's own page («اختر»). */
+  href: string;
   perNight?: boolean;
   /** The distance is from a place the traveller chose, not the centre. */
   fromPlace?: boolean;
@@ -455,7 +480,9 @@ function HotelCard({
     <article className="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-black/5">
       <div className="grid sm:grid-cols-[220px_minmax(0,1fr)]">
         {img ? (
-          <Photo src={img.thumb} alt={hotel.name} className="aspect-[16/9] w-full sm:aspect-auto sm:h-full" />
+          <a href={href} onClick={() => rememberHotel(hotel)} tabIndex={-1} aria-hidden="true" className="block">
+            <Photo src={img.thumb} alt={hotel.name} className="aspect-[16/9] w-full sm:aspect-auto sm:h-full" />
+          </a>
         ) : (
           <div className="hidden bg-gradient-to-br from-navy-800 to-navy-950 sm:block" />
         )}
@@ -464,7 +491,9 @@ function HotelCard({
             <div className="min-w-0">
               <Stars count={hotel.stars} className="text-xs" />
               <h3 className="font-display text-base font-extrabold leading-snug text-navy-950">
-                <bdi>{(locale === "ar" && hotel.nameAr) || hotel.name}</bdi>
+                <a href={href} onClick={() => rememberHotel(hotel)} className="hover:text-sea-800 hover:underline">
+                  <bdi>{(locale === "ar" && hotel.nameAr) || hotel.name}</bdi>
+                </a>
               </h3>
               {locale === "ar" && hotel.nameAr && (
                 <p className="text-xs font-semibold text-navy-500" dir="ltr">
@@ -529,15 +558,29 @@ function HotelCard({
             ) : (
               <span />
             )}
-            <button
-              type="button"
-              onClick={() => setOpen((v) => !v)}
-              aria-expanded={open}
-              className="inline-flex items-center gap-1.5 rounded-xl bg-sun-400 px-4 py-2.5 text-sm font-extrabold text-navy-950 shadow-[var(--shadow-sun)] transition hover:bg-sun-300"
-            >
-              {t.pricesEverySite}
-              <span aria-hidden="true">{open ? "▴" : "▾"}</span>
-            </button>
+            <div className="flex flex-wrap items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setOpen((v) => !v)}
+                aria-expanded={open}
+                className="inline-flex min-h-11 items-center gap-1.5 rounded-xl bg-white px-3.5 text-sm font-bold text-navy-900 ring-1 ring-mist-300 transition hover:ring-navy-400"
+              >
+                {t.pricesEverySite}
+                <span aria-hidden="true">{open ? "▴" : "▾"}</span>
+              </button>
+              <a
+                href={href}
+                onClick={() => {
+                  rememberHotel(hotel);
+                  track("hotel_select", { hotel: hotel.name });
+                }}
+                title={t.chooseHint}
+                className="inline-flex min-h-11 items-center gap-1.5 rounded-xl bg-sun-400 px-5 text-sm font-extrabold text-navy-950 shadow-[var(--shadow-sun)] transition hover:bg-sun-300"
+              >
+                {t.choose}
+                <span aria-hidden="true">{locale === "ar" ? "←" : "→"}</span>
+              </a>
+            </div>
           </div>
         </div>
       </div>
