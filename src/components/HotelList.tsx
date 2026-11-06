@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import type { HotelResult, HotelSearch } from "@/lib/providers/serpapi";
 import { amenityLabels } from "@/lib/hotelAmenities";
 import { CITY_COORDS } from "@/data/cityCoords";
 import Icon from "@/components/ui/Icon";
 import FilterPill from "@/components/ui/FilterPill";
 import FilterSheet, { type SheetGroup } from "@/components/ui/FilterSheet";
+import FilterSidebar from "@/components/ui/FilterSidebar";
 import {
   FACILITIES,
   NEAR_BANDS,
@@ -281,13 +282,26 @@ export default function HotelList({
       drop: () => g.onChange(g.value.filter((x) => x !== v)),
     }))
   );
+  // Phone and tablet: one button and a sheet. Wide screen (lg): the same groups
+  // as a column beside the list, on the reading-start side (right in Arabic), as
+  // Booking lays it out — the button is hidden there so the two never double.
   const filterBar = (
-    <FilterSheet
-      label={fx.button}
-      groups={groups}
-      results={fx.showResults.replace("{n}", String(hotels.length))}
-      onClear={() => setFacets(NO_FACETS)}
-    />
+    <div className="lg:hidden">
+      <FilterSheet
+        label={fx.button}
+        groups={groups}
+        results={fx.showResults.replace("{n}", String(hotels.length))}
+        onClear={() => setFacets(NO_FACETS)}
+      />
+    </div>
+  );
+  const layout = (main: ReactNode) => (
+    <div className="lg:grid lg:grid-cols-[17rem_minmax(0,1fr)] lg:items-start lg:gap-6">
+      <aside className="hidden lg:sticky lg:top-4 lg:block">
+        <FilterSidebar label={fx.button} groups={groups} onClear={() => setFacets(NO_FACETS)} />
+      </aside>
+      <div className="min-w-0">{main}</div>
+    </div>
   );
   const chips =
     chosen.length > 0 ? (
@@ -308,7 +322,7 @@ export default function HotelList({
       </ul>
     ) : null;
   if (!hotels.length) {
-    return (
+    return layout(
       <div className="space-y-3">
         <div className="flex items-center gap-2">{filterBar}</div>
         {chips}
@@ -347,7 +361,7 @@ export default function HotelList({
     ["reviews", hp.sortReviews],
     ...(centre ? ([["near", hp.sortNear]] as [Sort, string][]) : []),
   ];
-  return (
+  return layout(
     <div className="space-y-3">
       {/* One control, like Booking's "Sort by" (owner, 27 Oct): the chosen order on the pill, every order in its sheet. */}
       <div className="flex flex-wrap items-center gap-2">
