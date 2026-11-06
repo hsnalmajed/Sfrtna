@@ -1978,3 +1978,25 @@ Open decision for the owner: raise the Google-fares plan for routes from
 Riyadh (cost/benefit not yet written up), or wait for the partner's data.
 Remove `{ external: true }` from the «suggest a route» check in
 `scripts/e2e.mjs` once RUH routes return.
+
+**6 Nov 2026 — catch-up for workflow commits + hotels push failure.**
+Found: commits pushed by workflows with GITHUB_TOKEN never start a `push`
+run (GitHub rule), so since the gate closed (4 Nov) the guide commits
+649edc5 (4 Nov) and ba903f0 (5 Nov) reached production only with the next
+human push (9629fe1, 6 Nov). Fix: `release.yml` also runs hourly
+(`41 * * * *`); the guard step reads the newest finished gate run that
+really ran (success or failure, not this run) and releases main only if its
+commit differs → each commit goes through the gate once; a red commit mails
+once, not hourly; if the API read fails it releases anyway (safe: gate
+tests first). Production steps also run on `schedule`. `permissions:
+contents read, actions read` added.
+Hotels monthly run 42016010802 (5 Nov): collect + build OK (5 h), push of
+one 750-file commit rejected by GitHub («remote rejected … fatal error in
+commit_refs_rules»; no rulesets on the repo) → result lost. `hotels.yml`:
+upload artifact `hotels-result` (14 days) before Commit; Commit retries the
+push 3× (60/120/180 s), then splits into ≤200-file commits pushed one by
+one (`git diff --cached --no-renames --name-only` — with renames on, a
+deleted file paired with an identical new one was dropped; `pull --rebase
+--autostash` because the rest stays uncommitted). Tested on a local bare
+repo (450 new, 5 changed, 10 deleted → 470 files, nothing left over).
+New dispatch input `from_run`: restore that run's artifact and only commit.

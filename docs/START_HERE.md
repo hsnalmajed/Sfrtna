@@ -90,86 +90,60 @@ City guide / Viator / Search Console / Status email / Feedback / Dashboard /
 «رحلتي» / Google Play account / Workers Paid / Hotels like Booking /
 iPhone app.
 
-## ▶ Hand-off (3 Nov 2026, evening) — current state
+## ▶ Hand-off (6 Nov 2026, 04:30 KSA) — current state
 
-**▶ CURRENT SECTION (owner, 3 Nov 15:13): no error may reach visitors —
-prevent, don't just detect.** Details: PROJECT_NOTES «Release gate».
-1. «next-step tabs» flake: tests now name the cause on failure and the tabs
-   have scroll margins (pushed 3 Nov). **Next step:** after the next Site
-   check, if it fails again read the cause in the annotation and fix the
-   page (banner over the tab) or the test; no failure in ~10 runs = closed.
-2. **Release gate — route B (second Worker `sfrtna-staging`): BUILT, runs on
-   staging since 3 Nov 16:50; production not gated yet.** `.github/workflows/release.yml` (build once → deploy to
-   staging → smoke + e2e on it → same build to production if green; skips
-   itself, green, until the secrets exist), `scripts/make-staging-config.mjs`
-   (staging config from `wrangler.jsonc`, own rate-limit ids). Details +
-   secret names: PROJECT_NOTES «Release gate» → Step 2 built.
-   **Done 3 Nov:** (a) GitHub secrets `CLOUDFLARE_API_TOKEN` +
-   `CLOUDFLARE_ACCOUNT_ID` set; staging Worker exists; the workflow copies
-   `SMOKE_TOKEN` to it itself. Run 41647903785: smoke on staging fails ONLY
-   the 3 partner-link checks (Klook/Tiqets/Airalo) = staging lacks
-   `TRAVELPAYOUTS_TOKEN` (`/api/go/tp`); e2e not reached yet.
-   **Next steps, owner ONE at a time:** (b) add `TRAVELPAYOUTS_TOKEN` as a
-   *Secret* on `sfrtna-staging` in the Cloudflare dashboard (value from the
-   Travelpayouts dashboard, never in chat), then re-dispatch Release with
-   production unticked: `gh api -X POST repos/hsnalmajed/sfrtna/actions/workflows/release.yml/dispatches -f ref=main -F 'inputs[production]=false'`;
-   add other staging secrets only if smoke/e2e then name them (the 14 names
-   in PROJECT_NOTES are the full candidate list); (c) DONE 3 Nov 19:30 — run 41673807379 green
-   on staging (`TRAVELPAYOUTS_TOKEN` set by the owner was the only secret
-   needed). Gate does NOT cover: the live flight widget (returns no flights on
-   the workers.dev host → warning «check by hand on sfrtna.com») and RUH
-   «suggest a route» (known external);
-   (d) DONE 4 Nov: Cloudflare «Build variables and secrets» is empty, so no
-   override of `NEXT_PUBLIC_SITE_URL` / `NEXT_PUBLIC_TRAVELPAYOUTS_MARKER`
-   (build cmd there: `npx opennextjs-cloudflare build`, deploy `npx wrangler deploy`);
-   (d2) DONE 4 Nov: run 41719665474 (production ticked) green end to end —
-   staging checks → production deployed → quick check of production green;
-   (e) DONE 4 Nov 00:28: owner switched «Disable builds» ON for the Cloudflare
-   Git build of `sfrtna` (repo shown there: old name `hsnalmajed/itravel`;
-   NOT disconnected — undo = switch it off). Release is now the only way to
-   production; (f) DONE: `push` trigger removed from `smoke.yml` (schedule
-   every 2 h + manual stay). **GATE CLOSED 4 Nov:** first push run 41722144217
-   (commit 483da18) green end to end; only GitHub Actions built that commit
-   (no Cloudflare build). If a gate run ever fails, production stays on the
-   last good version and the owner gets the GitHub mail; read the annotations.
-   Still open in this section: item 1 («next-step tabs» flake — watch the
-   next scheduled Site checks) and the owner's decision on the Google-fares
-   plan (SerpApi allowance resets 6 Nov → then measure, propose the plan).
-3. Riyadh «suggest a route» is now «known external» in `e2e.mjs`
-   (warning in the mail, does not block); remove the flag when RUH fares return.
-Recommended model: Sonnet 5.5 for the owner steps (a)–(f); Opus 5.5 only if
-the first staging run shows a real failure to debug.
+**Release gate: CLOSED (4 Nov) + catch-up (6 Nov).** `release.yml` is the
+only way to production (Cloudflare Git build disabled). Pushes made by
+workflows with GITHUB_TOKEN (guide, hotels, photos, reports…) never start a
+`push` run, so guide data of 4–5 Nov sat outside production → release.yml
+now also runs hourly (`41 * * * *`) and releases main only if that commit was
+never through the gate (green or red), else does nothing. Details:
+PROJECT_NOTES «Release gate» → 6 Nov.
+**Next step:** after the next data commit by a workflow, confirm a
+`schedule` Release run deployed it (notice «Catch-up» in the run).
 
-**iPhone app submitted to App Review** (3 Nov 14:45, version 1.0, build
-27, status «Waiting for Review», up to 48 h). Listing, 8+8 captioned
-screenshots, App Privacy, content rights and review contact are done
-(PROJECT_NOTES «iPhone app» → 3 Nov entries). Store texts:
-`docs/app-store/listing.json`; upload: `ios-store.yml` (input `only`).
-**Next step:** when Apple's email arrives — approved: point the site's
-«حمّل التطبيق» banner / AppStoreButtons at the App Store link, then add
-the native rating prompt (SKStoreReviewController, once after a good
-moment, e.g. 3rd search); rejected: read the reason and fix.
-Offered to the owner (his decision): Apple Search Ads.
+**Hotels data (6 Nov):** monthly run of 5 Nov collected 5 h then GitHub
+rejected its 750-file push («fatal error in commit_refs_rules») → data lost.
+`hotels.yml` now: saves the result as artifact `hotels-result` (14 days)
+BEFORE pushing; push retried 3×, then split into ≤200-file commits
+(`--no-renames`, `--autostash`; tested on a local repo). A failed push is
+finished without re-collecting: Run workflow → `from_run` = that run's ID.
+Full refresh dispatched 6 Nov ~04:30 KSA. **Next step:** read that run
+(≈5 h): green → hotel commit(s) on main, then the hourly catch-up deploys
+them; red at Commit → dispatch again with `from_run`.
 
-Riyadh fares still missing at the flight partner (PROJECT_NOTES «Route
-suggestions — Riyadh missing at the partner»; probe 3 Nov 08:17: homeSize
-4, routes 0). **Travelpayouts replied 3 Nov 17:20 (ticket #254780, closed):
-limited flight data is due to the regional situation; data expected back
-as conditions improve, NO date given → not a bug on our side, no fix to wait
-for.** «suggest a route» (RUH) is only a warning now (known external).
-**Owner's business decision pending: the Google-fares plan for Riyadh
-routes, or wait.** When data lands: route-probe (`after`),
-then Site check. The store's flight screenshot uses Jeddah for this reason
-(retake from Riyadh later: ios.yml dispatch input `shots`).
+«next-step tabs» flake: 7 green Site checks in a row since the fix (4 Nov);
+~10 green = close it.
 
-Stay22: payout address fixed and all steps Done 3 Nov; waiting for
-Madeleine's clearance («Missing payout method» should disappear).
-Cloudflare Observability pricing (1 Dec): usage ≈1 % of the allowance,
-nothing to do.
+**iPhone app:** «Waiting for Review» since 3 Nov 14:45 (still waiting 5 Nov
+19:09). Approved → point «حمّل التطبيق» / AppStoreButtons at the App Store
+link, then the native rating prompt; rejected → read the reason, fix. Still
+waiting ~6 Nov evening → offer the owner an expedited review request.
 
-Waiting on the owner: Apple review email; Travelpayouts reply / Google-fares
-plan; Google Play identity check (owner sent his ID, waiting — may take days); Stay22 clearance; Android APK on a real
-phone.
+**Google Play:** identity REJECTED 4 Nov 15:48. Found 2 payments profiles:
+Türkiye 8920-… (address «Türkiye» only) — owner closed it 4 Nov; Saudi
+7453-2385-6824 (Individual, «ALMAJED, HASSAN ALI A», Riyadh 11465) is the
+one linked to the developer account; the name is exactly as on his Saudi ID
+(keep it, do NOT write the full «Hassan Ali Ahmad Almajed»). Support ticket
+sent 5 Nov 00:09 (Play developer account and verification → Developer
+verification → «I can't verify my identity document»): asks for the reason
++ re-open. **Do not re-upload the ID until Google replies** (limited tries).
+If the banner shows View details → Appeal, use it. Trader status: declare
+by 1 Feb 2027 (owner's decision; trader = phone + address shown publicly;
+non-trader allowed if not distributed in EEA/UK). Store texts ready:
+`docs/play-store/listing-draft.md` (Play has no keyword field).
 
-**Recommended model for the next chat: Sonnet 5.5** (owner steps for the
-gate, Apple review email); Opus 5.5 if the first staging run needs debugging.
+**Riyadh flights:** Travelpayouts 4 Nov (Viet): Aviasales decided not to
+show flights to Riyadh; Data API returns none either. Owner decided 4 Nov:
+wait until 6 Nov → then measure the SerpApi allowance (resets 6 Nov) and
+propose the Google-fares plan with numbers (his decision).
+
+Stay22: CLOSED 4 Nov — account cleared, Payments page shows only «Minimum
+payout threshold $500 not met» (wire $500; PayPal/ACH $100).
+
+Waiting on the owner: Apple review; Google Play ticket reply; Google-fares
+decision after the 6 Nov measurement; Android APK on a real phone.
+
+**Recommended model for the next chat: Opus 5.5** (SerpApi measurement +
+Google-fares plan, check the hotels run and the catch-up); Sonnet 5.5 for
+store-console steps only.

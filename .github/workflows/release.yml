@@ -24,6 +24,13 @@ name: Release
 on:
   push:
     branches: [main]
+  # Catch-up (6 Nov 2026): pushes made by other workflows with GITHUB_TOKEN
+  # (guide, hotels, photos, reports…) never start a `push` run — GitHub's
+  # rule — so their data stayed out of production (guide 4 + 5 Nov). Every
+  # hour this releases main if that commit was never through the gate; if
+  # it was (green or red), it does nothing, so a red commit mails once only.
+  schedule:
+    - cron: "41 * * * *"
   workflow_dispatch:
     inputs:
       production:
@@ -36,6 +43,11 @@ on:
 concurrency:
   group: release
   cancel-in-progress: false
+
+# actions: read lets the hourly catch-up see which commit the gate last tested.
+permissions:
+  contents: read
+  actions: read
 
 env:
   STAGING_URL: https://sfrtna-staging.almajedhsn.workers.dev
@@ -60,13 +72,32 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           SMOKE_TOKEN: ${{ secrets.SMOKE_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           if [ -z "$CLOUDFLARE_API_TOKEN" ] || [ -z "$CLOUDFLARE_ACCOUNT_ID" ] || [ -z "$SMOKE_TOKEN" ]; then
             echo "ready=false" >> "$GITHUB_OUTPUT"
             echo "::notice title=Release gate::Cloudflare secrets are not all set — gate skipped (Cloudflare's Git build still deploys)."
-          else
-            echo "ready=true" >> "$GITHUB_OUTPUT"
+            exit 0
           fi
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            # The newest finished gate run (not this one) that actually ran
+            # the gate: success or failure. Same commit → nothing to do.
+            last=$(gh api "repos/${{ github.repository }}/actions/workflows/release.yml/runs?status=completed&per_page=20" \
+              --jq "[.workflow_runs[] | select(.id != ${{ github.run_id }}) | select(.conclusion == \"success\" or .conclusion == \"failure\")][0].head_sha")
+            if [ -z "$last" ]; then
+              # Releasing again is safe (the gate still tests first); a red
+              # run here would mark this commit as "tested" and block it.
+              echo "::warning title=Release gate::Could not read the last gate run — releasing to be safe."
+              last="unknown"
+            fi
+            if [ "$last" = "$GITHUB_SHA" ]; then
+              echo "ready=false" >> "$GITHUB_OUTPUT"
+              echo "Nothing new on main since the last gate run ($last)."
+              exit 0
+            fi
+            echo "::notice title=Release gate::Catch-up: main ($GITHUB_SHA) was never through the gate (last: $last)."
+          fi
+          echo "ready=true" >> "$GITHUB_OUTPUT"
 
       - uses: actions/setup-node@v4
         if: steps.guard.outputs.ready == 'true'
@@ -137,14 +168,14 @@ jobs:
         run: node scripts/e2e.mjs "$STAGING_URL"
 
       - name: Deploy the same build to production
-        if: steps.guard.outputs.ready == 'true' && (github.event_name == 'push' || inputs.production)
+        if: steps.guard.outputs.ready == 'true' && (github.event_name == 'push' || github.event_name == 'schedule' || inputs.production)
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: npx wrangler deploy 2>&1 | tail -n 30
 
       - name: Quick check of production
-        if: steps.guard.outputs.ready == 'true' && (github.event_name == 'push' || inputs.production)
+        if: steps.guard.outputs.ready == 'true' && (github.event_name == 'push' || github.event_name == 'schedule' || inputs.production)
         env:
           SMOKE_TOKEN: ${{ secrets.SMOKE_TOKEN }}
         run: |
