@@ -115,6 +115,21 @@ the first runs on the new code (places 13 Nov, restaurants 14 Nov, hotels
 **Growth consultation (6 Nov):** owner's doc «استشارة نمو سفرتنا»
 https://claude.ai/artifact/PdyRGXJuakaAhJY3a6x1oa — 7 items in order;
 item 1 = the section below. Tick its checklist as items close.
+**Item 5 APPROVED by the owner 6 Nov 20:34 («طبّقها… جميلة، هادفة، أقصى
+ربح، العميل أفضل مسوّق لنا»)** — the traveller journey, scenario in the doc:
+no first-visit popup (Google intrusive-interstitial risk) → small content
+bar + «احفظ رحلتك» card after a search (Google one-tap, UNticked marketing
+consent) + «أرسل الخطة إلى بريدي»; on «احجز» click: return banner of what
+is left + email within 1 h «5 أشياء جهّزها الآن» (visa, hotel, eSIM,
+transfer, activities — all tagged partner links); reminders 7 d / 3 d
+before, arrival day, after return (AirHelp, next trip); app push later
+(iPhone after approval; needs consent, Apple 4.5.4). Sharing loop: share
+trip plan by WhatsApp to companions, shareable budget-result card. Rules:
+≤5 mails per trip, skip what is ticked in «رحلتي», monthly offers only with
+consent, unsubscribe in every mail (Saudi PDPL), no fixed prices in mail
+(buttons open live prices), beautiful Arabic design. Build after item 1:
+server-side trip save (today «رحلتي» = localStorage only) + consent +
+mail schedule (Resend: check plan limits) + share + push.
 
 **▶ NEXT SECTION (owner, 6 Nov): are partner commissions tracked on every
 way out?** Checked 6 Nov (code only): Site check verifies the tag on 5
