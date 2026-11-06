@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { useDictionary } from "@/lib/dict/context";
 
@@ -27,16 +27,22 @@ export default function FilterSheet({
   groups,
   results,
   onClear,
+  top,
+  extraActive = 0,
 }: {
   label: string;
   groups: SheetGroup[];
   /** "اعرض 12 فندق" — the footer button. */
   results: string;
   onClear: () => void;
+  /** Controls that are not chips (the budget slider), first in the sheet. */
+  top?: ReactNode;
+  /** How many of those are set (the button's count, «مسح»). */
+  extraActive?: number;
 }) {
   const [open, setOpen] = useState(false);
   const t = useDictionary().filters;
-  const active = groups.reduce((n, g) => n + g.value.length, 0);
+  const active = groups.reduce((n, g) => n + g.value.length, 0) + extraActive;
 
   useEffect(() => {
     if (!open) return;
@@ -67,6 +73,7 @@ export default function FilterSheet({
           </button>
         </div>
         <div className="min-h-0 flex-1 space-y-5 overflow-y-auto px-4 py-4">
+          {top && <div className="-mx-4 -mt-3">{top}</div>}
           {groups.map((g) => (
             <section key={g.key}>
               <h3 className="mb-2 text-sm font-extrabold text-navy-950">

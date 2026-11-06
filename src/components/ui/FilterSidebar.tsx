@@ -1,5 +1,6 @@
 "use client";
 
+import type { ReactNode } from "react";
 import { useDictionary } from "@/lib/dict/context";
 import type { SheetGroup } from "@/components/ui/FilterSheet";
 
@@ -10,9 +11,23 @@ import type { SheetGroup } from "@/components/ui/FilterSheet";
  * of hotels it would keep. The groups, counts and handlers are the sheet's —
  * one source of truth for both layouts, so they can never disagree.
  */
-export default function FilterSidebar({ label, groups, onClear }: { label: string; groups: SheetGroup[]; onClear: () => void }) {
+export default function FilterSidebar({
+  label,
+  groups,
+  onClear,
+  top,
+  extraActive = 0,
+}: {
+  label: string;
+  groups: SheetGroup[];
+  onClear: () => void;
+  /** Controls that are not checkboxes (the budget slider), first in the column. */
+  top?: ReactNode;
+  /** How many of those are set, for «مسح». */
+  extraActive?: number;
+}) {
   const t = useDictionary().filters;
-  const active = groups.reduce((n, g) => n + g.value.length, 0);
+  const active = groups.reduce((n, g) => n + g.value.length, 0) + extraActive;
 
   const pick = (g: SheetGroup, v: string | number) => {
     const on = g.value.includes(v);
@@ -31,6 +46,7 @@ export default function FilterSidebar({ label, groups, onClear }: { label: strin
         )}
       </div>
       <div className="max-h-[calc(100svh-9rem)] divide-y divide-mist-200 overflow-y-auto">
+        {top}
         {groups.map((g) => (
           <fieldset key={g.key} className="px-4 py-3">
             <legend className="mb-2 text-sm font-extrabold text-navy-950">

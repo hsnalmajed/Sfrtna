@@ -116,8 +116,10 @@ export interface Facets {
   near: number; // km, 0 = any
   brands: string[];
   eco: boolean;
+  /** «ميزانيتك لليلة»: the slider's low and high, a night; null = any. */
+  range: [number, number] | null;
 }
-export const NO_FACETS: Facets = { price: [], rating: [], stars: [], facilities: [], near: 0, brands: [], eco: false };
+export const NO_FACETS: Facets = { price: [], rating: [], stars: [], facilities: [], near: 0, brands: [], eco: false, range: null };
 export const RATING_FLOORS_5 = [4.5, 4, 3.5];
 export const NEAR_BANDS = [1, 3, 5];
 
@@ -148,6 +150,7 @@ export function passes(x: FacetInput, f: Facets, bands: number[], skip?: keyof F
     });
     if (!ok) return false;
   }
+  if (skip !== "range" && f.range && !(x.perNight >= f.range[0] && x.perNight <= f.range[1])) return false;
   if (skip !== "rating" && f.rating.length && !((h.rating ?? 0) >= Math.min(...f.rating))) return false;
   if (skip !== "stars" && f.stars.length && !f.stars.includes(h.stars ?? 0)) return false;
   if (skip !== "facilities" && f.facilities.some((fa) => !hasFacility(h, fa))) return false;
@@ -158,7 +161,7 @@ export function passes(x: FacetInput, f: Facets, bands: number[], skip?: keyof F
 }
 
 export function activeCount(f: Facets): number {
-  return f.price.length + f.rating.length + f.stars.length + f.facilities.length + (f.near ? 1 : 0) + f.brands.length + (f.eco ? 1 : 0);
+  return f.price.length + f.rating.length + f.stars.length + f.facilities.length + (f.near ? 1 : 0) + f.brands.length + (f.eco ? 1 : 0) + (f.range ? 1 : 0);
 }
 
 /** Google's words for how to reach a nearby place. */

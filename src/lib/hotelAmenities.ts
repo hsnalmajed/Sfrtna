@@ -125,3 +125,12 @@ export function amenityLabels(names: string[], locale: "ar" | "en", max: number)
   }
   return out;
 }
+
+/** Amenities that are not among the key ones above, in the page's language. */
+export function otherAmenities(names: string[], locale: "ar" | "en", max: number): string[] {
+  return amenityLabels(
+    names.filter((n) => !KEY.some((k) => k.test.test(n))),
+    locale,
+    max
+  );
+}

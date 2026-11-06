@@ -3,12 +3,20 @@
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import type { HotelResult, HotelSearch } from "@/lib/providers/serpapi";
-import { amenityLabels } from "@/lib/hotelAmenities";
+import { keyAmenities, otherAmenities } from "@/lib/hotelAmenities";
 import { CITY_COORDS } from "@/data/cityCoords";
 import Icon from "@/components/ui/Icon";
 import FilterPill from "@/components/ui/FilterPill";
 import FilterSheet, { type SheetGroup } from "@/components/ui/FilterSheet";
 import FilterSidebar from "@/components/ui/FilterSidebar";
+import BudgetSlider from "@/components/ui/BudgetSlider";
+import dynamic from "next/dynamic";
+import type { MapHotel } from "@/components/HotelsMap";
+
+const HotelsMap = dynamic(() => import("@/components/HotelsMap"), {
+  ssr: false,
+  loading: () => <div className="h-full w-full animate-pulse bg-mist-200/70" />,
+});
 import {
   FACILITIES,
   NEAR_BANDS,
@@ -102,6 +110,19 @@ export default function HotelList({
   const [perNight, setPerNight] = useState(false);
   // Booking-style filters on the list we hold: instant, no extra search.
   const [facets, setFacets] = useState<Facets>(NO_FACETS);
+  // The list on a full-screen map (Booking's «Show on map»).
+  const [mapOpen, setMapOpen] = useState(false);
+  useEffect(() => {
+    if (!mapOpen) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setMapOpen(false);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = prev;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [mapOpen]);
   const prefsKey = `${prefs.place}|${prefs.amenities.join(",")}|${prefs.rating}|${prefs.freeCancel ? 1 : 0}|${breakfast ? 1 : 0}`;
   const url = useMemo(() => {
     const p = new URLSearchParams({ q: `hotels in ${cityQuery}`.slice(0, 120), checkIn: c.checkIn, checkOut: c.checkOut, adults: String(c.adults) });
@@ -296,12 +317,64 @@ export default function HotelList({
       : []),
     ...(anyEco ? [{ key: "eco", title: fx.eco, icon: "🌿", options: [{ value: 1, label: fx.eco, count: count("eco", (x) => Boolean(x.hotel.eco)) }], value: facets.eco ? [1] : [], onChange: (v: (string | number)[]) => set({ eco: v.length > 0 }) }] : []),
   ];
-  const chosen = groups.flatMap((g) =>
-    g.value.map((v) => ({
-      key: `${g.key}:${v}`,
-      label: g.options.find((o) => o.value === v)?.label ?? String(v),
-      drop: () => g.onChange(g.value.filter((x) => x !== v)),
-    }))
+  const chosen = [
+    ...(facets.range
+      ? [{ key: "range", label: t.rangeChip.replace("{a}", amount(facets.range[0])).replace("{b}", amount(facets.range[1])), drop: () => set({ range: null }) }]
+      : []),
+    ...groups.flatMap((g) =>
+      g.value.map((v) => ({
+        key: `${g.key}:${v}`,
+        label: g.options.find((o) => o.value === v)?.label ?? String(v),
+        drop: () => g.onChange(g.value.filter((x) => x !== v)),
+      }))
+    ),
+  ];
+  // The list's hotels on the map: every one we know the place of, each pin its price.
+  const mapHotels: MapHotel[] = hotels
+    .filter((h) => h.lat != null && h.lng != null)
+    .map((h) => {
+      const pn = price(h) / Math.max(1, c.nights);
+      return {
+        key: h.token || h.name,
+        lat: h.lat as number,
+        lng: h.lng as number,
+        price: Number.isFinite(pn) ? amount(perNight && c.nights > 1 ? pn : price(h)) : "",
+        name: (locale === "ar" && h.nameAr) || h.name,
+        sub: [h.stars ? "★".repeat(h.stars) : "", h.rating ? `${h.rating.toFixed(1)} / 5` : ""].filter(Boolean).join("  ·  "),
+        href: pageHref(h),
+        thumb: h.images[0]?.thumb,
+      };
+    });
+  const byKey = new Map(hotels.map((h) => [h.token || h.name, h]));
+  const mapCard =
+    mapHotels.length > 1 ? (
+      <button
+        type="button"
+        onClick={() => setMapOpen(true)}
+        className="group relative block h-32 w-full overflow-hidden rounded-2xl shadow-sm ring-1 ring-black/5"
+      >
+        <span className="pointer-events-none absolute inset-0">
+          <HotelsMap hotels={mapHotels} centre={centre} attribution={t.mapAttribution} compact choose={t.choose} />
+        </span>
+        <span className="absolute inset-x-0 bottom-3 z-[500] flex justify-center">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-navy-900 px-4 py-2 text-sm font-extrabold text-white shadow-md transition group-hover:bg-navy-800">
+            <Icon name="pin" className="h-4 w-4" />
+            {t.showOnMap}
+          </span>
+        </span>
+      </button>
+    ) : null;
+  const budgetShown = inputs.filter((x) => Number.isFinite(x.perNight)).length >= 4;
+  const budget = (
+    <BudgetSlider
+      title={t.budgetNight}
+      all={inputs.map((x) => x.perNight)}
+      kept={inputs.filter((x) => passes(x, facets, bands, "range")).map((x) => x.perNight)}
+      value={facets.range}
+      onChange={(range) => set({ range })}
+      format={amount}
+      resultLabel={(n) => t.budgetKeeps.replace("{n}", String(n))}
+    />
   );
   // Phone and tablet: one button and a sheet. Wide screen (lg): the same groups
   // as a column beside the list, on the reading-start side (right in Arabic), as
@@ -310,7 +383,9 @@ export default function HotelList({
     <div className="lg:hidden">
       <FilterSheet
         label={fx.button}
-        groups={groups}
+        groups={budgetShown ? groups.filter((g) => g.key !== "price") : groups}
+        top={budget}
+        extraActive={facets.range ? 1 : 0}
         results={fx.showResults.replace("{n}", String(hotels.length))}
         onClear={() => setFacets(NO_FACETS)}
       />
@@ -318,8 +393,15 @@ export default function HotelList({
   );
   const layout = (main: ReactNode) => (
     <div className="lg:grid lg:grid-cols-[17rem_minmax(0,1fr)] lg:items-start lg:gap-6">
-      <aside className="hidden lg:sticky lg:top-4 lg:block">
-        <FilterSidebar label={fx.button} groups={groups} onClear={() => setFacets(NO_FACETS)} />
+      <aside className="hidden space-y-3 lg:sticky lg:top-24 lg:block">
+        {mapCard}
+        <FilterSidebar
+          label={fx.button}
+          groups={budgetShown ? groups.filter((g) => g.key !== "price") : groups}
+          onClear={() => setFacets(NO_FACETS)}
+          top={budget}
+          extraActive={facets.range ? 1 : 0}
+        />
       </aside>
       <div className="min-w-0">{main}</div>
     </div>
@@ -387,6 +469,16 @@ export default function HotelList({
       {/* One control, like Booking's "Sort by" (owner, 27 Oct): the chosen order on the pill, every order in its sheet. */}
       <div className="flex flex-wrap items-center gap-2">
         {filterBar}
+        {mapHotels.length > 1 && (
+          <button
+            type="button"
+            onClick={() => setMapOpen(true)}
+            className="inline-flex min-h-10 items-center gap-1.5 rounded-full bg-white px-3.5 text-sm font-bold text-navy-900 ring-1 ring-mist-300 lg:hidden"
+          >
+            <Icon name="pin" className="h-4 w-4 text-navy-500" />
+            {t.showOnMap}
+          </button>
+        )}
         <FilterPill<Sort>
           icon="↕️"
           label={hp.sortLabel}
@@ -442,6 +534,28 @@ export default function HotelList({
         </button>
       )}
       {extra.ended && <p className="text-center text-xs font-semibold text-navy-600">{t.moreHotelsLater}</p>}
+      {mapOpen && (
+        <div role="dialog" aria-modal="true" aria-label={t.mapOfHotels.replace("{city}", cityName)} className="fixed inset-0 z-[100] flex flex-col bg-white">
+          <div className="flex items-center justify-between gap-3 border-b border-mist-200 px-4 py-3">
+            <p className="font-display text-base font-extrabold text-navy-950">{t.mapOfHotels.replace("{city}", cityName)}</p>
+            <button type="button" autoFocus onClick={() => setMapOpen(false)} className="grid h-11 w-11 place-items-center rounded-full bg-mist-100 text-lg text-navy-900 hover:bg-mist-200" aria-label={t.closeMap}>
+              ✕
+            </button>
+          </div>
+          <div className="min-h-0 flex-1">
+            <HotelsMap
+              hotels={mapHotels}
+              centre={centre}
+              attribution={t.mapAttribution}
+              choose={t.choose}
+              onChoose={(k) => {
+                const h = byKey.get(k);
+                if (h) rememberHotel(h);
+              }}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -474,7 +588,12 @@ function HotelCard({
   const [open, setOpen] = useState(false);
   const one = hotel.total ?? (hotel.perNight ? hotel.perNight * c.nights : null);
   const total = one === null ? null : forRooms(one, c);
-  const amenities = amenityLabels(hotel.amenities.filter((a) => !/free breakfast/i.test(a)), locale, 4);
+  // The framed «خدمات الفندق» box (owner, 7 Nov): breakfast, internet,
+  // parking… as Google lists them for this hotel, then everything else it has.
+  const key = keyAmenities(hotel.amenities, locale);
+  const others = otherAmenities(hotel.amenities, locale, 40);
+  const [allServices, setAllServices] = useState(false);
+  const shownOthers = allServices ? others : others.slice(0, 6);
   const img = hotel.images[0];
   return (
     <article className="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-black/5">
@@ -504,10 +623,10 @@ function HotelCard({
             <Rating hotel={hotel} c={c} />
           </div>
           <ul className="flex flex-wrap gap-x-3 gap-y-1 text-xs font-semibold text-navy-600">
-            {distance != null && (
+            {distance != null && fromPlace && (
               <li className="inline-flex items-center gap-1">
                 <Icon name="pin" className="h-3.5 w-3.5 text-navy-400" />
-                {(fromPlace ? t.fromPlace : t.fromCentre).replace("{km}", distance < 10 ? distance.toFixed(1) : String(Math.round(distance))).replace("{city}", cityName)}
+                {t.fromPlace.replace("{km}", distance < 10 ? distance.toFixed(1) : String(Math.round(distance))).replace("{city}", cityName)}
               </li>
             )}
             {hotel.locationRating != null && hotel.locationRating > 0 && (
@@ -530,18 +649,43 @@ function HotelCard({
               </li>
             )}
           </ul>
-          {(hasBreakfast(hotel) || hotel.eco || amenities.length > 0) && (
-            <ul className="flex flex-wrap gap-1.5">
-              {hotel.eco && <li className="rounded-full bg-sea-50 px-2.5 py-1 text-[11px] font-extrabold text-sea-800 ring-1 ring-sea-200">{hp.ecoBadge}</li>}
-              {hasBreakfast(hotel) && (
-                <li className="rounded-full bg-sea-50 px-2.5 py-1 text-[11px] font-extrabold text-sea-800 ring-1 ring-sea-200">☕ {t.freeBreakfast}</li>
+          {(key.length > 0 || others.length > 0 || (distance != null && !fromPlace) || hotel.eco) && (
+            <div className="rounded-xl bg-mist-50 p-3 ring-1 ring-mist-200">
+              <p className="mb-2 text-[11px] font-extrabold text-navy-500">{t.servicesTitle}</p>
+              {(key.length > 0 || (distance != null && !fromPlace)) && (
+                <ul className="grid grid-cols-2 gap-x-3 gap-y-1.5 sm:grid-cols-3">
+                  {distance != null && !fromPlace && (
+                    <li className="flex items-center gap-1.5 text-xs font-bold text-navy-800">
+                      <span aria-hidden="true">📍</span>
+                      {t.fromCentreShort.replace("{km}", distance < 10 ? distance.toFixed(1) : String(Math.round(distance)))}
+                    </li>
+                  )}
+                  {key.map((k) => (
+                    <li key={k.label} className={`flex items-center gap-1.5 text-xs font-bold ${k.free ? "text-sea-800" : "text-navy-800"}`}>
+                      <span aria-hidden="true">{k.icon}</span>
+                      {k.label}
+                    </li>
+                  ))}
+                </ul>
               )}
-              {amenities.map((a) => (
-                <li key={a} className="rounded-full bg-mist-100 px-2.5 py-1 text-[11px] font-bold text-navy-700">
-                  {a}
-                </li>
-              ))}
-            </ul>
+              {(shownOthers.length > 0 || hotel.eco) && (
+                <ul className="mt-2 flex flex-wrap gap-1">
+                  {hotel.eco && <li className="rounded-full bg-sea-50 px-2 py-0.5 text-[11px] font-extrabold text-sea-800 ring-1 ring-sea-200">{hp.ecoBadge}</li>}
+                  {shownOthers.map((a) => (
+                    <li key={a} className="rounded-full bg-white px-2 py-0.5 text-[11px] font-semibold text-navy-700 ring-1 ring-mist-200">
+                      {a}
+                    </li>
+                  ))}
+                  {others.length > 6 && (
+                    <li>
+                      <button type="button" onClick={() => setAllServices((v) => !v)} className="rounded-full px-2 py-0.5 text-[11px] font-extrabold text-sea-800 hover:underline" aria-expanded={allServices}>
+                        {allServices ? "−" : `+${others.length - 6}`}
+                      </button>
+                    </li>
+                  )}
+                </ul>
+              )}
+            </div>
           )}
           <div className="mt-auto flex flex-wrap items-end justify-between gap-3 pt-1">
             {total ? (

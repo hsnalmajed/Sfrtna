@@ -251,17 +251,20 @@ export function PriceRows({
   c,
   checkedAt,
   compact,
+  expanded,
 }: {
   hotel: HotelResult;
   c: Common;
   checkedAt: string;
   compact?: boolean;
+  /** Every site in view from the start (the hotel page's prices section). */
+  expanded?: boolean;
 }) {
   const { t, locale } = c;
   const offers = siteOffers(hotel, c);
   // In view: the cheapest, our partners and the well-known names; the rest
   // a tap away. Order stays by price either way.
-  const [all, setAll] = useState(false);
+  const [all, setAll] = useState(Boolean(expanded));
   const pinned = offers.filter((o, i) => i === 0 || o.earns || o.known);
   const shown = all ? offers : pinned;
   const hiddenCount = offers.length - pinned.length;
@@ -331,131 +334,6 @@ export function PriceRows({
         {c.nights === 1 ? t.stayTotalOne : t.stayTotal.replace("{nights}", nightsLabel(c.nights, t))}
         {(c.rooms ?? 1) > 1 && ` · ${t.roomsPriced.replace(/\{count\}/g, String(c.rooms))}`} · {t.checkedAtAll.replace("{time}", time)}
       </p>
-    </div>
-  );
-}
-
-/**
- * The named hotel's booking panel (owner, 20 Oct): the cheapest site, its
- * price and «احجز الآن» first; every other site with its price and its own
- * «احجز الآن» one tap away under «قارن الأسعار في N مواقع». The traveller
- * reads the answer here and leaves only to book.
- */
-function BookPanel({ hotel, c, checkedAt }: { hotel: HotelResult; c: Common; checkedAt: string }) {
-  const { t, locale } = c;
-  const offers = siteOffers(hotel, c);
-  const [open, setOpen] = useState(false);
-  // The compare list: cheapest first, or the most expensive first.
-  const [desc, setDesc] = useState(false);
-  const time = new Date(checkedAt).toLocaleTimeString(nf(locale), { hour: "2-digit", minute: "2-digit" });
-  const arrow = <span aria-hidden="true">{locale === "ar" ? "←" : "→"}</span>;
-  if (!offers.length) {
-    return (
-      <div>
-        <p className="font-display text-lg font-extrabold text-navy-950">{t.noPriceTitle}</p>
-        <p className="mt-1 text-sm text-navy-600">{t.noPartnerPrice}</p>
-        {c.alternatives && (
-          <a
-            href={c.alternatives.href}
-            className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-sun-400 px-4 py-3 text-sm font-extrabold text-navy-950 shadow-[var(--shadow-sun)] hover:bg-sun-300"
-          >
-            {t.cityAlternatives.replace("{city}", c.alternatives.city)}
-            {arrow}
-          </a>
-        )}
-      </div>
-    );
-  }
-  const best = offers[0];
-  const rest = offers.slice(1);
-  const over = c.budget > 0 ? best.total - c.budget : 0;
-  return (
-    <div>
-      <p className="text-xs font-bold text-navy-500">{t.bestPriceTitle}</p>
-      <p className="mt-1 flex flex-wrap items-center gap-1.5 text-sm font-bold text-navy-800">
-        <bdi>{t.atSite.replace("{site}", best.label)}</bdi>
-        {rest.length > 0 && best.total < rest[0].total && (
-          <span className="rounded-full bg-sun-400 px-2 py-0.5 text-[11px] font-extrabold text-navy-950">{t.cheapest}</span>
-        )}
-      </p>
-      <p className="mt-1 font-display text-3xl font-black text-navy-950">{money(best.total, locale)}</p>
-      <p className="text-xs text-navy-600">
-        {c.nights === 1 ? t.stayTotalOne : t.stayTotal.replace("{nights}", nightsLabel(c.nights, t))}
-        {(c.rooms ?? 1) > 1 && ` · ${t.roomsPriced.replace(/\{count\}/g, String(c.rooms))}`}
-        {c.nights > 1 && ` · ${t.perNight.replace("{amount}", money(best.total / c.nights, locale))}`}
-      </p>
-      {c.budget > 0 && (
-        <p className={`mt-1 text-xs font-bold ${over > 0 ? "text-rose-700" : "text-sea-700"}`}>
-          {over > 0 ? t.overBudget.replace("{amount}", money(over, locale)) : `✓ ${t.withinBudget}`}
-        </p>
-      )}
-      {best.url && (
-        <PartnerLink
-          partner={best.partner}
-          href={best.url}
-          className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-sun-400 px-4 py-3.5 text-base font-extrabold text-navy-950 shadow-[var(--shadow-sun)] transition hover:bg-sun-300"
-        >
-          {t.bookNow}
-          {arrow}
-        </PartnerLink>
-      )}
-      {rest.length > 0 ? (
-        <div className="mt-4">
-          <button
-            type="button"
-            aria-expanded={open}
-            onClick={() => setOpen((v) => !v)}
-            className="flex w-full items-center justify-between gap-2 rounded-xl bg-mist-50 px-4 py-3 text-sm font-extrabold text-navy-900 ring-1 ring-mist-200 transition hover:ring-navy-300"
-          >
-            {open ? t.hideCompare : t.compareSites.replace("{count}", String(offers.length))}
-            <span aria-hidden="true" className={`transition ${open ? "rotate-180" : ""}`}>▾</span>
-          </button>
-          {open && (
-            <div className="mt-2 flex gap-2" role="group" aria-label={t.sortSites}>
-              {[false, true].map((d) => (
-                <button
-                  key={String(d)}
-                  type="button"
-                  aria-pressed={desc === d}
-                  onClick={() => setDesc(d)}
-                  className={`min-h-9 rounded-full px-3.5 text-xs font-bold ${desc === d ? "bg-navy-950 text-white" : "bg-white text-navy-800 ring-1 ring-mist-300"}`}
-                >
-                  {d ? t.sortExpensiveFirst : t.sortCheapestFirst}
-                </button>
-              ))}
-            </div>
-          )}
-          {open && (
-            <ul className="mt-2 divide-y divide-mist-100 rounded-xl ring-1 ring-mist-200">
-              {(desc ? [...offers].reverse() : offers).map((o, i) => (
-                <li key={`${o.label}-${i}`} className="flex items-center justify-between gap-3 px-3.5 py-2.5">
-                  <div className="min-w-0">
-                    <p className="truncate text-sm font-bold text-navy-800">
-                      <bdi>{o.label}</bdi>
-                    </p>
-                    <p className="font-display text-base font-extrabold text-navy-950">{money(o.total, locale)}</p>
-                  </div>
-                  {o.url && (
-                    <PartnerLink
-                      partner={o.partner}
-                      href={o.url}
-                      className={`inline-flex shrink-0 items-center gap-1 rounded-xl px-3.5 py-2 text-xs font-extrabold transition ${
-                        o === offers[0] ? "bg-sun-400 text-navy-950 hover:bg-sun-300" : "bg-white text-navy-900 ring-1 ring-mist-200 hover:ring-navy-300"
-                      }`}
-                    >
-                      {t.bookNow}
-                      {arrow}
-                    </PartnerLink>
-                  )}
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-      ) : (
-        <p className="mt-3 text-xs font-semibold text-navy-500">{t.oneSite}</p>
-      )}
-      <p className="mt-3 text-[11px] leading-relaxed text-navy-500">{t.checkedAtAll.replace("{time}", time)}</p>
     </div>
   );
 }
@@ -630,31 +508,28 @@ function HotelDetail({
   const { t, locale } = c;
   const amenities = amenityLabels(hotel.amenities, locale, 40);
   const key = keyAmenities(hotel.amenities, locale);
+  const offers = siteOffers(hotel, c);
+  const best = offers[0];
   const hasMap = hotel.lat != null && hotel.lng != null;
   const km = hasMap && centre ? kmBetween(centre, { lat: hotel.lat!, lon: hotel.lng! }) : null;
   const kmText = km == null ? "" : km < 10 ? km.toFixed(1) : String(Math.round(km));
   const nearby = hotel.nearby ?? [];
+  const rooms = hotel.rooms ?? [];
   const hasReviews = Boolean((hotel.topics ?? []).some((x) => x.positive + x.negative > 0) || (hotel.ratingsHist ?? []).some((r) => r.count > 0));
   const nav = [
     { id: "hotel-overview", label: t.navOverview, show: true },
     { id: "hotel-prices", label: t.navPrices, show: true },
-    { id: "hotel-facilities", label: t.navFacilities, show: amenities.length > 0 || key.length > 0 },
-    { id: "hotel-location", label: t.navLocation, show: hasMap || nearby.length > 0 },
     { id: "hotel-reviews", label: t.navReviews, show: hasReviews },
+    { id: "hotel-location", label: t.navLocation, show: nearby.length > 0 || hasMap },
+    { id: "hotel-facilities", label: t.navFacilities, show: amenities.length > 0 },
   ].filter((n) => n.show);
   const box = "scroll-mt-32 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-black/5 sm:p-6";
   const h3 = "font-display text-lg font-extrabold text-navy-950";
-  // The framed «أبرز ما في الفندق» card: only what Google says of this hotel.
-  const highlights: { icon: string; label: string; good?: boolean }[] = [
-    ...key.map((k) => ({ icon: k.icon, label: k.label, good: k.free })),
-    ...(km != null ? [{ icon: "📍", label: t.fromCentreShort.replace("{km}", kmText) }] : []),
-    ...(hotel.locationRating ? [{ icon: "🗺️", label: `${t.locationLabel}: ${hotel.locationRating.toFixed(1)} / 5`, good: hotel.locationRating >= 4.5 }] : []),
-    ...(hotel.checkInTime ? [{ icon: "🛎️", label: `${t.checkInLabel}: ${hotel.checkInTime}` }] : []),
-    ...(hotel.checkOutTime ? [{ icon: "🧳", label: `${t.checkOutLabel}: ${hotel.checkOutTime}` }] : []),
-  ];
+  const arrow = <span aria-hidden="true">{locale === "ar" ? "←" : "→"}</span>;
+  const mapsHref = hasMap ? `https://www.google.com/maps/search/?api=1&query=${hotel.lat},${hotel.lng}` : "";
   return (
     <div>
-      {/* Jump to a part of the page, as on the big booking sites. */}
+      {/* Jump to a part of the page, as Booking does under its photos. */}
       <nav aria-label={t.navOverview} className="sticky top-16 z-20 -mx-4 mb-4 border-b border-mist-200 bg-mist-50/95 backdrop-blur sm:mx-0 sm:rounded-xl sm:border sm:bg-white/95">
         <ScrollRow className="flex gap-1 px-4">
           {nav.map((n) => (
@@ -665,110 +540,265 @@ function HotelDetail({
         </ScrollRow>
       </nav>
 
-      <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_380px] lg:items-start lg:gap-6">
-        <div id="hotel-overview" className="min-w-0 scroll-mt-32 lg:col-start-1 lg:row-start-1">
-          <Gallery hotel={hotel} t={t} />
-        </div>
-
-        <aside id="hotel-prices" className="scroll-mt-32 lg:sticky lg:top-32 lg:col-start-2 lg:row-span-2 lg:row-start-1">
-          <div className="rounded-2xl bg-white p-5 shadow-[0_10px_40px_-15px_rgb(10_30_60/0.35)] ring-1 ring-black/5 sm:p-6">
-            <BookPanel hotel={hotel} c={c} checkedAt={checkedAt} />
-            {checking && (
-              <p className="mt-3 flex items-center gap-2 text-xs font-semibold text-navy-600">
-                <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-navy-200 border-t-sun-500" aria-hidden="true" />
-                {t.checking}
+      {/* 1 · Name, then photos with the side column (rating, map, best price) — Booking's top. */}
+      <div id="hotel-overview" className="scroll-mt-32">
+        <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
+          <div className="min-w-0">
+            <Stars count={hotel.stars} className="text-sm" />
+            <h2 className="font-display text-h3 font-extrabold text-navy-950">
+              <bdi>{(locale === "ar" && hotel.nameAr) || hotel.name}</bdi>
+            </h2>
+            {locale === "ar" && hotel.nameAr && (
+              <p className="text-sm font-semibold text-navy-500" dir="ltr">
+                {hotel.name}
               </p>
             )}
-            <p className="mt-3 border-t border-mist-100 pt-3 text-[11px] leading-relaxed text-navy-500">{t.roomsAtSite}</p>
+            {hotel.address && (
+              <p className="mt-1.5 flex items-start gap-1.5 text-sm text-navy-600">
+                <Icon name="pin" className="mt-0.5 h-4 w-4 shrink-0 text-navy-400" />
+                <bdi>{hotel.address}</bdi>
+                {km != null && <span className="whitespace-nowrap font-bold text-navy-700">· {t.fromCentreShort.replace("{km}", kmText)}</span>}
+              </p>
+            )}
           </div>
-        </aside>
+          <div className="flex items-center gap-2">
+            <FavButton locale={c.locale} fav={{ type: "hotel", name: hotel.name, area: "", label: hotel.nameAr || undefined }} />
+            {best?.url && (
+              <a href="#hotel-prices" className="inline-flex min-h-11 items-center gap-1.5 rounded-xl bg-sun-400 px-5 text-sm font-extrabold text-navy-950 shadow-[var(--shadow-sun)] hover:bg-sun-300">
+                {t.bookNow}
+              </a>
+            )}
+          </div>
+        </div>
 
-        <div className="flex min-w-0 flex-col gap-5 lg:col-start-1 lg:row-start-2">
-          <section className={box}>
-            <div className="flex flex-wrap items-start justify-between gap-3">
-              <div className="min-w-0">
-                <Stars count={hotel.stars} className="text-sm" />
-                <h2 className="font-display text-h3 font-extrabold text-navy-950">
-                  <bdi>{(locale === "ar" && hotel.nameAr) || hotel.name}</bdi>
-                </h2>
-                {locale === "ar" && hotel.nameAr && (
-                  <p className="text-sm font-semibold text-navy-500" dir="ltr">
-                    {hotel.name}
+        <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_300px]">
+          <div className="min-w-0">
+            <Gallery hotel={hotel} t={t} />
+          </div>
+          <div className="flex flex-col gap-4">
+            <div className="rounded-2xl bg-white p-4 shadow-sm ring-1 ring-black/5">
+              <Rating hotel={hotel} c={c} size="lg" />
+              {best && (
+                <div className="mt-4 border-t border-mist-100 pt-4">
+                  <p className="text-xs font-bold text-navy-500">{t.bestPriceTitle}</p>
+                  <p className="mt-0.5 text-sm font-bold text-navy-800">
+                    <bdi>{t.atSite.replace("{site}", best.label)}</bdi>
                   </p>
-                )}
-                {hotel.address && (
-                  <p className="mt-1.5 flex items-start gap-1.5 text-sm text-navy-600">
-                    <Icon name="pin" className="mt-0.5 h-4 w-4 shrink-0 text-navy-400" />
-                    <bdi>{hotel.address}</bdi>
-                  </p>
-                )}
-              </div>
-              <div className="flex items-start gap-2">
-                <Rating hotel={hotel} c={c} size="lg" />
-                <FavButton locale={c.locale} fav={{ type: "hotel", name: hotel.name, area: "", label: hotel.nameAr || undefined }} />
-              </div>
+                  <p className="font-display text-2xl font-black text-navy-950">{money(best.total, locale)}</p>
+                  <p className="text-xs text-navy-600">{c.nights === 1 ? t.stayTotalOne : t.stayTotal.replace("{nights}", nightsLabel(c.nights, t))}</p>
+                  {offers.length > 1 && (
+                    <a href="#hotel-prices" className="mt-3 flex min-h-11 items-center justify-center gap-1.5 rounded-xl bg-navy-900 px-4 text-sm font-extrabold text-white hover:bg-navy-800">
+                      {t.compareSites.replace("{count}", String(offers.length))}
+                    </a>
+                  )}
+                  {checking && (
+                    <p className="mt-2 flex items-center gap-2 text-xs font-semibold text-navy-600">
+                      <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-navy-200 border-t-sun-500" aria-hidden="true" />
+                      {t.checking}
+                    </p>
+                  )}
+                </div>
+              )}
             </div>
+            {/* 2 · The map, small, beside the photos. */}
+            {hasMap && (
+              <div className="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-black/5">
+                <HotelMap lat={hotel.lat!} lng={hotel.lng!} centre={centre} attribution={t.mapAttribution} small />
+                <a href={mapsHref} target="_blank" rel="noopener noreferrer" className="flex min-h-11 items-center justify-center gap-1.5 text-sm font-extrabold text-sea-800 hover:underline">
+                  <Icon name="pin" className="h-4 w-4" />
+                  {t.openInMaps}
+                </a>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
 
-            {highlights.length > 0 && (
-              <div className="mt-5 rounded-2xl bg-sea-50/60 p-4 ring-1 ring-sea-200">
+      <div className="mt-5 flex flex-col gap-5">
+        {/* 3 · Description and 4 · the most popular facilities. */}
+        {(hotel.description || key.length > 0 || hotel.locationRating) && (
+          <section className={box}>
+            {hotel.description && (
+              <>
+                <h3 className={h3}>{t.descriptionTitle}</h3>
+                {locale === "ar" && <p className="mt-1 text-xs font-semibold text-navy-500">{t.descriptionEnglish}</p>}
+                <p className="mt-2 text-sm leading-relaxed text-navy-700" dir="ltr" lang="en">
+                  {hotel.description}
+                </p>
+              </>
+            )}
+            {(key.length > 0 || hotel.locationRating) && (
+              <div className={hotel.description ? "mt-5" : ""}>
                 <p className="mb-3 text-sm font-extrabold text-navy-950">{t.highlightsTitle}</p>
-                <ul className="grid gap-2 sm:grid-cols-2">
-                  {highlights.map((x) => (
-                    <li key={x.label} className="flex items-center gap-2.5 text-sm font-bold text-navy-900">
-                      <span aria-hidden="true" className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-white text-base ring-1 ring-sea-200">
-                        {x.icon}
-                      </span>
-                      <bdi className={x.good ? "text-sea-800" : ""}>{x.label}</bdi>
+                <ul className="flex flex-wrap gap-2">
+                  {key.map((k) => (
+                    <li
+                      key={k.label}
+                      className={`inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-bold ring-1 ${k.free ? "bg-sea-50 text-sea-900 ring-sea-200" : "bg-mist-50 text-navy-800 ring-mist-200"}`}
+                    >
+                      <span aria-hidden="true">{k.icon}</span>
+                      {k.label}
                     </li>
                   ))}
+                  {hotel.locationRating ? (
+                    <li className="inline-flex items-center gap-2 rounded-xl bg-mist-50 px-3 py-2 text-sm font-bold text-navy-800 ring-1 ring-mist-200">
+                      <span aria-hidden="true">🗺️</span>
+                      {t.locationLabel}: {hotel.locationRating.toFixed(1)} / 5
+                    </li>
+                  ) : null}
                 </ul>
               </div>
             )}
-
-            {locale === "en" && hotel.description && <p className="mt-5 text-sm leading-relaxed text-navy-700">{hotel.description}</p>}
           </section>
+        )}
 
-          {amenities.length > 0 && (
-            <section id="hotel-facilities" className={box}>
-              <h3 className={h3}>{t.allAmenitiesTitle}</h3>
-              <ul className="mt-3 grid grid-cols-1 gap-x-4 gap-y-2 sm:grid-cols-2">
-                {amenities.map((a) => (
-                  <li key={a} className="flex items-center gap-2 text-sm font-semibold text-navy-800">
-                    <Icon name="check" className="h-4 w-4 shrink-0 text-sea-600" />
-                    {a}
-                  </li>
-                ))}
-              </ul>
-            </section>
+        {/* 5 · Every site's price with «احجز» beside it; rooms when Google gives them. */}
+        <section id="hotel-prices" className={box}>
+          <h3 className={h3}>{t.pricesTitle}</h3>
+          <p className="mb-4 mt-1 text-sm text-navy-600">{t.allSitesSub}</p>
+          {rooms.length > 0 && <RoomsTable rooms={rooms} c={c} />}
+          <PriceRows hotel={hotel} c={c} checkedAt={checkedAt} expanded />
+          {!offers.length && c.alternatives && (
+            <a
+              href={c.alternatives.href}
+              className="mt-4 flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-sun-400 px-4 text-sm font-extrabold text-navy-950 shadow-[var(--shadow-sun)] hover:bg-sun-300"
+            >
+              {t.cityAlternatives.replace("{city}", c.alternatives.city)}
+              {arrow}
+            </a>
           )}
+          {rooms.length === 0 && best?.url && (
+            <PartnerLink
+              partner={best.partner}
+              href={best.url}
+              className="mt-4 flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-white px-4 text-sm font-extrabold text-navy-900 ring-1 ring-mist-300 transition hover:ring-navy-400"
+            >
+              <span aria-hidden="true">🛏️</span>
+              {t.seeRooms}
+              <bdi className="font-semibold text-navy-500">({best.label})</bdi>
+              {arrow}
+            </PartnerLink>
+          )}
+          {rooms.length === 0 && <p className="mt-2 text-[11px] leading-relaxed text-navy-500">{t.roomsAtSite}</p>}
+        </section>
 
-          {(hasMap || nearby.length > 0) && (
-            <section id="hotel-location" className={box}>
-              <div className="flex flex-wrap items-baseline justify-between gap-2">
-                <h3 className={h3}>{t.mapTitle}</h3>
-                {km != null && <p className="text-sm font-bold text-navy-600">{t.fromCentreShort.replace("{km}", kmText)}</p>}
-              </div>
-              {hasMap && (
-                <div className="mt-3">
-                  <HotelMap lat={hotel.lat!} lng={hotel.lng!} centre={centre} attribution={t.mapAttribution} />
-                  <a
-                    href={`https://www.google.com/maps/search/?api=1&query=${hotel.lat},${hotel.lng}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-3 inline-flex min-h-11 items-center gap-1.5 rounded-xl bg-white px-4 text-sm font-bold text-navy-900 ring-1 ring-mist-300 hover:ring-navy-400"
-                  >
-                    <Icon name="pin" className="h-4 w-4 text-navy-500" />
-                    {t.openInMaps}
-                  </a>
+        {/* 6 · What guests talk about. */}
+        <HotelInsights hotel={hotel} locale={locale} part="reviews" />
+
+        {/* 7 · Around the hotel. */}
+        {(nearby.length > 0 || hasMap) && (
+          <section id="hotel-location" className={box}>
+            <div className="flex flex-wrap items-baseline justify-between gap-2">
+              <h3 className={h3}>{t.mapTitle}</h3>
+              {km != null && <p className="text-sm font-bold text-navy-600">{t.fromCentreShort.replace("{km}", kmText)}</p>}
+            </div>
+            {nearby.length > 0 ? (
+              <NearbyList nearby={nearby} locale={locale} />
+            ) : (
+              mapsHref && (
+                <a href={mapsHref} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex min-h-11 items-center gap-1.5 text-sm font-bold text-sea-800 hover:underline">
+                  <Icon name="pin" className="h-4 w-4" />
+                  {t.openInMaps}
+                </a>
+              )
+            )}
+          </section>
+        )}
+
+        {/* 8 · Every facility. */}
+        {amenities.length > 0 && (
+          <section id="hotel-facilities" className={box}>
+            <h3 className={h3}>{t.allAmenitiesTitle}</h3>
+            <ul className="mt-3 grid grid-cols-1 gap-x-4 gap-y-2 sm:grid-cols-2 lg:grid-cols-3">
+              {amenities.map((a) => (
+                <li key={a} className="flex items-center gap-2 text-sm font-semibold text-navy-800">
+                  <Icon name="check" className="h-4 w-4 shrink-0 text-sea-600" />
+                  {a}
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+        <HotelInsights hotel={hotel} locale={locale} part="facts" />
+
+        {/* 9 · Check-in and check-out (Booking's «house rules», the part we hold). */}
+        {(hotel.checkInTime || hotel.checkOutTime) && (
+          <section className={box}>
+            <h3 className={h3}>{t.checkTimesTitle}</h3>
+            <dl className="mt-3 grid gap-3 sm:grid-cols-2">
+              {hotel.checkInTime && (
+                <div className="flex items-center gap-3 rounded-xl bg-mist-50 p-3.5 ring-1 ring-mist-200">
+                  <span aria-hidden="true" className="text-xl">🛎️</span>
+                  <div>
+                    <dt className="text-xs font-bold text-navy-500">{t.checkInLabel}</dt>
+                    <dd className="font-display text-base font-extrabold text-navy-950">
+                      <bdi>{hotel.checkInTime}</bdi>
+                    </dd>
+                  </div>
                 </div>
               )}
-              {nearby.length > 0 && <NearbyList nearby={nearby} locale={locale} />}
-            </section>
-          )}
-
-          <HotelInsights hotel={hotel} locale={locale} />
-        </div>
+              {hotel.checkOutTime && (
+                <div className="flex items-center gap-3 rounded-xl bg-mist-50 p-3.5 ring-1 ring-mist-200">
+                  <span aria-hidden="true" className="text-xl">🧳</span>
+                  <div>
+                    <dt className="text-xs font-bold text-navy-500">{t.checkOutLabel}</dt>
+                    <dd className="font-display text-base font-extrabold text-navy-950">
+                      <bdi>{hotel.checkOutTime}</bdi>
+                    </dd>
+                  </div>
+                </div>
+              )}
+            </dl>
+          </section>
+        )}
       </div>
+    </div>
+  );
+}
+
+/** Room types, when Google's answer carried them: one row a room, its cheapest site. */
+function RoomsTable({ rooms, c }: { rooms: NonNullable<HotelResult["rooms"]>; c: Common }) {
+  const { t, locale } = c;
+  const byName = new Map<string, NonNullable<HotelResult["rooms"]>>();
+  for (const r of rooms) byName.set(r.name, [...(byName.get(r.name) ?? []), r]);
+  const rows = [...byName.entries()].map(([name, list]) => {
+    const priced = list.filter((r) => r.total).sort((a, b) => (a.total ?? 0) - (b.total ?? 0));
+    return { name, best: priced[0] ?? list[0], image: list.find((r) => r.image)?.image ?? "", guests: list.find((r) => r.guests)?.guests ?? null, sites: list.length };
+  });
+  return (
+    <div className="mb-5">
+      <p className="mb-2 text-sm font-extrabold text-navy-950">{t.roomsTitle}</p>
+      <ul className="divide-y divide-mist-200 rounded-xl ring-1 ring-mist-200">
+        {rows.map((r) => (
+          <li key={r.name} className="flex items-center gap-3 p-3">
+            {r.image ? <Photo src={r.image} alt="" className="h-16 w-20 shrink-0 rounded-lg" /> : <span className="grid h-16 w-20 shrink-0 place-items-center rounded-lg bg-mist-100 text-xl" aria-hidden="true">🛏️</span>}
+            <div className="min-w-0 flex-1">
+              <p className="text-sm font-extrabold text-navy-900" dir="auto">
+                <bdi>{r.name}</bdi>
+              </p>
+              <p className="text-xs text-navy-600">
+                {r.guests ? t.roomGuests.replace("{n}", String(r.guests)) : ""}
+                {r.best.source && (
+                  <>
+                    {r.guests ? " · " : ""}
+                    <bdi>{r.best.source}</bdi>
+                  </>
+                )}
+              </p>
+              {r.best.total && <p className="font-display text-base font-extrabold text-navy-950">{money(forRooms(r.best.total, c), locale)}</p>}
+            </div>
+            {r.best.link && (
+              <PartnerLink
+                partner={r.best.source || "hotel"}
+                href={r.best.link}
+                className="inline-flex shrink-0 items-center gap-1 rounded-xl bg-sun-400 px-3.5 py-2 text-xs font-extrabold text-navy-950 hover:bg-sun-300"
+              >
+                {t.bookNow}
+              </PartnerLink>
+            )}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
@@ -802,19 +832,19 @@ function NearbyList({ nearby, locale }: { nearby: NonNullable<HotelResult["nearb
  * what guests say per topic, how the ratings spread, what is around the
  * hotel and how long it takes to get there, and what it does not have.
  */
-function HotelInsights({ hotel, locale }: { hotel: HotelResult; locale: "ar" | "en" }) {
+function HotelInsights({ hotel, locale, part }: { hotel: HotelResult; locale: "ar" | "en"; part: "reviews" | "facts" }) {
   const hp = useDictionary().hotelPrefs;
   const topics = (hotel.topics ?? []).filter((x) => x.positive + x.negative > 0);
   const hist = [...(hotel.ratingsHist ?? [])].sort((a, b) => b.stars - a.stars);
   const histTotal = hist.reduce((n, r) => n + r.count, 0);
   const excluded = amenityLabels(hotel.excluded ?? [], locale, 12);
   const essential = locale === "en" ? hotel.essential ?? [] : [];
-  if (!topics.length && !histTotal && !excluded.length && !essential.length && !hotel.eco) return null;
+  if (part === "reviews" ? !topics.length && !histTotal : !excluded.length && !essential.length && !hotel.eco) return null;
   const box = "rounded-2xl bg-white p-5 shadow-sm ring-1 ring-black/5 sm:p-6";
   const h3 = "font-display text-lg font-extrabold text-navy-950";
   return (
     <>
-      {(topics.length > 0 || histTotal > 0) && (
+      {part === "reviews" && (topics.length > 0 || histTotal > 0) && (
         <section id="hotel-reviews" className={`${box} scroll-mt-32`}>
           <h3 className={h3}>{hp.topicsTitle}</h3>
           {hotel.reviews ? <p className="mt-1 text-xs font-semibold text-navy-500">{hp.topicsSub.replace("{n}", hotel.reviews.toLocaleString(locale === "ar" ? "ar-SA-u-nu-latn" : "en-US"))}</p> : null}
@@ -859,7 +889,7 @@ function HotelInsights({ hotel, locale }: { hotel: HotelResult; locale: "ar" | "
           )}
         </section>
       )}
-      {(excluded.length > 0 || essential.length > 0 || hotel.eco) && (
+      {part === "facts" && (excluded.length > 0 || essential.length > 0 || hotel.eco) && (
         <section className={box}>
           {hotel.eco && <p className="mb-3 inline-flex rounded-full bg-sea-50 px-3 py-1.5 text-xs font-extrabold text-sea-800 ring-1 ring-sea-200">{hp.ecoBadge}</p>}
           {essential.length > 0 && (

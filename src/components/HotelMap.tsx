@@ -14,7 +14,10 @@ export default function HotelMap({
   lng,
   centre,
   attribution,
+  small = false,
 }: {
+  /** The card beside the photos: shorter, no outer frame. */
+  small?: boolean;
   lat: number;
   lng: number;
   centre?: { lat: number; lon: number };
@@ -39,8 +42,8 @@ export default function HotelMap({
     : { center: [lat, lng] as [number, number], zoom: 15 };
   return (
     // `isolate`: leaflet's controls (z-index 800) stay under the site header.
-    <div className="isolate overflow-hidden rounded-xl ring-1 ring-mist-200">
-      <MapContainer {...view} scrollWheelZoom={false} className="h-64 w-full sm:h-80">
+    <div className={`isolate overflow-hidden ${small ? "" : "rounded-xl ring-1 ring-mist-200"}`}>
+      <MapContainer {...view} scrollWheelZoom={false} className={small ? "h-44 w-full" : "h-64 w-full sm:h-80"}>
         <TileLayer attribution={attribution} url="https://tile.openstreetmap.org/{z}/{x}/{y}.png" maxZoom={19} />
         <Marker position={[lat, lng]} icon={pin} />
         {near && <Marker position={[centre.lat, centre.lon]} icon={dot} />}
