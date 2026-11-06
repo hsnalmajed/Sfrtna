@@ -11,6 +11,7 @@ import type { Dictionary } from "@/lib/dictionaries";
 import { amenityLabels, keyAmenities } from "@/lib/hotelAmenities";
 import Icon from "@/components/ui/Icon";
 import PartnerLink from "@/components/PartnerLink";
+import ScrollRow from "@/components/ui/ScrollRow";
 import { useDictionary } from "@/lib/dict/context";
 import { TRANSPORT_AR, durationLabel, topicLabel } from "@/lib/hotelFacets";
 import { CITY_COORDS } from "@/data/cityCoords";
@@ -590,7 +591,7 @@ function Gallery({ hotel, t }: { hotel: HotelResult; t: T }) {
             )}
           </div>
           {count > 1 && (
-            <div className="flex justify-center gap-2 overflow-x-auto px-4 py-3">
+            <ScrollRow tone="dark" className="flex justify-center gap-2 px-4 py-3">
               {imgs.map((im, i) => (
                 <button
                   key={i}
@@ -603,7 +604,7 @@ function Gallery({ hotel, t }: { hotel: HotelResult; t: T }) {
                   <Photo src={im.thumb} alt="" className="h-14 w-20" />
                 </button>
               ))}
-            </div>
+            </ScrollRow>
           )}
         </div>
       )}
@@ -654,16 +655,14 @@ function HotelDetail({
   return (
     <div>
       {/* Jump to a part of the page, as on the big booking sites. */}
-      <nav aria-label={t.navOverview} className="sticky top-16 z-20 -mx-4 mb-4 overflow-x-auto border-b border-mist-200 bg-mist-50/95 px-4 backdrop-blur sm:mx-0 sm:rounded-xl sm:border sm:bg-white/95">
-        <ul className="flex gap-1">
+      <nav aria-label={t.navOverview} className="sticky top-16 z-20 -mx-4 mb-4 border-b border-mist-200 bg-mist-50/95 backdrop-blur sm:mx-0 sm:rounded-xl sm:border sm:bg-white/95">
+        <ScrollRow className="flex gap-1 px-4">
           {nav.map((n) => (
-            <li key={n.id}>
-              <a href={`#${n.id}`} className="inline-flex min-h-11 items-center whitespace-nowrap px-3 text-sm font-bold text-navy-700 hover:text-navy-950">
-                {n.label}
-              </a>
-            </li>
+            <a key={n.id} href={`#${n.id}`} className="inline-flex min-h-11 shrink-0 items-center whitespace-nowrap px-3 text-sm font-bold text-navy-700 hover:text-navy-950">
+              {n.label}
+            </a>
           ))}
-        </ul>
+        </ScrollRow>
       </nav>
 
       <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_380px] lg:items-start lg:gap-6">
