@@ -192,6 +192,21 @@ export interface HotelResult {
   eco?: boolean;
   /** Holiday rentals: "Entire villa", "Sleeps 6", "3 bedrooms"… */
   essential?: string[];
+  /**
+   * Room types, when Google's answer for the one hotel carries them (a
+   * site's offer split by room). Read defensively: absent → none shown.
+   */
+  rooms?: HotelRoom[];
+}
+
+export interface HotelRoom {
+  name: string;
+  source: string;
+  image: string;
+  guests: number | null;
+  perNight: number | null;
+  total: number | null;
+  link: string | null;
 }
 
 export interface HotelSearch {
@@ -202,10 +217,21 @@ export interface HotelSearch {
   checkedAt: string;
   /** A city list's next page (Google gives about 20 hotels a page), if any. */
   nextPage?: string | null;
+  /** Site check only (x-sfrtna-smoke): where the answer mentions rooms — field names, no values. */
+  shape?: string[];
 }
 
 type Rate = { extracted_lowest?: number; extracted_before_taxes_fees?: number } | undefined;
+interface GhRoom {
+  name?: string;
+  link?: string;
+  num_guests?: number;
+  images?: (string | { thumbnail?: string; original_image?: string })[];
+  rate_per_night?: Rate;
+  total_rate?: Rate;
+}
 interface GhPrice {
+  rooms?: GhRoom[];
   source?: string;
   link?: string;
   official?: boolean;
@@ -261,8 +287,50 @@ function offersOf(p: GhProperty): HotelOffer[] {
   return out;
 }
 
+function roomsOf(p: GhProperty): HotelRoom[] {
+  const out: HotelRoom[] = [];
+  const seen = new Set<string>();
+  for (const o of [...(p.featured_prices ?? []), ...(p.prices ?? [])]) {
+    for (const r of Array.isArray(o.rooms) ? o.rooms : []) {
+      const name = str(r?.name, 90);
+      if (!name) continue;
+      const key = `${(o.source || "").trim()}|${name}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      const im = (r.images ?? [])[0];
+      out.push({
+        name,
+        source: (o.source || "").trim(),
+        image: typeof im === "string" ? httpsOnly(im) : httpsOnly(im?.original_image) || httpsOnly(im?.thumbnail),
+        guests: num(r.num_guests),
+        perNight: num(r.rate_per_night?.extracted_lowest),
+        total: num(r.total_rate?.extracted_lowest),
+        link: httpsOnly(r.link) || httpsOnly(o.link) || null,
+      });
+    }
+  }
+  return out.slice(0, 40);
+}
+
+/** Paths of every field whose name mentions rooms (names only), for the site check. */
+function roomPaths(v: unknown, path = "", out: string[] = [], depth = 0): string[] {
+  if (depth > 6 || out.length > 40 || !v || typeof v !== "object") return out;
+  if (Array.isArray(v)) {
+    if (v.length) roomPaths(v[0], `${path}[0]`, out, depth + 1);
+    return out;
+  }
+  for (const [k, x] of Object.entries(v as Record<string, unknown>)) {
+    const here = path ? `${path}.${k}` : k;
+    if (/room|bed|guest/i.test(k)) out.push(`${here}:${Array.isArray(x) ? `array(${x.length})` : typeof x}`);
+    roomPaths(x, here, out, depth + 1);
+  }
+  return out;
+}
+
 function hotelOf(p: GhProperty): HotelResult {
+  const rooms = roomsOf(p);
   return {
+    ...(rooms.length ? { rooms } : {}),
     name: p.name || "",
     token: p.property_token || null,
     stars: num(p.extracted_hotel_class),
@@ -342,6 +410,8 @@ export async function hotelPrices(q: {
    * carries only the cheapest (owner, 20 Oct: "one site only").
    */
   one?: boolean;
+  /** Site check: answer afresh and say where rooms are (field names only). */
+  probe?: boolean;
 }): Promise<HotelSearch | null> {
   if (q.one && !q.token && !q.page) {
     const first = await hotelPrices({ ...q, one: false });
@@ -359,7 +429,7 @@ export async function hotelPrices(q: {
   const rating = q.rating && [7, 8, 9].includes(q.rating) ? q.rating : 0;
   const freeCancel = !rentals && Boolean(q.freeCancel);
   const cacheKey = `serp-hotels5:${q.q.toLowerCase()}:${q.token ?? ""}:${q.checkIn}:${q.checkOut}:${q.adults}:${ages.join(",")}:${currency}:${stars}:${maxPrice}:${q.page ?? ""}:${types.join(".")}:${amen.join(".")}:${rating}:${freeCancel ? 1 : 0}:${rentals ? 1 : 0}`;
-  return cachedJson<HotelSearch>(cacheKey, 6 * 3600, async () => {
+  return cachedJson<HotelSearch>(q.probe ? `probe:${cacheKey}` : cacheKey, q.probe ? 60 : 6 * 3600, async () => {
     const body = await search({
       engine: "google_hotels",
       q: q.q,
@@ -387,7 +457,8 @@ export async function hotelPrices(q: {
     if (!hotels.length || !hotels[0].name) return null;
     const pg = body.serpapi_pagination as { next_page_token?: string } | undefined;
     const nextPage = kind === "list" && typeof pg?.next_page_token === "string" ? pg.next_page_token : null;
-    return { kind, currency, hotels, checkedAt: new Date().toISOString(), nextPage };
+    const shape = q.probe ? [`top:${Object.keys(body).join(",")}`, `featured_prices[0]:${Object.keys((body.featured_prices as object[] | undefined)?.[0] ?? {}).join(",")}`, ...roomPaths(body)] : undefined;
+    return { kind, currency, hotels, checkedAt: new Date().toISOString(), nextPage, ...(shape ? { shape } : {}) };
   });
 }
 

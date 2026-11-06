@@ -45,8 +45,10 @@ export async function GET(req: NextRequest) {
       .map(Number)
       .filter((n) => Number.isInteger(n) && n > 0 && n < 100)
       .slice(0, 10);
+  const smoke = process.env.SMOKE_TOKEN;
+  const probe = Boolean(token && sp.get("probe") === "1" && smoke && req.headers.get("x-sfrtna-smoke") === smoke);
   const result = await hotelPrices({
-    q, checkIn, checkOut, adults, childrenAges, token, minStars, maxPerNight, page, one,
+    q, checkIn, checkOut, adults, childrenAges, token, minStars, maxPerNight, page, one, probe,
     types: list("types"),
     amenities: list("amen"),
     rating: Number(sp.get("rating")) || 0,
