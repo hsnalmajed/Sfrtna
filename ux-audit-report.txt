@@ -1,0 +1,124 @@
+
+## Desktop Chrome · web · /ar  [001-DesktopChrome-web.jpg]
+
+## Desktop Chrome · web · /ar?product=flights#plan  [002-DesktopChrome-web.jpg]
+  WRAPPED: طيران (288×60) | فنادق (288×60) | طيران + فندق (288×60)
+
+## Desktop Chrome · web · /ar?product=hotels#plan  [003-DesktopChrome-web.jpg]
+  WRAPPED: طيران (288×60) | فنادق (288×60) | طيران + فندق (288×60)
+
+## Desktop Chrome · web · /ar?product=combo#plan  [004-DesktopChrome-web.jpg]
+  WRAPPED: طيران (288×60) | فنادق (288×60) | طيران + فندق (288×60)
+
+## Desktop Chrome · web · /ar/attractions  [005-DesktopChrome-web.jpg]
+
+## Desktop Chrome · web · /ar/attractions/TR  [006-DesktopChrome-web.jpg]
+
+## Desktop Chrome · web · /ar/attractions/TR/istanbul  [007-DesktopChrome-web.jpg]
+  CUT: 117 مكان (1/64)
+
+## Desktop Chrome · web · /ar/maps  [008-DesktopChrome-web.jpg]
+
+## Desktop Chrome · web · /ar/maps/TR/istanbul  [009-DesktopChrome-web.jpg]
+  CUT: İstanbul Üniversitesi Atatürk ve Gençlik Anıtı (298/303) | İstanbul Üniversitesi Rıdvan Çelikel Arkeoloji Müz (298/353)
+
+## Desktop Chrome · web · /ar/seasons  [010-DesktopChrome-web.jpg]
+
+## Desktop Chrome · web · /ar/visa  [011-DesktopChrome-web.jpg]
+
+## Desktop Chrome · web · /ar/visa/TR  [012-DesktopChrome-web.jpg]
+
+## Desktop Chrome · web · /ar/currency  [013-DesktopChrome-web.jpg]
+  WRAPPED: SAR — الريال السعودي (240×56) | USD — الدولار الأمريكي (240×56)
+  CUT: من (1/19) | إلى (1/16)
+
+## Desktop Chrome · web · /ar/services  [014-DesktopChrome-web.jpg]
+
+## Desktop Chrome · web · /ar/services?code=TR&city=istanbul  [015-DesktopChrome-web.jpg]
+
+## Desktop Chrome · web · /ar/itinerary  [016-DesktopChrome-web.jpg]
+
+## Desktop Chrome · web · /ar/account  [017-DesktopChrome-web.jpg]
+
+## Desktop Chrome · web · /ar/about  [018-DesktopChrome-web.jpg]
+
+## Desktop Chrome · web · /ar/privacy  [019-DesktopChrome-web.jpg]
+
+## Desktop Chrome · web · /ar/results?tripType=flight&origin=RUH&destination=IST&adults=1&childrenAges=&infants=0&currency=SAR&directOnl  [020-DesktopChrome-web.jpg]
+  WRAPPED: 📋 متطلبات السفر (119×40) | احسب مبلغاً آخر (114×40)
+
+## Desktop Chrome · web · /ar/results?tripType=flight&origin=RUH&destination=IST&adults=2&childrenAges=&infants=0&currency=SAR&directOnl  [021-DesktopChrome-web.jpg]
+  WRAPPED: 📋 متطلبات السفر (119×40) | احسب مبلغاً آخر (114×40)
+
+## Desktop Chrome · web · /ar/discover-results?tripType=flight&origin=RUH&destination=IST&adults=1&childrenAges=&infants=0&currency=SAR&  [022-DesktopChrome-web.jpg]
+
+## Desktop Chrome · web · /ar/hotel-results?hmode=discover&checkIn=2026-12-17&checkOut=2026-12-21&adults=2&childrenAges=&infants=0&city=  [023-DesktopChrome-web.jpg]
+
+## Desktop Chrome · web · /ar/hotel-results?hmode=known&hotel=Hilton+Riyadh+Olaya&hotelArea=Riyadh,+Saudi+Arabia&label=هيلتون+الرياض+الع  [024-DesktopChrome-web.jpg]
+
+## Desktop Chrome · web · /en  [025-DesktopChrome-web.jpg]
+
+## Desktop Chrome · web · /en/attractions/TR/istanbul  [026-DesktopChrome-web.jpg]
+  CUT: 117 places (1/81)
+
+## Desktop Chrome · app · /ar  [027-DesktopChrome-app.jpg]
+
+## Desktop Chrome · app · /ar?product=flights#plan  [028-DesktopChrome-app.jpg]
+  WRAPPED: طيران (288×60) | فنادق (288×60) | طيران + فندق (288×60)
+
+## Desktop Chrome · app · /ar?product=hotels#plan  [029-DesktopChrome-app.jpg]
+  WRAPPED: طيران (288×60) | فنادق (288×60) | طيران + فندق (288×60)
+
+## Desktop Chrome · app · /ar?product=combo#plan  [030-DesktopChrome-app.jpg]
+  WRAPPED: طيران (288×60) | فنادق (288×60) | طيران + فندق (288×60)
+
+## Desktop Chrome · app · /ar/attractions  [031-DesktopChrome-app.jpg]
+
+## Desktop Chrome · app · /ar/attractions/TR  [032-DesktopChrome-app.jpg]
+
+## Desktop Chrome · app · /ar/attractions/TR/istanbul  [033-DesktopChrome-app.jpg]
+  CUT: 117 مكان (1/64)
+
+## Desktop Chrome · app · /ar/maps  [034-DesktopChrome-app.jpg]
+
+## Desktop Chrome · app · /ar/maps/TR/istanbul  [035-DesktopChrome-app.jpg]
+  CUT: İstanbul Üniversitesi Atatürk ve Gençlik Anıtı (298/303) | İstanbul Üniversitesi Rıdvan Çelikel Arkeoloji Müz (298/353)
+
+## Desktop Chrome · app · /ar/seasons  [036-DesktopChrome-app.jpg]
+
+## Desktop Chrome · app · /ar/visa  [037-DesktopChrome-app.jpg]
+
+## Desktop Chrome · app · /ar/visa/TR  [038-DesktopChrome-app.jpg]
+
+## Desktop Chrome · app · /ar/currency  [039-DesktopChrome-app.jpg]
+  WRAPPED: SAR — الريال السعودي (240×56) | USD — الدولار الأمريكي (240×56)
+  CUT: من (1/19) | إلى (1/16)
+
+## Desktop Chrome · app · /ar/services  [040-DesktopChrome-app.jpg]
+
+## Desktop Chrome · app · /ar/services?code=TR&city=istanbul  [041-DesktopChrome-app.jpg]
+
+## Desktop Chrome · app · /ar/itinerary  [042-DesktopChrome-app.jpg]
+
+## Desktop Chrome · app · /ar/account  [043-DesktopChrome-app.jpg]
+
+## Desktop Chrome · app · /ar/about  [044-DesktopChrome-app.jpg]
+
+## Desktop Chrome · app · /ar/privacy  [045-DesktopChrome-app.jpg]
+
+## Desktop Chrome · app · /ar/results?tripType=flight&origin=RUH&destination=IST&adults=1&childrenAges=&infants=0&currency=SAR&directOnl  [046-DesktopChrome-app.jpg]
+  WRAPPED: 📋 متطلبات السفر (119×40) | احسب مبلغاً آخر (114×40)
+
+## Desktop Chrome · app · /ar/results?tripType=flight&origin=RUH&destination=IST&adults=2&childrenAges=&infants=0&currency=SAR&directOnl  [047-DesktopChrome-app.jpg]
+  WRAPPED: 📋 متطلبات السفر (119×40) | احسب مبلغاً آخر (114×40)
+
+## Desktop Chrome · app · /ar/discover-results?tripType=flight&origin=RUH&destination=IST&adults=1&childrenAges=&infants=0&currency=SAR&  [048-DesktopChrome-app.jpg]
+
+## Desktop Chrome · app · /ar/hotel-results?hmode=discover&checkIn=2026-12-17&checkOut=2026-12-21&adults=2&childrenAges=&infants=0&city=  [049-DesktopChrome-app.jpg]
+
+## Desktop Chrome · app · /ar/hotel-results?hmode=known&hotel=Hilton+Riyadh+Olaya&hotelArea=Riyadh,+Saudi+Arabia&label=هيلتون+الرياض+الع  [050-DesktopChrome-app.jpg]
+
+## Desktop Chrome · app · /en  [051-DesktopChrome-app.jpg]
+
+## Desktop Chrome · app · /en/attractions/TR/istanbul  [052-DesktopChrome-app.jpg]
+  CUT: 117 places (1/81)
