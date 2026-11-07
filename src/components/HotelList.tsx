@@ -531,7 +531,9 @@ export default function HotelList({
           locale={c.locale}
         />
         <span className="text-xs font-semibold text-navy-500">
-          {activeCount(facets) ? fx.showing.replace("{n}", String(hotels.length)).replace("{m}", String(totalHeld)) : (nextToken && !extra.ended ? t.hotelsCountMore : t.hotelsCount).replace("{count}", String(hotels.length))}
+          {activeCount(facets) ? fx.showing.replace("{n}", String(hotels.length)).replace("{m}", String(totalHeld)) : (result?.total && nextToken && !extra.ended
+              ? t.hotelsOfTotal.replace("{total}", result.total.toLocaleString(locale === "ar" ? "ar-SA-u-nu-latn" : "en-US")).replace("{count}", String(hotels.length))
+              : (nextToken && !extra.ended ? t.hotelsCountMore : t.hotelsCount).replace("{count}", String(hotels.length)))}
         </span>
         {c.nights > 1 && (
           <div className="ms-auto flex rounded-full bg-mist-100 p-1 text-xs font-bold" role="group" aria-label={t.priceShowLabel}>
@@ -575,7 +577,7 @@ export default function HotelList({
           className="flex w-full items-center justify-center gap-2 rounded-xl bg-white px-4 py-3 text-sm font-extrabold text-navy-900 ring-1 ring-mist-200 transition hover:ring-navy-300 disabled:opacity-60"
         >
           {extra.busy && <span className="h-4 w-4 animate-spin rounded-full border-2 border-navy-200 border-t-sun-500" aria-hidden="true" />}
-          {t.moreHotels.replace("{count}", String(hotels.length))}
+          {result?.total ? t.moreHotelsOf.replace("{count}", String(hotels.length)).replace("{total}", result.total.toLocaleString(locale === "ar" ? "ar-SA-u-nu-latn" : "en-US")) : t.moreHotels.replace("{count}", String(hotels.length))}
         </button>
       )}
       {extra.ended && <p className="text-center text-xs font-semibold text-navy-600">{t.moreHotelsLater}</p>}

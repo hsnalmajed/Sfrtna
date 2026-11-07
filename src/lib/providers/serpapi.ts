@@ -247,6 +247,8 @@ export interface HotelSearch {
   checkedAt: string;
   /** A city list's next page (Google gives about 20 hotels a page), if any. */
   nextPage?: string | null;
+  /** How many hotels Google holds for this city search (all pages), if it says. */
+  total?: number | null;
   /** Site check only (x-sfrtna-smoke): where the answer mentions rooms — field names, no values. */
   shape?: string[];
 }
@@ -549,7 +551,11 @@ export async function hotelPrices(q: {
           sample("health_and_safety", body.health_and_safety, 300),
         ]
       : undefined;
-    return { kind, currency, hotels, checkedAt: new Date().toISOString(), nextPage, ...(shape ? { shape } : {}) };
+    // Google's count for the whole search (every page): «3,040 فندقاً».
+    const si = body.search_information as { total_results?: unknown } | undefined;
+    const totalRaw = typeof si?.total_results === "number" ? si.total_results : Number(String(si?.total_results ?? "").replace(/[^0-9]/g, ""));
+    const total = kind === "list" && Number.isFinite(totalRaw) && totalRaw > hotels.length ? Math.round(totalRaw) : null;
+    return { kind, currency, hotels, checkedAt: new Date().toISOString(), nextPage, ...(total ? { total } : {}), ...(shape ? { shape } : {}) };
   });
 }
 

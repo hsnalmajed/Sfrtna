@@ -536,8 +536,7 @@ function HotelDetail({
   const hasReviews = Boolean((hotel.topics ?? []).some((x) => x.positive + x.negative > 0) || (hotel.ratingsHist ?? []).some((r) => r.count > 0));
   const nav = [
     { id: "hotel-overview", label: t.navOverview, show: true },
-    { id: "hotel-prices", label: t.navPrices, show: true },
-    { id: "hotel-rooms", label: t.navRooms, show: rooms.length > 0 },
+    { id: "hotel-prices", label: rooms.length ? t.navRooms : t.navPrices, show: true },
     { id: "hotel-reviews", label: t.navReviews, show: hasReviews },
     { id: "hotel-location", label: t.navLocation, show: nearby.length > 0 || hasMap },
     { id: "hotel-facilities", label: t.navFacilities, show: amenities.length > 0 || groups.length > 0 },
@@ -618,7 +617,7 @@ function HotelDetail({
                   )}
                   {offers.length > 1 && (
                     <a href="#hotel-prices" className="mt-3 flex min-h-11 items-center justify-center gap-1.5 rounded-xl bg-navy-900 px-4 text-sm font-extrabold text-white hover:bg-navy-800">
-                      {t.compareSites.replace("{count}", String(offers.length))}
+                      {rooms.length ? t.seeRoomsCount.replace("{n}", String(new Set(rooms.map((r) => r.name)).size)) : t.compareSites.replace("{count}", String(offers.length))}
                     </a>
                   )}
                   {checking && (
@@ -682,39 +681,50 @@ function HotelDetail({
           </section>
         )}
 
-        {/* 5 · Every site's price with «احجز» beside it; rooms when Google gives them. */}
-        <section id="hotel-prices" className={box}>
-          <h3 className={h3}>{t.pricesTitle}</h3>
-          <p className="mb-4 mt-1 text-sm text-navy-600">{t.allSitesSub}</p>
-          <PriceRows hotel={hotel} c={c} checkedAt={checkedAt} expanded />
-          {!offers.length && c.alternatives && (
-            <a
-              href={c.alternatives.href}
-              className="mt-4 flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-sun-400 px-4 text-sm font-extrabold text-navy-950 shadow-[var(--shadow-sun)] hover:bg-sun-300"
-            >
-              {t.cityAlternatives.replace("{city}", c.alternatives.city)}
-              {arrow}
-            </a>
-          )}
-          {rooms.length === 0 && best?.url && (
-            <PartnerLink
-              partner={best.partner}
-              href={best.url}
-              className="mt-4 flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-white px-4 text-sm font-extrabold text-navy-900 ring-1 ring-mist-300 transition hover:ring-navy-400"
-            >
-              <span aria-hidden="true">🛏️</span>
-              {t.seeRooms}
-              <bdi className="font-semibold text-navy-500">({best.label})</bdi>
-              {arrow}
-            </PartnerLink>
-          )}
-          {rooms.length === 0 && <p className="mt-2 text-[11px] leading-relaxed text-navy-500">{t.roomsAtSite}</p>}
-        </section>
-
-        {/* 5b · Rooms, Booking's «Availability»: each room and its options. */}
-        {rooms.length > 0 && (
-          <section id="hotel-rooms" className={box}>
-            <RoomsTable rooms={rooms} offers={offers} c={c} />
+        {/* 5 · Rooms and prices, once (owner, 7 Nov: two price lists confused).
+            With Google's rooms: each room at its lowest price and «اختر», which
+            opens that room's booking details (every site, «احجز»). Without: the
+            hotel's price on every site. */}
+        {rooms.length > 0 ? (
+          <section id="hotel-prices" className={box}>
+            <RoomsTable rooms={rooms} offers={offers} c={c} hotelName={(locale === "ar" && hotel.nameAr) || hotel.name} />
+            <details className="group mt-5 rounded-xl ring-1 ring-mist-200">
+              <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-2 px-4 text-sm font-bold text-navy-800 hover:bg-mist-50">
+                {t.anyRoomPrices.replace("{n}", String(offers.length))}
+                <span aria-hidden="true" className="transition group-open:rotate-180">▾</span>
+              </summary>
+              <div className="border-t border-mist-200 p-3">
+                <PriceRows hotel={hotel} c={c} checkedAt={checkedAt} expanded />
+              </div>
+            </details>
+          </section>
+        ) : (
+          <section id="hotel-prices" className={box}>
+            <h3 className={h3}>{t.pricesTitle}</h3>
+            <p className="mb-4 mt-1 text-sm text-navy-600">{t.allSitesSub}</p>
+            <PriceRows hotel={hotel} c={c} checkedAt={checkedAt} expanded />
+            {!offers.length && c.alternatives && (
+              <a
+                href={c.alternatives.href}
+                className="mt-4 flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-sun-400 px-4 text-sm font-extrabold text-navy-950 shadow-[var(--shadow-sun)] hover:bg-sun-300"
+              >
+                {t.cityAlternatives.replace("{city}", c.alternatives.city)}
+                {arrow}
+              </a>
+            )}
+            {best?.url && (
+              <PartnerLink
+                partner={best.partner}
+                href={best.url}
+                className="mt-4 flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-white px-4 text-sm font-extrabold text-navy-900 ring-1 ring-mist-300 transition hover:ring-navy-400"
+              >
+                <span aria-hidden="true">🛏️</span>
+                {t.seeRooms}
+                <bdi className="font-semibold text-navy-500">({best.label})</bdi>
+                {arrow}
+              </PartnerLink>
+            )}
+            <p className="mt-2 text-[11px] leading-relaxed text-navy-500">{t.roomsAtSite}</p>
           </section>
         )}
 
@@ -827,25 +837,21 @@ function cancelDate(d: string, checkIn: string, locale: "ar" | "en"): string {
   return new Date(Date.UTC(y, mi, Number(m[2]))).toLocaleDateString(locale === "ar" ? "ar-SA-u-ca-gregory-nu-latn" : "en-GB", { day: "numeric", month: "long", timeZone: "UTC" });
 }
 
+type RoomOpt = { key: string; source: string; link: string | null; total: number; freeCancel: boolean; cancelUntil: string | null; breakfast: boolean };
+type RoomRow = { name: string; image: string; guests: number | null; opts: RoomOpt[] };
+
 /**
- * Room types, as Booking lists them (owner, 7 Nov): one row a room — its
- * photo, who it sleeps — and under it the room's options from every site,
- * cheapest first, each with what it includes (free cancellation, breakfast)
- * and «احجز» beside it. Only what Google's answer carried.
+ * Rooms as Booking lists them (owner, 7 Nov): one line a room — its photo,
+ * who it sleeps, what its cheapest option includes, the lowest price on
+ * any site — and «اختر». «اختر» opens the room's booking details, like a
+ * flight's: the stay, then every site's price for that room with what it
+ * includes and «احجز», which goes to that site.
  */
-function RoomsTable({ rooms, offers, c }: { rooms: NonNullable<HotelResult["rooms"]>; offers: SiteOffer[]; c: Common }) {
+function RoomsTable({ rooms, offers, c, hotelName }: { rooms: NonNullable<HotelResult["rooms"]>; offers: SiteOffer[]; c: Common; hotelName: string }) {
   const { t, locale } = c;
-  const [more, setMore] = useState<Record<string, boolean>>({});
   const [allRooms, setAllRooms] = useState(false);
-  // A partner's room opens through our partner link (it lands on the hotel and
-  // earns); any other site's room through Google's own link to that room.
-  const linkFor = (source: string, link: string | null) => {
-    const p = PARTNERS.find((x) => x.match.test(source));
-    const o = p ? offers.find((x) => x.earns && x.partner === p.partner) : undefined;
-    return o?.url ? { url: o.url, partner: o.partner, label: p?.label ?? source } : link ? { url: link, partner: source || "hotel", label: source } : null;
-  };
-  type Opt = { key: string; source: string; link: string | null; total: number; guests: number | null; freeCancel: boolean; cancelUntil: string | null; breakfast: boolean };
-  const byName = new Map<string, { name: string; image: string; guests: number | null; opts: Opt[] }>();
+  const [picked, setPicked] = useState<RoomRow | null>(null);
+  const byName = new Map<string, RoomRow>();
   for (const r of rooms) {
     const row = byName.get(r.name) ?? { name: r.name, image: "", guests: null, opts: [] };
     row.image ||= r.image;
@@ -854,7 +860,7 @@ function RoomsTable({ rooms, offers, c }: { rooms: NonNullable<HotelResult["room
     rates.forEach((x, i) => {
       const one = x.total ?? (x.perNight ? x.perNight * c.nights : null);
       if (!one) return;
-      row.opts.push({ key: `${r.source}-${i}`, source: r.source, link: r.link, total: forRooms(one, c), guests: x.guests ?? r.guests, freeCancel: x.freeCancel, cancelUntil: x.cancelUntil, breakfast: x.breakfast });
+      row.opts.push({ key: `${r.source}-${i}`, source: r.source, link: r.link, total: forRooms(one, c), freeCancel: x.freeCancel, cancelUntil: x.cancelUntil, breakfast: x.breakfast });
     });
     byName.set(r.name, row);
   }
@@ -863,91 +869,72 @@ function RoomsTable({ rooms, offers, c }: { rooms: NonNullable<HotelResult["room
     .map((r) => ({ ...r, opts: r.opts.sort((a, b) => a.total - b.total) }))
     .sort((a, b) => a.opts[0].total - b.opts[0].total);
   if (!rows.length) return null;
+  const shown = allRooms ? rows : rows.slice(0, 6);
   return (
     <div>
-      <div className="mb-3 flex items-baseline justify-between gap-2">
+      <div className="mb-1 flex items-baseline justify-between gap-2">
         <h3 className="font-display text-lg font-extrabold text-navy-950">{t.roomsTitle}</h3>
         <p className="text-xs font-bold text-navy-500">{t.roomTypesCount.replace("{n}", String(rows.length))}</p>
       </div>
-      <ul className="space-y-3">
-        {(allRooms ? rows : rows.slice(0, 6)).map((r) => {
-          const open = more[r.name];
-          const shown = open ? r.opts.slice(0, 12) : r.opts.slice(0, 2);
+      <p className="mb-4 text-sm text-navy-600">{t.roomsSub.replace("{nights}", c.nights === 1 ? t.stayTotalOne : nightsLabel(c.nights, t))}</p>
+      <ul className="divide-y divide-mist-200 overflow-hidden rounded-2xl ring-1 ring-mist-300">
+        {shown.map((r) => {
+          const low = r.opts[0];
+          const sites = new Set(r.opts.map((o) => o.source)).size;
+          const anyCancel = r.opts.some((o) => o.freeCancel);
+          const anyBreakfast = r.opts.some((o) => o.breakfast);
           return (
-            <li key={r.name} className="overflow-hidden rounded-2xl ring-1 ring-mist-300">
-              <div className="flex items-center gap-3 bg-mist-50 p-3">
+            <li key={r.name} className="flex flex-col gap-3 bg-white p-3 transition hover:bg-mist-50/60 sm:flex-row sm:items-center sm:p-4">
+              <div className="flex min-w-0 flex-1 items-center gap-3">
                 {r.image ? (
-                  <Photo src={r.image} alt="" className="h-20 w-28 shrink-0 rounded-xl" />
+                  <Photo src={r.image} alt="" className="h-20 w-28 shrink-0 rounded-xl sm:h-24 sm:w-32" />
                 ) : (
-                  <span className="grid h-20 w-28 shrink-0 place-items-center rounded-xl bg-mist-200 text-2xl" aria-hidden="true">
+                  <span className="grid h-20 w-28 shrink-0 place-items-center rounded-xl bg-mist-100 text-2xl sm:h-24 sm:w-32" aria-hidden="true">
                     🛏️
                   </span>
                 )}
-                <div className="min-w-0">
-                  <p className="font-display text-sm font-extrabold leading-snug text-sea-900" dir="auto">
+                <div className="min-w-0 space-y-1">
+                  <p className="font-display text-[15px] font-extrabold leading-snug text-sea-900" dir="auto">
                     <bdi>{r.name}</bdi>
                   </p>
                   {r.guests ? (
-                    <p className="mt-1 inline-flex items-center gap-1 text-xs font-semibold text-navy-600">
+                    <p className="inline-flex items-center gap-1 text-xs font-semibold text-navy-600">
                       <span aria-hidden="true">👤</span>
                       {t.roomGuests.replace("{n}", String(r.guests))}
                     </p>
                   ) : null}
+                  {(anyCancel || anyBreakfast) && (
+                    <ul className="flex flex-wrap gap-x-3 gap-y-0.5 text-xs font-bold text-sea-800">
+                      {anyCancel && (
+                        <li className="inline-flex items-center gap-1">
+                          <Icon name="check" className="h-3 w-3" />
+                          {t.freeCancelOption}
+                        </li>
+                      )}
+                      {anyBreakfast && (
+                        <li className="inline-flex items-center gap-1">
+                          <Icon name="check" className="h-3 w-3" />
+                          {t.breakfastOption}
+                        </li>
+                      )}
+                    </ul>
+                  )}
                 </div>
               </div>
-              <ul className="divide-y divide-mist-200">
-                {shown.map((o) => {
-                  const go = linkFor(o.source, o.link);
-                  return (
-                    <li key={o.key} className="flex items-center justify-between gap-3 p-3">
-                      <div className="min-w-0 flex-1 space-y-1">
-                        {/* Only what Google says the option includes: no badge is "not said", not "no". */}
-                        {(o.freeCancel || o.breakfast) && (
-                          <ul className="flex flex-wrap gap-1.5">
-                            {o.freeCancel && (
-                              <li className="inline-flex items-center gap-1 rounded-full bg-sea-50 px-2 py-0.5 text-[11px] font-extrabold text-sea-800 ring-1 ring-sea-200">
-                                <Icon name="check" className="h-3 w-3" />
-                                {o.cancelUntil ? t.freeCancelUntil.replace("{date}", cancelDate(o.cancelUntil, c.checkIn, locale)) : t.freeCancel}
-                              </li>
-                            )}
-                            {o.breakfast && (
-                              <li className="inline-flex items-center gap-1 rounded-full bg-sea-50 px-2 py-0.5 text-[11px] font-extrabold text-sea-800 ring-1 ring-sea-200">
-                                <span aria-hidden="true">🍳</span>
-                                {t.breakfastIncluded}
-                              </li>
-                            )}
-                          </ul>
-                        )}
-                        <p className="text-xs font-bold text-navy-600">
-                          <bdi>{go?.label || o.source}</bdi>
-                        </p>
-                      </div>
-                      <div className="flex shrink-0 items-center gap-3">
-                        <div className="text-end">
-                          <p className="whitespace-nowrap font-display text-lg font-extrabold leading-tight text-navy-950">{money(o.total, locale)}</p>
-                          <p className="text-[11px] text-navy-500">{c.nights === 1 ? t.stayTotalOne : t.stayTotal.replace("{nights}", nightsLabel(c.nights, t))}</p>
-                        </div>
-                        {go && (
-                          <PartnerLink partner={go.partner} href={go.url} className="inline-flex min-h-11 shrink-0 items-center rounded-xl bg-sun-400 px-4 text-sm font-extrabold text-navy-950 shadow-[var(--shadow-sun)] hover:bg-sun-300">
-                            {t.bookNow}
-                          </PartnerLink>
-                        )}
-                      </div>
-                    </li>
-                  );
-                })}
-              </ul>
-              {r.opts.length > 2 && (
+              <div className="flex items-center justify-between gap-4 border-t border-mist-100 pt-3 sm:justify-end sm:border-0 sm:pt-0">
+                <div className="text-start sm:text-end">
+                  <p className="text-[11px] font-semibold text-navy-500">{t.roomFrom.replace("{n}", String(sites))}</p>
+                  <p className="whitespace-nowrap font-display text-xl font-black leading-tight text-navy-950">{money(low.total, locale)}</p>
+                </div>
                 <button
                   type="button"
-                  onClick={() => setMore((m) => ({ ...m, [r.name]: !open }))}
-                  aria-expanded={Boolean(open)}
-                  className="flex min-h-11 w-full items-center justify-center gap-1 border-t border-mist-200 text-sm font-bold text-sea-800 hover:bg-sea-50"
+                  onClick={() => setPicked(r)}
+                  className="inline-flex min-h-12 min-w-[112px] items-center justify-center gap-1.5 rounded-xl bg-sun-400 px-5 text-base font-extrabold text-navy-950 shadow-[var(--shadow-sun)] transition hover:bg-sun-300"
                 >
-                  {open ? t.fewerRoomOptions : t.moreRoomOptions.replace("{n}", String(Math.min(12, r.opts.length) - 2))}
-                  <span aria-hidden="true">{open ? "▴" : "▾"}</span>
+                  {t.choose}
+                  <span aria-hidden="true">{locale === "ar" ? "←" : "→"}</span>
                 </button>
-              )}
+              </div>
             </li>
           );
         })}
@@ -963,6 +950,110 @@ function RoomsTable({ rooms, offers, c }: { rooms: NonNullable<HotelResult["room
           <span aria-hidden="true">{allRooms ? "▴" : "▾"}</span>
         </button>
       )}
+      {picked && <RoomBooking room={picked} offers={offers} c={c} hotelName={hotelName} onClose={() => setPicked(null)} />}
+    </div>
+  );
+}
+
+/** One room's booking details: the stay, then every site's price and «احجز». */
+function RoomBooking({ room, offers, c, hotelName, onClose }: { room: RoomRow; offers: SiteOffer[]; c: Common; hotelName: string; onClose: () => void }) {
+  const { t, locale } = c;
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = prev;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [onClose]);
+  // A partner's room opens through our partner link (lands on the hotel and
+  // earns); another site's through Google's link to that room.
+  const linkFor = (o: RoomOpt) => {
+    const p = PARTNERS.find((x) => x.match.test(o.source));
+    const offer = p ? offers.find((x) => x.earns && x.partner === p.partner) : undefined;
+    return offer?.url ? { url: offer.url, partner: offer.partner, label: p?.label ?? o.source } : o.link ? { url: o.link, partner: o.source || "hotel", label: o.source } : null;
+  };
+  const opts = room.opts.slice(0, 15);
+  const dateFmt = (d: string) =>
+    new Date(`${d}T00:00:00Z`).toLocaleDateString(locale === "ar" ? "ar-SA-u-ca-gregory-nu-latn" : "en-GB", { weekday: "short", day: "numeric", month: "long", timeZone: "UTC" });
+  return (
+    <div className="fixed inset-0 z-[90] flex items-end justify-center sm:items-center sm:p-6" role="dialog" aria-modal="true" aria-label={room.name}>
+      <button type="button" aria-label={t.closePhotos} onClick={onClose} className="absolute inset-0 bg-navy-950/60 backdrop-blur-[2px]" />
+      <div className="relative flex max-h-[90svh] w-full flex-col overflow-hidden rounded-t-3xl bg-white shadow-2xl sm:max-w-2xl sm:rounded-3xl">
+        <div className="flex items-center justify-between gap-3 border-b border-mist-200 px-5 py-3.5">
+          <p className="font-display text-lg font-extrabold text-navy-950">{t.bookingDetails}</p>
+          <button type="button" autoFocus onClick={onClose} aria-label={t.closePhotos} className="grid h-10 w-10 place-items-center rounded-full bg-mist-100 text-navy-700 hover:bg-mist-200">
+            ✕
+          </button>
+        </div>
+        <div className="min-h-0 flex-1 overflow-y-auto">
+          {/* The stay: the room, the hotel, the dates and the party. */}
+          <div className="flex gap-4 bg-mist-50 px-5 py-4">
+            {room.image ? <Photo src={room.image} alt="" className="h-20 w-28 shrink-0 rounded-xl" /> : null}
+            <div className="min-w-0 space-y-1">
+              <p className="font-display text-base font-extrabold leading-snug text-navy-950" dir="auto">
+                <bdi>{room.name}</bdi>
+              </p>
+              <p className="text-sm font-bold text-sea-800">
+                <bdi>{hotelName}</bdi>
+              </p>
+              <p className="text-xs font-semibold text-navy-600">
+                <bdi>{dateFmt(c.checkIn)}</bdi> ← <bdi>{dateFmt(c.checkOut)}</bdi> · {c.nights === 1 ? t.stayTotalOne : nightsLabel(c.nights, t)}
+                {room.guests ? <> · {t.roomGuests.replace("{n}", String(room.guests))}</> : null}
+              </p>
+            </div>
+          </div>
+
+          <div className="px-5 py-4">
+            <p className="mb-3 text-sm font-extrabold text-navy-950">{t.roomSitesTitle.replace("{n}", String(opts.length))}</p>
+            <ul className="space-y-2.5">
+              {opts.map((o, i) => {
+                const go = linkFor(o);
+                return (
+                  <li key={o.key} className={`flex items-center justify-between gap-3 rounded-2xl p-3.5 ring-1 ${i === 0 ? "bg-sun-50/60 ring-sun-300" : "bg-white ring-mist-200"}`}>
+                    <div className="min-w-0 space-y-1">
+                      <p className="flex flex-wrap items-center gap-2 text-sm font-extrabold text-navy-950">
+                        <bdi>{go?.label || o.source}</bdi>
+                        {i === 0 && <span className="rounded-full bg-sun-400 px-2 py-0.5 text-[10px] font-extrabold text-navy-950">{t.cheapest}</span>}
+                      </p>
+                      {(o.freeCancel || o.breakfast) && (
+                        <ul className="flex flex-wrap gap-x-3 gap-y-0.5 text-xs font-bold text-sea-800">
+                          {o.freeCancel && (
+                            <li className="inline-flex items-center gap-1">
+                              <Icon name="check" className="h-3 w-3" />
+                              {o.cancelUntil ? t.freeCancelUntil.replace("{date}", cancelDate(o.cancelUntil, c.checkIn, locale)) : t.freeCancel}
+                            </li>
+                          )}
+                          {o.breakfast && (
+                            <li className="inline-flex items-center gap-1">
+                              <Icon name="check" className="h-3 w-3" />
+                              {t.breakfastIncluded}
+                            </li>
+                          )}
+                        </ul>
+                      )}
+                    </div>
+                    <div className="flex shrink-0 items-center gap-3">
+                      <div className="text-end">
+                        <p className="whitespace-nowrap font-display text-lg font-black leading-tight text-navy-950">{money(o.total, locale)}</p>
+                        <p className="text-[11px] text-navy-500">{t.taxesIncluded}</p>
+                      </div>
+                      {go && (
+                        <PartnerLink partner={go.partner} href={go.url} className="inline-flex min-h-11 items-center rounded-xl bg-navy-900 px-4 text-sm font-extrabold text-white hover:bg-navy-800">
+                          {t.bookNow}
+                        </PartnerLink>
+                      )}
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+            <p className="mt-4 text-[11px] leading-relaxed text-navy-500">{t.roomBookingNote}</p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
