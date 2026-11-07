@@ -34,7 +34,7 @@ import {
   type Facets,
   type Facility,
 } from "@/lib/hotelFacets";
-import { PriceRows, Photo, Rating, Shimmer, Stars, money, forRooms, rememberHotel, type Common } from "@/components/HotelPrices";
+import { PriceRows, Photo, Shimmer, Stars, money, forRooms, ratingWord, rememberHotel, type Common } from "@/components/HotelPrices";
 import { AMENITY_CODE, BREAKFAST_CODE, NO_HOTEL_PREFS, PLACE_TYPE_CODE, type HotelPrefs } from "@/lib/hotelPrefs";
 import { useDictionary } from "@/lib/dict/context";
 import { track } from "@/lib/analytics";
@@ -638,132 +638,130 @@ function HotelCard({
   const key = keyAmenities(hotel.amenities, locale);
   const others = otherAmenities(hotel.amenities, locale, 40);
   const [allServices, setAllServices] = useState(false);
-  const shownOthers = allServices ? others : others.slice(0, 6);
   const name = (locale === "ar" && hotel.nameAr) || hotel.name;
   const choose = () => {
     rememberHotel(hotel);
     track("hotel_select", { hotel: hotel.name });
   };
   const shownPrice = total == null ? null : perNight && c.nights > 1 ? total / c.nights : total;
+  // The frame shows the services that decide a booking (breakfast, wifi,
+  // parking, pool…) on one line each; everything else is a tap away, so the
+  // card stays calm (owner, 7 Nov: «مستوانا احترافي ومرتب»).
+  const lead = key.slice(0, 6);
+  const rest = [...key.slice(6).map((k) => k.label), ...others];
+  const word = hotel.rating ? ratingWord(hotel.rating, t) : "";
+  const kmText = distance == null ? "" : distance < 10 ? distance.toFixed(1) : String(Math.round(distance));
   return (
-    <article className="overflow-hidden rounded-2xl bg-white shadow-[0_1px_3px_rgb(10_30_60/0.08)] ring-1 ring-mist-300 transition hover:shadow-[0_10px_30px_-12px_rgb(10_30_60/0.3)] hover:ring-navy-300">
-      <div className="grid sm:grid-cols-[240px_minmax(0,1fr)] lg:grid-cols-[250px_minmax(0,1fr)_190px]">
-        {/* Photos: swipe or the arrows; tap opens the hotel's page. */}
+    <article className="group/card overflow-hidden rounded-2xl bg-white shadow-[0_1px_2px_rgb(10_30_60/0.06)] ring-1 ring-mist-300 transition duration-200 hover:-translate-y-0.5 hover:shadow-[0_14px_34px_-14px_rgb(10_30_60/0.35)] hover:ring-navy-300">
+      <div className="grid sm:grid-cols-[220px_minmax(0,1fr)] xl:grid-cols-[250px_minmax(0,1fr)_200px]">
+        {/* 1 · Photos: swipe or arrows; a tap opens the hotel's page. */}
         <CardPhotos hotel={hotel} href={href} onOpen={choose} t={t} locale={locale} />
 
-        {/* The hotel: name, rating, the framed services, the distance. */}
-        <div className="flex min-w-0 flex-col gap-2.5 p-4">
-          <div className="flex items-start justify-between gap-3">
-            <div className="min-w-0">
-              <h3 className="font-display text-lg font-extrabold leading-snug text-sea-900">
-                <a href={href} onClick={choose} className="hover:underline">
-                  <bdi>{name}</bdi>
-                </a>
-              </h3>
-              <div className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-0.5">
-                <Stars count={hotel.stars} className="text-xs" />
-                {locale === "ar" && hotel.nameAr && (
-                  <span className="text-xs font-semibold text-navy-500" dir="ltr">
-                    {hotel.name}
-                  </span>
-                )}
-              </div>
+        {/* 2 · The hotel: name, where it is, the framed services. */}
+        <div className="flex min-w-0 flex-col gap-3 p-4 sm:p-5">
+          <div className="min-w-0">
+            <div className="flex items-center gap-2">
+              <Stars count={hotel.stars} className="text-xs" />
+              {hotel.eco && <span className="rounded-full bg-sea-50 px-2 py-0.5 text-[10px] font-extrabold text-sea-800 ring-1 ring-sea-200">{hp.ecoBadge}</span>}
             </div>
-            <div className="shrink-0 lg:hidden">
-              <Rating hotel={hotel} c={c} />
-            </div>
+            <h3 className="mt-0.5 font-display text-lg font-extrabold leading-snug text-navy-950">
+              <a href={href} onClick={choose} className="decoration-2 underline-offset-4 hover:text-sea-800 hover:underline">
+                <bdi>{name}</bdi>
+              </a>
+            </h3>
+            {locale === "ar" && hotel.nameAr && (
+              <p className="truncate text-xs font-semibold text-navy-400" dir="ltr">
+                {hotel.name}
+              </p>
+            )}
           </div>
 
-          <ul className="flex flex-wrap gap-x-3 gap-y-1 text-xs font-semibold text-navy-600">
+          <ul className="space-y-1 text-[13px] text-navy-700">
             {distance != null && (
-              <li className="inline-flex items-center gap-1 font-bold text-navy-800">
-                <Icon name="pin" className="h-3.5 w-3.5 text-sea-700" />
-                {fromPlace
-                  ? t.fromPlace.replace("{km}", distance < 10 ? distance.toFixed(1) : String(Math.round(distance))).replace("{city}", cityName)
-                  : t.fromCentreShort.replace("{km}", distance < 10 ? distance.toFixed(1) : String(Math.round(distance)))}
+              <li className="flex items-center gap-1.5">
+                <Icon name="pin" className="h-4 w-4 shrink-0 text-sea-700" />
+                <span className="font-bold text-navy-900">
+                  {fromPlace ? t.fromPlace.replace("{km}", kmText).replace("{city}", cityName) : t.fromCentreShort.replace("{km}", kmText)}
+                </span>
+                {hotel.locationRating ? (
+                  <span className="text-xs font-bold text-sea-800">· {hp.locationScore.replace("{r}", hotel.locationRating.toFixed(1))}</span>
+                ) : null}
               </li>
             )}
-            {hotel.locationRating != null && hotel.locationRating > 0 && (
-              <li className="font-bold text-sea-800">{hp.locationScore.replace("{r}", hotel.locationRating.toFixed(1))}</li>
-            )}
             {hotel.nearby?.[0] && (
-              <li className="inline-flex items-center gap-1">
-                <span aria-hidden="true">🚶</span>
-                {nearbyText(hotel.nearby[0], hp.nearbyLine, locale)}
+              <li className="flex items-center gap-1.5 text-xs">
+                <span aria-hidden="true" className="w-4 text-center">🚶</span>
+                <span className="truncate">{nearbyText(hotel.nearby[0], hp.nearbyLine, locale)}</span>
               </li>
             )}
           </ul>
 
-          {(key.length > 0 || others.length > 0 || hotel.eco) && (
-            <div className="rounded-xl border border-sea-200 bg-sea-50/40 p-3">
-              <p className="mb-2 text-[11px] font-extrabold text-sea-900">{t.servicesTitle}</p>
-              {key.length > 0 && (
-                <ul className="grid grid-cols-2 gap-x-3 gap-y-1.5 sm:grid-cols-3">
-                  {key.map((k) => (
-                    <li key={k.label} className={`flex items-center gap-1.5 text-xs font-bold ${k.free ? "text-sea-800" : "text-navy-800"}`}>
-                      <span aria-hidden="true">{k.icon}</span>
-                      {k.free && <Icon name="check" className="h-3 w-3 shrink-0" />}
-                      {k.label}
+          {(lead.length > 0 || rest.length > 0) && (
+            <div className="mt-auto rounded-xl bg-mist-50 px-3.5 py-3 ring-1 ring-inset ring-mist-200">
+              <p className="mb-2 text-[11px] font-extrabold tracking-wide text-navy-500">{t.servicesTitle}</p>
+              {lead.length > 0 && (
+                <ul className="grid grid-cols-2 gap-x-4 gap-y-1.5">
+                  {lead.map((k) => (
+                    <li key={k.label} className={`flex min-w-0 items-center gap-1.5 text-[13px] font-bold ${k.free ? "text-sea-800" : "text-navy-800"}`}>
+                      <span aria-hidden="true" className="shrink-0 text-sm">{k.icon}</span>
+                      <span className="leading-tight">{k.label}</span>
                     </li>
                   ))}
                 </ul>
               )}
-              {(shownOthers.length > 0 || hotel.eco) && (
-                <ul className="mt-2 flex flex-wrap gap-1">
-                  {hotel.eco && <li className="rounded-full bg-sea-100 px-2 py-0.5 text-[11px] font-extrabold text-sea-800 ring-1 ring-sea-200">{hp.ecoBadge}</li>}
-                  {shownOthers.map((a) => (
-                    <li key={a} className="rounded-full bg-white px-2 py-0.5 text-[11px] font-semibold text-navy-700 ring-1 ring-mist-200">
-                      {a}
-                    </li>
-                  ))}
-                  {others.length > 6 && (
-                    <li>
-                      <button type="button" onClick={() => setAllServices((v) => !v)} className="inline-flex min-h-9 min-w-11 items-center justify-center rounded-full bg-white px-2.5 text-xs font-extrabold text-sea-800 ring-1 ring-sea-200 hover:bg-sea-50" aria-expanded={allServices}>
-                        {allServices ? "−" : `+${others.length - 6}`}
-                      </button>
-                    </li>
+              {rest.length > 0 && (
+                <div className={lead.length ? "mt-2 border-t border-mist-200 pt-2" : ""}>
+                  {allServices ? (
+                    <ul className="flex flex-wrap gap-1">
+                      {rest.map((a) => (
+                        <li key={a} className="rounded-full bg-white px-2 py-0.5 text-[11px] font-semibold text-navy-700 ring-1 ring-mist-200">
+                          {a}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="truncate text-xs text-navy-600">{rest.slice(0, 4).join(" · ")}</p>
                   )}
-                </ul>
+                  {rest.length > 4 && (
+                    <button type="button" onClick={() => setAllServices((v) => !v)} aria-expanded={allServices} className="mt-1 inline-flex min-h-8 items-center text-xs font-extrabold text-sea-800 hover:underline">
+                      {allServices ? t.fewerRoomOptions : t.moreServices.replace("{n}", String(rest.length - 4))}
+                    </button>
+                  )}
+                </div>
               )}
             </div>
           )}
-
-          {(hotel.checkInTime || hotel.checkOutTime) && (
-            <p className="text-[11px] font-semibold text-navy-500">
-              {hotel.checkInTime && (
-                <>
-                  {t.checkInLabel}: <bdi>{hotel.checkInTime}</bdi>
-                </>
-              )}
-              {hotel.checkInTime && hotel.checkOutTime && " · "}
-              {hotel.checkOutTime && (
-                <>
-                  {t.checkOutLabel}: <bdi>{hotel.checkOutTime}</bdi>
-                </>
-              )}
-            </p>
-          )}
         </div>
 
-        {/* Rating, price and «اختر»: their own column on wide screens, the card's foot on phones. */}
-        <div className="flex flex-col justify-between gap-3 border-t border-mist-200 p-4 sm:col-span-2 lg:col-span-1 lg:border-s lg:border-t-0">
-          <div className="hidden justify-end lg:flex">
-            <Rating hotel={hotel} c={c} />
-          </div>
-          <div className="flex flex-wrap items-end justify-between gap-3 lg:flex-col lg:items-stretch lg:text-end">
+        {/* 3 · Rating, price, «اختر»: a column on wide screens, the card's foot on phones. */}
+        <div className="flex flex-col gap-3 border-t border-mist-200 bg-gradient-to-b from-white to-mist-50/60 p-4 sm:col-span-2 sm:p-5 xl:col-span-1 xl:border-s xl:border-t-0">
+          {hotel.rating ? (
+            <div className="flex items-center gap-2.5 xl:justify-end">
+              <span className="order-2 xl:order-1 xl:text-end">
+                <span className="block text-sm font-extrabold text-navy-950">{word}</span>
+                {hotel.reviews ? <span className="block text-[11px] text-navy-500">{t.reviews.replace("{count}", hotel.reviews.toLocaleString(locale === "ar" ? "ar-SA-u-nu-latn" : "en-US"))}</span> : null}
+              </span>
+              <span className="order-1 grid h-10 w-10 shrink-0 place-items-center rounded-lg rounded-es-none bg-navy-900 xl:order-2 font-display text-base font-extrabold text-white" dir="ltr">
+                {hotel.rating.toFixed(1)}
+              </span>
+            </div>
+          ) : (
+            <span className="hidden xl:block" />
+          )}
+
+          <div className="mt-auto flex items-end justify-between gap-3 xl:block xl:text-end">
             {shownPrice != null ? (
               <div>
-                <p className="text-[11px] font-bold text-navy-500">{perNight && c.nights > 1 ? t.lowestNight : t.lowestStay}</p>
                 {hotel.dealPct ? (
-                  <p className="mb-1 inline-flex items-center gap-1 rounded-full bg-sea-600 px-2 py-0.5 text-[11px] font-extrabold text-white">
-                    <span aria-hidden="true">🔥</span>
-                    {t.dealLess.replace("{pct}", String(hotel.dealPct))}
-                  </p>
+                  <span className="mb-1 inline-flex items-center gap-1 rounded-md bg-sea-600 px-1.5 py-0.5 text-[11px] font-extrabold text-white" title={t.dealLess.replace("{pct}", String(hotel.dealPct))}>
+                    {t.dealShort.replace("{pct}", String(hotel.dealPct))}
+                  </span>
                 ) : null}
+                <p className="text-[11px] font-semibold text-navy-500">{perNight && c.nights > 1 ? t.lowestNight : t.lowestStay}</p>
                 <p className="font-display text-2xl font-black leading-tight text-navy-950">{money(shownPrice, locale)}</p>
                 {perNight && c.nights > 1 && total != null && <p className="text-[11px] text-navy-500">{t.stayTotalShort.replace("{amount}", money(total, locale))}</p>}
                 {c.budget > 0 && total != null && (
-                  <p className={`text-xs font-bold ${total > c.budget ? "text-rose-700" : "text-sea-700"}`}>
+                  <p className={`text-[11px] font-bold ${total > c.budget ? "text-rose-700" : "text-sea-700"}`}>
                     {total > c.budget ? t.overBudget.replace("{amount}", money(total - c.budget, locale)) : `✓ ${t.withinBudget}`}
                   </p>
                 )}
@@ -771,21 +769,23 @@ function HotelCard({
             ) : (
               <span />
             )}
-            <div className="flex flex-col gap-2 max-lg:min-w-[150px]">
+            <div className="flex shrink-0 flex-col gap-1 xl:mt-3">
               <a
                 href={href}
                 onClick={choose}
                 title={t.chooseHint}
-                className="inline-flex min-h-12 items-center justify-center gap-1.5 rounded-xl bg-sun-400 px-5 text-base font-extrabold text-navy-950 shadow-[var(--shadow-sun)] transition hover:bg-sun-300"
+                className="inline-flex min-h-12 min-w-[140px] items-center justify-center gap-1.5 rounded-xl bg-sun-400 px-5 text-base font-extrabold text-navy-950 shadow-[var(--shadow-sun)] transition hover:bg-sun-300 xl:w-full"
               >
                 {t.choose}
-                <span aria-hidden="true">{locale === "ar" ? "←" : "→"}</span>
+                <span aria-hidden="true" className="transition group-hover/card:-translate-x-0.5 ltr:group-hover/card:translate-x-0.5">
+                  {locale === "ar" ? "←" : "→"}
+                </span>
               </a>
               <button
                 type="button"
                 onClick={() => setOpen((v) => !v)}
                 aria-expanded={open}
-                className="inline-flex min-h-10 items-center justify-center gap-1 rounded-xl px-2 text-xs font-bold text-sea-800 hover:bg-sea-50"
+                className="inline-flex min-h-9 items-center justify-center gap-1 rounded-lg px-2 text-xs font-bold text-sea-800 hover:bg-sea-50"
               >
                 {t.pricesEverySite}
                 <span aria-hidden="true">{open ? "▴" : "▾"}</span>
@@ -818,7 +818,7 @@ function CardPhotos({ hotel, href, onOpen, t, locale }: { hotel: HotelResult; hr
   const rtl = locale === "ar";
   return (
     <div
-      className="group relative aspect-[16/10] overflow-hidden bg-mist-100 sm:aspect-auto sm:min-h-[220px]"
+      className="group relative aspect-[16/10] overflow-hidden bg-mist-100 sm:aspect-auto sm:h-full sm:min-h-[230px]"
       onTouchStart={(e) => setX0(e.touches[0].clientX)}
       onTouchEnd={(e) => {
         if (x0 == null) return;

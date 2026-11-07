@@ -876,6 +876,9 @@ const ar = {
     savedMissing: "لم نجد هذه الخطة في حسابك.",
   },
   hotelResults: {
+    moreServices: "+{n} خدمة أخرى",
+    dealShort: "−{pct}% من المعتاد",
+    compareSitesShort: "قارن المواقع",
     navRooms: "الغرف",
     allRooms: "عرض كل الغرف ({n})",
     freeCancel: "إلغاء مجاني",

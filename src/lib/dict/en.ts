@@ -860,6 +860,9 @@ const en = {
     savedMissing: "We could not find this plan in your account.",
   },
   hotelResults: {
+    moreServices: "+{n} more",
+    dealShort: "{pct}% below usual",
+    compareSitesShort: "Compare sites",
     navRooms: "Rooms",
     allRooms: "Show all rooms ({n})",
     freeCancel: "Free cancellation",

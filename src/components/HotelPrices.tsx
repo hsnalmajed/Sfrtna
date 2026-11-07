@@ -177,7 +177,7 @@ export function siteOffers(hotel: HotelResult, c: Common): SiteOffer[] {
   return out.sort((a, b) => a.total - b.total);
 }
 
-function ratingWord(r: number, t: T) {
+export function ratingWord(r: number, t: T) {
   if (r >= 4.5) return t.ratingExcellent;
   if (r >= 4) return t.ratingVeryGood;
   if (r >= 3.5) return t.ratingGood;

@@ -231,7 +231,7 @@ function HotelResultsContent() {
           className="absolute inset-0 -z-10 bg-[radial-gradient(90%_60%_at_85%_0%,rgb(255_166_48/0.14),transparent_70%)]"
           aria-hidden="true"
         />
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
           {backHref && (
             <a
               href={backHref}
@@ -292,7 +292,7 @@ function HotelResultsContent() {
       </section>
 
       <div
-        className="mx-auto max-w-6xl px-4 pb-10 pt-8 sm:px-6"
+        className="mx-auto max-w-7xl px-4 pb-10 pt-8 sm:px-6"
         onClickCapture={(e) => {
           // A booking site opened from here: the hotel step is taken.
           if (tripCity && (e.target as HTMLElement).closest("a[data-partner]")) markStep(tripCity.slug, "hotel");
