@@ -876,6 +876,9 @@ const ar = {
     savedMissing: "لم نجد هذه الخطة في حسابك.",
   },
   hotelResults: {
+    anyRoomTitle: "أرخص سعر للفندق (أي غرفة)",
+    anyRoomSub: "مواقع تعطي سعر الفندق دون تفاصيل الغرفة؛ تختار الغرفة في صفحة الحجز.",
+    roomFromOne: "السعر لدى {site}",
     hotelsOfTotal: "{total} فندقاً في المدينة · معروض أفضل {count}",
     moreHotelsOf: "عرض المزيد من الفنادق ({count} من {total})",
     anyRoomPrices: "سعر الفندق في كل موقع ({n}) بلا تحديد غرفة",
@@ -883,7 +886,7 @@ const ar = {
     roomsSub: "أقل سعر لكل غرفة من كل المواقع، {nights} شامل الضرائب. اضغط «اختر» لترى أسعار كل المواقع لهذه الغرفة.",
     freeCancelOption: "خيار بإلغاء مجاني",
     breakfastOption: "خيار يشمل الإفطار",
-    roomFrom: "أقل سعر من {n} موقع",
+    roomFrom: "أقل سعر بين {n} مواقع",
     bookingDetails: "تفاصيل الحجز",
     roomSitesTitle: "أسعار هذه الغرفة ({n})",
     taxesIncluded: "شامل الضرائب",

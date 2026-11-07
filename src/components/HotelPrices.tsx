@@ -687,16 +687,7 @@ function HotelDetail({
             hotel's price on every site. */}
         {rooms.length > 0 ? (
           <section id="hotel-prices" className={box}>
-            <RoomsTable rooms={rooms} offers={offers} c={c} hotelName={(locale === "ar" && hotel.nameAr) || hotel.name} />
-            <details className="group mt-5 rounded-xl ring-1 ring-mist-200">
-              <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-2 px-4 text-sm font-bold text-navy-800 hover:bg-mist-50">
-                {t.anyRoomPrices.replace("{n}", String(offers.length))}
-                <span aria-hidden="true" className="transition group-open:rotate-180">▾</span>
-              </summary>
-              <div className="border-t border-mist-200 p-3">
-                <PriceRows hotel={hotel} c={c} checkedAt={checkedAt} expanded />
-              </div>
-            </details>
+            <RoomsTable rooms={rooms} offers={offers} c={c} hotelName={(locale === "ar" && hotel.nameAr) || hotel.name} hotelPhoto={hotel.images[0]?.thumb ?? ""} />
           </section>
         ) : (
           <section id="hotel-prices" className={box}>
@@ -847,7 +838,19 @@ type RoomRow = { name: string; image: string; guests: number | null; opts: RoomO
  * flight's: the stay, then every site's price for that room with what it
  * includes and «احجز», which goes to that site.
  */
-function RoomsTable({ rooms, offers, c, hotelName }: { rooms: NonNullable<HotelResult["rooms"]>; offers: SiteOffer[]; c: Common; hotelName: string }) {
+function RoomsTable({
+  rooms,
+  offers,
+  c,
+  hotelName,
+  hotelPhoto,
+}: {
+  rooms: NonNullable<HotelResult["rooms"]>;
+  offers: SiteOffer[];
+  c: Common;
+  hotelName: string;
+  hotelPhoto: string;
+}) {
   const { t, locale } = c;
   const [allRooms, setAllRooms] = useState(false);
   const [picked, setPicked] = useState<RoomRow | null>(null);
@@ -869,7 +872,20 @@ function RoomsTable({ rooms, offers, c, hotelName }: { rooms: NonNullable<HotelR
     .map((r) => ({ ...r, opts: r.opts.sort((a, b) => a.total - b.total) }))
     .sort((a, b) => a.opts[0].total - b.opts[0].total);
   if (!rows.length) return null;
-  const shown = allRooms ? rows : rows.slice(0, 6);
+  // Some sites (TUI, Clicktrip…) give the hotel's price but not the room
+  // (owner, 8 Nov: «833 في الأعلى و956 في الأسفل»). Their offers are one more
+  // row, «أي غرفة», so the page's lowest price is in this list too, and the
+  // order stays by price; «اختر» there shows every site's price for the hotel.
+  const anyRoom: RoomRow | null = offers.length
+    ? {
+        name: t.anyRoomTitle,
+        image: hotelPhoto,
+        guests: null,
+        opts: offers.map((o, i) => ({ key: `any-${i}`, source: o.label, link: o.url, total: o.total, freeCancel: false, cancelUntil: null, breakfast: false })),
+      }
+    : null;
+  const all = (anyRoom ? [...rows, anyRoom] : rows).sort((a, b) => a.opts[0].total - b.opts[0].total);
+  const shown = allRooms ? all : all.slice(0, 6);
   return (
     <div>
       <div className="mb-1 flex items-baseline justify-between gap-2">
@@ -883,6 +899,7 @@ function RoomsTable({ rooms, offers, c, hotelName }: { rooms: NonNullable<HotelR
           const sites = new Set(r.opts.map((o) => o.source)).size;
           const anyCancel = r.opts.some((o) => o.freeCancel);
           const anyBreakfast = r.opts.some((o) => o.breakfast);
+          const isAny = r === anyRoom;
           return (
             <li key={r.name} className="flex flex-col gap-3 bg-white p-3 transition hover:bg-mist-50/60 sm:flex-row sm:items-center sm:p-4">
               <div className="flex min-w-0 flex-1 items-center gap-3">
@@ -897,6 +914,7 @@ function RoomsTable({ rooms, offers, c, hotelName }: { rooms: NonNullable<HotelR
                   <p className="font-display text-[15px] font-extrabold leading-snug text-sea-900" dir="auto">
                     <bdi>{r.name}</bdi>
                   </p>
+                  {isAny && <p className="text-xs leading-snug text-navy-600">{t.anyRoomSub}</p>}
                   {r.guests ? (
                     <p className="inline-flex items-center gap-1 text-xs font-semibold text-navy-600">
                       <span aria-hidden="true">👤</span>
@@ -923,7 +941,7 @@ function RoomsTable({ rooms, offers, c, hotelName }: { rooms: NonNullable<HotelR
               </div>
               <div className="flex items-center justify-between gap-4 border-t border-mist-100 pt-3 sm:justify-end sm:border-0 sm:pt-0">
                 <div className="text-start sm:text-end">
-                  <p className="text-[11px] font-semibold text-navy-500">{t.roomFrom.replace("{n}", String(sites))}</p>
+                  <p className="text-[11px] font-semibold text-navy-500">{sites === 1 ? t.roomFromOne.replace("{site}", low.source) : t.roomFrom.replace("{n}", String(sites))}</p>
                   <p className="whitespace-nowrap font-display text-xl font-black leading-tight text-navy-950">{money(low.total, locale)}</p>
                 </div>
                 <button
@@ -939,14 +957,14 @@ function RoomsTable({ rooms, offers, c, hotelName }: { rooms: NonNullable<HotelR
           );
         })}
       </ul>
-      {rows.length > 6 && (
+      {all.length > 6 && (
         <button
           type="button"
           onClick={() => setAllRooms((v) => !v)}
           aria-expanded={allRooms}
           className="mt-3 flex min-h-12 w-full items-center justify-center gap-1.5 rounded-xl bg-white text-sm font-extrabold text-navy-900 ring-1 ring-mist-300 hover:ring-navy-400"
         >
-          {allRooms ? t.fewerRoomOptions : t.allRooms.replace("{n}", String(rows.length))}
+          {allRooms ? t.fewerRoomOptions : t.allRooms.replace("{n}", String(all.length))}
           <span aria-hidden="true">{allRooms ? "▴" : "▾"}</span>
         </button>
       )}

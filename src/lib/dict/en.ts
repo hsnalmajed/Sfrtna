@@ -860,6 +860,9 @@ const en = {
     savedMissing: "We could not find this plan in your account.",
   },
   hotelResults: {
+    anyRoomTitle: "The hotel's lowest price (any room)",
+    anyRoomSub: "Sites that give the hotel's price without the room; you pick the room on their page.",
+    roomFromOne: "Price at {site}",
     hotelsOfTotal: "{total} hotels in the city · showing the top {count}",
     moreHotelsOf: "Show more hotels ({count} of {total})",
     anyRoomPrices: "The hotel's price on every site ({n}), any room",
