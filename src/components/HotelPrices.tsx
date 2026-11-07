@@ -656,7 +656,7 @@ function HotelDetail({
         <section id="hotel-prices" className={box}>
           <h3 className={h3}>{t.pricesTitle}</h3>
           <p className="mb-4 mt-1 text-sm text-navy-600">{t.allSitesSub}</p>
-          {rooms.length > 0 && <RoomsTable rooms={rooms} c={c} />}
+          {rooms.length > 0 && <RoomsTable rooms={rooms} offers={offers} c={c} />}
           <PriceRows hotel={hotel} c={c} checkedAt={checkedAt} expanded />
           {!offers.length && c.alternatives && (
             <a
@@ -757,8 +757,15 @@ function HotelDetail({
 }
 
 /** Room types, when Google's answer carried them: one row a room, its cheapest site. */
-function RoomsTable({ rooms, c }: { rooms: NonNullable<HotelResult["rooms"]>; c: Common }) {
+function RoomsTable({ rooms, offers, c }: { rooms: NonNullable<HotelResult["rooms"]>; offers: SiteOffer[]; c: Common }) {
   const { t, locale } = c;
+  // A partner's room opens through our partner link (it lands on the hotel and
+  // earns); any other site's room through Google's own link to that room.
+  const linkFor = (r: NonNullable<HotelResult["rooms"]>[number]) => {
+    const p = PARTNERS.find((x) => x.match.test(r.source));
+    const o = p ? offers.find((x) => x.earns && x.partner === p.partner) : undefined;
+    return o?.url ? { url: o.url, partner: o.partner } : r.link ? { url: r.link, partner: r.source || "hotel" } : null;
+  };
   const byName = new Map<string, NonNullable<HotelResult["rooms"]>>();
   for (const r of rooms) byName.set(r.name, [...(byName.get(r.name) ?? []), r]);
   const rows = [...byName.entries()].map(([name, list]) => {
@@ -787,10 +794,10 @@ function RoomsTable({ rooms, c }: { rooms: NonNullable<HotelResult["rooms"]>; c:
               </p>
               {r.best.total && <p className="font-display text-base font-extrabold text-navy-950">{money(forRooms(r.best.total, c), locale)}</p>}
             </div>
-            {r.best.link && (
+            {linkFor(r.best) && (
               <PartnerLink
-                partner={r.best.source || "hotel"}
-                href={r.best.link}
+                partner={linkFor(r.best)!.partner}
+                href={linkFor(r.best)!.url}
                 className="inline-flex shrink-0 items-center gap-1 rounded-xl bg-sun-400 px-3.5 py-2 text-xs font-extrabold text-navy-950 hover:bg-sun-300"
               >
                 {t.bookNow}
