@@ -2144,3 +2144,11 @@ another source; room types only if a source provides them.
   city lists up to 100 — commercial terms to confirm by mail), RateHawk B2B
   API (we already have the ZenHotels affiliate). Amadeus Self-Service is
   decommissioned (2026) — not an option.
+- Round 2–3 (7 Nov, same day): card in three columns with a photo
+  carousel (`CardPhotos`, swipe/arrows, no rail), heart on the photo, deal
+  badge; phone sticky bar + quick chips (facilities ×6, 4–5★, top rating,
+  near, eco); rooms section (`RoomsTable`: six rooms then all; options per
+  room from every site, badges only when Google says free cancellation /
+  breakfast; cancellation date "Dec 5" → page date); grouped facilities
+  (`amenityGroupLabel`, Arabic names only, unknown groups → «مرافق أخرى»);
+  `typical` + `dealPct` parsed. Pacer slack 0.75 (`maySearch`).

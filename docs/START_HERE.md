@@ -124,19 +124,20 @@ what is ticked in «رحلتي», unsubscribe in every mail (Saudi PDPL), no fix
 prices in mail. Build after item 1: server-side trip save + consent + mail
 schedule (Resend: check plan limits) + share + push.
 
-**Hotel page section (7 Nov) — BUILT and in production (main 8bc4040).**
-Details: PROJECT_NOTES «Hotels like Booking — 7 Nov». List: budget slider +
-price chart, map card + full-screen map with price pins, framed «خدمات
-الفندق», «اختر» → hotel page (Booking's order; rooms table — Google's
-one-hotel answer DOES carry rooms: probe 7 Nov, 16 rooms with photo/guests/
-total). Probe: `hotel-probe.yml` (by hand; base = Worker; 2 searches).
-**Blocker found:** SerpApi = FREE 250/month (renews 6 Dec; 27 used) and the
-pacer allows ~8 hotel searches/day → most visitors see only the Stay22
-widget. Staging Worker has NO `SERPAPI_KEY` (cannot review the list there).
-**Next step:** owner decides the SerpApi plan (numbers given 7 Nov: Starter
-$25/1,000 · Developer $75/5,000 · Production $150/15,000) and whether to
-open a second hotel source (LiteAPI / Xotelo — see notes). Then: phone
-check of the live hotel page with real prices.
+**Hotel page section (7 Nov) — DONE, in production (3 rounds, last
+release 42330383517).** Details: PROJECT_NOTES «Hotels like Booking — 7 Nov».
+List card = 3 columns (photo carousel | hotel + framed services | rating,
+price, deal, «اختر»); phone: sticky bar + one-tap filter chips; side column
+(lg): map card + budget slider/chart + filters. Hotel page: Booking order;
+rooms section (Google `rooms[].rates`: free cancellation date, breakfast);
+facilities by Google's groups (`amenities_detailed`); usual range + deal.
+Pacer: early days may run 25% ahead (`maySearch`, 0.75) — the list had been
+shut for two days. Phone audit 7 Nov (ux-audit, iPhone 13): list + page OK.
+SerpApi = FREE 250/month (renews 6 Dec). Staging has no `SERPAPI_KEY`.
+**Next step:** discuss with the owner: SerpApi plan (Starter $25/1,000 ·
+Developer $75/5,000 · Production $150/15,000) and more hotel sources
+(Xotelo: ask commercial terms; LiteAPI = booking on our site, his call;
+Expedia/Hotelbeds/Trip.com later with traffic).
 
 «next-step tabs» flake: 7 green Site checks in a row since the fix (4 Nov);
 ~10 green = close it.
@@ -170,5 +171,5 @@ payout threshold $500 not met» (wire $500; PayPal/ACH $100).
 Waiting on the owner: Apple review; Google Play ticket reply; Google-fares
 decision after the 6 Nov measurement; Android APK on a real phone.
 
-**Recommended model for the next chat: Opus 5.5** (hotel page build +
-SerpApi plan numbers); Sonnet 5.5 for store-console steps only.
+**Recommended model for the next chat: Opus 5.5** (hotel sources
+decision + build); Sonnet 5.5 for store-console steps only.
