@@ -124,46 +124,19 @@ what is ticked in «رحلتي», unsubscribe in every mail (Saudi PDPL), no fix
 prices in mail. Build after item 1: server-side trip save + consent + mail
 schedule (Resend: check plan limits) + share + push.
 
-**▶ NEXT SECTION (owner, 7 Nov 01:36, «very very important»; he said the hotel
-page is far below the rest of the work): professional hotel page.**
-Found 7 Nov: owner saw only Stay22's English widget (our priced list =
-`HotelList`, SerpApi Google Hotels, pauses by design when the monthly search
-allowance is paced out → text «نعرض الآن فنادق شركائنا»). Owner wants:
-(1) «اختر» button under every card → a hotel page like the flight page: booking
-details + each provider's price with «احجز» beside it (Booking, Agoda, Expedia,
-Hotels.com, ZenHotels…); (2) a clear framed card per hotel: breakfast,
-internet, parking, distance from centre…; (3) several photos (we hold up to 8
-per hotel: `HotelResult.images`); (4) hotel page: map of its location (we hold
-lat/lng), description, amenities, check-in/out, nearby places, review topics;
-(5) room types with a photo per type — we do NOT hold this (not in our SerpApi
-fields; partner APIs: Agoda pending, Booking locked) → check what Google's
-property call returns before promising; else a «see rooms» deep link.
-Also owed: SerpApi measurement + plan numbers (searches needed/month, cost) —
-his decision, since the free allowance cannot carry a real city list.
-Build on a branch, Site check, then main. Open with Opus 5.5.
-**Progress 7 Nov (01:50):** owner sent Booking screenshots (list + hotel page).
-(a) DONE on branch `hotel-page-pro` (pushed, NOT in main, not seen live yet):
-filters as a checkbox side column on lg+ (`ui/FilterSidebar.tsx`, wired in
-`HotelList.tsx`; same groups/counts as the phone sheet; typegen/tsc/eslint
-clean). Still to add from Booking's list: budget slider + price histogram,
-small map card (anchor to the Stay22 map section).
-(b) DONE 7 Nov 02:40 on the same branch (commit e0ea5a6), staging release
-green (run 42310166194, production NOT touched): «اختر» on every list card
-(+ photo/title links) → hotel-results?hmode=known&hotel=…&token=…&hcity=…
-&back=… (by Google id = same cached search as «قارن الأسعار»; list facts
-kept in sessionStorage → page opens at once, stays if no search left).
-Hotel page: section tabs (overview/prices/amenities/location/reviews),
-full-screen photo viewer (all 8), framed «أبرز ما في الفندق», amenities grid,
-map (`HotelMap.tsx`, leaflet, hotel + centre) + nearby, note «room types on
-each site's booking page». **Next step:** owner checks staging
-https://sfrtna-staging.almajedhsn.workers.dev (city search → «اختر») on his
-phone → his OK → merge `hotel-page-pro` into main. Then: budget slider +
-histogram, small map card in the list; live property call for rooms.
-(c) Price gap vs Booking EXPLAINED 7 Nov 01:50: owner's screenshot of OUR page
-was the Stay22 widget (Booking only, English): Pege Hotel 1,956 SAR, 6 nights,
-2 adults, total incl. fees. Booking's own page 1,760 = 1,956 × 0.9 → the 10%
-Genius member price (2,608 struck). Our price is the public one; do not show
-member prices. Not yet checked: same room type on both; our SerpApi list price.
+**Hotel page section (7 Nov) — BUILT and in production (main 8bc4040).**
+Details: PROJECT_NOTES «Hotels like Booking — 7 Nov». List: budget slider +
+price chart, map card + full-screen map with price pins, framed «خدمات
+الفندق», «اختر» → hotel page (Booking's order; rooms table — Google's
+one-hotel answer DOES carry rooms: probe 7 Nov, 16 rooms with photo/guests/
+total). Probe: `hotel-probe.yml` (by hand; base = Worker; 2 searches).
+**Blocker found:** SerpApi = FREE 250/month (renews 6 Dec; 27 used) and the
+pacer allows ~8 hotel searches/day → most visitors see only the Stay22
+widget. Staging Worker has NO `SERPAPI_KEY` (cannot review the list there).
+**Next step:** owner decides the SerpApi plan (numbers given 7 Nov: Starter
+$25/1,000 · Developer $75/5,000 · Production $150/15,000) and whether to
+open a second hotel source (LiteAPI / Xotelo — see notes). Then: phone
+check of the live hotel page with real prices.
 
 «next-step tabs» flake: 7 green Site checks in a row since the fix (4 Nov);
 ~10 green = close it.

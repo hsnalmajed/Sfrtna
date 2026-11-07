@@ -2111,3 +2111,36 @@ What we hold (`HotelResult`, serpapi.ts): up to 8 photos, lat/lng, amenities
 review topics, offers per site. NOT held: room types and their photos.
 Open decisions for the owner: SerpApi plan (measure searches/month first) or
 another source; room types only if a source provides them.
+
+
+## Hotels like Booking — 7 Nov 2026 (owner: "very very important")
+
+- List (`HotelList.tsx`): «ميزانيتك (لليلة)» `ui/BudgetSlider.tsx` (24-bin
+  price chart + two-handle slider, facet `range`) in the side column and the
+  phone sheet (price bands then hidden); map card above the filters +
+  «اعرض على الخريطة» → `HotelsMap.tsx` full-screen, price pins, popup «اختر»;
+  card: framed «خدمات الفندق» (`keyAmenities` + distance + `otherAmenities`
+  +N); «اختر» → `hotel-results?hmode=known&hotel&token&hcity&hotelArea&back`;
+  list facts kept in sessionStorage (`rememberHotel`) → page opens at once.
+- Hotel page (`HotelPrices.tsx` → `HotelDetail`), Booking's order: name +
+  «احجز» → photos (viewer, all 8) with side column (rating, best price, small
+  `HotelMap`) → description (English, labelled) + top facilities → every
+  site's price (`PriceRows expanded`) + rooms table (`RoomsTable`, partner
+  rooms via the earning link; none → «شاهد الغرف» on the cheapest site) →
+  review topics → nearby → all facilities → check-in/out. Nothing we lack
+  (review texts, FAQ, policies).
+- Rooms: probe on production 7 Nov (The Canvas Dubai): `featured_prices[].
+  rooms[]` {name, images, num_guests, rate_per_night, total_rate, link,
+  rates[].beds}; also present and unused: `amenities_detailed`, `deal`,
+  `typical_price_range`, `phone`, `health_and_safety`.
+- SerpApi (serp-status 7 Nov): free 250/month, used 27, renews 6 Dec,
+  mayUse=false (pacer). 30 days to 7 Nov: 277 visits, 11 hotel-results
+  views (4%), 52 SerpApi calls. Prices (costbench, 5 Nov 2026): Starter $25
+  1,000 · Developer $75 5,000 · Production $150 15,000 · Big Data $275 30,000.
+  ~3 searches per hotel visitor (list + 1–2 hotel pages/filters).
+- More hotel sources (owner asked 7 Nov): LiteAPI/Nuitee (open API, rates
+  calls free, earns a margin, photos/rooms, booking on our site — big build),
+  Xotelo (free, TripAdvisor-based prices of Booking/Expedia/Agoda/Hotels.com,
+  city lists up to 100 — commercial terms to confirm by mail), RateHawk B2B
+  API (we already have the ZenHotels affiliate). Amadeus Self-Service is
+  decommissioned (2026) — not an option.
