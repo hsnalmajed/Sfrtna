@@ -158,6 +158,8 @@ export interface HotelOffer {
   official: boolean;
   /** The site's own page for this hotel and these dates (via Google), https only. */
   link: string | null;
+  /** The site's small logo, as Google shows it (https), or "". */
+  logo?: string;
 }
 
 export interface HotelResult {
@@ -219,6 +221,7 @@ export interface HotelRoom {
   perNight: number | null;
   total: number | null;
   link: string | null;
+  logo?: string;
   /** The room's options at that site (cancellation, breakfast…), cheapest first. */
   rates?: RoomRate[];
 }
@@ -274,6 +277,7 @@ interface GhRoom {
 }
 interface GhPrice {
   rooms?: GhRoom[];
+  logo?: string;
   source?: string;
   link?: string;
   official?: boolean;
@@ -327,6 +331,7 @@ function offersOf(p: GhProperty): HotelOffer[] {
       perNightBeforeTax: num(o.rate_per_night?.extracted_before_taxes_fees),
       official: Boolean(o.official),
       link: httpsOnly(o.link) || null,
+      logo: httpsOnly(o.logo),
     });
   }
   return out;
@@ -351,6 +356,7 @@ function roomsOf(p: GhProperty): HotelRoom[] {
         perNight: num(r.rate_per_night?.extracted_lowest),
         total: num(r.total_rate?.extracted_lowest),
         link: httpsOnly(r.link) || httpsOnly(o.link) || null,
+        logo: httpsOnly(o.logo),
         rates: (Array.isArray(r.rates) ? r.rates : [])
           .map((x) => ({
             total: num(x?.total_rate?.extracted_lowest),

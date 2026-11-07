@@ -135,6 +135,7 @@ export interface SiteOffer {
   earns: boolean;
   official: boolean;
   known: boolean;
+  logo: string;
 }
 
 /** Names travellers book with out of habit or trust: always in view. */
@@ -172,6 +173,7 @@ export function siteOffers(hotel: HotelResult, c: Common): SiteOffer[] {
       earns: Boolean(partnerLink),
       official: o.official,
       known: Boolean(p) || o.official || KNOWN.test(o.source),
+      logo: o.logo ?? "",
     });
   }
   return out.sort((a, b) => a.total - b.total);
@@ -687,7 +689,7 @@ function HotelDetail({
             hotel's price on every site. */}
         {rooms.length > 0 ? (
           <section id="hotel-prices" className={box}>
-            <RoomsTable rooms={rooms} offers={offers} c={c} hotelName={(locale === "ar" && hotel.nameAr) || hotel.name} hotelPhoto={hotel.images[0]?.thumb ?? ""} />
+            <RoomsTable rooms={rooms} offers={offers} c={c} hotel={hotel} />
           </section>
         ) : (
           <section id="hotel-prices" className={box}>
@@ -828,7 +830,7 @@ function cancelDate(d: string, checkIn: string, locale: "ar" | "en"): string {
   return new Date(Date.UTC(y, mi, Number(m[2]))).toLocaleDateString(locale === "ar" ? "ar-SA-u-ca-gregory-nu-latn" : "en-GB", { day: "numeric", month: "long", timeZone: "UTC" });
 }
 
-type RoomOpt = { key: string; source: string; link: string | null; total: number; freeCancel: boolean; cancelUntil: string | null; breakfast: boolean };
+type RoomOpt = { key: string; source: string; link: string | null; total: number; freeCancel: boolean; cancelUntil: string | null; breakfast: boolean; logo: string };
 type RoomRow = { name: string; image: string; guests: number | null; opts: RoomOpt[] };
 
 /**
@@ -838,19 +840,8 @@ type RoomRow = { name: string; image: string; guests: number | null; opts: RoomO
  * flight's: the stay, then every site's price for that room with what it
  * includes and «احجز», which goes to that site.
  */
-function RoomsTable({
-  rooms,
-  offers,
-  c,
-  hotelName,
-  hotelPhoto,
-}: {
-  rooms: NonNullable<HotelResult["rooms"]>;
-  offers: SiteOffer[];
-  c: Common;
-  hotelName: string;
-  hotelPhoto: string;
-}) {
+function RoomsTable({ rooms, offers, c, hotel }: { rooms: NonNullable<HotelResult["rooms"]>; offers: SiteOffer[]; c: Common; hotel: HotelResult }) {
+  const hotelPhoto = hotel.images[0]?.thumb ?? "";
   const { t, locale } = c;
   const [allRooms, setAllRooms] = useState(false);
   const [picked, setPicked] = useState<RoomRow | null>(null);
@@ -863,7 +854,7 @@ function RoomsTable({
     rates.forEach((x, i) => {
       const one = x.total ?? (x.perNight ? x.perNight * c.nights : null);
       if (!one) return;
-      row.opts.push({ key: `${r.source}-${i}`, source: r.source, link: r.link, total: forRooms(one, c), freeCancel: x.freeCancel, cancelUntil: x.cancelUntil, breakfast: x.breakfast });
+      row.opts.push({ key: `${r.source}-${i}`, source: r.source, link: r.link, total: forRooms(one, c), freeCancel: x.freeCancel, cancelUntil: x.cancelUntil, breakfast: x.breakfast, logo: r.logo ?? "" });
     });
     byName.set(r.name, row);
   }
@@ -881,7 +872,7 @@ function RoomsTable({
         name: t.anyRoomTitle,
         image: hotelPhoto,
         guests: null,
-        opts: offers.map((o, i) => ({ key: `any-${i}`, source: o.label, link: o.url, total: o.total, freeCancel: false, cancelUntil: null, breakfast: false })),
+        opts: offers.map((o, i) => ({ key: `any-${i}`, source: o.label, link: o.url, total: o.total, freeCancel: false, cancelUntil: null, breakfast: false, logo: o.logo })),
       }
     : null;
   const all = (anyRoom ? [...rows, anyRoom] : rows).sort((a, b) => a.opts[0].total - b.opts[0].total);
@@ -968,14 +959,51 @@ function RoomsTable({
           <span aria-hidden="true">{allRooms ? "▴" : "▾"}</span>
         </button>
       )}
-      {picked && <RoomBooking room={picked} offers={offers} c={c} hotelName={hotelName} onClose={() => setPicked(null)} />}
+      {picked && <RoomBooking room={picked} offers={offers} c={c} hotel={hotel} anyRoom={picked === anyRoom} onClose={() => setPicked(null)} />}
     </div>
   );
 }
 
-/** One room's booking details: the stay, then every site's price and «احجز». */
-function RoomBooking({ room, offers, c, hotelName, onClose }: { room: RoomRow; offers: SiteOffer[]; c: Common; hotelName: string; onClose: () => void }) {
+/** A site's logo as Google shows it, or its first letter on a tile. */
+function SiteLogo({ src, name }: { src: string; name: string }) {
+  const [ok, setOk] = useState(Boolean(src));
+  if (ok && src)
+    return (
+      // eslint-disable-next-line @next/next/no-img-element -- the site's small logo from the price answer
+      <img src={src} alt="" referrerPolicy="no-referrer" onError={() => setOk(false)} className="h-8 w-8 shrink-0 rounded-lg bg-white object-contain ring-1 ring-mist-200" />
+    );
+  return (
+    <span aria-hidden="true" className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-navy-900 text-sm font-extrabold uppercase text-white">
+      {name.trim().charAt(0)}
+    </span>
+  );
+}
+
+/** One line of what a room includes: ✓ said by the sites, ⓘ to check on theirs. */
+function BookFact({ ok, children }: { ok: boolean | null; children: React.ReactNode }) {
+  return (
+    <li className="flex items-start gap-2 text-sm text-navy-800">
+      {ok === true ? (
+        <span className="mt-0.5 grid h-4 w-4 shrink-0 place-items-center rounded-full bg-sea-600 text-[10px] font-black text-white">✓</span>
+      ) : (
+        <span className="mt-0.5 grid h-4 w-4 shrink-0 place-items-center text-sm font-bold text-navy-400">{ok === false ? "✕" : "ⓘ"}</span>
+      )}
+      <span>{children}</span>
+    </li>
+  );
+}
+
+/**
+ * A room's booking details — the same page as a flight's after «اختر»
+ * (owner, 8 Nov, «نفس الطيران بالضبط»): close and share on top; on one side
+ * the room (what it includes) and the stay as a timeline (check-in, nights,
+ * check-out); on the other every site's price, cheapest first, each with
+ * its button to that site, six and «المزيد».
+ */
+function RoomBooking({ room, offers, c, hotel, anyRoom, onClose }: { room: RoomRow; offers: SiteOffer[]; c: Common; hotel: HotelResult; anyRoom: boolean; onClose: () => void }) {
   const { t, locale } = c;
+  const [more, setMore] = useState(false);
+  const [copied, setCopied] = useState(false);
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
     const prev = document.body.style.overflow;
@@ -986,6 +1014,7 @@ function RoomBooking({ room, offers, c, hotelName, onClose }: { room: RoomRow; o
       window.removeEventListener("keydown", onKey);
     };
   }, [onClose]);
+  const hotelName = (locale === "ar" && hotel.nameAr) || hotel.name;
   // A partner's room opens through our partner link (lands on the hotel and
   // earns); another site's through Google's link to that room.
   const linkFor = (o: RoomOpt) => {
@@ -993,82 +1022,169 @@ function RoomBooking({ room, offers, c, hotelName, onClose }: { room: RoomRow; o
     const offer = p ? offers.find((x) => x.earns && x.partner === p.partner) : undefined;
     return offer?.url ? { url: offer.url, partner: offer.partner, label: p?.label ?? o.source } : o.link ? { url: o.link, partner: o.source || "hotel", label: o.source } : null;
   };
-  const opts = room.opts.slice(0, 15);
-  const dateFmt = (d: string) =>
-    new Date(`${d}T00:00:00Z`).toLocaleDateString(locale === "ar" ? "ar-SA-u-ca-gregory-nu-latn" : "en-GB", { weekday: "short", day: "numeric", month: "long", timeZone: "UTC" });
+  // One line an option, cheapest first: a site with a dearer option that
+  // includes free cancellation or breakfast shows it on its own line.
+  const sellers = room.opts.slice(0, 20);
+  const shown = more ? sellers : sellers.slice(0, 6);
+  const anyCancel = room.opts.find((o) => o.freeCancel);
+  const anyBreakfast = room.opts.some((o) => o.breakfast);
+  const day = (d: string) => new Date(`${d}T00:00:00Z`).toLocaleDateString(locale === "ar" ? "ar-SA-u-ca-gregory-nu-latn" : "en-GB", { weekday: "short", day: "numeric", month: "long", timeZone: "UTC" });
+  const party = c.party?.adults ?? c.adults;
+  const share = async () => {
+    const url = window.location.href;
+    try {
+      if (navigator.share) await navigator.share({ title: hotelName, text: `${hotelName} · ${room.name}`, url });
+      else {
+        await navigator.clipboard.writeText(url);
+        setCopied(true);
+        window.setTimeout(() => setCopied(false), 2000);
+      }
+    } catch {
+      /* closed the share sheet */
+    }
+  };
   return (
-    <div className="fixed inset-0 z-[90] flex items-end justify-center sm:items-center sm:p-6" role="dialog" aria-modal="true" aria-label={room.name}>
-      <button type="button" aria-label={t.closePhotos} onClick={onClose} className="absolute inset-0 bg-navy-950/60 backdrop-blur-[2px]" />
-      <div className="relative flex max-h-[90svh] w-full flex-col overflow-hidden rounded-t-3xl bg-white shadow-2xl sm:max-w-2xl sm:rounded-3xl">
-        <div className="flex items-center justify-between gap-3 border-b border-mist-200 px-5 py-3.5">
-          <p className="font-display text-lg font-extrabold text-navy-950">{t.bookingDetails}</p>
-          <button type="button" autoFocus onClick={onClose} aria-label={t.closePhotos} className="grid h-10 w-10 place-items-center rounded-full bg-mist-100 text-navy-700 hover:bg-mist-200">
-            ✕
+    <div className="fixed inset-0 z-[90] flex items-end justify-center sm:items-center sm:p-6" role="dialog" aria-modal="true" aria-label={t.bookingDetails}>
+      <button type="button" aria-label={t.closeMap} onClick={onClose} className="absolute inset-0 bg-navy-950/70 backdrop-blur-[2px]" />
+      <div className="relative flex max-h-[94svh] w-full flex-col overflow-hidden rounded-t-3xl bg-mist-100 shadow-2xl sm:max-w-5xl sm:rounded-3xl">
+        <div className="flex items-center justify-between gap-3 px-5 py-4 sm:px-8">
+          <button type="button" autoFocus onClick={onClose} className="inline-flex min-h-11 items-center gap-2 text-base font-extrabold text-sun-600 hover:text-sun-700">
+            <span aria-hidden="true" className="text-xl leading-none">✕</span>
+            {t.close}
+          </button>
+          <button type="button" onClick={share} className="inline-flex min-h-11 items-center gap-2 text-base font-extrabold text-sun-600 hover:text-sun-700">
+            {copied ? t.linkCopied : t.share}
+            <span aria-hidden="true" className="text-lg leading-none">⇪</span>
           </button>
         </div>
-        <div className="min-h-0 flex-1 overflow-y-auto">
-          {/* The stay: the room, the hotel, the dates and the party. */}
-          <div className="flex gap-4 bg-mist-50 px-5 py-4">
-            {room.image ? <Photo src={room.image} alt="" className="h-20 w-28 shrink-0 rounded-xl" /> : null}
-            <div className="min-w-0 space-y-1">
-              <p className="font-display text-base font-extrabold leading-snug text-navy-950" dir="auto">
-                <bdi>{room.name}</bdi>
-              </p>
-              <p className="text-sm font-bold text-sea-800">
-                <bdi>{hotelName}</bdi>
-              </p>
-              <p className="text-xs font-semibold text-navy-600">
-                <bdi>{dateFmt(c.checkIn)}</bdi> ← <bdi>{dateFmt(c.checkOut)}</bdi> · {c.nights === 1 ? t.stayTotalOne : nightsLabel(c.nights, t)}
-                {room.guests ? <> · {t.roomGuests.replace("{n}", String(room.guests))}</> : null}
-              </p>
-            </div>
-          </div>
 
-          <div className="px-5 py-4">
-            <p className="mb-3 text-sm font-extrabold text-navy-950">{t.roomSitesTitle.replace("{n}", String(opts.length))}</p>
-            <ul className="space-y-2.5">
-              {opts.map((o, i) => {
-                const go = linkFor(o);
-                return (
-                  <li key={o.key} className={`flex items-center justify-between gap-3 rounded-2xl p-3.5 ring-1 ${i === 0 ? "bg-sun-50/60 ring-sun-300" : "bg-white ring-mist-200"}`}>
-                    <div className="min-w-0 space-y-1">
-                      <p className="flex flex-wrap items-center gap-2 text-sm font-extrabold text-navy-950">
-                        <bdi>{go?.label || o.source}</bdi>
-                        {i === 0 && <span className="rounded-full bg-sun-400 px-2 py-0.5 text-[10px] font-extrabold text-navy-950">{t.cheapest}</span>}
-                      </p>
-                      {(o.freeCancel || o.breakfast) && (
-                        <ul className="flex flex-wrap gap-x-3 gap-y-0.5 text-xs font-bold text-sea-800">
-                          {o.freeCancel && (
-                            <li className="inline-flex items-center gap-1">
-                              <Icon name="check" className="h-3 w-3" />
-                              {o.cancelUntil ? t.freeCancelUntil.replace("{date}", cancelDate(o.cancelUntil, c.checkIn, locale)) : t.freeCancel}
-                            </li>
+        <div className="min-h-0 flex-1 overflow-y-auto px-4 pb-6 sm:px-8">
+          <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,22rem)] lg:items-start">
+            {/* The sites: cheapest first, each with its button (the flight page's sellers). */}
+            <div className="order-1 rounded-2xl bg-white p-4 shadow-sm lg:sticky lg:top-0 lg:order-2">
+              <ul className="space-y-1">
+                {shown.map((o, i) => {
+                  const go = linkFor(o);
+                  return (
+                    <li key={o.key} className="flex items-center justify-between gap-3 rounded-xl px-1 py-2.5">
+                      <div className="flex min-w-0 items-center gap-3">
+                        <SiteLogo src={o.logo} name={go?.label || o.source} />
+                        <div className="min-w-0">
+                          <p className="whitespace-nowrap font-display text-lg font-black leading-tight text-navy-950">{money(o.total, locale)}</p>
+                          <p className="truncate text-xs font-semibold text-navy-600">
+                            <bdi>{go?.label || o.source}</bdi>
+                          </p>
+                          {(o.freeCancel || o.breakfast) && (
+                            <p className="mt-0.5 text-[11px] font-bold text-sea-700">
+                              {[o.freeCancel ? t.freeCancel : "", o.breakfast ? t.breakfastIncluded : ""].filter(Boolean).join(" · ")}
+                            </p>
                           )}
-                          {o.breakfast && (
-                            <li className="inline-flex items-center gap-1">
-                              <Icon name="check" className="h-3 w-3" />
-                              {t.breakfastIncluded}
-                            </li>
-                          )}
-                        </ul>
-                      )}
-                    </div>
-                    <div className="flex shrink-0 items-center gap-3">
-                      <div className="text-end">
-                        <p className="whitespace-nowrap font-display text-lg font-black leading-tight text-navy-950">{money(o.total, locale)}</p>
-                        <p className="text-[11px] text-navy-500">{t.taxesIncluded}</p>
+                        </div>
                       </div>
                       {go && (
-                        <PartnerLink partner={go.partner} href={go.url} className="inline-flex min-h-11 items-center rounded-xl bg-navy-900 px-4 text-sm font-extrabold text-white hover:bg-navy-800">
-                          {t.bookNow}
+                        <PartnerLink
+                          partner={go.partner}
+                          href={go.url}
+                          className={`inline-flex min-h-10 min-w-[104px] shrink-0 items-center justify-center rounded-full px-5 text-sm font-extrabold transition ${i === 0 ? "bg-sun-400 text-navy-950 hover:bg-sun-300" : "bg-mist-200 text-navy-900 hover:bg-mist-300"}`}
+                        >
+                          {t.bookShort}
                         </PartnerLink>
                       )}
-                    </div>
+                    </li>
+                  );
+                })}
+              </ul>
+              {sellers.length > 6 && (
+                <button type="button" onClick={() => setMore((v) => !v)} aria-expanded={more} className="mt-1 inline-flex min-h-10 items-center gap-1.5 px-1 text-sm font-extrabold text-navy-900 hover:underline">
+                  {more ? t.fewer : t.moreSellers.replace("{n}", String(sellers.length - 6))}
+                  <span aria-hidden="true">{more ? "⌃" : "⌄"}</span>
+                </button>
+              )}
+              <p className="mt-3 border-t border-mist-100 pt-3 text-[11px] leading-relaxed text-navy-500">{t.roomBookingNote}</p>
+            </div>
+
+            {/* The room and the stay (the flight page's fare and segments). */}
+            <div className="order-2 space-y-5 lg:order-1">
+              <div className="rounded-2xl bg-white p-5 shadow-sm">
+                <div className="flex items-start gap-4">
+                  <div className="min-w-0 flex-1">
+                    <p className="font-display text-lg font-extrabold leading-snug text-navy-950" dir="auto">
+                      <bdi>{room.name}</bdi>
+                    </p>
+                    <ul className="mt-3 space-y-2">
+                      {room.guests ? <BookFact ok>{t.roomGuests.replace("{n}", String(room.guests))}</BookFact> : null}
+                      {anyRoom && <BookFact ok={null}>{t.anyRoomSub}</BookFact>}
+                      {!anyRoom && (
+                        <BookFact ok={anyCancel ? true : null}>
+                          {anyCancel ? (anyCancel.cancelUntil ? t.freeCancelUntil.replace("{date}", cancelDate(anyCancel.cancelUntil, c.checkIn, locale)) : t.freeCancel) + ` · ${t.atSomeSites}` : t.cancelAtSite}
+                        </BookFact>
+                      )}
+                      {!anyRoom && <BookFact ok={anyBreakfast ? true : null}>{anyBreakfast ? `${t.breakfastIncluded} · ${t.atSomeSites}` : t.breakfastAtSite}</BookFact>}
+                      <BookFact ok>{t.taxesIncludedLong}</BookFact>
+                    </ul>
+                  </div>
+                  {room.image && <Photo src={room.image} alt="" className="hidden h-24 w-32 shrink-0 rounded-xl sm:block" />}
+                </div>
+              </div>
+
+              <div>
+                <p className="font-display text-lg font-extrabold text-navy-950">
+                  <bdi>{hotelName}</bdi>
+                </p>
+                <p className="text-sm text-navy-600">
+                  {c.nights === 1 ? t.stayTotalOne : nightsLabel(c.nights, t)} · {t.guestsCount.replace("{n}", String(party))}
+                </p>
+              </div>
+              <div className="rounded-2xl bg-white p-5 shadow-sm">
+                <div className="flex items-center gap-3">
+                  {hotel.images[0] ? <Photo src={hotel.images[0].thumb} alt="" className="h-11 w-11 shrink-0 rounded-full" /> : null}
+                  <div className="min-w-0">
+                    <p className="font-extrabold text-navy-950">
+                      <bdi>{hotelName}</bdi>
+                    </p>
+                    {hotel.stars ? <Stars count={hotel.stars} className="text-xs" /> : null}
+                  </div>
+                </div>
+                <ol className="relative mt-4 space-y-5 ps-7">
+                  <span aria-hidden="true" className="absolute bottom-3 start-[9px] top-3 w-0.5 bg-mist-300" />
+                  <li className="relative">
+                    <span aria-hidden="true" className="absolute -start-7 top-1 h-4 w-4 rounded-full border-[3px] border-navy-300 bg-white" />
+                    <p className="text-sm font-extrabold text-navy-950">{t.checkInLabel}</p>
+                    <p className="text-sm text-navy-700">
+                      <bdi>{day(c.checkIn)}</bdi>
+                      {hotel.checkInTime && (
+                        <>
+                          {" · "}
+                          <bdi>{hotel.checkInTime}</bdi>
+                        </>
+                      )}
+                    </p>
+                    {hotel.address && (
+                      <p className="text-xs text-navy-500">
+                        <bdi>{hotel.address}</bdi>
+                      </p>
+                    )}
                   </li>
-                );
-              })}
-            </ul>
-            <p className="mt-4 text-[11px] leading-relaxed text-navy-500">{t.roomBookingNote}</p>
+                  <li className="relative -ms-7 rounded-xl bg-mist-100 px-4 py-2.5 text-sm font-bold text-navy-800">
+                    <span aria-hidden="true">🛏️ </span>
+                    {c.nights === 1 ? t.stayTotalOne : nightsLabel(c.nights, t)}
+                  </li>
+                  <li className="relative">
+                    <span aria-hidden="true" className="absolute -start-7 top-1 h-4 w-4 rounded-full border-[3px] border-navy-300 bg-white" />
+                    <p className="text-sm font-extrabold text-navy-950">{t.checkOutLabel}</p>
+                    <p className="text-sm text-navy-700">
+                      <bdi>{day(c.checkOut)}</bdi>
+                      {hotel.checkOutTime && (
+                        <>
+                          {" · "}
+                          <bdi>{hotel.checkOutTime}</bdi>
+                        </>
+                      )}
+                    </p>
+                  </li>
+                </ol>
+              </div>
+            </div>
           </div>
         </div>
       </div>
