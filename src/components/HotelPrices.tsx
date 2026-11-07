@@ -591,11 +591,54 @@ function HotelDetail({
           </div>
         </div>
 
-        <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_300px]">
-          <div className="min-w-0">
+        {/* Phone: photos, price, map, then what the hotel offers. Wide: photos
+            and the offers in one column, price and map beside them, same height. */}
+        <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_300px] lg:grid-rows-[auto_1fr]">
+          <div className="min-w-0 lg:col-start-1 lg:row-start-1">
             <Gallery hotel={hotel} t={t} />
           </div>
-          <div className="flex flex-col gap-4">
+            {/* 3 · What the hotel offers, under the photos: it fills the column
+                beside the rating and the map (owner, 8 Nov: «الفراغ»). */}
+            {(key.length > 0 || hotel.locationRating) && (
+              <section className="order-last flex flex-col rounded-2xl bg-white p-4 shadow-sm ring-1 ring-black/5 sm:p-5 lg:order-none lg:col-start-1 lg:row-start-2">
+                <p className="mb-3 text-sm font-extrabold text-navy-950">{t.highlightsTitle}</p>
+                <ul className="grid flex-1 grid-cols-2 content-start gap-2 sm:grid-cols-3 xl:grid-cols-4">
+                  {key.map((k) => (
+                    <li
+                      key={k.label}
+                      className={`flex min-h-12 items-center gap-2.5 rounded-xl px-3 py-2 text-sm font-bold ring-1 ${k.free ? "bg-sea-50 text-sea-900 ring-sea-200" : "bg-mist-50 text-navy-800 ring-mist-200"}`}
+                    >
+                      <span aria-hidden="true" className="text-base">{k.icon}</span>
+                      <span className="leading-tight">{k.label}</span>
+                    </li>
+                  ))}
+                  {hotel.locationRating ? (
+                    <li className="flex min-h-12 items-center gap-2.5 rounded-xl bg-mist-50 px-3 py-2 text-sm font-bold text-navy-800 ring-1 ring-mist-200">
+                      <span aria-hidden="true" className="text-base">🗺️</span>
+                      <span className="leading-tight">
+                        {t.locationLabel}: {hotel.locationRating.toFixed(1)} / 5
+                      </span>
+                    </li>
+                  ) : null}
+                </ul>
+                {(hotel.checkInTime || hotel.checkOutTime) && (
+                  <p className="mt-3 border-t border-mist-100 pt-3 text-xs font-semibold text-navy-600">
+                    {hotel.checkInTime && (
+                      <>
+                        🛎️ {t.checkInLabel}: <bdi>{hotel.checkInTime}</bdi>
+                      </>
+                    )}
+                    {hotel.checkInTime && hotel.checkOutTime && "  ·  "}
+                    {hotel.checkOutTime && (
+                      <>
+                        🧳 {t.checkOutLabel}: <bdi>{hotel.checkOutTime}</bdi>
+                      </>
+                    )}
+                  </p>
+                )}
+              </section>
+            )}
+          <div className="flex flex-col gap-4 lg:col-start-2 lg:row-span-2 lg:row-start-1">
             <div className="rounded-2xl bg-white p-4 shadow-sm ring-1 ring-black/5">
               <Rating hotel={hotel} c={c} size="lg" />
               {best && (
@@ -633,8 +676,10 @@ function HotelDetail({
             </div>
             {/* 2 · The map, small, beside the photos. */}
             {hasMap && (
-              <div className="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-black/5">
-                <HotelMap lat={hotel.lat!} lng={hotel.lng!} centre={centre} attribution={t.mapAttribution} small />
+              <div className="flex flex-1 flex-col overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-black/5">
+                <div className="relative min-h-44 flex-1">
+                  <HotelMap lat={hotel.lat!} lng={hotel.lng!} centre={centre} attribution={t.mapAttribution} small />
+                </div>
                 <a href={mapsHref} target="_blank" rel="noopener noreferrer" className="flex min-h-11 items-center justify-center gap-1.5 text-sm font-extrabold text-sea-800 hover:underline">
                   <Icon name="pin" className="h-4 w-4" />
                   {t.openInMaps}
@@ -646,8 +691,8 @@ function HotelDetail({
       </div>
 
       <div className="mt-5 flex flex-col gap-5">
-        {/* 3 · Description and 4 · the most popular facilities. */}
-        {(hotel.description || key.length > 0 || hotel.locationRating) && (
+        {/* 4 · The hotel's own description. */}
+        {hotel.description && (
           <section className={box}>
             {hotel.description && (
               <>
@@ -657,28 +702,6 @@ function HotelDetail({
                   {hotel.description}
                 </p>
               </>
-            )}
-            {(key.length > 0 || hotel.locationRating) && (
-              <div className={hotel.description ? "mt-5" : ""}>
-                <p className="mb-3 text-sm font-extrabold text-navy-950">{t.highlightsTitle}</p>
-                <ul className="flex flex-wrap gap-2">
-                  {key.map((k) => (
-                    <li
-                      key={k.label}
-                      className={`inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-bold ring-1 ${k.free ? "bg-sea-50 text-sea-900 ring-sea-200" : "bg-mist-50 text-navy-800 ring-mist-200"}`}
-                    >
-                      <span aria-hidden="true">{k.icon}</span>
-                      {k.label}
-                    </li>
-                  ))}
-                  {hotel.locationRating ? (
-                    <li className="inline-flex items-center gap-2 rounded-xl bg-mist-50 px-3 py-2 text-sm font-bold text-navy-800 ring-1 ring-mist-200">
-                      <span aria-hidden="true">🗺️</span>
-                      {t.locationLabel}: {hotel.locationRating.toFixed(1)} / 5
-                    </li>
-                  ) : null}
-                </ul>
-              </div>
             )}
           </section>
         )}

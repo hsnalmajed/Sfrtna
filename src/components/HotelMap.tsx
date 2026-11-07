@@ -1,6 +1,7 @@
 "use client";
 
-import { MapContainer, Marker, TileLayer } from "react-leaflet";
+import { useEffect } from "react";
+import { MapContainer, Marker, TileLayer, useMap } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
@@ -42,12 +43,26 @@ export default function HotelMap({
     : { center: [lat, lng] as [number, number], zoom: 15 };
   return (
     // `isolate`: leaflet's controls (z-index 800) stay under the site header.
-    <div className={`isolate overflow-hidden ${small ? "" : "rounded-xl ring-1 ring-mist-200"}`}>
-      <MapContainer {...view} scrollWheelZoom={false} className={small ? "h-44 w-full" : "h-64 w-full sm:h-80"}>
+    // `small`: fills its box (the side column's free height), at least h-44.
+    <div className={`isolate overflow-hidden ${small ? "absolute inset-0" : "rounded-xl ring-1 ring-mist-200"}`}>
+      <MapContainer {...view} scrollWheelZoom={false} className={small ? "h-full w-full" : "h-64 w-full sm:h-80"}>
+        <Resize />
         <TileLayer attribution={attribution} url="https://tile.openstreetmap.org/{z}/{x}/{y}.png" maxZoom={19} />
         <Marker position={[lat, lng]} icon={pin} />
         {near && <Marker position={[centre.lat, centre.lon]} icon={dot} />}
       </MapContainer>
     </div>
   );
+}
+
+/** The box gets its height from the column after the map starts: measure again. */
+function Resize() {
+  const map = useMap();
+  useEffect(() => {
+    const el = map.getContainer();
+    const ro = new ResizeObserver(() => map.invalidateSize());
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [map]);
+  return null;
 }
