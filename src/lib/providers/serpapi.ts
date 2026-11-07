@@ -203,6 +203,12 @@ export interface HotelResult {
    * site's offer split by room). Read defensively: absent → none shown.
    */
   rooms?: HotelRoom[];
+  /** Google's amenities by group (Internet, Food & drink…), the hotel's page. */
+  amenityGroups?: AmenityGroup[];
+  /** What this hotel usually costs a night (Google's own range). */
+  typical?: { low: number; high: number } | null;
+  /** «26% less than usual» → 26. */
+  dealPct?: number | null;
 }
 
 export interface HotelRoom {
@@ -213,6 +219,24 @@ export interface HotelRoom {
   perNight: number | null;
   total: number | null;
   link: string | null;
+  /** The room's options at that site (cancellation, breakfast…), cheapest first. */
+  rates?: RoomRate[];
+}
+
+export interface RoomRate {
+  total: number | null;
+  perNight: number | null;
+  guests: number | null;
+  freeCancel: boolean;
+  /** "Dec 5" / "6:00 PM", as Google gives them (English). */
+  cancelUntil: string | null;
+  cancelUntilTime: string | null;
+  breakfast: boolean;
+}
+
+export interface AmenityGroup {
+  title: string;
+  items: { name: string; label: string | null; available: boolean }[];
 }
 
 export interface HotelSearch {
@@ -228,7 +252,17 @@ export interface HotelSearch {
 }
 
 type Rate = { extracted_lowest?: number; extracted_before_taxes_fees?: number } | undefined;
+interface GhRate {
+  num_guests?: number;
+  free_cancellation?: boolean;
+  free_cancellation_until_date?: string;
+  free_cancellation_until_time?: string;
+  breakfast_included?: boolean;
+  rate_per_night?: Rate;
+  total_rate?: Rate;
+}
 interface GhRoom {
+  rates?: GhRate[];
   name?: string;
   link?: string;
   num_guests?: number;
@@ -268,6 +302,9 @@ interface GhProperty {
   excluded_amenities?: string[];
   eco_certified?: boolean;
   essential_info?: string[];
+  amenities_detailed?: { groups?: { title?: string; list?: { title?: string; label?: string; available?: boolean }[] }[] };
+  typical_price_range?: { extracted_lowest?: number; extracted_highest?: number };
+  deal?: string;
 }
 
 const str = (v: unknown, max = 80) => (typeof v === "string" ? v.trim().slice(0, max) : "");
@@ -312,6 +349,19 @@ function roomsOf(p: GhProperty): HotelRoom[] {
         perNight: num(r.rate_per_night?.extracted_lowest),
         total: num(r.total_rate?.extracted_lowest),
         link: httpsOnly(r.link) || httpsOnly(o.link) || null,
+        rates: (Array.isArray(r.rates) ? r.rates : [])
+          .map((x) => ({
+            total: num(x?.total_rate?.extracted_lowest),
+            perNight: num(x?.rate_per_night?.extracted_lowest),
+            guests: num(x?.num_guests),
+            freeCancel: x?.free_cancellation === true,
+            cancelUntil: str(x?.free_cancellation_until_date, 20) || null,
+            cancelUntilTime: str(x?.free_cancellation_until_time, 12) || null,
+            breakfast: x?.breakfast_included === true,
+          }))
+          .filter((x) => x.total || x.perNight)
+          .sort((a, b) => (a.total ?? 0) - (b.total ?? 0))
+          .slice(0, 6),
       });
     }
   }
@@ -333,10 +383,30 @@ function roomPaths(v: unknown, path = "", out: string[] = [], depth = 0): string
   return out;
 }
 
+function groupsOf(p: GhProperty): AmenityGroup[] {
+  return (p.amenities_detailed?.groups ?? [])
+    .map((g) => ({
+      title: str(g?.title, 40),
+      items: (g?.list ?? [])
+        .map((x) => ({ name: str(x?.title, 60), label: str(x?.label, 30) || null, available: x?.available !== false }))
+        .filter((x) => x.name)
+        .slice(0, 40),
+    }))
+    .filter((g) => g.title && g.items.length)
+    .slice(0, 20);
+}
+
 function hotelOf(p: GhProperty): HotelResult {
   const rooms = roomsOf(p);
+  const amenityGroups = groupsOf(p);
+  const low = num(p.typical_price_range?.extracted_lowest);
+  const high = num(p.typical_price_range?.extracted_highest);
+  const deal = /(\d{1,2})\s*%\s*less/i.exec(p.deal ?? "");
   return {
     ...(rooms.length ? { rooms } : {}),
+    ...(amenityGroups.length ? { amenityGroups } : {}),
+    ...(low && high ? { typical: { low, high } } : {}),
+    ...(deal ? { dealPct: Number(deal[1]) } : {}),
     name: p.name || "",
     token: p.property_token || null,
     stars: num(p.extracted_hotel_class),

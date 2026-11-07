@@ -8,7 +8,7 @@ import dynamic from "next/dynamic";
 import type { HotelResult, HotelSearch } from "@/lib/providers/serpapi";
 import { hotelPartnerLinks } from "@/lib/affiliateLinks";
 import type { Dictionary } from "@/lib/dictionaries";
-import { amenityLabels, keyAmenities } from "@/lib/hotelAmenities";
+import { amenityGroupLabel, amenityLabel, amenityLabels, keyAmenities } from "@/lib/hotelAmenities";
 import Icon from "@/components/ui/Icon";
 import PartnerLink from "@/components/PartnerLink";
 import ScrollRow from "@/components/ui/ScrollRow";
@@ -515,13 +515,31 @@ function HotelDetail({
   const kmText = km == null ? "" : km < 10 ? km.toFixed(1) : String(Math.round(km));
   const nearby = hotel.nearby ?? [];
   const rooms = hotel.rooms ?? [];
+  // Google's own groups (Internet, Food & drink…), in the page's language;
+  // an item with no Arabic name is left out rather than shown in English.
+  const groups = (hotel.amenityGroups ?? [])
+    .map((g) => ({
+      title: amenityGroupLabel(g.title, locale),
+      items: g.items
+        .filter((x) => x.available)
+        .map((x) => ({ name: amenityLabel(x.name, locale) ?? "", label: x.label && /free/i.test(x.label) ? "free" : x.label && /charge|\$/i.test(x.label) ? "extra" : null }))
+        .filter((x, i, all) => x.name && all.findIndex((y) => y.name === x.name) === i),
+    }))
+    .filter((g) => g.items.length)
+    // Same group title twice (two unknown ones → «مرافق أخرى»): merge.
+    .reduce<{ title: string; items: { name: string; label: string | null }[] }[]>((acc, g) => {
+      const same = acc.find((x) => x.title === g.title);
+      if (same) same.items.push(...g.items.filter((i) => !same.items.some((y) => y.name === i.name)));
+      else acc.push(g);
+      return acc;
+    }, []);
   const hasReviews = Boolean((hotel.topics ?? []).some((x) => x.positive + x.negative > 0) || (hotel.ratingsHist ?? []).some((r) => r.count > 0));
   const nav = [
     { id: "hotel-overview", label: t.navOverview, show: true },
     { id: "hotel-prices", label: t.navPrices, show: true },
     { id: "hotel-reviews", label: t.navReviews, show: hasReviews },
     { id: "hotel-location", label: t.navLocation, show: nearby.length > 0 || hasMap },
-    { id: "hotel-facilities", label: t.navFacilities, show: amenities.length > 0 },
+    { id: "hotel-facilities", label: t.navFacilities, show: amenities.length > 0 || groups.length > 0 },
   ].filter((n) => n.show);
   const box = "scroll-mt-32 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-black/5 sm:p-6";
   const h3 = "font-display text-lg font-extrabold text-navy-950";
@@ -585,7 +603,18 @@ function HotelDetail({
                     <bdi>{t.atSite.replace("{site}", best.label)}</bdi>
                   </p>
                   <p className="font-display text-2xl font-black text-navy-950">{money(best.total, locale)}</p>
+                  {hotel.dealPct ? (
+                    <p className="mt-1 inline-flex items-center gap-1 rounded-full bg-sea-600 px-2.5 py-0.5 text-xs font-extrabold text-white">
+                      <span aria-hidden="true">🔥</span>
+                      {t.dealLess.replace("{pct}", String(hotel.dealPct))}
+                    </p>
+                  ) : null}
                   <p className="text-xs text-navy-600">{c.nights === 1 ? t.stayTotalOne : t.stayTotal.replace("{nights}", nightsLabel(c.nights, t))}</p>
+                  {hotel.typical && (
+                    <p className="mt-1 text-xs font-semibold text-navy-500">
+                      {t.typicalRange.replace("{low}", money(hotel.typical.low, locale)).replace("{high}", money(hotel.typical.high, locale))}
+                    </p>
+                  )}
                   {offers.length > 1 && (
                     <a href="#hotel-prices" className="mt-3 flex min-h-11 items-center justify-center gap-1.5 rounded-xl bg-navy-900 px-4 text-sm font-extrabold text-white hover:bg-navy-800">
                       {t.compareSites.replace("{count}", String(offers.length))}
@@ -706,7 +735,29 @@ function HotelDetail({
         )}
 
         {/* 8 · Every facility. */}
-        {amenities.length > 0 && (
+        {groups.length > 0 ? (
+          <section id="hotel-facilities" className={box}>
+            <h3 className={h3}>{t.allAmenitiesTitle}</h3>
+            <div className="mt-4 columns-1 gap-6 sm:columns-2 lg:columns-3">
+              {groups.map((g) => (
+                <div key={g.title} className="mb-5 break-inside-avoid">
+                  <p className="mb-2 text-sm font-extrabold text-navy-950">{g.title}</p>
+                  <ul className="space-y-1.5">
+                    {g.items.map((x) => (
+                      <li key={x.name} className="flex items-start gap-2 text-sm font-semibold text-navy-800">
+                        <Icon name="check" className="mt-0.5 h-4 w-4 shrink-0 text-sea-600" />
+                        <span>
+                          {x.name}
+                          {x.label && <span className={`ms-1.5 text-xs font-bold ${x.label === "free" ? "text-sea-700" : "text-navy-500"}`}>({x.label === "free" ? t.amenityFree : t.amenityExtra})</span>}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </section>
+        ) : amenities.length > 0 && (
           <section id="hotel-facilities" className={box}>
             <h3 className={h3}>{t.allAmenitiesTitle}</h3>
             <ul className="mt-3 grid grid-cols-1 gap-x-4 gap-y-2 sm:grid-cols-2 lg:grid-cols-3">
@@ -756,55 +807,142 @@ function HotelDetail({
   );
 }
 
-/** Room types, when Google's answer carried them: one row a room, its cheapest site. */
+/** "Dec 5" (Google, English) → the page's own date, in the year of the stay. */
+function cancelDate(d: string, checkIn: string, locale: "ar" | "en"): string {
+  const m = /^([A-Za-z]{3})\w*\s+(\d{1,2})$/.exec(d.trim());
+  const months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+  const mi = m ? months.indexOf(m[1].toLowerCase()) : -1;
+  if (!m || mi < 0) return d;
+  const ci = new Date(`${checkIn}T00:00:00Z`);
+  let y = Number.isFinite(ci.getTime()) ? ci.getUTCFullYear() : new Date().getUTCFullYear();
+  // Free cancellation ends before the stay: December before a January stay is last year.
+  if (Number.isFinite(ci.getTime()) && mi > ci.getUTCMonth()) y -= 1;
+  return new Date(Date.UTC(y, mi, Number(m[2]))).toLocaleDateString(locale === "ar" ? "ar-SA-u-ca-gregory-nu-latn" : "en-GB", { day: "numeric", month: "long", timeZone: "UTC" });
+}
+
+/**
+ * Room types, as Booking lists them (owner, 7 Nov): one row a room — its
+ * photo, who it sleeps — and under it the room's options from every site,
+ * cheapest first, each with what it includes (free cancellation, breakfast)
+ * and «احجز» beside it. Only what Google's answer carried.
+ */
 function RoomsTable({ rooms, offers, c }: { rooms: NonNullable<HotelResult["rooms"]>; offers: SiteOffer[]; c: Common }) {
   const { t, locale } = c;
+  const [more, setMore] = useState<Record<string, boolean>>({});
   // A partner's room opens through our partner link (it lands on the hotel and
   // earns); any other site's room through Google's own link to that room.
-  const linkFor = (r: NonNullable<HotelResult["rooms"]>[number]) => {
-    const p = PARTNERS.find((x) => x.match.test(r.source));
+  const linkFor = (source: string, link: string | null) => {
+    const p = PARTNERS.find((x) => x.match.test(source));
     const o = p ? offers.find((x) => x.earns && x.partner === p.partner) : undefined;
-    return o?.url ? { url: o.url, partner: o.partner } : r.link ? { url: r.link, partner: r.source || "hotel" } : null;
+    return o?.url ? { url: o.url, partner: o.partner, label: p?.label ?? source } : link ? { url: link, partner: source || "hotel", label: source } : null;
   };
-  const byName = new Map<string, NonNullable<HotelResult["rooms"]>>();
-  for (const r of rooms) byName.set(r.name, [...(byName.get(r.name) ?? []), r]);
-  const rows = [...byName.entries()].map(([name, list]) => {
-    const priced = list.filter((r) => r.total).sort((a, b) => (a.total ?? 0) - (b.total ?? 0));
-    return { name, best: priced[0] ?? list[0], image: list.find((r) => r.image)?.image ?? "", guests: list.find((r) => r.guests)?.guests ?? null, sites: list.length };
-  });
+  type Opt = { key: string; source: string; link: string | null; total: number; guests: number | null; freeCancel: boolean; cancelUntil: string | null; breakfast: boolean };
+  const byName = new Map<string, { name: string; image: string; guests: number | null; opts: Opt[] }>();
+  for (const r of rooms) {
+    const row = byName.get(r.name) ?? { name: r.name, image: "", guests: null, opts: [] };
+    row.image ||= r.image;
+    row.guests ??= r.guests;
+    const rates = r.rates?.length ? r.rates : [{ total: r.total, perNight: r.perNight, guests: r.guests, freeCancel: false, cancelUntil: null, cancelUntilTime: null, breakfast: false }];
+    rates.forEach((x, i) => {
+      const one = x.total ?? (x.perNight ? x.perNight * c.nights : null);
+      if (!one) return;
+      row.opts.push({ key: `${r.source}-${i}`, source: r.source, link: r.link, total: forRooms(one, c), guests: x.guests ?? r.guests, freeCancel: x.freeCancel, cancelUntil: x.cancelUntil, breakfast: x.breakfast });
+    });
+    byName.set(r.name, row);
+  }
+  const rows = [...byName.values()]
+    .filter((r) => r.opts.length)
+    .map((r) => ({ ...r, opts: r.opts.sort((a, b) => a.total - b.total) }))
+    .sort((a, b) => a.opts[0].total - b.opts[0].total);
+  if (!rows.length) return null;
   return (
-    <div className="mb-5">
-      <p className="mb-2 text-sm font-extrabold text-navy-950">{t.roomsTitle}</p>
-      <ul className="divide-y divide-mist-200 rounded-xl ring-1 ring-mist-200">
-        {rows.map((r) => (
-          <li key={r.name} className="flex items-center gap-3 p-3">
-            {r.image ? <Photo src={r.image} alt="" className="h-16 w-20 shrink-0 rounded-lg" /> : <span className="grid h-16 w-20 shrink-0 place-items-center rounded-lg bg-mist-100 text-xl" aria-hidden="true">🛏️</span>}
-            <div className="min-w-0 flex-1">
-              <p className="text-sm font-extrabold text-navy-900" dir="auto">
-                <bdi>{r.name}</bdi>
-              </p>
-              <p className="text-xs text-navy-600">
-                {r.guests ? t.roomGuests.replace("{n}", String(r.guests)) : ""}
-                {r.best.source && (
-                  <>
-                    {r.guests ? " · " : ""}
-                    <bdi>{r.best.source}</bdi>
-                  </>
+    <div className="mb-6">
+      <div className="mb-3 flex items-baseline justify-between gap-2">
+        <p className="font-display text-base font-extrabold text-navy-950">{t.roomsTitle}</p>
+        <p className="text-xs font-bold text-navy-500">{t.roomTypesCount.replace("{n}", String(rows.length))}</p>
+      </div>
+      <ul className="space-y-3">
+        {rows.map((r) => {
+          const open = more[r.name];
+          const shown = open ? r.opts.slice(0, 12) : r.opts.slice(0, 2);
+          return (
+            <li key={r.name} className="overflow-hidden rounded-2xl ring-1 ring-mist-300">
+              <div className="flex items-center gap-3 bg-mist-50 p-3">
+                {r.image ? (
+                  <Photo src={r.image} alt="" className="h-20 w-28 shrink-0 rounded-xl" />
+                ) : (
+                  <span className="grid h-20 w-28 shrink-0 place-items-center rounded-xl bg-mist-200 text-2xl" aria-hidden="true">
+                    🛏️
+                  </span>
                 )}
-              </p>
-              {r.best.total && <p className="font-display text-base font-extrabold text-navy-950">{money(forRooms(r.best.total, c), locale)}</p>}
-            </div>
-            {linkFor(r.best) && (
-              <PartnerLink
-                partner={linkFor(r.best)!.partner}
-                href={linkFor(r.best)!.url}
-                className="inline-flex shrink-0 items-center gap-1 rounded-xl bg-sun-400 px-3.5 py-2 text-xs font-extrabold text-navy-950 hover:bg-sun-300"
-              >
-                {t.bookNow}
-              </PartnerLink>
-            )}
-          </li>
-        ))}
+                <div className="min-w-0">
+                  <p className="font-display text-sm font-extrabold leading-snug text-sea-900" dir="auto">
+                    <bdi>{r.name}</bdi>
+                  </p>
+                  {r.guests ? (
+                    <p className="mt-1 inline-flex items-center gap-1 text-xs font-semibold text-navy-600">
+                      <span aria-hidden="true">👤</span>
+                      {t.roomGuests.replace("{n}", String(r.guests))}
+                    </p>
+                  ) : null}
+                </div>
+              </div>
+              <ul className="divide-y divide-mist-200">
+                {shown.map((o) => {
+                  const go = linkFor(o.source, o.link);
+                  return (
+                    <li key={o.key} className="flex flex-wrap items-center justify-between gap-3 p-3">
+                      <div className="min-w-0 space-y-1">
+                        {/* Only what Google says the option includes: no badge is "not said", not "no". */}
+                        {(o.freeCancel || o.breakfast) && (
+                          <ul className="flex flex-wrap gap-1.5">
+                            {o.freeCancel && (
+                              <li className="inline-flex items-center gap-1 rounded-full bg-sea-50 px-2 py-0.5 text-[11px] font-extrabold text-sea-800 ring-1 ring-sea-200">
+                                <Icon name="check" className="h-3 w-3" />
+                                {o.cancelUntil ? t.freeCancelUntil.replace("{date}", cancelDate(o.cancelUntil, c.checkIn, locale)) : t.freeCancel}
+                              </li>
+                            )}
+                            {o.breakfast && (
+                              <li className="inline-flex items-center gap-1 rounded-full bg-sea-50 px-2 py-0.5 text-[11px] font-extrabold text-sea-800 ring-1 ring-sea-200">
+                                <span aria-hidden="true">🍳</span>
+                                {t.breakfastIncluded}
+                              </li>
+                            )}
+                          </ul>
+                        )}
+                        <p className="text-xs font-bold text-navy-600">
+                          <bdi>{go?.label || o.source}</bdi>
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <div className="text-end">
+                          <p className="font-display text-lg font-extrabold leading-tight text-navy-950">{money(o.total, locale)}</p>
+                          <p className="text-[11px] text-navy-500">{c.nights === 1 ? t.stayTotalOne : t.stayTotal.replace("{nights}", nightsLabel(c.nights, t))}</p>
+                        </div>
+                        {go && (
+                          <PartnerLink partner={go.partner} href={go.url} className="inline-flex min-h-11 shrink-0 items-center rounded-xl bg-sun-400 px-4 text-sm font-extrabold text-navy-950 shadow-[var(--shadow-sun)] hover:bg-sun-300">
+                            {t.bookNow}
+                          </PartnerLink>
+                        )}
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+              {r.opts.length > 2 && (
+                <button
+                  type="button"
+                  onClick={() => setMore((m) => ({ ...m, [r.name]: !open }))}
+                  aria-expanded={Boolean(open)}
+                  className="flex min-h-11 w-full items-center justify-center gap-1 border-t border-mist-200 text-sm font-bold text-sea-800 hover:bg-sea-50"
+                >
+                  {open ? t.fewerRoomOptions : t.moreRoomOptions.replace("{n}", String(Math.min(12, r.opts.length) - 2))}
+                  <span aria-hidden="true">{open ? "▴" : "▾"}</span>
+                </button>
+              )}
+            </li>
+          );
+        })}
       </ul>
     </div>
   );

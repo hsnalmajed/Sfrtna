@@ -10,6 +10,8 @@ import FilterPill from "@/components/ui/FilterPill";
 import FilterSheet, { type SheetGroup } from "@/components/ui/FilterSheet";
 import FilterSidebar from "@/components/ui/FilterSidebar";
 import BudgetSlider from "@/components/ui/BudgetSlider";
+import ScrollRow from "@/components/ui/ScrollRow";
+import FavButton from "@/components/member/FavButton";
 import dynamic from "next/dynamic";
 import type { MapHotel } from "@/components/HotelsMap";
 
@@ -379,6 +381,44 @@ export default function HotelList({
   // Phone and tablet: one button and a sheet. Wide screen (lg): the same groups
   // as a column beside the list, on the reading-start side (right in Arabic), as
   // Booking lays it out — the button is hidden there so the two never double.
+  // Phone (owner, 7 Nov «الفلاتر خارج»): the most used filters as one-tap
+  // chips under the bar, not only inside the sheet.
+  const quick = groups.flatMap((g) => {
+    const take =
+      g.key === "facilities" ? g.options.filter((o) => (o.count ?? 0) > 0).slice(0, 6)
+      : g.key === "stars" ? g.options.filter((o) => Number(o.value) >= 4 && (o.count ?? 0) > 0)
+      : g.key === "rating" || g.key === "near" ? g.options.filter((o) => (o.count ?? 0) > 0).slice(0, 1)
+      : g.key === "eco" ? g.options
+      : [];
+    return take.map((o) => {
+      const on = g.value.includes(o.value);
+      return {
+        key: `${g.key}:${o.value}`,
+        label: g.key === "stars" ? `${o.label} ★` : o.label,
+        icon: g.key === "facilities" ? "" : g.icon,
+        on,
+        toggle: () => g.onChange(on ? g.value.filter((v) => v !== o.value) : g.multi ? [...g.value, o.value] : [o.value]),
+      };
+    });
+  });
+  const quickRow =
+    quick.length > 0 ? (
+      <ScrollRow className="-mx-4 flex gap-2 px-4 pb-1 lg:hidden">
+        {quick.map((q) => (
+          <button
+            key={q.key}
+            type="button"
+            aria-pressed={q.on}
+            onClick={q.toggle}
+            className={`inline-flex min-h-10 shrink-0 items-center gap-1 whitespace-nowrap rounded-full px-3.5 text-sm font-bold ring-1 transition ${q.on ? "bg-navy-900 text-white ring-navy-900" : "bg-white text-navy-800 ring-mist-300 hover:ring-navy-400"}`}
+          >
+            {q.on && <Icon name="check" className="h-3.5 w-3.5" />}
+            {q.icon && <span aria-hidden="true">{q.icon}</span>}
+            {q.label}
+          </button>
+        ))}
+      </ScrollRow>
+    ) : null;
   const filterBar = (
     <div className="lg:hidden">
       <FilterSheet
@@ -428,6 +468,7 @@ export default function HotelList({
     return layout(
       <div className="space-y-3">
         <div className="flex items-center gap-2">{filterBar}</div>
+        {quickRow}
         {chips}
         <div className="rounded-2xl bg-white p-6 text-center shadow-sm ring-1 ring-black/5">
           <p className="text-sm font-semibold text-navy-700">{fx.none}</p>
@@ -466,6 +507,8 @@ export default function HotelList({
   ];
   return layout(
     <div className="space-y-3">
+      {/* Phone: the bar (filters, map, sort) and the quick chips stay in view while scrolling, as on Booking's app. */}
+      <div className="sticky top-16 z-20 -mx-4 space-y-2 border-b border-mist-200 bg-mist-50/95 px-4 py-2 backdrop-blur lg:static lg:mx-0 lg:border-0 lg:bg-transparent lg:p-0 lg:backdrop-blur-none">
       {/* One control, like Booking's "Sort by" (owner, 27 Oct): the chosen order on the pill, every order in its sheet. */}
       <div className="flex flex-wrap items-center gap-2">
         {filterBar}
@@ -505,6 +548,8 @@ export default function HotelList({
             ))}
           </div>
         )}
+      </div>
+      {quickRow}
       </div>
       {chips}
       {note && <p className="text-sm font-semibold text-navy-700">{note}</p>}
@@ -594,39 +639,48 @@ function HotelCard({
   const others = otherAmenities(hotel.amenities, locale, 40);
   const [allServices, setAllServices] = useState(false);
   const shownOthers = allServices ? others : others.slice(0, 6);
-  const img = hotel.images[0];
+  const name = (locale === "ar" && hotel.nameAr) || hotel.name;
+  const choose = () => {
+    rememberHotel(hotel);
+    track("hotel_select", { hotel: hotel.name });
+  };
+  const shownPrice = total == null ? null : perNight && c.nights > 1 ? total / c.nights : total;
   return (
-    <article className="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-black/5">
-      <div className="grid sm:grid-cols-[220px_minmax(0,1fr)]">
-        {img ? (
-          <a href={href} onClick={() => rememberHotel(hotel)} tabIndex={-1} aria-hidden="true" className="block">
-            <Photo src={img.thumb} alt={hotel.name} className="aspect-[16/9] w-full sm:aspect-auto sm:h-full" />
-          </a>
-        ) : (
-          <div className="hidden bg-gradient-to-br from-navy-800 to-navy-950 sm:block" />
-        )}
-        <div className="flex min-w-0 flex-col gap-2 p-4">
-          <div className="flex flex-wrap items-start justify-between gap-2">
+    <article className="overflow-hidden rounded-2xl bg-white shadow-[0_1px_3px_rgb(10_30_60/0.08)] ring-1 ring-mist-300 transition hover:shadow-[0_10px_30px_-12px_rgb(10_30_60/0.3)] hover:ring-navy-300">
+      <div className="grid sm:grid-cols-[240px_minmax(0,1fr)] lg:grid-cols-[250px_minmax(0,1fr)_190px]">
+        {/* Photos: swipe or the arrows; tap opens the hotel's page. */}
+        <CardPhotos hotel={hotel} href={href} onOpen={choose} t={t} locale={locale} />
+
+        {/* The hotel: name, rating, the framed services, the distance. */}
+        <div className="flex min-w-0 flex-col gap-2.5 p-4">
+          <div className="flex items-start justify-between gap-3">
             <div className="min-w-0">
-              <Stars count={hotel.stars} className="text-xs" />
-              <h3 className="font-display text-base font-extrabold leading-snug text-navy-950">
-                <a href={href} onClick={() => rememberHotel(hotel)} className="hover:text-sea-800 hover:underline">
-                  <bdi>{(locale === "ar" && hotel.nameAr) || hotel.name}</bdi>
+              <h3 className="font-display text-lg font-extrabold leading-snug text-sea-900">
+                <a href={href} onClick={choose} className="hover:underline">
+                  <bdi>{name}</bdi>
                 </a>
               </h3>
-              {locale === "ar" && hotel.nameAr && (
-                <p className="text-xs font-semibold text-navy-500" dir="ltr">
-                  {hotel.name}
-                </p>
-              )}
+              <div className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-0.5">
+                <Stars count={hotel.stars} className="text-xs" />
+                {locale === "ar" && hotel.nameAr && (
+                  <span className="text-xs font-semibold text-navy-500" dir="ltr">
+                    {hotel.name}
+                  </span>
+                )}
+              </div>
             </div>
-            <Rating hotel={hotel} c={c} />
+            <div className="shrink-0 lg:hidden">
+              <Rating hotel={hotel} c={c} />
+            </div>
           </div>
+
           <ul className="flex flex-wrap gap-x-3 gap-y-1 text-xs font-semibold text-navy-600">
-            {distance != null && fromPlace && (
-              <li className="inline-flex items-center gap-1">
-                <Icon name="pin" className="h-3.5 w-3.5 text-navy-400" />
-                {t.fromPlace.replace("{km}", distance < 10 ? distance.toFixed(1) : String(Math.round(distance))).replace("{city}", cityName)}
+            {distance != null && (
+              <li className="inline-flex items-center gap-1 font-bold text-navy-800">
+                <Icon name="pin" className="h-3.5 w-3.5 text-sea-700" />
+                {fromPlace
+                  ? t.fromPlace.replace("{km}", distance < 10 ? distance.toFixed(1) : String(Math.round(distance))).replace("{city}", cityName)
+                  : t.fromCentreShort.replace("{km}", distance < 10 ? distance.toFixed(1) : String(Math.round(distance)))}
               </li>
             )}
             {hotel.locationRating != null && hotel.locationRating > 0 && (
@@ -638,31 +692,17 @@ function HotelCard({
                 {nearbyText(hotel.nearby[0], hp.nearbyLine, locale)}
               </li>
             )}
-            {hotel.checkInTime && (
-              <li>
-                {t.checkInLabel}: <bdi>{hotel.checkInTime}</bdi>
-              </li>
-            )}
-            {hotel.checkOutTime && (
-              <li>
-                {t.checkOutLabel}: <bdi>{hotel.checkOutTime}</bdi>
-              </li>
-            )}
           </ul>
-          {(key.length > 0 || others.length > 0 || (distance != null && !fromPlace) || hotel.eco) && (
-            <div className="rounded-xl bg-mist-50 p-3 ring-1 ring-mist-200">
-              <p className="mb-2 text-[11px] font-extrabold text-navy-500">{t.servicesTitle}</p>
-              {(key.length > 0 || (distance != null && !fromPlace)) && (
+
+          {(key.length > 0 || others.length > 0 || hotel.eco) && (
+            <div className="rounded-xl border border-sea-200 bg-sea-50/40 p-3">
+              <p className="mb-2 text-[11px] font-extrabold text-sea-900">{t.servicesTitle}</p>
+              {key.length > 0 && (
                 <ul className="grid grid-cols-2 gap-x-3 gap-y-1.5 sm:grid-cols-3">
-                  {distance != null && !fromPlace && (
-                    <li className="flex items-center gap-1.5 text-xs font-bold text-navy-800">
-                      <span aria-hidden="true">📍</span>
-                      {t.fromCentreShort.replace("{km}", distance < 10 ? distance.toFixed(1) : String(Math.round(distance)))}
-                    </li>
-                  )}
                   {key.map((k) => (
                     <li key={k.label} className={`flex items-center gap-1.5 text-xs font-bold ${k.free ? "text-sea-800" : "text-navy-800"}`}>
                       <span aria-hidden="true">{k.icon}</span>
+                      {k.free && <Icon name="check" className="h-3 w-3 shrink-0" />}
                       {k.label}
                     </li>
                   ))}
@@ -670,7 +710,7 @@ function HotelCard({
               )}
               {(shownOthers.length > 0 || hotel.eco) && (
                 <ul className="mt-2 flex flex-wrap gap-1">
-                  {hotel.eco && <li className="rounded-full bg-sea-50 px-2 py-0.5 text-[11px] font-extrabold text-sea-800 ring-1 ring-sea-200">{hp.ecoBadge}</li>}
+                  {hotel.eco && <li className="rounded-full bg-sea-100 px-2 py-0.5 text-[11px] font-extrabold text-sea-800 ring-1 ring-sea-200">{hp.ecoBadge}</li>}
                   {shownOthers.map((a) => (
                     <li key={a} className="rounded-full bg-white px-2 py-0.5 text-[11px] font-semibold text-navy-700 ring-1 ring-mist-200">
                       {a}
@@ -678,7 +718,7 @@ function HotelCard({
                   ))}
                   {others.length > 6 && (
                     <li>
-                      <button type="button" onClick={() => setAllServices((v) => !v)} className="rounded-full px-2 py-0.5 text-[11px] font-extrabold text-sea-800 hover:underline" aria-expanded={allServices}>
+                      <button type="button" onClick={() => setAllServices((v) => !v)} className="min-h-6 rounded-full px-2 py-0.5 text-[11px] font-extrabold text-sea-800 hover:underline" aria-expanded={allServices}>
                         {allServices ? "−" : `+${others.length - 6}`}
                       </button>
                     </li>
@@ -687,13 +727,42 @@ function HotelCard({
               )}
             </div>
           )}
-          <div className="mt-auto flex flex-wrap items-end justify-between gap-3 pt-1">
-            {total ? (
+
+          {(hotel.checkInTime || hotel.checkOutTime) && (
+            <p className="text-[11px] font-semibold text-navy-500">
+              {hotel.checkInTime && (
+                <>
+                  {t.checkInLabel}: <bdi>{hotel.checkInTime}</bdi>
+                </>
+              )}
+              {hotel.checkInTime && hotel.checkOutTime && " · "}
+              {hotel.checkOutTime && (
+                <>
+                  {t.checkOutLabel}: <bdi>{hotel.checkOutTime}</bdi>
+                </>
+              )}
+            </p>
+          )}
+        </div>
+
+        {/* Rating, price and «اختر»: their own column on wide screens, the card's foot on phones. */}
+        <div className="flex flex-col justify-between gap-3 border-t border-mist-200 p-4 sm:col-span-2 lg:col-span-1 lg:border-s lg:border-t-0">
+          <div className="hidden justify-end lg:flex">
+            <Rating hotel={hotel} c={c} />
+          </div>
+          <div className="flex flex-wrap items-end justify-between gap-3 lg:flex-col lg:items-stretch lg:text-end">
+            {shownPrice != null ? (
               <div>
                 <p className="text-[11px] font-bold text-navy-500">{perNight && c.nights > 1 ? t.lowestNight : t.lowestStay}</p>
-                <p className="font-display text-xl font-extrabold text-navy-950">{money(perNight && c.nights > 1 ? total / c.nights : total, locale)}</p>
-                {perNight && c.nights > 1 && <p className="text-[11px] text-navy-500">{t.stayTotalShort.replace("{amount}", money(total, locale))}</p>}
-                {c.budget > 0 && (
+                {hotel.dealPct ? (
+                  <p className="mb-1 inline-flex items-center gap-1 rounded-full bg-sea-600 px-2 py-0.5 text-[11px] font-extrabold text-white">
+                    <span aria-hidden="true">🔥</span>
+                    {t.dealLess.replace("{pct}", String(hotel.dealPct))}
+                  </p>
+                ) : null}
+                <p className="font-display text-2xl font-black leading-tight text-navy-950">{money(shownPrice, locale)}</p>
+                {perNight && c.nights > 1 && total != null && <p className="text-[11px] text-navy-500">{t.stayTotalShort.replace("{amount}", money(total, locale))}</p>}
+                {c.budget > 0 && total != null && (
                   <p className={`text-xs font-bold ${total > c.budget ? "text-rose-700" : "text-sea-700"}`}>
                     {total > c.budget ? t.overBudget.replace("{amount}", money(total - c.budget, locale)) : `✓ ${t.withinBudget}`}
                   </p>
@@ -702,28 +771,25 @@ function HotelCard({
             ) : (
               <span />
             )}
-            <div className="flex flex-wrap items-center gap-2">
-              <button
-                type="button"
-                onClick={() => setOpen((v) => !v)}
-                aria-expanded={open}
-                className="inline-flex min-h-11 items-center gap-1.5 rounded-xl bg-white px-3.5 text-sm font-bold text-navy-900 ring-1 ring-mist-300 transition hover:ring-navy-400"
-              >
-                {t.pricesEverySite}
-                <span aria-hidden="true">{open ? "▴" : "▾"}</span>
-              </button>
+            <div className="flex flex-col gap-2 max-lg:min-w-[150px]">
               <a
                 href={href}
-                onClick={() => {
-                  rememberHotel(hotel);
-                  track("hotel_select", { hotel: hotel.name });
-                }}
+                onClick={choose}
                 title={t.chooseHint}
-                className="inline-flex min-h-11 items-center gap-1.5 rounded-xl bg-sun-400 px-5 text-sm font-extrabold text-navy-950 shadow-[var(--shadow-sun)] transition hover:bg-sun-300"
+                className="inline-flex min-h-12 items-center justify-center gap-1.5 rounded-xl bg-sun-400 px-5 text-base font-extrabold text-navy-950 shadow-[var(--shadow-sun)] transition hover:bg-sun-300"
               >
                 {t.choose}
                 <span aria-hidden="true">{locale === "ar" ? "←" : "→"}</span>
               </a>
+              <button
+                type="button"
+                onClick={() => setOpen((v) => !v)}
+                aria-expanded={open}
+                className="inline-flex min-h-10 items-center justify-center gap-1 rounded-xl px-2 text-xs font-bold text-sea-800 hover:bg-sea-50"
+              >
+                {t.pricesEverySite}
+                <span aria-hidden="true">{open ? "▴" : "▾"}</span>
+              </button>
             </div>
           </div>
         </div>
@@ -734,6 +800,70 @@ function HotelCard({
         </div>
       )}
     </article>
+  );
+}
+
+/**
+ * The card's photos (owner, 7 Nov: «صور الفندق» in the frame): the arrows or
+ * a swipe step through Google's photos of the hotel, a tap opens its page.
+ * No sideways scrolling (one photo at a time), so no rail is needed.
+ */
+function CardPhotos({ hotel, href, onOpen, t, locale }: { hotel: HotelResult; href: string; onOpen: () => void; t: Common["t"]; locale: "ar" | "en" }) {
+  const imgs = hotel.images;
+  const [i, setI] = useState(0);
+  const [x0, setX0] = useState<number | null>(null);
+  if (!imgs.length) return <div className="hidden bg-gradient-to-br from-navy-800 to-navy-950 sm:block" />;
+  const n = imgs.length;
+  const go = (d: number) => setI((v) => (v + d + n) % n);
+  const rtl = locale === "ar";
+  return (
+    <div
+      className="group relative aspect-[16/10] overflow-hidden bg-mist-100 sm:aspect-auto sm:min-h-[220px]"
+      onTouchStart={(e) => setX0(e.touches[0].clientX)}
+      onTouchEnd={(e) => {
+        if (x0 == null) return;
+        const dx = e.changedTouches[0].clientX - x0;
+        setX0(null);
+        if (Math.abs(dx) > 40) go((dx < 0 ? 1 : -1) * (rtl ? -1 : 1));
+      }}
+    >
+      <a href={href} onClick={onOpen} tabIndex={-1} aria-hidden="true" className="absolute inset-0">
+        <Photo key={i} src={i === 0 ? imgs[0].thumb : imgs[i].full || imgs[i].thumb} alt="" className="h-full w-full" />
+      </a>
+      <span className="pointer-events-none absolute end-2 top-2 z-[1]">
+        <span className="pointer-events-auto">
+          <FavButton locale={locale} fav={{ type: "hotel", name: hotel.name, area: "", label: hotel.nameAr || undefined }} />
+        </span>
+      </span>
+      {n > 1 && (
+        <>
+          <button
+            type="button"
+            onClick={() => go(-1)}
+            aria-label={t.prevPhoto}
+            className="absolute start-2 top-1/2 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full bg-white/90 text-lg font-bold text-navy-900 shadow transition sm:opacity-0 sm:group-hover:opacity-100"
+          >
+            <span aria-hidden="true" className="rtl:rotate-180">‹</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => go(1)}
+            aria-label={t.nextPhoto}
+            className="absolute end-2 top-1/2 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full bg-white/90 text-lg font-bold text-navy-900 shadow transition sm:opacity-0 sm:group-hover:opacity-100"
+          >
+            <span aria-hidden="true" className="rtl:rotate-180">›</span>
+          </button>
+          <span className="pointer-events-none absolute bottom-2 start-2 rounded-full bg-black/55 px-2 py-0.5 text-[11px] font-bold text-white" dir="ltr">
+            {i + 1} / {n}
+          </span>
+          <span className="pointer-events-none absolute inset-x-0 bottom-2.5 flex justify-center gap-1" aria-hidden="true">
+            {imgs.slice(0, 8).map((_, k) => (
+              <span key={k} className={`h-1.5 rounded-full transition-all ${k === i ? "w-4 bg-white" : "w-1.5 bg-white/60"}`} />
+            ))}
+          </span>
+        </>
+      )}
+    </div>
   );
 }
 
