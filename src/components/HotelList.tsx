@@ -718,7 +718,7 @@ function HotelCard({
                   ))}
                   {others.length > 6 && (
                     <li>
-                      <button type="button" onClick={() => setAllServices((v) => !v)} className="min-h-6 rounded-full px-2 py-0.5 text-[11px] font-extrabold text-sea-800 hover:underline" aria-expanded={allServices}>
+                      <button type="button" onClick={() => setAllServices((v) => !v)} className="inline-flex min-h-9 min-w-11 items-center justify-center rounded-full bg-white px-2.5 text-xs font-extrabold text-sea-800 ring-1 ring-sea-200 hover:bg-sea-50" aria-expanded={allServices}>
                         {allServices ? "−" : `+${others.length - 6}`}
                       </button>
                     </li>
@@ -828,7 +828,7 @@ function CardPhotos({ hotel, href, onOpen, t, locale }: { hotel: HotelResult; hr
       }}
     >
       <a href={href} onClick={onOpen} tabIndex={-1} aria-hidden="true" className="absolute inset-0">
-        <Photo key={i} src={i === 0 ? imgs[0].thumb : imgs[i].full || imgs[i].thumb} alt="" className="h-full w-full" />
+        <Photo key={i} src={imgs[i].full || imgs[i].thumb} alt="" className="h-full w-full" />
       </a>
       <span className="pointer-events-none absolute end-2 top-2 z-[1]">
         <span className="pointer-events-auto">

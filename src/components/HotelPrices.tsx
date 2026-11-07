@@ -537,6 +537,7 @@ function HotelDetail({
   const nav = [
     { id: "hotel-overview", label: t.navOverview, show: true },
     { id: "hotel-prices", label: t.navPrices, show: true },
+    { id: "hotel-rooms", label: t.navRooms, show: rooms.length > 0 },
     { id: "hotel-reviews", label: t.navReviews, show: hasReviews },
     { id: "hotel-location", label: t.navLocation, show: nearby.length > 0 || hasMap },
     { id: "hotel-facilities", label: t.navFacilities, show: amenities.length > 0 || groups.length > 0 },
@@ -685,7 +686,6 @@ function HotelDetail({
         <section id="hotel-prices" className={box}>
           <h3 className={h3}>{t.pricesTitle}</h3>
           <p className="mb-4 mt-1 text-sm text-navy-600">{t.allSitesSub}</p>
-          {rooms.length > 0 && <RoomsTable rooms={rooms} offers={offers} c={c} />}
           <PriceRows hotel={hotel} c={c} checkedAt={checkedAt} expanded />
           {!offers.length && c.alternatives && (
             <a
@@ -710,6 +710,13 @@ function HotelDetail({
           )}
           {rooms.length === 0 && <p className="mt-2 text-[11px] leading-relaxed text-navy-500">{t.roomsAtSite}</p>}
         </section>
+
+        {/* 5b · Rooms, Booking's «Availability»: each room and its options. */}
+        {rooms.length > 0 && (
+          <section id="hotel-rooms" className={box}>
+            <RoomsTable rooms={rooms} offers={offers} c={c} />
+          </section>
+        )}
 
         {/* 6 · What guests talk about. */}
         <HotelInsights hotel={hotel} locale={locale} part="reviews" />
@@ -829,6 +836,7 @@ function cancelDate(d: string, checkIn: string, locale: "ar" | "en"): string {
 function RoomsTable({ rooms, offers, c }: { rooms: NonNullable<HotelResult["rooms"]>; offers: SiteOffer[]; c: Common }) {
   const { t, locale } = c;
   const [more, setMore] = useState<Record<string, boolean>>({});
+  const [allRooms, setAllRooms] = useState(false);
   // A partner's room opens through our partner link (it lands on the hotel and
   // earns); any other site's room through Google's own link to that room.
   const linkFor = (source: string, link: string | null) => {
@@ -856,13 +864,13 @@ function RoomsTable({ rooms, offers, c }: { rooms: NonNullable<HotelResult["room
     .sort((a, b) => a.opts[0].total - b.opts[0].total);
   if (!rows.length) return null;
   return (
-    <div className="mb-6">
+    <div>
       <div className="mb-3 flex items-baseline justify-between gap-2">
-        <p className="font-display text-base font-extrabold text-navy-950">{t.roomsTitle}</p>
+        <h3 className="font-display text-lg font-extrabold text-navy-950">{t.roomsTitle}</h3>
         <p className="text-xs font-bold text-navy-500">{t.roomTypesCount.replace("{n}", String(rows.length))}</p>
       </div>
       <ul className="space-y-3">
-        {rows.map((r) => {
+        {(allRooms ? rows : rows.slice(0, 6)).map((r) => {
           const open = more[r.name];
           const shown = open ? r.opts.slice(0, 12) : r.opts.slice(0, 2);
           return (
@@ -891,8 +899,8 @@ function RoomsTable({ rooms, offers, c }: { rooms: NonNullable<HotelResult["room
                 {shown.map((o) => {
                   const go = linkFor(o.source, o.link);
                   return (
-                    <li key={o.key} className="flex flex-wrap items-center justify-between gap-3 p-3">
-                      <div className="min-w-0 space-y-1">
+                    <li key={o.key} className="flex items-center justify-between gap-3 p-3">
+                      <div className="min-w-0 flex-1 space-y-1">
                         {/* Only what Google says the option includes: no badge is "not said", not "no". */}
                         {(o.freeCancel || o.breakfast) && (
                           <ul className="flex flex-wrap gap-1.5">
@@ -914,9 +922,9 @@ function RoomsTable({ rooms, offers, c }: { rooms: NonNullable<HotelResult["room
                           <bdi>{go?.label || o.source}</bdi>
                         </p>
                       </div>
-                      <div className="flex items-center gap-3">
+                      <div className="flex shrink-0 items-center gap-3">
                         <div className="text-end">
-                          <p className="font-display text-lg font-extrabold leading-tight text-navy-950">{money(o.total, locale)}</p>
+                          <p className="whitespace-nowrap font-display text-lg font-extrabold leading-tight text-navy-950">{money(o.total, locale)}</p>
                           <p className="text-[11px] text-navy-500">{c.nights === 1 ? t.stayTotalOne : t.stayTotal.replace("{nights}", nightsLabel(c.nights, t))}</p>
                         </div>
                         {go && (
@@ -944,6 +952,17 @@ function RoomsTable({ rooms, offers, c }: { rooms: NonNullable<HotelResult["room
           );
         })}
       </ul>
+      {rows.length > 6 && (
+        <button
+          type="button"
+          onClick={() => setAllRooms((v) => !v)}
+          aria-expanded={allRooms}
+          className="mt-3 flex min-h-12 w-full items-center justify-center gap-1.5 rounded-xl bg-white text-sm font-extrabold text-navy-900 ring-1 ring-mist-300 hover:ring-navy-400"
+        >
+          {allRooms ? t.fewerRoomOptions : t.allRooms.replace("{n}", String(rows.length))}
+          <span aria-hidden="true">{allRooms ? "▴" : "▾"}</span>
+        </button>
+      )}
     </div>
   );
 }
