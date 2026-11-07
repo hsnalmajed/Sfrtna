@@ -131,6 +131,9 @@ price, deal, «اختر»); phone: sticky bar + one-tap filter chips; side colum
 (lg): map card + budget slider/chart + filters. Hotel page: Booking order;
 rooms section (Google `rooms[].rates`: free cancellation date, breakfast);
 facilities by Google's groups (`amenities_detailed`); usual range + deal.
+Card round 3 (7 Nov 23:30, release 42410604135): page max-w-7xl, services
+frame = 6 key lines + «+N خدمة أخرى», rating box + price + «اختر» column.
+Preview locally: `next dev` + Playwright mocking /api/hotel-prices.
 Pacer: early days may run 25% ahead (`maySearch`, 0.75) — the list had been
 shut for two days. Phone audit 7 Nov (ux-audit, iPhone 13): list + page OK.
 SerpApi = FREE 250/month (renews 6 Dec). Staging has no `SERPAPI_KEY`.
