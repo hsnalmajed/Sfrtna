@@ -111,7 +111,10 @@ async function maySearch(kind: "hotel" | "flight" | "explore" | "probe" = "hotel
     daysAfterToday = cycleDays - now.getUTCDate();
   }
   const perDay = a.perMonth / cycleDays;
-  return a.left > Math.floor(daysAfterToday * perDay);
+  // Slack (7 Nov): a busy first day (tests, a few visitors) used to shut
+  // hotels for two days. Early days may run up to 25% ahead; the reserve
+  // shrinks to nothing by the renewal day, so the month is never overspent.
+  return a.left > Math.floor(daysAfterToday * perDay * 0.75);
 }
 
 /** Whether a key is set at all — for the status check. */
@@ -460,7 +463,22 @@ export async function hotelPrices(q: {
     if (!hotels.length || !hotels[0].name) return null;
     const pg = body.serpapi_pagination as { next_page_token?: string } | undefined;
     const nextPage = kind === "list" && typeof pg?.next_page_token === "string" ? pg.next_page_token : null;
-    const shape = q.probe ? [`top:${Object.keys(body).join(",")}`, `featured_prices[0]:${Object.keys((body.featured_prices as object[] | undefined)?.[0] ?? {}).join(",")}`, ...roomPaths(body)] : undefined;
+    const sample = (label: string, v: unknown, n = 900) => `sample ${label}: ${JSON.stringify(v ?? null, (k, x) => (k === "images" || k === "link" || k === "logo" || k === "thumbnail" ? undefined : x)).slice(0, n)}`;
+    const fp = (body.featured_prices as { rooms?: unknown[] }[] | undefined)?.[0];
+    const shape = q.probe
+      ? [
+          `top:${Object.keys(body).join(",")}`,
+          `featured_prices[0]:${Object.keys(fp ?? {}).join(",")}`,
+          ...roomPaths(body),
+          sample("rooms[0]", fp?.rooms?.[0], 1400),
+          sample("rooms[1]", fp?.rooms?.[1], 700),
+          sample("amenities_detailed", body.amenities_detailed, 1600),
+          sample("typical_price_range", body.typical_price_range, 300),
+          sample("deal", [body.deal, body.deal_description], 300),
+          sample("reviews_breakdown", body.reviews_breakdown, 400),
+          sample("health_and_safety", body.health_and_safety, 300),
+        ]
+      : undefined;
     return { kind, currency, hotels, checkedAt: new Date().toISOString(), nextPage, ...(shape ? { shape } : {}) };
   });
 }
