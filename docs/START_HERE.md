@@ -136,7 +136,10 @@ frame = 6 key lines + «+N خدمة أخرى», rating box + price + «اختر�
 Preview locally: `next dev` + Playwright mocking /api/hotel-prices.
 Rooms round (7 Nov 23:55, release 42412188124): with rooms the prices
 section = rooms list (lowest price + «اختر» → `RoomBooking` panel: every
-site + «احجز»); any-room prices folded under it. List count uses Google's
+site + «احجز»). 8 Nov (release 42415948995): prices once — sites without
+room details = row «أرخص سعر للفندق (أي غرفة)»; `RoomBooking` = the flight
+widget's layout (close/share, sellers with logo + pill button, room ✓ facts,
+stay timeline). Flight panel itself = partner widget (tpwgt), not our code. List count uses Google's
 `search_information.total_results` (Istanbul 15,000) → «N فندقاً · معروض أفضل 20».
 Pacer: early days may run 25% ahead (`maySearch`, 0.75) — the list had been
 shut for two days. Phone audit 7 Nov (ux-audit, iPhone 13): list + page OK.
