@@ -919,6 +919,7 @@ const en = {
     sortCheapestFirst: "Cheapest first",
     sortExpensiveFirst: "Most expensive first",
     hotelsCount: "{count} hotels",
+    hotelsCountMore: "Showing {count} hotels · more at the end of the list",
     roomsCount: "Rooms: {count}",
     roomsPriced: "Prices for all rooms: room price × {count}",
     eyebrowKnown: "Your hotel",

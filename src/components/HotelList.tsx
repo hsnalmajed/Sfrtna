@@ -531,7 +531,7 @@ export default function HotelList({
           locale={c.locale}
         />
         <span className="text-xs font-semibold text-navy-500">
-          {activeCount(facets) ? fx.showing.replace("{n}", String(hotels.length)).replace("{m}", String(totalHeld)) : t.hotelsCount.replace("{count}", String(hotels.length))}
+          {activeCount(facets) ? fx.showing.replace("{n}", String(hotels.length)).replace("{m}", String(totalHeld)) : (nextToken && !extra.ended ? t.hotelsCountMore : t.hotelsCount).replace("{count}", String(hotels.length))}
         </span>
         {c.nights > 1 && (
           <div className="ms-auto flex rounded-full bg-mist-100 p-1 text-xs font-bold" role="group" aria-label={t.priceShowLabel}>

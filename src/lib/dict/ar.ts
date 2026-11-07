@@ -935,6 +935,7 @@ const ar = {
     sortCheapestFirst: "الأرخص أولاً",
     sortExpensiveFirst: "الأغلى أولاً",
     hotelsCount: "عدد الفنادق: {count}",
+    hotelsCountMore: "معروض الآن {count} فندقاً · المزيد في أسفل القائمة",
     roomsCount: "الغرف: {count}",
     roomsPriced: "الأسعار لكل الغرف: سعر الغرفة × {count}",
     eyebrowKnown: "فندقك",
