@@ -229,8 +229,15 @@ results with route + dates + party; else it keeps Google Flights «on X».
 | Emirates | `www.emirates.com/booking/search-results/?pub=/sa/arabic\|/sa/english&seldcity1&selacity1&selddate1=10 Dec 26&seladate1=17 Dec 26&seladults&selchildren&selinfants&selcabinclass=0` (names read from its own `searchResultsPayloadTransformer`; no `seladate1` = one way) | fresh tab: RUH→IST RT 2+1 ar → «العودة · 3 من المسافرين», 22 options, lowest total SAR 4,546 = the site's own search (22 options, SAR 4,546) ✓; DMM→LHR OW 1 + infant en → «One way · 2 passengers» ✓ | **OWN LINK** |
 | Etihad | `digital.etihad.com/book/search?LANGUAGE&CHANNEL=DESKTOP&B_LOCATION&E_LOCATION&TRIP_TYPE=R\|O&CABIN=E&TRAVELERS=ADT,ADT,CHD&TRIP_FLOW_TYPE=AVAILABILITY&SITE_EDITION=EN-SA&DATE_1=202612100000&DATE_2=…` (shape = its own `OneAUrlStaticParams`) | first cold visit → bot-check page «Pardon Our Interruption» ✗; after etihad.com set its cookies → results RUH→IST 10–17 Dec, 3 guests ✓ | keep Google (a traveller arriving cold would hit the bot check); re-test cold later |
 
-Still to test: flydubai, Gulf Air, Turkish, Kuwait, Oman Air, RJ,
-EgyptAir, Pegasus.
+### Airlines' own booking links — round 3 (8 Nov 2026, Chrome)
+
+| Airline | Shape tried | Result | Decision |
+|---|---|---|---|
+| flydubai | `flights2.flydubai.com/{en\|ar}/results/{rt\|ow}/a2c1i0/RUH_IST/20261210_20261217?cabinClass=Economy&isOriginMetro=false&isDestMetro=false&pm=cash` (the URL its own search lands on) | new tab: RUH→IST RT 2+1 en → same party and dates, lowest total SAR 7,815, first options SAR 996 / 1,950 = the site's own search (owner's screenshot, 3 outbound options); DMM→DXB OW 1 + infant ar → «2 مسافرين» ✓. Tested in a browser that had already visited flydubai.com, so a truly cold visit is not proven | **OWN LINK** |
+| Turkish Airlines | RUH→IST 10–17 Dec 2+1 through its own form | results URL = `availability-international/?cId=<session id>`, carries no route, dates or party ✗ | keep Google |
+| Gulf Air | — | Chrome tool refuses navigation to gulfair.com; not tested | keep Google until tested |
+
+Still to test: Gulf Air, Kuwait, Oman Air, RJ, EgyptAir, Pegasus.
 
 Notes: flynas flies to SAW, not IST (a link would also need the airport
 swap). The redirect must be a fresh page load (a hash change from inside

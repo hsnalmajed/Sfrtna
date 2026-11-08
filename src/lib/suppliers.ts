@@ -255,6 +255,25 @@ const OWN_SITE: Record<string, (t: FlightTrip) => string> = {
     for (const [k, v] of q) u.searchParams.set(k, v);
     return u.toString();
   },
+  // flydubai's own search lands on this path. Checked 8 Nov in a new tab:
+  // RUH→IST RT 2+1 en = same party, dates and lowest total (SAR 7,815) as
+  // the site's own search; DMM→DXB OW 1 + infant ar.
+  flydubai: (t) => {
+    const p = pax(t);
+    const d = (iso: string) => iso.replaceAll("-", "");
+    const dates = t.returnDate ? `${d(t.departDate)}_${d(t.returnDate)}` : d(t.departDate);
+    const u = new URL(
+      `https://flights2.flydubai.com/${t.locale === "en" ? "en" : "ar"}/results/${t.returnDate ? "rt" : "ow"}/a${p.adults}c${p.kids}i${p.infants}/${t.origin}_${t.destination}/${dates}`,
+    );
+    const q: [string, string][] = [
+      ["cabinClass", "Economy"],
+      ["isOriginMetro", "false"],
+      ["isDestMetro", "false"],
+      ["pm", "cash"],
+    ];
+    for (const [k, v] of q) u.searchParams.set(k, v);
+    return u.toString();
+  },
 };
 
 /** Big connecting airlines between the Gulf and the world. */

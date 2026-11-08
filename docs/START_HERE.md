@@ -178,8 +178,10 @@ SerpApi = FREE 250/month (renews 6 Dec). Staging has no `SERPAPI_KEY`.
    Table + method in TEST_PLAN «Airlines' own booking links». Add each
    passing airline to `OWN_SITE`. **Round 2 (8 Nov 10:30): Emirates → OWN
    LINK** (RT/OW, ar/en, same options + total as its own search); Etihad →
-   keep Google (cold visit = bot-check page). **Next: flydubai, Gulf Air,
-   Turkish, Kuwait, Oman Air, RJ, EgyptAir, Pegasus**
+   keep Google (cold visit = bot-check page). **Round 3 (8 Nov 11:15):
+   flydubai → OWN LINK; Turkish → keep Google (session id only). Gulf Air:
+   Chrome tool refuses gulfair.com. Next: Kuwait, Oman Air, RJ, EgyptAir,
+   Pegasus, then Gulf Air if allowed; widen `NATIONAL_AIRLINES` still open**
    (sites may show a cookie wall: choose essential only)
    (read each site's own search script; quick test = open the results URL
    in a fresh tab). Saudia's Riyadh notice (flights via ELQ/DMM + bus):
