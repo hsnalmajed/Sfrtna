@@ -53,12 +53,14 @@ Rules from now on:
   delete a file unless the owner asks. Secrets = Cloudflare Runtime vars /
   GitHub secrets. Never name data sources/tools to visitors.
 - No ads, ever (site and apps). Income = partner commission only.
-- **Commission check (owner 8 Nov 10:43):** for EVERY company whose data
-  or link we show, check if it pays us commission (own programme or any
-  network). No → never show its price. Yes → find how to link it. A
-  company on several networks/partners → connect them all, route to the
-  one that pays us most, and fall back to the next if one fails (down,
-  empty, error) so travellers always get results.
+- **Commission check (owner 8 Nov 10:45, corrected):** show EVERY company
+  we can link to, with or without commission, and keep showing its live
+  price when we have one. For each, check if it pays commission (own
+  programme or any network): yes → route its button through that
+  programme; no → keep it as it is (link + price). A company on several
+  networks → connect them all, route to the one that pays most, fall back
+  to the next if one fails (down, empty, error). Never hide a company
+  for paying nothing.
 - Protect data from scraping in every feature: any new /api route must be
   added to `ROUTES` in `edge-guard.js` (else 404; `check-guard.mjs` fails the
   build on mismatch).
