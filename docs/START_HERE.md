@@ -166,8 +166,8 @@ SerpApi = FREE 250/month (renews 6 Dec). Staging has no `SERPAPI_KEY`.
    Table + method in TEST_PLAN «Airlines' own booking links». No code
    change yet. **Next: Qatar, then Emirates, Etihad, flydubai, Turkish…**
    (read each site's own search script; quick test = open the results URL
-   in a fresh tab). Saudia notice for the owner: its Riyadh flights now
-   run via ELQ/DMM + bus (TEST_PLAN note) — ask him whether to show it.
+   in a fresh tab). Saudia's Riyadh notice (flights via ELQ/DMM + bus):
+   owner 8 Nov 05:39 — temporary, don't show it, no action.
 3. Monitoring BEFORE launch: hourly journey checks (flight search, hotel
    list + page, prices present), Worker errors, SerpApi allowance, alert
    the owner by email/push; we find problems before travellers do.
