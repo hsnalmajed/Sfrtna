@@ -195,13 +195,50 @@ const NATIONAL_AIRLINES: Record<string, string[]> = {
   Australia: ["Qantas"],
 };
 
+/**
+ * Airlines whose own site opens its results from a link (round trip + one
+ * way, Arabic + English, in a fresh tab — TEST_PLAN «Airlines' own booking
+ * links»). Every other airline keeps Google Flights narrowed to it.
+ */
+const OWN_SITE: Record<string, (t: FlightTrip) => string> = {
+  // Qatar Airways' own booking widget builds exactly this (checked 8 Nov:
+  // RUH→IST RT 2+1, JED→IST RT ar, DMM→LHR OW 1 + infant).
+  "Qatar Airways": (t) => {
+    const p = pax(t);
+    const u = new URL("https://www.qatarairways.com/app/booking/flight-selection");
+    const q: [string, string][] = [
+      ["widget", "QR"],
+      ["searchType", "F"],
+      ["addTaxToFare", "Y"],
+      ["minPurTime", "0"],
+      ["selLang", t.locale === "en" ? "en" : "ar"],
+      ["tripType", t.returnDate ? "R" : "O"],
+      ["fromStation", t.origin],
+      ["toStation", t.destination],
+      ["departing", t.departDate],
+      ...(t.returnDate ? ([["returning", t.returnDate]] as [string, string][]) : []),
+      ["bookingClass", "E"],
+      ["adults", String(p.adults)],
+      ["children", String(p.kids)],
+      ["infants", String(p.infants)],
+      ["ofw", "0"],
+      ["teenager", "0"],
+      ["flexibleDate", "off"],
+      ["allowRedemption", "N"],
+    ];
+    for (const [k, v] of q) u.searchParams.set(k, v);
+    return u.toString();
+  },
+};
+
 /** Big connecting airlines between the Gulf and the world. */
 const HUB_AIRLINES = ["Emirates", "Qatar Airways", "Etihad", "Turkish Airlines"];
 
 /**
  * Airlines for a route — those of the two countries first, then the big
- * connecting ones — each opening Google Flights on this trip narrowed to that
- * airline, where its own "book with" button leads to the airline's site.
+ * connecting ones — each opening its own site on this trip when it has a
+ * checked link (OWN_SITE), else Google Flights narrowed to that airline,
+ * where its own "book with" button leads to the airline's site.
  */
 export function airlineLinks(t: FlightTrip, limit = 8): SupplierLink[] {
   const from = findAirport(t.origin)?.countryEn ?? "";
@@ -212,7 +249,7 @@ export function airlineLinks(t: FlightTrip, limit = 8): SupplierLink[] {
   for (const n of names) {
     if (seen.has(n) || out.length >= limit) continue;
     seen.add(n);
-    out.push({ id: `airline-${n.toLowerCase().replace(/[^a-z]+/g, "-")}`, name: n, href: googleFlightsUrl(t, n) });
+    out.push({ id: `airline-${n.toLowerCase().replace(/[^a-z]+/g, "-")}`, name: n, href: OWN_SITE[n]?.(t) ?? googleFlightsUrl(t, n) });
   }
   return out;
 }

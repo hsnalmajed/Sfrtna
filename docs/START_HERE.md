@@ -160,11 +160,13 @@ SerpApi = FREE 250/month (renews 6 Dec). Staging has no `SERPAPI_KEY`.
    on RUH→IST 10–17 Dec, 2 ad + 1 child. Fills the search → direct link;
    else keep the Google one. Widen `NATIONAL_AIRLINES` per country. Log in
    TEST_PLAN «Suppliers directory».
-   **Round 1 (8 Nov):** flynas, Saudia, flyadeal DONE → all three keep
-   Google (flynas: redirect only for today's date; Saudia + flyadeal: the
-   search lives in session storage, results URL carries nothing).
-   Table + method in TEST_PLAN «Airlines' own booking links». No code
-   change yet. **Next: Qatar, then Emirates, Etihad, flydubai, Turkish…**
+   **Round 1 (8 Nov):** flynas, Saudia, flyadeal → keep Google (flynas:
+   redirect only for today's date; Saudia + flyadeal: search lives in
+   session storage, results URL carries nothing). **Qatar Airways → OWN
+   LINK** (`OWN_SITE` in `src/lib/suppliers.ts`; RT/OW, ar/en checked).
+   Table + method in TEST_PLAN «Airlines' own booking links». Add each
+   passing airline to `OWN_SITE`. **Next: Emirates, Etihad, flydubai,
+   Gulf Air, Turkish, Kuwait, Oman Air, RJ, EgyptAir, Pegasus**
    (read each site's own search script; quick test = open the results URL
    in a fresh tab). Saudia's Riyadh notice (flights via ELQ/DMM + bus):
    owner 8 Nov 05:39 — temporary, don't show it, no action.
