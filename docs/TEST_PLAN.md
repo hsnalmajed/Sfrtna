@@ -222,6 +222,16 @@ results with route + dates + party; else it keeps Google Flights «on X».
 | Qatar Airways | `qatarairways.com/app/booking/flight-selection?widget=QR&searchType=F&addTaxToFare=Y&minPurTime=0&selLang=ar\|en&tripType=R\|O&fromStation&toStation&departing&returning&bookingClass=E&adults&children&infants&ofw=0&teenager=0&flexibleDate=off&allowRedemption=N` (copied from the URL its own widget opened) | fresh tab: RUH→IST RT 10–17 Dec 2+1 en → 15 results ✓; JED→IST RT 12–20 Dec 2+1 **ar** → 15 results ✓; DMM→LHR **OW** 15 Dec 1 ad + 1 inf ar → 15 results ✓ | **own link** (`OWN_SITE` in suppliers.ts) |
 | flyadeal | flyadeal.com Angular app (`main.*.js`): `/search-flight` reads only login/pnr flags from the query; the search lives in session storage `flightSearch`, then `/select-flight` | no URL form of a search ✗ (and the search hung on its loader 30 s in Chrome, 8 Nov) | keep Google |
 
+### Airlines' own booking links — round 2 (8 Nov 2026, Chrome)
+
+| Airline | Shape tried | Result | Decision |
+|---|---|---|---|
+| Emirates | `www.emirates.com/booking/search-results/?pub=/sa/arabic\|/sa/english&seldcity1&selacity1&selddate1=10 Dec 26&seladate1=17 Dec 26&seladults&selchildren&selinfants&selcabinclass=0` (names read from its own `searchResultsPayloadTransformer`; no `seladate1` = one way) | fresh tab: RUH→IST RT 2+1 ar → «العودة · 3 من المسافرين», 22 options, lowest total SAR 4,546 = the site's own search (22 options, SAR 4,546) ✓; DMM→LHR OW 1 + infant en → «One way · 2 passengers» ✓ | **OWN LINK** |
+| Etihad | `digital.etihad.com/book/search?LANGUAGE&CHANNEL=DESKTOP&B_LOCATION&E_LOCATION&TRIP_TYPE=R\|O&CABIN=E&TRAVELERS=ADT,ADT,CHD&TRIP_FLOW_TYPE=AVAILABILITY&SITE_EDITION=EN-SA&DATE_1=202612100000&DATE_2=…` (shape = its own `OneAUrlStaticParams`) | first cold visit → bot-check page «Pardon Our Interruption» ✗; after etihad.com set its cookies → results RUH→IST 10–17 Dec, 3 guests ✓ | keep Google (a traveller arriving cold would hit the bot check); re-test cold later |
+
+Still to test: flydubai, Gulf Air, Turkish, Kuwait, Oman Air, RJ,
+EgyptAir, Pegasus.
+
 Notes: flynas flies to SAW, not IST (a link would also need the airport
 swap). The redirect must be a fresh page load (a hash change from inside
 booking.flynas.com is ignored). Still to test:

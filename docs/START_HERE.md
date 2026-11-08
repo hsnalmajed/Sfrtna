@@ -165,8 +165,11 @@ SerpApi = FREE 250/month (renews 6 Dec). Staging has no `SERPAPI_KEY`.
    session storage, results URL carries nothing). **Qatar Airways → OWN
    LINK** (`OWN_SITE` in `src/lib/suppliers.ts`; RT/OW, ar/en checked).
    Table + method in TEST_PLAN «Airlines' own booking links». Add each
-   passing airline to `OWN_SITE`. **Next: Emirates, Etihad, flydubai,
-   Gulf Air, Turkish, Kuwait, Oman Air, RJ, EgyptAir, Pegasus**
+   passing airline to `OWN_SITE`. **Round 2 (8 Nov 10:30): Emirates → OWN
+   LINK** (RT/OW, ar/en, same options + total as its own search); Etihad →
+   keep Google (cold visit = bot-check page). **Next: flydubai, Gulf Air,
+   Turkish, Kuwait, Oman Air, RJ, EgyptAir, Pegasus**
+   (sites may show a cookie wall: choose essential only)
    (read each site's own search script; quick test = open the results URL
    in a fresh tab). Saudia's Riyadh notice (flights via ELQ/DMM + bus):
    owner 8 Nov 05:39 — temporary, don't show it, no action.

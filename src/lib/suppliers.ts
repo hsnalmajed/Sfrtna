@@ -229,6 +229,32 @@ const OWN_SITE: Record<string, (t: FlightTrip) => string> = {
     for (const [k, v] of q) u.searchParams.set(k, v);
     return u.toString();
   },
+  // Emirates' results page reads these names itself (its own
+  // searchResultsPayloadTransformer; dates "10 Dec 26"). Checked 8 Nov in a
+  // fresh tab: RUH→IST RT 2+1 ar = same 22 options and total as the site's
+  // own search; DMM→LHR OW 1 + infant en.
+  Emirates: (t) => {
+    const p = pax(t);
+    const d = (iso: string) => {
+      const [y, m, day] = iso.split("-").map(Number);
+      const mon = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][m - 1];
+      return `${String(day).padStart(2, "0")} ${mon} ${String(y).slice(2)}`;
+    };
+    const u = new URL("https://www.emirates.com/booking/search-results/");
+    const q: [string, string][] = [
+      ["pub", t.locale === "en" ? "/sa/english" : "/sa/arabic"],
+      ["seldcity1", t.origin],
+      ["selacity1", t.destination],
+      ["selddate1", d(t.departDate)],
+      ...(t.returnDate ? ([["seladate1", d(t.returnDate)]] as [string, string][]) : []),
+      ["seladults", String(p.adults)],
+      ["selchildren", String(p.kids)],
+      ["selinfants", String(p.infants)],
+      ["selcabinclass", "0"],
+    ];
+    for (const [k, v] of q) u.searchParams.set(k, v);
+    return u.toString();
+  },
 };
 
 /** Big connecting airlines between the Gulf and the world. */
