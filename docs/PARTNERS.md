@@ -34,13 +34,21 @@ Status words: **Active** (tracked link live + payout set) · **Applied** ·
 | GetYourGuide (direct) | Activities | own (`partner_id=NNJW64J`) | needs confirmation | — | ✓ | Active (bank, 2FA) | — |
 | Viator (direct) | Activities | own | 8% (TP figure) | ID + selfie verification | ✓ | Linked 21 Oct | — |
 | Qatar Airways | Flights (own link live) | Partnerize / impact.com / CJ (qatarairways.com affiliates page) | needs confirmation | needs confirmation | needs confirmation | Asked (Partnerize, 8 Nov 09:58) | wait for support reply |
-| Emirates | Flights (own link live) | Partnerize; TradeTracker (campaigns by market: AE, UK…) | 1.25–2.5%, cookie 30 d (Travelpayouts blog, not official) | needs confirmation; Saudi market coverage asked | needs confirmation | Asked (both, 8 Nov 10:43) | compare replies → best first, other = fallback |
+| Emirates | Flights (own link live) | Partnerize; TradeTracker (campaigns by market: AE, UK…) | 1.25–2.5%, cookie 30 d (Travelpayouts blog, not official) | needs confirmation; Saudi market coverage asked | needs confirmation | Asked Partnerize 8 Nov 10:43; TradeTracker mail BOUNCED (contact on its campaign page no longer exists) → ask via tradetracker.com/ae/contact-us form | compare replies → best first, other = fallback |
 | Etihad | Flights (Google link) | To check | — | — | — | To check | own link: cold visit hits bot check |
 | Saudia, flynas, flyadeal | Flights (Google link) | To check | — | — | — | To check | — |
 | flydubai, Gulf Air, Turkish, Kuwait, Oman Air, RJ, EgyptAir, Pegasus | Flights | To check | — | — | — | To check | own-link test pending too |
 | Almosafer | Flights, hotels | To check | — | — | — | To check | — |
 | Skyscanner, KAYAK, Trip.com (flights) | Flights, hotels, cars | To check | — | — | — | To check | — |
 | Google Flights / Google Hotels | Flights, hotels | To check (no programme known) | — | — | — | To check | — |
+
+## Networks — conditions to join
+
+| Network | Conditions (source) | We meet? | Account |
+|---|---|---|---|
+| TradeTracker | no traffic minimum stated; active site with fresh content, clear audience, professional look; "any committed publisher" (tradetracker.com/ae/publisher-qualifications, 8 Nov) | ✓ likely | none yet — Dubai office form tradetracker.com/ae/contact-us, tel +971 4 375 6240 |
+| Partnerize | needs confirmation | ✓ (Expedia active) | «sfrtna-aeek», login lost |
+| Travelpayouts | open programmes now; 13 big brands after 3 months of stable traffic | partly | active |
 
 ## How to add a supplier
 
