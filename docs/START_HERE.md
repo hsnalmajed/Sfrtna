@@ -200,7 +200,8 @@ SerpApi = FREE 250/month (renews 6 Dec). Staging has no `SERPAPI_KEY`.
    tracks Saudi bookings (emirates.com/sa), rate, cookie, deep links
    (Partnerize = same support thread; TradeTracker = the Emirates AE
    campaign contact). Replies in → compare, route the Emirates button via
-   the better one, the other as fallback.
+   the better one, the other as fallback. TradeTracker contact on the
+   campaign page bounced → owner sent the Dubai office form 8 Nov 10:58.
 3. Monitoring BEFORE launch: hourly journey checks (flight search, hotel
    list + page, prices present), Worker errors, SerpApi allowance, alert
    the owner by email/push; we find problems before travellers do.
