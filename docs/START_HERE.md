@@ -152,6 +152,14 @@ SerpApi = FREE 250/month (renews 6 Dec). Staging has no `SERPAPI_KEY`.
    airline), search filled in; hotels +KAYAK/Google Hotels; cars +KAYAK.
    Left: insurance row + more eSIM/activity/transfer sites — their link
    shapes need checking in a browser that allows those domains.
+2b. **NEXT (owner 8 Nov 05:13, before monitoring): airlines' own sites.**
+   Today each airline button = Google Flights narrowed to it (`airlineLinks`
+   in `src/lib/suppliers.ts`). Task: in Chrome, test each main airline's own
+   booking deep link (Saudia, flynas, flyadeal, Qatar, Emirates, Etihad,
+   flydubai, Gulf Air, Turkish, Kuwait, Oman Air, RJ, EgyptAir, Pegasus…)
+   on RUH→IST 10–17 Dec, 2 ad + 1 child. Fills the search → direct link;
+   else keep the Google one. Widen `NATIONAL_AIRLINES` per country. Log in
+   TEST_PLAN «Suppliers directory».
 3. Monitoring BEFORE launch: hourly journey checks (flight search, hotel
    list + page, prices present), Worker errors, SerpApi allowance, alert
    the owner by email/push; we find problems before travellers do.
