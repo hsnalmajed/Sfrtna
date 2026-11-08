@@ -144,10 +144,22 @@ stay timeline). Flight panel itself = partner widget (tpwgt), not our code. List
 Pacer: early days may run 25% ahead (`maySearch`, 0.75) — the list had been
 shut for two days. Phone audit 7 Nov (ux-audit, iPhone 13): list + page OK.
 SerpApi = FREE 250/month (renews 6 Dec). Staging has no `SERPAPI_KEY`.
-**Next step:** discuss with the owner: SerpApi plan (Starter $25/1,000 ·
-Developer $75/5,000 · Production $150/15,000) and more hotel sources
-(Xotelo: ask commercial terms; LiteAPI = booking on our site, his call;
-Expedia/Hotelbeds/Trip.com later with traffic).
+**Owner's decisions 8 Nov 04:28 (next sections, in this order):**
+1. SerpApi: NO paid plan before launch — measure demand at launch, then decide.
+2. **Suppliers directory (next chat):** add as many TRUSTED suppliers as
+   possible — flights, hotels, activities, transfers, car hire, eSIM,
+   insurance… — even with no commission (traffic is the gain; the
+   traveller may book another service we earn on). Plain deep links with
+   the search filled in (dates, city, party), no prices unless live.
+   Includes the Riyadh-flights fix: for routes our flight source lacks,
+   show the airlines and flight sites with the search filled in.
+3. Monitoring BEFORE launch: hourly journey checks (flight search, hotel
+   list + page, prices present), Worker errors, SerpApi allowance, alert
+   the owner by email/push; we find problems before travellers do.
+4. Item 5 (traveller journey): approved; build after 2–3, measure opens and
+   clicks, keep only what works.
+5. Google Play trader status: owner asked why it matters → explained 8 Nov;
+   decide before 1 Feb 2027.
 
 «next-step tabs» flake: 7 green Site checks in a row since the fix (4 Nov);
 ~10 green = close it.
@@ -181,5 +193,5 @@ payout threshold $500 not met» (wire $500; PayPal/ACH $100).
 Waiting on the owner: Apple review; Google Play ticket reply; Google-fares
 decision after the 6 Nov measurement; Android APK on a real phone.
 
-**Recommended model for the next chat: Opus 5.5** (hotel sources
-decision + build); Sonnet 5.5 for store-console steps only.
+**Recommended model for the next chat: Opus 5.5** (suppliers directory
+build); Sonnet 5.5 for store-console steps only.
