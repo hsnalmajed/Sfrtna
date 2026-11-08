@@ -60,7 +60,10 @@ Rules from now on:
   programme; no → keep it as it is (link + price). A company on several
   networks → connect them all, route to the one that pays most, fall back
   to the next if one fails (down, empty, error). Never hide a company
-  for paying nothing.
+  for paying nothing. **Register: `docs/PARTNERS.md`** — each supplier's
+  programme, rate, conditions to join, whether we meet them, status. Not
+  met yet → note what is missing, apply once met. Update it with every
+  partner change.
 - Protect data from scraping in every feature: any new /api route must be
   added to `ROUTES` in `edge-guard.js` (else 404; `check-guard.mjs` fails the
   build on mismatch).
