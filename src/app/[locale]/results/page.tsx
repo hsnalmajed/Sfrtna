@@ -545,6 +545,7 @@ function ResultsContent() {
                 returnDate: isMulti ? "" : search.returnDate || "",
                 adults: search.adults,
                 children: search.childrenAges?.length ?? 0,
+                childrenAges: search.childrenAges ?? [],
                 infants: search.infants ?? 0,
               }
             : undefined

@@ -1401,6 +1401,8 @@ const ar = {
     fallbackMore: "عرض رحلات أكثر",
     fallbackOthers: "قارن الرحلة نفسها في مواقع أخرى:",
     fallbackNoLive: "لم نتمكن من جلب الأسعار في هذه اللحظة. أعد المحاولة، أو افتح الرحلة نفسها مباشرة:",
+    fallbackAirlines: "شركات الطيران على هذا المسار:",
+    fallbackAirlinesSub: "يفتح بحث رحلتك نفسها مقصوراً على الشركة، ومنه تحجز من موقعها مباشرة.",
     fallbackBook: "احجز",
     fallbackRetry: "أعد المحاولة",
     fallbackTotal: "السعر لكل المسافرين",

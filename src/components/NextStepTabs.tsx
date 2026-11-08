@@ -202,6 +202,7 @@ export default function NextStepTabs({
             cityName={name}
             cityNameEn={city.nameEn}
             withCompensation={withCompensation}
+            dates={checkIn && checkOut ? { from: checkIn, to: checkOut } : undefined}
             t={dict.attractions}
           />
         </ServicesSheet>

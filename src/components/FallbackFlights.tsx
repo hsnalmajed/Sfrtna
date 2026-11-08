@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import type { Locale } from "@/lib/types";
 import { useDictionary } from "@/lib/dict/context";
 import { findAirport } from "@/lib/airports";
+import { airlineLinks, flightSites } from "@/lib/suppliers";
 
 export interface FallbackRoute {
   origin: string;
@@ -12,6 +13,8 @@ export interface FallbackRoute {
   returnDate: string;
   adults: number;
   children: number;
+  /** The children's ages, for sites that ask for them (KAYAK, Expedia). */
+  childrenAges?: number[];
   infants: number;
 }
 
@@ -96,25 +99,25 @@ export default function FallbackFlights({
     return a ? (isAr ? a.cityAr : a.cityEn) : code;
   };
 
-  // The same trip on other sites: always offered here, so the traveller is
-  // never left with nothing.
-  const d = route.departDate;
-  const r = route.returnDate;
-  const pax = route.adults + route.children;
-  const others = [
-    {
-      name: "Google Flights",
-      href:
-        answer && answer !== "none" && answer.url
-          ? answer.url
-          : `https://www.google.com/travel/flights?hl=${locale}&q=${encodeURIComponent(`Flights from ${route.origin} to ${route.destination} on ${d}${r ? ` returning ${r}` : ""}`)}`,
-    },
-    { name: "KAYAK", href: `https://www.kayak.com/flights/${route.origin}-${route.destination}/${d}${r ? `/${r}` : ""}/${pax}adults?sort=bestflight_a` },
-    {
-      name: "Skyscanner",
-      href: `https://www.skyscanner.net/transport/flights/${route.origin.toLowerCase()}/${route.destination.toLowerCase()}/${d.slice(2).replace(/-/g, "")}/${r ? `${r.slice(2).replace(/-/g, "")}/` : ""}?adultsv2=${route.adults}`,
-    },
-  ];
+  // The same trip on other sites, and the airlines of the two countries:
+  // always offered here, so the traveller is never left with nothing — the
+  // route our flight source lacks (Riyadh, since 30 Oct) included.
+  const trip = {
+    origin: route.origin,
+    destination: route.destination,
+    departDate: route.departDate,
+    returnDate: route.returnDate,
+    adults: route.adults,
+    childrenAges: route.childrenAges ?? [],
+    children: route.children,
+    infants: route.infants,
+    currency,
+    locale,
+  };
+  const others = flightSites(trip).map((o) =>
+    o.id === "google-flights" && answer && answer !== "none" && answer.url ? { ...o, href: answer.url } : o
+  );
+  const airlines = airlineLinks(trip);
 
   const flights = answer && answer !== "none" ? answer.flights : [];
 
@@ -218,16 +221,39 @@ export default function FallbackFlights({
           <div className="mt-2 flex flex-wrap gap-2">
             {others.map((o) => (
               <a
-                key={o.name}
+                key={o.id}
                 href={o.href}
                 target="_blank"
                 rel="noopener noreferrer"
+                data-partner={o.id}
+                data-placement="flight_fallback"
                 className="rounded-full bg-mist-50 px-4 py-2 text-sm font-bold text-navy-900 ring-1 ring-mist-200 hover:ring-navy-300"
               >
-                {o.name} ↗
+                <bdi>{o.name}</bdi> ↗
               </a>
             ))}
           </div>
+          {flights.length === 0 && airlines.length > 0 && (
+            <>
+              <p className="mt-4 text-sm font-bold text-navy-800">{t.fallbackAirlines}</p>
+              <p className="mt-0.5 text-xs leading-relaxed text-navy-500">{t.fallbackAirlinesSub}</p>
+              <div className="mt-2 flex flex-wrap gap-2">
+                {airlines.map((o) => (
+                  <a
+                    key={o.id}
+                    href={o.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-partner={o.id}
+                    data-placement="flight_fallback_airline"
+                    className="rounded-full bg-white px-4 py-2 text-sm font-bold text-navy-900 ring-1 ring-mist-300 hover:ring-sea-300"
+                  >
+                    <bdi>{o.name}</bdi> ↗
+                  </a>
+                ))}
+              </div>
+            </>
+          )}
         </div>
       )}
     </div>

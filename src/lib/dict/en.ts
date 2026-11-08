@@ -1382,6 +1382,8 @@ const en = {
     fallbackMore: "Show more flights",
     fallbackOthers: "Compare the same trip on other sites:",
     fallbackNoLive: "We could not fetch fares this moment. Try again, or open the same trip directly:",
+    fallbackAirlines: "Airlines on this route:",
+    fallbackAirlinesSub: "Opens your same search narrowed to that airline, and you book on its own site from there.",
     fallbackBook: "Book",
     fallbackRetry: "Try again",
     fallbackTotal: "Price for all travellers",

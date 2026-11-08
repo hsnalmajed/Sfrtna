@@ -188,3 +188,24 @@ chosen amount, current language).
 | More sheet (app UA): language first, then sign-in with subtitle | ✓ |
 | DO unit run: wrong verifier, reuse, 20-search cap, delete account removes items | ✓ |
 | Not testable here: native Custom Tab + deep link on a phone (needs the new APK), silent Google (needs Android OAuth client), email codes (needs RESEND_API_KEY) | owner |
+
+## Suppliers directory — 8 Nov 2026 (links checked by hand in Chrome)
+
+Trip used: RUH → IST, 10–17 Dec 2026, 2 adults + 1 child (7). Each URL shape
+in `src/lib/suppliers.ts` was opened and the site's own search box read back:
+
+| Site | Route | Dates | Party | Result |
+|---|---|---|---|---|
+| Google Flights (`hl=en`, q in words) | ✓ | ✓ | 3 | ✓ (`hl=ar` → empty form ✗, fixed) |
+| Google Flights + «on flynas/Saudia» | ✓ | ✓ | 3 | airline chip set ✓ |
+| Almosafer `/RUH-IST/d1/d2/Economy/2Adult/1Child` | ✓ | ✓ | 3 | ✓ (shape from its own form) |
+| Trip.com `showfarefirst` | ✓ | ✓ | 3 | ✓ |
+| KAYAK flights `/children-7` | ✓ | ✓ | 3 | ✓ |
+| Expedia `Flights-Search` | ✓ | ✓ | 3 | ✓ |
+| KAYAK hotels `Istanbul,Turkey/…/1children-7` | ✓ | ✓ | 3 | ✓ |
+| Google Hotels (q in words) | ✓ | ✓ | — | party not read from q |
+| KAYAK cars `/IST/d1/d2` | ✓ | ✓ | — | ✓ («Turkey» text → Turkey NC ✗, so airport code) |
+
+Not linked (domain refused by the checking browser, shape unproven): Wego,
+Momondo, Kiwi.com, Klook, Airbnb. Skyscanner kept as before (page opened,
+not readable).

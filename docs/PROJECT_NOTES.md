@@ -2152,3 +2152,28 @@ another source; room types only if a source provides them.
   breakfast; cancellation date "Dec 5" → page date); grouped facilities
   (`amenityGroupLabel`, Arabic names only, unknown groups → «مرافق أخرى»);
   `typical` + `dealPct` parsed. Pacer slack 0.75 (`maySearch`).
+
+
+## Suppliers directory — 8 Nov 2026 (owner's decision 2, round 1)
+
+Owner: trusted suppliers even with no commission; deep links with the search
+filled in; no prices unless live. New `src/lib/suppliers.ts` (only shapes
+checked by hand — table in docs/TEST_PLAN.md «Suppliers directory»):
+- **Flights (Riyadh fix):** `FallbackFlights` (shown when the flight
+  partner returns 0 or stalls — Riyadh routes) now lists Google Flights,
+  المسافر (Almosafer), Trip.com, KAYAK, Expedia (via /api/go/expedia, paid),
+  Skyscanner — all on the same trip and party — and, when no live fares,
+  «شركات الطيران على هذا المسار»: the airlines of the two countries
+  (`NATIONAL_AIRLINES`, by Google Flights names) + Emirates / Qatar /
+  Etihad / Turkish, max 8, each = Google Flights narrowed to that airline
+  («… on flynas»), whose «book with» leads to the airline's site.
+  Bug fixed: Google Flights link used `hl=ar` → empty form for Arabic
+  visitors; now `hl=en&curr=<currency>`. Children ages now passed in the
+  fallback route (`childrenAges`).
+- **Hotels:** city search (`/hotel-results`, discover mode) adds KAYAK
+  (dates + party) and Google Hotels (dates only).
+- **Car hire:** trip-services sheet on flight results (`NextStepTabs` →
+  `TripServices dates`) adds KAYAK cars at the city's airport with the dates.
+Not done in round 1: insurance row, extra eSIM/activities/transfer sites
+(Klook, Holafly…) — their link shapes could not be checked (browser refused
+the domains). Infants are carried only by Trip.com (`babyqty`).

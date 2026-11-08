@@ -1,6 +1,8 @@
 import PartnerLink from "@/components/PartnerLink";
 import { COMPENSATION_LINK, servicesFor, type ServiceKind } from "@/lib/tripEssentials";
 import type { Locale } from "@/lib/types";
+import { CITY_AIRPORTS } from "@/data/cityAirports";
+import { carHireSites } from "@/lib/suppliers";
 
 /**
  * Everything around the trip in one compact panel — tours and tickets, mobile
@@ -18,6 +20,7 @@ export default function TripServices({
   only,
   except,
   bare = false,
+  dates,
   t,
 }: {
   locale: Locale;
@@ -33,6 +36,8 @@ export default function TripServices({
   except?: ServiceKind[];
   /** Inside a tab: no heading of its own. */
   bare?: boolean;
+  /** The trip's dates, when known: suppliers that take them open filled in. */
+  dates?: { from: string; to: string };
   t: {
     servicesTitle: string;
     servicesSub: string;
@@ -49,6 +54,15 @@ export default function TripServices({
   );
   const rows: { key: string; icon: string; title: string; links: { partner: string; name: string; href: string }[] }[] =
     groups.map((g) => ({ key: g.kind, ...LABEL(g.kind, t), links: g.links }));
+  // Suppliers directory (8 Nov): car hire at the city's airport for these dates.
+  const airport = CITY_AIRPORTS[citySlug]?.iata ?? "";
+  const cars = dates ? carHireSites(airport, dates.from, dates.to) : [];
+  if (cars.length && (!only || only.includes("car")) && (!except || !except.includes("car"))) {
+    const extra = cars.map((c) => ({ partner: c.id, name: c.name, href: c.href }));
+    const row = rows.find((r) => r.key === "car");
+    if (row) row.links = [...row.links, ...extra];
+    else rows.push({ key: "car", ...LABEL("car", t), links: extra });
+  }
   if (withCompensation) rows.push({ key: "compensation", icon: "🛬", title: t.serviceCompensation, links: [COMPENSATION_LINK] });
   if (!rows.length) return null;
 

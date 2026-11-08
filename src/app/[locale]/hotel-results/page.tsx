@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useDictionary } from "@/lib/dict/context";
 import type { Locale } from "@/lib/types";
 import { parseChildrenAges } from "@/lib/searchParamsUtil";
+import { extraHotelSites } from "@/lib/suppliers";
 import { hotelPartnerLinks } from "@/lib/affiliateLinks";
 import { nightsBetween } from "@/components/PlannerFields";
 import { cleanRooms, roomShare } from "@/lib/rooms";
@@ -140,7 +141,20 @@ function HotelResultsContent() {
             isHotel: mode === "known",
             area: mode === "known" ? hotelArea || undefined : cityAddress,
             locale,
-          })
+          }).concat(
+            // Suppliers directory (8 Nov): more sites for a city search, no
+            // commission — KAYAK and Google Hotels with the dates filled in.
+            mode === "discover" && cityAddress
+              ? extraHotelSites({
+                  cityEn: cityAddress.split(", ")[0],
+                  countryEn: cityAddress.split(", ")[1],
+                  checkIn,
+                  checkOut,
+                  adults,
+                  childrenAges,
+                }).map((l) => ({ partner: l.name, url: l.href }))
+              : []
+          )
         : [],
     [complete, query, checkIn, checkOut, adults, childrenAges, rooms, mode, minStars, breakfast, stay, locale, hotelArea, cityAddress]
   );

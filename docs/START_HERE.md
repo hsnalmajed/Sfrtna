@@ -146,13 +146,12 @@ shut for two days. Phone audit 7 Nov (ux-audit, iPhone 13): list + page OK.
 SerpApi = FREE 250/month (renews 6 Dec). Staging has no `SERPAPI_KEY`.
 **Owner's decisions 8 Nov 04:28 (next sections, in this order):**
 1. SerpApi: NO paid plan before launch — measure demand at launch, then decide.
-2. **Suppliers directory (next chat):** add as many TRUSTED suppliers as
-   possible — flights, hotels, activities, transfers, car hire, eSIM,
-   insurance… — even with no commission (traffic is the gain; the
-   traveller may book another service we earn on). Plain deep links with
-   the search filled in (dates, city, party), no prices unless live.
-   Includes the Riyadh-flights fix: for routes our flight source lacks,
-   show the airlines and flight sites with the search filled in.
+2. **Suppliers directory — round 1 DONE 8 Nov** (PROJECT_NOTES «Suppliers
+   directory — 8 Nov»; checks in TEST_PLAN). Riyadh fix live: empty flight
+   results list 6 flight sites + the route's airlines (Google Flights per
+   airline), search filled in; hotels +KAYAK/Google Hotels; cars +KAYAK.
+   Left: insurance row + more eSIM/activity/transfer sites — their link
+   shapes need checking in a browser that allows those domains.
 3. Monitoring BEFORE launch: hourly journey checks (flight search, hotel
    list + page, prices present), Worker errors, SerpApi allowance, alert
    the owner by email/push; we find problems before travellers do.
@@ -193,5 +192,5 @@ payout threshold $500 not met» (wire $500; PayPal/ACH $100).
 Waiting on the owner: Apple review; Google Play ticket reply; Google-fares
 decision after the 6 Nov measurement; Android APK on a real phone.
 
-**Recommended model for the next chat: Opus 5.5** (suppliers directory
-build); Sonnet 5.5 for store-console steps only.
+**Recommended model for the next chat: Opus 5.5** (monitoring before
+launch, decision 3); Sonnet 5.5 for store-console steps only.
