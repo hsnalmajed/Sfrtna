@@ -176,7 +176,11 @@ SerpApi = FREE 250/month (renews 6 Dec). Staging has no `SERPAPI_KEY`.
    Partnerize (`camref`) → apply to Qatar through the SAME Partnerize
    account (join link on that page). Approved → route the Qatar button via
    a redirect like `/api/go/expedia` with the Qatar camref. Same check for
-   each airline that passes.
+   each airline that passes. **Partnerize login lost** (account name
+   «sfrtna-aeek»; reset form takes neither it nor the email) → owner
+   mailed support@partnerize.com 8 Nov 09:58 asking for login + reset +
+   to apply to Qatar from the same account. Do NOT open a second account
+   via the Qatar sign-up form. Waiting on their reply.
 3. Monitoring BEFORE launch: hourly journey checks (flight search, hotel
    list + page, prices present), Worker errors, SerpApi allowance, alert
    the owner by email/push; we find problems before travellers do.
