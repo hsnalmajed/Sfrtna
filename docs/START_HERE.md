@@ -170,6 +170,13 @@ SerpApi = FREE 250/month (renews 6 Dec). Staging has no `SERPAPI_KEY`.
    (read each site's own search script; quick test = open the results URL
    in a fresh tab). Saudia's Riyadh notice (flights via ELQ/DMM + bus):
    owner 8 Nov 05:39 — temporary, don't show it, no action.
+   **Owner 8 Nov 09:48: join ANY trusted partner that pays commission.**
+   Qatar Airways program = Partnerize / impact.com / CJ (official
+   qatarairways.com/en/affiliates.html). Our Expedia link is already
+   Partnerize (`camref`) → apply to Qatar through the SAME Partnerize
+   account (join link on that page). Approved → route the Qatar button via
+   a redirect like `/api/go/expedia` with the Qatar camref. Same check for
+   each airline that passes.
 3. Monitoring BEFORE launch: hourly journey checks (flight search, hotel
    list + page, prices present), Worker errors, SerpApi allowance, alert
    the owner by email/push; we find problems before travellers do.
