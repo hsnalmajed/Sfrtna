@@ -209,3 +209,19 @@ in `src/lib/suppliers.ts` was opened and the site's own search box read back:
 Not linked (domain refused by the checking browser, shape unproven): Wego,
 Momondo, Kiwi.com, Klook, Airbnb. Skyscanner kept as before (page opened,
 not readable).
+
+### Airlines' own booking links — round 1 (8 Nov 2026, Chrome)
+
+Same trip. Rule: an airline gets its own link only if the link opens its
+results with route + dates + party; else it keeps Google Flights «on X».
+
+| Airline | Shape tried | Result | Decision |
+|---|---|---|---|
+| flynas | `booking.flynas.com/#/booking/search-redirect?origin&destination&currency&departureDate&returnDate&flightMode=round\|oneway&adultCount&childCount&infantCount&culture&locationsource=SA` (names read from flynas.com's own `flight-search-js`) | today's date (DMM→MED 8 Nov) → results with 2 ad + 1 ch ✓; ANY future date (DMM→MED, JED→SAW, RUH→IST/SAW, 10–17 Dec; RUH→JED 20–25 Nov) → «Invalid departure date» ✗ | keep Google |
+
+Notes: flynas flies to SAW, not IST (a link would also need the airport
+swap). The redirect must be a fresh page load (a hash change from inside
+booking.flynas.com is ignored). Still to test: Saudia, flyadeal, Qatar,
+Emirates, Etihad, flydubai, Gulf Air, Turkish, Kuwait, Oman Air, RJ,
+EgyptAir, Pegasus. Tip: read the site's own search script for the
+redirect URL (as done for flynas) instead of guessing names.
