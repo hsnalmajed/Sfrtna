@@ -53,6 +53,12 @@ Rules from now on:
   delete a file unless the owner asks. Secrets = Cloudflare Runtime vars /
   GitHub secrets. Never name data sources/tools to visitors.
 - No ads, ever (site and apps). Income = partner commission only.
+- **Commission check (owner 8 Nov 10:43):** for EVERY company whose data
+  or link we show, check if it pays us commission (own programme or any
+  network). No → never show its price. Yes → find how to link it. A
+  company on several networks/partners → connect them all, route to the
+  one that pays us most, and fall back to the next if one fails (down,
+  empty, error) so travellers always get results.
 - Protect data from scraping in every feature: any new /api route must be
   added to `ROUTES` in `edge-guard.js` (else 404; `check-guard.mjs` fails the
   build on mismatch).
@@ -184,6 +190,12 @@ SerpApi = FREE 250/month (renews 6 Dec). Staging has no `SERPAPI_KEY`.
    mailed support@partnerize.com 8 Nov 09:58 asking for login + reset +
    to apply to Qatar from the same account. Do NOT open a second account
    via the Qatar sign-up form. Waiting on their reply.
+   **Emirates (8 Nov 10:43):** programme on Partnerize + TradeTracker
+   (campaigns split by market: AE, UK…). Owner asked BOTH which programme
+   tracks Saudi bookings (emirates.com/sa), rate, cookie, deep links
+   (Partnerize = same support thread; TradeTracker = the Emirates AE
+   campaign contact). Replies in → compare, route the Emirates button via
+   the better one, the other as fallback.
 3. Monitoring BEFORE launch: hourly journey checks (flight search, hotel
    list + page, prices present), Worker errors, SerpApi allowance, alert
    the owner by email/push; we find problems before travellers do.
