@@ -218,10 +218,17 @@ results with route + dates + party; else it keeps Google Flights «on X».
 | Airline | Shape tried | Result | Decision |
 |---|---|---|---|
 | flynas | `booking.flynas.com/#/booking/search-redirect?origin&destination&currency&departureDate&returnDate&flightMode=round\|oneway&adultCount&childCount&infantCount&culture&locationsource=SA` (names read from flynas.com's own `flight-search-js`) | today's date (DMM→MED 8 Nov) → results with 2 ad + 1 ch ✓; ANY future date (DMM→MED, JED→SAW, RUH→IST/SAW, 10–17 Dec; RUH→JED 20–25 Nov) → «Invalid departure date» ✗ | keep Google |
+| Saudia | Search on saudia.com (RUH→IST 10–17 Dec, 2 ad + 1 ch) → results at `saudia.com/en-SA/booking` with NO search data in the URL (state in session storage; last search also in localStorage `LASTTWORECENTSEARCH`). Bundles (Angular/Sitecore JSS) read no origin/date/pax from the URL; the only meta flow is `GOOGLE_WEGO` (order made by Google's own integration, not a public link) | same URL in a fresh tab → bounced to home ✗. Search itself works: 12 results, 2 non-stop (10:30, 14:20) | keep Google |
+| flyadeal | flyadeal.com Angular app (`main.*.js`): `/search-flight` reads only login/pnr flags from the query; the search lives in session storage `flightSearch`, then `/select-flight` | no URL form of a search ✗ (and the search hung on its loader 30 s in Chrome, 8 Nov) | keep Google |
 
 Notes: flynas flies to SAW, not IST (a link would also need the airport
 swap). The redirect must be a fresh page load (a hash change from inside
-booking.flynas.com is ignored). Still to test: Saudia, flyadeal, Qatar,
+booking.flynas.com is ignored). Still to test: Qatar,
 Emirates, Etihad, flydubai, Gulf Air, Turkish, Kuwait, Oman Air, RJ,
-EgyptAir, Pegasus. Tip: read the site's own search script for the
+EgyptAir, Pegasus. Saudia notice seen 8 Nov (owner's business call, not
+code): «Riyadh flights update» — Saudia flights to/from Riyadh currently
+operate via Al-Qassim (ELQ) and Dammam (DMM) with a Saudia bus to/from
+Riyadh; its results show the airport and bus times. Test: a session-only
+site (results URL carries nothing) = keep Google; check by opening the
+results URL in a fresh tab. Tip: read the site's own search script for the
 redirect URL (as done for flynas) instead of guessing names.

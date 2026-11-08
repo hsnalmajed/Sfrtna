@@ -160,11 +160,14 @@ SerpApi = FREE 250/month (renews 6 Dec). Staging has no `SERPAPI_KEY`.
    on RUH→IST 10–17 Dec, 2 ad + 1 child. Fills the search → direct link;
    else keep the Google one. Widen `NATIONAL_AIRLINES` per country. Log in
    TEST_PLAN «Suppliers directory».
-   **Round 1 (8 Nov, 05:13–):** flynas DONE → keep Google (its redirect
-   works only for today's date; future dates «Invalid departure date»).
+   **Round 1 (8 Nov):** flynas, Saudia, flyadeal DONE → all three keep
+   Google (flynas: redirect only for today's date; Saudia + flyadeal: the
+   search lives in session storage, results URL carries nothing).
    Table + method in TEST_PLAN «Airlines' own booking links». No code
-   change yet. **Next: Saudia, then flyadeal, Qatar, Emirates…** (read each
-   site's own search script for the URL shape; don't guess names).
+   change yet. **Next: Qatar, then Emirates, Etihad, flydubai, Turkish…**
+   (read each site's own search script; quick test = open the results URL
+   in a fresh tab). Saudia notice for the owner: its Riyadh flights now
+   run via ELQ/DMM + bus (TEST_PLAN note) — ask him whether to show it.
 3. Monitoring BEFORE launch: hourly journey checks (flight search, hotel
    list + page, prices present), Worker errors, SerpApi allowance, alert
    the owner by email/push; we find problems before travellers do.
