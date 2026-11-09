@@ -179,6 +179,33 @@ export async function GET(req: Request) {
   if (faresMonth && /^\d{4}-\d{2}$/.test(faresMonth)) {
     return NextResponse.json(await fareCoverage(faresMonth));
   }
+  // The hourly monitor (scripts/monitor.mjs): fares only, so it spends no
+  // HERE or Pexels allowance. Dubai, not Riyadh: the flight partner carries
+  // no Riyadh fares, so an empty Riyadh answer would prove nothing.
+  if (new URL(req.url).searchParams.get("monitor") === "1") {
+    try {
+      const offers = await travelpayouts.searchFlights!({
+        tripType: "flight",
+        origin: "DXB",
+        destination: "IST",
+        departDate: new Date(Date.now() + 30 * 86_400_000).toISOString().slice(0, 10),
+        adults: 1,
+        budgetTotal: 0,
+        currency: "SAR",
+        directFlightsOnly: false,
+        minHotelStars: 0,
+        baggageIncluded: false,
+        childrenAges: [],
+        infants: 0,
+      });
+      return NextResponse.json({ flightProbe: { ok: true, offers: offers.length } }, { headers: { "cache-control": "no-store" } });
+    } catch (err) {
+      return NextResponse.json(
+        { flightProbe: { ok: false, offers: 0, error: String(err).slice(0, 200) } },
+        { headers: { "cache-control": "no-store" } }
+      );
+    }
+  }
   const configured = configuredProviders().map((p) => p.name);
 
   let probe: { ok: boolean; offers: number; error?: string } = { ok: false, offers: 0 };

@@ -1,0 +1,55 @@
+# Hourly watch before travellers find a fault (scripts/monitor.mjs). Its
+# memory (what already failed, what was already mailed) is kept on the branch
+# `monitor-state`. "Test alert" sends one mail to prove the path works.
+name: Monitor
+
+on:
+  schedule:
+    - cron: "29 * * * *"
+  workflow_dispatch:
+    inputs:
+      test_alert:
+        description: "Send a test mail"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: monitor
+  cancel-in-progress: false
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Load the last state
+        run: |
+          curl -sf -H "Authorization: Bearer ${{ github.token }}" -H "Accept: application/vnd.github.raw" \
+            "https://api.github.com/repos/${{ github.repository }}/contents/monitor-state.json?ref=monitor-state" \
+            -o monitor-state.json || rm -f monitor-state.json
+      - name: Check
+        env:
+          SMOKE_TOKEN: ${{ secrets.SMOKE_TOKEN }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          REPORT_TO: ${{ secrets.REPORT_TO }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          MONITOR_TEST: ${{ inputs.test_alert }}
+        run: node scripts/monitor.mjs
+      - name: Save the state
+        if: always()
+        run: |
+          [ -f monitor-state.json ] || exit 0
+          mkdir state && cp monitor-state.json state/ && cd state
+          git init -q
+          git config user.name "Claude"; git config user.email "noreply@anthropic.com"
+          git checkout -q -b monitor-state
+          git add . && git commit -q -m "Monitor state"
+          git push -q -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" monitor-state
