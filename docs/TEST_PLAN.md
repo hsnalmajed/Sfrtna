@@ -237,7 +237,9 @@ results with route + dates + party; else it keeps Google Flights «on X».
 | Turkish Airlines | RUH→IST 10–17 Dec 2+1 through its own form | results URL = `availability-international/?cId=<session id>`, carries no route, dates or party ✗ | keep Google |
 | Gulf Air | `flights.gulfair.com/flights?adt=2&cabin_class=A&chd=1&departure_date=20261210&destination=IST&flight_type=return&inf=0&locale=en&origin=RUH&return_date=20261217&tnn=0` (the URL its own search lands on) | Chrome tool refuses gulfair.com; in the built-in browser its own search → URL carries the full trip, but the page = bot check «Pardon Our Interruption» (HTTP 405, CAPTCHA). CAPTCHA not solved there. Owner's normal browser 9 Nov: same URL → results RUH→IST, Thu 10 – Thu 17 Dec, 3 passengers, first option SAR 4,417.50 economy, no bot check ✓. One-way and Arabic untested | **OWN LINK, round trip only** (one-way keeps Google; page in English) |
 
-Still to test: Gulf Air, Kuwait, Oman Air, RJ, EgyptAir, Pegasus.
+| Kuwait Airways | Its own form, DMM→IST RT 2+1 (its calendar opened on May 2027 and would not go back, so 15–21 May 2027 was used) | results URL = `digital.kuwaitairways.com/booking/availability/0`, carries no route, dates or party ✗ | keep Google |
+
+Still to test: Oman Air, RJ, EgyptAir, Pegasus. Also retest Etihad in the owner's normal browser (private window; link in round 2).
 
 Notes: flynas flies to SAW, not IST (a link would also need the airport
 swap). The redirect must be a fresh page load (a hash change from inside

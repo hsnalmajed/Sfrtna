@@ -64,6 +64,11 @@ Rules from now on:
   programme, rate, conditions to join, whether we meet them, status. Not
   met yet → note what is missing, apply once met. Update it with every
   partner change.
+- **Airlines and ticket sites (owner 9 Nov):** direct link to the company
+  first; then any commission route, only if trusted. A site that won't open
+  or shows a bot check in Chrome → try another browser, then the owner's
+  normal browser. Every trusted airline or ticket site gets linked with its
+  price, commission or not.
 - Protect data from scraping in every feature: any new /api route must be
   added to `ROUTES` in `edge-guard.js` (else 404; `check-guard.mjs` fails the
   build on mismatch).
@@ -181,7 +186,9 @@ SerpApi = FREE 250/month (renews 6 Dec). Staging has no `SERPAPI_KEY`.
    keep Google (cold visit = bot-check page). **Round 3 (8 Nov 11:15):
    flydubai → OWN LINK; Turkish → keep Google (session id only). Gulf Air
    (9 Nov) → OWN LINK, round trip only, English page (owner's browser OK;
-   automated browser gets a bot check; one-way + ar untested). Next: Kuwait, Oman Air, RJ, EgyptAir, Pegasus; widen `NATIONAL_AIRLINES` still open**
+   automated browser gets a bot check; one-way + ar untested). Kuwait → keep
+   Google (URL carries nothing). Next: Oman Air, RJ, EgyptAir, Pegasus;
+   Etihad = owner retests in a private window; widen `NATIONAL_AIRLINES` still open**
    (sites may show a cookie wall: choose essential only)
    (read each site's own search script; quick test = open the results URL
    in a fresh tab). Saudia's Riyadh notice (flights via ELQ/DMM + bus):
