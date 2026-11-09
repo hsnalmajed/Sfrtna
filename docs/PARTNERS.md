@@ -35,10 +35,10 @@ Status words: **Active** (tracked link live + payout set) · **Applied** ·
 | Viator (direct) | Activities | own | 8% (TP figure) | ID + selfie verification | ✓ | Linked 21 Oct | — |
 | Qatar Airways | Flights (own link live) | Partnerize / impact.com / CJ (qatarairways.com affiliates page) | needs confirmation | needs confirmation | needs confirmation | Asked (Partnerize, 8 Nov 09:58) | wait for support reply |
 | Emirates | Flights (own link live) | Partnerize; TradeTracker (campaigns by market: AE, UK…) | 1.25–2.5%, cookie 30 d (Travelpayouts blog, not official) | needs confirmation; Saudi market coverage asked | needs confirmation | Asked Partnerize 8 Nov 10:43; TradeTracker mail BOUNCED (contact on its campaign page no longer exists) → asked via tradetracker.com/ae/contact-us form 8 Nov 10:58 | compare replies → best first, other = fallback |
-| Etihad | Flights (Google link) | To check | — | — | — | To check | own link: cold visit hits bot check |
+| Etihad | Flights (own link, round trip) | To check | — | — | — | To check | own link passed in owner's private window 9 Nov |
 | Saudia, flynas, flyadeal | Flights (Google link) | To check | — | — | — | To check | — |
 | flydubai | Flights (own link live) | Tradedoubler, CJ (Travelpayouts blog, not official) | 0.80%, cookie 30 d (same blog, updated 2022–25, not official) | needs confirmation | needs confirmation | Not applied | confirm on the network, then apply |
-| Gulf Air, Turkish, Kuwait, Oman Air, RJ, EgyptAir, Pegasus | Flights | To check | — | — | — | To check | own-link test done 9 Nov (Turkish, Kuwait, Oman Air, RJ, EgyptAir: keep Google; Gulf Air: own link, no public programme found 9 Nov; Pegasus: own link, programme not checked yet) |
+| Gulf Air, Turkish, Kuwait, Oman Air, RJ, EgyptAir, Pegasus | Flights | To check | — | — | — | To check | own-link test done 9 Nov (Turkish, Kuwait, Oman Air, RJ, EgyptAir: keep Google; Gulf Air: own link, no public programme found 9 Nov; Pegasus: own link, no public programme found in a web search 9 Nov) |
 | Almosafer | Flights, hotels | To check | — | — | — | To check | — |
 | Skyscanner, KAYAK, Trip.com (flights) | Flights, hotels, cars | To check | — | — | — | To check | — |
 | Google Flights / Google Hotels | Flights, hotels | To check (no programme known) | — | — | — | To check | — |

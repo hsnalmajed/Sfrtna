@@ -193,6 +193,26 @@ const NATIONAL_AIRLINES: Record<string, string[]> = {
   "United States": ["United", "American", "Delta"],
   Canada: ["Air Canada"],
   Australia: ["Qantas"],
+  Bangladesh: ["Biman Bangladesh"],
+  Nepal: ["Nepal Airlines"],
+  Belgium: ["Brussels Airlines"],
+  Ireland: ["Aer Lingus"],
+  Finland: ["Finnair"],
+  Denmark: ["SAS"],
+  Sweden: ["SAS"],
+  Norway: ["SAS", "Norwegian"],
+  Serbia: ["Air Serbia"],
+  Algeria: ["Air Algerie"],
+  Yemen: ["Yemenia"],
+  Syria: ["Syrian Air"],
+  Mauritius: ["Air Mauritius"],
+  Seychelles: ["Air Seychelles"],
+  Taiwan: ["China Airlines", "EVA Air"],
+  Mexico: ["Aeromexico"],
+  Brazil: ["LATAM"],
+  "New Zealand": ["Air New Zealand"],
+  Nigeria: ["Air Peace"],
+  Tanzania: ["Air Tanzania"],
 };
 
 /**
@@ -294,6 +314,30 @@ const OWN_SITE: Record<string, (t: FlightTrip) => string | undefined> = {
       ["origin", t.origin],
       ["return_date", d(t.returnDate)],
       ["tnn", "0"],
+    ];
+    for (const [k, v] of q) u.searchParams.set(k, v);
+    return u.toString();
+  },
+  // Etihad: its own OneA search link. Checked 9 Nov in the owner's private
+  // window (cold): RUH→IST RT 3 guests = route, dates, guests, fares. One-way,
+  // Arabic and infants are untested, so those keep Google.
+  Etihad: (t) => {
+    const p = pax(t);
+    if (!t.returnDate || p.infants > 0) return undefined;
+    const d = (iso: string) => `${iso.replaceAll("-", "")}0000`;
+    const u = new URL("https://digital.etihad.com/book/search");
+    const q: [string, string][] = [
+      ["LANGUAGE", "EN"],
+      ["CHANNEL", "DESKTOP"],
+      ["B_LOCATION", t.origin],
+      ["E_LOCATION", t.destination],
+      ["TRIP_TYPE", "R"],
+      ["CABIN", "E"],
+      ["TRAVELERS", [...Array(p.adults).fill("ADT"), ...Array(p.kids).fill("CHD")].join(",")],
+      ["TRIP_FLOW_TYPE", "AVAILABILITY"],
+      ["SITE_EDITION", "EN-SA"],
+      ["DATE_1", d(t.departDate)],
+      ["DATE_2", d(t.returnDate)],
     ];
     for (const [k, v] of q) u.searchParams.set(k, v);
     return u.toString();

@@ -191,7 +191,7 @@ SerpApi = FREE 250/month (renews 6 Dec). Staging has no `SERPAPI_KEY`.
    (results URL carries nothing); RJ → keep Google (form works, results URL
    has no route; a hand-built link left the tab on New Tab twice). Pegasus:
    one guessed link = blank page, NOT concluded, use its own form (flies
-   SAW, not IST). Round 5 (9 Nov): Pegasus → OWN LINK (IST → SAW in code); EgyptAir → keep Google (results URL carries nothing; hand-built link answered from the session, not the link). All listed airlines tested.** Left: Etihad = owner retests in a private window; widen `NATIONAL_AIRLINES`; Pegasus programme check; **then item 3 (monitoring)**
+   SAW, not IST). Round 5 (9 Nov): Pegasus → OWN LINK (IST → SAW in code); EgyptAir → keep Google (results URL carries nothing; hand-built link answered from the session, not the link). Etihad → OWN LINK (owner's private window; round trip, en, no infants). `NATIONAL_AIRLINES` widened with countries not listed before only (limit 8 links: adding to listed countries would push out hub airlines). Pegasus: no public programme found. SECTION 2b CLOSED.** **NEXT = item 3 (monitoring).**
    (sites may show a cookie wall: choose essential only)
    (read each site's own search script; quick test = open the results URL
    in a fresh tab). Saudia's Riyadh notice (flights via ELQ/DMM + bus):

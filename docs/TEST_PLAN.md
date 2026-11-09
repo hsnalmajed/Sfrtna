@@ -248,8 +248,8 @@ results with route + dates + party; else it keeps Google Flights «on X».
 | Pegasus | Guessed link `web.flypgs.com/booking?…` RUH→SAW RT 2+1 | blank page after 10 s; a guess, so no conclusion | retest through its own form (it flies SAW, not IST) |
 | Pegasus (retest) | Its own form RUH→SAW RT 10–17 Dec 2+1 → `web.flypgs.com/booking?language&adultCount&childCount&arrivalPort&departurePort&currency&dateOption=1&departureDate&returnDate`. Same link typed by hand: RT 2+1 ar SAR → route, dates, 2 adults + 1 child ✓; DMM→SAW OW + infantCount=1 ar SAR → route, date, SAR 677 ✓ (infant count not seen on the page) | **OWN LINK**; IST → SAW in code |
 | EgyptAir | Its own form RUH→IST RT 10–17 Dec 2+1 → results OK, 10 Dec from SAR 3,619.50; URL = `onlinebooking.egyptair.com/plnext/egyptAirDX/Override.action#/FPOW`, no route, dates or party (the page passes a brief bot-check «Pardon Our Interruption»). Hand-built Amadeus link (SITE=BAYLBNEW) RUH→IST looked right, but a second link JED→CAI OW ar showed the SAME RUH→IST page: the session answered, not the link ✗ | keep Google |
+| Etihad (retest) | Round-2 link, owner's normal browser, private window, 9 Nov 12:42: RUH→IST 10–17 Dec, Guests 3, fares from SAR 2,866 ✓ no bot check | **OWN LINK**, round trip, English, no infants (one-way, ar, infants untested) |
 
-Also retest Etihad in the owner's normal browser (private window; link in round 2).
 
 Notes: flynas flies to SAW, not IST (a link would also need the airport
 swap). The redirect must be a fresh page load (a hash change from inside
