@@ -1,5 +1,6 @@
 import { countUse } from "@/lib/usage";
 import { cachedJson } from "@/lib/edgeCache";
+import { headers } from "next/headers";
 
 /**
  * Live hotel prices from Google Hotels, through SerpApi: one named hotel's
@@ -129,8 +130,33 @@ export async function serpUsage(): Promise<(Account & { mayUse: boolean }) | nul
   return { ...a, mayUse: await maySearch() };
 }
 
+/**
+ * Our own checks never spend the allowance (10 Nov 2026): the Site check,
+ * the post-release check and the twice-daily status report all run
+ * smoke.mjs/e2e.mjs against production, and each run asked Google for
+ * "suggest a destination" fares and the flight fallback on dates no
+ * visitor uses — about 8 searches a run, 122 of 250 in the cycle's first
+ * three days. A request carrying the check token gets only what visitors
+ * already put in the cache; staging (no key) shows these checks pass that
+ * way. Exceptions: the hand-run probe, and a check that asks to spend on
+ * purpose (monitor.mjs's one real hotel search a day: x-sfrtna-spend: 1).
+ */
+async function isOwnCheck(): Promise<boolean> {
+  const token = process.env.SMOKE_TOKEN;
+  if (!token) return false;
+  try {
+    const h = await headers();
+    return h.get("x-sfrtna-smoke") === token && h.get("x-sfrtna-spend") !== "1";
+  } catch {
+    // Outside a request (build, background job): not a check.
+    return false;
+  }
+}
+
 async function search(params: Record<string, string>, kind: "hotel" | "flight" | "explore" | "probe" = "hotel"): Promise<Record<string, unknown> | null> {
-  if (!key() || !(await maySearch(kind))) return null;
+  if (!key()) return null;
+  if (kind !== "probe" && (await isOwnCheck())) return null;
+  if (!(await maySearch(kind))) return null;
   const url = new URL(`${BASE}/search.json`);
   for (const [k, v] of Object.entries(params)) url.searchParams.set(k, v);
   url.searchParams.set("api_key", key());

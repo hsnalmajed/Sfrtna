@@ -2177,3 +2177,18 @@ checked by hand — table in docs/TEST_PLAN.md «Suppliers directory»):
 Not done in round 1: insurance row, extra eSIM/activities/transfer sites
 (Klook, Holafly…) — their link shapes could not be checked (browser refused
 the domains). Infants are carried only by Trip.com (`babyqty`).
+
+
+## SerpApi spend — 10 Nov 2026
+
+Owner signed in to SerpApi (Your Searches, last 7 days). 133/250 used by
+10 Nov 02:40 KSA. Pattern: bursts of ~6–8 searches (google_travel_explore
+from RUH, 1 and 2 adults, RT + OW on day 40/45 dates; google_flights ar
+RUH→DXB 1 ad, RUH→IST 2 ad) at exactly the start times of Site check
+(smoke.yml), Release (post-deploy `smoke.mjs $PRODUCTION_URL`) and Status
+report (runs smoke.mjs). Checks' dates shift daily, so the 6 h cache never
+helps. 7 Nov google_hotels rows = hand tests/hotel-probe while building the
+hotel page (one-off). Fix: `isOwnCheck()` in `src/lib/providers/serpapi.ts` —
+a request with a valid `x-sfrtna-smoke` never spends (gets cache only), except
+kind "probe" and `x-sfrtna-spend: 1` (monitor.mjs daily hotel search).
+Staging has no key and its smoke/e2e pass, so checks still pass.

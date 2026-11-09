@@ -224,8 +224,15 @@ SerpApi = FREE 250/month (renews 6 Dec). Staging has no `SERPAPI_KEY`.
    **First run 9 Nov found: hotel search is paced shut** (128 of 250 left,
    renews 6 Dec; `maySearch` needs > 162 today, reopens ~15 Nov if nothing is
    spent). So the real hotel price check has NOT run yet. Owner 9 Nov 13:36: KEEP the
-   pace. Test mail arrived. **NEXT: find who spent 122 searches 6–9 Nov; then
-   item 5.** After ~15 Nov check the daily real hotel search ran (`monitor-state`).
+   pace. Test mail arrived. **SerpApi spend FOUND + FIXED 10 Nov:** our own
+   checks (Site check, Release's production check, Status report 2×/day all
+   run smoke/e2e on production) spent ~8 searches a run (explore + flight
+   fallback) — 122 by 9 Nov; 7 Nov hotel rows = hand tests. Fix: requests with
+   the check token never spend (`isOwnCheck` in serpapi.ts) except probe and
+   monitor's daily hotel search (`x-sfrtna-spend: 1`). **Verify ~11 Nov:**
+   SerpApi «Your Searches» shows no bursts at Site check times; count stays
+   ~133 unless visitors search. After ~15 Nov check the daily real hotel search
+   ran (`monitor-state`). **NEXT: item 5.**
 4. Item 5 (traveller journey): approved; build after 2–3, measure opens and
    clicks, keep only what works.
 5. Google Play trader status: owner asked why it matters → explained 8 Nov;
@@ -263,5 +270,4 @@ payout threshold $500 not met» (wire $500; PayPal/ACH $100).
 Waiting on the owner: Apple review; Google Play ticket reply; Google-fares
 decision after the 6 Nov measurement; Android APK on a real phone.
 
-**Recommended model for the next chat: Opus 5.5** (SerpApi spend, then
-item 5); Sonnet 5.5 for store-console steps only.
+**Recommended model for the next chat: Opus 5.5** (item 5); Sonnet 5.5 for store-console steps only.

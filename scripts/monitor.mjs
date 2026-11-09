@@ -56,13 +56,13 @@ async function check(id, name, fn) {
   }
 }
 
-async function get(path, page = "/ar") {
-  const res = await fetch(`${BASE}${path}`, { headers: headers(page), signal: AbortSignal.timeout(60_000) });
+async function get(path, page = "/ar", extra = {}) {
+  const res = await fetch(`${BASE}${path}`, { headers: { ...headers(page), ...extra }, signal: AbortSignal.timeout(60_000) });
   return { status: res.status, text: await res.text() };
 }
 
-async function getJson(path, page) {
-  const { status, text } = await get(path, page);
+async function getJson(path, page, extra) {
+  const { status, text } = await get(path, page, extra);
   if (status !== 200) throw new Error(`رد الخادم ${status}`);
   try {
     return JSON.parse(text);
@@ -153,7 +153,10 @@ if (realDue && serp?.connected && serp.mayUse && serp.left > MIN_LEFT_FOR_REAL_S
   const kind = single ? "hotel" : "list";
   const q = single ? "Hilton Riyadh Olaya" : "hotels in Istanbul";
   await check("hotel-prices", single ? "أسعار صفحة الفندق (بحث حقيقي)" : "أسعار قائمة الفنادق (بحث حقيقي)", async () => {
-    const j = await getJson(`/api/hotel-prices?${qs({ q, checkIn: stay.checkIn, checkOut: stay.checkOut, adults: "2", currency: "SAR" })}`, "/ar/hotel-results");
+    const j = await getJson(`/api/hotel-prices?${qs({ q, checkIn: stay.checkIn, checkOut: stay.checkOut, adults: "2", currency: "SAR" })}`, "/ar/hotel-results", {
+      // Our checks never spend searches unless they ask to (serpapi.ts isOwnCheck).
+      "x-sfrtna-spend": "1",
+    });
     const hotels = j.result?.hotels ?? [];
     if (!hotels.length) throw new Error("لا فنادق في الرد");
     const priced = single ? hotels[0].offers?.filter((o) => o.perNight || o.total).length ?? 0 : hotels.filter((h) => h.perNight).length;
