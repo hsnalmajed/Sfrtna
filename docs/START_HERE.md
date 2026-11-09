@@ -93,7 +93,7 @@ on GitHub against `sfrtna.almajedhsn.workers.dev` with `SMOKE_TOKEN`.
 dispatch: `gh api -X POST repos/hsnalmajed/sfrtna/actions/workflows/<f>.yml/dispatches -f ref=main`.
 Checks: `smoke.yml` (Site check: check + pages/e2e), `ux-audit.yml`
 (→ branch `ux-audit-results`), `mobile-taps.yml`, `route-probe.yml`
-(→ branch `route-probe`), `health-report.yml`, `ios.yml` (→ `ios-shots`).
+(→ branch `route-probe`), `health-report.yml`, `monitor.yml`, `ios.yml` (→ `ios-shots`).
 Apps: Capacitor shells loading sfrtna.com — Android `com.sfrtna.app`
 (`android.yml`), iOS `mobile/ios` (`ios.yml`, uploads to App Store Connect).
 
@@ -191,7 +191,7 @@ SerpApi = FREE 250/month (renews 6 Dec). Staging has no `SERPAPI_KEY`.
    (results URL carries nothing); RJ → keep Google (form works, results URL
    has no route; a hand-built link left the tab on New Tab twice). Pegasus:
    one guessed link = blank page, NOT concluded, use its own form (flies
-   SAW, not IST). Round 5 (9 Nov): Pegasus → OWN LINK (IST → SAW in code); EgyptAir → keep Google (results URL carries nothing; hand-built link answered from the session, not the link). Etihad → OWN LINK (owner's private window; round trip, en, no infants). `NATIONAL_AIRLINES` widened with countries not listed before only (limit 8 links: adding to listed countries would push out hub airlines). Pegasus: no public programme found. SECTION 2b CLOSED.** **NEXT = item 3 (monitoring).**
+   SAW, not IST). Round 5 (9 Nov): Pegasus → OWN LINK (IST → SAW in code); EgyptAir → keep Google (results URL carries nothing; hand-built link answered from the session, not the link). Etihad → OWN LINK (owner's private window; round trip, en, no infants). `NATIONAL_AIRLINES` widened with countries not listed before only (limit 8 links: adding to listed countries would push out hub airlines). Pegasus: no public programme found. SECTION 2b CLOSED.** Next = item 3 (monitoring), see below.
    (sites may show a cookie wall: choose essential only)
    (read each site's own search script; quick test = open the results URL
    in a fresh tab). Saudia's Riyadh notice (flights via ELQ/DMM + bus):
@@ -214,9 +214,18 @@ SerpApi = FREE 250/month (renews 6 Dec). Staging has no `SERPAPI_KEY`.
    campaign contact). Replies in → compare, route the Emirates button via
    the better one, the other as fallback. TradeTracker contact on the
    campaign page bounced → owner sent the Dubai office form 8 Nov 10:58.
-3. Monitoring BEFORE launch: hourly journey checks (flight search, hotel
-   list + page, prices present), Worker errors, SerpApi allowance, alert
-   the owner by email/push; we find problems before travellers do.
+3. **Monitoring — BUILT 9 Nov** (`monitor.yml` hourly at :29, `scripts/monitor.mjs`,
+   state on branch `monitor-state`). Free every hour: 4 pages, flight widget
+   script, DXB→IST fares (`/api/health?monitor=1`; RUH has none), SerpApi
+   allowance, Worker errors (Cloudflare token works). Once a day one real hotel
+   search (list / single hotel in turn), only if allowance OK. Mail after 2
+   failures in a row, reminder every 24 h, mail on recovery. Limit: full flight
+   search not exercised (widget answers on sfrtna.com only).
+   **First run 9 Nov found: hotel search is paced shut** (128 of 250 left,
+   renews 6 Dec; `maySearch` needs > 162 today, reopens ~15 Nov if nothing is
+   spent). So the real hotel price check has NOT run yet. **NEXT: owner's
+   decision on the pace (keep, or loosen before launch); confirm the test mail
+   arrived; find who spent 122 searches 6–9 Nov; then item 5.**
 4. Item 5 (traveller journey): approved; build after 2–3, measure opens and
    clicks, keep only what works.
 5. Google Play trader status: owner asked why it matters → explained 8 Nov;
@@ -254,5 +263,5 @@ payout threshold $500 not met» (wire $500; PayPal/ACH $100).
 Waiting on the owner: Apple review; Google Play ticket reply; Google-fares
 decision after the 6 Nov measurement; Android APK on a real phone.
 
-**Recommended model for the next chat: Opus 5.5** (monitoring before
-launch, decision 3); Sonnet 5.5 for store-console steps only.
+**Recommended model for the next chat: Opus 5.5** (SerpApi spend, then
+item 5); Sonnet 5.5 for store-console steps only.
