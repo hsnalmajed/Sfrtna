@@ -200,7 +200,7 @@ const NATIONAL_AIRLINES: Record<string, string[]> = {
  * way, Arabic + English, in a fresh tab — TEST_PLAN «Airlines' own booking
  * links»). Every other airline keeps Google Flights narrowed to it.
  */
-const OWN_SITE: Record<string, (t: FlightTrip) => string> = {
+const OWN_SITE: Record<string, (t: FlightTrip) => string | undefined> = {
   // Qatar Airways' own booking widget builds exactly this (checked 8 Nov:
   // RUH→IST RT 2+1, JED→IST RT ar, DMM→LHR OW 1 + infant).
   "Qatar Airways": (t) => {
@@ -270,6 +270,30 @@ const OWN_SITE: Record<string, (t: FlightTrip) => string> = {
       ["isOriginMetro", "false"],
       ["isDestMetro", "false"],
       ["pm", "cash"],
+    ];
+    for (const [k, v] of q) u.searchParams.set(k, v);
+    return u.toString();
+  },
+  // Gulf Air: the URL its own search lands on. Checked 9 Nov in the owner's
+  // normal browser: RUH→IST RT 2+1 = route, dates and 3 passengers. One-way
+  // and Arabic are untested, so one-way keeps Google and the page stays en.
+  "Gulf Air": (t) => {
+    if (!t.returnDate) return undefined;
+    const p = pax(t);
+    const d = (iso: string) => iso.replaceAll("-", "");
+    const u = new URL("https://flights.gulfair.com/flights");
+    const q: [string, string][] = [
+      ["adt", String(p.adults)],
+      ["cabin_class", "A"],
+      ["chd", String(p.kids)],
+      ["departure_date", d(t.departDate)],
+      ["destination", t.destination],
+      ["flight_type", "return"],
+      ["inf", String(p.infants)],
+      ["locale", "en"],
+      ["origin", t.origin],
+      ["return_date", d(t.returnDate)],
+      ["tnn", "0"],
     ];
     for (const [k, v] of q) u.searchParams.set(k, v);
     return u.toString();
