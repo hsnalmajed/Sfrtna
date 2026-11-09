@@ -298,7 +298,30 @@ const OWN_SITE: Record<string, (t: FlightTrip) => string | undefined> = {
     for (const [k, v] of q) u.searchParams.set(k, v);
     return u.toString();
   },
+  // Pegasus: the URL its own search lands on. Checked 9 Nov in Chrome, typed
+  // by hand: RUH→SAW RT 2+1 ar, DMM→SAW OW ar (SAR) = route, dates, language.
+  Pegasus: (t) => {
+    const p = pax(t);
+    const u = new URL("https://web.flypgs.com/booking");
+    const q: [string, string][] = [
+      ["language", t.locale === "en" ? "en" : "ar"],
+      ["adultCount", String(p.adults)],
+      ["childCount", String(p.kids)],
+      ["infantCount", String(p.infants)],
+      ["departurePort", pegasusPort(t.origin)],
+      ["arrivalPort", pegasusPort(t.destination)],
+      ["currency", t.currency || "SAR"],
+      ["dateOption", "1"],
+      ["departureDate", t.departDate],
+      ...(t.returnDate ? ([["returnDate", t.returnDate]] as [string, string][]) : []),
+    ];
+    for (const [k, v] of q) u.searchParams.set(k, v);
+    return u.toString();
+  },
 };
+
+/** Pegasus: Istanbul means Sabiha Gökçen, it does not fly to IST. */
+const pegasusPort = (code: string) => (code === "IST" ? "SAW" : code);
 
 /** Big connecting airlines between the Gulf and the world. */
 const HUB_AIRLINES = ["Emirates", "Qatar Airways", "Etihad", "Turkish Airlines"];

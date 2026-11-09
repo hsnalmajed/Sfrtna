@@ -38,7 +38,7 @@ Status words: **Active** (tracked link live + payout set) · **Applied** ·
 | Etihad | Flights (Google link) | To check | — | — | — | To check | own link: cold visit hits bot check |
 | Saudia, flynas, flyadeal | Flights (Google link) | To check | — | — | — | To check | — |
 | flydubai | Flights (own link live) | Tradedoubler, CJ (Travelpayouts blog, not official) | 0.80%, cookie 30 d (same blog, updated 2022–25, not official) | needs confirmation | needs confirmation | Not applied | confirm on the network, then apply |
-| Gulf Air, Turkish, Kuwait, Oman Air, RJ, EgyptAir, Pegasus | Flights | To check | — | — | — | To check | own-link test pending for Oman Air, RJ, EgyptAir, Pegasus (Turkish, Kuwait: keep Google; Gulf Air: own link, no public programme found 9 Nov) |
+| Gulf Air, Turkish, Kuwait, Oman Air, RJ, EgyptAir, Pegasus | Flights | To check | — | — | — | To check | own-link test done 9 Nov (Turkish, Kuwait, Oman Air, RJ, EgyptAir: keep Google; Gulf Air: own link, no public programme found 9 Nov; Pegasus: own link, programme not checked yet) |
 | Almosafer | Flights, hotels | To check | — | — | — | To check | — |
 | Skyscanner, KAYAK, Trip.com (flights) | Flights, hotels, cars | To check | — | — | — | To check | — |
 | Google Flights / Google Hotels | Flights, hotels | To check (no programme known) | — | — | — | To check | — |
