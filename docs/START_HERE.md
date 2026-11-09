@@ -223,9 +223,9 @@ SerpApi = FREE 250/month (renews 6 Dec). Staging has no `SERPAPI_KEY`.
    search not exercised (widget answers on sfrtna.com only).
    **First run 9 Nov found: hotel search is paced shut** (128 of 250 left,
    renews 6 Dec; `maySearch` needs > 162 today, reopens ~15 Nov if nothing is
-   spent). So the real hotel price check has NOT run yet. **NEXT: owner's
-   decision on the pace (keep, or loosen before launch); confirm the test mail
-   arrived; find who spent 122 searches 6–9 Nov; then item 5.**
+   spent). So the real hotel price check has NOT run yet. Owner 9 Nov 13:36: KEEP the
+   pace. Test mail arrived. **NEXT: find who spent 122 searches 6–9 Nov; then
+   item 5.** After ~15 Nov check the daily real hotel search ran (`monitor-state`).
 4. Item 5 (traveller journey): approved; build after 2–3, measure opens and
    clicks, keep only what works.
 5. Google Play trader status: owner asked why it matters → explained 8 Nov;
