@@ -187,8 +187,11 @@ SerpApi = FREE 250/month (renews 6 Dec). Staging has no `SERPAPI_KEY`.
    flydubai → OWN LINK; Turkish → keep Google (session id only). Gulf Air
    (9 Nov) → OWN LINK, round trip only, English page (owner's browser OK;
    automated browser gets a bot check; one-way + ar untested). Kuwait → keep
-   Google (URL carries nothing). Next: Oman Air, RJ, EgyptAir, Pegasus;
-   Etihad = owner retests in a private window; widen `NATIONAL_AIRLINES` still open**
+   Google (URL carries nothing). **Round 4 (9 Nov): Oman Air → keep Google
+   (results URL carries nothing); RJ → keep Google (form works, results URL
+   has no route; a hand-built link left the tab on New Tab twice). Pegasus:
+   one guessed link = blank page, NOT concluded, use its own form (flies
+   SAW, not IST). Next: EgyptAir, Pegasus;** Etihad = owner retests in a private window; widen `NATIONAL_AIRLINES` still open**
    (sites may show a cookie wall: choose essential only)
    (read each site's own search script; quick test = open the results URL
    in a fresh tab). Saudia's Riyadh notice (flights via ELQ/DMM + bus):

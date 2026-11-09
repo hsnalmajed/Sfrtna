@@ -239,7 +239,15 @@ results with route + dates + party; else it keeps Google Flights «on X».
 
 | Kuwait Airways | Its own form, DMM→IST RT 2+1 (its calendar opened on May 2027 and would not go back, so 15–21 May 2027 was used) | results URL = `digital.kuwaitairways.com/booking/availability/0`, carries no route, dates or party ✗ | keep Google |
 
-Still to test: Oman Air, RJ, EgyptAir, Pegasus. Also retest Etihad in the owner's normal browser (private window; link in round 2).
+### Airlines' own booking links — round 4 (9 Nov 2026, Chrome)
+
+| Airline | Shape tried | Result | Decision |
+|---|---|---|---|
+| Oman Air | Its own form, RUH→IST RT (10 Dec–14 Jan, 1 adult: the calendar jumped when picking the return; the shape was the question) | results URL = `book.omanair.com/flights/outbound`, carries no route, dates or party ✗ | keep Google |
+| Royal Jordanian | Its own form, RUH→IST RT 9–16 Dec 2+1 (9 Dec = a misclick) → results OK; URL = `booking.rj.com/plnext/royaljordanianB2CDX/Override.action` with site settings only, no route, dates or party. Hand-built link with the usual Amadeus names (`B_LOCATION_1`, `E_LOCATION_1`, `B_DATE_1`, `TRAVELLER_TYPE_n`…), new tab, 2 tries | tab went back to New Tab both times ✗ | keep Google |
+| Pegasus | Guessed link `web.flypgs.com/booking?…` RUH→SAW RT 2+1 | blank page after 10 s; a guess, so no conclusion | retest through its own form (it flies SAW, not IST) |
+
+Still to test: EgyptAir, Pegasus. Also retest Etihad in the owner's normal browser (private window; link in round 2).
 
 Notes: flynas flies to SAW, not IST (a link would also need the airport
 swap). The redirect must be a fresh page load (a hash change from inside
