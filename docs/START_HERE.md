@@ -206,7 +206,12 @@ SerpApi = FREE 250/month (renews 6 Dec). Staging has no `SERPAPI_KEY`.
    «sfrtna-aeek»; reset form takes neither it nor the email) → owner
    mailed support@partnerize.com 8 Nov 09:58 asking for login + reset +
    to apply to Qatar from the same account. Do NOT open a second account
-   via the Qatar sign-up form. Waiting on their reply.
+   via the Qatar sign-up form. **Partnerize replied 9 Nov (ticket #710723,
+   closed):** the account was made through the Expedia Affiliate Hub, so
+   login is handled by affiliatehubsupport@expediagroup.com, not Partnerize.
+   Once in: Campaigns → Join Campaigns → tick the brand → accept terms →
+   Join selected campaigns; approved links appear under Tracking. Owner
+   writes to Affiliate Hub support (10 Nov).
    **Emirates (8 Nov 10:43):** programme on Partnerize + TradeTracker
    (campaigns split by market: AE, UK…). Owner asked BOTH which programme
    tracks Saudi bookings (emirates.com/sa), rate, cookie, deep links
