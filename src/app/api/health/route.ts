@@ -210,9 +210,11 @@ export async function GET(req: Request) {
 
   let probe: { ok: boolean; offers: number; error?: string } = { ok: false, offers: 0 };
   try {
+    // Dubai, not Riyadh: the flight partner carries no Riyadh fares (4 Nov),
+    // so RUH always answered 0 and the status report flagged a false alarm.
     const offers = await travelpayouts.searchFlights!({
       tripType: "flight",
-      origin: "RUH",
+      origin: "DXB",
       destination: "IST",
       departDate: new Date(Date.now() + 30 * 86_400_000).toISOString().slice(0, 10),
       adults: 1,

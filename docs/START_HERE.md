@@ -211,7 +211,8 @@ SerpApi = FREE 250/month (renews 6 Dec). Staging has no `SERPAPI_KEY`.
    login is handled by affiliatehubsupport@expediagroup.com, not Partnerize.
    Once in: Campaigns → Join Campaigns → tick the brand → accept terms →
    Join selected campaigns; approved links appear under Tracking. Owner
-   writes to Affiliate Hub support (10 Nov).
+   wrote to Affiliate Hub support 10 Nov 03:42 → their ticket 00045017
+   (auto-reply received). Wait for their answer.
    **Emirates (8 Nov 10:43):** programme on Partnerize + TradeTracker
    (campaigns split by market: AE, UK…). Owner asked BOTH which programme
    tracks Saudi bookings (emirates.com/sa), rate, cookie, deep links
