@@ -266,6 +266,13 @@ link, then the native rating prompt; rejected → read the reason, fix. Still
 waiting ~6 Nov evening → offer the owner an expedited review request.
 **Expedited review ACCEPTED by Apple 10 Nov 03:48** («We'll expedite review
 for Sfrtna»); a rejection + resubmit returns to the expedited queue.
+**Owner 10 Nov 03:50 — app banner, build when each store approves:** top
+banner «حمّل التطبيق» on phones, dismissible, visitor stays in the browser.
+iPhone Safari = Apple's own Smart App Banner (`<meta name="apple-itunes-app"
+content="app-id=…">`). Android = our own slim top bar → Play link (only after
+Play approval). Never inside our own apps (they load sfrtna.com: detect the
+Capacitor shell), not on desktop, hidden for N days after «لا شكراً»
+(try/catch storage). Plus the «حمّل التطبيق» buttons → store links.
 
 **Google Play:** identity REJECTED 4 Nov 15:48. Found 2 payments profiles:
 Türkiye 8920-… (address «Türkiye» only) — owner closed it 4 Nov; Saudi
