@@ -50,6 +50,9 @@ cfg.ratelimits = (cfg.ratelimits || []).map((r) => ({ ...r, namespace_id: String
 // Staging must never claim production's routes or domains.
 for (const key of ["routes", "route", "workers_dev", "custom_domains"]) delete cfg[key];
 cfg.workers_dev = true;
+// No cron on staging: it must never send trip emails (its own Accounts
+// store is empty anyway, but a cron there would also spend Resend calls).
+delete cfg.triggers;
 
 writeFileSync(OUT, `${JSON.stringify(cfg, null, 2)}\n`);
 console.log(`staging config written: ${OUT}`);

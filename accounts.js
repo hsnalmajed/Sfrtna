@@ -28,6 +28,9 @@
 //             Each change is also written to consent_log (value, time,
 //             screen) — the proof the Saudi PDPL asks for. Never ticked
 //             for the traveller: the box starts empty.
+//   mails     each trip email sent (owner, 6 Nov, item 5): user, trip key,
+//             kind, when — so no kind goes twice and a trip gets at most 5.
+//             No copy of the mail itself.
 //   stats     anonymous daily counts for the owner's weekly report (owner,
 //             23 Oct): visits by platform/device/source, searches by type,
 //             destination, origin and hotel, partner clicks by partner. Only
@@ -95,6 +98,8 @@ export class Accounts extends DurableObject {
       CREATE TABLE IF NOT EXISTS consent (user TEXT PRIMARY KEY, trip_mail INTEGER NOT NULL, at INTEGER NOT NULL, src TEXT NOT NULL, locale TEXT NOT NULL, unsub TEXT NOT NULL);
       CREATE TABLE IF NOT EXISTS consent_log (user TEXT NOT NULL, trip_mail INTEGER NOT NULL, at INTEGER NOT NULL, src TEXT NOT NULL);
       CREATE INDEX IF NOT EXISTS consent_log_user ON consent_log(user, at);
+      CREATE UNIQUE INDEX IF NOT EXISTS consent_unsub ON consent(unsub);
+      CREATE TABLE IF NOT EXISTS mails (user TEXT NOT NULL, trip TEXT NOT NULL, kind TEXT NOT NULL, at INTEGER NOT NULL, PRIMARY KEY (user, trip, kind));
       CREATE TABLE IF NOT EXISTS feedback (id INTEGER PRIMARY KEY AUTOINCREMENT, created INTEGER NOT NULL, user TEXT, kind TEXT NOT NULL, area TEXT NOT NULL, rating INTEGER, text TEXT NOT NULL, email TEXT, contact INTEGER NOT NULL, ctx TEXT NOT NULL, ip TEXT);
       CREATE INDEX IF NOT EXISTS feedback_created ON feedback(created);
       CREATE INDEX IF NOT EXISTS feedback_ip ON feedback(ip, created);
@@ -296,6 +301,70 @@ export class Accounts extends DurableObject {
     return { ok: true, consent: { tripMail: Boolean(tripMail), at: now, src, locale } };
   }
 
+  // ---- Trip emails (src/lib/tripMail.ts decides what is due) ----------
+
+  /**
+   * Every trip that may get a mail: the traveller said yes, has an email,
+   * pressed «احجز» on it, and it has not ended before `endFrom` (ISO day).
+   * With the kinds already sent for it.
+   */
+  async mailCandidates(endFrom) {
+    const rows = this.sql
+      .exec(
+        "SELECT c.user, c.locale, c.unsub, c.at AS consentAt, u.email, i.key, i.data FROM consent c JOIN users u ON u.id = c.user JOIN items i ON i.user = c.user AND i.kind = 'trip' WHERE c.trip_mail = 1 AND u.email IS NOT NULL"
+      )
+      .toArray();
+    const out = [];
+    for (const r of rows) {
+      let trip;
+      try {
+        trip = JSON.parse(r.data);
+      } catch {
+        continue;
+      }
+      if (!trip || typeof trip.pickedAt !== "number" || (trip.back || trip.depart) < endFrom) continue;
+      const sent = this.sql.exec("SELECT kind, at FROM mails WHERE user = ? AND trip = ?", r.user, r.key).toArray();
+      out.push({ user: r.user, email: r.email, locale: r.locale, unsub: r.unsub, consentAt: r.consentAt, key: r.key, trip, sent });
+    }
+    return out;
+  }
+
+  /** Takes a mail before it is sent (false = already taken: never twice). */
+  async mailClaim(user, trip, kind) {
+    return this.sql.exec("INSERT OR IGNORE INTO mails (user, trip, kind, at) VALUES (?, ?, ?, ?)", user, trip, kind, Date.now()).rowsWritten === 1;
+  }
+
+  /** Gives a claimed mail back when the sender refused it (tried next hour). */
+  async mailRelease(user, trip, kind) {
+    this.sql.exec("DELETE FROM mails WHERE user = ? AND trip = ? AND kind = ?", user, trip, kind);
+    return { ok: true };
+  }
+
+  /** Trip mails sent since a time (for the daily cap and the status report). */
+  async mailCount(since) {
+    return this.one("SELECT COUNT(*) AS n FROM mails WHERE at > ?", since).n;
+  }
+
+  /** What the unsubscribe page shows for a mail's link (no sign-in needed). */
+  async unsubInfo(unsub) {
+    if (typeof unsub !== "string" || !/^[a-f0-9]{64}$/.test(unsub)) return { ok: false };
+    const row = this.one("SELECT trip_mail, locale FROM consent WHERE unsub = ?", unsub);
+    return row ? { ok: true, on: row.trip_mail === 1, locale: row.locale } : { ok: false };
+  }
+
+  /** «إلغاء الاشتراك» from a mail: no, logged like any other change. */
+  async unsubByToken(unsub, src) {
+    if (typeof unsub !== "string" || !/^[a-f0-9]{64}$/.test(unsub)) return { ok: false };
+    const row = this.one("SELECT user, trip_mail, locale FROM consent WHERE unsub = ?", unsub);
+    if (!row) return { ok: false };
+    if (row.trip_mail === 1) {
+      const now = Date.now();
+      this.sql.exec("UPDATE consent SET trip_mail = 0, at = ?, src = ? WHERE user = ?", now, src, row.user);
+      this.sql.exec("INSERT INTO consent_log (user, trip_mail, at, src) VALUES (?, 0, ?, ?)", row.user, now, src);
+    }
+    return { ok: true, locale: row.locale };
+  }
+
   async signOut(token) {
     if (token) this.sql.exec("DELETE FROM sessions WHERE hash = ?", await sha256(token));
     return { ok: true };
@@ -308,6 +377,7 @@ export class Accounts extends DurableObject {
     this.sql.exec("DELETE FROM items WHERE user = ?", user.id);
     this.sql.exec("DELETE FROM consent WHERE user = ?", user.id);
     this.sql.exec("DELETE FROM consent_log WHERE user = ?", user.id);
+    this.sql.exec("DELETE FROM mails WHERE user = ?", user.id);
     this.sql.exec("DELETE FROM appcodes WHERE user = ?", user.id);
     this.sql.exec("DELETE FROM sessions WHERE user = ?", user.id);
     if (user.email) this.sql.exec("DELETE FROM codes WHERE email = ?", user.email);

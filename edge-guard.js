@@ -70,6 +70,12 @@ export const ROUTES = {
   "/api/me/items": { methods: ["GET", "POST"], caller: "page" },
   "/api/me/items/delete": { methods: ["POST"], caller: "page" },
   "/api/me/consent": { methods: ["GET", "POST"], caller: "page" },
+  // Trip emails (src/lib/tripMails.ts). The run answers only the site-check
+  // key (the Worker's hourly cron calls it from inside, edge-worker.js);
+  // unsubscribe is opened from a mail and posted by the mail app's own
+  // button, so neither comes from our pages — the token in it is the key.
+  "/api/trip-mail/run": { methods: ["POST"], caller: "link", heavy: true },
+  "/api/unsub": { methods: ["GET", "POST"], caller: "link", heavy: true },
   "/api/plans": { methods: ["GET", "POST"], caller: "page" },
   "/api/plans/delete": { methods: ["POST"], caller: "page" },
   // «شاركنا رأيك» (src/lib/feedback.ts). The recent list answers only the

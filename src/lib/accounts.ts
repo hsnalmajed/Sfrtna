@@ -81,6 +81,12 @@ interface AccountsStub {
   consentGet(token: string): Promise<{ ok: true; consent: TripMailConsent | null } | Fail>;
   consentSet(token: string, tripMail: boolean, src: string, locale: string): Promise<{ ok: true; consent: TripMailConsent } | Fail>;
   sessionMaxAge(): Promise<number>;
+  mailCandidates(endFrom: string): Promise<MailCandidate[]>;
+  mailClaim(user: string, trip: string, kind: string): Promise<boolean>;
+  mailRelease(user: string, trip: string, kind: string): Promise<{ ok: true }>;
+  mailCount(since: number): Promise<number>;
+  unsubInfo(unsub: string): Promise<{ ok: true; on: boolean; locale: string } | { ok: false }>;
+  unsubByToken(unsub: string, src: string): Promise<{ ok: true; locale: string } | { ok: false }>;
   feedbackAdd(token: string, f: FeedbackInput): Promise<{ ok: true; id: number; ref: string; email: string | null; signedIn: boolean } | Fail>;
   feedbackRecent(since: number): Promise<FeedbackRow[]>;
   statsAdd(pairs: [string, string][]): Promise<{ ok: boolean }>;
@@ -110,6 +116,18 @@ export interface FeedbackRow {
   email: string | null;
   contact: number;
   ctx: Record<string, string>;
+}
+
+/** A trip that may get a trip email (accounts.js mailCandidates). */
+export interface MailCandidate {
+  user: string;
+  email: string;
+  locale: string;
+  unsub: string;
+  consentAt: number;
+  key: string;
+  trip: unknown;
+  sent: { kind: string; at: number }[];
 }
 
 export interface StoredItem {

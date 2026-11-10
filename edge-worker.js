@@ -198,4 +198,19 @@ const worker = {
   },
 };
 
+// Hourly cron (wrangler.jsonc triggers): the trip emails that are due
+// (src/lib/tripMails.ts). Handed to Next's own route, which holds the mail
+// texts and links; the request never leaves the Worker and carries the
+// site-check key the route asks for.
+worker.scheduled = async function scheduled(controller, env, ctx) {
+  const token = env?.SMOKE_TOKEN;
+  if (!token) return;
+  const request = new Request("https://sfrtna.com/api/trip-mail/run", {
+    method: "POST",
+    headers: { "x-sfrtna-smoke": token },
+  });
+  const res = await handler.fetch(request, env, ctx);
+  if (!res.ok) console.error("trip mail cron", res.status, (await res.text()).slice(0, 300));
+};
+
 export default worker;

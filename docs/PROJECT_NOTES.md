@@ -2217,3 +2217,38 @@ Built 10 Nov:
 - `member/TripMailSwitch.tsx` in «حسابي» (#trip-mail): on since <date> /
   off / never; one button to flip (withdrawal as easy as consent).
 Not done yet: content strip on guide pages, «أرسل الخطة إلى بريدي», mails.
+
+## Traveller journey — 10 Nov 2026 (item 5, step 3: trip emails)
+
+Built 10 Nov (`src/lib/tripMails.ts` = schedule + texts; NOT `tripMail.ts`,
+which is the browser's consent helper):
+- Who: consent yes + email + trip item with `pickedAt` (accounts.js
+  `mailCandidates`). Table `mails` (user, trip key, kind, at): one row per
+  sent mail, claimed BEFORE sending (`mailClaim`, never twice), released if
+  Resend refuses (`mailRelease`, retried next hour). Account delete clears it.
+- Kinds (Riyadh time, timed ones 09:00–21:00 only): ready 1–24 h after
+  «احجز» (visa, hotel, eSIM, transfer, activities); week 5–7 d before (what
+  is not ticked + plan); esim 1–3 d before; arrival day 0/−1 (plan +
+  activities); after 1–3 d after return (AirHelp via /api/go/tp + «اقترح لي
+  وجهة»). ≤5 per trip, ≤1 per trip per 20 h, ≤1 per traveller per run.
+  Ticked steps are left out; a mail with no lines is not sent. No prices.
+- Links = our pages (live prices, every company) with
+  `utm_source=trip_mail&utm_medium=email&utm_campaign=<kind>&utm_content=<line>`.
+- Sending: `/api/trip-mail/run` (POST, site-check key only; `?dry=1` lists
+  what is due without sending). Called by the Worker cron `17 * * * *`
+  (wrangler.jsonc `triggers`; edge-worker.js `scheduled` → handler.fetch with
+  SMOKE_TOKEN). Staging config drops `triggers`.
+- Limits: Resend free plan = 100/day (UTC day), 3,000/month, 10 req/s,
+  codes included. Stop when the day's Resend count (stats ext/resend) ≥
+  `RESEND_DAILY_BUDGET` (default 80) or trip mails in 24 h ≥
+  `TRIP_MAIL_DAILY_CAP` (default 60); ≤30 per run, 250 ms apart.
+- Unsubscribe: `/api/unsub?t=<consent.unsub>` — GET = page with one button
+  (opening alone changes nothing: mail scanners open links), POST = «no»
+  logged as `unsub_link`; header List-Unsubscribe + One-Click → POST logged
+  `unsub_oneclick`. Both routes in edge-guard ROUTES (caller link, heavy).
+- Checks: `npx tsx scripts/check-trip-mails.ts [out-dir]` (20 schedule cases
+  + every mail has the unsubscribe link and no price; writes HTML to look
+  at). DO methods tested with a node:sqlite shim (claim twice → false;
+  ended trip filtered; unsub twice OK, log has yes then no; re-yes keeps the
+  token; delete leaves 0 mails).
+Left for step 2: guide-page strip «مسافر إلى …؟», «أرسل الخطة إلى بريدي».

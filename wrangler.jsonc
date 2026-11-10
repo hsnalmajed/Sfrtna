@@ -34,6 +34,9 @@
       { "name": "ACCOUNTS", "class_name": "Accounts" }
     ]
   },
+  // Hourly: trip emails that are due (edge-worker.js `scheduled` →
+  // /api/trip-mail/run). Staging gets no cron (make-staging-config.mjs).
+  "triggers": { "crons": ["17 * * * *"] },
   "migrations": [
     { "tag": "here-quota-v1", "new_sqlite_classes": ["HereQuota"] },
     { "tag": "accounts-v1", "new_sqlite_classes": ["Accounts"] }
