@@ -264,6 +264,8 @@ SerpApi = FREE 250/month (renews 6 Dec). Staging has no `SERPAPI_KEY`.
 19:09). Approved → point «حمّل التطبيق» / AppStoreButtons at the App Store
 link, then the native rating prompt; rejected → read the reason, fix. Still
 waiting ~6 Nov evening → offer the owner an expedited review request.
+**Expedited review ACCEPTED by Apple 10 Nov 03:48** («We'll expedite review
+for Sfrtna»); a rejection + resubmit returns to the expedited queue.
 
 **Google Play:** identity REJECTED 4 Nov 15:48. Found 2 payments profiles:
 Türkiye 8920-… (address «Türkiye» only) — owner closed it 4 Nov; Saudi
