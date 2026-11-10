@@ -268,9 +268,10 @@ waiting ~6 Nov evening → offer the owner an expedited review request.
 for Sfrtna»); a rejection + resubmit returns to the expedited queue.
 **Owner 10 Nov 03:50 — app banner, build when each store approves:** top
 banner «حمّل التطبيق» on phones, dismissible, visitor stays in the browser.
-iPhone Safari = Apple's own Smart App Banner (`<meta name="apple-itunes-app"
-content="app-id=…">`). Android = our own slim top bar → Play link (only after
-Play approval). Never inside our own apps (they load sfrtna.com: detect the
+Owner 03:51: must be eye-catching like other big sites → OUR OWN designed
+banner on iPhone + Android (brand colours, app icon, short line, sun-yellow
+«حمّل» button, ✕), not Apple's plain Smart App Banner (never both). Each
+store's link only after that store approves. Never inside our own apps (they load sfrtna.com: detect the
 Capacitor shell), not on desktop, hidden for N days after «لا شكراً»
 (try/catch storage). Plus the «حمّل التطبيق» buttons → store links.
 
