@@ -271,7 +271,11 @@ banner «حمّل التطبيق» on phones, dismissible, visitor stays in the 
 Owner 03:51: must be eye-catching like other big sites → OUR OWN designed
 banner on iPhone + Android (brand colours, app icon, short line, sun-yellow
 «حمّل» button, ✕), not Apple's plain Smart App Banner (never both). Each
-store's link only after that store approves. Never inside our own apps (they load sfrtna.com: detect the
+store's link only after that store approves.
+Owner 03:52: trip mails (`tripMails.ts`) also get the stores' official
+badges («Download on the App Store» / «Get it on Google Play», images
+served from our site) with one line inviting to install; each badge only
+after its store approves; skip if we know the member uses the app. Never inside our own apps (they load sfrtna.com: detect the
 Capacitor shell), not on desktop, hidden for N days after «لا شكراً»
 (try/catch storage). Plus the «حمّل التطبيق» buttons → store links.
 
