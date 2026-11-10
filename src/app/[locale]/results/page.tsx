@@ -29,6 +29,7 @@ import { openJoin, showToast } from "@/components/member/events";
 import { track } from "@/lib/analytics";
 import { comboParams, readCombo } from "@/lib/combo";
 import { setMyTrip } from "@/lib/myTrip";
+import SaveTripCard from "@/components/member/SaveTripCard";
 
 
 export default function ResultsPage() {
@@ -289,6 +290,7 @@ function ResultsContent() {
         infants: search.infants ?? 0,
         booked: existing?.data.booked ?? false,
         done: existing?.data.done ?? [],
+        pickedAt: existing?.data.pickedAt ?? Date.now(),
       })
       .then((ok) => ok && showToast({ text: dictMember.tripSaved, href: `/${locale}/account#trips`, linkText: dictMember.openTrips }));
   }
@@ -580,6 +582,30 @@ function ResultsContent() {
 
       {visaOpen && destinationCountry && (
         <VisaRequirementsDialog countryCode={destinationCountry.code} locale={locale} onClose={() => setVisaOpen(false)} />
+      )}
+
+      {/* Item 5 «رحلة المسافر»: keep this trip (and, only if they tick it,
+          trip reminders by email) — after the results, before the next steps. */}
+      {!isMulti && !searchProblem && search.origin && search.destination && search.departDate && (
+        <SaveTripCard
+          locale={locale}
+          cityName={destinationCityName ?? search.destination}
+          trip={{
+            origin: search.origin,
+            destination: search.destination,
+            depart: search.departDate,
+            back: search.returnDate || undefined,
+            code: destinationCountry?.code,
+            slug: destinationCity?.slug,
+            cityAr: destinationCity?.nameAr ?? destinationAirport?.cityAr,
+            cityEn: destinationCity?.nameEn ?? destinationAirport?.cityEn,
+            adults: Math.max(1, search.adults),
+            childrenAges: search.childrenAges ?? [],
+            infants: search.infants ?? 0,
+            booked: false,
+            done: [],
+          }}
+        />
       )}
 
       {/* What comes next for this trip: hotel, services, a plan, the

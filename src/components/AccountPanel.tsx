@@ -9,6 +9,7 @@ import { appFeatures, googleSignOutInApp, inApp, openAuthInApp } from "@/lib/nat
 import JoinBenefits from "@/components/member/JoinBenefits";
 import MemberSections from "@/components/member/MemberSections";
 import { newAppChallenge, takeAppCode, takeVerifier } from "@/lib/appAuth";
+import TripMailSwitch from "@/components/member/TripMailSwitch";
 import { PENDING_PLAN_KEY, refreshAccount, setSignedIn, useAccount, type AccountUser } from "@/lib/useAccount";
 
 interface SavedPlan {
@@ -412,6 +413,8 @@ function SignedIn({ locale, user }: { locale: Locale; user: AccountUser }) {
       </div>
 
       <MemberSections locale={locale} />
+
+      <TripMailSwitch locale={locale} />
 
       <section id="plans" className="scroll-mt-24">
         <h2 className="mb-3 font-display text-lg font-extrabold text-navy-900">🗺️ {t.myPlans}</h2>

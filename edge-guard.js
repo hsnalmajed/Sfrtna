@@ -69,6 +69,7 @@ export const ROUTES = {
   "/api/auth/app-exchange": { methods: ["POST"], caller: "page", heavy: true },
   "/api/me/items": { methods: ["GET", "POST"], caller: "page" },
   "/api/me/items/delete": { methods: ["POST"], caller: "page" },
+  "/api/me/consent": { methods: ["GET", "POST"], caller: "page" },
   "/api/plans": { methods: ["GET", "POST"], caller: "page" },
   "/api/plans/delete": { methods: ["POST"], caller: "page" },
   // «شاركنا رأيك» (src/lib/feedback.ts). The recent list answers only the

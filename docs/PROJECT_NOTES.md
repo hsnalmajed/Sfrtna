@@ -2192,3 +2192,28 @@ hotel page (one-off). Fix: `isOwnCheck()` in `src/lib/providers/serpapi.ts` —
 a request with a valid `x-sfrtna-smoke` never spends (gets cache only), except
 kind "probe" and `x-sfrtna-spend: 1` (monitor.mjs daily hotel search).
 Staging has no key and its smoke/e2e pass, so checks still pass.
+
+## Traveller journey — 10 Nov 2026 (item 5, steps 1+2)
+
+Doc «استشارة نمو سفرتنا» item 5 order: 1 server trip save + consent with
+date; 2 «احفظ رحلتك» card + content strip + «أرسل الخطة إلى بريدي»; 3 first
+mail after «احجز» then timed mails; 4 share + budget card; 5 app push.
+Built 10 Nov:
+- `accounts.js`: tables `consent` (user, trip_mail, at, src, locale, unsub)
+  and `consent_log` (every change: value, time, screen); `consentGet`,
+  `consentSet`; deleteAccount clears both. Tested with a node:sqlite shim
+  (yes → no keeps the same unsub token; log has both rows; signed-out
+  refused; delete leaves 0 rows).
+- `/api/me/consent` GET/POST (src ∈ save_card | account | my_trip),
+  added to `edge-guard.js` ROUTES.
+- Trip item gains `pickedAt` (ms of the first «احجز»; `keepTrip` sets it,
+  kept on later saves) — the 1-hour mail will key on it.
+- `member/SaveTripCard.tsx`: flight results (single trips), above
+  NextStepTabs. 3 benefits, consent box UNticked, «احفظ رحلتي»; signed out →
+  `SignInForm` inside the card, saved right after sign-in; «ليس الآن» hides
+  it for this trip in this tab; hidden when the trip is already in the
+  account. An empty box records nothing (never overwrites an earlier yes).
+  GA4 `trip_save_card` {mail}.
+- `member/TripMailSwitch.tsx` in «حسابي» (#trip-mail): on since <date> /
+  off / never; one button to flip (withdrawal as easy as consent).
+Not done yet: content strip on guide pages, «أرسل الخطة إلى بريدي», mails.

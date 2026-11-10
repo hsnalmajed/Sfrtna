@@ -106,7 +106,7 @@ City guide / Viator / Search Console / Status email / Feedback / Dashboard /
 «رحلتي» / Google Play account / Workers Paid / Hotels like Booking /
 iPhone app.
 
-## ▶ Hand-off (6 Nov 2026, 04:30 KSA) — current state
+## ▶ Hand-off (10 Nov 2026, 03:40 KSA) — current state
 
 **Release gate: CLOSED (4 Nov) + catch-up (6 Nov).** `release.yml` is the
 only way to production (Cloudflare Git build disabled). Pushes made by
@@ -232,9 +232,21 @@ SerpApi = FREE 250/month (renews 6 Dec). Staging has no `SERPAPI_KEY`.
    monitor's daily hotel search (`x-sfrtna-spend: 1`). **Verify ~11 Nov:**
    SerpApi «Your Searches» shows no bursts at Site check times; count stays
    ~133 unless visitors search. After ~15 Nov check the daily real hotel search
-   ran (`monitor-state`). **NEXT: item 5.**
-4. Item 5 (traveller journey): approved; build after 2–3, measure opens and
-   clicks, keep only what works.
+   ran (`monitor-state`). Item 5 started 10 Nov (see 4.)
+4. **Item 5 (traveller journey) — step 1+2 BUILT 10 Nov** (PROJECT_NOTES
+   «Traveller journey — 10 Nov»): consent table in Accounts DO
+   (`consent` + `consent_log`, unsub token), `/api/me/consent`, trip item
+   `pickedAt` (set on «احجز»), card `member/SaveTripCard.tsx` on flight
+   results above NextStepTabs (sign-in inside the card, box UNticked),
+   switch `member/TripMailSwitch.tsx` in «حسابي». **Next step:** (a) after
+   the release, ux-audit/phone screenshot of the card signed out + signed
+   in; (b) build step 3 = mails: hourly cron reads trips with `pickedAt`
+   ≥ 1 h and consent yes → mail «5 أشياء جهّزها الآن» (Resend, tagged
+   partner links, unsubscribe link `/api/unsub?t=` public route + guard),
+   then 7 d / 3 d / arrival / after return, ≤5 per trip, skip ticked steps
+   (needs a `mails` table: user, trip key, kind, sent). Check Resend plan
+   limits first. Then step 2 leftovers: guide-page strip «مسافر إلى …؟»
+   and «أرسل الخطة إلى بريدي».
 5. Google Play trader status: owner asked why it matters → explained 8 Nov;
    decide before 1 Feb 2027.
 
@@ -270,4 +282,4 @@ payout threshold $500 not met» (wire $500; PayPal/ACH $100).
 Waiting on the owner: Apple review; Google Play ticket reply; Google-fares
 decision after the 6 Nov measurement; Android APK on a real phone.
 
-**Recommended model for the next chat: Opus 5.5** (item 5); Sonnet 5.5 for store-console steps only.
+**Recommended model for the next chat: Opus 5.5** (item 5 step 3: mails + cron); Sonnet 5.5 for store-console steps only.

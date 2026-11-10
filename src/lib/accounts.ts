@@ -45,6 +45,14 @@ export interface SavedPlanData {
   short?: boolean;
 }
 
+/** The traveller's answer about trip emails (item 5), with when and where it was given. */
+export interface TripMailConsent {
+  tripMail: boolean;
+  at: number;
+  src: string;
+  locale: string;
+}
+
 export interface SavedPlan {
   id: string;
   title: string;
@@ -70,6 +78,8 @@ interface AccountsStub {
   itemsList(token: string): Promise<StoredItem[] | null>;
   itemPut(token: string, kind: string, key: string, data: unknown): Promise<{ ok: true } | Fail>;
   itemDelete(token: string, kind: string, key: string): Promise<{ ok: true } | Fail>;
+  consentGet(token: string): Promise<{ ok: true; consent: TripMailConsent | null } | Fail>;
+  consentSet(token: string, tripMail: boolean, src: string, locale: string): Promise<{ ok: true; consent: TripMailConsent } | Fail>;
   sessionMaxAge(): Promise<number>;
   feedbackAdd(token: string, f: FeedbackInput): Promise<{ ok: true; id: number; ref: string; email: string | null; signedIn: boolean } | Fail>;
   feedbackRecent(since: number): Promise<FeedbackRow[]>;

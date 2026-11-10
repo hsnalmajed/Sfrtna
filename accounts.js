@@ -22,6 +22,12 @@
 //             an email only when the visitor typed one. A hash of the
 //             sender's address is kept one day for the hourly limit, then
 //             cleared. Screenshots are mailed to the owner, never stored.
+//   consent   whether the traveller agreed to trip emails (owner, 6 Nov,
+//             item 5 «رحلة المسافر»): yes/no, when, from which screen, in
+//             which language; an unsubscribe token for every mail's link.
+//             Each change is also written to consent_log (value, time,
+//             screen) — the proof the Saudi PDPL asks for. Never ticked
+//             for the traveller: the box starts empty.
 //   stats     anonymous daily counts for the owner's weekly report (owner,
 //             23 Oct): visits by platform/device/source, searches by type,
 //             destination, origin and hotel, partner clicks by partner. Only
@@ -86,6 +92,9 @@ export class Accounts extends DurableObject {
       CREATE INDEX IF NOT EXISTS items_user ON items(user, kind, created);
       CREATE TABLE IF NOT EXISTS stats (day TEXT NOT NULL, kind TEXT NOT NULL, key TEXT NOT NULL, n INTEGER NOT NULL, PRIMARY KEY (day, kind, key));
       CREATE TABLE IF NOT EXISTS appcodes (hash TEXT PRIMARY KEY, user TEXT NOT NULL, challenge TEXT NOT NULL, expires INTEGER NOT NULL);
+      CREATE TABLE IF NOT EXISTS consent (user TEXT PRIMARY KEY, trip_mail INTEGER NOT NULL, at INTEGER NOT NULL, src TEXT NOT NULL, locale TEXT NOT NULL, unsub TEXT NOT NULL);
+      CREATE TABLE IF NOT EXISTS consent_log (user TEXT NOT NULL, trip_mail INTEGER NOT NULL, at INTEGER NOT NULL, src TEXT NOT NULL);
+      CREATE INDEX IF NOT EXISTS consent_log_user ON consent_log(user, at);
       CREATE TABLE IF NOT EXISTS feedback (id INTEGER PRIMARY KEY AUTOINCREMENT, created INTEGER NOT NULL, user TEXT, kind TEXT NOT NULL, area TEXT NOT NULL, rating INTEGER, text TEXT NOT NULL, email TEXT, contact INTEGER NOT NULL, ctx TEXT NOT NULL, ip TEXT);
       CREATE INDEX IF NOT EXISTS feedback_created ON feedback(created);
       CREATE INDEX IF NOT EXISTS feedback_ip ON feedback(ip, created);
@@ -260,6 +269,33 @@ export class Accounts extends DurableObject {
     return { ok: true };
   }
 
+  /** The traveller's answer about trip emails, or null when never asked. */
+  async consentGet(token) {
+    const user = await this.userFor(token);
+    if (!user) return { ok: false, reason: "signed_out" };
+    const row = this.one("SELECT trip_mail, at, src, locale FROM consent WHERE user = ?", user.id);
+    return { ok: true, consent: row ? { tripMail: row.trip_mail === 1, at: row.at, src: row.src, locale: row.locale } : null };
+  }
+
+  /** Records yes or no (with the time and the screen); every change is logged. */
+  async consentSet(token, tripMail, src, locale) {
+    const user = await this.userFor(token);
+    if (!user) return { ok: false, reason: "signed_out" };
+    const now = Date.now();
+    const row = this.one("SELECT unsub FROM consent WHERE user = ?", user.id);
+    this.sql.exec(
+      "INSERT INTO consent (user, trip_mail, at, src, locale, unsub) VALUES (?, ?, ?, ?, ?, ?) ON CONFLICT(user) DO UPDATE SET trip_mail = excluded.trip_mail, at = excluded.at, src = excluded.src, locale = excluded.locale",
+      user.id,
+      tripMail ? 1 : 0,
+      now,
+      src,
+      locale,
+      row?.unsub ?? randomToken()
+    );
+    this.sql.exec("INSERT INTO consent_log (user, trip_mail, at, src) VALUES (?, ?, ?, ?)", user.id, tripMail ? 1 : 0, now, src);
+    return { ok: true, consent: { tripMail: Boolean(tripMail), at: now, src, locale } };
+  }
+
   async signOut(token) {
     if (token) this.sql.exec("DELETE FROM sessions WHERE hash = ?", await sha256(token));
     return { ok: true };
@@ -270,6 +306,8 @@ export class Accounts extends DurableObject {
     if (!user) return { ok: false };
     this.sql.exec("DELETE FROM plans WHERE user = ?", user.id);
     this.sql.exec("DELETE FROM items WHERE user = ?", user.id);
+    this.sql.exec("DELETE FROM consent WHERE user = ?", user.id);
+    this.sql.exec("DELETE FROM consent_log WHERE user = ?", user.id);
     this.sql.exec("DELETE FROM appcodes WHERE user = ?", user.id);
     this.sql.exec("DELETE FROM sessions WHERE user = ?", user.id);
     if (user.email) this.sql.exec("DELETE FROM codes WHERE email = ?", user.email);

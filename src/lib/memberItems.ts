@@ -69,6 +69,9 @@ export interface Trip {
   /** The traveller says they booked it (we cannot see the booking). */
   booked: boolean;
   done: TripStep[];
+  /** When «احجز» was first pressed on one of its flights (ms): the first
+   *  trip email goes out an hour later, when the traveller agreed to them. */
+  pickedAt?: number;
 }
 
 const ISO = /^\d{4}-\d{2}-\d{2}$/;
@@ -157,6 +160,7 @@ export function cleanItem(kind: unknown, key: unknown, data: unknown): { kind: I
       infants: int(o.infants, 0, 4) ?? 0,
       booked: o.booked === true,
       done: Array.isArray(o.done) ? (o.done.filter((x) => (TRIP_STEPS as readonly string[]).includes(x as string)) as TripStep[]) : [],
+      pickedAt: int(o.pickedAt, 1_700_000_000_000, 4_000_000_000_000),
     };
     if (key !== tripKey(t)) return null;
     return { kind, key, data: t };
