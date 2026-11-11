@@ -171,6 +171,17 @@ const worker = {
         { headers: { "content-type": "text/html; charset=utf-8", "x-robots-tag": "noindex", "cache-control": "no-store" } },
       );
     }
+    // Admitad (Mitgo) site ownership (owner's publisher account, 11 Nov 2026):
+    // meta tag on the home page. "/" redirects visitors to /ar, so a checker
+    // that does not follow redirects gets the tag here. Checker user agent not
+    // published: match the network names. The tag is also in [locale]/layout.
+    const mitgoId = "abfa1f5d-e91a-4cb7-bd94-599367568a79";
+    if (url.pathname === "/" && /mitgo|admitad/i.test(request.headers.get("user-agent") || "")) {
+      return new Response(
+        `<!doctype html><html><head><meta name="mitgo-verification" content="${mitgoId}" /><meta name="robots" content="noindex"></head><body></body></html>`,
+        { headers: { "content-type": "text/html; charset=utf-8", "x-robots-tag": "noindex", "cache-control": "no-store" } },
+      );
+    }
     // Stored data files (public/data, e.g. each city's places) are for the
     // server only — it reads them through env.ASSETS. Never served outside.
     if (url.pathname === "/data" || url.pathname.startsWith("/data/")) {

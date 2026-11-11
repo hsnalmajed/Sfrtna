@@ -77,6 +77,8 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
         {/* impact.com site ownership (owner's partner account, 11 Nov). Their
             tag uses `value`, not `content`: keep both. Not a secret. */}
         <meta name="impact-site-verification" content="4d08b9a4-c1a9-4ff0-a924-85e8c56453bb" {...{ value: "4d08b9a4-c1a9-4ff0-a924-85e8c56453bb" }} />
+        {/* Admitad (Mitgo) site ownership (owner's publisher account, 11 Nov). Not a secret. */}
+        <meta name="mitgo-verification" content="abfa1f5d-e91a-4cb7-bd94-599367568a79" />
         {/*
           Inside the phone app (mobile/, user agent "SfrtnaApp/…") the page
           wears app chrome — bottom tab bar, compact header, no footer — set
