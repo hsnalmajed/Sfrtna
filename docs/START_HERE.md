@@ -212,7 +212,14 @@ SerpApi = FREE 250/month (renews 6 Dec). Staging has no `SERPAPI_KEY`.
    Once in: Campaigns → Join Campaigns → tick the brand → accept terms →
    Join selected campaigns; approved links appear under Tracking. Owner
    wrote to Affiliate Hub support 10 Nov 03:42 → their ticket 00045017
-   (auto-reply received). Wait for their answer.
+   (auto-reply received). **Expedia replied 11 Nov 05:41:** they will
+   only REFER the request, no promise of direct Partnerize access; they ask
+   for the Partnerize Publisher ID (PZ ID) if any + Partnerize's reply +
+   a screenshot of the login/reset error (+ items hidden in the owner's
+   screenshot). Expedia account itself = Expedia Group Creator Hub. Qatar /
+   Emirates: «contact those programmes directly», can't say if the
+   Expedia-linked account can apply. Owner's decision pending: keep waiting,
+   or apply to Qatar via impact.com / CJ (official list) instead.
    **Emirates (8 Nov 10:43):** programme on Partnerize + TradeTracker
    (campaigns split by market: AE, UK…). Owner asked BOTH which programme
    tracks Saudi bookings (emirates.com/sa), rate, cookie, deep links
