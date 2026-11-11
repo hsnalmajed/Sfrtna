@@ -269,6 +269,18 @@ SerpApi = FREE 250/month (renews 6 Dec). Staging has no `SERPAPI_KEY`.
 5. Google Play trader status: owner asked why it matters → explained 8 Nov;
    decide before 1 Feb 2027.
 
+**Owner 11 Nov 06:40 — do ALL of it, plus anything that adds value.
+Queue (owner steps one at a time; code items in a fresh Opus chat):**
+- Owner steps: A) impact.com account (app.impact.com/login.user → Partner →
+  Email, owner's Gmail, region SA, currency USD) → apply Qatar + Skyscanner;
+  B) Admitad → flynas, Jazeera; C) CJ → Qatar; D) OWN Partnerize account
+  (owner: yes) — after Expedia's answer or by 14 Nov if none (same site on
+  two accounts could put the Expedia account at risk; say so on sign-up);
+  E) trip-mail real test (item 4 a). Fill PARTNERS.md «Accounts» each time.
+- Code (no owner step): item 4 (b)(c) + step 4 share; app banner + store
+  badges in mails, built behind a switch, turned on per store approval;
+  Search Console «pages not indexed» mail (9 Nov) → find the reason.
+
 «next-step tabs» flake: 7 green Site checks in a row since the fix (4 Nov);
 ~10 green = close it.
 
