@@ -155,6 +155,22 @@ const worker = {
         return Response.redirect(`https://sfrtna.com${url.pathname}${url.search}`, 301);
       }
     }
+    // impact.com site ownership (owner's partner account, 11 Nov 2026). Their
+    // checker (user agent "Impact-SiteVerifier") asks for
+    // /impact<id>.html and for "/", which redirects visitors to /ar — so
+    // both answer it directly with the tag. Cloudflare's own logs showed the
+    // file request falling into a 404. Nothing secret: the id is public.
+    const impactId = "4d08b9a4-c1a9-4ff0-a924-85e8c56453bb";
+    if (
+      url.pathname === `/impact${impactId}.html` ||
+      (url.pathname === "/" && (request.headers.get("user-agent") || "").includes("Impact-SiteVerifier"))
+    ) {
+      const tag = `<meta name="impact-site-verification" content="${impactId}" value="${impactId}">`;
+      return new Response(
+        `<!doctype html><html><head>${tag}<meta name="robots" content="noindex"></head><body>Impact-Site-Verification: ${impactId}</body></html>`,
+        { headers: { "content-type": "text/html; charset=utf-8", "x-robots-tag": "noindex", "cache-control": "no-store" } },
+      );
+    }
     // Stored data files (public/data, e.g. each city's places) are for the
     // server only — it reads them through env.ASSETS. Never served outside.
     if (url.pathname === "/data" || url.pathname.startsWith("/data/")) {
