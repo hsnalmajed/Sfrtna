@@ -277,8 +277,9 @@ Queue (owner steps one at a time; code items in a fresh Opus chat):**
   text with budget planning. Status «قيد المراجعة» (impact's own review) →
   when approved: apply to Qatar + Skyscanner + search marketplace for
   Saudia/flyadeal/Turkish/Almosafer and others; write rates in PARTNERS.
-  **NEXT owner step = B) Admitad sign-up** (same profile texts: PARTNERS);
-  B) Admitad → flynas, Jazeera; C) CJ → Qatar; D) OWN Partnerize account
+  B) Admitad — DONE 11 Nov 15:03 (PID2605420, verified by meta tag; ad
+  space «Under review») → when Active: join flynas, Jazeera.
+  **NEXT owner step = C) CJ sign-up** (same profile texts: PARTNERS); C) CJ → Qatar; D) OWN Partnerize account
   (owner: yes) — after Expedia's answer or by 14 Nov if none (same site on
   two accounts could put the Expedia account at risk; say so on sign-up);
   E) trip-mail real test (item 4 a). Fill PARTNERS.md «Accounts» each time.

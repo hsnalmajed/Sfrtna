@@ -82,7 +82,8 @@ the checker asked for. impact.com: tag in layout.tsx + edge-worker.js answers
 Admitad (11 Nov 14:20): ad space «Sfrtna», https://sfrtna.com, Content website,
 categories Travel + Transportation, countries SA/AE/KW/QA/BH; meta tag
 `mitgo-verification` in [locale]/layout.tsx + edge-worker.js answers `/` for UA
-matching mitgo|admitad. Verify fails → read Cloudflare Events for the real UA.
+matching mitgo|admitad. Verify fails → read Cloudflare Events for the real UA. 15:03: account
+activated, ad space «Under review» → when Active: join flynas + Jazeera.
 
 **Profile texts used on impact.com (reuse on other networks):** description
 = Arabic-first planning + comparison site for Saudi/Gulf travellers (also
@@ -99,7 +100,7 @@ family travel, eSIM, car rental.
 
 | Network | Login URL | Email used | Managed by | 2FA |
 |---|---|---|---|---|
-| Admitad | store.admitad.com (publisher, «Sign up via» Google) | owner's Gmail | owner | — |
+| Admitad (PID2605420) | store.admitad.com (publisher, «Sign up via» Google) | owner's Gmail | owner | — |
 | impact.com | app.impact.com/login.user (Partner, «Sign in with Google») | owner's Gmail | owner | Google 2-step | 
 | Partnerize «sfrtna-aeek» | console.partnerize.com/account/signin («Forgotten Details») | unknown | Expedia hub (lost); Expedia help names a dedicated desk: expediaaffiliates.support@partnerize.com (not tried yet) | — |
 
