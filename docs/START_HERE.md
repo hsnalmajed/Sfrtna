@@ -218,8 +218,13 @@ SerpApi = FREE 250/month (renews 6 Dec). Staging has no `SERPAPI_KEY`.
    a screenshot of the login/reset error (+ items hidden in the owner's
    screenshot). Expedia account itself = Expedia Group Creator Hub. Qatar /
    Emirates: «contact those programmes directly», can't say if the
-   Expedia-linked account can apply. Owner's decision pending: keep waiting,
-   or apply to Qatar via impact.com / CJ (official list) instead.
+   Expedia-linked account can apply. **11 Nov 06:39: owner replied to
+   00045017** (account name, site, Partnerize reply + reset screenshot:
+   reset on console.partnerize.com «Forgotten Details» sent no mail).
+   Owner: WAIT for Expedia's answer before any other mail (incl. the
+   expediaaffiliates.support@partnerize.com desk). Owner approved (06:32)
+   opening our OWN accounts on impact.com, CJ and other networks: map +
+   order in PARTNERS.md «Network map».
    **Emirates (8 Nov 10:43):** programme on Partnerize + TradeTracker
    (campaigns split by market: AE, UK…). Owner asked BOTH which programme
    tracks Saudi bookings (emirates.com/sa), rate, cookie, deep links
