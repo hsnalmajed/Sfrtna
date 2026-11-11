@@ -271,8 +271,13 @@ SerpApi = FREE 250/month (renews 6 Dec). Staging has no `SERPAPI_KEY`.
 
 **Owner 11 Nov 06:40 — do ALL of it, plus anything that adds value.
 Queue (owner steps one at a time; code items in a fresh Opus chat):**
-- Owner steps: A) impact.com account (app.impact.com/login.user → Partner →
-  Email, owner's Gmail, region SA, currency USD) → apply Qatar + Skyscanner;
+- Owner steps: A) impact.com account — DONE 11 Nov 13:11: signed up with
+  Google (owner's Gmail), Publisher / فرد / websites / editorial content,
+  sfrtna.com verified («متصل», see PARTNERS «Site verification»), profile
+  text with budget planning. Status «قيد المراجعة» (impact's own review) →
+  when approved: apply to Qatar + Skyscanner + search marketplace for
+  Saudia/flyadeal/Turkish/Almosafer and others; write rates in PARTNERS.
+  **NEXT owner step = B) Admitad sign-up** (same profile texts: PARTNERS);
   B) Admitad → flynas, Jazeera; C) CJ → Qatar; D) OWN Partnerize account
   (owner: yes) — after Expedia's answer or by 14 Nov if none (same site on
   two accounts could put the Expedia account at risk; say so on sign-up);
@@ -327,4 +332,4 @@ payout threshold $500 not met» (wire $500; PayPal/ACH $100).
 Waiting on the owner: Apple review; Google Play ticket reply; Google-fares
 decision after the 6 Nov measurement; Android APK on a real phone.
 
-**Recommended model for the next chat: Sonnet 5.5** for the owner's test of the trip mail (step-by-step); Opus 5.5 for step 2 leftovers / step 4 (share).
+**Recommended model for the next chat: Sonnet 5.5** for the network sign-ups (Admitad, CJ) and the trip-mail test; Opus 5.5 for the code queue (banner, badges, share, Search Console).

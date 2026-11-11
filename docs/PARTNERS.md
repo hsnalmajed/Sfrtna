@@ -80,6 +80,17 @@ the checker asked for. impact.com: tag in layout.tsx + edge-worker.js answers
 `/impact<id>.html` and `/` for UA «Impact-SiteVerifier» → verified 13:08
 (channel «متصل»). Do the same for CJ / Admitad (no need to turn protection off).
 
+**Profile texts used on impact.com (reuse on other networks):** description
+= Arabic-first planning + comparison site for Saudi/Gulf travellers (also
+English); start from budget → suggested destinations → compare live
+flight/hotel prices → book on the provider's site via our links; guides
+(season, visa, currency, sights, checklist); saved trips + reminders; no
+coupon/cashback/incentive traffic, no brand-keyword bidding; iOS/Android
+apps in store review. Tags: budget travel, trip budget planner, flights,
+hotels, price comparison, airline tickets, hotel booking, travel planning,
+destination guides, visa information, Saudi Arabia, GCC travellers, Arabic,
+family travel, eSIM, car rental.
+
 ## Accounts (where each login lives)
 
 | Network | Login URL | Email used | Managed by | 2FA |
