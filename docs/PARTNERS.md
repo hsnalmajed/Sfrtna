@@ -73,10 +73,18 @@ Not found on any public page yet: Saudia, flyadeal, Turkish, Almosafer →
 search each network's marketplace once our accounts exist. Rates are shown
 only to signed-in publishers: write them here when seen.
 
+**Site verification for networks (11 Nov):** Cloudflare (Bot Fight Mode,
+AI Labyrinth) hides the site from verifier bots. When a verify fails, read
+Security → Analytics → Events at the click time: path + user agent show what
+the checker asked for. impact.com: tag in layout.tsx + edge-worker.js answers
+`/impact<id>.html` and `/` for UA «Impact-SiteVerifier» → verified 13:08
+(channel «متصل»). Do the same for CJ / Admitad (no need to turn protection off).
+
 ## Accounts (where each login lives)
 
 | Network | Login URL | Email used | Managed by | 2FA |
 |---|---|---|---|---|
+| impact.com | app.impact.com/login.user (Partner, «Sign in with Google») | owner's Gmail | owner | Google 2-step | 
 | Partnerize «sfrtna-aeek» | console.partnerize.com/account/signin («Forgotten Details») | unknown | Expedia hub (lost); Expedia help names a dedicated desk: expediaaffiliates.support@partnerize.com (not tried yet) | — |
 
 ## How to add a supplier
