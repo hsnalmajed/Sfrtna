@@ -74,6 +74,9 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
         {/* The two Arabic faces of the first screen, fetched with the page (globals.css). */}
         <link rel="preload" href="/fonts/plex-ar-400.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
         <link rel="preload" href="/fonts/tajawal-ar-800.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        {/* impact.com site ownership (owner's partner account, 11 Nov). Their
+            tag uses `value`, not `content`: keep both. Not a secret. */}
+        <meta name="impact-site-verification" content="4d08b9a4-c1a9-4ff0-a924-85e8c56453bb" {...{ value: "4d08b9a4-c1a9-4ff0-a924-85e8c56453bb" }} />
         {/*
           Inside the phone app (mobile/, user agent "SfrtnaApp/…") the page
           wears app chrome — bottom tab bar, compact header, no footer — set
