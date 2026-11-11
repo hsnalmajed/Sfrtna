@@ -77,7 +77,7 @@ only to signed-in publishers: write them here when seen.
 
 | Network | Login URL | Email used | Managed by | 2FA |
 |---|---|---|---|---|
-| Partnerize «sfrtna-aeek» | — | unknown | Expedia hub (lost) | — |
+| Partnerize «sfrtna-aeek» | console.partnerize.com/account/signin («Forgotten Details») | unknown | Expedia hub (lost); Expedia help names a dedicated desk: expediaaffiliates.support@partnerize.com (not tried yet) | — |
 
 ## How to add a supplier
 
