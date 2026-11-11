@@ -51,6 +51,34 @@ Status words: **Active** (tracked link live + payout set) · **Applied** ·
 | Partnerize | needs confirmation | ✓ (Expedia active) | «sfrtna-aeek», login lost |
 | Travelpayouts | open programmes now; 13 big brands after 3 months of stable traffic | partly | active |
 
+## Network map (11 Nov, owner: «connect impact.com, CJ and any other»)
+
+Root cause of the Qatar delay: our only Partnerize login belongs to an
+account made by Expedia's hub; neither Partnerize nor Expedia will hand it
+back (Expedia ticket 00045017, 11 Nov). Fix = every network account is
+opened by us directly, owner's email, password manager + 2FA, and listed
+under «Accounts» below (login URL, email, who manages it). Never again an
+account made through someone else's hub.
+
+| Network | Brands confirmed on it (source) | Order |
+|---|---|---|
+| Partnerize (own account) | Qatar (qatarairways.com affiliates), Emirates (TP blog), **Etihad** (etihad.com affiliate page: «in collaboration with the Partnerize network», managed by DigitasLBi, affiliate@etihad.ae) | 1 — most airlines |
+| impact.com | Qatar (official page), Skyscanner (Skyscanner partner support: programme on impact.com) | 2 |
+| Admitad | flynas (Admitad's own flynas case study), Jazeera Airways | 3 — MENA brands |
+| CJ | Qatar (official page) | 4 |
+| TradeTracker | Emirates AE | form sent 8 Nov |
+| Arabclicks | MENA network; our brands not confirmed | after 1–4 |
+
+Not found on any public page yet: Saudia, flyadeal, Turkish, Almosafer →
+search each network's marketplace once our accounts exist. Rates are shown
+only to signed-in publishers: write them here when seen.
+
+## Accounts (where each login lives)
+
+| Network | Login URL | Email used | Managed by | 2FA |
+|---|---|---|---|---|
+| Partnerize «sfrtna-aeek» | — | unknown | Expedia hub (lost) | — |
+
 ## How to add a supplier
 
 Look up its official affiliate/partner page first, then the networks
