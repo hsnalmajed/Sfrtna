@@ -88,7 +88,15 @@ CJ (11 Nov 16:30): account made, agreements accepted, user + Network Profile
 (budget-first text) + property «Sfrtna – Trip budget planner & travel
 comparison» id 101926504 (Website; Content + Comparison) + Account info
 (Riyadh, USD). LEFT: tax form W-8BEN (individual), payment method, then
-ACTIVATE ACCOUNT, then apply to Qatar. Postal code typed 11456 vs 11465 on
+ACTIVATE ACCOUNT, then apply to Qatar.
+12 Nov: W-8BEN SUBMITTED (individual, no treaty claim). CJ Payments has no
+Saudi bank country → Payoneer (CJ's official partner): owner opened Payoneer
+12 Nov 15:40 (owner's Gmail, individual, sfrtna.com, ID selfie + address
+doc) — «verifying». Payoneer shows the name read from the ID as «HASSAN AU
+AHMED ALMAJED» («AU» looks like a misread of ALI) ≠ CJ «HASSAN ALI A ALMAJED».
+Once approved: fix the Payoneer name with its support if wrong, then put CJ
+bank country UNITED STATES + Payoneer USD receiving details, payee name =
+Payoneer's account-holder name exactly (resubmit W-8BEN if it changes). Postal code typed 11456 vs 11465 on
 Google profile: owner to confirm.
 
 **Profile texts used on impact.com (reuse on other networks):** description
@@ -106,6 +114,7 @@ family travel, eSIM, car rental.
 
 | Network | Login URL | Email used | Managed by | 2FA |
 |---|---|---|---|---|
+| Payoneer | payoneer.com (Sign in) | owner's Gmail | owner | — |
 | CJ | members.cj.com (Login, email + password) | owner's Gmail | owner (Superuser) | — |
 | Admitad (PID2605420) | store.admitad.com (publisher, «Sign up via» Google) | owner's Gmail | owner | — |
 | impact.com | app.impact.com/login.user (Partner, «Sign in with Google») | owner's Gmail | owner | Google 2-step | 
