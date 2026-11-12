@@ -222,8 +222,9 @@ SerpApi = FREE 250/month (renews 6 Dec). Staging has no `SERPAPI_KEY`.
    Expedia-linked account can apply. **11 Nov 06:39: owner replied to
    00045017** (account name, site, Partnerize reply + reset screenshot:
    reset on console.partnerize.com «Forgotten Details» sent no mail).
-   Owner: WAIT for Expedia's answer before any other mail (incl. the
-   expediaaffiliates.support@partnerize.com desk). Owner approved (06:32)
+   **Expedia answered 12 Nov 17:41: login is Partnerize's job — contact
+   Partnerize citing #710723** (loop: each side points at the other). Existing
+   Expedia links keep working; Travel Creator Program still usable. Owner approved (06:32)
    opening our OWN accounts on impact.com, CJ and other networks: map +
    order in PARTNERS.md «Network map».
    **Emirates (8 Nov 10:43):** programme on Partnerize + TradeTracker
@@ -326,7 +327,12 @@ verification → «I can't verify my identity document»): asks for the reason
 6 Nov 22:35: account RESTRICTED (profile removed; nothing was published). Identity page offered only Appeal (no re-verify attempts left) → APPEAL SENT 7 Nov 00:00 KSA, reason «I believe I have fixed this issue» (TR profile closed, SA profile matches the ID); answer within 7 days by mail. Do not file another. **12 Nov 12:10: support
 ticket [7-5929000041524] — agent «Sha» ESCALATED it to the appropriate team,
 update to follow by mail (7 Nov reply was a generic review-time note).** Wait;
-don't reply/re-file. Trader status: declare
+don't reply/re-file. **12 Nov 17:26: Google Payments «You need to verify your
+identity» (Verify now, profile 7453-2385-6824) + Play «Restricted developer
+account»: issues = phone number(s) NOT verified in Play Console + identity not
+verified.** Plan: 1) verify phone in Play Console, 2) identity: name exactly as
+ID «HASSAN ALI A» / «ALMAJED» (owner 12 Nov: ID reads «ALMAJED, HASSAN ALI A»),
+clear photo, all 4 corners, no glare — attempts are limited. Trader status: declare
 by 1 Feb 2027 (owner's decision; trader = phone + address shown publicly;
 non-trader allowed if not distributed in EEA/UK). Store texts ready:
 `docs/play-store/listing-draft.md` (Play has no keyword field).

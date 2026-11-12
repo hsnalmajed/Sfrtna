@@ -105,7 +105,10 @@ rejected — the page requires the doc to show the WRONG name «HASSAN AU AHMED
 ALMAJED» + «Olaya Street, Riyadh, 11465», issued < 6 months. 16:28 owner asked
 support to correct the name to HASSAN ALI A ALMAJED (ticket #261112-010093,
 My Payoneer Account › Change Account Details › change name). After the fix:
-upload a stc bank statement < 6 months whose address = Olaya St, 11465. Postal code typed 11456 vs 11465 on
+upload a stc bank statement < 6 months whose address = Olaya St, 11465.
+12 Nov 17:29 Payoneer answer: self-service — Settings › Profile settings ›
+Name and email › Edit › Request name change › reason › Submit, then upload
+the requested docs in Verification Center. Postal code typed 11456 vs 11465 on
 Google profile: owner to confirm.
 
 **Profile texts used on impact.com (reuse on other networks):** description
