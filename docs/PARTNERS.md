@@ -97,11 +97,9 @@ AHMED ALMAJED» («AU» looks like a misread of ALI) ≠ CJ «HASSAN ALI A ALMAJ
 Once approved: fix the Payoneer name with its support if wrong, then put CJ
 bank country UNITED STATES + Payoneer USD receiving details, payee name =
 Payoneer's account-holder name exactly (resubmit W-8BEN if it changes).
-**Owner 12 Nov 15:44: Saudi ID English name = «ALMAJED, HASAN ALI A» (HASAN,
-ONE S).** So the legal name everywhere = HASAN ALI A ALMAJED: fix CJ Account
-info + resubmit W-8BEN; ask Payoneer support to correct «HASSAN AU AHMED» →
-«HASAN ALI A». Possible cause of the Google Play ID rejection too (payments
-profile written «HASSAN»): check when Google answers. Postal code typed 11456 vs 11465 on
+**Owner 12 Nov 15:50 (corrects 15:44): Saudi ID English name = «ALMAJED,
+HASSAN ALI A» (two S).** CJ name HASSAN ALI A ALMAJED is right; only
+Payoneer («HASSAN AU AHMED ALMAJED») needs support to correct it. Postal code typed 11456 vs 11465 on
 Google profile: owner to confirm.
 
 **Profile texts used on impact.com (reuse on other networks):** description
