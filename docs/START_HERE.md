@@ -279,7 +279,8 @@ Queue (owner steps one at a time; code items in a fresh Opus chat):**
   Saudia/flyadeal/Turkish/Almosafer and others; write rates in PARTNERS.
   B) Admitad — DONE 11 Nov 15:03 (PID2605420, verified by meta tag; ad
   space «Under review») → when Active: join flynas, Jazeera.
-  **C) CJ — IN PROGRESS** (PARTNERS «CJ (11 Nov»): W-8BEN done; NEXT = Payoneer approval
+  **C) CJ — IN PROGRESS** (PARTNERS «CJ (11 Nov»): W-8BEN done (name must be redone as HASAN ALI A ALMAJED — ID spelling);
+  NEXT = Payoneer approval
   → name check → CJ payment (US + Payoneer details) → ACTIVATE ACCOUNT; C) CJ → Qatar; D) OWN Partnerize account
   (owner: yes) — after Expedia's answer or by 14 Nov if none (same site on
   two accounts could put the Expedia account at risk; say so on sign-up);
@@ -314,7 +315,9 @@ Capacitor shell), not on desktop, hidden for N days after «لا شكراً»
 Türkiye 8920-… (address «Türkiye» only) — owner closed it 4 Nov; Saudi
 7453-2385-6824 (Individual, «ALMAJED, HASSAN ALI A», Riyadh 11465) is the
 one linked to the developer account; the name is exactly as on his Saudi ID
-(keep it, do NOT write the full «Hassan Ali Ahmad Almajed»). Support ticket
+(keep it, do NOT write the full «Hassan Ali Ahmad Almajed»). **12 Nov: owner's ID
+reads «ALMAJED, HASAN ALI A» — HASAN with ONE S; the profile says HASSAN →
+likely cause of the rejection; raise it when Google answers.**. Support ticket
 sent 5 Nov 00:09 (Play developer account and verification → Developer
 verification → «I can't verify my identity document»): asks for the reason
 + re-open. **Do not re-upload the ID until Google replies** (limited tries).
