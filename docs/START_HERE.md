@@ -327,7 +327,8 @@ non-trader allowed if not distributed in EEA/UK). Store texts ready:
 **Riyadh flights:** Travelpayouts 4 Nov (Viet): Aviasales decided not to
 show flights to Riyadh; Data API returns none either. Owner decided 4 Nov:
 wait until 6 Nov → then measure the SerpApi allowance (resets 6 Nov) and
-propose the Google-fares plan with numbers (his decision).
+propose the Google-fares plan with numbers (his decision). 12 Nov: owner
+replied to TP ticket #254780 (understood, close it, tell us if RUH returns).
 
 Stay22: CLOSED 4 Nov — account cleared, Payments page shows only «Minimum
 payout threshold $500 not met» (wire $500; PayPal/ACH $100).

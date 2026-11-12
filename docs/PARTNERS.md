@@ -126,7 +126,7 @@ family travel, eSIM, car rental.
 | Payoneer | payoneer.com (Sign in) | owner's Gmail | owner | — |
 | CJ | members.cj.com (Login, email + password) | owner's Gmail | owner (Superuser) | — |
 | Admitad (PID2605420) | store.admitad.com (publisher, «Sign up via» Google) | owner's Gmail | owner | — |
-| impact.com | app.impact.com/login.user (Partner, «Sign in with Google») | owner's Gmail | owner | Google 2-step | 
+| impact.com (Account ID 8176167; applied 11 Nov, answer ~72 h) | app.impact.com/login.user (Partner, «Sign in with Google») | owner's Gmail | owner | Google 2-step | 
 | Partnerize «sfrtna-aeek» | console.partnerize.com/account/signin («Forgotten Details») | unknown | Expedia hub (lost); Expedia help names a dedicated desk: expediaaffiliates.support@partnerize.com (not tried yet) | — |
 
 ## How to add a supplier
