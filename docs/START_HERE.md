@@ -343,7 +343,12 @@ English name = ID English name and whose address = profile address (Salla
 guide). Payoneer OCR read «AHMED» from the ID → ID card English name may be
 longer than the profile's. CJ/Payoneer were given «Olaya» — unify to the SPL
 address. Chrome default account = almajedov@gmail.com (other profiles: «Bin
-Majed» India, SA 3442-7858-8202) — not the Play account; use u/4. Trader status: declare
+Majed» India, SA 3442-7858-8202) — not the Play account; use u/4.
+**12 Nov 22:40 FIXED: profile address = owner's SPL National Address
+(Al Mubarraz, Al Fath, 36342 — doc issued 12 Nov, the single source for every
+form). Name kept «ALMAJED, HASSAN ALI A» = ID card (owner 22:45).** Open
+issue: SPL doc English name is the FULL «Hassan Ali Ahmed Almajed» ≠ ID «A» →
+need an address proof whose name = ID (e.g. bank statement) or accept risk. Trader status: declare
 by 1 Feb 2027 (owner's decision; trader = phone + address shown publicly;
 non-trader allowed if not distributed in EEA/UK). Store texts ready:
 `docs/play-store/listing-draft.md` (Play has no keyword field).
