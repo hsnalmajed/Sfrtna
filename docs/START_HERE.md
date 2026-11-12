@@ -320,7 +320,10 @@ one linked to the developer account; the name is exactly as on his Saudi ID
 sent 5 Nov 00:09 (Play developer account and verification → Developer
 verification → «I can't verify my identity document»): asks for the reason
 + re-open. **Do not re-upload the ID until Google replies** (limited tries).
-6 Nov 22:35: account RESTRICTED (profile removed; nothing was published). Identity page offered only Appeal (no re-verify attempts left) → APPEAL SENT 7 Nov 00:00 KSA, reason «I believe I have fixed this issue» (TR profile closed, SA profile matches the ID); answer within 7 days by mail. Do not file another. Trader status: declare
+6 Nov 22:35: account RESTRICTED (profile removed; nothing was published). Identity page offered only Appeal (no re-verify attempts left) → APPEAL SENT 7 Nov 00:00 KSA, reason «I believe I have fixed this issue» (TR profile closed, SA profile matches the ID); answer within 7 days by mail. Do not file another. **12 Nov 12:10: support
+ticket [7-5929000041524] — agent «Sha» ESCALATED it to the appropriate team,
+update to follow by mail (7 Nov reply was a generic review-time note).** Wait;
+don't reply/re-file. Trader status: declare
 by 1 Feb 2027 (owner's decision; trader = phone + address shown publicly;
 non-trader allowed if not distributed in EEA/UK). Store texts ready:
 `docs/play-store/listing-draft.md` (Play has no keyword field).
