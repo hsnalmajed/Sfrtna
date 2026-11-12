@@ -332,7 +332,18 @@ identity» (Verify now, profile 7453-2385-6824) + Play «Restricted developer
 account»: issues = phone number(s) NOT verified in Play Console + identity not
 verified.** Plan: 1) verify phone in Play Console, 2) identity: name exactly as
 ID «HASSAN ALI A» / «ALMAJED» (owner 12 Nov: ID reads «ALMAJED, HASSAN ALI A»),
-clear photo, all 4 corners, no glare — attempts are limited. Trader status: declare
+clear photo, all 4 corners, no glare — attempts are limited.
+**AUDIT 12 Nov 18:20 (Claude read pay.google.com u/4 + Play account page):**
+profile 7453-2385-6824 Individual SA, name «ALMAJED, HASSAN ALI A», address
+ONLY «Alyassamin, Riyadh / Riyadh 11465» (no building no./street/additional
+no.; 11465 may be a PO-box code, not the National Address postcode), payments
+phone «+966 056…» (extra 0); Play contact phone +966563399984 OK. Saudi
+individuals need ID (colour, both sides) + SPL National Address doc whose
+English name = ID English name and whose address = profile address (Salla
+guide). Payoneer OCR read «AHMED» from the ID → ID card English name may be
+longer than the profile's. CJ/Payoneer were given «Olaya» — unify to the SPL
+address. Chrome default account = almajedov@gmail.com (other profiles: «Bin
+Majed» India, SA 3442-7858-8202) — not the Play account; use u/4. Trader status: declare
 by 1 Feb 2027 (owner's decision; trader = phone + address shown publicly;
 non-trader allowed if not distributed in EEA/UK). Store texts ready:
 `docs/play-store/listing-draft.md` (Play has no keyword field).
