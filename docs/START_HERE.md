@@ -348,7 +348,11 @@ Majed» India, SA 3442-7858-8202) — not the Play account; use u/4.
 (Al Mubarraz, Al Fath, 36342 — doc issued 12 Nov, the single source for every
 form). Name kept «ALMAJED, HASSAN ALI A» = ID card (owner 22:45).** Open
 issue: SPL doc English name is the FULL «Hassan Ali Ahmed Almajed» ≠ ID «A» →
-need an address proof whose name = ID (e.g. bank statement) or accept risk. Trader status: declare
+need an address proof whose name = ID (e.g. bank statement) or accept risk.
+**23:09 owner: every bank writes «Hassan Ali Ahmed Almajed» or «Hassan
+Almajed» — no proof shows «A».** Decision: upload ID card (colour, both sides)
++ the ORIGINAL SPL PDF (it carries the same national ID number, linking «A» =
+«Ahmed»). Profile name stays = ID. Trader status: declare
 by 1 Feb 2027 (owner's decision; trader = phone + address shown publicly;
 non-trader allowed if not distributed in EEA/UK). Store texts ready:
 `docs/play-store/listing-draft.md` (Play has no keyword field).
