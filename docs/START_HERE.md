@@ -279,7 +279,8 @@ Queue (owner steps one at a time; code items in a fresh Opus chat):**
   Saudia/flyadeal/Turkish/Almosafer and others; write rates in PARTNERS.
   B) Admitad — DONE 11 Nov 15:03 (PID2605420, verified by meta tag; ad
   space «Under review») → when Active: join flynas, Jazeera.
-  **NEXT owner step = C) CJ sign-up** (same profile texts: PARTNERS); C) CJ → Qatar; D) OWN Partnerize account
+  **C) CJ — IN PROGRESS** (PARTNERS «CJ (11 Nov»): NEXT = W-8BEN tax form,
+  payment method, ACTIVATE ACCOUNT; C) CJ → Qatar; D) OWN Partnerize account
   (owner: yes) — after Expedia's answer or by 14 Nov if none (same site on
   two accounts could put the Expedia account at risk; say so on sign-up);
   E) trip-mail real test (item 4 a). Fill PARTNERS.md «Accounts» each time.

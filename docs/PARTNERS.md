@@ -84,6 +84,12 @@ categories Travel + Transportation, countries SA/AE/KW/QA/BH; meta tag
 `mitgo-verification` in [locale]/layout.tsx + edge-worker.js answers `/` for UA
 matching mitgo|admitad. Verify fails → read Cloudflare Events for the real UA. 15:03: account
 activated, ad space «Under review» → when Active: join flynas + Jazeera.
+CJ (11 Nov 16:30): account made, agreements accepted, user + Network Profile
+(budget-first text) + property «Sfrtna – Trip budget planner & travel
+comparison» id 101926504 (Website; Content + Comparison) + Account info
+(Riyadh, USD). LEFT: tax form W-8BEN (individual), payment method, then
+ACTIVATE ACCOUNT, then apply to Qatar. Postal code typed 11456 vs 11465 on
+Google profile: owner to confirm.
 
 **Profile texts used on impact.com (reuse on other networks):** description
 = Arabic-first planning + comparison site for Saudi/Gulf travellers (also
@@ -100,6 +106,7 @@ family travel, eSIM, car rental.
 
 | Network | Login URL | Email used | Managed by | 2FA |
 |---|---|---|---|---|
+| CJ | members.cj.com (Login, email + password) | owner's Gmail | owner (Superuser) | — |
 | Admitad (PID2605420) | store.admitad.com (publisher, «Sign up via» Google) | owner's Gmail | owner | — |
 | impact.com | app.impact.com/login.user (Partner, «Sign in with Google») | owner's Gmail | owner | Google 2-step | 
 | Partnerize «sfrtna-aeek» | console.partnerize.com/account/signin («Forgotten Details») | unknown | Expedia hub (lost); Expedia help names a dedicated desk: expediaaffiliates.support@partnerize.com (not tried yet) | — |
