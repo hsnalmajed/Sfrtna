@@ -280,8 +280,8 @@ Queue (owner steps one at a time; code items in a fresh Opus chat):**
   B) Admitad — DONE 11 Nov 15:03 (PID2605420, verified by meta tag; ad
   space «Under review») → when Active: join flynas, Jazeera.
   **C) CJ — IN PROGRESS** (PARTNERS «CJ (11 Nov»): W-8BEN done (name HASSAN ALI A ALMAJED = ID, OK);
-  NEXT = Payoneer approval
-  → name check → CJ payment (US + Payoneer details) → ACTIVATE ACCOUNT; C) CJ → Qatar; D) OWN Partnerize account
+  NEXT = Payoneer name fix (ticket
+  #261112-010093, then address doc) → approval → CJ payment (US + Payoneer details) → ACTIVATE ACCOUNT; C) CJ → Qatar; D) OWN Partnerize account
   (owner: yes) — after Expedia's answer or by 14 Nov if none (same site on
   two accounts could put the Expedia account at risk; say so on sign-up);
   E) trip-mail real test (item 4 a). Fill PARTNERS.md «Accounts» each time.
