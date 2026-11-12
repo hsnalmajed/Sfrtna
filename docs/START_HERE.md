@@ -298,7 +298,10 @@ Queue (owner steps one at a time; code items in a fresh Opus chat):**
 link, then the native rating prompt; rejected → read the reason, fix. Still
 waiting ~6 Nov evening → offer the owner an expedited review request.
 **Expedited review ACCEPTED by Apple 10 Nov 03:48** («We'll expedite review
-for Sfrtna»); a rejection + resubmit returns to the expedited queue.
+for Sfrtna»); a rejection + resubmit returns to the expedited queue. **12 Nov 16:44: still
+«iOS 1.0 Waiting for Review»** (Apple mail goes to the owner's Outlook; last
+ASC mail 3 Nov). If unchanged on 14 Nov → owner sends a status inquiry via
+App Review «Contact Us» (do NOT withdraw/resubmit — resets the queue).
 **Owner 10 Nov 03:50 — app banner, build when each store approves:** top
 banner «حمّل التطبيق» on phones, dismissible, visitor stays in the browser.
 Owner 03:51: must be eye-catching like other big sites → OUR OWN designed
