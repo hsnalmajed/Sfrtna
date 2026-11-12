@@ -352,7 +352,11 @@ need an address proof whose name = ID (e.g. bank statement) or accept risk.
 **23:09 owner: every bank writes «Hassan Ali Ahmed Almajed» or «Hassan
 Almajed» — no proof shows «A».** Decision: upload ID card (colour, both sides)
 + the ORIGINAL SPL PDF (it carries the same national ID number, linking «A» =
-«Ahmed»). Profile name stays = ID. Trader status: declare
+«Ahmed»). Profile name stays = ID. 23:35 confirmed: Play «Legal name and
+address» now shows the new Al Mubarraz address (synced from the profile).
+**NEXT (owner): Play Console › identity row › View details › Upload document
+— screenshot each screen to Claude BEFORE submitting.** Then phone check
+unlocks; then trader status; payments phone «+966 056…» extra 0 still to fix. Trader status: declare
 by 1 Feb 2027 (owner's decision; trader = phone + address shown publicly;
 non-trader allowed if not distributed in EEA/UK). Store texts ready:
 `docs/play-store/listing-draft.md` (Play has no keyword field).
