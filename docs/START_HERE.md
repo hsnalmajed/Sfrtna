@@ -115,8 +115,9 @@ workflows with GITHUB_TOKEN (guide, hotels, photos, reports…) never start a
 now also runs hourly (`41 * * * *`) and releases main only if that commit was
 never through the gate (green or red), else does nothing. Details:
 PROJECT_NOTES «Release gate» → 6 Nov.
-**Next step:** after the next data commit by a workflow, confirm a
-`schedule` Release run deployed it (notice «Catch-up» in the run).
+**CONFIRMED 12 Nov:** data commit 73bb327 (guide workflow) — catch-up run
+43059837110 failed at «Install the browser» (download flake), next hourly run
+43116712029 released it green. Catch-up works; a red catch-up is retried.
 
 **Data workflows (6 Nov, audit):** see PROJECT_NOTES «6 Nov 2026 — audit
 of all data workflows». Long jobs (hotels, places, restaurants, guide,
