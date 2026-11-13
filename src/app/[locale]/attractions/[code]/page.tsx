@@ -17,6 +17,8 @@ import CountryQuickFacts, { type QuickFact } from "@/components/CountryQuickFact
 import { currencyForCountry, findCurrency } from "@/lib/currencies";
 import TripCurrencyInline from "@/components/TripCurrencyInline";
 import BackLink from "@/components/BackLink";
+import GuideTripStrip from "@/components/member/GuideTripStrip";
+import { CITY_AIRPORTS } from "@/data/cityAirports";
 
 /**
  * A title that says which country.
@@ -170,6 +172,14 @@ export default async function CountryAttractionsPage({
           </section>
         )}
 
+        {/* After the reading: «مسافر إلى …؟» — the search starts at the
+            country's first listed city with an airport. */}
+        <GuideTripStrip
+          locale={loc}
+          code={country.code}
+          placeName={loc === "ar" ? country.nameAr : country.nameEn}
+          airport={cities.map((c) => CITY_AIRPORTS[c.slug]?.iata).find(Boolean)}
+        />
       </div>
     </div>
   );

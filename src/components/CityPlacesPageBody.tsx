@@ -29,6 +29,7 @@ import PageHero from "@/components/ui/PageHero";
 import CityPhotos from "@/components/CityPhotos";
 import FavButton from "@/components/member/FavButton";
 import BackLink from "@/components/BackLink";
+import GuideTripStrip from "@/components/member/GuideTripStrip";
 
 /**
  * Only a relative path on this site is allowed back.
@@ -468,6 +469,8 @@ export default async function CityPlacesPageBody({
             />
           </>
         )}
+        {/* After the reading: «مسافر إلى …؟» (item 5, never a window over the page). */}
+        <GuideTripStrip locale={loc} code={country.code} slug={cityEntry.slug} placeName={cityName} airport={CITY_AIRPORTS[cityEntry.slug]?.iata} />
       </div>
     </div>
   );

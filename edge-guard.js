@@ -78,6 +78,7 @@ export const ROUTES = {
   "/api/unsub": { methods: ["GET", "POST"], caller: "link", heavy: true },
   "/api/plans": { methods: ["GET", "POST"], caller: "page" },
   "/api/plans/delete": { methods: ["POST"], caller: "page" },
+  "/api/plans/mail": { methods: ["POST"], caller: "page", heavy: true },
   // «شاركنا رأيك» (src/lib/feedback.ts). The recent list answers only the
   // site-check key, checked in the route itself.
   "/api/feedback": { methods: ["POST"], caller: "page", heavy: true },

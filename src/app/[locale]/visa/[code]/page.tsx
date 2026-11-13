@@ -10,6 +10,9 @@ import VisaWarning from "@/components/VisaWarning";
 import VisaOfficialLinks from "@/components/VisaOfficialLinks";
 import PageHero from "@/components/ui/PageHero";
 import BackLink from "@/components/BackLink";
+import GuideTripStrip from "@/components/member/GuideTripStrip";
+import { COUNTRY_CITIES } from "@/lib/cities";
+import { CITY_AIRPORTS } from "@/data/cityAirports";
 import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/seo";
 
@@ -133,6 +136,14 @@ export default async function VisaCountryPage({ params }: PageProps<"/[locale]/v
         <div className="mt-6">
           <VisaOfficialLinks countryCode={country.code} locale={loc} />
         </div>
+
+        {/* After the reading: «مسافر إلى …؟» (item 5). */}
+        <GuideTripStrip
+          locale={loc}
+          code={country.code}
+          placeName={countryName}
+          airport={(COUNTRY_CITIES[country.code] ?? []).map((c) => CITY_AIRPORTS[c.slug]?.iata).find(Boolean)}
+        />
       </div>
     </div>
   );

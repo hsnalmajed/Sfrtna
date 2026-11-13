@@ -14,6 +14,7 @@ import CityPlacesExplorer, { score, type PlaceListItem } from "@/components/City
 import PrintHeader from "@/components/PrintHeader";
 import DateRangeInput from "@/components/DateRangeInput";
 import SavePlanButton from "@/components/SavePlanButton";
+import MailPlanButton from "@/components/MailPlanButton";
 import SmartPlanner, { SMART_OPEN_EVENT } from "@/components/smart/SmartPlanner";
 
 /**
@@ -792,6 +793,14 @@ function PlanView({
             <button type="button" onClick={onEdit} className={`${btn} text-navy-700 ring-1 ring-mist-300 hover:ring-navy-300`}>
               <span aria-hidden="true">✏️</span> {t.edit}
             </button>
+            {/* «أرسل الخطة إلى بريدي» (item 5): the whole row on a phone. */}
+            <MailPlanButton
+              locale={locale}
+              plan={plan}
+              cityName={cityName}
+              countryCode={countryCode}
+              className={`${btn} col-span-2 bg-white text-navy-900 ring-1 ring-navy-900/15 hover:ring-navy-300 sm:col-span-1`}
+            />
           </div>
         </div>
       </div>
