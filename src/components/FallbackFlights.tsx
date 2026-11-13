@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import type { Locale } from "@/lib/types";
 import { useDictionary } from "@/lib/dict/context";
-import { findAirport } from "@/lib/airports";
 import { airlineLinks, flightSites } from "@/lib/suppliers";
 
 export interface FallbackRoute {
@@ -18,7 +17,7 @@ export interface FallbackRoute {
   infants: number;
 }
 
-interface Leg {
+export interface FallbackLeg {
   depDate: string;
   arrDate: string;
   depTime: string;
@@ -30,16 +29,16 @@ interface Leg {
   logo: string;
   flightNumber: string;
 }
-interface Flight {
+export interface FallbackFlight {
   price: number;
   minutes: number;
   stops: number;
   layovers: { code: string; minutes: number }[];
-  legs: Leg[];
+  legs: FallbackLeg[];
   best: boolean;
 }
-interface Answer {
-  flights: Flight[];
+export interface FallbackAnswer {
+  flights: FallbackFlight[];
   url: string;
   roundTrip: boolean;
   currency: string;
@@ -47,28 +46,25 @@ interface Answer {
 
 /**
  * The second source of flights (owner, 13 Oct 2026): when the flight
- * partner's search cannot be reached, live fares from Google Flights are
- * shown instead, each opening Google Flights on the same route and dates.
- * With no live fares to be had, links to search the same trip elsewhere —
- * never a number that is not a live price.
+ * partner's search cannot be reached, or has nothing for the route (Riyadh
+ * since 30 Oct), live fares from Google Flights. `null` while asking,
+ * "none" when there is nothing live to show. The results page draws these
+ * fares with the same cards, tabs and filters as the partner's (owner,
+ * 13 Nov: the plain list on the phone was not acceptable).
  */
-export default function FallbackFlights({
-  locale,
-  route,
-  currency,
-  directOnly,
-}: {
-  locale: Locale;
-  route: FallbackRoute;
-  currency: string;
-  directOnly: boolean;
-}) {
-  const t = useDictionary().results;
-  const isAr = locale === "ar";
-  const [answer, setAnswer] = useState<Answer | null | "none">(null);
-  const [limit, setLimit] = useState(8);
-
+export function useFallbackFares(
+  route: FallbackRoute | undefined,
+  enabled: boolean,
+  currency: string,
+  locale: Locale,
+  directOnly: boolean
+): FallbackAnswer | null | "none" {
+  const [answer, setAnswer] = useState<FallbackAnswer | null | "none">(null);
+  const key = route
+    ? [route.origin, route.destination, route.departDate, route.returnDate, route.adults, route.children, route.infants].join("|")
+    : "";
   useEffect(() => {
+    if (!enabled || !route) return;
     let live = true;
     const qs = new URLSearchParams({
       origin: route.origin,
@@ -83,25 +79,38 @@ export default function FallbackFlights({
       directOnly: String(directOnly),
     });
     fetch(`/api/flight-fallback?${qs}`)
-      .then(async (r): Promise<Answer | "none"> => (r.status === 200 ? ((await r.json()) as Answer) : "none"))
+      .then(async (r): Promise<FallbackAnswer | "none"> => {
+        if (r.status !== 200) return "none";
+        const a = (await r.json()) as FallbackAnswer;
+        return a.flights?.length ? a : "none";
+      })
       .then((a) => live && setAnswer(a))
       .catch(() => live && setAnswer("none"));
     return () => {
       live = false;
     };
-  }, [route.origin, route.destination, route.departDate, route.returnDate, route.adults, route.children, route.infants, currency, locale, directOnly]);
+    // route is read through `key`
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [enabled, key, currency, locale, directOnly]);
+  return answer;
+}
 
-  const money = (n: number) =>
-    `${new Intl.NumberFormat(isAr ? "ar-SA-u-nu-latn" : "en-US", { maximumFractionDigits: 0 }).format(n)} ${currency === "SAR" && isAr ? "ر.س" : currency}`;
-  const dur = (m: number) => `${Math.floor(m / 60)}${t.durHours} ${String(m % 60).padStart(2, "0")}${t.durMinutes}`;
-  const city = (code: string) => {
-    const a = findAirport(code);
-    return a ? (isAr ? a.cityAr : a.cityEn) : code;
-  };
-
-  // The same trip on other sites, and the airlines of the two countries:
-  // always offered here, so the traveller is never left with nothing — the
-  // route our flight source lacks (Riyadh, since 30 Oct) included.
+/**
+ * No live fares at all: never a number that is not a live price — the same
+ * trip on other sites, and the airlines of the two countries, so the
+ * traveller is never left with nothing. Shown only then: with fares on the
+ * page the «compare elsewhere» row is gone (owner, 13 Nov).
+ */
+export default function FallbackLinks({
+  locale,
+  route,
+  currency,
+}: {
+  locale: Locale;
+  route: FallbackRoute;
+  currency: string;
+}) {
+  const t = useDictionary().results;
   const trip = {
     origin: route.origin,
     destination: route.destination,
@@ -114,147 +123,56 @@ export default function FallbackFlights({
     currency,
     locale,
   };
-  const others = flightSites(trip).map((o) =>
-    o.id === "google-flights" && answer && answer !== "none" && answer.url ? { ...o, href: answer.url } : o
-  );
+  const others = flightSites(trip);
   const airlines = airlineLinks(trip);
 
-  const flights = answer && answer !== "none" ? answer.flights : [];
-
   return (
-    <div className="mb-5 space-y-3">
-      {answer === null && (
-        <p className="flex items-center gap-2 rounded-2xl bg-white px-5 py-3.5 text-sm font-semibold text-navy-700 shadow-sm ring-1 ring-black/5">
-          <span className="h-2.5 w-2.5 shrink-0 animate-pulse rounded-full bg-sun-400" aria-hidden="true" />
-          {t.fallbackLoading}
-        </p>
-      )}
-
-      {flights.length > 0 && (
+    <div className="mb-5 rounded-2xl bg-white p-4 ring-1 ring-mist-200">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <p className="text-sm font-bold text-navy-800">{t.fallbackNoLive}</p>
+        <button
+          type="button"
+          onClick={() => window.location.reload()}
+          className="rounded-full bg-navy-900 px-4 py-2 text-sm font-extrabold text-white"
+        >
+          {t.fallbackRetry}
+        </button>
+      </div>
+      <div className="mt-2 flex flex-wrap gap-2">
+        {others.map((o) => (
+          <a
+            key={o.id}
+            href={o.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-partner={o.id}
+            data-placement="flight_fallback"
+            className="rounded-full bg-mist-50 px-4 py-2 text-sm font-bold text-navy-900 ring-1 ring-mist-200 hover:ring-navy-300"
+          >
+            <bdi>{o.name}</bdi> ↗
+          </a>
+        ))}
+      </div>
+      {airlines.length > 0 && (
         <>
-          <p className="text-sm font-bold text-navy-700">
-            {t.fallbackTitle}
-            {answer && answer !== "none" && answer.roundTrip ? ` · ${t.fallbackRoundTrip}` : ""}
-          </p>
-          <ul className="space-y-2">
-            {flights.slice(0, limit).map((f, i) => {
-              const first = f.legs[0];
-              const last = f.legs[f.legs.length - 1];
-              const plus =
-                first.depDate && last.arrDate
-                  ? Math.round((Date.parse(last.arrDate) - Date.parse(first.depDate)) / 86_400_000)
-                  : 0;
-              const airlines = [...new Set(f.legs.map((l) => l.airline).filter(Boolean))];
-              return (
-                <li key={i} className="flex flex-wrap items-center gap-3 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-mist-200">
-                  {first.logo ? (
-                    // eslint-disable-next-line @next/next/no-img-element -- airline logo from the search result
-                    <img src={first.logo} alt="" className="h-9 w-9 shrink-0 rounded-full bg-white object-contain ring-1 ring-mist-200" />
-                  ) : (
-                    <span className="h-9 w-9 shrink-0 rounded-full bg-mist-100" aria-hidden="true" />
-                  )}
-                  <div className="min-w-0 flex-1">
-                    <p className="flex flex-wrap items-baseline gap-x-2 font-extrabold text-navy-950" dir="ltr">
-                      <span>{first.depTime}</span>
-                      <span className="text-xs font-bold text-navy-500">{first.depCode}</span>
-                      <span className="text-navy-300">→</span>
-                      <span>
-                        {last.arrTime}
-                        {plus > 0 && <sup className="ms-0.5 text-xs font-extrabold text-rose-700">+{plus}</sup>}
-                      </span>
-                      <span className="text-xs font-bold text-navy-500">{last.arrCode}</span>
-                    </p>
-                    <p className="mt-0.5 text-xs text-navy-500">
-                      {airlines.join(" · ")} · {dur(f.minutes)} ·{" "}
-                      {f.stops === 0
-                        ? t.fallbackDirect
-                        : `${t.fallbackStops.replace("{n}", String(f.stops))} (${f.layovers.map((l) => city(l.code)).join("، ")})`}
-                    </p>
-                  </div>
-                  <div className="flex w-full items-center justify-between gap-3 border-t border-mist-100 pt-3 sm:w-auto sm:border-0 sm:pt-0">
-                    <div className="text-end">
-                      <p className="font-display text-lg font-black text-navy-950">{money(f.price)}</p>
-                      <p className="text-[11px] text-navy-500">{t.fallbackTotal}</p>
-                    </div>
-                    {/* Opens the same flight search on Google Flights: every
-                        site selling it, with its price and its own booking. */}
-                    <a
-                      href={answer && answer !== "none" ? answer.url || others[0].href : others[0].href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      data-partner="google-flights"
-                      className="shrink-0 rounded-xl bg-sun-400 px-5 py-2.5 text-sm font-extrabold text-navy-950 shadow-[var(--shadow-sun)] hover:bg-sun-300"
-                    >
-                      {t.fallbackBook} {isAr ? "←" : "→"}
-                    </a>
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
-          {flights.length > limit && (
-            <button
-              type="button"
-              onClick={() => setLimit((n) => n + 8)}
-              className="w-full rounded-full bg-white py-2.5 text-sm font-bold text-navy-800 ring-1 ring-mist-300 hover:ring-navy-300"
-            >
-              {t.fallbackMore}
-            </button>
-          )}
-        </>
-      )}
-
-      {answer !== null && (
-        <div className="rounded-2xl bg-white p-4 ring-1 ring-mist-200">
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <p className="text-sm font-bold text-navy-800">{flights.length > 0 ? t.fallbackOthers : t.fallbackNoLive}</p>
-            {flights.length === 0 && (
-              <button
-                type="button"
-                onClick={() => window.location.reload()}
-                className="rounded-full bg-navy-900 px-4 py-2 text-sm font-extrabold text-white"
-              >
-                {t.fallbackRetry}
-              </button>
-            )}
-          </div>
+          <p className="mt-4 text-sm font-bold text-navy-800">{t.fallbackAirlines}</p>
+          <p className="mt-0.5 text-xs leading-relaxed text-navy-500">{t.fallbackAirlinesSub}</p>
           <div className="mt-2 flex flex-wrap gap-2">
-            {others.map((o) => (
+            {airlines.map((o) => (
               <a
                 key={o.id}
                 href={o.href}
                 target="_blank"
                 rel="noopener noreferrer"
                 data-partner={o.id}
-                data-placement="flight_fallback"
-                className="rounded-full bg-mist-50 px-4 py-2 text-sm font-bold text-navy-900 ring-1 ring-mist-200 hover:ring-navy-300"
+                data-placement="flight_fallback_airline"
+                className="rounded-full bg-white px-4 py-2 text-sm font-bold text-navy-900 ring-1 ring-mist-300 hover:ring-sea-300"
               >
                 <bdi>{o.name}</bdi> ↗
               </a>
             ))}
           </div>
-          {flights.length === 0 && airlines.length > 0 && (
-            <>
-              <p className="mt-4 text-sm font-bold text-navy-800">{t.fallbackAirlines}</p>
-              <p className="mt-0.5 text-xs leading-relaxed text-navy-500">{t.fallbackAirlinesSub}</p>
-              <div className="mt-2 flex flex-wrap gap-2">
-                {airlines.map((o) => (
-                  <a
-                    key={o.id}
-                    href={o.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    data-partner={o.id}
-                    data-placement="flight_fallback_airline"
-                    className="rounded-full bg-white px-4 py-2 text-sm font-bold text-navy-900 ring-1 ring-mist-300 hover:ring-sea-300"
-                  >
-                    <bdi>{o.name}</bdi> ↗
-                  </a>
-                ))}
-              </div>
-            </>
-          )}
-        </div>
+        </>
       )}
     </div>
   );

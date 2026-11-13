@@ -1,8 +1,9 @@
 "use client";
 
 import ShareButton from "@/components/ShareButton";
-import FallbackFlights, { type FallbackRoute } from "@/components/FallbackFlights";
-import { useCallback, useEffect, useId, useRef, useState } from "react";
+import FallbackLinks, { useFallbackFares, type FallbackAnswer, type FallbackRoute } from "@/components/FallbackFlights";
+import { flightSites } from "@/lib/suppliers";
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import type { Locale } from "@/lib/types";
 import { useDictionary } from "@/lib/dict/context";
@@ -199,6 +200,12 @@ interface Flight {
   best: boolean;
   /** The widget's notes on this flight: overnight stop, long stop, airport change… */
   warnings: string[];
+  /**
+   * Second source only (Google Flights): where «احجز» goes, and whether the
+   * fare is for the round trip while only the way out is drawn.
+   */
+  href?: string;
+  roundTripFare?: boolean;
 }
 
 /** A booking site in the live search, with its cheapest fare. */
@@ -646,6 +653,8 @@ export default function FlightResultsGuide({
   const book = useCallback(
     (f: Flight) => {
       onPicked?.(f.bagOn ? f.total : f.price);
+      // The second source's cards are links themselves.
+      if (f.href) return;
       (cardById(f.id)?.querySelector('[class*="FlightCard-module__cardLeftButton"]') as HTMLElement | null)?.click();
     },
     [onPicked]
@@ -709,6 +718,44 @@ export default function FlightResultsGuide({
     return () => window.clearInterval(id);
   }, [siteKey, noSelf]);
 
+  // The second source (Google Flights), when the flight partner did not
+  // load or found nothing for the route (Riyadh): its fares go through the
+  // same pick, tabs, filters and cards as the partner's — the plain list
+  // shown before was what the owner saw on the phone (13 Nov). The partner
+  // stays first: should it find flights later, its own are shown.
+  const [fbWanted, setFbWanted] = useState(false);
+  const fbNow = Boolean(route) && (stalled || (state.settled && state.total === 0));
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (fbNow) setFbWanted(true);
+  }, [fbNow]);
+  const fbAnswer = useFallbackFares(route, fbWanted, currency, locale, directOnly);
+  const fbFlights = useMemo(() => {
+    if (!route || !fbAnswer || fbAnswer === "none") return null;
+    const google = flightSites({ ...route, childrenAges: route.childrenAges ?? [], currency, locale }).find((o) => o.id === "google-flights");
+    return fromFallback(fbAnswer, locale, t, fbAnswer.url || google?.href || "");
+  }, [fbAnswer, route, locale, t, currency]);
+  const fbShown = fbWanted && fbFlights !== null && state.total === 0;
+  const st: State = useMemo(
+    () =>
+      fbShown && fbFlights
+        ? {
+            searching: false,
+            settled: true,
+            filtering: true,
+            comparable: true,
+            total: fbFlights.length,
+            fits: fbFlights.filter((f) => budget <= 0 || f.price <= budget).sort((x, y) => x.price - y.price),
+            over: budget <= 0 ? [] : fbFlights.filter((f) => f.price > budget).sort((x, y) => x.price - y.price),
+            hasMore: false,
+            agencies: [],
+          }
+        : state,
+    [fbShown, fbFlights, budget, state]
+  );
+  // What the second source cannot tell: a checked bag, a change of airport.
+  const bagKnown = !fbShown;
+
   const hasBudget = budget > 0;
 
   // One flight_results per search (GA4), sent once the widget has settled
@@ -716,20 +763,21 @@ export default function FlightResultsGuide({
   // search, so it is not counted again.
   const reported = useRef(false);
   useEffect(() => {
-    if (!state.settled || reported.current) return;
+    if (!st.settled || reported.current) return;
+    if (route && state.total === 0 && fbAnswer === null) return;
     reported.current = true;
-    const prices = [...state.fits, ...state.over].map((f) => f.price);
-    const comparable = hasBudget && state.comparable;
+    const prices = [...st.fits, ...st.over].map((f) => f.price);
+    const comparable = hasBudget && st.comparable;
     track("flight_results", {
-      results_count: state.total,
+      results_count: st.total,
       cheapest_fare: prices.length ? Math.min(...prices) : undefined,
       budget: budget || undefined,
       currency,
-      within_budget_count: comparable ? state.fits.length : undefined,
-      all_over_budget: comparable ? state.fits.length === 0 && state.over.length > 0 : undefined,
+      within_budget_count: comparable ? st.fits.length : undefined,
+      all_over_budget: comparable ? st.fits.length === 0 && st.over.length > 0 : undefined,
       ...lastSearchContext(),
     });
-  }, [state, hasBudget, budget, currency]);
+  }, [st, hasBudget, budget, currency, route, state.total, fbAnswer]);
 
   // The traveller's preferences from the search form — direct only, a
   // checked bag in the fare — are held to strictly: a flight that breaks
@@ -737,30 +785,31 @@ export default function FlightResultsGuide({
   // A bag counts only when the fare includes it, so the price shown is the
   // price with it. Matches are shown the moment they arrive; nothing waits
   // for the whole search to finish.
-  const meets = (f: Flight) => (!directOnly || f.maxStops === 0) && (!bagIncluded || f.bag === "in");
-  const prefsSet = directOnly || bagIncluded;
+  const bagPref = bagIncluded && bagKnown;
+  const meets = (f: Flight) => (!directOnly || f.maxStops === 0) && (!bagPref || f.bag === "in");
+  const prefsSet = directOnly || bagPref;
   const [relaxed, setRelaxed] = useState(false);
   const strict = prefsSet && !relaxed;
-  const found = [...state.fits, ...state.over];
+  const found = [...st.fits, ...st.over];
   // Flights found, none of them meeting the preferences (yet).
-  const prefsNone = strict && state.filtering && found.length > 0 && !found.some(meets);
+  const prefsNone = strict && st.filtering && found.length > 0 && !found.some(meets);
   // Still none: asked on the page once a wide set of flights is in, and
   // over the page when every agency has answered. Not from the first
   // batches: those are the cheapest low-cost fares, and the direct flight
   // with a bag usually arrives with the next load (live test 13 Oct: none
   // in the first 20 at 6 s, matches at 18 s once 200 were in).
-  const prefsAsk = prefsNone && (state.settled || found.length >= 100);
+  const prefsAsk = prefsNone && (st.settled || found.length >= 100);
   // The traveller's filters on the results (stops, features, times,
   // airlines, booking sites) narrow every list: the pick, the tabs, the rest.
-  const fitsAll = strict ? state.fits.filter(meets) : state.fits;
-  const overAll0 = strict ? state.over.filter(meets) : state.over;
+  const fitsAll = strict ? st.fits.filter(meets) : st.fits;
+  const overAll0 = strict ? st.over.filter(meets) : st.over;
   const fits = fitsAll.filter((f) => passes(f, filters));
   const over = overAll0.filter((f) => passes(f, filters));
   const pool = [...fitsAll, ...overAll0];
   const filtersOn = (Object.keys(filters) as Facet[]).some((k) => filters[k].length > 0);
   const countBy = (facet: Facet, test: (f: Flight) => boolean) =>
     pool.filter((f) => passes(f, filters, facet) && test(f)).length;
-  const prefsLabel = [directOnly ? t.chipDirect : "", bagIncluded ? t.chipBag : ""].filter(Boolean).join(" · ");
+  const prefsLabel = [directOnly ? t.chipDirect : "", bagPref ? t.chipBag : ""].filter(Boolean).join(" · ");
   const bestFit = fits.find((f) => f.best) ?? fits[0] ?? null;
   const cheapestFit = fits[0] ?? null;
   const fastestFit = fits.length
@@ -771,8 +820,8 @@ export default function FlightResultsGuide({
   // Nothing within the budget among the flights found: said on the page
   // straight away ("so far", with the search still running above it), and
   // over the page once every agency has answered.
-  const noneWithin = hasBudget && state.filtering && !shown && over.length > 0;
-  const noneBody = (state.settled ? t.guideNoneBody : t.guideNoneSoFar)
+  const noneWithin = hasBudget && st.filtering && !shown && over.length > 0;
+  const noneBody = (st.settled ? t.guideNoneBody : t.guideNoneSoFar)
     .replace("{city}", cityName)
     .replace("{amount}", money(over[0]?.price ?? 0))
     .replace("{count}", String(travelers))
@@ -852,7 +901,7 @@ export default function FlightResultsGuide({
       label: t[`fT${v}` as "fT0"],
       count: countBy(facet, (f) => facts(f)[facet] === v),
     }));
-  const filterBar = state.filtering && pool.length > 0 && !prefsAsk && (
+  const filterBar = st.filtering && pool.length > 0 && !prefsAsk && (
     <div className="mb-4">
       <p className="mb-2 text-sm font-extrabold text-navy-900">{t.fTitle}</p>
       <div className={FILTER_ROW}>
@@ -881,8 +930,12 @@ export default function FlightResultsGuide({
           options={[
             { value: "noNight" as Feature, label: t.fNoNight, count: countBy("features", (f) => !facts(f).night) },
             { value: "noLong" as Feature, label: t.fNoLong, count: countBy("features", (f) => !facts(f).long) },
-            { value: "noSelf" as Feature, label: t.fNoSelf, count: countBy("features", (f) => !facts(f).self) },
-            { value: "bag" as Feature, label: t.fBagIn, count: countBy("features", (f) => facts(f).bag) },
+            ...(bagKnown
+              ? [
+                  { value: "noSelf" as Feature, label: t.fNoSelf, count: countBy("features", (f) => !facts(f).self) },
+                  { value: "bag" as Feature, label: t.fBagIn, count: countBy("features", (f) => facts(f).bag) },
+                ]
+              : []),
           ]}
         />
         <FilterPill<Slot>
@@ -924,7 +977,7 @@ export default function FlightResultsGuide({
               note: t.fSitesNote.replace("{price}", money(from)),
             }))}
         />
-        {state.agencies.length > 0 && (
+        {st.agencies.length > 0 && (
           <FilterPill<string>
             locale={locale}
             multi
@@ -933,7 +986,7 @@ export default function FlightResultsGuide({
             allLabel={t.fSitesAll}
             value={filters.sites}
             onChange={(v) => setFacet("sites", v)}
-            options={state.agencies.map((a) => ({
+            options={st.agencies.map((a) => ({
               value: a.name,
               label: a.name,
               note: a.price ? t.fSitesNote.replace("{price}", money(a.price)) : undefined,
@@ -953,8 +1006,8 @@ export default function FlightResultsGuide({
       <p className="mt-2 text-xs font-semibold text-navy-500">
         {filtersOn
           ? t.fShowing.replace("{n}", flightsLabel(fits.length + over.length)).replace("{total}", String(pool.length))
-          : state.agencies.length > 1
-            ? t.fSitesCount.replace("{n}", String(state.agencies.length))
+          : st.agencies.length > 1
+            ? t.fSitesCount.replace("{n}", String(st.agencies.length))
             : null}
       </p>
       {filtersOn && fits.length + over.length === 0 && (
@@ -983,35 +1036,39 @@ export default function FlightResultsGuide({
       {/* The search, while it runs: a plane along a line at the top, and
           how many flights are in so far. Results below appear as they
           arrive; the bar stays until every agency has answered. */}
-      {(stalled || (state.settled && state.total === 0)) && (
-        <>
-          {/* With a second source the traveller just sees fares — no
-              warning banner over them (owner, 20 Oct). */}
-          {!route && (
-          <div role="alert" className="mb-3 flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-amber-50 px-5 py-3 ring-1 ring-amber-200">
-            <p className="min-w-0 flex-1 text-sm leading-relaxed text-amber-900">
-              <span className="font-extrabold">{t.stalledTitle}</span> {route ? t.stalledBodyFallback : t.stalledBody}
-            </p>
-            <button
-              type="button"
-              onClick={() => window.location.reload()}
-              className="shrink-0 rounded-full bg-navy-900 px-4 py-2 text-sm font-extrabold text-white hover:bg-navy-800"
-            >
-              {t.stalledRetry}
-            </button>
-          </div>
-          )}
-          {route && <FallbackFlights locale={locale} route={route} currency={currency} directOnly={directOnly} />}
-        </>
+      {/* With a second source the traveller just sees fares — no warning
+          banner over them (owner, 20 Oct). Without one, the plain truth. */}
+      {!route && (stalled || (state.settled && state.total === 0)) && (
+        <div role="alert" className="mb-3 flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-amber-50 px-5 py-3 ring-1 ring-amber-200">
+          <p className="min-w-0 flex-1 text-sm leading-relaxed text-amber-900">
+            <span className="font-extrabold">{t.stalledTitle}</span> {t.stalledBody}
+          </p>
+          <button
+            type="button"
+            onClick={() => window.location.reload()}
+            className="shrink-0 rounded-full bg-navy-900 px-4 py-2 text-sm font-extrabold text-white hover:bg-navy-800"
+          >
+            {t.stalledRetry}
+          </button>
+        </div>
       )}
-      {!state.settled && !stalled && (
+      {route && fbWanted && state.total === 0 && fbAnswer === null && (
+        <p className="mb-5 flex items-center gap-2 rounded-2xl bg-white px-5 py-3.5 text-sm font-semibold text-navy-700 shadow-sm ring-1 ring-black/5">
+          <span className="h-2.5 w-2.5 shrink-0 animate-pulse rounded-full bg-sun-400" aria-hidden="true" />
+          {t.fallbackLoading}
+        </p>
+      )}
+      {route && fbWanted && state.total === 0 && fbAnswer === "none" && (
+        <FallbackLinks locale={locale} route={route} currency={currency} />
+      )}
+      {!st.settled && !stalled && !(fbWanted && state.total === 0) && (
         <div className="mb-5 overflow-hidden rounded-2xl bg-white px-5 py-3.5 shadow-sm ring-1 ring-black/5">
           <p className="flex items-center gap-2 text-sm font-semibold text-navy-700">
             <span className="h-2.5 w-2.5 shrink-0 animate-pulse rounded-full bg-sun-400" aria-hidden="true" />
             {prefsNone
               ? t.prefsWaiting.replace("{prefs}", prefsLabel)
-              : state.total > 0
-                ? t.guideFoundSoFar.replace("{n}", flightsLabel(state.total))
+              : st.total > 0
+                ? t.guideFoundSoFar.replace("{n}", flightsLabel(st.total))
                 : hasBudget
                   ? t.guideSearching
                   : t.guideSearchingAny}
@@ -1031,7 +1088,7 @@ export default function FlightResultsGuide({
       )}
 
       {/* Nothing meets the preferences: asked, never assumed. */}
-      {prefsAsk && state.settled && !prefsDismissed && (
+      {prefsAsk && st.settled && !prefsDismissed && (
         <NoneWithinDialog
           icon="✈️"
           title={t.prefsAskTitle}
@@ -1050,7 +1107,7 @@ export default function FlightResultsGuide({
         <div className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-black/5">
           <p className="font-display text-lg font-extrabold text-navy-950">{t.prefsAskTitle}</p>
           <p className="mt-1 text-sm leading-relaxed text-navy-600">
-            {state.settled
+            {st.settled
               ? t.prefsAskBody.replace("{prefs}", prefsLabel)
               : t.prefsAskSoFar.replace("{n}", flightsLabel(found.length)).replace("{prefs}", prefsLabel)}
           </p>
@@ -1130,53 +1187,44 @@ export default function FlightResultsGuide({
             featured
             badge={tab === "cheapest" ? (hasBudget ? t.badgeCheapest : t.tabCheapest) : tab === "fastest" ? (hasBudget ? t.badgeFastest : t.tabFastest) : t.pickBadge}
             aside={overToggle || null}
-            foot={
-              others.length > 0 && (
-                <button
-                  type="button"
-                  aria-expanded={showWithin}
-                  onClick={() => setShowWithin((v) => !v)}
-                  className="flex w-full items-center gap-3 rounded-xl bg-navy-950/[0.04] px-4 py-3.5 text-start transition hover:bg-navy-950/[0.07]"
-                >
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-navy-800 ring-1 ring-mist-200">
-                    <Icon name="search" className="h-4 w-4" />
-                  </span>
-                  <span className="min-w-0 flex-1">
-                    <span className="flex items-center gap-2 text-base font-extrabold text-navy-950">
-                      {showWithin ? t.allWithinHide : hasBudget ? t.withinBarTitle : t.othersBarTitle}
-                      <span className="rounded-full bg-navy-900 px-2 py-0.5 text-xs font-black text-white">{others.length}</span>
-                    </span>
-                    <span className="mt-0.5 block text-xs font-semibold text-navy-500">{t.withinBarSub}</span>
-                  </span>
-                  <Icon name="chevron" className={`h-5 w-5 text-navy-700 transition ${showWithin ? "rotate-180" : ""}`} />
-                </button>
-              )
-            }
           />
 
-          {showWithin && (
+          {/* Three flights in sight — the pick and the next two — and the
+              rest behind one button that says how many (owner, 13 Nov). */}
+          {withinAll.length > 0 && (
             <>
-              {controls}
-              <ol className="space-y-3">
-                {withinShown.map((f) => (
+              {showWithin && controls}
+              <ol className={`space-y-3 ${showWithin ? "" : "mt-3"}`}>
+                {(showWithin ? withinShown : withinAll.slice(0, 2)).map((f) => (
                   <li key={f.id}>
                     <FlightCard {...card} flight={f} diff={f.price - shown.price} />
                   </li>
                 ))}
               </ol>
-              {withinShown.length === 0 && (
-                <p className="rounded-2xl bg-white px-5 py-4 text-sm text-navy-600 ring-1 ring-mist-200">{t.listNone}</p>
+              {withinAll.length > 2 && (
+                <button
+                  type="button"
+                  aria-expanded={showWithin}
+                  onClick={() => {
+                    setShowWithin((v) => !v);
+                    setLimit(10);
+                  }}
+                  className="mt-3 flex w-full items-center justify-center gap-2 rounded-2xl bg-white px-4 py-3.5 text-base font-extrabold text-navy-950 shadow-sm ring-1 ring-mist-300 transition hover:ring-navy-300"
+                >
+                  {showWithin ? t.allWithinHide : t.showRest.replace("{n}", String(withinAll.length - 2))}
+                  <Icon name="chevron" className={`h-5 w-5 text-navy-700 transition ${showWithin ? "rotate-180" : ""}`} />
+                </button>
               )}
             </>
           )}
         </>
       )}
 
-      {noneWithin && state.settled && !noneDismissed && (
+      {noneWithin && st.settled && !noneDismissed && (
         <NoneWithinDialog
           title={t.guideNoneTitle}
           body={noneBody}
-          searching={!state.settled}
+          searching={!st.settled}
           searchingLabel={t.guideStillSearching}
           showLabel={t.noneShowFlights}
           editLabel={t.noneEditSearch}
@@ -1214,7 +1262,7 @@ export default function FlightResultsGuide({
         </>
       )}
 
-      {(showWithin || showOver) && (moreHidden || state.hasMore) && (
+      {(showWithin || showOver) && (moreHidden || st.hasMore) && (
         <div className="mt-4 text-center">
           <button
             type="button"
@@ -1226,10 +1274,10 @@ export default function FlightResultsGuide({
         </div>
       )}
 
-      {state.settled && !state.comparable && (
+      {st.settled && !st.comparable && (
         <p className="rounded-2xl bg-white px-5 py-4 text-sm text-navy-600 ring-1 ring-black/5">{t.guideOtherCurrency}</p>
       )}
-      {state.settled && state.total === 0 && (
+      {st.settled && st.total === 0 && !route && (
         <p className="rounded-2xl bg-white px-5 py-4 text-sm text-navy-600 ring-1 ring-black/5">{t.guideNoResults}</p>
       )}
     </section>
@@ -1237,6 +1285,78 @@ export default function FlightResultsGuide({
 }
 
 type Dict = Dictionary["results"];
+
+/**
+ * The second source's fares as our flights: one way drawn (Google prices a
+ * round trip by its way out), its stops and waits, local times as given.
+ * Nothing is added that Google did not say — no bag, no seller list.
+ */
+function fromFallback(a: FallbackAnswer, locale: Locale, t: Dict, href: string): Flight[] {
+  const isAr = locale === "ar";
+  const cityOf = (code: string) => {
+    const x = findAirport(code);
+    return x ? (isAr ? x.cityAr : x.cityEn) : code;
+  };
+  const dur = (m: number) => `${Math.floor(m / 60)}${t.durHours} ${String(Math.round(m % 60)).padStart(2, "0")}${t.durMinutes}`;
+  const fmt = new Intl.DateTimeFormat(isAr ? "ar-SA-u-ca-gregory-nu-latn" : "en-GB", {
+    weekday: "short",
+    day: "numeric",
+    month: "short",
+    timeZone: "UTC",
+  });
+  const day = (d: string) => {
+    const ms = Date.parse(`${d}T12:00:00Z`);
+    return Number.isFinite(ms) ? fmt.format(ms) : "";
+  };
+  const hour = (s: string) => {
+    const m = s.match(/^(\d{1,2}):(\d{2})/);
+    return m ? Number(m[1]) + Number(m[2]) / 60 : -1;
+  };
+  return a.flights
+    .filter((f) => f.legs.length > 0)
+    .map((f, i): Flight => {
+      const first = f.legs[0];
+      const last = f.legs[f.legs.length - 1];
+      const plus =
+        first.depDate && last.arrDate
+          ? Math.max(0, Math.round((Date.parse(last.arrDate) - Date.parse(first.depDate)) / 86_400_000))
+          : 0;
+      const minutes = f.minutes || f.legs.reduce((n, l) => n + l.minutes, 0);
+      const leg: Leg = {
+        depTime: first.depTime,
+        depCode: first.depCode,
+        depCity: cityOf(first.depCode),
+        depDay: day(first.depDate),
+        arrTime: last.arrTime,
+        arrCode: last.arrCode,
+        arrCity: cityOf(last.arrCode),
+        plusDays: plus,
+        duration: minutes ? dur(minutes) : "",
+        minutes,
+        stops: f.layovers.map((l) => ({ city: cityOf(l.code), wait: l.minutes ? dur(l.minutes) : "", waitMin: l.minutes })),
+        depHour: hour(first.depTime),
+        arrHour: hour(last.arrTime),
+      };
+      return {
+        id: `fb-${i}`,
+        price: f.price,
+        airlines: [...new Set(f.legs.map((l) => l.airline).filter(Boolean))],
+        logos: [...new Set(f.legs.map((l) => l.logo).filter(Boolean))].slice(0, 2),
+        legs: [leg],
+        avgMinutes: minutes,
+        maxStops: Math.max(f.stops, f.layovers.length),
+        bag: null,
+        bagExtra: null,
+        bagAllowance: "",
+        bagOn: false,
+        total: f.price,
+        best: f.best,
+        warnings: [],
+        href: href || undefined,
+        roundTripFare: a.roundTrip,
+      };
+    });
+}
 
 /**
  * One flight, as a card: the airline and two tags — direct (blue) or its
@@ -1276,7 +1396,34 @@ function FlightCard({
   overBy?: number;
 }) {
   const isAr = locale === "ar";
-  const labels = flight.legs.length === 2 ? [t.cardOutbound, t.cardReturn] : flight.legs.map(() => t.cardLeg);
+  const labels =
+    flight.legs.length === 2
+      ? [t.cardOutbound, t.cardReturn]
+      : flight.roundTripFare
+        ? [t.cardOutbound]
+        : flight.legs.map(() => t.cardLeg);
+  // «احجز»: the partner's own button (pressed for us), or — second source —
+  // a plain link to the same search on Google Flights, every seller there.
+  const bookButton = (cls: string) =>
+    flight.href ? (
+      <a
+        href={flight.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        data-partner="google-flights"
+        data-placement="flight_card"
+        onClick={() => onBook(flight)}
+        className={cls}
+      >
+        {t.cardBook}
+        <span aria-hidden="true">{isAr ? "←" : "→"}</span>
+      </a>
+    ) : (
+      <button type="button" onClick={() => onBook(flight)} className={cls}>
+        {t.cardBook}
+        <span aria-hidden="true">{isAr ? "←" : "→"}</span>
+      </button>
+    );
   const pay = flight.bagOn ? flight.total : flight.price;
   const bagOver = flight.bagOn && budget > 0 ? flight.total - budget : 0;
 
@@ -1447,18 +1594,14 @@ function FlightCard({
             <p className="mt-0.5 text-xs text-navy-500">
               {countLabel(travelers, { one: t.travelersOne, two: t.travelersTwo, few: t.travelersFew, many: t.travelersMany })}
               {flight.bagOn && ` · ${t.bagAdded}`}
+              {flight.roundTripFare && ` · ${t.fallbackRoundTrip}`}
             </p>
           </div>
-          <button
-            type="button"
-            onClick={() => onBook(flight)}
-            className={`flex shrink-0 items-center justify-center gap-2 rounded-xl bg-sun-400 px-5 font-extrabold text-navy-950 shadow-[var(--shadow-sun)] transition hover:bg-sun-300 md:hidden ${
+          {bookButton(
+            `flex shrink-0 items-center justify-center gap-2 rounded-xl bg-sun-400 px-5 font-extrabold text-navy-950 shadow-[var(--shadow-sun)] transition hover:bg-sun-300 md:hidden ${
               featured ? "py-3 text-base" : "py-2.5 text-sm"
-            }`}
-          >
-            {t.cardBook}
-            <span aria-hidden="true">{isAr ? "←" : "→"}</span>
-          </button>
+            }`
+          )}
           </div>
 
           {flight.bag === "extra" && flight.bagExtra !== null && (
@@ -1510,16 +1653,11 @@ function FlightCard({
               {diff === 0 ? t.cardSame : <Amount template={diff > 0 ? t.cardMore : t.cardLess} amount={money(diff)} />}
             </p>
           )}
-          <button
-            type="button"
-            onClick={() => onBook(flight)}
-            className={`hidden items-center justify-center gap-2 rounded-xl bg-sun-400 px-4 font-extrabold text-navy-950 shadow-[var(--shadow-sun)] transition hover:bg-sun-300 md:flex md:w-full ${
+          {bookButton(
+            `hidden items-center justify-center gap-2 rounded-xl bg-sun-400 px-4 font-extrabold text-navy-950 shadow-[var(--shadow-sun)] transition hover:bg-sun-300 md:flex md:w-full ${
               featured ? "py-3.5 text-base" : "py-3 text-sm"
-            }`}
-          >
-            {t.cardBook}
-            <span aria-hidden="true">{isAr ? "←" : "→"}</span>
-          </button>
+            }`
+          )}
           {aside}
         </div>
       </div>

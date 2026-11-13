@@ -396,7 +396,9 @@ function ResultsContent() {
                     aria-hidden="true"
                   >
                     <span className="h-px w-6 bg-sun-400/50 sm:w-9" />
-                    <span className="text-h3">✈</span>
+                    {/* From departure to arrival: in Arabic the trip reads
+                        right to left, so the plane faces left (owner, 13 Nov). */}
+                    <span className="inline-block text-h3 rtl:-scale-x-100">✈</span>
                     <span className="h-px w-6 bg-sun-400/50 sm:w-9" />
                   </span>
                 </>
