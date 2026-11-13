@@ -106,7 +106,7 @@ City guide / Viator / Search Console / Status email / Feedback / Dashboard /
 «رحلتي» / Google Play account / Workers Paid / Hotels like Booking /
 iPhone app.
 
-## ▶ Hand-off (10 Nov 2026, 2nd chat — trip emails) — current state
+## ▶ Hand-off (13 Nov 2026 — item 5 step 2 leftovers) — current state
 
 **Release gate: CLOSED (4 Nov) + catch-up (6 Nov).** `release.yml` is the
 only way to production (Cloudflare Git build disabled). Pushes made by
@@ -124,10 +124,12 @@ of all data workflows». Long jobs (hotels, places, restaurants, guide,
 partner-pages) push via `scripts/ci/push-to-main.sh` (retry, then split)
 and save their result as an artifact first; hotels/places/restaurants
 refresh the oldest cities first, 3× a month; restaurants now has a time
-budget; status report lists time-outs. Full hotels refresh dispatched 6 Nov
-~04:30 KSA (run 42141827127, old code). **Next step:** check that run and
-the first runs on the new code (places 13 Nov, restaurants 14 Nov, hotels
-15 Nov): `fetched-at` files appear and grow; no «توقف عند المهلة».
+budget; status report lists time-outs. Full hotels refresh run 42141827127
+(old code) = GREEN 6 Nov. Checked 13 Nov 03:10 KSA: no scheduled run on the
+new code yet; no `*fetched-at.json` in main yet (6 Nov push runs were
+missing-only). **Next step:** check the first scheduled runs (places 13 Nov
+05:41 KSA, restaurants 14 Nov 06:17, hotels 15 Nov 06:17): `fetched-at`
+files appear and grow; no «توقف عند المهلة».
 
 **Growth consultation (6 Nov):** owner's doc «استشارة نمو سفرتنا»
 https://claude.ai/artifact/PdyRGXJuakaAhJY3a6x1oa — 7 items in order;
@@ -260,14 +262,18 @@ SerpApi = FREE 250/month (renews 6 Dec). Staging has no `SERPAPI_KEY`.
    esim / arrival / after return), ≤5 per trip, ticked steps skipped, no
    prices, unsubscribe + one-click header. Daily caps for Resend's free
    plan (80 Resend calls incl. codes, 60 trip mails).
+   **Step 2 leftovers DONE 13 Nov** (PROJECT_NOTES «Traveller journey — 13
+   Nov»): `GuideTripStrip` (end of city/country/visa pages) + «أرسل الخطة
+   إلى بريدي» (plan toolbar → `/api/plans/mail`, own address only, 3/day).
    **Next step:** (a) after the release: one real test — owner signs in,
    ticks the box on a flight result, presses «احجز» → mail «أشياء جهّزها
    الآن» within ~1 h 17 m; check it on the phone (layout, links open our
    pages, «إلغاء الاشتراك» page → button → «حسابي» shows off). Dry check
    any time: POST `/api/trip-mail/run?dry=1` with the check key. (b) ux-audit
-   / phone screenshot of SaveTripCard signed out + signed in. (c) step 2
-   leftovers: guide-page strip «مسافر إلى …؟» and «أرسل الخطة إلى بريدي».
-   Then item 5 step 4 (WhatsApp share + budget card).
+   / phone screenshot of SaveTripCard signed out + signed in + the guide
+   strip. (c) owner presses «أرسل الخطة إلى بريدي» on a city plan → mail on
+   the phone (layout RTL, place links open Maps, day route). Then item 5
+   step 4 (WhatsApp share + budget card).
 5. Google Play trader status: owner asked why it matters → explained 8 Nov;
    decide before 1 Feb 2027.
 
@@ -287,7 +293,7 @@ Queue (owner steps one at a time; code items in a fresh Opus chat):**
   (owner: yes) — after Expedia's answer or by 14 Nov if none (same site on
   two accounts could put the Expedia account at risk; say so on sign-up);
   E) trip-mail real test (item 4 a). Fill PARTNERS.md «Accounts» each time.
-- Code (no owner step): item 4 (b)(c) + step 4 share; app banner + store
+- Code (no owner step): item 4 (b) + step 4 share; app banner + store
   badges in mails, built behind a switch, turned on per store approval;
   Search Console «pages not indexed» mail (9 Nov) → find the reason.
 

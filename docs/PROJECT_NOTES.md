@@ -2251,4 +2251,31 @@ which is the browser's consent helper):
   at). DO methods tested with a node:sqlite shim (claim twice → false;
   ended trip filtered; unsub twice OK, log has yes then no; re-yes keeps the
   token; delete leaves 0 mails).
-Left for step 2: guide-page strip «مسافر إلى …؟», «أرسل الخطة إلى بريدي».
+Left for step 2 (DONE 13 Nov, see below): guide-page strip «مسافر إلى …؟», «أرسل الخطة إلى بريدي».
+
+## Traveller journey — 13 Nov 2026 (item 5, step 2 leftovers)
+
+- `member/GuideTripStrip.tsx`: dark strip at the END of city pages
+  (CityPlacesPageBody), country pages (attractions/[code]) and visa pages
+  (visa/[code]). «مسافر إلى {place}؟» + one line (no visa word for SA) →
+  `/{locale}?mode=known&destination=<IATA>#plan` (home opens the flight form
+  with it filled). Airport: the city's (`CITY_AIRPORTS`), on country/visa
+  pages the first listed city that has one. When «رحلتي» (localStorage) holds
+  a trip to that city (slug) / country (code): «رحلتك إلى …» + «جهّزت N من M»
+  → `/my-trip`. «✕» = hidden for that country 14 days (`sfr-guide-strip-off`,
+  try/catch). Renders only after mount (bottom of page: no layout jump).
+  GA4 `guide_strip` {action: search | my_trip | dismiss, code}.
+- «أرسل الخطة إلى بريدي»: `MailPlanButton.tsx` in the plan toolbar
+  (CityPlacesPlanner PlanView, full row on phones) → POST `/api/plans/mail`
+  (edge-guard ROUTES, page, heavy). Sends ONLY to the signed-in account's
+  own email (never an address from the request); body = names + coords,
+  cleaned by `cleanPlanMail` (≤30 days, ≤12 a day, ≤120 chars, no tags).
+  Mail = `src/lib/planMail.ts` (each place → Google Maps, day walking route,
+  opening-hours caveat, «رحلتي» + city page links tagged utm_source=plan_mail,
+  no prices, footer says why it came). Limit 3 a member per UTC day: claimed
+  in `mails` (trip `plan:<day>`, kind plan1..3; released if Resend refuses),
+  so it also counts in TRIP_MAIL_DAILY_CAP; refused when the day's Resend
+  count ≥ RESEND_DAILY_BUDGET. Signed out → join sheet. GA4 `plan_mail`.
+  Checked: tsc, eslint, check-guard; renderer unit run (bad bodies → null,
+  tags stripped, no price). Visual check of the mail: on the owner's phone
+  (Playwright download blocked in the container).
