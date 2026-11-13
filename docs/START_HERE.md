@@ -371,9 +371,10 @@ meanwhile. If rejected for the name (bank writes AHMED in full) → read the
 reason first, then decide. **VERIFIED 13 Nov 14:08 KSA** (Play Console mail «Your identity
 has been verified»). **Owner 13 Nov 18:24: NON-TRADER** (targets
 SA + Gulf only, no Europe) → when creating the app, EXCLUDE EEA/UK countries
-from distribution; switch to trader if ever distributed there. Phone check is
-locked until the status is declared. Next: phone check
-unlocks; then trader status; payments phone «+966 056…» extra 0 still to fix. Trader status: declare
+from distribution; switch to trader if ever distributed there. Non-trader SAVED +
+**PHONE VERIFIED 13 Nov 18:29.** Red banner still: «Your developer profile and
+all apps have been removed» (the 6 Nov restriction) → next: its View details,
+see if it lifts by itself or needs the appeal/ticket. Then create the app; payments phone «+966 056…» extra 0 still to fix. Trader status: declare
 by 1 Feb 2027 (owner's decision; trader = phone + address shown publicly;
 non-trader allowed if not distributed in EEA/UK). Store texts ready:
 `docs/play-store/listing-draft.md` (Play has no keyword field).
