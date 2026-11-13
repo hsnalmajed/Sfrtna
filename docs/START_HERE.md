@@ -369,7 +369,10 @@ PDF), name «ALMAJED, HASSAN ALI A», address Al Fath / AL AHSA 36342 → «In
 review». Wait for Google's mail; do NOT resubmit or edit the profile
 meanwhile. If rejected for the name (bank writes AHMED in full) → read the
 reason first, then decide. **VERIFIED 13 Nov 14:08 KSA** (Play Console mail «Your identity
-has been verified»). Next: phone check
+has been verified»). **Owner 13 Nov 18:24: NON-TRADER** (targets
+SA + Gulf only, no Europe) → when creating the app, EXCLUDE EEA/UK countries
+from distribution; switch to trader if ever distributed there. Phone check is
+locked until the status is declared. Next: phone check
 unlocks; then trader status; payments phone «+966 056…» extra 0 still to fix. Trader status: declare
 by 1 Feb 2027 (owner's decision; trader = phone + address shown publicly;
 non-trader allowed if not distributed in EEA/UK). Store texts ready:
