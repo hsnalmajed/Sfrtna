@@ -2279,3 +2279,41 @@ Left for step 2 (DONE 13 Nov, see below): guide-page strip «مسافر إلى �
   Checked: tsc, eslint, check-guard; renderer unit run (bad bodies → null,
   tags stripped, no price). Visual check of the mail: on the owner's phone
   (Playwright download blocked in the container).
+
+## Owner's notes of 13 Nov 2026 (18:52) — phone/app review before Play upload
+
+Seen on the Android app (= sfrtna.com in a shell, so these are the site's
+PHONE layout, or an old cached build — check both first). Search DMM/RUH →
+LJU 25 Jan–11 Feb, 2 travellers. Owner: fix ALL before uploading to Play.
+
+A. Results page (phone):
+ 1. Header «الرياض ✈ ليوبليانا»: the plane points back to the origin. It must
+    point from departure to arrival (in RTL: towards the LEFT).
+ 2. Filters missing after a flight / hotel search (the ones agreed for the
+    site must be on the phone too).
+ 3. «الأفضل / الأرخص / الأسرع» tabs missing after a flight search.
+ 4. Flight card and list layout not as tidy as the site's; same for hotels.
+ 5. Show 3 flights, the rest behind «عرض باقي الرحلات (N)» — N in the button.
+ 6. «قارن الرحلة نفسها في مواقع أخرى» row (Google Flights, المسافر, KAYAK,
+    Trip.com, Skyscanner, Expedia): owner — agreed NOT to show it, on the site
+    or in the app. Remove it. (Claude's plan: keep the list only when a search
+    has NO results, e.g. Riyadh, unless the owner objects.)
+B. «اقترح لي وجهة» (all tabs, flights and hotels): far too few results, and
+   wrong. Example: DMM → Slovenia, 2 travellers, round trip — the known-
+   destination search finds fares under 6,000 SAR, but «اقترح لي وجهة» with a
+   10,000 SAR flight budget does not list Slovenia. Owner: «a feature turned
+   into a failure». Must list EVERY destination that fits the budget, with the
+   same live prices the known-destination search shows. Find the root cause
+   (likely cached Data API destinations vs live search) before coding.
+C. Flights + hotels:
+ 1. ONE total budget for the trip (flight + hotel), split smartly: show only
+    destinations where a flight AND hotels both fit; after the traveller picks a
+    flight (e.g. 5,000 of 20,000), hotels shown fit the rest (15,000), and the
+    reverse. Respect his preferences. Owner: «build it smart and accurate».
+ 2. Today a flight+hotel search shows flights only, no hotel → wrong flow.
+    Wanted: pick a flight (do NOT book yet) → pick a hotel (do NOT book yet) →
+    a summary page of the trip: flight with its prices + «احجز», hotel with its
+    prices + «احجز». No bouncing to a partner and back between the two.
+    Owner invites a better design than his.
+D. «احجز» page: editing the departure airport / destination city is very hard
+   (retyping, clearing, searching another airport/city). Improve it.

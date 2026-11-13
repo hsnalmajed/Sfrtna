@@ -106,7 +106,18 @@ City guide / Viator / Search Console / Status email / Feedback / Dashboard /
 «رحلتي» / Google Play account / Workers Paid / Hotels like Booking /
 iPhone app.
 
-## ▶ Hand-off (13 Nov 2026 — item 5 step 2 leftovers) — current state
+## ▶ Hand-off (13 Nov 2026 evening) — current state
+
+**▶▶ NEXT SECTION (owner 13 Nov 18:52, BEFORE uploading to Google Play):**
+PROJECT_NOTES «Owner's notes of 13 Nov 2026» — A) results page on phone:
+plane arrow direction, filters, الأفضل/الأرخص/الأسرع tabs, flight + hotel
+cards like the site, 3 flights + «عرض باقي الرحلات (N)», remove «قارن
+الرحلة نفسها في مواقع أخرى»; B) «اقترح لي وجهة» misses destinations that fit
+the budget (DMM→LJU case) — root cause first; C) flights+hotels: one total
+budget split smartly + pick flight → pick hotel → summary page with both
+«احجز»; D) easier airport/city editing on «احجز». Order: A+D (one round,
+one release), then B, then C. Opus chat. Play upload waits for A–D.
+
 
 **Release gate: CLOSED (4 Nov) + catch-up (6 Nov).** `release.yml` is the
 only way to production (Cloudflare Git build disabled). Pushes made by
