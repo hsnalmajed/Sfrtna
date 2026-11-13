@@ -2337,8 +2337,10 @@ the «قارن الرحلة نفسها…» row. Now:
 - `FallbackLinks` (other sites + airlines) only when no live fares at all.
 - A1: the route header plane is flipped in RTL (`rtl:-scale-x-100`).
 - D: `AirportInput` — focus selects the label, ✕ clears, recent (localStorage
-  `sfr-recent-airports`, try/catch) + popular before typing; phones (<640px)
-  get a full-screen picker (portal, z-80). Typed text no longer replaced by a
+  `sfr-recent-airports`, try/catch) + popular before typing. **Owner 13 Nov
+  20:01: NO full-screen picker / other page** — a tap empties the field in
+  place and the list opens under it; leaving without a pick restores the old
+  place (phone scrolls the field to the top so the list clears the keyboard). Typed text no longer replaced by a
   label when it happens to be a code ("dub").
 Checked locally (next dev + Playwright, phone 390×844, mocked fallback):
 tabs, filters, 3 cards + «عرض باقي الرحلات (4)», no compare row; picker

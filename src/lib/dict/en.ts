@@ -1262,13 +1262,10 @@ const en = {
     searching: "Searching...",
     originPlaceholder: "City or airport",
     destinationPlaceholder: "Search a city or airport",
-    placeSearch: "Type a city, airport or country",
     placeRecent: "Recently picked",
     placePopular: "Popular cities",
     placeNone: "No city or airport by that name. Try another name or the country.",
     placeClear: "Clear",
-    placeClose: "Close",
-    placeChange: "Change",
   },
   picker: {
     add: "Add to my plan",

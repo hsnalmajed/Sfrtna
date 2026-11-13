@@ -1279,13 +1279,10 @@ const ar = {
     searching: "جاري البحث...",
     originPlaceholder: "مدينة أو مطار",
     destinationPlaceholder: "ابحث عن مدينة أو مطار",
-    placeSearch: "اكتب اسم المدينة أو المطار أو الدولة",
     placeRecent: "اخترتها مؤخراً",
     placePopular: "مدن شائعة",
     placeNone: "لا توجد مدينة أو مطار بهذا الاسم. جرّب اسماً آخر أو اسم الدولة.",
     placeClear: "امسح",
-    placeClose: "إغلاق",
-    placeChange: "تغيير",
   },
   picker: {
     add: "أضف إلى خطتي",

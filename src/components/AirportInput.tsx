@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { createPortal } from "react-dom";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { Locale } from "@/lib/types";
 import { airportLabel, findAirport, searchAirports, type Airport } from "@/lib/airports";
 import { useDictionary } from "@/lib/dict/context";
@@ -37,12 +36,10 @@ const isPhone = () => typeof window !== "undefined" && window.matchMedia("(max-w
  *
  * Changing a place used to mean deleting the whole label letter by letter
  * before a new search could start (owner, 13 Nov). Now:
- *   - a tap selects the current place, so the first letter typed replaces it,
- *     and an ✕ clears it in one go;
- *   - before anything is typed, the list offers the places picked lately on
+ *   - a tap empties the field in place (same page, no other screen — owner,
+ *     13 Nov 20:01) and the list opens under it: the places picked lately on
  *     this device and the popular ones, so most changes are one tap;
- *   - on a phone the tap opens a full-screen picker (search on top, the list
- *     under it, above the keyboard), as travel apps do.
+ *   - typing narrows the list; leaving without a pick puts the old place back.
  */
 export default function AirportInput({
   locale,
@@ -76,12 +73,9 @@ export default function AirportInput({
   const [open, setOpen] = useState(false);
   // Typed since the field was opened: until then the list shows recent and popular places.
   const [typed, setTyped] = useState(false);
-  const [sheet, setSheet] = useState(false);
-  const [sheetQuery, setSheetQuery] = useState("");
   const [recent, setRecent] = useState<string[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const sheetInputRef = useRef<HTMLInputElement>(null);
 
   // Keep the visible text in sync when the value changes from outside this
   // component (edit-search prefill, swap, or the parent resetting the field).
@@ -92,30 +86,22 @@ export default function AirportInput({
     setQuery((prev) => (value && prev === value ? prev : value ? airportLabel(value, locale) : ""));
   }, [value, locale]);
 
+  // Leaving the field without a pick: the place it had comes back.
+  const close = useCallback(() => {
+    setOpen(false);
+    if (!typed) setQuery(value ? airportLabel(value, locale) : "");
+    setTyped(false);
+  }, [typed, value, locale]);
+
   useEffect(() => {
+    if (!open) return;
     function onClickOutside(e: MouseEvent) {
-      if (containerRef.current && !containerRef.current.contains(e.target as Node)) setOpen(false);
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) close();
     }
     document.addEventListener("mousedown", onClickOutside);
     return () => document.removeEventListener("mousedown", onClickOutside);
-  }, []);
+  }, [open, close]);
 
-  // The phone picker: the page behind stays still, the search field takes the keyboard.
-  useEffect(() => {
-    if (!sheet) return;
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    const id = window.setTimeout(() => sheetInputRef.current?.focus(), 60);
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setSheet(false);
-    window.addEventListener("keydown", onKey);
-    return () => {
-      document.body.style.overflow = prev;
-      window.clearTimeout(id);
-      window.removeEventListener("keydown", onKey);
-    };
-  }, [sheet]);
-
-  const picked = Boolean(value && findAirport(value));
   const starters = (): { title: string; list: Airport[] }[] => {
     const toAirports = (codes: string[]) =>
       codes.map((c) => findAirport(c)).filter((a): a is Airport => Boolean(a));
@@ -133,7 +119,6 @@ export default function AirportInput({
     keepRecent(a.iata);
     setOpen(false);
     setTyped(false);
-    setSheet(false);
   };
 
   const row = (a: Airport, big = false) => (
@@ -176,24 +161,20 @@ export default function AirportInput({
   };
 
   const openPicker = () => {
+    if (open) return;
     setRecent(readRecent());
-    if (isPhone()) {
-      inputRef.current?.blur();
-      setSheetQuery("");
-      setSheet(true);
-      return;
-    }
     setTyped(false);
+    setQuery("");
     setOpen(true);
-    // The whole label selected: the first letter typed replaces it.
-    window.setTimeout(() => inputRef.current?.select(), 0);
+    // Phone: the field to the top of the screen, so the list shows above the keyboard.
+    if (isPhone()) window.setTimeout(() => inputRef.current?.scrollIntoView({ block: "start", behavior: "smooth" }), 250);
   };
 
   return (
-    <div className="relative" ref={containerRef}>
+    <div className={`relative ${open ? "z-40" : ""}`} ref={containerRef}>
       <input
         ref={inputRef}
-        className={`${className ?? defaultInputClass} ${query && open ? "!pe-10" : ""}`}
+        className={`${className ?? defaultInputClass} scroll-mt-28 ${query && open ? "!pe-10" : ""}`}
         aria-label={ariaLabel ?? placeholder}
         value={query}
         placeholder={placeholder}
@@ -206,9 +187,13 @@ export default function AirportInput({
           setOpen(true);
         }}
         onFocus={openPicker}
-        onClick={() => !open && !sheet && openPicker()}
+        onClick={openPicker}
         onKeyDown={(e) => {
-          if (e.key === "Escape") setOpen(false);
+          if (e.key === "Tab") close();
+          if (e.key === "Escape") {
+            close();
+            inputRef.current?.blur();
+          }
           if (e.key === "Enter" && open && typed) {
             const first = searchAirports(query)[0];
             if (first) {
@@ -226,98 +211,20 @@ export default function AirportInput({
           onMouseDown={(e) => e.preventDefault()}
           onClick={() => {
             setQuery("");
-            onChange("");
             setTyped(false);
-            setRecent(readRecent());
-            if (isPhone()) {
-              setSheetQuery("");
-              setSheet(true);
-            } else {
-              setOpen(true);
-              inputRef.current?.focus();
-            }
+            inputRef.current?.focus();
           }}
           className="absolute end-2 top-1/2 z-20 grid h-7 w-7 -translate-y-1/2 place-items-center rounded-full bg-mist-200/80 text-sm font-black text-navy-700 hover:bg-mist-300"
         >
           ✕
         </button>
       )}
-      {open && !sheet && (
+      {open && (
         <div className="absolute start-0 z-30 mt-1 max-h-80 w-full min-w-[19rem] overflow-auto rounded-xl border border-gray-200 bg-white py-1 shadow-lg">
-          {groups(query, typed, false)}
+          {groups(query, typed, isPhone())}
         </div>
       )}
 
-      {sheet &&
-        createPortal(
-          <div
-            role="dialog"
-            aria-modal="true"
-            aria-label={ariaLabel ?? placeholder}
-            className="fixed inset-0 z-[80] flex flex-col bg-white"
-            dir={locale === "ar" ? "rtl" : "ltr"}
-          >
-            <div className="flex items-center gap-2 border-b border-mist-200 px-3 pb-2 pt-[max(0.75rem,env(safe-area-inset-top))]">
-              <button
-                type="button"
-                onClick={() => setSheet(false)}
-                aria-label={f.placeClose}
-                className="grid h-10 w-10 shrink-0 place-items-center rounded-full text-lg font-black text-navy-800 hover:bg-mist-100"
-              >
-                ✕
-              </button>
-              <p className="min-w-0 flex-1 truncate text-base font-extrabold text-navy-950">{ariaLabel ?? placeholder}</p>
-            </div>
-            <div className="px-3 py-3">
-              <div className="relative">
-                <span className="pointer-events-none absolute start-3 top-1/2 -translate-y-1/2 text-navy-400">
-                  <Icon name="search" className="h-4 w-4" />
-                </span>
-                <input
-                  ref={sheetInputRef}
-                  type="search"
-                  enterKeyHint="search"
-                  autoComplete="off"
-                  spellCheck={false}
-                  value={sheetQuery}
-                  onChange={(e) => setSheetQuery(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      const first = searchAirports(sheetQuery)[0];
-                      if (first) choose(first);
-                    }
-                  }}
-                  placeholder={f.placeSearch}
-                  aria-label={f.placeSearch}
-                  className="w-full rounded-xl bg-mist-50 py-3 pe-10 ps-9 text-base text-navy-950 outline-none ring-1 ring-mist-200 focus:ring-2 focus:ring-sun-400"
-                />
-                {sheetQuery && (
-                  <button
-                    type="button"
-                    aria-label={f.placeClear}
-                    onClick={() => {
-                      setSheetQuery("");
-                      sheetInputRef.current?.focus();
-                    }}
-                    className="absolute end-2 top-1/2 grid h-7 w-7 -translate-y-1/2 place-items-center rounded-full bg-mist-200 text-sm font-black text-navy-700"
-                  >
-                    ✕
-                  </button>
-                )}
-              </div>
-              {picked && (
-                <p className="mt-2 truncate text-xs font-semibold text-navy-500">
-                  <Icon name="check" className="me-1 inline h-3.5 w-3.5 text-emerald-600" />
-                  {airportLabel(value, locale)}
-                </p>
-              )}
-            </div>
-            <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain pb-[env(safe-area-inset-bottom)]">
-              {groups(sheetQuery, true, true)}
-            </div>
-          </div>,
-          document.body
-        )}
     </div>
   );
 }
