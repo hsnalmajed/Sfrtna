@@ -109,15 +109,15 @@ iPhone app.
 ## ▶ Hand-off (13 Nov 2026 evening) — current state
 
 **▶▶ NEXT SECTION (owner 13 Nov 18:52, BEFORE uploading to Google Play):**
-PROJECT_NOTES «Owner's notes of 13 Nov 2026» — A) results page on phone:
-plane arrow direction, filters, الأفضل/الأرخص/الأسرع tabs, flight + hotel
-cards like the site, 3 flights + «عرض باقي الرحلات (N)», remove «قارن
-الرحلة نفسها في مواقع أخرى»; B) «اقترح لي وجهة» misses destinations that fit
-the budget (DMM→LJU case) — root cause first; C) flights+hotels: one total
-budget split smartly + pick flight → pick hotel → summary page with both
-«احجز»; D) easier airport/city editing on «احجز». Order: A+D (one round,
-one release), then B, then C. Opus chat. Play upload waits for A–D.
-
+PROJECT_NOTES «Owner's notes of 13 Nov 2026» (A–D). **A+D DONE 13 Nov
+(commit 9890a27, release 43461431466 green)** — details in PROJECT_NOTES
+«A+D done». Waiting: owner checks on the phone (DMM/RUH→LJU search; edit
+the departure city). Hotel half of A4 not touched: the hotel list was
+paced shut (SerpApi, reopens ~15 Nov) → re-check once open, with C.
+**Next step: B** («اقترح لي وجهة» misses DMM→Slovenia under 10,000) — root
+cause first (cached Data API destinations vs live search), then C
+(flight+hotel: one budget, pick flight → hotel → summary). Opus chat.
+Play upload waits for B–C.
 
 **Release gate: CLOSED (4 Nov) + catch-up (6 Nov).** `release.yml` is the
 only way to production (Cloudflare Git build disabled). Pushes made by
@@ -403,4 +403,4 @@ payout threshold $500 not met» (wire $500; PayPal/ACH $100).
 Waiting on the owner: Apple review; Google Play ticket reply; Google-fares
 decision after the 6 Nov measurement; Android APK on a real phone.
 
-**Recommended model for the next chat: Sonnet 5.5** for the network sign-ups (Admitad, CJ) and the trip-mail test; Opus 5.5 for the code queue (banner, badges, share, Search Console).
+**Recommended model for the next chat: Opus 5.5** (section B: root-cause in «اقترح لي وجهة», then C).

@@ -2317,3 +2317,29 @@ C. Flights + hotels:
     Owner invites a better design than his.
 D. «احجز» page: editing the departure airport / destination city is very hard
    (retyping, clearing, searching another airport/city). Improve it.
+
+### A+D done — 13 Nov 2026 (commit 9890a27, release 43461431466)
+
+Root cause of A2–A6: the owner's search used the SECOND source (Google
+Flights via `/api/flight-fallback` — Riyadh has no partner fares since 30
+Oct, and any partner failure lands there too). That path drew a plain list
+(`FallbackFlights`) with no tabs, no filters, our card not used, 8 rows and
+the «قارن الرحلة نفسها…» row. Now:
+- `useFallbackFares` (FallbackFlights.tsx) fetches; `fromFallback`
+  (FlightResultsGuide.tsx) turns its fares into our `Flight`s (one way drawn,
+  `roundTripFare` → «الذهاب» label + «السعر للذهاب والعودة»; `href` = the
+  Google Flights search → «احجز» is a link, data-partner google-flights).
+  The guide's effective state `st` = these when the partner has 0 flights;
+  the partner stays first if it finds flights later. Bag / change-of-airport
+  filters hidden for this source; the bag preference is not applied there
+  (Google does not say).
+- Pick + next 2 shown; the rest behind «عرض باقي الرحلات (N)» (`showRest`).
+- `FallbackLinks` (other sites + airlines) only when no live fares at all.
+- A1: the route header plane is flipped in RTL (`rtl:-scale-x-100`).
+- D: `AirportInput` — focus selects the label, ✕ clears, recent (localStorage
+  `sfr-recent-airports`, try/catch) + popular before typing; phones (<640px)
+  get a full-screen picker (portal, z-80). Typed text no longer replaced by a
+  label when it happens to be a code ("dub").
+Checked locally (next dev + Playwright, phone 390×844, mocked fallback):
+tabs, filters, 3 cards + «عرض باقي الرحلات (4)», no compare row; picker
+phone + desktop.
