@@ -358,9 +358,11 @@ address» now shows the new Al Mubarraz address (synced from the profile).
 Rajhi bank statement (issued 13 Nov, owner updated his national address in
 the bank app). It matches the profile except city «AL AHSA» → profile city
 changed to AL AHSA (saved 13 Nov). stc bank statement unusable (no address).
-**NEXT (owner): Play Console › identity row › View details › Upload document
-› type «Bank statement (last 60 days)» › Al Rajhi PDF — screenshot each
-screen to Claude BEFORE submitting.** Then phone check
+**SUBMITTED 13 Nov 03:07 KSA:** address document = Bank statement (Al Rajhi
+PDF), name «ALMAJED, HASSAN ALI A», address Al Fath / AL AHSA 36342 → «In
+review». Wait for Google's mail; do NOT resubmit or edit the profile
+meanwhile. If rejected for the name (bank writes AHMED in full) → read the
+reason first, then decide. Then phone check
 unlocks; then trader status; payments phone «+966 056…» extra 0 still to fix. Trader status: declare
 by 1 Feb 2027 (owner's decision; trader = phone + address shown publicly;
 non-trader allowed if not distributed in EEA/UK). Store texts ready:
