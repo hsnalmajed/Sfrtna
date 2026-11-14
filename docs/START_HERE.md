@@ -106,7 +106,35 @@ City guide / Viator / Search Console / Status email / Feedback / Dashboard /
 «رحلتي» / Google Play account / Workers Paid / Hotels like Booking /
 iPhone app.
 
-## ▶ Hand-off (13 Nov 2026 evening) — current state
+## ▶ Hand-off (14 Nov 2026 noon) — current state
+
+**▶▶ NOW (owner 14 Nov 12:32: «no postponing — decide the fix and do it,
+it must make us better»; this comes BEFORE E round 2):** iPhone app fix for
+Apple's 4.3 / 4.2.6 rejection. Today `mobile/` = Capacitor 8 shell loading
+sfrtna.com with NO native plugins (only core) → Apple sees a website in a
+wrapper. Build real iPhone-only value (Capacitor plugins, called from the
+site's code only inside the app via `src/lib/nativeApp.ts`; the site keeps
+working in browsers):
+1) **Saved plans offline** — on open/save in the app, store the plan
+   (Preferences/Filesystem) + a native-shell offline screen that lists and
+   shows saved plans with no internet (abroad without data).
+2) **Local notifications** — trip reminders on the device (7 d / 3 d /
+   departure day / each plan day's first stop) + optional **prayer-time
+   alerts for the trip city** (we already compute times in the plan); asked
+   permission only when the traveller turns it on.
+3) **Native share sheet** for plan / route image / flight result (Share).
+4) Add-to-calendar for plan days (.ics via Share/Filesystem) if cheap;
+   haptics on key taps.
+Then: bump build, `ios.yml` uploads to App Store Connect; TestFlight
+internal testers (owner + friends with App Store Connect access, no beta
+review) 2–3 days, log real feedback; write the reply to Apple's 9 questions
+(honest; 4.2.6: own content/account, Capacitor = standard framework; partner
+flight widget = third-party content) + review notes listing the native
+features and how to see them (Airplane mode → saved plan); owner pastes it
+via «Reply to App Review», then resubmits. Never invent beta testing.
+Recommended model: **Opus 5.5**.
+
+**Earlier hand-off (13 Nov evening):**
 
 **▶▶ NEXT SECTION (owner 13 Nov 18:52, BEFORE uploading to Google Play):**
 PROJECT_NOTES «Owner's notes of 13 Nov 2026» (A–D). **A+D DONE 13 Nov
@@ -343,10 +371,7 @@ Queue (owner steps one at a time; code items in a fresh Opus chat):**
 ~10 green = close it.
 
 **iPhone app: REJECTED 13 Nov 22:51 — 4.3 Spam + 4.2.6** (PROJECT_NOTES
-«iPhone app REJECTED»). Owner 14 Nov: POSTPONE + STRENGTHEN — no reply /
-resubmit / cancel now. After E + audit: iPhone-only features (offline saved
-plan, push trip reminders, native share), real TestFlight beta (~1 week,
-log feedback), then new build + reply to Apple's 9 questions + resubmit.
+«iPhone app REJECTED»). See ▶▶ NOW at the top of the hand-off.
 **Owner 10 Nov 03:50 — app banner, build when each store approves:** top
 banner «حمّل التطبيق» on phones, dismissible, visitor stays in the browser.
 Owner 03:51: must be eye-catching like other big sites → OUR OWN designed
