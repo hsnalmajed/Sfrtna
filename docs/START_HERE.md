@@ -144,7 +144,11 @@ mall; 3) reopened saved plan shows «محفوظة»; 4) plan mail for smart plan
 5) ride-time accuracy. Owner (parallel, one step): open a plan on the phone
 (DMM→Colombo 10 days; Istanbul 4 days), send ONE screenshot of anything
 wrong. Then step 2 = FULL PRODUCT AUDIT (F coverage first: Ella
-English-only + no restaurants, Galle 8 places).
+English-only + no restaurants, Galle 8 places). **Round 1b (14 Nov 11:20,
+release green):** Arabic final-letter tails fixed site-wide (globals.css),
+route image = place icons + city cards that avoid stops + footer of each
+city's best places, «حفظ الصورة» via app share sheet (`share-binary`, NEW
+native code: Android test APK rebuilt; iOS needs the next build).
 
 **Release gate: CLOSED (4 Nov) + catch-up (6 Nov).** `release.yml` is the
 only way to production (Cloudflare Git build disabled). Pushes made by
