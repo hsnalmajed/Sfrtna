@@ -81,6 +81,38 @@ export function toKML(places: ExportPlace[], title: string): string {
   );
 }
 
+/**
+ * A day-by-day plan as KML: one folder (layer in Google My Maps) per day,
+ * its stops in order, plus the day's line from stop to stop.
+ */
+export function toKMLDays(days: { name: string; places: ExportPlace[] }[], title: string): string {
+  const COLORS = ["ff481de1", "ffeb6325", "ff699605", "ff0677d9", "ffed3a7c", "ffb29108", "ff7727db", "ff4aa316", "ff0c58ea", "ffe5464f"];
+  const styles = COLORS.map((c, i) => `    <Style id="d${i}"><IconStyle><color>${c}</color></IconStyle><LineStyle><color>${c}</color><width>4</width></LineStyle></Style>`).join("\n");
+  const folders = days
+    .filter((d) => d.places.length)
+    .map((d, i) => {
+      const style = `#d${i % COLORS.length}`;
+      const marks = d.places
+        .map(
+          (p, k) =>
+            `      <Placemark>\n        <name>${xmlEscape(`${k + 1}. ${p.name}`)}</name>\n` +
+            (p.description ? `        <description>${xmlEscape(p.description)}</description>\n` : "") +
+            `        <styleUrl>${style}</styleUrl>\n        <Point><coordinates>${coord(p.lon)},${coord(p.lat)},0</coordinates></Point>\n      </Placemark>`
+        )
+        .join("\n");
+      const line =
+        d.places.length > 1
+          ? `\n      <Placemark>\n        <name>${xmlEscape(d.name)}</name>\n        <styleUrl>${style}</styleUrl>\n        <LineString><tessellate>1</tessellate><coordinates>${d.places.map((p) => `${coord(p.lon)},${coord(p.lat)},0`).join(" ")}</coordinates></LineString>\n      </Placemark>`
+          : "";
+      return `    <Folder>\n      <name>${xmlEscape(d.name)}</name>\n${marks}${line}\n    </Folder>`;
+    })
+    .join("\n");
+  return (
+    `<?xml version="1.0" encoding="UTF-8"?>\n<kml xmlns="http://www.opengis.net/kml/2.2">\n  <Document>\n    <name>${xmlEscape(title)}</name>\n` +
+    `${styles}\n${folders}\n  </Document>\n</kml>\n`
+  );
+}
+
 // Keeps filenames safe across Android, iOS and desktop: no separators, no
 // characters Windows rejects, and never empty.
 export function safeFileName(base: string, extension: string): string {

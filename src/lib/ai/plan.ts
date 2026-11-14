@@ -62,7 +62,12 @@ export interface PlanAnswers {
   arrive?: (typeof DAY_PART)[number];
   leave?: (typeof DAY_PART)[number];
   needs?: (typeof NEEDS)[number][];
+  /** Long trip in a small country: several cities (default) or one city only. */
+  route?: (typeof ROUTE)[number];
 }
+
+/** «multi»: past the days a city needs, the plan moves on to the country's other cities. */
+export const ROUTE = ["multi", "single"] as const;
 
 export interface PlanRequest {
   code: string;
@@ -120,6 +125,7 @@ export function cleanPlanRequest(b: unknown): PlanRequest | null {
       arrive: pickEnum(DAY_PART, a.arrive) ?? "morning",
       leave: pickEnum(DAY_PART, a.leave) ?? "evening",
       needs: pickMany(NEEDS, a.needs, NEEDS.length),
+      route: pickEnum(ROUTE, a.route) ?? "multi",
     },
   };
 }
@@ -128,7 +134,8 @@ export function cleanPlanRequest(b: unknown): PlanRequest | null {
 
 export interface PlanItem {
   time: string;
-  kind: "place" | "meal" | "break";
+  /** «move»: the way from one city of the route to the next. */
+  kind: "place" | "meal" | "break" | "move";
   name: string;
   /** Name as written locally, area, rating as the source shows it. */
   localName: string;
@@ -153,6 +160,12 @@ export interface PlanItem {
   mapQuery?: string;
   /** Which of the traveller's interests chose it (an INTERESTS key). */
   forYou?: string;
+  /** A «move» between cities: where the ride starts. */
+  from?: { lat: number; lon: number };
+  /** Our own id of the stop («p:<guide q>» / «r:<restaurant id>»): swaps and saving. */
+  key?: string;
+  /** «بديل»: other stops that fit this slot (same day, close by, open that day). */
+  alts?: PlanItem[];
 }
 
 export interface PlanDay {
@@ -166,6 +179,22 @@ export interface PlanDay {
   prayers?: { fajr: string; dhuhr: string; asr: string; maghrib: string; isha: string };
   /** What shaped this day (heat, arrival, a closed day…), short notes. */
   notes?: string[];
+  /** On a route across cities: the city this day is spent in. */
+  city?: { code: string; slug: string; name: string };
+}
+
+/** One city of a route, in order. */
+export interface PlanLeg {
+  slug: string;
+  code: string;
+  name: string;
+  days: number;
+  lat: number;
+  lon: number;
+  /** Days the city needs to see its best (our advice). */
+  needs: number;
+  /** Close enough to the city before: visited from that hotel, no move. */
+  dayTrip?: boolean;
 }
 
 export interface SmartPlan {
@@ -185,6 +214,11 @@ export interface SmartPlan {
   from: string;
   to: string;
   generatedAt: string;
+  /** Days the chosen city needs to see its best (our advice), and the route if the trip goes on to other cities. */
+  cityDays?: number;
+  route?: PlanLeg[];
+  /** A route was possible but the traveller asked for one city: the cities that could be added. */
+  suggest?: PlanLeg[];
 }
 
 const str = { type: "string" } as const;

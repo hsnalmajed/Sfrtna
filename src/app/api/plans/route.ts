@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { accounts, sessionToken, type SavedPlanData } from "@/lib/accounts";
+import { cleanPlanRequest } from "@/lib/ai/plan";
 
 export const dynamic = "force-dynamic";
 
@@ -27,8 +28,15 @@ function clean(p: unknown): SavedPlanData | null {
   if (!Array.isArray(o.days) || o.days.length < 1 || o.days.length > 30) return null;
   const days: string[][] = [];
   for (const d of o.days) {
-    if (!Array.isArray(d) || d.length > 40 || !d.every((k) => typeof k === "string" && k.length <= 80)) return null;
+    if (!Array.isArray(d) || d.length > 40 || !d.every((k) => typeof k === "string" && k.length <= 90)) return null;
     days.push(d as string[]);
+  }
+  // The smart plan keeps its answers (checked like a new plan request) to rebuild it.
+  let smart: SavedPlanData["smart"];
+  if (o.source === "smart") {
+    const req = cleanPlanRequest({ code, slug, from, to, locale: o.locale, answers: (o.smart as { answers?: unknown } | undefined)?.answers });
+    if (!req) return null;
+    smart = { answers: req.answers };
   }
   return {
     v: 1,
@@ -36,7 +44,8 @@ function clean(p: unknown): SavedPlanData | null {
     slug,
     city,
     locale: o.locale === "en" ? "en" : "ar",
-    source: o.source === "auto" ? "auto" : "pick",
+    source: o.source === "auto" ? "auto" : o.source === "smart" ? "smart" : "pick",
+    ...(smart ? { smart } : {}),
     from,
     to,
     days,

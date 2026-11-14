@@ -93,7 +93,7 @@ const DEFAULT_MIN: Record<Group, number> = {
   culture: 90,
 };
 
-const PER_DAY = { relaxed: 3, balanced: 4, packed: 5 } as const;
+const PER_DAY = { relaxed: 3, balanced: 5, packed: 6 } as const;
 const START_MIN = { early: 8 * 60, normal: 10 * 60, late: 12 * 60 } as const;
 /** First day: when the plan can start; last day: when it must end. */
 const ARRIVE_START = { morning: 0, noon: 13 * 60 + 30, evening: 17 * 60 + 30 } as const;
@@ -363,7 +363,32 @@ const toMin = (hm: string) => {
 
 // ── The plan ───────────────────────────────────────────────────────────────
 
-export function buildGuidePlan(req: PlanRequest, guide: GuideFile, restaurants: StoredRestaurant[], cityName: string, cityEn: string, centre?: { lat: number; lon: number }): SmartPlan {
+/**
+ * Days a city needs to see its best at a balanced pace (our advice, shown in
+ * the plan and on destination pages): grows with how much the guide holds,
+ * plus half a day for each visit that takes most of a day (theme parks,
+ * beaches, big parks). 1–6 days.
+ */
+export function cityNeedsDays(guide: GuideFile | null): number {
+  const pool = (guide?.places ?? []).filter((p) => usable(p) && !p.out);
+  if (!pool.length) return 1;
+  const long = pool.slice(0, 40).filter((p) => (p.m ?? DEFAULT_MIN[p.g]) >= 180).length;
+  return Math.max(1, Math.min(6, Math.round(Math.sqrt(pool.length) / 2.4 + Math.min(2, long * 0.5))));
+}
+
+/** A leg of a route across cities (routePlan.ts): when the first day starts, and whether the last day is a full one. */
+export interface LegOptions {
+  /** Minute of the first day the plan may start (after the ride from the city before). */
+  startAt?: number;
+  /** The last day is a full day here (the next city takes over the morning after). */
+  openEnd?: boolean;
+  /** Places already planned in other cities of the route (by guide q). */
+  used?: Set<string>;
+  /** The country's names: a pin named after the country is not a place. */
+  countryNames?: string[];
+}
+
+export function buildGuidePlan(req: PlanRequest, guide: GuideFile, restaurants: StoredRestaurant[], cityName: string, cityEn: string, centre?: { lat: number; lon: number }, opts: LegOptions = {}): SmartPlan {
   const a = req.answers;
   const t = T[req.locale];
   const ar = req.locale === "ar";
@@ -378,6 +403,10 @@ export function buildGuidePlan(req: PlanRequest, guide: GuideFile, restaurants: 
   const easyGoing = seniors || needs.has("wheelchair") || needs.has("stroller") || needs.has("less_walking");
   const walkKm = easyGoing ? 0.8 : 1.5;
   const perDay = Math.max(2, PER_DAY[a.pace] - (seniors || littleOnes ? 1 : 0));
+  const custom = typeof opts.startAt === "number";
+  const aStart = custom ? (opts.startAt as number) : ARRIVE_START[arrive];
+  const aShare = custom ? Math.min(1, Math.max(0.15, (19.5 * 60 - aStart) / (9.5 * 60))) : ARRIVE_SHARE[arrive];
+  const lShare = opts.openEnd ? 1 : LEAVE_SHARE[leave];
 
   // The month's climate (first day's month is enough for the choosing).
   const month = Number(req.from.slice(5, 7));
@@ -394,7 +423,9 @@ export function buildGuidePlan(req: PlanRequest, guide: GuideFile, restaurants: 
     for (const g of WANTS[i].groups) if (!wantedGroups.has(g)) wantedGroups.set(g, i);
   }
   const askedChurches = a.interests.includes("churches");
-  const pool = guide.places.filter((p) => usable(p) && !p.out);
+  // A pin named after the whole country (bad mapping) is not a stop.
+  const countryWords = new Set([opts.countryNames ?? []].flat().map((x) => x.toLowerCase()));
+  const pool = guide.places.filter((p) => usable(p) && !p.out && !opts.used?.has(p.q) && !countryWords.has(p.n.toLowerCase()) && !countryWords.has((p.e ?? "").toLowerCase()));
   const scored = pool.map((p, rank) => {
     let s = 0;
     let why: Interest | undefined = p.kd ? wantedKinds.get(p.kd) : undefined;
@@ -424,7 +455,7 @@ export function buildGuidePlan(req: PlanRequest, guide: GuideFile, restaurants: 
   scored.sort((x, y) => y.s - x.s);
 
   // ── 2. Choose ────────────────────────────────────────────────────────
-  const capacity = Math.max(1, Math.round(perDay * (days === 1 ? Math.min(ARRIVE_SHARE[arrive], LEAVE_SHARE[leave] + 0.5) : ARRIVE_SHARE[arrive] + LEAVE_SHARE[leave] + (days - 2))));
+  const capacity = Math.max(1, Math.round(perDay * (days === 1 ? Math.min(aShare, lShare + 0.5) : aShare + lShare + (days - 2))));
   const target = Math.min(scored.length, capacity);
   const chosen: { p: GuidePlace; why?: Interest; rank: number }[] = [];
   const perGroup = new Map<Group, number>();
@@ -450,7 +481,7 @@ export function buildGuidePlan(req: PlanRequest, guide: GuideFile, restaurants: 
 
   // ── 3. Days ──────────────────────────────────────────────────────────
   const dateOf = (d: number) => new Date(Date.parse(`${req.from}T00:00:00Z`) + d * 86_400_000);
-  const share = (d: number): number => (days === 1 ? 1 : d === 0 ? ARRIVE_SHARE[arrive] : d === days - 1 ? LEAVE_SHARE[leave] : 1);
+  const share = (d: number): number => (days === 1 ? (custom ? aShare : 1) : d === 0 ? aShare : d === days - 1 ? lShare : 1);
   const left = chosen.map((c) => c.p);
   const dayStops: GuidePlace[][] = [];
   let closedSkipped = false;
@@ -483,8 +514,10 @@ export function buildGuidePlan(req: PlanRequest, guide: GuideFile, restaurants: 
         p.g !== last.g && !(p.g === "religion" && day.some((x) => x.g === "religion")) && day.filter((x) => x.g === p.g).length < 2;
       const fits = (p: GuidePlace) => (p.m ?? DEFAULT_MIN[p.g]) < FULL_DAY && openToday(p);
       left.sort((x, y) => km(last, x) - km(last, y));
-      let i = left.findIndex((p) => ok(p) && fits(p));
-      if (i < 0) i = left.findIndex(fits);
+      // No long hops inside a day (Versailles is a day of its own, not a stop before the Louvre).
+      const near = (p: GuidePlace) => km(last, p) <= 12;
+      let i = left.findIndex((p) => near(p) && ok(p) && fits(p));
+      if (i < 0) i = left.findIndex((p) => near(p) && fits(p));
       if (i < 0) break;
       if (!openToday(left[i])) closedSkipped = true;
       day.push(left.splice(i, 1)[0]);
@@ -507,15 +540,18 @@ export function buildGuidePlan(req: PlanRequest, guide: GuideFile, restaurants: 
   // ── 5. Times, meals, prayers, weather ───────────────────────────────
   const usedMeals = new Set<string>();
   const vegWords = /vegetarian|vegan/;
-  const pickMeal = (at: { y: number; x: number }): StoredRestaurant | undefined => {
-    const open = restaurants.filter((r) => !usedMeals.has(r.i) && isMeal(r) && !(a.halalOnly && DRINKS.test(`${r.n} ${r.e ?? ""} ${r.u ?? ""}`)));
+  const pickMeal = (at: { y: number; x: number }): { r?: StoredRestaurant; near: StoredRestaurant[] } => {
+    const open = restaurants.filter((r) => !usedMeals.has(r.i) && !usedMeals.has(r.n.toLowerCase()) && isMeal(r) && !(a.halalOnly && DRINKS.test(`${r.n} ${r.e ?? ""} ${r.u ?? ""}`)));
     const close = open.filter((r) => km(at, r) < 1.2).sort((p, q) => q.f - p.f);
     let near = close.length ? close.slice(0, 15) : open.filter((r) => km(at, r) < 3).sort((p, q) => km(at, p) - km(at, q)).slice(0, 15);
     if (a.vegetarian) near = [...near.filter((r) => vegWords.test(r.u ?? "")), ...near.filter((r) => !vegWords.test(r.u ?? ""))];
     if (a.halalOnly) near = [...near.filter((r) => r.h === 1), ...near.filter((r) => r.h !== 1)];
     const r = near[0];
-    if (r) usedMeals.add(r.i);
-    return r;
+    if (r) {
+      usedMeals.add(r.i);
+      usedMeals.add(r.n.toLowerCase());
+    }
+    return { r, near };
   };
   const name = (p: { n: string; a?: string; an?: string; e?: string }) => (ar ? p.a || p.an || p.e || p.n : p.e || p.n);
   const blankItem = (): PlanItem => ({
@@ -539,6 +575,52 @@ export function buildGuidePlan(req: PlanRequest, guide: GuideFile, restaurants: 
   const lat0 = centre?.lat ?? chosen[0]?.p.y ?? 0;
   const lon0 = centre?.lon ?? chosen[0]?.p.x ?? 0;
   const wantPrayer = needs.has("prayer") || a.halalOnly;
+  // Every stop's slot, for «بديل» once the whole plan is known.
+  const mealSlots: { it: PlanItem; near: StoredRestaurant[]; kind: "lunch" | "dinner"; at: { y: number; x: number } }[] = [];
+  const placeSlots: { it: PlanItem; p: GuidePlace; prev: { y: number; x: number } | null; wd: number; time: number }[] = [];
+  const fillMeal = (it: PlanItem, r: StoredRestaurant, kind: "lunch" | "dinner", at: { y: number; x: number }) => {
+    const rn = name(r);
+    it.key = `r:${r.i}`;
+    it.name = (kind === "lunch" ? t.lunchAt : t.dinnerAt).replace("{name}", rn);
+    it.localName = r.n !== rn ? r.n : "";
+    it.why = t.mealNearby;
+    it.dish = readableCuisine(r.u, req.locale);
+    it.halal = r.h === 1 ? t.halalTagged : a.halalOnly ? t.halalCheck : "";
+    it.lat = r.y;
+    it.lon = r.x;
+    it.mapQuery = `${r.n} ${cityEn}`;
+    it.fromPrevKm = Math.round(km(at, r) * 10) / 10;
+  };
+  /** A place as a stop at this time, coming from prev (no change to the day's clock). */
+  const placeItem = (p: GuidePlace, at: number, prevPt: { y: number; x: number } | null, firstOfDay: boolean): PlanItem => {
+    const it = blankItem();
+    const minutes = Math.round((p.m ?? DEFAULT_MIN[p.g]) * (a.pace === "relaxed" ? 1.15 : a.pace === "packed" ? 0.85 : 1) * (seniors ? 1.15 : 1));
+    it.key = `p:${p.q}`;
+    it.time = hhmm(at);
+    it.name = name(p);
+    it.localName = p.n !== it.name ? p.n : "";
+    it.durationMin = roundTo(minutes, 5);
+    it.why = [ar ? p.d : p.de, p.wh ? t.heritage : ""].filter(Boolean).join(" ");
+    const tips = [(ar ? p.tp : p.tpe) || (ar ? p.bt : p.bte) || ""];
+    if (needs.has("avoid_crowds") && (rankOf.get(p.q) ?? 99) < 10 && firstOfDay) tips.push(t.early);
+    if (hot && !isIndoor(p)) tips.push(t.outdoorHot);
+    it.tip = tips.filter(Boolean).join(" ");
+    it.hours = p.oh ? readableHours(p.oh, req.locale) : "";
+    it.booking = p.fee === "no" ? t.freeEntry : p.fee === "yes" || p.sl >= 25 ? t.bookAhead : "";
+    it.dress = (ar ? p.dr : p.dre) ?? "";
+    it.website = p.web ?? "";
+    it.lat = p.y;
+    it.lon = p.x;
+    it.mapQuery = `${p.e || p.n} ${cityEn}`;
+    it.forYou = whyOf.get(p.q);
+    if (p.fee === "yes" || p.sl >= 25) it.ticketQuery = `${(p.e || p.n).replace(/\s*\([^)]*\)/g, "")} ${cityEn}`;
+    if (prevPt) {
+      const d = km(prevPt, p);
+      it.fromPrevKm = Math.round(d * 10) / 10;
+      it.gettingThere = travel(d, a.move, walkKm, t).how;
+    }
+    return it;
+  };
 
   const out: PlanDay[] = dayStops.map((stops, di) => {
     const dt = dateOf(di);
@@ -547,34 +629,26 @@ export function buildGuidePlan(req: PlanRequest, guide: GuideFile, restaurants: 
     const prayers = wantPrayer ? prayersFor(req.slug, req.code, lat0, lon0, date) : undefined;
     const friday = dt.getUTCDay() === 5 && wantPrayer && prayers;
     const notes: string[] = [];
-    const first = di === 0 && days > 1;
-    const lastDay = di === days - 1 && days > 1;
-    let clock = Math.max(START_MIN[a.start], first ? ARRIVE_START[arrive] : 0);
+    const first = di === 0 && (days > 1 || custom);
+    const lastDay = !opts.openEnd && di === days - 1 && days > 1;
+    let clock = Math.max(START_MIN[a.start], first ? aStart : 0);
     if (needs.has("avoid_crowds")) clock = Math.min(clock, first && arrive !== "morning" ? clock : 9 * 60);
     const dayEnd = lastDay ? LEAVE_END[leave] : (a.lateNights ? 22 : 19) * 60 + 30;
-    if (first && arrive !== "morning") notes.push(t.arriveNote);
+    if (first && !custom && arrive !== "morning") notes.push(t.arriveNote);
     if (lastDay && leave !== "evening") notes.push(t.leaveNote);
     let lunchDone = false;
     let fridayDone = false;
     const items: PlanItem[] = [];
     let prev: { y: number; x: number } | null = null;
     const addMeal = (kind: "lunch" | "dinner", at: { y: number; x: number }) => {
-      const r = pickMeal(at);
+      const { r, near } = pickMeal(at);
       const it = blankItem();
       it.kind = "meal";
       it.time = hhmm(roundTo(clock));
       it.durationMin = kind === "lunch" ? 60 : 75;
       if (r) {
-        const rn = name(r);
-        it.name = (kind === "lunch" ? t.lunchAt : t.dinnerAt).replace("{name}", rn);
-        it.localName = r.n !== rn ? r.n : "";
-        it.why = t.mealNearby;
-        it.dish = readableCuisine(r.u, req.locale);
-        it.halal = r.h === 1 ? t.halalTagged : a.halalOnly ? t.halalCheck : "";
-        it.lat = r.y;
-        it.lon = r.x;
-        it.mapQuery = `${r.n} ${cityEn}`;
-        it.fromPrevKm = Math.round(km(at, r) * 10) / 10;
+        fillMeal(it, r, kind, at);
+        mealSlots.push({ it, near, kind, at });
       } else {
         it.name = kind === "lunch" ? t.lunch : t.dinner;
         it.halal = a.halalOnly ? t.halalCheck : "";
@@ -612,8 +686,13 @@ export function buildGuidePlan(req: PlanRequest, guide: GuideFile, restaurants: 
     };
     const placeStop = (p: GuidePlace) => {
       addFriday();
+      // Arriving after midday (a ride from another city, a noon flight): lunch first, near the first stop.
+      if (!prev && !lunchDone && clock >= 12 * 60 && clock <= 15 * 60 + 30) {
+        addMeal("lunch", p);
+        lunchDone = true;
+      }
       if (prev) {
-        if (!lunchDone && clock >= 12 * 60) {
+        if (!lunchDone && clock >= 12 * 60 && clock <= 15 * 60 + 30) {
           addFriday();
           addMeal("lunch", prev);
           lunchDone = true;
@@ -621,31 +700,9 @@ export function buildGuidePlan(req: PlanRequest, guide: GuideFile, restaurants: 
         }
         clock += travel(km(prev, p), a.move, walkKm, t).min;
       }
-      const it = blankItem();
-      const minutes = Math.round((p.m ?? DEFAULT_MIN[p.g]) * (a.pace === "relaxed" ? 1.15 : a.pace === "packed" ? 0.85 : 1) * (seniors ? 1.15 : 1));
-      it.time = hhmm(roundTo(clock));
-      it.name = name(p);
-      it.localName = p.n !== it.name ? p.n : "";
-      it.durationMin = roundTo(minutes, 5);
-      it.why = [ar ? p.d : p.de, p.wh ? t.heritage : ""].filter(Boolean).join(" ");
-      const tips = [(ar ? p.tp : p.tpe) || (ar ? p.bt : p.bte) || ""];
-      if (needs.has("avoid_crowds") && (rankOf.get(p.q) ?? 99) < 10 && items.filter((x) => x.kind === "place").length === 0) tips.push(t.early);
-      if (hot && !isIndoor(p)) tips.push(t.outdoorHot);
-      it.tip = tips.filter(Boolean).join(" ");
-      it.hours = p.oh ? readableHours(p.oh, req.locale) : "";
-      it.booking = p.fee === "no" ? t.freeEntry : p.fee === "yes" || p.sl >= 25 ? t.bookAhead : "";
-      it.dress = (ar ? p.dr : p.dre) ?? "";
-      it.website = p.web ?? "";
-      it.lat = p.y;
-      it.lon = p.x;
-      it.mapQuery = `${p.e || p.n} ${cityEn}`;
-      it.forYou = whyOf.get(p.q);
-      if (p.fee === "yes" || p.sl >= 25) it.ticketQuery = `${(p.e || p.n).replace(/\s*\([^)]*\)/g, "")} ${cityEn}`;
-      if (prev) {
-        const d = km(prev, p);
-        it.fromPrevKm = Math.round(d * 10) / 10;
-        it.gettingThere = travel(d, a.move, walkKm, t).how;
-      }
+      const it = placeItem(p, roundTo(clock), prev, items.filter((x) => x.kind === "place").length === 0);
+      placeSlots.push({ it, p, prev, wd: dt.getUTCDay(), time: roundTo(clock) });
+      const tips = [it.tip];
       // Friday prayer falls inside this visit: say when, and where to go.
       if (friday && !fridayDone && prayers) {
         const at = toMin(prayers.dhuhr);
@@ -662,13 +719,14 @@ export function buildGuidePlan(req: PlanRequest, guide: GuideFile, restaurants: 
       prev = p;
     };
     for (const p of [...stops]) {
-      if (prev && clock + (p.m ?? DEFAULT_MIN[p.g]) * 0.8 > dayEnd) break;
+      const arriveAt = prev ? clock + travel(km(prev, p), a.move, walkKm, t).min : clock;
+      if (prev && arriveAt + (p.m ?? DEFAULT_MIN[p.g]) * 0.8 > dayEnd) break;
       // Late in the day only what is open in the evening.
-      if (prev && clock + 30 >= LATE && !eveningOk(p)) continue;
+      if (prev && arriveAt + 30 >= LATE && !eveningOk(p)) continue;
       placeStop(p);
     }
     addFriday();
-    if (prev && !lunchDone && clock >= 12 * 60 && clock < dayEnd) {
+    if (prev && !lunchDone && clock >= 12 * 60 && clock <= 15 * 60 + 30 && clock < dayEnd) {
       addMeal("lunch", prev);
       lunchDone = true;
       addRest();
@@ -682,7 +740,7 @@ export function buildGuidePlan(req: PlanRequest, guide: GuideFile, restaurants: 
         .filter((c) => !closedOn(c.p.oh, wd) && (c.p.m ?? DEFAULT_MIN[c.p.g]) < FULL_DAY && km(here, c.p) < 4)
         .filter((c) => clock + travel(km(here, c.p), a.move, walkKm, t).min + (c.p.m ?? DEFAULT_MIN[c.p.g]) <= fillUntil)
         .filter((c) => !(c.p.g === "religion" && stops.some((x) => x.g === "religion")))
-        .filter((c) => clock < LATE - 60 || eveningOk(c.p))
+        .filter((c) => clock + travel(km(here, c.p), a.move, walkKm, t).min < LATE - 30 || eveningOk(c.p))
         .sort((x, y) => y.s - x.s - (km(here, y.p) - km(here, x.p)) * 8)[0];
       if (!next) break;
       extras.splice(extras.indexOf(next), 1);
@@ -706,6 +764,20 @@ export function buildGuidePlan(req: PlanRequest, guide: GuideFile, restaurants: 
     if (prev && !lastDay && (a.lateNights || clock <= 20 * 60)) {
       clock = Math.max(clock + 30, 19 * 60);
       addMeal("dinner", prev);
+      // Night owls: one more stop that is at its best after dark, close by.
+      const nightOwl = a.lateNights || a.interests.includes("night");
+      const here: { y: number; x: number } = items[items.length - 1]?.lat !== undefined ? { y: items[items.length - 1].lat as number, x: items[items.length - 1].lon as number } : prev;
+      const night = nightOwl
+        ? extras.filter((c) => eveningOk(c.p) && !isIndoor(c.p) && km(here, c.p) < 3 && !closedOn(c.p.oh, wd)).sort((x, y) => y.s - x.s)[0]
+        : undefined;
+      if (night && clock <= 21 * 60 + 30) {
+        extras.splice(extras.indexOf(night), 1);
+        whyOf.set(night.p.q, night.why ?? (a.interests.includes("night") ? "night" : undefined));
+        rankOf.set(night.p.q, night.rank);
+        prev = here;
+        placeStop(night.p);
+        items[items.length - 1].durationMin = Math.min(items[items.length - 1].durationMin, 60);
+      }
     } else if (!prev && first) {
       // Arrival in the evening: dinner near the city centre.
       clock = Math.max(clock, 19 * 60);
@@ -723,6 +795,50 @@ export function buildGuidePlan(req: PlanRequest, guide: GuideFile, restaurants: 
     const title = stops[0] ? t.dayTitle.replace("{place}", name(stops[0])) : first ? t.arriveTitle : lastDay ? t.leaveTitle : cityName;
     return { date, title, area: "", weather, wear, items, prayers, notes };
   });
+
+  // ── «بديل»: up to three other stops for each slot ───────────────────
+  // Places: not in the plan, open that day, close to the stop they replace,
+  // best for this traveller first. Meals: the next restaurants near the
+  // same spot. Each comes ready to drop in (same time, its own facts).
+  const inPlan = new Set(placeSlots.map((x) => x.p.q));
+  for (const sl of placeSlots) {
+    const fullDay = (sl.p.m ?? DEFAULT_MIN[sl.p.g]) >= FULL_DAY;
+    const near = (r: number) =>
+      scored.filter(
+        (c) =>
+          !inPlan.has(c.p.q) &&
+          c.s > -100 &&
+          !closedOn(c.p.oh, sl.wd) &&
+          ((c.p.m ?? DEFAULT_MIN[c.p.g]) >= FULL_DAY) === fullDay &&
+          km(sl.p, c.p) < r &&
+          km(sl.p, c.p) > 0.15
+      );
+    let cands = near(4);
+    if (cands.length < 3) cands = near(10);
+    const alts = cands
+      .sort((x, y) => y.s - km(sl.p, y.p) * 12 - (x.s - km(sl.p, x.p) * 12))
+      .slice(0, 3)
+      .map((c) => {
+        whyOf.set(c.p.q, c.why);
+        const it = placeItem(c.p, sl.time, sl.prev, false);
+        return it;
+      });
+    if (alts.length) sl.it.alts = alts;
+  }
+  for (const sl of mealSlots) {
+    const alts = sl.near
+      .filter((r) => !usedMeals.has(r.i) && !usedMeals.has(r.n.toLowerCase()))
+      .slice(0, 3)
+      .map((r) => {
+        const it = blankItem();
+        it.kind = "meal";
+        it.time = sl.it.time;
+        it.durationMin = sl.it.durationMin;
+        fillMeal(it, r, sl.kind, sl.at);
+        return it;
+      });
+    if (alts.length) sl.it.alts = alts;
+  }
 
   // ── Summary and what to bring ────────────────────────────────────────
   const considered: string[] = [];
@@ -761,5 +877,6 @@ export function buildGuidePlan(req: PlanRequest, guide: GuideFile, restaurants: 
     from: req.from,
     to: req.to,
     generatedAt: new Date().toISOString(),
+    cityDays: cityNeedsDays(guide),
   };
 }

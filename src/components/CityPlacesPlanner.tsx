@@ -270,10 +270,13 @@ export default function CityPlacesPlanner({
     if (!id) return;
     let live = true;
     fetch("/api/plans", { cache: "no-store" })
-      .then((r) => r.json() as Promise<{ ok: boolean; plans?: { id: string; plan: { source: "pick" | "auto"; from: string; to: string; days: string[][]; short?: boolean } }[] }>)
+      .then((r) => r.json() as Promise<{ ok: boolean; plans?: { id: string; plan: { source: "pick" | "auto" | "smart"; from: string; to: string; days: string[][]; short?: boolean } }[] }>)
       .then((j) => {
         if (!live) return;
-        const saved = j.plans?.find((p) => p.id === id)?.plan;
+        const found = j.plans?.find((p) => p.id === id)?.plan;
+        // A smart plan is reopened by the smart planner itself (SmartPlanner.tsx).
+        if (found?.source === "smart") return;
+        const saved = found as (typeof found & { source: "pick" | "auto" }) | undefined;
         const byKey = new Map(places.map((p) => [p.key, p]));
         const rebuilt = saved?.days.map((d) => d.map((k) => byKey.get(k)).filter((p): p is PlaceListItem => Boolean(p)));
         if (!saved || !rebuilt || rebuilt.every((d) => d.length === 0)) {

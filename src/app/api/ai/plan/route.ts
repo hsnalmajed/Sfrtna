@@ -4,11 +4,9 @@ import { buildPlan, cleanPlanRequest, type SmartPlan } from "@/lib/ai/plan";
 import { takeAi } from "@/lib/ai/quota";
 import { cachedJson } from "@/lib/edgeCache";
 import { readGuide } from "@/lib/guide";
-import { buildGuidePlan, guidePlanReady } from "@/lib/guidePlan";
+import { guidePlanReady } from "@/lib/guidePlan";
+import { buildRoutePlan } from "@/lib/routePlan";
 import type { GuideFile } from "@/lib/guideTypes";
-import { readStoredRestaurants } from "@/lib/mapPins";
-import { findCity } from "@/lib/cities";
-import { CITY_COORDS } from "@/data/cityCoords";
 
 export const dynamic = "force-dynamic";
 
@@ -25,10 +23,9 @@ export async function POST(request: Request) {
   // and no cost per visitor (src/lib/guidePlan.ts).
   const guide = await readGuide(req.slug);
   if (guidePlanReady(guide)) {
-    const city = findCity(req.code, req.slug);
-    if (!city) return NextResponse.json({ ok: false, reason: "bad_request" }, { status: 400 });
-    const restaurants = await readStoredRestaurants(req.slug);
-    const plan = buildGuidePlan(req, guide as GuideFile, restaurants, req.locale === "ar" ? city.nameAr : city.nameEn, city.nameEn, CITY_COORDS[req.slug]);
+    // One city, or a route across the country when the trip is longer than the city needs (routePlan.ts).
+    const plan = await buildRoutePlan(req, guide as GuideFile);
+    if (!plan) return NextResponse.json({ ok: false, reason: "bad_request" }, { status: 400 });
     return NextResponse.json({ ok: true, plan, fresh: true }, { headers: { "Cache-Control": "no-store" } });
   }
   if (!aiConfigured()) return NextResponse.json({ ok: false, reason: "off" }, { status: 503 });

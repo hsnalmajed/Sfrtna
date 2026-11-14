@@ -2397,3 +2397,53 @@ them when the owner told them). Owner: «these are obvious and you missed
 them» → before launch, a full product audit (coverage counts vs market,
 photos per city, feature discoverability on home + results + plan), then a
 launch plan section by section. Goal: something outstanding.
+
+### E round 1 — trip plan rebuild, 14 Nov 2026 (all 8 points touched)
+
+Root cause of «too few places / empty days»: a long trip stayed in one city
+whose guide holds few places (Colombo 28, Galle 8, Ella 10 → 10 days in
+Colombo ran dry). Fixes:
+- **Days per city** (`cityNeedsDays` in guidePlan.ts): round(√places/2.4 +
+  ½ per long visit), 1–6. Colombo 3, Kandy 2, Galle 2, Ella 2, Istanbul 5,
+  Paris 6, Dubai 5, Makkah 4. Shown in the plan and as a chip on every city
+  page hero («تكفيها نحو N أيام لترى أبرزها» → #trip-plan).
+- **Route across the country** (`src/lib/routePlan.ts`, used by
+  /api/ai/plan): trip ≥ city's need + 2 → nearest guide cities of the same
+  country (≤300 km, ≤5 cities), each its own days, order = shortest loop back
+  to the first city; city ≤60 km from the hotel = «رحلة يوم» (no hotel move);
+  ride item «الانتقال إلى …» (road km = straight×1.3, speed per country
+  `ROAD_KMH`, said «نحو»); last day ends earlier by the ride back to the
+  first city's airport + a note. No place twice across the route. Answer
+  `route: multi|single` («أفضّل البقاء في …» / «اجعلها رحلة على مسار»
+  rebuild). DMM→Colombo 10 days = Colombo 4 → Kandy 2 → Ella 2 → Galle 2.
+- **Fuller days**: per day relaxed 3 / balanced 5 / packed 6 (texts
+  updated); no hop > 12 km inside a day; lunch first when arriving after
+  noon, never after 15:30; late stops count the ride before «evening only»;
+  night owls get one evening stop after dinner; pins named after the
+  country dropped; same restaurant name never twice.
+- **«بديل»** on every place and meal: up to 3 alternatives (not in the plan,
+  open that weekday, near, best for the traveller first), computed by the
+  engine; swap keeps the hour, later times shift until free time absorbs it
+  (meals keep their hour when shorter).
+- **New view** (SmartPlanView.tsx): navy header (dates · days · places ·
+  cities, route ribbon, summary), toolbar (save · Google Maps · route image ·
+  PDF · new plan), sticky day strip (ScrollRow) + «كل الأيام», day cards with
+  a day badge, prev/next day, ride cards.
+- **Save to account**: source «smart» (answers + each stop's key, so swaps
+  come back); signed out → pending → sign in → back to the city page
+  ?saved= → SmartPlanner rebuilds and opens it. /api/plans accepts it.
+- **Google Maps**: each day's route link + KML with one folder (layer) per
+  day + lines (`toKMLDays`), how-to for My Maps import.
+- **Route image** (`src/lib/planImage.ts`): 1080×1350 PNG on canvas, OSM
+  tiles washed, cities numbered with days + arrows + dashed way home, or per
+  day colours in one city; header, legend, sfrtna.com, OSM credit.
+  Container can't reach tiles → checked only on the plain background.
+- **«قبل أن تسافر»**: all services of the main city with dates
+  (TripServices) + tours for each other route city, then packing/tips.
+Checked locally (next dev + Chrome 390 px): Colombo route, swap, day strip,
+maps sheet, services, image; Paris image. NOT yet checked live: image with
+real tiles, save/reopen with a real account, PDF file.
+Left for round 2: PDF cover page with the route image; Ella has English
+names + no restaurants and Galle 8 places (→ F coverage); ride times are
+estimates; alternatives thin in small cities; plan mail for smart plans.
+

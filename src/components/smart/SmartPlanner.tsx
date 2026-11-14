@@ -86,6 +86,10 @@ export default function SmartPlanner({
   const [error, setError] = useState("");
   const [plan, setPlan] = useState<SmartPlan | null>(null);
   const [tick, setTick] = useState(0);
+  /** A saved plan reopened: its stops by key (swaps made before saving). */
+  const [savedKeys, setSavedKeys] = useState<string[][] | undefined>(undefined);
+  /** The answers the shown plan was built from. */
+  const [built, setBuilt] = useState<PlanAnswers | null>(null);
 
   // Is the plan ready for this city (our guide has its places written up)?
   useEffect(() => {
@@ -114,6 +118,31 @@ export default function SmartPlanner({
     window.addEventListener(SMART_OPEN_EVENT, onOpen);
     return () => window.removeEventListener(SMART_OPEN_EVENT, onOpen);
   }, [standalone]);
+
+  // «افتح» on a saved smart plan (حسابي → ?saved=<id>): rebuilt from its
+  // answers and dates, with the swaps made before saving.
+  useEffect(() => {
+    if (standalone || !city || ready !== true) return;
+    const id = new URLSearchParams(window.location.search).get("saved");
+    if (!id) return;
+    let live = true;
+    fetch("/api/plans", { cache: "no-store" })
+      .then((r) => r.json() as Promise<{ ok: boolean; plans?: { id: string; plan: { source: string; slug: string; from: string; to: string; days: string[][]; smart?: { answers: PlanAnswers } } }[] }>)
+      .then((j) => {
+        const saved = j.plans?.find((p) => p.id === id)?.plan;
+        if (!live || !saved || saved.source !== "smart" || !saved.smart || saved.slug !== city.slug) return;
+        setA(saved.smart.answers);
+        setFrom(saved.from);
+        setTo(saved.to);
+        setOpen(true);
+        void build({ answers: saved.smart.answers, from: saved.from, to: saved.to, keys: saved.days });
+      })
+      .catch(() => undefined);
+    return () => {
+      live = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- once, when the city is known to be ready
+  }, [standalone, city, ready]);
 
   // The full-screen layer: questions on a city page; the plan everywhere.
   const layer = open || state === "done";
@@ -152,23 +181,28 @@ export default function SmartPlanner({
     return true;
   }, [steps, step, city, ready, days, a.interests.length]);
 
-  async function build() {
+  async function build(over?: { answers?: PlanAnswers; from?: string; to?: string; keys?: string[][] }) {
     if (!city) return;
+    const answers = over?.answers ?? a;
+    const f = over?.from ?? from;
+    const tt = over?.to ?? to;
     setState("building");
     setTick(0);
-    track("ai_plan_start", { city: city.slug, days, standalone });
+    track("ai_plan_start", { city: city.slug, days, standalone, route: answers.route ?? "multi" });
     const started = Date.now();
     try {
       const res = await fetch("/api/ai/plan", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ code: city.code, slug: city.slug, from, to, locale, answers: a }),
+        body: JSON.stringify({ code: city.code, slug: city.slug, from: f, to: tt, locale, answers }),
       });
       const j = (await res.json()) as { ok: boolean; plan?: SmartPlan; reason?: string };
       if (j.ok && j.plan) {
         // A short moment on the building screen, so the steps can be read.
         await new Promise((r) => setTimeout(r, Math.max(0, 2600 - (Date.now() - started))));
         setPlan(j.plan);
+        setBuilt(answers);
+        setSavedKeys(over?.keys);
         setState("done");
         track("ai_plan_done", { city: city.slug, days, interests: a.interests.join(","), needs: (a.needs ?? []).join(",") });
         return;
@@ -487,8 +521,16 @@ export default function SmartPlanner({
       {state === "done" && plan ? (
         <div className="flex-1 overflow-y-auto">
           <SmartPlanView
+            key={plan.generatedAt}
             locale={locale}
             plan={plan}
+            answers={built ?? a}
+            initialKeys={savedKeys}
+            onRoute={(route) => {
+              const next = { ...(built ?? a), route };
+              setA(next);
+              void build({ answers: next });
+            }}
             onNew={() => {
               setPlan(null);
               setState("ask");

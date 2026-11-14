@@ -1,3 +1,4 @@
+import type { PlanAnswers } from "@/lib/ai/plan";
 /**
  * Server side of accounts (owner, 13 Oct 2026: Google + email now, Apple
  * later). The data lives in the Accounts Durable Object (accounts.js); this
@@ -38,11 +39,13 @@ export interface SavedPlanData {
   slug: string;
   city: string;
   locale: string;
-  source: "pick" | "auto";
+  /** «smart»: the smart plan (its answers; days = each stop's key, so swaps come back). */
+  source: "pick" | "auto" | "smart";
   from: string;
   to: string;
   days: string[][];
   short?: boolean;
+  smart?: { answers: PlanAnswers };
 }
 
 /** The traveller's answer about trip emails (item 5), with when and where it was given. */

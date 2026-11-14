@@ -131,10 +131,16 @@ why DMM→CMB had only the second source) AND re-checks the new plan → one
 report with numbers + a launch plan; 3) sections from that plan, incl. B, C,
 G («Been» map). Owner stresses: his notes are NOT only about the plan —
 none may be dropped. Play upload after B–C.
-**Next step: E round 1** — read `src/components/smart/*` + the plan API,
-then: more places per day, new day layout, swap («بديل») per stop, save to
-account, all places to Google Maps, «قبل أن تسافر» services, PDF + route-map
-image, days-per-city advice / multi-city for small countries. Opus chat.
+**E round 1 DONE 14 Nov** (PROJECT_NOTES «E round 1»): route across a
+country's cities (routePlan.ts), days per city (plan + city-page chip),
+fuller days, «بديل» per stop, new day layout, save smart plan to account,
+Google Maps (day links + KML by day), route image (planImage.ts), «قبل أن
+تسافر» services. **Next step: E round 2** — after the release: owner opens
+a plan on the phone (DMM→Colombo 10 days; Istanbul 4 days) and sends ONE
+screenshot of anything wrong; check live: route image with real map tiles,
+save → «حسابي» → open, PDF file. Then: PDF cover with the route image, plan
+mail for smart plans, ride-time accuracy; then step 2 = FULL PRODUCT AUDIT
+(F coverage first: Ella English-only + no restaurants, Galle 8 places).
 
 **Release gate: CLOSED (4 Nov) + catch-up (6 Nov).** `release.yml` is the
 only way to production (Cloudflare Git build disabled). Pushes made by
@@ -420,4 +426,4 @@ payout threshold $500 not met» (wire $500; PayPal/ACH $100).
 Waiting on the owner: Apple review; Google Play ticket reply; Google-fares
 decision after the 6 Nov measurement; Android APK on a real phone.
 
-**Recommended model for the next chat: Opus 5.5** (E: trip plan rebuild).
+**Recommended model for the next chat: Opus 5.5** (E round 2 + product audit).

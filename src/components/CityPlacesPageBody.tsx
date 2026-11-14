@@ -1,5 +1,5 @@
 import { readGuide } from "@/lib/guide";
-import { guidePlanReady } from "@/lib/guidePlan";
+import { cityNeedsDays, guidePlanReady } from "@/lib/guidePlan";
 import { readGallery, galleryUrl, commonsUrl } from "@/lib/gallery";
 import { readableHours, type Group } from "@/lib/guideTypes";
 import type { PinCategory } from "@/lib/pinStyles";
@@ -311,6 +311,20 @@ export default async function CityPlacesPageBody({
               <span aria-hidden="true">{loc === "ar" ? "→" : "←"}</span>
               {dict.itinerary.backToResults}
             </Link>
+          )}
+          {/* Days the city needs to see its best (owner's friend, 14 Nov), our advice from the guide. */}
+          {guidePlanReady(guide) && (
+            <a
+              href="#trip-plan"
+              className="inline-flex w-fit items-center gap-1.5 rounded-full bg-white/15 px-3.5 py-2 text-sm font-bold text-white ring-1 ring-white/25 backdrop-blur-md transition hover:bg-white/25"
+            >
+              🗓️{" "}
+              {(() => {
+                const n = cityNeedsDays(guide);
+                const w = dict.smart.daysWord;
+                return dict.attractions.cityDaysChip.replace("{n}", (n === 1 ? w.one : n === 2 ? w.two : w.few).replace("{n}", String(n)));
+              })()}
+            </a>
           )}
           <FavButton
             locale={loc}
