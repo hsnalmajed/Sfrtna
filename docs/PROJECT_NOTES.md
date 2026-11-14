@@ -2447,3 +2447,28 @@ Left for round 2: PDF cover page with the route image; Ella has English
 names + no restaurants and Galle 8 places (→ F coverage); ride times are
 estimates; alternatives thin in small cities; plan mail for smart plans.
 
+
+### E round 2 — live check, 14 Nov 2026 11:30 KSA (release 43569181384, d89db0a)
+
+Checked on sfrtna.com in the owner's Chrome (desktop), plan Colombo
+10–19 Dec, 10 days, couple, defaults:
+- **Plan builds live**: route Colombo 4 → Kandy 2 → Ella 2 → Galle 2, 30
+  places, 4 cities. OK.
+- **Route image with real OSM tiles: OK** (numbers, arrows, dashed way home,
+  legend, OSM credit, sfrtna.com).
+- **Save → «حسابي» → «خططي المحفوظة» → «افتح»: OK** (rebuilds the same plan
+  via ?saved=). Small: reopened plan still shows «احفظ الخطة في حسابك»
+  instead of «محفوظة».
+- **PDF: works but poor** (11 pages, 3.2 MB, no download kept — blob
+  captured in the page): (1) page 1 = small header alone, rest blank (day 1
+  too tall to share the page); (2) every day is taller than a page
+  (1472×2554–3718 px) so `planPdf.ts` SHRINKS it to fit → ~55–60 % width,
+  wide white side margins, tiny text; (3) large blank gaps between stops
+  (rows hidden for print leave their space). Fix: cover page (title, dates,
+  route ribbon + route image), then days flowing across pages at stop
+  boundaries (`data-pdf-part` per day header / stop; never shrink), full
+  width; remove the gaps.
+- **Content seen (day 2 Colombo)**: first stop Liberty Plaza (a shopping
+  mall) for «أشهر معالم المدينة»; lunch «Como Colombo» = Italian although
+  the answers were halal + local dishes → meal choice must prefer the chosen
+  cuisines; English place names under Arabic ones are fine.

@@ -132,15 +132,19 @@ report with numbers + a launch plan; 3) sections from that plan, incl. B, C,
 G («Been» map). Owner stresses: his notes are NOT only about the plan —
 none may be dropped. Play upload after B–C.
 **E round 1 DONE 14 Nov** (PROJECT_NOTES «E round 1»): route across a
-country's cities (routePlan.ts), days per city (plan + city-page chip),
-fuller days, «بديل» per stop, new day layout, save smart plan to account,
-Google Maps (day links + KML by day), route image (planImage.ts), «قبل أن
-تسافر» services. **Next step: E round 2** — after the release: owner opens
-a plan on the phone (DMM→Colombo 10 days; Istanbul 4 days) and sends ONE
-screenshot of anything wrong; check live: route image with real map tiles,
-save → «حسابي» → open, PDF file. Then: PDF cover with the route image, plan
-mail for smart plans, ride-time accuracy; then step 2 = FULL PRODUCT AUDIT
-(F coverage first: Ella English-only + no restaurants, Galle 8 places).
+country's cities, days per city, «بديل», new day layout, save, Google Maps,
+route image, «قبل أن تسافر». **E round 2 live check DONE 14 Nov 11:30**
+(PROJECT_NOTES «E round 2 — live check»): plan, route image with real tiles,
+save → «حسابي» → open = OK. **Next step: E round 2 fixes (code, Opus):**
+1) PDF rebuild in `planPdf.ts` + SmartPlanView: cover page (title, dates,
+route ribbon + route image), days flow across pages at stop boundaries,
+full width, never shrink, no blank gaps; 2) meals follow the chosen cuisines
+(halal + local got an Italian lunch); «أشهر معالم» should not open with a
+mall; 3) reopened saved plan shows «محفوظة»; 4) plan mail for smart plans;
+5) ride-time accuracy. Owner (parallel, one step): open a plan on the phone
+(DMM→Colombo 10 days; Istanbul 4 days), send ONE screenshot of anything
+wrong. Then step 2 = FULL PRODUCT AUDIT (F coverage first: Ella
+English-only + no restaurants, Galle 8 places).
 
 **Release gate: CLOSED (4 Nov) + catch-up (6 Nov).** `release.yml` is the
 only way to production (Cloudflare Git build disabled). Pushes made by
