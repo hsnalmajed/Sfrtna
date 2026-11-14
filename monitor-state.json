@@ -1,0 +1,85 @@
+{
+ "checks": {
+  "home": {
+   "fails": 0,
+   "name": "الصفحة الرئيسية"
+  },
+  "flight-page": {
+   "fails": 0,
+   "name": "صفحة نتائج الطيران"
+  },
+  "hotel-list-page": {
+   "fails": 0,
+   "name": "صفحة قائمة الفنادق"
+  },
+  "hotel-page": {
+   "fails": 0,
+   "name": "صفحة الفندق"
+  },
+  "flight-widget": {
+   "fails": 0,
+   "name": "أداة بحث الطيران لدى الشريك"
+  },
+  "flight-fares": {
+   "fails": 0,
+   "name": "أسعار الطيران من الشريك"
+  },
+  "serpapi": {
+   "fails": 19,
+   "name": "رصيد أسعار الفنادق (SerpApi)",
+   "detail": "قائمة الفنادق متوقفة عن البحث الآن (المتبقي 107 من 250)",
+   "alertedAt": 1794257655640,
+   "remindedAt": 1794666162807
+  },
+  "worker-errors": {
+   "fails": 0,
+   "name": "أخطاء Worker في آخر ساعة"
+  }
+ },
+ "lastRunAt": "2026-11-14T19:20:02.257Z",
+ "last": [
+  {
+   "id": "home",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "flight-page",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "hotel-list-page",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "hotel-page",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "flight-widget",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "id": "flight-fares",
+   "ok": true,
+   "detail": "1 رحلة"
+  },
+  {
+   "id": "serpapi",
+   "ok": false,
+   "detail": "قائمة الفنادق متوقفة عن البحث الآن (المتبقي 107 من 250)"
+  },
+  {
+   "id": "worker-errors",
+   "ok": true,
+   "detail": "0 خطأ من 107 طلب"
+  }
+ ],
+ "notes": [
+  "البحث الحقيقي عن الفنادق أُجّل حفاظًا على الرصيد"
+ ]
+}
