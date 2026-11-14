@@ -119,6 +119,9 @@ Nov 2026»): E trip-plan rebuild (8 points), F more cities (Sri Lanka 4 only),
 G «Been»-style visited map, H why DMM→CMB had only the second source.
 Owner calls the plan «very bad» — plan + budget + places are what set us
 apart. Prayer-times overflow + identical flight tabs fixed 14 Nov.
+**Friends 14 Nov 03:28: «not ready to launch»** — coverage (flights,
+destinations, cities), plan, city photos (nature/sights not buildings),
+hotels display, hidden features (PROJECT_NOTES «Friends' verdict»).
 **Next step:** ask the owner the order (proposed: H quick evidence → E plan
 rebuild in rounds → F cities → B → C → G; Play upload after B–C), then work
 one section per chat. Opus chat.

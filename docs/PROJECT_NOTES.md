@@ -2386,3 +2386,14 @@ G) «Been»-style travel map (getbeen.app idea), in «المزيد» or best pla
 H) Owner's question: why did DMM→CMB (Sri Lanka) show only Google's fares
    (second source)? Find out: partner widget 0 results vs failed to load in
    the app WebView (route-probe / health on DMM→CMB) — answer with evidence.
+
+### Friends' verdict, 14 Nov 03:28 — «beautiful but NOT ready to launch»
+
+Missing: flights (options), destinations, cities per country, a real trip
+plan; city photos show buildings, not nature / the famous sights; hotels not
+shown in a standout way; no complete picture that makes the visit enjoyable;
+the site's features are hidden (travel services etc. — friends only noticed
+them when the owner told them). Owner: «these are obvious and you missed
+them» → before launch, a full product audit (coverage counts vs market,
+photos per city, feature discoverability on home + results + plan), then a
+launch plan section by section. Goal: something outstanding.
