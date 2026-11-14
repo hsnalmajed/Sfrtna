@@ -2472,3 +2472,36 @@ Checked on sfrtna.com in the owner's Chrome (desktop), plan Colombo
   mall) for «أشهر معالم المدينة»; lunch «Como Colombo» = Italian although
   the answers were halal + local dishes → meal choice must prefer the chosen
   cuisines; English place names under Arabic ones are fine.
+
+### iPhone app REJECTED — 13 Nov 2026 22:51 KSA (owner's email review, 14 Nov)
+
+App Store Connect: iOS 1.0 (build 27, submitted 3 Nov) **Rejected —
+Guidelines 4.3 Spam (4.3(a) duplicate, 4.3(b) indistinguishable / variant of
+a popular category) and 4.2.6 App Generation Services**. Apple: do NOT
+resubmit without significant changes (else rejected again); if we believe it
+complies, reply (no resubmit) answering 9 questions in full: 1) what it does
++ problem solved (not the marketing text); 2) target user; 3) market gap vs
+existing apps; 4) beta testing done + examples of beta feedback applied to
+the build; 5) standalone or part of a suite; 6) could it be an IAP/feature
+of another app on the account; 7) code/assets shared with other apps on the
+account; 8) codebase/SDK/content shared with third-party apps beyond
+standard frameworks; 9) made for a client/partner. Phone call with App Review
+can be requested in the reply.
+**Owner's decision 14 Nov 12:30: POSTPONE + STRENGTHEN** — no reply, no
+resubmit, no Cancel Submission now. Order: finish E (plan) + full product
+audit; add iPhone-only value the site lacks (saved plan offline, trip
+reminders as push notifications, native share of plan/route image, home
+widget/Live Activity if cheap); then a REAL TestFlight beta (external
+testers: friends/family, ~1 week), log their feedback and what changed
+(friends' 14 Nov verdict already counts as real feedback) → new build +
+reply answering all 9 questions honestly (4.2.6: our own content, own
+account, Capacitor = standard framework; 8: partner flight widget = third
+party content, say so) → resubmit. Never invent beta testing.
+Other mails reviewed 14 Nov: Play «Restricted» notices 12–13 Nov = before
+phone/identity fixes (no action; watch for a lift); Play non-trader
+confirmed 13 Nov 18:27 (exclude EEA/UK when creating the app); 4 Release
+failures 13 Nov 18:17–18:29 healed by 18:52 green; status report counts
+healed release failures as «مشاكل» → fix: skip a failed release if a later
+release succeeded (`status-report`); Admitad ad space: owner pressed Finish
+(meta tag matches) 14 Nov 11:14 → «Verifying» → check Active, then flynas +
+Jazeera.

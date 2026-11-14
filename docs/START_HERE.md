@@ -342,15 +342,11 @@ Queue (owner steps one at a time; code items in a fresh Opus chat):**
 «next-step tabs» flake: 7 green Site checks in a row since the fix (4 Nov);
 ~10 green = close it.
 
-**iPhone app:** «Waiting for Review» since 3 Nov 14:45 (still waiting 5 Nov
-19:09). Approved → point «حمّل التطبيق» / AppStoreButtons at the App Store
-link, then the native rating prompt; rejected → read the reason, fix. Still
-waiting ~6 Nov evening → offer the owner an expedited review request.
-**Expedited review ACCEPTED by Apple 10 Nov 03:48** («We'll expedite review
-for Sfrtna»); a rejection + resubmit returns to the expedited queue. **12 Nov 16:44: still
-«iOS 1.0 Waiting for Review»** (Apple mail goes to the owner's Outlook; last
-ASC mail 3 Nov). If unchanged on 14 Nov → owner sends a status inquiry via
-App Review «Contact Us» (do NOT withdraw/resubmit — resets the queue).
+**iPhone app: REJECTED 13 Nov 22:51 — 4.3 Spam + 4.2.6** (PROJECT_NOTES
+«iPhone app REJECTED»). Owner 14 Nov: POSTPONE + STRENGTHEN — no reply /
+resubmit / cancel now. After E + audit: iPhone-only features (offline saved
+plan, push trip reminders, native share), real TestFlight beta (~1 week,
+log feedback), then new build + reply to Apple's 9 questions + resubmit.
 **Owner 10 Nov 03:50 — app banner, build when each store approves:** top
 banner «حمّل التطبيق» on phones, dismissible, visitor stays in the browser.
 Owner 03:51: must be eye-catching like other big sites → OUR OWN designed
@@ -431,7 +427,7 @@ Aviasales and tell us when Riyadh data returns. Nothing to do until that mail.
 Stay22: CLOSED 4 Nov — account cleared, Payments page shows only «Minimum
 payout threshold $500 not met» (wire $500; PayPal/ACH $100).
 
-Waiting on the owner: Apple review; Google Play ticket reply; Google-fares
+Waiting on the owner: Admitad ad space «Verifying» (14 Nov) → Active → flynas/Jazeera; Google Play ticket reply; Google-fares
 decision after the 6 Nov measurement; Android APK on a real phone.
 
 **Recommended model for the next chat: Opus 5.5** (E round 2 + product audit).
