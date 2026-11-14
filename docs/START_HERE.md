@@ -122,9 +122,19 @@ apart. Prayer-times overflow + identical flight tabs fixed 14 Nov.
 **Friends 14 Nov 03:28: «not ready to launch»** — coverage (flights,
 destinations, cities), plan, city photos (nature/sights not buildings),
 hotels display, hidden features (PROJECT_NOTES «Friends' verdict»).
-**Next step:** ask the owner the order (proposed: H quick evidence → E plan
-rebuild in rounds → F cities → B → C → G; Play upload after B–C), then work
-one section per chat. Opus chat.
+**OWNER'S ORDER (14 Nov 09:39):** 1) **E = trip plan rebuild FIRST**
+(all 8 points, in rounds, to 100%); 2) then a FULL PRODUCT AUDIT that covers
+everything in «Owner's notes of 14 Nov» + «Friends' verdict» (coverage of
+flights / destinations / cities — Sri Lanka 4 only; city photos = nature and
+famous sights; hotels display; features visible from the first visit; H =
+why DMM→CMB had only the second source) AND re-checks the new plan → one
+report with numbers + a launch plan; 3) sections from that plan, incl. B, C,
+G («Been» map). Owner stresses: his notes are NOT only about the plan —
+none may be dropped. Play upload after B–C.
+**Next step: E round 1** — read `src/components/smart/*` + the plan API,
+then: more places per day, new day layout, swap («بديل») per stop, save to
+account, all places to Google Maps, «قبل أن تسافر» services, PDF + route-map
+image, days-per-city advice / multi-city for small countries. Opus chat.
 
 **Release gate: CLOSED (4 Nov) + catch-up (6 Nov).** `release.yml` is the
 only way to production (Cloudflare Git build disabled). Pushes made by
@@ -410,4 +420,4 @@ payout threshold $500 not met» (wire $500; PayPal/ACH $100).
 Waiting on the owner: Apple review; Google Play ticket reply; Google-fares
 decision after the 6 Nov measurement; Android APK on a real phone.
 
-**Recommended model for the next chat: Opus 5.5** (section B: root-cause in «اقترح لي وجهة», then C).
+**Recommended model for the next chat: Opus 5.5** (E: trip plan rebuild).
