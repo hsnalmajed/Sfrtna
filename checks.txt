@@ -1,0 +1,21 @@
+device:     iPhone 17 Pro Max (78974B82-8A98-4B1E-B8FD-2C4852E3B705) (Shutdown) 
+warm-up ok
+store-1-home ok
+store-2-flights ok
+store-3-hotels failed
+store-4-discover ok
+store-5-city ok
+store-6-seasons ok
+store-7-visa ok
+store-8-currency ok
+store-en-1-home ok
+store-en-2-flights ok
+store-en-3-hotels ok
+store-en-4-discover ok
+store-en-5-city ok
+store-en-6-seasons ok
+store-en-7-visa ok
+store-en-8-currency ok
+check-partner ok
+check-print ok
+check-share ok

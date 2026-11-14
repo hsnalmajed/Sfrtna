@@ -1,0 +1,2 @@
++ perl -e 'alarm shift; exec @ARGV' 90 xcrun simctl launch 98A0BFA3-CEC3-4FD6-9916-5A2149774DBF com.sfrtna.app
+com.sfrtna.app: 11886
