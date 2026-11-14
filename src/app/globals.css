@@ -986,3 +986,12 @@ html.in-app .sit-on-tabbar {
     padding-bottom: 0;
   }
 }
+
+/* Tajawal's final letters (ي ى ن) sweep past their own width to the left:
+   next to other text, or in a cut-off line, they were clipped or ran into
+   the next word (owner, 14 Nov 2026: «كاندي» in the plan's route). A little
+   room after every display-font span and every one-line cut text. */
+[dir="rtl"] span.font-display,
+[dir="rtl"] .truncate {
+  padding-inline-end: 0.14em;
+}

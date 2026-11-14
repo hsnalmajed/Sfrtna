@@ -14,7 +14,7 @@
 const APP_UA = /SfrtnaApp\/(Android|iOS)/;
 
 interface SfrtnaAppPlugin {
-  shareFile(options: { name: string; mimeType: string; content: string }): Promise<void>;
+  shareFile(options: { name: string; mimeType: string; content: string; encoding?: "base64" }): Promise<void>;
   print(options: { title: string }): Promise<void>;
   info(): Promise<{ platform: string; version: string; features?: string[] }>;
   /** Opens our sign-in page in the phone's browser (Custom Tab); app builds from 21 Oct 2026. */
@@ -54,6 +54,28 @@ export async function shareFileInApp(name: string, mimeType: string, content: st
   if (!app) return false;
   try {
     await app.shareFile({ name, mimeType, content });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * A picture (the plan's route image) to the phone's share sheet: save to the
+ * gallery, send on WhatsApp. Needs an app build with «share-binary» (14 Nov
+ * 2026); false → the caller tries the browser's own share, then a download.
+ */
+export async function shareImageInApp(name: string, blob: Blob): Promise<boolean> {
+  const app = plugin();
+  if (!app || !(await appFeatures()).includes("share-binary")) return false;
+  try {
+    const base64 = await new Promise<string>((resolve, reject) => {
+      const r = new FileReader();
+      r.onload = () => resolve(String(r.result).split(",")[1] ?? "");
+      r.onerror = () => reject(r.error);
+      r.readAsDataURL(blob);
+    });
+    await app.shareFile({ name, mimeType: blob.type || "image/png", content: base64, encoding: "base64" });
     return true;
   } catch {
     return false;

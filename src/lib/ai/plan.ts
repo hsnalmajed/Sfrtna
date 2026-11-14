@@ -160,6 +160,8 @@ export interface PlanItem {
   mapQuery?: string;
   /** Which of the traveller's interests chose it (an INTERESTS key). */
   forYou?: string;
+  /** The kind of place as an icon (🕌 🏛️ 🌳 🏖️…), for the route image and the map. */
+  icon?: string;
   /** A «move» between cities: where the ride starts. */
   from?: { lat: number; lon: number };
   /** Our own id of the stop («p:<guide q>» / «r:<restaurant id>»): swaps and saving. */

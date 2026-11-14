@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { Locale } from "@/lib/types";
 import { useDictionary } from "@/lib/dict/context";
-import { inApp, printPage } from "@/lib/nativeApp";
+import { inApp, printPage, shareImageInApp } from "@/lib/nativeApp";
 import { downloadText, safeFileName, toKMLDays } from "@/lib/mapExport";
 import { PENDING_PLAN_KEY, refreshAccount, useAccount } from "@/lib/useAccount";
 import { findCity } from "@/lib/cities";
@@ -298,7 +298,34 @@ export default function SmartPlanView({
     downloadText(toKMLDays(list, title), safeFileName(fileBase, "kml"), "application/vnd.google-earth.kml+xml");
   }
 
-  const [image, setImage] = useState<{ url: string } | null>(null);
+  const [image, setImage] = useState<{ url: string; blob: Blob } | null>(null);
+  const [imageSaveFailed, setImageSaveFailed] = useState(false);
+  /** Save or share the picture: the app's share sheet, else the phone browser's, else a download. */
+  async function saveImage() {
+    if (!image) return;
+    setImageSaveFailed(false);
+    const name = safeFileName(fileBase.replace(/[^\w-]+/g, "-"), "png");
+    if (await shareImageInApp(name, image.blob)) return;
+    try {
+      const file = new File([image.blob], name, { type: "image/png" });
+      if (navigator.canShare?.({ files: [file] })) {
+        await navigator.share({ files: [file], title });
+        return;
+      }
+    } catch (e) {
+      if ((e as Error)?.name === "AbortError") return;
+    }
+    if (inApp()) {
+      setImageSaveFailed(true);
+      return;
+    }
+    const a = document.createElement("a");
+    a.href = image.url;
+    a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  }
   const [imageBusy, setImageBusy] = useState(false);
   const [imageError, setImageError] = useState(false);
   async function makeImage() {
@@ -313,6 +340,8 @@ export default function SmartPlanView({
           .map((it) => ({
             lat: it.lat as number,
             lon: it.lon as number,
+            icon: it.icon,
+            name: it.name,
             day: di,
             city: d.city ? (cityIdx.get(d.city.slug) ?? 0) : 0,
           })),
@@ -331,7 +360,7 @@ export default function SmartPlanView({
         dayLabel: (n) => t.day.replace("{n}", String(n)),
         rtl: isAr,
       });
-      setImage({ url: URL.createObjectURL(blob) });
+      setImage({ url: URL.createObjectURL(blob), blob });
     } catch {
       setImageError(true);
     } finally {
@@ -648,7 +677,7 @@ export default function SmartPlanView({
                   )}
                   <span className="rounded-2xl bg-white px-3 py-1.5 text-navy-950">
                     <span className="font-display text-sm font-extrabold">{l.name}</span>
-                    <span className="ms-1 text-[11px] font-bold text-navy-500">
+                    <span className="ms-2.5 text-[11px] font-bold text-navy-500">
                       {counted(t.daysWord, l.days)}
                       {l.dayTrip ? ` · ${t.dayTrip}` : ""}
                     </span>
@@ -905,13 +934,11 @@ export default function SmartPlanView({
         >
           {/* eslint-disable-next-line @next/next/no-img-element -- a picture drawn here, as a blob */}
           <img src={image.url} alt={title} className="max-h-[75vh] w-auto rounded-2xl shadow-2xl" onClick={(e) => e.stopPropagation()} />
-          <p className="text-center text-xs font-bold text-white/80">{t.imageHint}</p>
+          {imageSaveFailed && <p className="max-w-sm text-center text-xs font-bold text-sun-200">{t.imageUpdateApp}</p>}
           <div className="flex gap-2" onClick={(e) => e.stopPropagation()}>
-            {!inApp() && (
-              <a href={image.url} download={safeFileName(fileBase, "png")} className="inline-flex min-h-11 items-center rounded-full bg-sun-400 px-5 font-extrabold text-navy-950">
-                ⬇️ {t.imageSave}
-              </a>
-            )}
+            <button type="button" onClick={saveImage} className="inline-flex min-h-11 items-center rounded-full bg-sun-400 px-5 font-extrabold text-navy-950">
+              ⬇️ {t.imageSave}
+            </button>
             <button type="button" onClick={() => setImage(null)} className="min-h-11 rounded-full bg-white/15 px-5 font-bold text-white">
               {t.close}
             </button>

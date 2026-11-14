@@ -247,6 +247,17 @@ function travel(d: number, move: PlanAnswers["move"], walkKm: number, t: (typeof
   return { min, how: (move === "walk_transit" ? t.transit : t.ride).replace("{min}", String(min)) };
 }
 
+/** An icon per kind of place (then per group), for the route image. */
+const KIND_ICON: Record<string, string> = {
+  mosque: "🕌", church: "⛪", temple: "🛕", synagogue: "🕍", museum: "🏛️", gallery: "🖼️", theatre: "🎭", culture: "🎭",
+  palace: "🏰", castle: "🏰", ancient: "🏺", monument: "🗿", oldtown: "🏘️", square: "⛲", bridge: "🌉", street: "🚶", landmark: "📍",
+  park: "🌳", garden: "🌷", reserve: "🦜", lake: "🛶", waterfall: "💧", mountain: "⛰️", cave: "🪨", beach: "🏖️", island: "🏝️", water: "🌊",
+  zoo: "🦁", aquarium: "🐠", themepark: "🎡", mall: "🛍️", market: "🧺", tower: "🗼", observation: "🔭",
+};
+const GROUP_ICON: Record<Group, string> = {
+  history: "🏰", religion: "🕌", museums: "🏛️", nature: "🌳", beach: "🏖️", views: "🔭", family: "🎡", shopping: "🛍️", markets: "🧺", culture: "🎭",
+};
+
 const usable = (p: GuidePlace) => typeof p.y === "number" && typeof p.x === "number";
 
 /** A visit that fills a day by itself (theme parks, big parks with rides). */
@@ -596,6 +607,7 @@ export function buildGuidePlan(req: PlanRequest, guide: GuideFile, restaurants: 
     const it = blankItem();
     const minutes = Math.round((p.m ?? DEFAULT_MIN[p.g]) * (a.pace === "relaxed" ? 1.15 : a.pace === "packed" ? 0.85 : 1) * (seniors ? 1.15 : 1));
     it.key = `p:${p.q}`;
+    it.icon = (p.kd && KIND_ICON[p.kd]) || GROUP_ICON[p.g];
     it.time = hhmm(at);
     it.name = name(p);
     it.localName = p.n !== it.name ? p.n : "";

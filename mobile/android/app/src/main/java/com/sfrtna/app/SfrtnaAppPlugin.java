@@ -56,7 +56,7 @@ import java.nio.charset.StandardCharsets;
 @CapacitorPlugin(name = "SfrtnaApp")
 public class SfrtnaAppPlugin extends Plugin {
 
-    private static final int MAX_FILE_CHARS = 5_000_000;
+    private static final int MAX_FILE_CHARS = 12_000_000;
 
     @PluginMethod
     public void shareFile(PluginCall call) {
@@ -77,7 +77,12 @@ public class SfrtnaAppPlugin extends Plugin {
             if (!dir.exists() && !dir.mkdirs()) throw new IOException("mkdir");
             File file = new File(dir, safe);
             try (FileOutputStream out = new FileOutputStream(file)) {
-                out.write(content.getBytes(StandardCharsets.UTF_8));
+                // «base64»: a picture (the plan's route image); otherwise text (KML/GPX).
+                if ("base64".equals(call.getString("encoding", ""))) {
+                    out.write(android.util.Base64.decode(content, android.util.Base64.DEFAULT));
+                } else {
+                    out.write(content.getBytes(StandardCharsets.UTF_8));
+                }
             }
             Uri uri = FileProvider.getUriForFile(ctx, ctx.getPackageName() + ".fileprovider", file);
 
@@ -129,6 +134,7 @@ public class SfrtnaAppPlugin extends Plugin {
         // What this build can do: the site checks before it offers a button.
         JSArray features = new JSArray();
         features.put("share");
+        features.put("share-binary");
         features.put("print");
         features.put("auth");
         features.put("google");

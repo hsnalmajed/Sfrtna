@@ -584,11 +584,11 @@ public class SfrtnaAppPlugin: CAPPlugin, CAPBridgedPlugin {
 
     @objc func info(_ call: CAPPluginCall) {
         let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
-        call.resolve(["platform": "ios", "version": version, "features": ["share", "print"]])
+        call.resolve(["platform": "ios", "version": version, "features": ["share", "share-binary", "print"]])
     }
 
     @objc func shareFile(_ call: CAPPluginCall) {
-        guard let content = call.getString("content"), content.count <= 5_000_000 else {
+        guard let content = call.getString("content"), content.count <= 12_000_000 else {
             call.reject("bad_content")
             return
         }
@@ -596,7 +596,13 @@ public class SfrtnaAppPlugin: CAPPlugin, CAPBridgedPlugin {
         if safe.isEmpty || safe.hasPrefix(".") { safe = "sfrtna" + safe }
         let file = FileManager.default.temporaryDirectory.appendingPathComponent(safe)
         do {
-            try content.write(to: file, atomically: true, encoding: .utf8)
+            // «base64»: a picture (the plan's route image); otherwise text (KML/GPX).
+            if call.getString("encoding") == "base64" {
+                guard let data = Data(base64Encoded: content, options: .ignoreUnknownCharacters) else { call.reject("bad_content"); return }
+                try data.write(to: file, options: .atomic)
+            } else {
+                try content.write(to: file, atomically: true, encoding: .utf8)
+            }
         } catch {
             call.reject("write_failed")
             return

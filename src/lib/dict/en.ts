@@ -706,7 +706,7 @@ const en = {
     image: "Route image",
     imageBusy: "Drawing your route…",
     imageSave: "Save image",
-    imageHint: "On a phone: press and hold the image to save or share it.",
+    imageUpdateApp: "Saving the image needs the latest Sfrtna app. Update the app, or open the plan in the browser on your phone and save it there.",
     imageFailed: "Could not draw the image now. Try again.",
     imageDays: "{n} · {places}",
     pdfBusy: "Preparing the file…",

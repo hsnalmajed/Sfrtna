@@ -19,6 +19,9 @@ export interface ImageStop {
   day: number;
   /** City of the route (index into cities), or 0. */
   city: number;
+  /** The kind of place as an icon, and its name (the footer lists each city's best). */
+  icon?: string;
+  name?: string;
 }
 
 export interface ImageCity {
@@ -42,7 +45,9 @@ export interface PlanImageInput {
 const W = 1080;
 const H = 1350;
 const HEAD = 200;
-const FOOT = 150;
+const FOOT_ONE = 150;
+/** Room each route city takes in the footer (its line of places). */
+const FOOT_LINE = 50;
 const COLORS = ["#e11d48", "#2563eb", "#059669", "#d97706", "#7c3aed", "#0891b2", "#db2777", "#65a30d", "#ea580c", "#4f46e5", "#0d9488", "#b45309", "#9333ea", "#16a34a"];
 const NAVY = "#0b1b33";
 const SUN = "#fbbf24";
@@ -110,6 +115,7 @@ export async function drawPlanImage(input: PlanImageInput): Promise<Blob> {
   const mapX = 0;
   const mapY = HEAD;
   const mapW = W;
+  const FOOT = multi ? 80 + FOOT_LINE * Math.min(5, input.cities.length) : FOOT_ONE;
   const mapH = H - HEAD - FOOT;
   const pad = 90;
   let z = 16;
@@ -150,7 +156,7 @@ export async function drawPlanImage(input: PlanImageInput): Promise<Blob> {
       jobs.push(
         tile(z, tx, ty).then((img) => {
           if (img) ctx.drawImage(img, mapX + tx * T - left, mapY + ty * T - top, T + 0.5, T + 0.5);
-        })
+        }),
       );
   await Promise.all(jobs);
   // A light wash: the route reads first, the map second.
@@ -190,18 +196,28 @@ export async function drawPlanImage(input: PlanImageInput): Promise<Blob> {
       ctx.lineTo(mx + Math.cos(ang - 2.5) * 16, my + Math.sin(ang - 2.5) * 16);
       ctx.fill();
     }
-    // Stops: small dots in their city's colour.
+    // Stops: the kind of place as an icon in a white disc ringed in its
+    // city's colour; one that would sit on another is left out.
+    const drawn: { x: number; y: number }[] = cps.map((p) => ({ x: p.x, y: p.y }));
     for (const s of input.stops) {
       const p = px(s.lat, s.lon);
-      ctx.fillStyle = colorOf(s);
-      ctx.strokeStyle = "#fff";
-      ctx.lineWidth = 3;
+      if (drawn.some((d) => Math.hypot(d.x - p.x, d.y - p.y) < 40)) continue;
+      drawn.push(p);
+      ctx.fillStyle = "#fff";
+      ctx.strokeStyle = colorOf(s);
+      ctx.lineWidth = 4;
       ctx.beginPath();
-      ctx.arc(p.x, p.y, 8, 0, Math.PI * 2);
+      ctx.arc(p.x, p.y, 18, 0, Math.PI * 2);
       ctx.fill();
       ctx.stroke();
+      ctx.font = `20px ${FONT}`;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillStyle = NAVY;
+      ctx.fillText(s.icon ?? "📍", p.x, p.y + 1);
     }
-    // Cities: numbered markers with name and days.
+    // Cities: numbered markers; the name card where it covers the fewest stops.
+    const cards: { x: number; y: number; w: number; h: number }[] = [];
     input.cities.forEach((c, i) => {
       const p = cps[i];
       ctx.fillStyle = COLORS[i % COLORS.length];
@@ -216,25 +232,40 @@ export async function drawPlanImage(input: PlanImageInput): Promise<Blob> {
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       ctx.fillText(String(i + 1), p.x, p.y + 2);
-      // Label card beside the marker, kept inside the map.
       const name = fitText(ctx, c.name, 300, 32, 800);
       const nameW = ctx.measureText(name).width;
       ctx.font = `500 22px ${FONT}`;
-      const lw = Math.max(nameW, ctx.measureText(c.label).width) + 36;
-      let lx = p.x + 44;
-      if (lx + lw > W - 16) lx = p.x - 44 - lw;
-      const ly = Math.min(Math.max(p.y - 40, mapY + 12), mapY + mapH - 92);
-      ctx.fillStyle = "rgba(255,255,255,0.95)";
-      roundRect(ctx, lx, ly, lw, 80, 18);
+      // Generous sides: Arabic final letters (ي ى) reach past their own width.
+      const lw = Math.max(nameW, ctx.measureText(c.label).width) + 56;
+      const lh = 84;
+      const spots = [
+        { x: p.x + 44, y: p.y - lh / 2 },
+        { x: p.x - 44 - lw, y: p.y - lh / 2 },
+        { x: p.x - lw / 2, y: p.y - 44 - lh },
+        { x: p.x - lw / 2, y: p.y + 44 },
+      ];
+      const cost = (r: { x: number; y: number }) => {
+        let n = 0;
+        if (r.x < 12 || r.x + lw > W - 12 || r.y < mapY + 12 || r.y + lh > mapY + mapH - 40) n += 1000;
+        for (const d of drawn) if (d.x > r.x - 20 && d.x < r.x + lw + 20 && d.y > r.y - 20 && d.y < r.y + lh + 20) n += 10;
+        for (const k of cards) if (r.x < k.x + k.w && r.x + lw > k.x && r.y < k.y + k.h && r.y + lh > k.y) n += 500;
+        return n;
+      };
+      const at = spots.reduce((best, r) => (cost(r) < cost(best) ? r : best), spots[0]);
+      const lx = Math.min(Math.max(at.x, 12), W - 12 - lw);
+      const ly = Math.min(Math.max(at.y, mapY + 12), mapY + mapH - 40 - lh);
+      cards.push({ x: lx, y: ly, w: lw, h: lh });
+      ctx.fillStyle = "rgba(255,255,255,0.96)";
+      roundRect(ctx, lx, ly, lw, lh, 18);
       ctx.fill();
       ctx.fillStyle = NAVY;
       ctx.textAlign = "center";
       ctx.textBaseline = "alphabetic";
-      ctx.font = `800 ${32}px ${FONT}`;
-      ctx.fillText(name, lx + lw / 2, ly + 38);
+      ctx.font = `800 32px ${FONT}`;
+      ctx.fillText(name, lx + lw / 2, ly + 40);
       ctx.font = `500 22px ${FONT}`;
       ctx.fillStyle = "#475569";
-      ctx.fillText(c.label, lx + lw / 2, ly + 68);
+      ctx.fillText(c.label, lx + lw / 2, ly + 70);
     });
   } else {
     // One city: each day's stops joined, numbered within the day.
@@ -310,32 +341,63 @@ export async function drawPlanImage(input: PlanImageInput): Promise<Blob> {
   const fy = H - FOOT;
   ctx.fillStyle = "#fff";
   ctx.fillRect(0, fy, W, FOOT);
-  const chips: { color: string; text: string }[] = multi
-    ? input.cities.map((c, i) => ({ color: COLORS[i % COLORS.length], text: `${i + 1}. ${c.name}` }))
-    : [...new Set(input.stops.map((s) => s.day))].sort((a, b) => a - b).map((d) => ({ color: COLORS[d % COLORS.length], text: input.dayLabel(d + 1) }));
-  ctx.textBaseline = "middle";
-  ctx.font = `700 22px ${FONT}`;
-  let x = input.rtl ? W - 40 : 40;
-  let y = fy + 36;
-  for (const c of chips) {
-    const w = ctx.measureText(c.text).width + 44;
-    if (input.rtl ? x - w < 40 : x + w > W - 40) {
-      x = input.rtl ? W - 40 : 40;
-      y += 40;
-      if (y > fy + 80) break;
+  if (multi) {
+    // Each city on its own line: its number, name, days and best places.
+    input.cities.slice(0, 5).forEach((c, i) => {
+      const y = fy + 34 + i * FOOT_LINE;
+      const color = COLORS[i % COLORS.length];
+      const cxDot = input.rtl ? W - 52 : 52;
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.arc(cxDot, y, 17, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = "#fff";
+      ctx.font = `900 20px ${FONT}`;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(String(i + 1), cxDot, y + 1);
+      const names = [...new Set(input.stops.filter((s) => s.city === i && s.name).map((s) => `${s.icon ?? ""} ${s.name}`.trim()))].slice(0, 4);
+      const head = `${c.name} · ${c.label}`;
+      ctx.textAlign = input.rtl ? "right" : "left";
+      const x0 = input.rtl ? W - 84 : 84;
+      ctx.fillStyle = NAVY;
+      ctx.font = `800 24px ${FONT}`;
+      ctx.fillText(head, x0, y + 1);
+      const hw = ctx.measureText(head).width + 24;
+      ctx.fillStyle = "#475569";
+      const rest = fitText(ctx, names.join(input.rtl ? "، " : ", "), W - 84 - 40 - hw, 21, 500, 16);
+      ctx.fillText(rest, input.rtl ? x0 - hw : x0 + hw, y + 1);
+    });
+  } else {
+    const chips: { color: string; text: string }[] = input.stops
+      .map((s) => s.day)
+      .filter((d, i, all) => all.indexOf(d) === i)
+      .sort((a, b) => a - b)
+      .map((d) => ({ color: COLORS[d % COLORS.length], text: input.dayLabel(d + 1) }));
+    ctx.textBaseline = "middle";
+    ctx.font = `700 22px ${FONT}`;
+    let x = input.rtl ? W - 40 : 40;
+    let y = fy + 36;
+    for (const c of chips) {
+      const w = ctx.measureText(c.text).width + 44;
+      if (input.rtl ? x - w < 40 : x + w > W - 40) {
+        x = input.rtl ? W - 40 : 40;
+        y += 40;
+        if (y > fy + 80) break;
+      }
+      const x0 = input.rtl ? x - w : x;
+      ctx.fillStyle = "#f1f5f9";
+      roundRect(ctx, x0, y - 16, w, 32, 16);
+      ctx.fill();
+      ctx.fillStyle = c.color;
+      ctx.beginPath();
+      ctx.arc(input.rtl ? x0 + w - 18 : x0 + 18, y, 8, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = NAVY;
+      ctx.textAlign = input.rtl ? "right" : "left";
+      ctx.fillText(c.text, input.rtl ? x0 + w - 32 : x0 + 32, y + 1);
+      x = input.rtl ? x0 - 10 : x0 + w + 10;
     }
-    const x0 = input.rtl ? x - w : x;
-    ctx.fillStyle = "#f1f5f9";
-    roundRect(ctx, x0, y - 16, w, 32, 16);
-    ctx.fill();
-    ctx.fillStyle = c.color;
-    ctx.beginPath();
-    ctx.arc(input.rtl ? x0 + w - 18 : x0 + 18, y, 8, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.fillStyle = NAVY;
-    ctx.textAlign = input.rtl ? "right" : "left";
-    ctx.fillText(c.text, input.rtl ? x0 + w - 32 : x0 + 32, y + 1);
-    x = input.rtl ? x0 - 10 : x0 + w + 10;
   }
   ctx.fillStyle = NAVY;
   ctx.font = `900 26px ${FONT}`;
