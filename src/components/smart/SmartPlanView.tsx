@@ -91,15 +91,21 @@ export default function SmartPlanView({ locale, plan, onNew }: { locale: Locale;
         </div>
 
         {dd.prayers && (
-          <p className="mt-2 rounded-2xl bg-emerald-50 px-3 py-2 text-[13px] leading-relaxed text-emerald-950 ring-1 ring-emerald-100">
-            <span className="font-extrabold">🕌 {t.prayersTitle}:</span>{" "}
-            {(["fajr", "dhuhr", "asr", "maghrib", "isha"] as const).map((k, n) => (
-              <span key={k} className="whitespace-nowrap">
-                {n > 0 ? " · " : ""}
-                {t.prayers[k]} <span dir="ltr">{dd.prayers?.[k]}</span>
-              </span>
-            ))}
-          </p>
+          // Five equal boxes, name over time: always inside the frame, on any
+          // screen (owner, 14 Nov — the one-line version ran off the card).
+          <div className="mt-2 rounded-2xl bg-emerald-50 px-3 py-2 text-emerald-950 ring-1 ring-emerald-100">
+            <p className="text-[13px] font-extrabold">🕌 {t.prayersTitle}</p>
+            <ul className="mt-1.5 grid grid-cols-5 gap-1 text-center">
+              {(["fajr", "dhuhr", "asr", "maghrib", "isha"] as const).map((k) => (
+                <li key={k} className="min-w-0 rounded-xl bg-white/70 px-0.5 py-1">
+                  <span className="block truncate text-[11px] font-bold text-emerald-800">{t.prayers[k]}</span>
+                  <span className="block text-[13px] font-extrabold tabular-nums" dir="ltr">
+                    {dd.prayers?.[k]}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
         )}
         {dd.notes && dd.notes.length > 0 && (
           <ul className="mt-2 space-y-1 text-[13px] text-navy-600">

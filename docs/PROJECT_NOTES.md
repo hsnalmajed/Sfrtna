@@ -2345,3 +2345,44 @@ the «قارن الرحلة نفسها…» row. Now:
 Checked locally (next dev + Playwright, phone 390×844, mocked fallback):
 tabs, filters, 3 cards + «عرض باقي الرحلات (4)», no compare row; picker
 phone + desktop.
+
+## Owner's notes of 14 Nov 2026 (03:24 KSA, with a friend who went to Sri Lanka)
+
+Owner's verdict: «the trip plan is very bad» (his and his friend's). What
+sets Sfrtna apart = budget + trip plan + places/activities, and we do not
+show enough of them nor arrange them well. Work must be complete, precise,
+professional — more than asked, not less.
+
+Fixed the same night (commit after d202eb8): prayer times in the plan ran
+off the card (one nowrap line) → 5 equal boxes, name over time; flight
+tabs hidden when best = cheapest = fastest (one flight within budget, DMM→
+CMB showed three identical boxes).
+
+E) Trip plan («خطة … المصممة لك», `src/components/smart/*`) — rebuild:
+  1. Too few places a day; day split (14 day buttons in a grid) and the PDF
+     are poor → redesign the day layout and the PDF.
+  2. «احفظ الخطة في حسابك» button (push sign-up / the app).
+  3. «أضف كل الأماكن إلى خرائط Google» — all the plan's places into the
+     traveller's own Google Maps (list / KML / per-day route).
+  4. Swap any stop (place, restaurant, activity): «بديل» next to each →
+     alternatives that fit the traveller's choices.
+  5. «قبل أن تسافر»: our services — eSIM, tours, transfers, car rental and
+     everything we offer (partner links, commission).
+  6. Friend: download the plan as an IMAGE like a route map (country map,
+     stops, lines, icons — sample = Sri Lanka tour map).
+  7. Friend: days each city deserves (enough to see it fully) — in the plan
+     AND on destination pages; trip longer than the city needs → suggest
+     another city in the same country inside the plan.
+  8. Friend: small countries (Sri Lanka) → a country route across several
+     cities instead of the whole trip in one city.
+F) Coverage: Sri Lanka shows 4 cities only; there are better places to stay
+   ≤30 min from others → widen cities per country (Sri Lanka first, then
+   audit other countries the same way).
+G) «Been»-style travel map (getbeen.app idea), in «المزيد» or best place:
+   member marks countries AND cities visited → world map coloured by
+   country and city, counts, % of the world, % explored per country (Istanbul
+   only ≠ all Türkiye); view by country or by city; tied to the account
+   (drives sign-ups and app use). Make it delightful.
+H) Owner's question: why did DMM→CMB (Sri Lanka) show only Google's fares
+   (second source)? Find out: partner widget 0 results vs failed to load in
+   the app WebView (route-probe / health on DMM→CMB) — answer with evidence.

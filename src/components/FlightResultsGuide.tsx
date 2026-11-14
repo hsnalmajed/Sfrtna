@@ -1147,7 +1147,10 @@ export default function FlightResultsGuide({
             )}
           </div>
 
-          {/* Best, cheapest, fastest — within the budget, at a glance. */}
+          {/* Best, cheapest, fastest — within the budget, at a glance. Hidden
+              when all three are the same flight (one fits): three equal boxes
+              say nothing (owner's phone, 14 Nov). */}
+          {new Set(tabs.map((x) => x.f?.id)).size > 1 && (
           <div role="tablist" className="mb-6 grid grid-cols-3 overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-mist-200">
             {tabs.map(({ key, label, f }, i) => {
               const on = tab === key;
@@ -1180,6 +1183,7 @@ export default function FlightResultsGuide({
               );
             })}
           </div>
+          )}
 
           <FlightCard
             {...card}

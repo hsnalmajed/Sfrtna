@@ -114,10 +114,14 @@ PROJECT_NOTES «Owner's notes of 13 Nov 2026» (A–D). **A+D DONE 13 Nov
 «A+D done». Waiting: owner checks on the phone (DMM/RUH→LJU search; edit
 the departure city). Hotel half of A4 not touched: the hotel list was
 paced shut (SerpApi, reopens ~15 Nov) → re-check once open, with C.
-**Next step: B** («اقترح لي وجهة» misses DMM→Slovenia under 10,000) — root
-cause first (cached Data API destinations vs live search), then C
-(flight+hotel: one budget, pick flight → hotel → summary). Opus chat.
-Play upload waits for B–C.
+**Owner 14 Nov 03:24 — new notes E–H** (PROJECT_NOTES «Owner's notes of 14
+Nov 2026»): E trip-plan rebuild (8 points), F more cities (Sri Lanka 4 only),
+G «Been»-style visited map, H why DMM→CMB had only the second source.
+Owner calls the plan «very bad» — plan + budget + places are what set us
+apart. Prayer-times overflow + identical flight tabs fixed 14 Nov.
+**Next step:** ask the owner the order (proposed: H quick evidence → E plan
+rebuild in rounds → F cities → B → C → G; Play upload after B–C), then work
+one section per chat. Opus chat.
 
 **Release gate: CLOSED (4 Nov) + catch-up (6 Nov).** `release.yml` is the
 only way to production (Cloudflare Git build disabled). Pushes made by
