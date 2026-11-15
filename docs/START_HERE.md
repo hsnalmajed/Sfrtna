@@ -137,6 +137,21 @@ sends View details); 2) create the app (exclude EEA/UK, non-trader), upload
 the .aab from android.yml to the INTERNAL testing track (no 12×14 rule,
 installs from Play, owner first); 3) closed test with 15+ Android testers
 for 14 days (personal account rule) → apply for production (~3 weeks).
+**Play progress 16 Nov 02:34:** app CREATED (Personal account 8893362294243663078,
+«سفرتنا | Sfrtna», com.sfrtna.app, ar default, free, automatic protection
+ON). Internal testing: list «Sfrtna team» = owner's almajedov@gmail.com;
+release 28 (1.0.0) = aab from android.yml run 43574244827 (share-binary),
+PUBLISHED to internal testers 02:34; owner accepted the invite, store page
+not live yet («Not Found» at 02:38 = normal first-release delay) → owner
+retries https://play.google.com/store/apps/details?id=com.sfrtna.app.
+**Next Play steps (owner, Sonnet chat):** «Finish setting up your app» on the
+dashboard: app access (no login needed), ads = NO, content rating, target
+audience (18+), data safety (account email, saved plans), privacy policy =
+https://sfrtna.com/ar/privacy, news = no; store listing from
+`docs/play-store/listing-draft.md` + 512 icon, 1024×500 feature graphic,
+phone screenshots (Claude makes them); countries = SA + Gulf, NO EEA/UK.
+Then closed test track + 15 testers' Gmail list (owner collecting).
+New code = bump versionCode (CI run number) → upload aab to internal.
 **▶▶ NEXT 1 (owner 16 Nov 01:59): interactive route map in the plan.**
 Keep today's route map; tapping a city's number (1, 2…) opens that city on
 the map with ALL the plan's places there (numbered pins by day, tap a pin →
