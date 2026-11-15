@@ -178,6 +178,26 @@ route image = place icons + city cards that avoid stops + footer of each
 city's best places, «حفظ الصورة» via app share sheet (`share-binary`, NEW
 native code: Android test APK rebuilt; iOS needs the next build).
 
+**Apple REJECTED iOS 1.0 (27) on 13 Nov 22:51: 4.3 Spam (a)(b) + 4.2.6
+template.** Owner AGREES the app feels like a copy of others. Decision 15 Nov:
+do NOT reply/resubmit yet. First finish E round 2 + the work below, then
+build app-only value («وضع الرحلة»: today's plan offline, prayer alerts in the
+city's time, qibla, nearest mosque / halal food, trip reminders), THEN reply
+to App Review answering its 9 questions (draft: PROJECT_NOTES «Apple 4.3
+rejection — 14 Nov»). Never press Resubmit without big changes.
+**Positioning + home hero (owner 15 Nov): ALL proposals rejected** («خطّط
+سفرتك صح», «خلّ سفرتك علينا» = sounds like we book, «رحلة كاملة جاهزة» =
+not true today, a 4-card sketch = «فاشل»; fails on words, look and clutter).
+Owner wants: a hero that EXCITES and shows ALL we offer (choose destination:
+budget destinations, budget advisor, seasons, visa, currency / book: live
+flights incl. multi-city, hotels, cars / plan: day plan with prayer + halal +
+kids, city route, 365-city guide, maps / prepare: eSIM, airport transfer,
+tours, «رحلتي» + reminders, saved plans, app). Must be honest (we plan and
+compare; partners book). Method next time: study the heroes of Almosafer,
+Wego, Booking, Airbnb, Kayak in Chrome first; then make 2–3 COMPLETE designs
+(Design artifact, real photos/fonts/colours, phone + desktop), no chat
+sketches, no lists of slogans; owner picks.
+
 **Release gate: CLOSED (4 Nov) + catch-up (6 Nov).** `release.yml` is the
 only way to production (Cloudflare Git build disabled). Pushes made by
 workflows with GITHUB_TOKEN (guide, hotels, photos, reports…) never start a

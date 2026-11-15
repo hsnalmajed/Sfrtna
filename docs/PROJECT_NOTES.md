@@ -2505,3 +2505,19 @@ healed release failures as «مشاكل» → fix: skip a failed release if a la
 release succeeded (`status-report`); Admitad ad space: owner pressed Finish
 (meta tag matches) 14 Nov 11:14 → «Verifying» → check Active, then flynas +
 Jazeera.
+
+### Apple 4.3 rejection — 14 Nov 2026
+App Store Connect, iOS App 1.0 (27), Apple message 13 Nov 22:51: Guidelines
+4.3 Spam (a duplicate, b indistinguishable) + 4.2.6 (template / app
+generation service). Apple: don't resubmit without significant changes; or
+reply answering 9 questions (what it does, users, market gap, beta testing
+with feedback examples, standalone?, could be IAP of another app?, shared
+code with own apps?, shared SDK/content with third parties?, made for a
+client?). Draft reply written 14 Nov (in chat): Arabic-first planner for
+Saudi/Gulf families; prayer/Friday/halal/kids-aware day plans; own engine and
+365-city Arabic guide; TestFlight group «Sfrtna Team» + Android test builds +
+friends; feedback examples (Dynamic Island safe area, prayer boxes, Sri Lanka
+route, Arabic clipping, saving offline); only app on the account; Capacitor
+(open source) + own native code; owner's own product. Owner 14–15 Nov: agrees
+the app feels duplicated → reply only after app-only features are built.
+
