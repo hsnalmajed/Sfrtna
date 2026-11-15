@@ -119,7 +119,18 @@ final ي cut in the route ribbon (no space between spans).
 **Owner (one step):** on the phone open a plan (DMM→Colombo 10 days),
 press «تحميل PDF» and «أرسل الخطة إلى بريدي», send ONE screenshot of anything
 wrong; check Kandy → Ella ride reads ~130+ km.
-**▶▶ NEXT (owner's decision 15 Nov): iPhone app-only value** for Apple's 4.3 /
+**Mail claims fixed for real 16 Nov 02:10** (release 43772073265 green):
+rowsWritten counts index writes (1 row = 2) → claims now use RETURNING.
+Owner to re-try «أرسل الخطة إلى بريدي». «حفظ الصورة» says «update the app»
+= owner's installed APK is older than share-binary (14 Nov) → install the
+test APK (releases/download/android-test/sfrtna-android-test.apk; debug key
+changes per build → uninstall the old app first).
+**▶▶ NEXT 1 (owner 16 Nov 01:59): interactive route map in the plan.**
+Keep today's route map; tapping a city's number (1, 2…) opens that city on
+the map with ALL the plan's places there (numbered pins by day, tap a pin →
+name + day + «على الخريطة»), not only the list under the map. Goal: make
+the plan the reason to rely on the app. Same map in the app (later offline).
+**▶▶ NEXT 2 (owner's decision 15 Nov): iPhone app-only value** for Apple's 4.3 /
 4.2.6 rejection, then the reply. Today `mobile/` = Capacitor 8 shell with NO
 native plugins. Build (plugins called via `src/lib/nativeApp.ts`, site keeps
 working in browsers) «وضع الرحلة»: 1) saved plans offline (Preferences/
