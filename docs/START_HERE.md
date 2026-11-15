@@ -130,6 +130,13 @@ installed» even after uninstall; file 6.2 MB OK; phone has a WORK profile
 whose policy forces Play Protect). Don't walk him through sideloading again.
 Test app features via the site in the phone browser; real fix = Play
 internal testing track once the Play account works.
+**Owner 16 Nov 02:18: go to Google Play NOW** (changes «Play upload after
+B–C»): purpose = test every fix/addition through the store instead of
+sideloaded APKs. Plan: 1) clear the red «profile removed» banner (owner
+sends View details); 2) create the app (exclude EEA/UK, non-trader), upload
+the .aab from android.yml to the INTERNAL testing track (no 12×14 rule,
+installs from Play, owner first); 3) closed test with 15+ Android testers
+for 14 days (personal account rule) → apply for production (~3 weeks).
 **▶▶ NEXT 1 (owner 16 Nov 01:59): interactive route map in the plan.**
 Keep today's route map; tapping a city's number (1, 2…) opens that city on
 the map with ALL the plan's places there (numbered pins by day, tap a pin →
