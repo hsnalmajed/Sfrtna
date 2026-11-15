@@ -2,6 +2,8 @@ import type { Locale } from "@/lib/types";
 import PageHero from "@/components/ui/PageHero";
 
 export interface LegalSection {
+  /** Anchor for links into the page (store forms link to #delete). */
+  id?: string;
   heading: string;
   body: string;
   /** Something to do about it, under the text — the privacy page's cookie choice. */
@@ -45,7 +47,7 @@ export default function LegalPage({
 
         <div className="space-y-7">
           {sections.map((s) => (
-            <section key={s.heading}>
+            <section key={s.heading} id={s.id} className={s.id ? "scroll-mt-24" : undefined}>
               <h2 className="font-display text-h3 font-extrabold text-navy-900">{s.heading}</h2>
               <p className="mt-2.5 text-base leading-relaxed text-navy-700">{s.body}</p>
               {s.action && <div className="mt-3">{s.action}</div>}
