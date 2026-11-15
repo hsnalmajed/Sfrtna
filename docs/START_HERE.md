@@ -125,6 +125,11 @@ Owner to re-try «أرسل الخطة إلى بريدي». «حفظ الصورة
 = owner's installed APK is older than share-binary (14 Nov) → install the
 test APK (releases/download/android-test/sfrtna-android-test.apk; debug key
 changes per build → uninstall the old app first).
+**16 Nov 02:16: test APK will NOT install on the owner's phone** («App not
+installed» even after uninstall; file 6.2 MB OK; phone has a WORK profile
+whose policy forces Play Protect). Don't walk him through sideloading again.
+Test app features via the site in the phone browser; real fix = Play
+internal testing track once the Play account works.
 **▶▶ NEXT 1 (owner 16 Nov 01:59): interactive route map in the plan.**
 Keep today's route map; tapping a city's number (1, 2…) opens that city on
 the map with ALL the plan's places there (numbered pins by day, tap a pin →
