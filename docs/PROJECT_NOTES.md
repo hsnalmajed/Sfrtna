@@ -2573,4 +2573,12 @@ the app feels duplicated → reply only after app-only features are built.
    «كانديومان» as one word and the final ي took its joining form. The 14 Nov
    padding fix treated a symptom. Fix: a real space between the spans.
    Reproduced locally (Chrome, Tajawal 800) before/after.
+   **Correction 16 Nov 01:55 (owner: mail still «limit»):** the first fix
+   was wrong. Tested in workerd (wrangler dev): one new row in a table with
+   a primary key gives rowsWritten = 2 (row + index), so `=== 1` was never
+   true — and the one-time cleanup (same check) never ran. Now claims and
+   the cleanup use `INSERT OR IGNORE … RETURNING` (`added()`: 1 = new, 0 =
+   already there), cleanup id `mails-never-sent-2026-11-16b`. Tested in
+   workerd: claim → true, repeat → false, cleanup once. Rule: never compare
+   rowsWritten with an exact number.
 

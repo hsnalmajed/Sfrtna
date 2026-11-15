@@ -108,20 +108,30 @@ export class Accounts extends DurableObject {
     // One time: until 16 Nov 2026 every claim was written but answered «taken»,
     // so no row in «mails» stands for a mail that was really sent. Clear them,
     // or those plan-mail slots and trip mails would stay blocked for good.
-    if (this.written(this.sql.exec("INSERT OR IGNORE INTO fixes (id, at) VALUES ('mails-never-sent-2026-11-16', ?)", Date.now())) === 1) {
+    if (this.added("INSERT OR IGNORE INTO fixes (id, at) VALUES ('mails-never-sent-2026-11-16b', ?) RETURNING id", Date.now())) {
       this.sql.exec("DELETE FROM mails");
     }
   }
 
   /**
-   * Rows a write changed. A cursor's rowsWritten counts only what has run
-   * «so far» and reads 0 until the cursor is read through (16 Nov 2026: every
-   * mail claim answered «taken» — trip mails never went out and «أرسل الخطة
-   * إلى بريدي» said «limit» on its first use).
+   * Rows a write changed (> 0 = something changed). Not an exact row count:
+   * rowsWritten also counts index writes — one new row in a table with a
+   * primary key reads 2 (tested in workerd, 16 Nov 2026). Never compare it
+   * with 1; use added() for «was this row new?».
    */
   written(cursor) {
     cursor.toArray();
     return cursor.rowsWritten;
+  }
+
+  /**
+   * True when an «INSERT OR IGNORE … RETURNING» added its row (false when it
+   * was already there). Until 16 Nov 2026 the claims compared rowsWritten
+   * with 1, read 2, and every mail claim answered «taken»: trip mails never
+   * went out and «أرسل الخطة إلى بريدي» said «limit» on its first use.
+   */
+  added(query, ...args) {
+    return this.sql.exec(query, ...args).toArray().length === 1;
   }
 
   one(query, ...args) {
@@ -349,7 +359,7 @@ export class Accounts extends DurableObject {
 
   /** Takes a mail before it is sent (false = already taken: never twice). */
   async mailClaim(user, trip, kind) {
-    return this.written(this.sql.exec("INSERT OR IGNORE INTO mails (user, trip, kind, at) VALUES (?, ?, ?, ?)", user, trip, kind, Date.now())) === 1;
+    return this.added("INSERT OR IGNORE INTO mails (user, trip, kind, at) VALUES (?, ?, ?, ?) RETURNING kind", user, trip, kind, Date.now());
   }
 
   /** Gives a claimed mail back when the sender refused it (tried next hour). */
