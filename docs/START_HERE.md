@@ -106,33 +106,28 @@ City guide / Viator / Search Console / Status email / Feedback / Dashboard /
 «رحلتي» / Google Play account / Workers Paid / Hotels like Booking /
 iPhone app.
 
-## ▶ Hand-off (14 Nov 2026 noon) — current state
+## ▶ Hand-off (15 Nov 2026) — current state
 
-**▶▶ NOW (owner 14 Nov 12:32: «no postponing — decide the fix and do it,
-it must make us better»; this comes BEFORE E round 2):** iPhone app fix for
-Apple's 4.3 / 4.2.6 rejection. Today `mobile/` = Capacitor 8 shell loading
-sfrtna.com with NO native plugins (only core) → Apple sees a website in a
-wrapper. Build real iPhone-only value (Capacitor plugins, called from the
-site's code only inside the app via `src/lib/nativeApp.ts`; the site keeps
-working in browsers):
-1) **Saved plans offline** — on open/save in the app, store the plan
-   (Preferences/Filesystem) + a native-shell offline screen that lists and
-   shows saved plans with no internet (abroad without data).
-2) **Local notifications** — trip reminders on the device (7 d / 3 d /
-   departure day / each plan day's first stop) + optional **prayer-time
-   alerts for the trip city** (we already compute times in the plan); asked
-   permission only when the traveller turns it on.
-3) **Native share sheet** for plan / route image / flight result (Share).
-4) Add-to-calendar for plan days (.ics via Share/Filesystem) if cheap;
-   haptics on key taps.
-Then: bump build, `ios.yml` uploads to App Store Connect; TestFlight
-internal testers (owner + friends with App Store Connect access, no beta
-review) 2–3 days, log real feedback; write the reply to Apple's 9 questions
-(honest; 4.2.6: own content/account, Capacitor = standard framework; partner
-flight widget = third-party content) + review notes listing the native
-features and how to see them (Airplane mode → saved plan); owner pastes it
-via «Reply to App Review», then resubmits. Never invent beta testing.
-Recommended model: **Opus 5.5**.
+**▶ E round 2 fixes DONE 15 Nov** (PROJECT_NOTES «E round 2 fixes — 15
+Nov»): PDF cover + full-width days broken between stops; meals follow the
+chosen kitchens, no mall opening a «famous» day; saved plan shows saved;
+plan mail for smart plans; real road times between cities.
+**Owner (one step):** on the phone open a plan (DMM→Colombo 10 days),
+press «تحميل PDF» and «أرسل الخطة إلى بريدي», send ONE screenshot of anything
+wrong; check Kandy → Ella ride reads ~130+ km.
+**▶▶ NEXT (owner's decision 15 Nov): iPhone app-only value** for Apple's 4.3 /
+4.2.6 rejection, then the reply. Today `mobile/` = Capacitor 8 shell with NO
+native plugins. Build (plugins called via `src/lib/nativeApp.ts`, site keeps
+working in browsers) «وضع الرحلة»: 1) saved plans offline (Preferences/
+Filesystem + offline screen in the shell); 2) local notifications: trip
+reminders 7 d / 3 d / departure / each day's first stop + optional prayer
+alerts in the city's time (permission only when turned on); 3) qibla,
+nearest mosque / halal food; 4) native share sheet; .ics calendar + haptics if
+cheap. Then bump build → `ios.yml` → TestFlight internal 2–3 days (real
+feedback only) → reply to Apple's 9 questions (draft: PROJECT_NOTES «Apple 4.3
+rejection — 14 Nov») + review notes (Airplane mode → saved plan) → owner
+resubmits. Never resubmit without big changes. After that: FULL PRODUCT AUDIT
+(owner's order 14 Nov, step 2). Recommended model: **Opus 5.5**.
 
 **Earlier hand-off (13 Nov evening):**
 
@@ -163,7 +158,7 @@ none may be dropped. Play upload after B–C.
 country's cities, days per city, «بديل», new day layout, save, Google Maps,
 route image, «قبل أن تسافر». **E round 2 live check DONE 14 Nov 11:30**
 (PROJECT_NOTES «E round 2 — live check»): plan, route image with real tiles,
-save → «حسابي» → open = OK. **Next step: E round 2 fixes (code, Opus):**
+save → «حسابي» → open = OK. E round 2 fixes (DONE 15 Nov, see top):
 1) PDF rebuild in `planPdf.ts` + SmartPlanView: cover page (title, dates,
 route ribbon + route image), days flow across pages at stop boundaries,
 full width, never shrink, no blank gaps; 2) meals follow the chosen cuisines
@@ -475,4 +470,4 @@ payout threshold $500 not met» (wire $500; PayPal/ACH $100).
 Waiting on the owner: Admitad ad space «Verifying» (14 Nov) → Active → flynas/Jazeera; Google Play ticket reply; Google-fares
 decision after the 6 Nov measurement; Android APK on a real phone.
 
-**Recommended model for the next chat: Opus 5.5** (E round 2 + product audit).
+**Recommended model for the next chat: Opus 5.5** (iPhone app-only features).

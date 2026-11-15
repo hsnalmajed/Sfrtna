@@ -2521,3 +2521,35 @@ route, Arabic clipping, saving offline); only app on the account; Capacitor
 (open source) + own native code; owner's own product. Owner 14–15 Nov: agrees
 the app feels duplicated → reply only after app-only features are built.
 
+### E round 2 fixes — 15 Nov 2026 (all 5 points)
+1. **PDF rebuilt** (`planPdf.ts`): draws from an off-screen copy of the plan
+   (760 px wide, print rules on: `.print:hidden` really gone → no gaps; same
+   file from phone or desktop). Page 1 = cover: title block (dates, route
+   ribbon, summary) + route image (the one made, else drawn, 12 s cap; none →
+   days follow the title). Days flow at full width, never shrunk; pages break
+   only between stops (`data-pdf-cut` on each stop; a day header keeps its
+   first stop). html-to-image `backgroundColor` was painting over the navy
+   cover → removed, white goes behind in `crop()`. Old city planner
+   (CityPlacesPlanner) uses the same function. Local test (next dev +
+   Chrome, Colombo 5 days, 1280 and 390 px): 7 pages, cover OK, days full width.
+2. **Meals follow the chosen kitchens** (`mealFit` in `guidePlan.ts`): local
+   = the country's own cuisine tags (`LOCAL_CUISINE`) + regional/local/
+   traditional; wrong kitchen −40 when only local was asked; if nothing near
+   fits, the nearest fitting one within 3 km comes first; halal-tagged still
+   first (+100). Shopping centres get no «famous» bonus unless malls/souqs
+   asked, and never open a day. Reproduced the owner's case on the old code
+   (day 2 Colombo = Liberty Plaza first, lunch Como Colombo Italian) → new
+   code: Galle Face Green first, local/halal lunches; Istanbul all Turkish.
+   Seen: some days have an empty «غداء/عشاء» (no restaurant within 3 km, old
+   behaviour) → for the audit (F coverage).
+3. **Reopened saved plan** starts as «حُفظت في حسابك» (checked).
+4. **Plan mail for smart plans**: «أرسل الخطة إلى بريدي» in the smart plan
+   toolbar; mail carries each stop's time, 🍴/🚗 marks and each day's city ·
+   theme (`planMail.ts` optional `time`, `kind`, `titles`; old planner
+   unchanged). Checked: request accepted by `cleanPlanMail`, text rendered.
+5. **Ride times between cities**: real road distance/time from the OSRM
+   router (cached 30 days at the edge, 2.5 s timeout, all legs at once) ×1.15
+   (×1.35 slow-road countries: LK, NP, IN…); old straight-line estimate when it
+   fails or looks wrong. Container can't reach the router → verify live
+   (Kandy → Ella should read ~130+ km, 4 h+).
+

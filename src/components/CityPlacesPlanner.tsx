@@ -750,8 +750,7 @@ function PlanView({
     setPdfBusy(true);
     try {
       const { downloadPlanPdf } = await import("@/lib/planPdf");
-      const blocks = [...sheet.current.querySelectorAll<HTMLElement>("[data-pdf]")];
-      await downloadPlanPdf(blocks, safeFileName(`sfrtna-plan-${countryCode}-${cityName}`, "pdf"));
+      await downloadPlanPdf({ root: sheet.current, fileName: safeFileName(`sfrtna-plan-${countryCode}-${cityName}`, "pdf") });
     } catch {
       printPage(title);
     } finally {
@@ -812,7 +811,7 @@ function PlanView({
         <PrintHeader locale={locale} title={title} subtitle={subtitle} />
 
         {/* On screen: the same heading, in the site's own style. */}
-        <div data-pdf className="print:hidden overflow-hidden rounded-3xl bg-gradient-to-br from-navy-800 to-navy-990 p-6 text-white">
+        <div data-pdf data-pdf-cover className="print:hidden overflow-hidden rounded-3xl bg-gradient-to-br from-navy-800 to-navy-990 p-6 text-white">
           {/* eslint-disable-next-line @next/next/no-img-element -- local asset; image optimizer is off on Workers */}
           <img src="/sfrtna-logo-360.webp" alt="" className="mb-4 h-10 w-auto rounded-lg bg-white px-2 py-1" />
           <h2 className="font-display text-2xl font-black sm:text-3xl">{title}</h2>
@@ -863,7 +862,7 @@ function PlanView({
                 ) : (
                   <ol className="divide-y divide-mist-100">
                     {items.map((p, n) => (
-                      <li key={p.key} className="flex items-start gap-3 px-5 py-3">
+                      <li key={p.key} data-pdf-cut className="flex items-start gap-3 px-5 py-3">
                         <span
                           className="mt-0.5 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-sm"
                           style={{ backgroundColor: `${PIN_STYLES[p.category].color}1a` }}

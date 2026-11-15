@@ -269,6 +269,49 @@ const NOT_A_MEAL = /starbucks|mcdonald|kfc|burger king|subway|domino|pizza hut|c
 const DRINKS = /meyhane|\bpub\b|\bbar\b|tavern|brewery|brauhaus|bierhaus|beer|wine|vino|izakaya|taverna|bodega|cantina|sake/i;
 const isMeal = (r: StoredRestaurant) => !NOT_A_MEAL.test(`${r.n} ${r.e ?? ""}`) && !/coffee_shop|cafe|donut|ice_cream|bubble_tea|tea\b|juice|dessert|bakery|cake/.test(r.u ?? "");
 
+/**
+ * The traveller's food wishes against a restaurant's cuisine tags (owner,
+ * 14 Nov: «halal + local dishes» got an Italian lunch in Colombo).
+ * «local» = the country's own kitchen (or tagged regional/local/traditional).
+ */
+const LOCAL_CUISINE: Record<string, string[]> = {
+  LK: ["sri_lankan"], IN: ["indian", "south_indian", "punjabi", "curry"], PK: ["pakistani"], BD: ["bangladeshi"], NP: ["nepalese", "nepali", "momo"],
+  TR: ["turkish", "kebab", "ottoman", "doner"], AZ: ["azerbaijani"], GE: ["georgian"], AM: ["armenian"], UZ: ["uzbek"], KG: ["kyrgyz"], KZ: ["kazakh"],
+  EG: ["egyptian"], MA: ["moroccan", "couscous"], TN: ["tunisian"], JO: ["jordanian", "arab"], LB: ["lebanese"], SY: ["syrian"],
+  SA: ["saudi", "arab"], AE: ["emirati", "arab"], QA: ["qatari", "arab"], BH: ["arab"], KW: ["kuwaiti", "arab"], OM: ["omani", "arab"], IR: ["persian", "iranian"],
+  MY: ["malaysian", "malay"], ID: ["indonesian", "javanese", "padang", "balinese"], TH: ["thai"], VN: ["vietnamese"], KH: ["cambodian", "khmer"], LA: ["lao"],
+  PH: ["filipino"], SG: ["singaporean", "malaysian", "chinese"], CN: ["chinese", "cantonese", "sichuan", "dim_sum", "hotpot", "hot_pot"], HK: ["cantonese", "dim_sum", "chinese"],
+  TW: ["taiwanese"], JP: ["japanese", "sushi", "ramen", "udon", "soba", "yakiniku", "okonomiyaki", "teppanyaki"], KR: ["korean"], MV: ["maldivian"],
+  IT: ["italian", "pizza", "pasta", "sicilian", "italian_pizza"], ES: ["spanish", "tapas", "paella", "catalan", "basque"], FR: ["french", "brasserie", "crepe"],
+  GR: ["greek", "gyros", "souvlaki"], PT: ["portuguese"], DE: ["german", "bavarian"], AT: ["austrian"], CH: ["swiss", "fondue"], GB: ["british", "english", "fish_and_chips"],
+  IE: ["irish"], NL: ["dutch"], BE: ["belgian"], CZ: ["czech"], HU: ["hungarian"], PL: ["polish"], HR: ["croatian"], BA: ["bosnian", "balkan"], RS: ["serbian", "balkan"],
+  AL: ["albanian", "balkan"], ME: ["balkan"], SI: ["balkan"], RO: ["romanian"], BG: ["bulgarian"], RU: ["russian"], UA: ["ukrainian"], DK: ["danish", "nordic"],
+  SE: ["swedish", "scandinavian"], NO: ["nordic", "scandinavian"], FI: ["nordic"], MX: ["mexican", "tacos"], PE: ["peruvian"], AR: ["argentinian"], BR: ["brazilian"],
+  US: ["american"], CA: ["canadian"], GH: ["ghanaian"], ET: ["ethiopian"], KE: ["african"], TZ: ["african"], ZA: ["african"], SN: ["senegalese"],
+};
+const ALWAYS_LOCAL = ["regional", "local", "traditional", "daerahregional"];
+const QUICK = ["fast_food", "sandwich", "burger", "shawarma", "kebab", "falafel", "street_food", "chicken", "fried_chicken", "snack", "noodle", "noodles", "doner", "hot_dog"];
+/** Kitchens a halal-first traveller usually finds halal (a tagged restaurant still comes first). */
+const MUSLIM_FRIENDLY = ["arab", "arabic", "lebanese", "syrian", "turkish", "kebab", "shawarma", "pakistani", "middle_eastern", "persian", "afghan", "malaysian", "malay", "indonesian", "moroccan", "egyptian", "uzbek", "falafel", "palestinian", "yemeni"];
+
+/** How well a restaurant fits the traveller's food wishes (higher = better). */
+export function mealFit(r: { u?: string; n: string }, food: readonly string[], country: string, halalOnly: boolean): number {
+  const tags = (r.u ?? "").toLowerCase().split(";").map((x) => x.trim()).filter(Boolean);
+  const local = new Set([...ALWAYS_LOCAL, ...(LOCAL_CUISINE[country.toUpperCase()] ?? [])]);
+  const isLocal = tags.some((x) => local.has(x));
+  const foreign = tags.length > 0 && !isLocal && !tags.every((x) => x === "international" || x === "seafood" || x === "fish" || x === "grill" || x === "barbecue");
+  const quick = tags.some((x) => QUICK.includes(x));
+  const fine = tags.includes("fine_dining") || tags.includes("gourmet");
+  let s = 0;
+  if (food.includes("local")) s += isLocal ? 60 : foreign && !food.includes("international") ? -40 : 0;
+  if (food.includes("international") && foreign) s += 30;
+  if (food.includes("quick") && quick) s += 30;
+  if (food.includes("fine") && fine) s += 40;
+  if (!food.includes("quick") && quick) s -= 10;
+  if (halalOnly && tags.some((x) => MUSLIM_FRIENDLY.includes(x))) s += 20;
+  return s;
+}
+
 export function guidePlanReady(g: GuideFile | null): boolean {
   return Boolean(g && g.places.filter((p) => p.d && usable(p)).length >= 6);
 }
@@ -434,6 +477,7 @@ export function buildGuidePlan(req: PlanRequest, guide: GuideFile, restaurants: 
     for (const g of WANTS[i].groups) if (!wantedGroups.has(g)) wantedGroups.set(g, i);
   }
   const askedChurches = a.interests.includes("churches");
+  const askedShops = a.interests.includes("malls") || a.interests.includes("souqs");
   // A pin named after the whole country (bad mapping) is not a stop.
   const countryWords = new Set([opts.countryNames ?? []].flat().map((x) => x.toLowerCase()));
   const pool = guide.places.filter((p) => usable(p) && !p.out && !opts.used?.has(p.q) && !countryWords.has(p.n.toLowerCase()) && !countryWords.has((p.e ?? "").toLowerCase()));
@@ -442,7 +486,11 @@ export function buildGuidePlan(req: PlanRequest, guide: GuideFile, restaurants: 
     let why: Interest | undefined = p.kd ? wantedKinds.get(p.kd) : undefined;
     if (!why && !p.kd) why = wantedGroups.get(p.g);
     if (why) s += 100;
-    const famous = rank < 12;
+    // A shopping centre is never «one of the city's best-known sights»
+    // unless shopping was asked for (owner, 14 Nov: Colombo opened with a mall).
+    const shop = p.kd === "mall" || p.g === "shopping";
+    const famous = rank < 12 && !(shop && !askedShops);
+    if (shop && !askedShops) s -= 30;
     if (a.interests.includes("famous") && famous) {
       s += 90;
       why = why ?? "famous";
@@ -539,6 +587,8 @@ export function buildGuidePlan(req: PlanRequest, guide: GuideFile, restaurants: 
       const indoor = day.filter(isIndoor);
       if (outdoor.length && indoor.length) day.splice(0, day.length, ...outdoor.slice(0, 1), ...indoor, ...outdoor.slice(1));
     }
+    // A day opens with a sight, not a shopping centre (late is their time).
+    if (!askedShops && day.length > 1 && (day[0].kd === "mall" || day[0].g === "shopping")) day.push(day.shift() as GuidePlace);
     // To beat the crowds, the best-known place of the day comes first.
     if (needs.has("avoid_crowds") && day.length > 1) {
       const best = day.reduce((x, y) => ((rankOf.get(y.q) ?? 99) < (rankOf.get(x.q) ?? 99) ? y : x));
@@ -555,8 +605,17 @@ export function buildGuidePlan(req: PlanRequest, guide: GuideFile, restaurants: 
     const open = restaurants.filter((r) => !usedMeals.has(r.i) && !usedMeals.has(r.n.toLowerCase()) && isMeal(r) && !(a.halalOnly && DRINKS.test(`${r.n} ${r.e ?? ""} ${r.u ?? ""}`)));
     const close = open.filter((r) => km(at, r) < 1.2).sort((p, q) => q.f - p.f);
     let near = close.length ? close.slice(0, 15) : open.filter((r) => km(at, r) < 3).sort((p, q) => km(at, p) - km(at, q)).slice(0, 15);
-    if (a.vegetarian) near = [...near.filter((r) => vegWords.test(r.u ?? "")), ...near.filter((r) => !vegWords.test(r.u ?? ""))];
-    if (a.halalOnly) near = [...near.filter((r) => r.h === 1), ...near.filter((r) => r.h !== 1)];
+    // The traveller's kitchen: when nothing nearby fits, the closest one that
+    // does within 3 km comes before an unwanted kitchen next door.
+    const fit = (r: StoredRestaurant) => mealFit(r, a.food ?? [], req.code, a.halalOnly);
+    if (a.food?.length && !near.some((r) => fit(r) > 0)) {
+      const wider = open.filter((r) => km(at, r) < 3 && fit(r) > 0).sort((p, q) => km(at, p) - km(at, q)).slice(0, 5);
+      near = [...wider, ...near.filter((r) => !wider.includes(r))];
+    }
+    near = near
+      .map((r, i) => ({ r, i, s: fit(r) + (a.halalOnly && r.h === 1 ? 100 : 0) + (a.vegetarian && vegWords.test(r.u ?? "") ? 80 : 0) }))
+      .sort((p, q) => q.s - p.s || p.i - q.i)
+      .map((x) => x.r);
     const r = near[0];
     if (r) {
       usedMeals.add(r.i);

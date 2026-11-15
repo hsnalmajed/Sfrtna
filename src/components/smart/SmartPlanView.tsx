@@ -12,6 +12,7 @@ import { findCountry } from "@/lib/countries";
 import ViatorOffers from "@/components/ViatorOffers";
 import TripServices from "@/components/TripServices";
 import ScrollRow from "@/components/ui/ScrollRow";
+import MailPlanButton, { type PlanForMail } from "@/components/MailPlanButton";
 import type { PlanAnswers, PlanDay, PlanItem, SmartPlan } from "@/lib/ai/plan";
 
 type T = ReturnType<typeof useDictionary>["smart"];
@@ -225,7 +226,8 @@ export default function SmartPlanView({
   const subtitle = `${fmt(plan.from)} – ${fmt(plan.to)} · ${counted(t.daysWord, days.length)} · ${counted(t.placesWord, placesN)}`;
 
   // ── Save to the account ────────────────────────────────────────────
-  const [saveState, setSaveState] = useState<"idle" | "saving" | "saved" | "error" | "full">("idle");
+  // A plan reopened from «خططي المحفوظة» is already saved (owner, 14 Nov).
+  const [saveState, setSaveState] = useState<"idle" | "saving" | "saved" | "error" | "full">(initialKeys ? "saved" : "idle");
   const canSave = Boolean(answers) && account.status === "ready" && (account.user || account.methods.email || account.methods.google);
   const saveBody = () =>
     JSON.stringify({
@@ -328,11 +330,9 @@ export default function SmartPlanView({
   }
   const [imageBusy, setImageBusy] = useState(false);
   const [imageError, setImageError] = useState(false);
-  async function makeImage() {
-    setImageBusy(true);
-    setImageError(false);
-    try {
-      const { drawPlanImage } = await import("@/lib/planImage");
+  /** The route picture (also the PDF's cover). */
+  async function buildImage(): Promise<Blob> {
+    const { drawPlanImage } = await import("@/lib/planImage");
       const cityIdx = new Map((route ?? []).map((l, i) => [l.slug, i]));
       const stops = days.flatMap((d, di) =>
         d.items
@@ -346,7 +346,7 @@ export default function SmartPlanView({
             city: d.city ? (cityIdx.get(d.city.slug) ?? 0) : 0,
           })),
       );
-      const blob = await drawPlanImage({
+    return drawPlanImage({
         title,
         subtitle,
         stops,
@@ -360,6 +360,12 @@ export default function SmartPlanView({
         dayLabel: (n) => t.day.replace("{n}", String(n)),
         rtl: isAr,
       });
+  }
+  async function makeImage() {
+    setImageBusy(true);
+    setImageError(false);
+    try {
+      const blob = await buildImage();
       setImage({ url: URL.createObjectURL(blob), blob });
     } catch {
       setImageError(true);
@@ -374,21 +380,43 @@ export default function SmartPlanView({
   async function savePdf() {
     if (inApp() || !sheet.current) return printPage(title);
     setPdfBusy(true);
-    const before = showAll;
-    setShowAll(true);
     try {
-      // Every day on the page, then each block as a picture on A4 (planPdf.ts).
-      await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+      // The route picture for the cover: the one already made, else draw it
+      // (no cover picture rather than a long wait).
+      const routeImage =
+        image?.blob ??
+        (await Promise.race([buildImage().catch(() => null), new Promise<null>((r) => window.setTimeout(() => r(null), 12000))]));
       const { downloadPlanPdf } = await import("@/lib/planPdf");
-      const blocks = [...sheet.current.querySelectorAll<HTMLElement>("[data-pdf]")];
-      await downloadPlanPdf(blocks, safeFileName(fileBase, "pdf"));
+      await downloadPlanPdf({ root: sheet.current, fileName: safeFileName(fileBase, "pdf"), routeImage });
     } catch {
       printPage(title);
     } finally {
-      setShowAll(before);
       setPdfBusy(false);
     }
   }
+
+  // ── «أرسل الخطة إلى بريدي»: the days as they stand (swaps included) ──
+  const mailPlan: PlanForMail = useMemo(
+    () => ({
+      from: plan.from,
+      to: plan.to,
+      days: days.map((d) =>
+        d.items
+          .filter((it) => it.kind !== "break" && it.name)
+          .slice(0, 12)
+          .map((it) => ({
+            name: it.name,
+            lat: it.lat,
+            lon: it.lon,
+            time: it.time || undefined,
+            stop: it.kind === "meal" || it.kind === "move" ? it.kind : undefined,
+          })),
+      ),
+      titles: days.map((d) => [d.city?.name, d.title].filter(Boolean).join(" · ")),
+    }),
+    [days, plan.from, plan.to],
+  );
+  const mailName = route && country ? (isAr ? country.nameAr : country.nameEn) : plan.city.name;
 
   // ── Before you travel ──────────────────────────────────────────────
   const ess = plan.essentials;
@@ -414,7 +442,7 @@ export default function SmartPlanView({
           ? `https://www.google.com/maps/dir/?api=1&origin=${it.from.lat},${it.from.lon}&destination=${it.lat},${it.lon}&travelmode=driving`
           : null;
       return (
-        <li key={id} className="relative">
+        <li key={id} data-pdf-cut className="relative">
           <span className="absolute -start-[1.95rem] top-2 flex h-7 w-7 items-center justify-center rounded-full bg-sea-600 text-sm ring-4 ring-white" aria-hidden="true">
             🚗
           </span>
@@ -438,7 +466,7 @@ export default function SmartPlanView({
     }
     const isPlace = it.kind === "place";
     return (
-      <li key={id} className={`relative transition ${justSwapped === id ? "rounded-2xl bg-emerald-50/70 px-2 py-2 ring-2 ring-emerald-300" : ""}`}>
+      <li key={id} data-pdf-cut className={`relative transition ${justSwapped === id ? "rounded-2xl bg-emerald-50/70 px-2 py-2 ring-2 ring-emerald-300" : ""}`}>
         <span
           className={`absolute -start-[1.95rem] top-1 flex h-7 w-7 items-center justify-center rounded-full text-[12px] font-black ring-4 ring-white ${
             it.kind === "meal" ? "bg-amber-400" : it.kind === "break" ? "bg-mist-300" : "bg-navy-900 text-white"
@@ -657,7 +685,7 @@ export default function SmartPlanView({
   return (
     <div ref={sheet} className="mx-auto max-w-3xl px-4 py-5 sm:py-8">
       {/* Title, the route and what the plan took into account. */}
-      <section data-pdf className="overflow-hidden rounded-3xl bg-navy-950 text-white shadow-[var(--shadow-card)]">
+      <section data-pdf data-pdf-cover className="overflow-hidden rounded-3xl bg-navy-950 text-white shadow-[var(--shadow-card)]">
         <div className="px-5 py-5 sm:px-7 sm:py-6">
           <p className="text-xs font-bold text-sun-300">{subtitle}</p>
           <h2 className="mt-1 font-display text-xl font-black leading-snug sm:text-2xl">{title}</h2>
@@ -737,6 +765,7 @@ export default function SmartPlanView({
         <button type="button" onClick={savePdf} disabled={pdfBusy} className={tool}>
           📄 {pdfBusy ? t.pdfBusy : t.print}
         </button>
+        <MailPlanButton locale={locale} plan={mailPlan} cityName={mailName} countryCode={plan.city.code} slug={plan.city.slug} className={tool} />
         {onNew && (
           <button type="button" onClick={onNew} className={`${tool} !font-bold !text-navy-700`}>
             ✨ {t.newPlan}

@@ -17,6 +17,7 @@
  * Ride times are road estimates from the distance, said as «نحو».
  */
 
+import { cachedJson } from "@/lib/edgeCache";
 import { buildGuidePlan, cityNeedsDays, guidePlanReady } from "@/lib/guidePlan";
 import { readGuide } from "@/lib/guide";
 import { readStoredRestaurants } from "@/lib/mapPins";
@@ -75,6 +76,44 @@ function ride(d: number, code: string): { roadKm: number; min: number } {
   const roadKm = Math.round((d * 1.3) / 5) * 5;
   const kmh = ROAD_KMH[code] ?? 60;
   return { roadKm, min: Math.max(30, Math.round(((roadKm / kmh) * 60) / 15) * 15) };
+}
+
+/** Countries whose roads run slower than the road map's free-flow time (hills, towns, traffic). */
+const SLOW_ROADS = new Set(["LK", "NP", "ID", "PH", "VN", "IN", "PK", "BD", "KH", "LA", "KE", "TZ", "GE", "AM", "EG", "MA"]);
+type Pt = { lat: number; lon: number };
+
+/**
+ * The real road between two cities (E round 2, ride-time accuracy): road
+ * distance and drive time from the open road map's router, cached a month,
+ * with a margin for traffic and stops; the straight-line estimate when the
+ * router does not answer in time. Kandy → Ella is ~135 km of hill road,
+ * not the 85 km a straight line suggests.
+ */
+async function roadRide(a: Pt, b: Pt, code: string): Promise<{ roadKm: number; min: number }> {
+  const line = km(a, b);
+  const est = ride(line, code);
+  const k = (n: number) => n.toFixed(3);
+  const got = await cachedJson<{ m: number; s: number }>(`road:v1:${k(a.lat)},${k(a.lon)}:${k(b.lat)},${k(b.lon)}`, 30 * 86_400, async () => {
+    try {
+      const res = await fetch(`https://router.project-osrm.org/route/v1/driving/${a.lon},${a.lat};${b.lon},${b.lat}?overview=false`, {
+        signal: AbortSignal.timeout(2500),
+        headers: { "User-Agent": "sfrtna.com trip planner" },
+      });
+      if (!res.ok) return null;
+      const j = (await res.json()) as { code?: string; routes?: { distance: number; duration: number }[] };
+      const r = j.routes?.[0];
+      return j.code === "Ok" && r && r.distance > 0 && r.duration > 0 ? { m: r.distance, s: r.duration } : null;
+    } catch {
+      return null;
+    }
+  });
+  // No answer, or a route far longer than the line (a ferry, a wrong snap): the estimate.
+  if (!got || got.m / 1000 > line * 3 + 20 || got.m / 1000 < line * 0.9) return est;
+  const factor = SLOW_ROADS.has(code) ? 1.35 : 1.15;
+  return {
+    roadKm: Math.max(5, Math.round(got.m / 1000 / 5) * 5),
+    min: Math.max(30, Math.round(((got.s / 60) * factor) / 15) * 15),
+  };
 }
 
 function rideText(min: number, ar: boolean): string {
@@ -192,6 +231,14 @@ export async function buildRoutePlan(req: PlanRequest, guide: GuideFile): Promis
   }
 
   // Each city by the same engine, one after the other.
+  // Every road the plan uses, asked for at once.
+  const pairs: [Pt, Pt][] = [];
+  for (let i = 1; i < legs.length; i++) pairs.push([legs[i].dayTrip ? legs[i].base : legs[i - 1].base, legs[i]]);
+  if (legs.length > 1) pairs.push([legs[legs.length - 1].base, legs[0]]);
+  const roadKey = (a: Pt, b: Pt) => `${a.lat},${a.lon}>${b.lat},${b.lon}`;
+  const roads = new Map(await Promise.all(pairs.map(async ([a, b]) => [roadKey(a, b), await roadRide(a, b, req.code)] as const)));
+  const road = (a: Pt, b: Pt) => roads.get(roadKey(a, b)) ?? ride(km(a, b), req.code);
+
   const used = new Set<string>();
   const outDays: PlanDay[] = [];
   const plans: SmartPlan[] = [];
@@ -202,12 +249,12 @@ export async function buildRoutePlan(req: PlanRequest, guide: GuideFile): Promis
     const to = new Date(Date.parse(`${req.from}T00:00:00Z`) + (dayAt + leg.days - 1) * 86_400_000).toISOString().slice(0, 10);
     // Where the traveller wakes up that morning: the base of the leg before.
     const prev = i > 0 ? (leg.dayTrip ? leg.base : legs[i - 1].base) : undefined;
-    const r = prev ? ride(km(prev, leg), req.code) : null;
+    const r = prev ? road(prev, leg) : null;
     const startAt = r ? Math.ceil((9 * 60 + r.min + (leg.dayTrip ? 0 : 45)) / 15) * 15 : undefined;
     const legReq: PlanRequest = { ...req, slug: leg.slug, from, to };
     // The flight home is from the first city: on the last day, leave the last city earlier by the ride back.
     if (i === legs.length - 1 && i > 0) {
-      const back = ride(km(leg.base, legs[0]), req.code).min;
+      const back = road(leg.base, legs[0]).min;
       const leave = req.answers.leave ?? "evening";
       if (back >= 90) legReq.answers = { ...req.answers, leave: leave === "evening" ? "noon" : "morning" };
     }
@@ -255,7 +302,7 @@ export async function buildRoutePlan(req: PlanRequest, guide: GuideFile): Promis
   }
   // The flight home is from the first city: say how far the last one is.
   const lastLeg = legs[legs.length - 1].base;
-  const home = ride(km(lastLeg, legs[0]), req.code);
+  const home = road(lastLeg, legs[0]);
   if (home.roadKm >= 40 && outDays.length) {
     const last = outDays[outDays.length - 1];
     last.notes = [...(last.notes ?? []), t.goBack.replace("{from}", lastLeg.name).replace("{to}", legs[0].name).replace("{km}", String(home.roadKm)).replace("{time}", rideText(home.min, ar))];

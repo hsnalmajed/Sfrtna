@@ -10,7 +10,9 @@ import { track } from "@/lib/analytics";
 export interface PlanForMail {
   from: string;
   to: string;
-  days: { name: string; lat?: number; lon?: number }[][];
+  days: { name: string; lat?: number; lon?: number; time?: string; stop?: "meal" | "move" }[][];
+  /** Smart plans: each day's heading. */
+  titles?: string[];
 }
 
 /** The city page this planner is on: /{locale}/(attractions|maps)/{CODE}/{slug}. */
@@ -29,12 +31,15 @@ export default function MailPlanButton({
   plan,
   cityName,
   countryCode,
+  slug,
   className = "",
 }: {
   locale: Locale;
   plan: PlanForMail;
   cityName: string;
   countryCode: string;
+  /** The city's slug when the page path does not end with it. */
+  slug?: string;
   className?: string;
 }) {
   const t = useDictionary().tripPlan;
@@ -58,13 +63,19 @@ export default function MailPlanButton({
         body: JSON.stringify({
           locale,
           code: countryCode.toUpperCase(),
-          slug: citySlug(),
+          slug: slug ?? citySlug(),
           city: cityName,
           from: plan.from,
           to: plan.to,
           days: plan.days.map((d) =>
-            d.map((p) => (typeof p.lat === "number" && typeof p.lon === "number" ? { name: p.name, lat: p.lat, lon: p.lon } : { name: p.name }))
+            d.map((p) => ({
+              name: p.name,
+              ...(typeof p.lat === "number" && typeof p.lon === "number" ? { lat: p.lat, lon: p.lon } : {}),
+              ...(p.time ? { time: p.time } : {}),
+              ...(p.stop ? { kind: p.stop } : {}),
+            }))
           ),
+          ...(plan.titles ? { titles: plan.titles } : {}),
         }),
       });
       if (res.status === 401) {

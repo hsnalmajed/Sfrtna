@@ -13,6 +13,9 @@ export interface PlanMailPlace {
   name: string;
   lat?: number;
   lon?: number;
+  /** Smart plans: the stop's time (HH:MM) and whether it is a meal or a ride. */
+  time?: string;
+  kind?: "meal" | "move";
 }
 
 export interface PlanMailInput {
@@ -23,6 +26,8 @@ export interface PlanMailInput {
   from: string;
   to: string;
   days: PlanMailPlace[][];
+  /** Smart plans: each day's heading (city · theme). */
+  titles?: string[];
 }
 
 const ISO = /^\d{4}-\d{2}-\d{2}$/;
@@ -60,12 +65,17 @@ export function cleanPlanMail(body: unknown): PlanMailInput | null {
       if (!name) return null;
       const lat = coord(q.lat, 90);
       const lon = coord(q.lon, 180);
-      day.push(lat !== undefined && lon !== undefined ? { name, lat, lon } : { name });
+      const item: PlanMailPlace = lat !== undefined && lon !== undefined ? { name, lat, lon } : { name };
+      if (typeof q.time === "string" && /^\d{2}:\d{2}$/.test(q.time)) item.time = q.time;
+      if (q.kind === "meal" || q.kind === "move") item.kind = q.kind;
+      day.push(item);
     }
     days.push(day);
   }
   if (!days.some((d) => d.length)) return null;
-  return { locale: o.locale === "en" ? "en" : "ar", code, slug, city, from, to, days };
+  const out: PlanMailInput = { locale: o.locale === "en" ? "en" : "ar", code, slug, city, from, to, days };
+  if (Array.isArray(o.titles) && o.titles.length === days.length) out.titles = o.titles.map((x) => text(x, 120) ?? "");
+  return out;
 }
 
 const esc = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -79,7 +89,7 @@ const placeUrl = (p: PlanMailPlace) =>
 
 /** The day's walking route on Google Maps (the same as the plan page's button). */
 function routeUrl(day: PlanMailPlace[]): string | null {
-  const pts = day.filter((p) => p.lat !== undefined && p.lon !== undefined).slice(0, 10).map((p) => `${p.lat},${p.lon}`);
+  const pts = day.filter((p) => p.kind !== "move" && p.lat !== undefined && p.lon !== undefined).slice(0, 10).map((p) => `${p.lat},${p.lon}`);
   if (pts.length < 2) return null;
   const u = new URL("https://www.google.com/maps/dir/");
   u.searchParams.set("api", "1");
@@ -148,7 +158,9 @@ export function renderPlanMail(p: PlanMailInput, site: string): { subject: strin
               const name = url
                 ? `<a href="${esc(url)}" style="color:#0b2d5b;font-weight:bold;text-decoration:none">${esc(pl.name)}</a>`
                 : `<span style="color:#0b2d5b;font-weight:bold">${esc(pl.name)}</span>`;
-              return `<div style="font-family:${font};font-size:15px;line-height:1.8;padding:4px 0;border-top:${j ? "1px solid #eef3f9" : "0"}"><span style="color:#9aa6b5">${j + 1}.</span> ${name}</div>`;
+              const mark = pl.time ? `<span style="color:#0f7a8a;font-weight:bold" dir="ltr">${esc(pl.time)}</span>` : `<span style="color:#9aa6b5">${j + 1}.</span>`;
+              const icon = pl.kind === "meal" ? "🍴 " : pl.kind === "move" ? "🚗 " : "";
+              return `<div style="font-family:${font};font-size:15px;line-height:1.8;padding:4px 0;border-top:${j ? "1px solid #eef3f9" : "0"}">${mark} ${icon}${name}</div>`;
             })
             .join("")
         : `<div style="font-family:${font};font-size:14px;color:#6b7a8f">${W.free}</div>`;
@@ -157,7 +169,7 @@ export function renderPlanMail(p: PlanMailInput, site: string): { subject: strin
         ? `<div style="margin-top:10px"><a href="${esc(route)}" style="display:inline-block;background:#f9880b;color:#ffffff;font-family:${font};font-size:14px;font-weight:bold;text-decoration:none;padding:8px 18px;border-radius:999px">${W.route}</a></div>`
         : "";
       return `<tr><td style="padding:0 0 12px 0"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#ffffff;border:1px solid #dbe8f7;border-radius:12px"><tr><td style="padding:14px 16px;text-align:${align}">
-<div style="font-family:${font};font-size:16px;font-weight:bold;color:#0b2d5b">${W.day(i + 1)} <span style="font-weight:normal;color:#6b7a8f;font-size:13px">· ${esc(date)}</span></div>
+<div style="font-family:${font};font-size:16px;font-weight:bold;color:#0b2d5b">${W.day(i + 1)} <span style="font-weight:normal;color:#6b7a8f;font-size:13px">· ${esc(date)}</span></div>${p.titles?.[i] ? `<div style="font-family:${font};font-size:14px;color:#17427a;margin-top:2px">${esc(p.titles[i])}</div>` : ""}
 <div style="margin-top:6px">${items}</div>${routeBtn}
 </td></tr></table></td></tr>`;
     })
@@ -196,8 +208,8 @@ ${dayBlocks}
     ...p.days.flatMap((day, i) => {
       const route = routeUrl(day);
       return [
-        `${W.day(i + 1)} · ${fmt(addDays(p.from, i), true)}`,
-        ...(day.length ? day.map((pl, j) => `  ${j + 1}. ${pl.name}${placeUrl(pl) ? ` — ${placeUrl(pl)}` : ""}`) : [`  ${W.free}`]),
+        `${W.day(i + 1)} · ${fmt(addDays(p.from, i), true)}${p.titles?.[i] ? ` · ${p.titles[i]}` : ""}`,
+        ...(day.length ? day.map((pl, j) => `  ${pl.time ?? `${j + 1}.`} ${pl.name}${placeUrl(pl) ? ` — ${placeUrl(pl)}` : ""}`) : [`  ${W.free}`]),
         ...(route ? [`  ${W.route}: ${route}`] : []),
         "",
       ];
