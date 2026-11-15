@@ -108,6 +108,14 @@ iPhone app.
 
 ## ▶ Hand-off (15 Nov 2026) — current state
 
+**OWNER'S ORDER 16 Nov 02:40 (overrides NEXT 1/NEXT 2 order below):**
+1) Google Play setup to 100% — «Finish setting up your app» + store listing
+   (see «Next Play steps» below; owner steps, **Sonnet 5.5**);
+2) Apple: iPhone app-only value + TestFlight + reply to App Review (Apple's
+   review takes days, so it goes early; **Opus 5.5**);
+3) then improvements/additions: interactive route map, full product audit,
+   B, C, F, G, H, friends' notes, home hero.
+
 **▶ E round 2 fixes DONE 15 Nov** (PROJECT_NOTES «E round 2 fixes — 15
 Nov»): PDF cover + full-width days broken between stops; meals follow the
 chosen kitchens, no mall opening a «famous» day; saved plan shows saved;
