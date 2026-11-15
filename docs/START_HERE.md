@@ -112,6 +112,10 @@ iPhone app.
 Nov»): PDF cover + full-width days broken between stops; meals follow the
 chosen kitchens, no mall opening a «famous» day; saved plan shows saved;
 plan mail for smart plans; real road times between cities.
+**16 Nov owner's check found 3 bugs — FIXED** (PROJECT_NOTES «Owner's
+phone check, 16 Nov»): mail claims always «taken» (plan mail «limit» + NO
+trip mail ever sent since 10 Nov), app PDF = print screen → share sheet,
+final ي cut in the route ribbon (no space between spans).
 **Owner (one step):** on the phone open a plan (DMM→Colombo 10 days),
 press «تحميل PDF» and «أرسل الخطة إلى بريدي», send ONE screenshot of anything
 wrong; check Kandy → Ella ride reads ~130+ km.

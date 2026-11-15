@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { Locale } from "@/lib/types";
 import { useDictionary } from "@/lib/dict/context";
-import { inApp, printPage, shareImageInApp } from "@/lib/nativeApp";
+import { appCanShareFiles, inApp, printPage, shareBlobInApp, shareImageInApp } from "@/lib/nativeApp";
 import { downloadText, safeFileName, toKMLDays } from "@/lib/mapExport";
 import { PENDING_PLAN_KEY, refreshAccount, useAccount } from "@/lib/useAccount";
 import { findCity } from "@/lib/cities";
@@ -378,7 +378,11 @@ export default function SmartPlanView({
   const sheet = useRef<HTMLDivElement>(null);
   const [pdfBusy, setPdfBusy] = useState(false);
   async function savePdf() {
-    if (inApp() || !sheet.current) return printPage(title);
+    if (!sheet.current) return printPage(title);
+    // In the app: the PDF goes to the phone's share sheet (save to Files,
+    // WhatsApp). Only an old app build without file sharing gets the print screen.
+    const app = inApp();
+    if (app && !(await appCanShareFiles())) return printPage(title);
     setPdfBusy(true);
     try {
       // The route picture for the cover: the one already made, else draw it
@@ -387,7 +391,9 @@ export default function SmartPlanView({
         image?.blob ??
         (await Promise.race([buildImage().catch(() => null), new Promise<null>((r) => window.setTimeout(() => r(null), 12000))]));
       const { downloadPlanPdf } = await import("@/lib/planPdf");
-      await downloadPlanPdf({ root: sheet.current, fileName: safeFileName(fileBase, "pdf"), routeImage });
+      const name = safeFileName(fileBase, "pdf");
+      const file = await downloadPlanPdf({ root: sheet.current, fileName: name, routeImage, output: app ? "blob" : "save" });
+      if (app && file && !(await shareBlobInApp(name, file, "application/pdf"))) printPage(title);
     } catch {
       printPage(title);
     } finally {
@@ -704,8 +710,10 @@ export default function SmartPlanView({
                     </span>
                   )}
                   <span className="rounded-2xl bg-white px-3 py-1.5 text-navy-950">
-                    <span className="font-display text-sm font-extrabold">{l.name}</span>
-                    <span className="ms-2.5 text-[11px] font-bold text-navy-500">
+                    {/* A real space: without it «كاندي» and «يومان» are one word to the
+                        browser, and the final ي joins the next letter (16 Nov). */}
+                    <span className="font-display text-sm font-extrabold">{l.name}</span>{" "}
+                    <span className="ms-1.5 text-[11px] font-bold text-navy-500">
                       {counted(t.daysWord, l.days)}
                       {l.dayTrip ? ` · ${t.dayTrip}` : ""}
                     </span>

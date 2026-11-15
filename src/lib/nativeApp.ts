@@ -66,6 +66,19 @@ export async function shareFileInApp(name: string, mimeType: string, content: st
  * 2026); false → the caller tries the browser's own share, then a download.
  */
 export async function shareImageInApp(name: string, blob: Blob): Promise<boolean> {
+  return shareBlobInApp(name, blob, "image/png");
+}
+
+/** Can this app build hand a binary file (picture, PDF) to the share sheet? */
+export async function appCanShareFiles(): Promise<boolean> {
+  return plugin() !== null && (await appFeatures()).includes("share-binary");
+}
+
+/**
+ * Any binary file (the plan's PDF, 16 Nov 2026) to the phone's share sheet:
+ * save to Files, send on WhatsApp. Same «share-binary» build as the picture.
+ */
+export async function shareBlobInApp(name: string, blob: Blob, fallbackType = "application/octet-stream"): Promise<boolean> {
   const app = plugin();
   if (!app || !(await appFeatures()).includes("share-binary")) return false;
   try {
@@ -75,7 +88,7 @@ export async function shareImageInApp(name: string, blob: Blob): Promise<boolean
       r.onerror = () => reject(r.error);
       r.readAsDataURL(blob);
     });
-    await app.shareFile({ name, mimeType: blob.type || "image/png", content: base64, encoding: "base64" });
+    await app.shareFile({ name, mimeType: blob.type || fallbackType, content: base64, encoding: "base64" });
     return true;
   } catch {
     return false;

@@ -79,7 +79,9 @@ export async function downloadPlanPdf(opts: {
   fileName: string;
   /** The route image for the cover, when one could be drawn. */
   routeImage?: Blob | null;
-}): Promise<void> {
+  /** «blob»: hand the file back (the app shares it) instead of downloading it. */
+  output?: "save" | "blob";
+}): Promise<Blob | null> {
   const [{ toCanvas, getFontEmbedCSS }, { jsPDF }] = await Promise.all([import("html-to-image"), import("jspdf")]);
 
   // A copy of the sheet, laid out off screen with the print rules.
@@ -211,7 +213,9 @@ export async function downloadPlanPdf(opts: {
       pdf.setPage(i);
       pdf.text(`sfrtna.com  ·  ${i}/${pages}`, PAGE_W / 2, PAGE_H - 5, { align: "center" });
     }
+    if (opts.output === "blob") return pdf.output("blob");
     pdf.save(opts.fileName);
+    return null;
   } finally {
     holder.remove();
     style.remove();

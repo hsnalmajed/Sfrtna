@@ -2553,3 +2553,24 @@ the app feels duplicated → reply only after app-only features are built.
    fails or looks wrong. Container can't reach the router → verify live
    (Kandy → Ella should read ~130+ km, 4 h+).
 
+### Owner's phone check, 16 Nov 2026 01:33 — 3 bugs, fixed
+1. **«أرسل الخطة إلى بريدي» said «limit (3)» on first use.** Root cause in
+   `accounts.js`: `mailClaim` read the cursor's `rowsWritten` before the
+   cursor was read through → always 0 → every claim «taken» (the row WAS
+   written). Same bug made EVERY trip mail (item 5, built 10 Nov) skip: no
+   trip mail was ever sent. Fix: `written()` reads the cursor through first
+   (also used by `statsAdd`, whose counts were right only by luck); one-time
+   `DELETE FROM mails` guarded by table `fixes` (no row there was a real send).
+   Trip-mail windows are bounded (ready ≤24 h after «احجز», week 5–7 d…), so
+   no flood of old mails.
+2. **«تحميل PDF» in the app opened the print screen** — by design (old code:
+   app → print). Now: app build with «share-binary» → the PDF is made and
+   handed to the share sheet (save to Files / WhatsApp); older builds keep
+   the print screen. Android test APK has share-binary; iPhone needs the
+   next build.
+3. **«كاندي», «غالي» cut in the route ribbon** — not the font: the name span
+   and «يومان» span had no space between them in JSX, so the browser shaped
+   «كانديومان» as one word and the final ي took its joining form. The 14 Nov
+   padding fix treated a symptom. Fix: a real space between the spans.
+   Reproduced locally (Chrome, Tajawal 800) before/after.
+

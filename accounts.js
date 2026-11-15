@@ -99,11 +99,29 @@ export class Accounts extends DurableObject {
       CREATE TABLE IF NOT EXISTS consent_log (user TEXT NOT NULL, trip_mail INTEGER NOT NULL, at INTEGER NOT NULL, src TEXT NOT NULL);
       CREATE INDEX IF NOT EXISTS consent_log_user ON consent_log(user, at);
       CREATE UNIQUE INDEX IF NOT EXISTS consent_unsub ON consent(unsub);
+      CREATE TABLE IF NOT EXISTS fixes (id TEXT PRIMARY KEY, at INTEGER NOT NULL);
       CREATE TABLE IF NOT EXISTS mails (user TEXT NOT NULL, trip TEXT NOT NULL, kind TEXT NOT NULL, at INTEGER NOT NULL, PRIMARY KEY (user, trip, kind));
       CREATE TABLE IF NOT EXISTS feedback (id INTEGER PRIMARY KEY AUTOINCREMENT, created INTEGER NOT NULL, user TEXT, kind TEXT NOT NULL, area TEXT NOT NULL, rating INTEGER, text TEXT NOT NULL, email TEXT, contact INTEGER NOT NULL, ctx TEXT NOT NULL, ip TEXT);
       CREATE INDEX IF NOT EXISTS feedback_created ON feedback(created);
       CREATE INDEX IF NOT EXISTS feedback_ip ON feedback(ip, created);
     `);
+    // One time: until 16 Nov 2026 every claim was written but answered «taken»,
+    // so no row in «mails» stands for a mail that was really sent. Clear them,
+    // or those plan-mail slots and trip mails would stay blocked for good.
+    if (this.written(this.sql.exec("INSERT OR IGNORE INTO fixes (id, at) VALUES ('mails-never-sent-2026-11-16', ?)", Date.now())) === 1) {
+      this.sql.exec("DELETE FROM mails");
+    }
+  }
+
+  /**
+   * Rows a write changed. A cursor's rowsWritten counts only what has run
+   * «so far» and reads 0 until the cursor is read through (16 Nov 2026: every
+   * mail claim answered «taken» — trip mails never went out and «أرسل الخطة
+   * إلى بريدي» said «limit» on its first use).
+   */
+  written(cursor) {
+    cursor.toArray();
+    return cursor.rowsWritten;
   }
 
   one(query, ...args) {
@@ -331,7 +349,7 @@ export class Accounts extends DurableObject {
 
   /** Takes a mail before it is sent (false = already taken: never twice). */
   async mailClaim(user, trip, kind) {
-    return this.sql.exec("INSERT OR IGNORE INTO mails (user, trip, kind, at) VALUES (?, ?, ?, ?)", user, trip, kind, Date.now()).rowsWritten === 1;
+    return this.written(this.sql.exec("INSERT OR IGNORE INTO mails (user, trip, kind, at) VALUES (?, ?, ?, ?)", user, trip, kind, Date.now())) === 1;
   }
 
   /** Gives a claimed mail back when the sender refused it (tried next hour). */
@@ -419,7 +437,7 @@ export class Accounts extends DurableObject {
     const day = new Date().toISOString().slice(0, 10);
     const rows = this.sql.exec("SELECT COUNT(*) AS c FROM stats WHERE day = ?", day).one().c;
     for (const [kind, key] of pairs) {
-      const hit = this.sql.exec("UPDATE stats SET n = n + 1 WHERE day = ? AND kind = ? AND key = ?", day, kind, key).rowsWritten;
+      const hit = this.written(this.sql.exec("UPDATE stats SET n = n + 1 WHERE day = ? AND kind = ? AND key = ?", day, kind, key));
       if (!hit && (rows < STATS_KEYS_PER_DAY || kind === "ext")) this.sql.exec("INSERT OR IGNORE INTO stats (day, kind, key, n) VALUES (?, ?, ?, 1)", day, kind, key);
     }
     if (Math.random() < 0.01) {

@@ -9,7 +9,7 @@ import type { Locale } from "@/lib/types";
 import { countLabel } from "@/lib/format";
 import { PIN_STYLES } from "@/lib/pinStyles";
 import { downloadText, safeFileName, toKML } from "@/lib/mapExport";
-import { inApp, printPage } from "@/lib/nativeApp";
+import { appCanShareFiles, inApp, printPage, shareBlobInApp } from "@/lib/nativeApp";
 import CityPlacesExplorer, { score, type PlaceListItem } from "@/components/CityPlacesExplorer";
 import PrintHeader from "@/components/PrintHeader";
 import DateRangeInput from "@/components/DateRangeInput";
@@ -746,11 +746,14 @@ function PlanView({
   const sheet = useRef<HTMLDivElement>(null);
   const [pdfBusy, setPdfBusy] = useState(false);
   async function savePdf() {
-    if (inApp() || !sheet.current) return printPage(title);
+    if (!sheet.current || (inApp() && !(await appCanShareFiles()))) return printPage(title);
     setPdfBusy(true);
     try {
       const { downloadPlanPdf } = await import("@/lib/planPdf");
-      await downloadPlanPdf({ root: sheet.current, fileName: safeFileName(`sfrtna-plan-${countryCode}-${cityName}`, "pdf") });
+      const name = safeFileName(`sfrtna-plan-${countryCode}-${cityName}`, "pdf");
+      const app = inApp();
+      const file = await downloadPlanPdf({ root: sheet.current, fileName: name, output: app ? "blob" : "save" });
+      if (app && file && !(await shareBlobInApp(name, file, "application/pdf"))) printPage(title);
     } catch {
       printPage(title);
     } finally {
