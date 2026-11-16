@@ -108,6 +108,28 @@ iPhone app.
 
 ## ▶ Hand-off (15 Nov 2026) — current state
 
+**▶▶▶▶▶▶ NEXT SECTION (owner 16 Nov 23:13): Sign in with Apple** («ميزة
+واضحة وصريحة»; also App Store rule 4.8 once any third-party sign-in shows in
+the iOS app — today the iOS build hides sign-in: no «auth» in `features`).
+Plan (Opus): 1) server `/api/auth/apple` POST {idToken, nonce, name?}: verify
+the JWT with Apple's JWKS (appleid.apple.com/auth/keys, edge-cached), iss
+https://appleid.apple.com, aud com.sfrtna.app, sha256(nonce); then the same
+account/session path as `/api/auth/google` (`verifyGoogleToken` in
+src/lib/accounts.ts); private-relay e-mails are real addresses (mail works
+only after the owner registers sfrtna.com's sender in Apple's «Email
+Communication»); add to edge-guard ROUTES. 2) iOS plugin `appleSignIn`
+(ASAuthorizationAppleIDProvider, nonce) + features «auth» «apple»; site
+sign-in shows «تسجيل الدخول عبر Apple» (official black button) first in the
+iOS app, plus the e-mail code. 3) entitlement com.apple.developer.applesignin
+[Default] (App ID com.sfrtna.app already has Sign in with Apple ticked) —
+ios.yml must ad-hoc sign the archive with App.entitlements before export (the
+widget trick of 91c4c4b worked: «Signing widget app-group: 1»). 4) Account
+deletion must revoke the Apple token (needs a Sign in with Apple key from the
+owner: Keys → + → Sign in with Apple → Runtime var). 5) Web (Services ID +
+domain) = later. Then update review notes + reply («Sign in with Apple» in
+the iPhone-only list). Calendar build 0f97edde: simulator compile OK; check
+its TestFlight upload first.
+
 **▶▶▶▶▶ OWNER'S DECISION 16 Nov 18:23 (overrides ALL Apple work below):
 iPhone LOOKS like the site/Android (no native tabs, no widget); it only gets
 better iPhone ways to use features we already have.** Owner picked: «احفظ
