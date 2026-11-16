@@ -220,7 +220,12 @@ class MainViewController: CAPBridgeViewController {
             let lang = cookies.first { $0.name == "sfrtna_lang" && $0.domain.hasSuffix("sfrtna.com") }?.value
             DispatchQueue.main.async {
                 let english = lang.map { $0 == "en" } ?? phoneEnglish
-                TripMode.english = english
+                // The app's own screens follow the site: Arabic unless it was read in English.
+                let native = lang.map { $0 == "en" } ?? false
+                if TripMode.english != native {
+                    TripMode.english = native
+                    (self.tabBarController as? RootTabController)?.relabel()
+                }
                 begin(english)
             }
         }
@@ -819,7 +824,8 @@ import MapKit
 enum TripMode {
     /// The language the visitor last used on the site (set from the
     /// sfrtna_lang cookie at launch), else the phone's.
-    static var english = !(Locale.preferredLanguages.first?.hasPrefix("ar") ?? true)
+    /// (Arabic until the cookie says English: the site's own default.)
+    static var english = false
     static func t(_ ar: String, _ en: String) -> String { english ? en : ar }
     static let navy = UIColor(red: 0x0B / 255, green: 0x2D / 255, blue: 0x5B / 255, alpha: 1)
     static let gold = UIColor(red: 0xF8 / 255, green: 0xB8 / 255, blue: 0x40 / 255, alpha: 1)
@@ -1035,6 +1041,7 @@ final class TripHomeController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = TripMode.t("وضع الرحلة", "Trip mode")
+        if navigationController?.tabBarController != nil { title = TripMode.t("خططي", "My plans") }
         if navigationController?.tabBarController == nil {
             navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(close))
         }

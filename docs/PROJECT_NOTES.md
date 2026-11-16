@@ -2671,3 +2671,37 @@ No native screen except the opening and an offline notice.
 Business cost (owner accepted by «meet Apple's conditions»): flight/hotel
 commission from INSIDE the iOS app falls (booking via Safari links only).
 No guarantee: Apple decides; this removes every cited cause.
+
+### Apple root fix — P1–P3 + P5 text built (16 Nov 2026 13:30–15:00)
+Owner 16 Nov 13:21: «this is the right solution, build it».
+- **P1** `RootTabController` (AppDelegate.swift; SceneDelegate roots it):
+  «اليوم» `TodayController` (Gregorian + Hijri date, place name, prayer times
+  where you are via `PrayerCalc` — same methods as guidePlan, checked against
+  adhan to the minute for Riyadh/Istanbul/London/Dubai/KL incl. adhan's
+  method adjustments —, next prayer + countdown, switch «نبّهني بوقت كل صلاة
+  حيث أنا» = `Here.notices` 3 days/15 alerts; next/ongoing kept trip with
+  today's stops (keepPlan now stores `days`); tools grid), «خططي»
+  (TripHomeController), «خطّط» (MainViewController = the site; CI -sfrPath
+  selects it), «المزيد» `MoreController` (account, my-trip, visa, currency,
+  seasons, maps, language, about, contact, privacy, terms, delete account →
+  open in the planner tab). Native language = site cookie, else Arabic.
+  Location only on the phone (UserDefaults here.*), never sent.
+- **P2** site: UA `SfrtnaApp/iOS SfrtnaTabs/1` (mobile/capacitor.config.json)
+  → html.in-ios-tabs: own tab bar hidden; `IosTabsGuard` (locale layout):
+  home → /itinerary; results, hotel-results, multicity-results,
+  discover-results, budget, services → Safari sheet via `?sfr_out=1`
+  (native shouldOverrideLoad). Browsers + Android unchanged.
+- **P3** native prayer times + alerts (above). Widget/Calendar = not built.
+- **P5** `docs/app-store/listing.json` rewritten (subtitle «رفيق رحلة
+  العائلة المسلمة», companion description, keywords, review notes with
+  steps) — upload with `ios-store.yml` when submitting. Store screenshots
+  must be remade from the new screens (store-3-hotels shot now fails: hotels
+  are outside the app, expected).
+- **P7** draft reply: `docs/app-store/review-reply.md` (9 answers; two
+  «[after beta]» lines to fill).
+CI run 43849026579: compiled first time; check-today/check-trip shots OK.
+Fixed after the shots: native screens were English on an English phone while
+the site was Arabic → native follows the site (Arabic default); «خططي» title.
+**Left:** P4 widget + calendar (optional), store screenshots from the new
+screens, P6 external TestFlight week (owner invites ≥5), fill 2 feedback
+lines, upload listing (ios-store.yml), reply + request a call, submit.

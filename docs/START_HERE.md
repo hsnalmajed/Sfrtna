@@ -108,7 +108,14 @@ iPhone app.
 
 ## ▶ Hand-off (15 Nov 2026) — current state
 
-**▶▶▶ NEXT SECTION (owner 16 Nov 11:16): cover Apple's rejection at the root.**
+**▶▶▶ NOW (16 Nov 15:00): Apple root fix P1+P2+P3 BUILT, P5 text + P7 draft
+written** (PROJECT_NOTES «Apple root fix — P1–P3 + P5»). Next: store
+screenshots from the new screens (ios.yml shots), optional P4 widget, then
+P6: owner invites ≥5 external TestFlight testers for a week → fill
+`docs/app-store/review-reply.md` → `ios-store.yml` (listing) → reply + call →
+submit. **Opus 5.5** for screenshots/widget; Sonnet for owner TestFlight steps.
+
+**(older) NEXT SECTION (owner 16 Nov 11:16): cover Apple's rejection at the root.**
 Study + plan: PROJECT_NOTES «Apple rejection — root-cause study» (table +
 P1–P7). Start P1 (native home/tab bar, iOS only) + P2 (no booking engine /
 white-label widget inside the iOS app; site + Android unchanged), then P3–P5,
