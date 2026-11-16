@@ -118,6 +118,10 @@ Name, Email, App interactions (required), search history, other UGC, Device
 IDs; collected, not shared. **Owner next:** add testers to «Sfrtna team» until
 12+ opted in (14-day clock starts then) → apply for production ~3 weeks.
 Then item 2 below (Apple), **Opus 5.5**.
+**Home 16 Nov (live):** hero subtitle → owner's 7 features (`HeroFeatures`,
+dict `hero.features/featuresDetail/featuresShort`), two still rows, no boxes;
+month name in the season panel = logo gold #f8b840. Owner rule: every new
+colour comes from the logo (navy, light blue, sun orange, sun gold).
 
 **OWNER'S ORDER 16 Nov 02:40 (overrides NEXT 1/NEXT 2 order below):**
 1) Google Play setup to 100% — «Finish setting up your app» + store listing
