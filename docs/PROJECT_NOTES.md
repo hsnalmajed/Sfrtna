@@ -2725,3 +2725,19 @@ Owner 16 Nov 14:35: no beta week; finish the changes, then submit.
 - CI: `-sfrPlan form|result` (Istanbul +40..+43 d) → shots check-plan-form,
   check-plan (run 43863442594: both OK, plan built live with 14 places).
 - Fixed after the shots: the tab read «خطّط رحلتك» (root title) → navigationItem.title.
+
+### Widget — Apple step 2 (16 Nov 2026, commit 91c4c4b)
+- Target `SfrtnaWidget` (mobile/ios/App/SfrtnaWidget, iOS 16, bundle
+  com.sfrtna.app.widget): systemSmall/Medium (navy, gold clock), lock screen
+  accessoryRectangular/Inline. Next prayer + countdown + place; today's next
+  stops of a kept plan, else the next trip, else «صمّم رحلتك من تبويب خطّط».
+- Data: app writes `widget.feed` (JSON: lang, place, prayers 3 days, days ≤8
+  days ahead) to UserDefaults suite group.com.sfrtna.app in `WidgetFeed.write()`
+  (first line of `TripAlerts.rescheduleAll`) + reloadAllTimelines.
+- ios.yml: frameworks, widget, app ad-hoc signed with entitlements before
+  export («Signing widget app-group: 1» = OK); checks.txt lists the appex.
+- Run 43869577336: simulator build + shots OK; export FAILED «No profiles for
+  'com.sfrtna.app.widget'» + «Authentication failed» → identifiers must be
+  made by the owner in developer.apple.com (App Group can't be made by API).
+- review-reply.md filled (real feedback: friends 14 Nov, phone checks);
+  listing.json review notes: native Plan tab + widget step.

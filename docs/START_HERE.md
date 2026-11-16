@@ -112,7 +112,16 @@ iPhone app.
 submit straight to Apple.** Order (Opus): ~~1) native trip-plan screen~~
 **DONE 16 Nov** (PROJECT_NOTES «Native «خطّط» tab»; tabs: اليوم | خططي |
 خطّط native | الدليل = site | المزيد; shots check-plan-form/check-plan OK).
-**2) START HERE: WidgetKit widget** (next prayer + today's first stop;
+**2) Widget BUILT 16 Nov (commit 91c4c4b): compiles, embedded
+(SfrtnaWidget.appex), archive carries the app group (ad-hoc signed before
+export). BLOCKED at export: «No profiles for com.sfrtna.app.widget» — the
+App Group + widget App ID must exist in developer.apple.com (ASC API can't
+create app groups). Owner steps (one at a time): register App Group
+group.com.sfrtna.app → enable it on App ID com.sfrtna.app → new App ID
+com.sfrtna.app.widget with that group → then re-run ios.yml
+(gh api -X POST …/ios.yml/dispatches -f ref=main) and read the Report
+annotations. Until then NO new TestFlight build uploads.** Old brief:
+**WidgetKit widget** (next prayer + today's first stop;
 home small/medium + lock screen accessoryRectangular/Inline, iOS 16 target).
 Plan: App Group `group.com.sfrtna.app`; the app writes a snapshot (next 3
 days of prayer times from `PrayerCalc` at `Here` + kept plans' `days` stops)
