@@ -172,6 +172,7 @@ jobs:
           shot check-plan-form 20 -sfrPlan form
           shot check-plan 45 -sfrPlan result
           t 30 xcrun simctl terminate "$UDID" com.sfrtna.app || true
+          echo "widget: $(ls "$APP/PlugIns" 2>/dev/null | tr '\n' ' ')" >> "$OUT/checks.txt"
           cat "$OUT/checks.txt"
 
       - name: Keep the shots on branch ios-shots
@@ -211,6 +212,14 @@ jobs:
           tail -20 "$LOG"
           # Archived unsigned (a development profile would need a registered
           # iPhone); the export below signs it for App Store distribution.
+          # The app group (widget ↔ app, 16 Nov 2026) must survive that: the
+          # export re-signs with the entitlements the archived code carries,
+          # so sign the archive ad hoc with them first (inner code first).
+          APPDIR="$RUNNER_TEMP/Sfrtna.xcarchive/Products/Applications/App.app"
+          for f in "$APPDIR"/Frameworks/*; do [ -e "$f" ] && codesign --force --sign - "$f"; done
+          codesign --force --sign - --entitlements ios/App/SfrtnaWidget/SfrtnaWidget.entitlements "$APPDIR/PlugIns/SfrtnaWidget.appex"
+          codesign --force --sign - --entitlements ios/App/App/App.entitlements "$APPDIR"
+          codesign -d --entitlements - "$APPDIR/PlugIns/SfrtnaWidget.appex" 2>&1 | grep -c "group.com.sfrtna.app" | sed 's/^/Signing widget app-group: /' | tee -a "$LOG" || true
           cat > "$RUNNER_TEMP/export.plist" <<EOF
           <?xml version="1.0" encoding="UTF-8"?>
           <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">

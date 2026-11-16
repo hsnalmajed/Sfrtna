@@ -960,6 +960,7 @@ enum TripAlerts {
 
     /// Clears ours and schedules the next 60 switched-on notices of all kept plans.
     static func rescheduleAll() {
+        WidgetFeed.write()
         let center = UNUserNotificationCenter.current()
         center.getPendingNotificationRequests { pending in
             center.removePendingNotificationRequests(withIdentifiers: pending.map { $0.identifier }.filter { $0.hasPrefix(prefix) || $0.hasPrefix("here.") })
@@ -2880,5 +2881,52 @@ final class PlanResultController: UITableViewController {
         var u = URLComponents(string: "https://maps.apple.com/")
         u?.queryItems = [URLQueryItem(name: "q", value: q)]
         if let url = u?.url { UIApplication.shared.open(url) }
+    }
+}
+
+// MARK: - The home / lock screen widget's data (16 Nov 2026)
+//
+// The widget (mobile/ios/App/SfrtnaWidget) has no network and no location of
+// its own: the app hands it, through the shared app group, the next prayers
+// where the traveller is (PrayerCalc at Here) and the kept plans' days.
+// Written whenever the alerts are rescheduled (app opened, plan kept or
+// removed, place changed).
+
+import WidgetKit
+
+enum WidgetFeed {
+    static let group = "group.com.sfrtna.app"
+
+    static func write() {
+        guard let shared = UserDefaults(suiteName: group) else { return }
+        let now = Date()
+        var prayers: [[String: Any]] = []
+        if let la = Here.lat, let lo = Here.lng {
+            for i in 0..<3 {
+                guard let day = Calendar.current.date(byAdding: .day, value: i, to: now) else { continue }
+                let times = PrayerCalc.times(for: day, lat: la, lng: lo, country: Here.country)
+                for (key, at) in times.sorted(by: { $0.value < $1.value }) where key != "sunrise" && at > now {
+                    prayers.append(["at": at.timeIntervalSince1970, "name": PrayerCalc.name(key), "clock": PrayerCalc.clock(at)])
+                }
+            }
+        }
+        let today = ISO8601DateFormatter.day.string(from: now)
+        let last = ISO8601DateFormatter.day.string(from: now.addingTimeInterval(8 * 86_400))
+        var seen = Set<String>()
+        var days: [[String: Any]] = []
+        for plan in TripStore.all() {
+            for d in plan["days"] as? [[String: Any]] ?? [] {
+                guard let date = d["date"] as? String, date >= today, date <= last, !seen.contains(date) else { continue }
+                seen.insert(date)
+                days.append(["date": date, "city": d["city"] as? String ?? "", "stops": d["stops"] as? [[String: String]] ?? []])
+            }
+        }
+        let feed: [String: Any] = [
+            "lang": TripMode.english ? "en" : "ar", "place": Here.place ?? "",
+            "prayers": prayers, "days": days.sorted { ($0["date"] as? String ?? "") < ($1["date"] as? String ?? "") },
+        ]
+        guard let data = try? JSONSerialization.data(withJSONObject: feed) else { return }
+        shared.set(data, forKey: "widget.feed")
+        WidgetCenter.shared.reloadAllTimelines()
     }
 }
