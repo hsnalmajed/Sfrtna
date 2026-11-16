@@ -207,6 +207,13 @@ jobs:
           tail -20 "$LOG"
           # Archived unsigned (a development profile would need a registered
           # iPhone); the export below signs it for App Store distribution.
+          # Sign in with Apple (16 Nov 2026) must survive that: the export
+          # re-signs with the entitlements the archived code carries, so sign
+          # the archive ad hoc with them first (inner code first).
+          APPDIR="$RUNNER_TEMP/Sfrtna.xcarchive/Products/Applications/App.app"
+          for f in "$APPDIR"/Frameworks/*; do [ -e "$f" ] && codesign --force --sign - "$f"; done
+          codesign --force --sign - --entitlements ios/App/App/App.entitlements "$APPDIR"
+          codesign -d --entitlements - "$APPDIR" 2>&1 | grep -c "applesignin" | sed 's/^/Signing app applesignin: /' | tee -a "$LOG" || true
           cat > "$RUNNER_TEMP/export.plist" <<EOF
           <?xml version="1.0" encoding="UTF-8"?>
           <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">

@@ -20,15 +20,19 @@ export default function JoinHost({ locale }: { locale: Locale }) {
   const [reason, setReason] = useState<JoinReason | null>(null);
   const [toast, setToast] = useState<ToastMsg | null>(null);
   const [appAuth, setAppAuth] = useState(false);
+  const [apple, setApple] = useState(false);
   const [next, setNext] = useState("");
 
   useEffect(() => {
-    void appFeatures().then((f) => setAppAuth(f.includes("auth")));
+    void appFeatures().then((f) => {
+      setAppAuth(f.includes("auth"));
+      setApple(f.includes("apple"));
+    });
   }, []);
 
   const canSignIn =
     account.status === "ready" &&
-    (account.methods.email || (Boolean(account.methods.google) && (!inApp() || appAuth)));
+    (account.methods.email || apple || (Boolean(account.methods.google) && (!inApp() || appAuth)));
 
   useEffect(() => {
     const onJoin = (e: Event) => {

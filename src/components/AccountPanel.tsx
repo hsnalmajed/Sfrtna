@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useDictionary } from "@/lib/dict/context";
 import type { Locale } from "@/lib/types";
-import { appFeatures, googleSignOutInApp, inApp, openAuthInApp } from "@/lib/nativeApp";
+import { appFeatures, appleSignInInApp, googleSignOutInApp, inApp, openAuthInApp } from "@/lib/nativeApp";
 import JoinBenefits from "@/components/member/JoinBenefits";
 import MemberSections from "@/components/member/MemberSections";
 import { newAppChallenge, takeAppCode, takeVerifier } from "@/lib/appAuth";
@@ -132,10 +132,32 @@ export function SignInForm({
   const t = useDictionary().account;
   const m = useDictionary().member;
   const [appAuth, setAppAuth] = useState(false);
+  const [apple, setApple] = useState(false);
   const [opening, setOpening] = useState(false);
   useEffect(() => {
-    void appFeatures().then((f) => setAppAuth(f.includes("auth")));
+    void appFeatures().then((f) => {
+      setAppAuth(f.includes("auth"));
+      setApple(f.includes("apple"));
+    });
   }, []);
+  /** iPhone app: Apple's own sheet → identity token → our session. */
+  async function appleSignIn() {
+    setOpening(true);
+    setError("");
+    const nonce = Array.from(crypto.getRandomValues(new Uint8Array(24)), (b) => b.toString(16).padStart(2, "0")).join("");
+    try {
+      const r = await appleSignInInApp(nonce);
+      if (!r) return;
+      const res = await fetch("/api/auth/apple", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ idToken: r.idToken, nonce, name: r.name }) });
+      const json = (await res.json()) as { ok: boolean; user?: AccountUser };
+      if (json.ok && json.user) onSignedIn(json.user);
+      else setError(t.appleFailed);
+    } catch {
+      setError(t.appleFailed);
+    } finally {
+      setOpening(false);
+    }
+  }
   async function appSignIn() {
     setOpening(true);
     setError("");
@@ -231,7 +253,7 @@ export function SignInForm({
   }
 
   const appButton = app && appAuth && (Boolean(methods.google) || methods.email);
-  const none = !googleId && !methods.email && !appButton && !(app && methods.google);
+  const none = !googleId && !methods.email && !appButton && !(app && methods.google) && !apple;
   const input =
     "w-full rounded-2xl border border-mist-300 bg-white px-4 py-3 text-base text-navy-900 outline-none focus:border-sea-500 focus:ring-2 focus:ring-sea-200";
   const primary =
@@ -254,6 +276,29 @@ export function SignInForm({
             <>
               <div ref={googleBox} className="flex min-h-11 justify-center" aria-label={t.google} />
               {methods.email && (
+                <div className="flex items-center gap-3 text-xs font-bold text-navy-400">
+                  <span className="h-px flex-1 bg-mist-200" />
+                  {t.or}
+                  <span className="h-px flex-1 bg-mist-200" />
+                </div>
+              )}
+            </>
+          )}
+          {/* iPhone app: Sign in with Apple first (Apple's black button style). */}
+          {apple && (
+            <>
+              <button
+                type="button"
+                onClick={appleSignIn}
+                disabled={opening}
+                className="flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-black px-5 py-3 text-base font-bold text-white transition hover:bg-neutral-800 disabled:opacity-60"
+              >
+                <svg aria-hidden="true" viewBox="0 0 384 512" className="h-5 w-5 fill-current">
+                  <path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z" />
+                </svg>
+                {opening ? t.appleOpening : t.apple}
+              </button>
+              {(methods.email || appButton) && (
                 <div className="flex items-center gap-3 text-xs font-bold text-navy-400">
                   <span className="h-px flex-1 bg-mist-200" />
                   {t.or}

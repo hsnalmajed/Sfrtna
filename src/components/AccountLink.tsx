@@ -25,8 +25,12 @@ export default function AccountLink({
   const member = useDictionary().member;
   const { status, user, methods } = useAccount();
   const [appAuth, setAppAuth] = useState(false);
+  const [apple, setApple] = useState(false);
   useEffect(() => {
-    void appFeatures().then((f) => setAppAuth(f.includes("auth")));
+    void appFeatures().then((f) => {
+      setAppAuth(f.includes("auth"));
+      setApple(f.includes("apple"));
+    });
   }, []);
   // While the account is being asked for, the header keeps the button's
   // place (invisible), so nothing beside it jumps when it appears.
@@ -40,7 +44,7 @@ export default function AccountLink({
   // counts only when this build can sign in through the phone's browser —
   // no link to a page that cannot sign anyone in.
   const google = Boolean(methods.google) && (!(status === "ready" && inApp()) || appAuth);
-  if (status !== "ready" || (!user && !methods.email && !google)) return null;
+  if (status !== "ready" || (!user && !methods.email && !google && !apple)) return null;
   const href = `/${locale}/account`;
   const label = user ? nav.account : nav.signIn;
   const click = onNavigate ? (e: React.MouseEvent) => onNavigate(e, href) : undefined;

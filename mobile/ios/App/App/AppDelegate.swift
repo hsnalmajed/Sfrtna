@@ -625,6 +625,7 @@ public class SfrtnaAppPlugin: CAPPlugin, CAPBridgedPlugin {
         CAPPluginMethod(name: "openTripMode", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "haptic", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "addToCalendar", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "appleSignIn", returnType: CAPPluginReturnPromise),
     ]
 
     static let ourHosts: Set<String> = ["sfrtna.com", "www.sfrtna.com"]
@@ -659,7 +660,7 @@ public class SfrtnaAppPlugin: CAPPlugin, CAPBridgedPlugin {
 
     @objc func info(_ call: CAPPluginCall) {
         let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
-        call.resolve(["platform": "ios", "version": version, "features": ["share", "share-binary", "print", "trip-mode", "haptics", "calendar"]])
+        call.resolve(["platform": "ios", "version": version, "features": ["share", "share-binary", "print", "trip-mode", "haptics", "calendar", "apple"]])
     }
 
     // MARK: Trip mode calls from the site (src/lib/nativeApp.ts)
@@ -777,6 +778,24 @@ public class SfrtnaAppPlugin: CAPPlugin, CAPBridgedPlugin {
             store.requestWriteOnlyAccessToEvents { granted, _ in done(granted) }
         } else {
             store.requestAccess(to: .event) { granted, _ in done(granted) }
+        }
+    }
+
+    /// «تسجيل الدخول عبر Apple» (16 Nov 2026): Apple's own sheet; the page
+    /// sends the identity token to /api/auth/apple, which checks it against
+    /// the nonce the page made (Apple gets only its SHA-256).
+    @objc func appleSignIn(_ call: CAPPluginCall) {
+        guard let nonce = call.getString("nonce"), nonce.count >= 16 else { call.reject("bad_nonce"); return }
+        DispatchQueue.main.async {
+            AppleSignIn.start(nonce: nonce, window: self.bridge?.viewController?.view.window) { token, name, error in
+                if let token = token {
+                    var out: [String: Any] = ["idToken": token]
+                    if let name = name, !name.isEmpty { out["name"] = name }
+                    call.resolve(out)
+                } else {
+                    call.reject(error ?? "apple_failed")
+                }
+            }
         }
     }
 
@@ -1562,5 +1581,57 @@ final class NearbyController: UITableViewController, CLLocationManagerDelegate {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         items[indexPath.row].openInMaps(launchOptions: [MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeWalking])
+    }
+}
+
+// MARK: - Sign in with Apple (16 Nov 2026)
+
+import AuthenticationServices
+import CryptoKit
+
+final class AppleSignIn: NSObject, ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding {
+    private static var current: AppleSignIn?
+    private let window: UIWindow?
+    private let done: (String?, String?, String?) -> Void
+
+    private init(window: UIWindow?, done: @escaping (String?, String?, String?) -> Void) {
+        self.window = window
+        self.done = done
+    }
+
+    static func start(nonce: String, window: UIWindow?, done: @escaping (String?, String?, String?) -> Void) {
+        let me = AppleSignIn(window: window, done: done)
+        current = me
+        let request = ASAuthorizationAppleIDProvider().createRequest()
+        request.requestedScopes = [.fullName, .email]
+        request.nonce = SHA256.hash(data: Data(nonce.utf8)).map { String(format: "%02x", $0) }.joined()
+        let controller = ASAuthorizationController(authorizationRequests: [request])
+        controller.delegate = me
+        controller.presentationContextProvider = me
+        controller.performRequests()
+    }
+
+    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
+        window ?? UIApplication.shared.connectedScenes.compactMap { ($0 as? UIWindowScene)?.windows.first { $0.isKeyWindow } }.first ?? UIWindow()
+    }
+
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+        guard let cred = authorization.credential as? ASAuthorizationAppleIDCredential,
+              let data = cred.identityToken, let token = String(data: data, encoding: .utf8) else {
+            finish(nil, nil, "no_token")
+            return
+        }
+        let name = cred.fullName.map { PersonNameComponentsFormatter().string(from: $0) }
+        finish(token, name, nil)
+    }
+
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+        let cancelled = (error as? ASAuthorizationError)?.code == .canceled
+        finish(nil, nil, cancelled ? "cancelled" : "apple_failed")
+    }
+
+    private func finish(_ token: String?, _ name: String?, _ error: String?) {
+        done(token, name, error)
+        AppleSignIn.current = nil
     }
 }

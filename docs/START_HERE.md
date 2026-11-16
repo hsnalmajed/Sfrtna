@@ -108,6 +108,15 @@ iPhone app.
 
 ## ▶ Hand-off (15 Nov 2026) — current state
 
+**▶▶▶▶▶▶ Sign in with Apple BUILT 16 Nov 23:50 (same chat, owner asked):**
+`/api/auth/apple` (+ edge-guard), `verifyAppleToken` (Apple JWKS, aud
+com.sfrtna.app, sha256 nonce) → `googleSignIn("apple:"+sub)`; iOS plugin
+`appleSignIn` (feature «apple», AuthenticationServices), black button first
+in SignInForm, AccountLink/JoinHost count it; entitlement applesignin in
+App.entitlements + ad-hoc signing before export («Signing app applesignin:
+1»). LEFT: revoke Apple token on account deletion (owner makes a Sign in
+with Apple key → Runtime vars APPLE_KEY_ID/APPLE_TEAM_ID/APPLE_P8 →
+/auth/revoke in delete); web sign-in later. Old plan text:
 **▶▶▶▶▶▶ NEXT SECTION (owner 16 Nov 23:13): Sign in with Apple** («ميزة
 واضحة وصريحة»; also App Store rule 4.8 once any third-party sign-in shows in
 the iOS app — today the iOS build hides sign-in: no «auth» in `features`).

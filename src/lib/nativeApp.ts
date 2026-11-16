@@ -31,6 +31,8 @@ interface SfrtnaAppPlugin {
   setAlerts(options: { id: string; remind: boolean; prayers: boolean }): Promise<AppPlanState & { granted: boolean }>;
   openTripMode(options: { target?: string }): Promise<void>;
   haptic(options: { kind: "success" | "light" }): Promise<void>;
+  /** Sign in with Apple, the phone's own sheet (iPhone builds from 16 Nov 2026, feature «apple»). */
+  appleSignIn(options: { nonce: string }): Promise<{ idToken: string; name?: string }>;
   /** The plan's stops into the phone's calendar (iPhone builds from 16 Nov 2026, feature «calendar»). */
   addToCalendar(options: { title: string; events: CalendarStop[] }): Promise<{ added: number; granted: boolean }>;
 }
@@ -212,6 +214,23 @@ export const keepPlanInApp = (plan: OfflinePlan) => tripCall((app) => app.keepPl
 export const forgetPlanInApp = (id: string) => tripCall((app) => app.forgetPlan({ id }));
 export const planStateInApp = (id: string) => tripCall((app) => app.planState({ id }));
 export const setPlanAlertsInApp = (id: string, remind: boolean, prayers: boolean) => tripCall((app) => app.setAlerts({ id, remind, prayers }));
+
+/** Can this app build sign in with Apple? */
+export async function appleInApp(): Promise<boolean> {
+  return plugin() !== null && (await appFeatures()).includes("apple");
+}
+
+/** Sign in with Apple on the phone: the identity token (bound to `nonce`) and the name Apple gave, or null. */
+export async function appleSignInInApp(nonce: string): Promise<{ idToken: string; name?: string } | null> {
+  const app = plugin();
+  if (!app || !(await appleInApp())) return null;
+  try {
+    const r = await app.appleSignIn({ nonce });
+    return r.idToken ? r : null;
+  } catch {
+    return null;
+  }
+}
 
 /** Can this app build put a plan in the phone's calendar? */
 export async function calendarInApp(): Promise<boolean> {

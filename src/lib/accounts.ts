@@ -294,3 +294,68 @@ export async function verifyGoogleToken(
     return null;
   }
 }
+
+// ── Sign in with Apple (iPhone app, 16 Nov 2026) ───────────────────────────
+// The app's native button returns an identity token signed by Apple for our
+// bundle id; the nonce the page made is checked against the token's hash of
+// it. The person is kept in the same `google` column with an «apple:» prefix
+// (one sign-in id per user row; an e-mail already known links the account).
+
+let appleJwks: { keys: Jwk[]; until: number } | null = null;
+
+async function appleKeys(): Promise<Jwk[]> {
+  if (appleJwks && appleJwks.until > Date.now()) return appleJwks.keys;
+  const res = await fetch("https://appleid.apple.com/auth/keys", { signal: AbortSignal.timeout(8000) });
+  if (!res.ok) throw new Error("apple_keys");
+  const json = (await res.json()) as { keys: Jwk[] };
+  appleJwks = { keys: json.keys, until: Date.now() + 6 * 3600 * 1000 };
+  return json.keys;
+}
+
+export const APPLE_BUNDLE_ID = "com.sfrtna.app";
+
+async function sha256Hex(text: string): Promise<string> {
+  const d = new Uint8Array(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text)));
+  return [...d].map((b) => b.toString(16).padStart(2, "0")).join("");
+}
+
+/** The verified person behind an Apple identity token, or null. */
+export async function verifyAppleToken(
+  idToken: string,
+  nonce: string
+): Promise<{ sub: string; email: string | null } | null> {
+  if (typeof idToken !== "string" || typeof nonce !== "string" || nonce.length < 16) return null;
+  const parts = idToken.split(".");
+  if (parts.length !== 3) return null;
+  try {
+    const header = JSON.parse(new TextDecoder().decode(b64urlBytes(parts[0]))) as { kid?: string; alg?: string };
+    if (header.alg !== "RS256" || !header.kid) return null;
+    const jwk = (await appleKeys()).find((k) => k.kid === header.kid);
+    if (!jwk) return null;
+    const key = await crypto.subtle.importKey(
+      "jwk",
+      { kty: jwk.kty, n: jwk.n, e: jwk.e, alg: "RS256", ext: true },
+      { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" },
+      false,
+      ["verify"]
+    );
+    const ok = await crypto.subtle.verify("RSASSA-PKCS1-v1_5", key, b64urlBytes(parts[2]), new TextEncoder().encode(`${parts[0]}.${parts[1]}`));
+    if (!ok) return null;
+    const p = JSON.parse(new TextDecoder().decode(b64urlBytes(parts[1]))) as {
+      aud?: string;
+      iss?: string;
+      exp?: number;
+      sub?: string;
+      email?: string;
+      email_verified?: boolean | string;
+      nonce?: string;
+    };
+    if (p.iss !== "https://appleid.apple.com" || p.aud !== APPLE_BUNDLE_ID) return null;
+    if (!p.exp || p.exp * 1000 < Date.now() || !p.sub) return null;
+    if (p.nonce !== (await sha256Hex(nonce))) return null;
+    const verified = p.email_verified === true || p.email_verified === "true";
+    return { sub: p.sub, email: p.email && verified ? p.email.toLowerCase() : null };
+  } catch {
+    return null;
+  }
+}
