@@ -122,6 +122,10 @@ Then item 2 below (Apple), **Opus 5.5**.
 dict `hero.features/featuresDetail/featuresShort`), two still rows, no boxes;
 month name in the season panel = logo gold #f8b840. Owner rule: every new
 colour comes from the logo (navy, light blue, sun orange, sun gold).
+**WHEN THE OWNER SAYS GOOGLE APPROVED (owner 16 Nov):** first thing, remake
+Play screenshot 1 (home) from the live site with the new feature rows,
+1080×2160, app view (UA «SfrtnaApp/», tips/welcome keys sfr-tips-v1 /
+sfr-welcome-v1 set), send it; owner swaps it in Main store listing.
 
 **OWNER'S ORDER 16 Nov 02:40 (overrides NEXT 1/NEXT 2 order below):**
 1) Google Play setup to 100% — «Finish setting up your app» + store listing
