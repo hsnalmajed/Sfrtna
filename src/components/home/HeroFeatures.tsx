@@ -12,10 +12,10 @@ const ICONS: IconName[] = [
   "pin", "map", "sun", "idCard", "calendar", "ticket", "calculator",
 ];
 
-function Item({ icon, label, detail }: { icon: IconName; label: string; detail?: string }) {
+function Item({ icon, label, detail, small }: { icon: IconName; label: string; detail?: string; small?: boolean }) {
   return (
-    <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
-      <Icon name={icon} className="h-4 w-4 text-sun-400" strokeWidth={1.75} />
+    <span className={`inline-flex items-center whitespace-nowrap ${small ? "gap-1" : "gap-1.5"}`}>
+      <Icon name={icon} className={`${small ? "h-3.5 w-3.5" : "h-4 w-4"} text-sun-400`} strokeWidth={1.75} />
       {label}
       {detail ? <span className="font-normal text-white/65">({detail})</span> : null}
     </span>
@@ -41,7 +41,7 @@ export default function HeroFeatures({
       {/* Two balanced rows on wide screens (four, then three), not a wrap
           that leaves one item alone on the second line. */}
       {/* Still, readable rows everywhere (owner, 16 Nov: nothing moving).
-          Wide screens: four, then three. Phones: the same, with shorter names. */}
+          Wide screens: four, then three. Phones: see below. */}
       <div className="mt-4 hidden flex-col items-center gap-y-2.5 text-sm font-medium text-white/90 drop-shadow-[0_1px_8px_rgba(4,24,47,0.95)] sm:flex">
         {[items.slice(0, half), items.slice(half)].map((row, r) => (
           <p key={r} className="flex flex-wrap justify-center gap-x-6 gap-y-2.5">
@@ -51,15 +51,15 @@ export default function HeroFeatures({
           </p>
         ))}
       </div>
-      <div className="mt-3 flex flex-col items-center gap-y-2 text-[12.5px] font-medium text-white/90 drop-shadow-[0_1px_8px_rgba(4,24,47,0.95)] sm:hidden">
-        {[short.slice(0, half), short.slice(half)].map((row, r) => (
-          <p key={r} className="flex flex-wrap justify-center gap-x-3.5 gap-y-2">
-            {row.map((it) => (
-              <Item key={it.label} icon={it.icon} label={it.label} />
-            ))}
-          </p>
+      {/* One wrapping row, filled in order: four then three when they fit,
+          otherwise three, three, one — never a lone item in the middle
+          (owner, 16 Nov). The type follows the screen width so four fit
+          on most phones. */}
+      <p className="mt-3 flex max-w-[24rem] flex-wrap justify-center gap-x-2.5 gap-y-2 text-[clamp(11px,3.1vw,12.5px)] font-medium text-white/90 drop-shadow-[0_1px_8px_rgba(4,24,47,0.95)] sm:hidden">
+        {short.map((it) => (
+          <Item key={it.label} icon={it.icon} label={it.label} small />
         ))}
-      </div>
+      </p>
     </>
   );
 }
