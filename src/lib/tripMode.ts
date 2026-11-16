@@ -88,6 +88,8 @@ export interface OfflinePlan {
   lang: "ar" | "en";
   html: string;
   notices: TripNotice[];
+  /** The days in short for the app's «اليوم» screen. */
+  days: { date: string; city: string; stops: { time: string; name: string }[] }[];
 }
 
 const esc = (s: unknown) =>
@@ -296,5 +298,10 @@ export function buildOfflinePlan(input: OfflinePlanInput): OfflinePlan {
     lang: input.locale,
     html: offlinePlanHtml(input),
     notices: planNotices(input),
+    days: input.days.map((d) => ({
+      date: d.date,
+      city: d.city?.name ?? input.city.name,
+      stops: d.items.filter((it) => isStop(it) && it.time).map((it) => ({ time: it.time, name: it.name })),
+    })),
   };
 }

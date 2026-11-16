@@ -10,6 +10,7 @@ import Footer from "@/components/Footer";
 import NavTracker from "@/components/NavTracker";
 import Analytics from "@/components/Analytics";
 import AppTabBar from "@/components/AppTabBar";
+import IosTabsGuard from "@/components/IosTabsGuard";
 import AppInstallBanner from "@/components/AppInstallBanner";
 import AppWelcome from "@/components/AppWelcome";
 import JoinHost from "@/components/member/JoinHost";
@@ -89,7 +90,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
         */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `try{if(navigator.userAgent.indexOf("SfrtnaApp/")>-1)document.documentElement.classList.add("in-app")}catch(e){}`,
+            __html: `try{var u=navigator.userAgent;if(u.indexOf("SfrtnaApp/")>-1)document.documentElement.classList.add("in-app");if(u.indexOf("SfrtnaTabs/")>-1)document.documentElement.classList.add("in-ios-tabs")}catch(e){}`,
           }}
         />
       </head>
@@ -113,6 +114,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
           <main className="flex-1">{children}</main>
           <Footer locale={loc} />
           <AppTabBar locale={loc} />
+          <IosTabsGuard locale={loc} />
           <AppInstallBanner />
           <AppWelcome />
           <JoinHost locale={loc} />

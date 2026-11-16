@@ -22,7 +22,7 @@
     }
   },
   "ios": {
-    "appendUserAgent": "SfrtnaApp/iOS",
+    "appendUserAgent": "SfrtnaApp/iOS SfrtnaTabs/1",
     "contentInset": "never",
     "scrollEnabled": true,
     "limitsNavigationsToAppBoundDomains": false

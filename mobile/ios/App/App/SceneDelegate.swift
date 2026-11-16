@@ -10,7 +10,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: windowScene)
         // Our shell (AppDelegate.swift), not the bare Capacitor controller — with
         // the bare one none of the app's own code ran (builds 9–11).
-        window?.rootViewController = MainViewController()
+        // The app's own tabs, opening on «اليوم»; the website is one tab
+        // (App Review 4.3 / 4.2.6, 16 Nov 2026).
+        window?.rootViewController = RootTabController(web: MainViewController())
         window?.makeKeyAndVisible()
 
         SceneDelegateProxy.shared.scene(scene, willConnectTo: session, options: connectionOptions)

@@ -881,6 +881,18 @@ html.in-app body {
   overscroll-behavior-y: none;
 }
 
+/* iPhone app with its own native tabs (UA «SfrtnaTabs/», 16 Nov 2026): the
+   app's tab bar replaces ours, and the web view ends above it. */
+html.in-ios-tabs .app-tabbar {
+  display: none !important;
+}
+html.in-ios-tabs body {
+  padding-bottom: 0;
+}
+html.in-ios-tabs .ios-tabs-hide {
+  display: none !important;
+}
+
 /* The bar at the top: solid from the start, slim, logo centred. */
 html.in-app .site-header-scrim {
   display: none;

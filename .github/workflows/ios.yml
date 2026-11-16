@@ -163,6 +163,7 @@ jobs:
           # Trip mode (native screens): Istanbul's Sultanahmet as the location.
           t 30 xcrun simctl privacy "$UDID" grant location com.sfrtna.app > /dev/null 2>&1 || true
           t 30 xcrun simctl location "$UDID" set 41.0054,28.9768 > /dev/null 2>&1 || true
+          shot check-today 18 -sfrTab today
           shot check-trip 16 -sfrTrip list
           shot check-qibla 18 -sfrTrip qibla
           shot check-mosques 25 -sfrTrip mosques

@@ -255,6 +255,8 @@ class MainViewController: CAPBridgeViewController {
             DispatchQueue.main.async { [weak self] in self?.openTripModeRequest() }
             return
         }
+        // Inside the tabs (RootTabController) the tabs open trip mode.
+        guard tabBarController == nil else { return }
         guard intro == nil, view.window != nil, let target = TripMode.pending else { return }
         TripMode.pending = nil
         if let nav = presentedViewController as? TripNavController {
@@ -646,7 +648,10 @@ public class SfrtnaAppPlugin: CAPPlugin, CAPBridgedPlugin {
         guard scheme == "https" || scheme == "http" else { return nil }
         let mainFrame = navigationAction.targetFrame?.isMainFrame ?? true
         if !mainFrame { return nil }
-        if let host = url.host?.lowercased(), SfrtnaAppPlugin.ourHosts.contains(host), !SfrtnaAppPlugin.isOutLink(url) {
+        // ?sfr_out=1: one of our booking pages, which open in a Safari sheet
+        // from the app (IosTabsGuard on the site), never inside it.
+        let outside = url.query?.contains("sfr_out=1") ?? false
+        if let host = url.host?.lowercased(), SfrtnaAppPlugin.ourHosts.contains(host), !SfrtnaAppPlugin.isOutLink(url), !outside {
             return NSNumber(value: false)
         }
         DispatchQueue.main.async { [weak self] in
@@ -684,10 +689,19 @@ public class SfrtnaAppPlugin: CAPPlugin, CAPBridgedPlugin {
             return out
         }
         func text(_ key: String) -> String { String((call.getString(key) ?? "").prefix(200)) }
+        // The days in short (date, city, first stops) for «اليوم».
+        let days: [[String: Any]] = (call.getArray("days") ?? []).prefix(60).compactMap { value in
+            guard let o = value as? JSObject, let date = o["date"] as? String else { return nil }
+            let stops: [[String: String]] = ((o["stops"] as? JSArray) ?? []).prefix(12).compactMap { v in
+                guard let st = v as? JSObject else { return nil }
+                return ["time": String((st["time"] as? String ?? "").prefix(8)), "name": String((st["name"] as? String ?? "").prefix(120))]
+            }
+            return ["date": String(date.prefix(10)), "city": String((o["city"] as? String ?? "").prefix(80)), "stops": stops]
+        }
         var plan: [String: Any] = [
             "id": id, "title": text("title"), "subtitle": text("subtitle"),
             "from": text("from"), "to": text("to"), "lang": text("lang"),
-            "html": html, "notices": notices,
+            "html": html, "notices": notices, "days": days,
             "savedAt": ISO8601DateFormatter().string(from: Date()),
         ]
         plan["remind"] = old?["remind"] as? Bool ?? false
@@ -942,7 +956,7 @@ enum TripAlerts {
     static func rescheduleAll() {
         let center = UNUserNotificationCenter.current()
         center.getPendingNotificationRequests { pending in
-            center.removePendingNotificationRequests(withIdentifiers: pending.map { $0.identifier }.filter { $0.hasPrefix(prefix) })
+            center.removePendingNotificationRequests(withIdentifiers: pending.map { $0.identifier }.filter { $0.hasPrefix(prefix) || $0.hasPrefix("here.") })
             let now = Date()
             var items: [(Date, UNNotificationRequest)] = []
             for plan in TripStore.all() {
@@ -964,7 +978,9 @@ enum TripAlerts {
                     items.append((at, UNNotificationRequest(identifier: "\(prefix)\(id).\(i)", content: content, trigger: trigger)))
                 }
             }
-            for (_, request) in items.sorted(by: { $0.0 < $1.0 }).prefix(60) { center.add(request) }
+            // Trips get 45 of the phone's 64, prayers where you are up to 15.
+            for (_, request) in items.sorted(by: { $0.0 < $1.0 }).prefix(45) { center.add(request) }
+            for (_, request) in Here.notices().prefix(15) { center.add(request) }
         }
     }
 }
@@ -1019,7 +1035,9 @@ final class TripHomeController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = TripMode.t("وضع الرحلة", "Trip mode")
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(close))
+        if navigationController?.tabBarController == nil {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(close))
+        }
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "tool")
     }
 
@@ -1509,5 +1527,615 @@ final class NearbyController: UITableViewController, CLLocationManagerDelegate {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         items[indexPath.row].openInMaps(launchOptions: [MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeWalking])
+    }
+}
+
+// MARK: - The app's own home: tabs («اليوم» / «خططي» / «خطّط» / «المزيد»), 16 Nov 2026
+//
+// App Review (4.3 / 4.2.6, PROJECT_NOTES «Apple rejection — root-cause
+// study»): the app opens on its own native screen, not on the website. The
+// website lives in one tab («خطّط»: city guides + the trip planner); booking
+// pages never open inside the app (the site's IosTabsGuard sends them to a
+// Safari sheet). Everything in «اليوم» and «خططي» works without internet.
+
+/// The five prayers for a place and day, computed on the phone (no network).
+/// Same methods as the site (guidePlan.ts prayerMethod via adhan); checked
+/// against adhan to the minute for Riyadh, Istanbul, London, Dubai, Kuala
+/// Lumpur (16 Nov 2026).
+enum PrayerCalc {
+    static let keys = ["fajr", "sunrise", "dhuhr", "asr", "maghrib", "isha"]
+    /// fajr angle, isha angle, isha minutes after maghrib, and per-time minute
+    /// adjustments (fajr, sunrise, dhuhr, asr, maghrib, isha) as adhan applies.
+    private static func method(_ code: String) -> (Double, Double, Double, [Double]) {
+        switch code {
+        case "SA": return (18.5, 0, 90, [0, 0, 0, 0, 0, 0])
+        case "AE": return (18.2, 18.2, 0, [0, -3, 3, 3, 3, 0])
+        case "QA": return (18, 0, 90, [0, 0, 0, 0, 0, 0])
+        case "KW": return (18, 17.5, 0, [0, 0, 0, 0, 0, 0])
+        case "EG", "SD", "LY": return (19.5, 17.5, 0, [0, 0, 0, 0, 0, 0])
+        case "TR": return (18, 17, 0, [0, -7, 5, 4, 7, 0])
+        case "PK", "IN", "BD", "AF": return (18, 18, 0, [0, 0, 1, 0, 0, 0])
+        case "MY", "SG", "ID", "BN": return (20, 18, 0, [0, 0, 1, 0, 0, 0])
+        case "US", "CA": return (15, 15, 0, [0, 0, 1, 0, 0, 0])
+        default: return (18, 17, 0, [0, 0, 1, 0, 0, 0])
+        }
+    }
+
+    private static func rad(_ d: Double) -> Double { d * .pi / 180 }
+    private static func deg(_ r: Double) -> Double { r * 180 / .pi }
+    private static func fix(_ a: Double, _ b: Double) -> Double { let v = a - b * floor(a / b); return v < 0 ? v + b : v }
+
+    private static func julian(_ y0: Int, _ m0: Int, _ d: Int) -> Double {
+        var y = y0, m = m0
+        if m <= 2 { y -= 1; m += 12 }
+        let a = floor(Double(y) / 100), b = 2 - a + floor(a / 4)
+        return floor(365.25 * Double(y + 4716)) + floor(30.6001 * Double(m + 1)) + Double(d) + b - 1524.5
+    }
+
+    private static func sun(_ jd: Double) -> (decl: Double, eqt: Double) {
+        let d = jd - 2451545
+        let g = fix(357.529 + 0.98560028 * d, 360), q = fix(280.459 + 0.98564736 * d, 360)
+        let l = fix(q + 1.915 * sin(rad(g)) + 0.020 * sin(rad(2 * g)), 360)
+        let e = 23.439 - 0.00000036 * d
+        let ra = fix(deg(atan2(cos(rad(e)) * sin(rad(l)), cos(rad(l)))) / 15, 24)
+        return (deg(asin(sin(rad(e)) * sin(rad(l)))), q / 15 - ra)
+    }
+
+    /// The times as Dates for the given calendar day at (lat, lng); nil where
+    /// the sun never reaches the angle (far north in summer).
+    static func times(for day: Date, lat: Double, lng: Double, country: String, zone: TimeZone = .current) -> [String: Date] {
+        var cal = Calendar(identifier: .gregorian)
+        cal.timeZone = zone
+        let c = cal.dateComponents([.year, .month, .day], from: day)
+        guard let y = c.year, let m = c.month, let dd = c.day,
+              let midnight = cal.date(from: DateComponents(year: y, month: m, day: dd)) else { return [:] }
+        let (fajrAngle, ishaAngle, ishaMinutes, adjust) = method(country)
+        let jd = julian(y, m, dd) - lng / (15 * 24)
+        func mid(_ t: Double) -> Double { fix(12 - sun(jd + t).eqt, 24) }
+        func at(_ angle: Double, _ t: Double, _ before: Bool) -> Double? {
+            let s = sun(jd + t)
+            let v = (-sin(rad(angle)) - sin(rad(s.decl)) * sin(rad(lat))) / (cos(rad(s.decl)) * cos(rad(lat)))
+            guard v >= -1, v <= 1 else { return nil }
+            let h = deg(acos(v)) / 15
+            return mid(t) + (before ? -h : h)
+        }
+        func asr(_ t: Double) -> Double? {
+            let s = sun(jd + t)
+            return at(-deg(atan(1 / (1 + tan(rad(abs(lat - s.decl)))))), t, false)
+        }
+        let maghrib = at(0.833, 18 / 24, false)
+        let raw: [Double?] = [
+            at(fajrAngle, 5 / 24, true), at(0.833, 6 / 24, true), mid(12 / 24), asr(13 / 24), maghrib,
+            ishaMinutes > 0 ? maghrib.map { $0 + ishaMinutes / 60 } : at(ishaAngle, 18 / 24, false),
+        ]
+        let offset = Double(zone.secondsFromGMT(for: midnight)) / 3600
+        var out: [String: Date] = [:]
+        for (i, key) in keys.enumerated() {
+            guard let h = raw[i] else { continue }
+            let hours = h + offset - lng / 15 + adjust[i] / 60
+            // Rounded to the minute, as the site shows them.
+            let minutes = (hours * 60).rounded()
+            out[key] = midnight.addingTimeInterval(minutes * 60)
+        }
+        return out
+    }
+
+    static func name(_ key: String) -> String {
+        switch key {
+        case "fajr": return TripMode.t("الفجر", "Fajr")
+        case "sunrise": return TripMode.t("الشروق", "Sunrise")
+        case "dhuhr": return TripMode.t("الظهر", "Dhuhr")
+        case "asr": return TripMode.t("العصر", "Asr")
+        case "maghrib": return TripMode.t("المغرب", "Maghrib")
+        default: return TripMode.t("العشاء", "Isha")
+        }
+    }
+
+    static func clock(_ d: Date) -> String {
+        let f = DateFormatter()
+        f.locale = Locale(identifier: "en_GB")
+        f.dateFormat = "HH:mm"
+        return f.string(from: d)
+    }
+}
+
+/// Where the traveller is (last known, kept on the phone only) for the
+/// prayer times and «حولك». Never sent anywhere.
+enum Here {
+    private static let d = UserDefaults.standard
+    static var lat: Double? { d.object(forKey: "here.lat") as? Double }
+    static var lng: Double? { d.object(forKey: "here.lng") as? Double }
+    static var country: String { d.string(forKey: "here.country") ?? (Locale.current.regionCode ?? "SA") }
+    static var place: String? { d.string(forKey: "here.place") }
+    static var alerts: Bool {
+        get { d.bool(forKey: "here.alerts") }
+        set { d.set(newValue, forKey: "here.alerts") }
+    }
+
+    static func save(_ loc: CLLocation, done: @escaping () -> Void) {
+        let moved = lat.map { CLLocation(latitude: $0, longitude: lng ?? 0).distance(from: loc) > 3000 } ?? true
+        d.set(loc.coordinate.latitude, forKey: "here.lat")
+        d.set(loc.coordinate.longitude, forKey: "here.lng")
+        guard moved || place == nil else { done(); return }
+        CLGeocoder().reverseGeocodeLocation(loc, preferredLocale: Locale(identifier: TripMode.english ? "en" : "ar")) { marks, _ in
+            DispatchQueue.main.async {
+                if let p = marks?.first {
+                    if let cc = p.isoCountryCode { d.set(cc, forKey: "here.country") }
+                    d.set(p.locality ?? p.administrativeArea ?? p.country, forKey: "here.place")
+                }
+                done()
+            }
+        }
+    }
+
+    /// Prayer alerts where the traveller is: the next 3 days (15 alerts).
+    static func notices() -> [(Date, UNNotificationRequest)] {
+        guard alerts, let la = lat, let lo = lng else { return [] }
+        var out: [(Date, UNNotificationRequest)] = []
+        let now = Date()
+        for i in 0..<3 {
+            guard let day = Calendar.current.date(byAdding: .day, value: i, to: now) else { continue }
+            for (key, at) in PrayerCalc.times(for: day, lat: la, lng: lo, country: country) where key != "sunrise" && at > now {
+                let c = UNMutableNotificationContent()
+                c.title = "🕌 " + PrayerCalc.name(key) + (place.map { " · \($0)" } ?? "")
+                c.body = TripMode.t("حان وقت صلاة \(PrayerCalc.name(key)) (\(PrayerCalc.clock(at))).",
+                                    "It is time for \(PrayerCalc.name(key)) (\(PrayerCalc.clock(at))).")
+                c.sound = .default
+                c.threadIdentifier = "here"
+                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: at.timeIntervalSince(now), repeats: false)
+                out.append((at, UNNotificationRequest(identifier: "here.\(key).\(i)", content: c, trigger: trigger)))
+            }
+        }
+        return out
+    }
+}
+
+/// The app's root: four tabs, opening on «اليوم».
+final class RootTabController: UITabBarController {
+    let web: MainViewController
+    private let todayNav = UINavigationController()
+    private let plansNav = UINavigationController()
+    private let moreNav = UINavigationController()
+
+    init(web: MainViewController) {
+        self.web = web
+        super.init(nibName: nil, bundle: nil)
+        build()
+        NotificationCenter.default.addObserver(self, selector: #selector(tripModeRequest), name: TripMode.openRequest, object: nil)
+        // The website loads in the background from the start (planner tab).
+        web.loadViewIfNeeded()
+        // CI: -sfrPath photographs a page of the site → show the planner tab.
+        if ProcessInfo.processInfo.arguments.contains("-sfrPath") { selectedIndex = 2 }
+    }
+
+    required init?(coder: NSCoder) { fatalError("not used") }
+
+    private func build() {
+        let dir: UISemanticContentAttribute = TripMode.english ? .forceLeftToRight : .forceRightToLeft
+        for v in [view, tabBar] as [UIView] { v.semanticContentAttribute = dir }
+        UIView.appearance(whenContainedInInstancesOf: [UINavigationController.self]).semanticContentAttribute = dir
+        let look = UITabBarAppearance()
+        look.configureWithOpaqueBackground()
+        tabBar.standardAppearance = look
+        tabBar.scrollEdgeAppearance = look
+        tabBar.isTranslucent = false
+        tabBar.tintColor = TripMode.navy
+
+        todayNav.setViewControllers([TodayController()], animated: false)
+        plansNav.setViewControllers([TripHomeController()], animated: false)
+        moreNav.setViewControllers([MoreController()], animated: false)
+        for nav in [todayNav, plansNav, moreNav] {
+            nav.navigationBar.tintColor = TripMode.navy
+            nav.navigationBar.prefersLargeTitles = true
+            nav.view.semanticContentAttribute = dir
+            nav.navigationBar.semanticContentAttribute = dir
+        }
+        todayNav.tabBarItem = UITabBarItem(title: TripMode.t("اليوم", "Today"), image: UIImage(systemName: "sun.max"), selectedImage: UIImage(systemName: "sun.max.fill"))
+        plansNav.tabBarItem = UITabBarItem(title: TripMode.t("خططي", "My plans"), image: UIImage(systemName: "map"), selectedImage: UIImage(systemName: "map.fill"))
+        web.tabBarItem = UITabBarItem(title: TripMode.t("خطّط", "Plan"), image: UIImage(systemName: "sparkles"), selectedImage: UIImage(systemName: "sparkles"))
+        moreNav.tabBarItem = UITabBarItem(title: TripMode.t("المزيد", "More"), image: UIImage(systemName: "ellipsis.circle"), selectedImage: UIImage(systemName: "ellipsis.circle.fill"))
+        setViewControllers([todayNav, plansNav, web, moreNav], animated: false)
+        selectedIndex = 0
+    }
+
+    /// After a language change: the native tabs again, in the new language.
+    func relabel() {
+        let keep = selectedIndex
+        build()
+        selectedIndex = keep
+    }
+
+    /// Opens one of our pages in the planner tab (path like "/ar/visa").
+    func openWeb(_ path: String) {
+        selectedIndex = 2
+        let lang = TripMode.english ? "en" : "ar"
+        let full = path.hasPrefix("/") ? path : "/\(lang)/\(path)"
+        if let url = URL(string: "https://sfrtna.com" + full) { web.webView?.load(URLRequest(url: url)) }
+    }
+
+    @objc private func tripModeRequest() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self, let target = TripMode.pending else { return }
+            TripMode.pending = nil
+            self.presentedViewController?.dismiss(animated: false)
+            switch target {
+            case "qibla", "mosques", "halal":
+                self.selectedIndex = 0
+                self.todayNav.popToRootViewController(animated: false)
+                let next: UIViewController = target == "qibla" ? QiblaController() : NearbyController(kind: target == "mosques" ? .mosques : .halal)
+                self.todayNav.pushViewController(next, animated: true)
+            default:
+                self.selectedIndex = 1
+                self.plansNav.popToRootViewController(animated: false)
+                if let id = TripStore.cleanId(target), TripStore.load(id) != nil {
+                    self.plansNav.pushViewController(PlanViewerController(id: id), animated: true)
+                }
+            }
+        }
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if TripMode.pending != nil { tripModeRequest() }
+    }
+}
+
+/// «اليوم»: where you are now — the next prayer, your trip today, and the
+/// tools for the road. All of it without internet except the place name.
+final class TodayController: UIViewController, CLLocationManagerDelegate {
+    private let manager = CLLocationManager()
+    private let scroll = UIScrollView()
+    private let stack = UIStackView()
+    private var timer: Timer?
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        title = TripMode.t("اليوم", "Today")
+        view.backgroundColor = .systemGroupedBackground
+        scroll.translatesAutoresizingMaskIntoConstraints = false
+        stack.axis = .vertical
+        stack.spacing = 14
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(scroll)
+        scroll.addSubview(stack)
+        NSLayoutConstraint.activate([
+            scroll.topAnchor.constraint(equalTo: view.topAnchor),
+            scroll.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            scroll.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scroll.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            stack.topAnchor.constraint(equalTo: scroll.contentLayoutGuide.topAnchor, constant: 8),
+            stack.bottomAnchor.constraint(equalTo: scroll.contentLayoutGuide.bottomAnchor, constant: -24),
+            stack.leadingAnchor.constraint(equalTo: scroll.frameLayoutGuide.leadingAnchor, constant: 16),
+            stack.trailingAnchor.constraint(equalTo: scroll.frameLayoutGuide.trailingAnchor, constant: -16),
+        ])
+        manager.delegate = self
+        manager.desiredAccuracy = kCLLocationAccuracyKilometer
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        render()
+        locate()
+        timer?.invalidate()
+        timer = Timer.scheduledTimer(withTimeInterval: 30, repeats: true) { [weak self] _ in self?.render() }
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        timer?.invalidate()
+    }
+
+    private func locate() {
+        switch manager.authorizationStatus {
+        case .authorizedWhenInUse, .authorizedAlways: manager.requestLocation()
+        default: break
+        }
+    }
+
+    @objc private func askLocation() {
+        if manager.authorizationStatus == .notDetermined {
+            manager.requestWhenInUseAuthorization()
+        } else if let url = URL(string: UIApplication.openSettingsURLString) {
+            UIApplication.shared.open(url)
+        }
+    }
+
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) { locate() }
+
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let loc = locations.last else { return }
+        Here.save(loc) { [weak self] in
+            self?.render()
+            TripAlerts.rescheduleAll()
+        }
+    }
+
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {}
+
+    // MARK: Drawing
+
+    private func card(_ views: [UIView], tint: UIColor = .secondarySystemGroupedBackground, spacing: CGFloat = 8) -> UIView {
+        let box = UIView()
+        box.backgroundColor = tint
+        box.layer.cornerRadius = 18
+        let s = UIStackView(arrangedSubviews: views)
+        s.axis = .vertical
+        s.spacing = spacing
+        s.translatesAutoresizingMaskIntoConstraints = false
+        box.addSubview(s)
+        NSLayoutConstraint.activate([
+            s.topAnchor.constraint(equalTo: box.topAnchor, constant: 16),
+            s.bottomAnchor.constraint(equalTo: box.bottomAnchor, constant: -16),
+            s.leadingAnchor.constraint(equalTo: box.leadingAnchor, constant: 16),
+            s.trailingAnchor.constraint(equalTo: box.trailingAnchor, constant: -16),
+        ])
+        return box
+    }
+
+    private func label(_ text: String, _ font: UIFont, _ color: UIColor = .label, lines: Int = 0) -> UILabel {
+        let l = UILabel()
+        l.text = text
+        l.font = font
+        l.textColor = color
+        l.numberOfLines = lines
+        l.textAlignment = .natural
+        return l
+    }
+
+    private func button(_ title: String, filled: Bool, action: Selector) -> UIButton {
+        var config = filled ? UIButton.Configuration.filled() : UIButton.Configuration.tinted()
+        config.title = title
+        config.cornerStyle = .capsule
+        config.baseBackgroundColor = filled ? TripMode.gold : TripMode.navy
+        config.baseForegroundColor = TripMode.navy
+        config.buttonSize = .large
+        let b = UIButton(configuration: config)
+        b.addTarget(self, action: action, for: .touchUpInside)
+        return b
+    }
+
+    private func render() {
+        stack.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        stack.addArrangedSubview(dateCard())
+        stack.addArrangedSubview(prayerCard())
+        stack.addArrangedSubview(tripCard())
+        stack.addArrangedSubview(toolsCard())
+    }
+
+    private func dateCard() -> UIView {
+        let now = Date()
+        let g = DateFormatter()
+        g.locale = Locale(identifier: TripMode.english ? "en_GB" : "ar_SA@calendar=gregorian;numbers=latn")
+        g.calendar = Calendar(identifier: .gregorian)
+        g.dateFormat = "EEEE d MMMM"
+        let h = DateFormatter()
+        h.locale = Locale(identifier: TripMode.english ? "en_GB" : "ar_SA@numbers=latn")
+        h.calendar = Calendar(identifier: .islamicUmmAlQura)
+        h.dateFormat = "d MMMM yyyy"
+        let place = Here.place.map { "📍 \($0)" } ?? TripMode.t("📍 لم نحدد مكانك بعد", "📍 Location not set yet")
+        return card([
+            label(g.string(from: now), .boldSystemFont(ofSize: 22), .white),
+            label(h.string(from: now) + TripMode.t(" هـ", " AH"), .systemFont(ofSize: 15), UIColor.white.withAlphaComponent(0.8)),
+            label(place, .systemFont(ofSize: 15, weight: .semibold), TripMode.gold),
+        ], tint: TripMode.navy, spacing: 4)
+    }
+
+    private func prayerCard() -> UIView {
+        guard let la = Here.lat, let lo = Here.lng else {
+            let b = button(TripMode.t("حدّد مكاني", "Use my location"), filled: true, action: #selector(askLocation))
+            return card([
+                label(TripMode.t("🕌 أوقات الصلاة حيث أنت", "🕌 Prayer times where you are"), .boldSystemFont(ofSize: 18)),
+                label(TripMode.t("نحسبها على جوالك بدون إنترنت، ولا نحفظ موقعك خارج الجوال.",
+                                 "Worked out on your phone, offline. Your location never leaves the phone."), .systemFont(ofSize: 14), .secondaryLabel),
+                b,
+            ])
+        }
+        let now = Date()
+        let today = PrayerCalc.times(for: now, lat: la, lng: lo, country: Here.country)
+        let order = PrayerCalc.keys.filter { $0 != "sunrise" }
+        var next: (String, Date)? = order.compactMap { k -> (String, Date)? in today[k].map { (k, $0) } }.first { $0.1 > now }
+        if next == nil, let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: now),
+           let f = PrayerCalc.times(for: tomorrow, lat: la, lng: lo, country: Here.country)["fajr"] { next = ("fajr", f) }
+        var views: [UIView] = []
+        if let n = next {
+            let (k, at) = n
+            let mins = Int(at.timeIntervalSince(now) / 60)
+            let left = mins >= 60 ? TripMode.t("بعد \(mins / 60) س \(mins % 60) د", "in \(mins / 60)h \(mins % 60)m")
+                                  : TripMode.t("بعد \(mins) دقيقة", "in \(mins) min")
+            views.append(label(TripMode.t("الصلاة القادمة", "Next prayer"), .systemFont(ofSize: 14, weight: .semibold), .secondaryLabel))
+            views.append(label("🕌 \(PrayerCalc.name(k))  \(PrayerCalc.clock(at))", .boldSystemFont(ofSize: 26), TripMode.navy))
+            views.append(label(left, .systemFont(ofSize: 15, weight: .semibold), .systemGreen))
+        }
+        let row = UIStackView()
+        row.axis = .horizontal
+        row.distribution = .fillEqually
+        row.spacing = 4
+        for k in order {
+            let cell = UIStackView(arrangedSubviews: [
+                label(PrayerCalc.name(k), .systemFont(ofSize: 12), .secondaryLabel, lines: 1),
+                label(today[k].map(PrayerCalc.clock) ?? "—", .boldSystemFont(ofSize: 15), .label, lines: 1),
+            ])
+            cell.axis = .vertical
+            cell.alignment = .center
+            cell.backgroundColor = next?.0 == k ? TripMode.gold.withAlphaComponent(0.3) : .tertiarySystemGroupedBackground
+            cell.layer.cornerRadius = 10
+            cell.isLayoutMarginsRelativeArrangement = true
+            cell.layoutMargins = UIEdgeInsets(top: 6, left: 2, bottom: 6, right: 2)
+            row.addArrangedSubview(cell)
+        }
+        views.append(row)
+        let toggle = UISwitch()
+        toggle.isOn = Here.alerts
+        toggle.onTintColor = TripMode.navy
+        toggle.addTarget(self, action: #selector(alertsChanged(_:)), for: .valueChanged)
+        let line = UIStackView(arrangedSubviews: [label(TripMode.t("نبّهني بوقت كل صلاة حيث أنا", "Alert me at each prayer time here"), .systemFont(ofSize: 15)), toggle])
+        line.axis = .horizontal
+        line.spacing = 8
+        line.alignment = .center
+        views.append(line)
+        return card(views)
+    }
+
+    @objc private func alertsChanged(_ s: UISwitch) {
+        guard s.isOn else {
+            Here.alerts = false
+            TripAlerts.rescheduleAll()
+            return
+        }
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { ok, _ in
+            DispatchQueue.main.async {
+                Here.alerts = ok
+                s.setOn(ok, animated: true)
+                TripAlerts.rescheduleAll()
+                if !ok, let url = URL(string: UIApplication.openSettingsURLString) { UIApplication.shared.open(url) }
+            }
+        }
+    }
+
+    /// The kept trip happening now, else the next one.
+    private func tripCard() -> UIView {
+        let today = ISO8601DateFormatter.day.string(from: Date())
+        let plans = TripStore.all().filter { ($0["to"] as? String ?? "") >= today }
+        guard let p = plans.first, let id = p["id"] as? String else {
+            return card([
+                label(TripMode.t("🧳 لا توجد رحلة على جوالك", "🧳 No trip on your phone yet"), .boldSystemFont(ofSize: 18)),
+                label(TripMode.t("خطّط رحلتك يوماً بيوم مع أوقات الصلاة والأكل الحلال، ثم احفظها على جوالك لتفتح بدون إنترنت.",
+                                 "Plan your trip day by day with prayer times and halal food, then keep it on your phone to open offline."),
+                      .systemFont(ofSize: 14), .secondaryLabel),
+                button(TripMode.t("خطّط رحلة", "Plan a trip"), filled: true, action: #selector(planTrip)),
+            ])
+        }
+        let from = p["from"] as? String ?? today
+        var views: [UIView] = [label("🗺️ " + (p["title"] as? String ?? ""), .boldSystemFont(ofSize: 18))]
+        let f = ISO8601DateFormatter.day
+        if let a = f.date(from: from), let b = f.date(from: today) {
+            let n = Calendar.current.dateComponents([.day], from: b, to: a).day ?? 0
+            let when = n > 0 ? TripMode.t(n == 1 ? "رحلتك غداً" : "بعد \(n) يوماً", n == 1 ? "Your trip is tomorrow" : "In \(n) days")
+                             : TripMode.t("اليوم \(1 - n) من رحلتك", "Day \(1 - n) of your trip")
+            views.append(label(when, .systemFont(ofSize: 15, weight: .semibold), .systemGreen))
+        }
+        let days = p["days"] as? [[String: Any]] ?? []
+        if let d = days.first(where: { ($0["date"] as? String) == today }) {
+            for s in (d["stops"] as? [[String: Any]] ?? []).prefix(6) {
+                views.append(label("\(s["time"] as? String ?? "")  ·  \(s["name"] as? String ?? "")", .systemFont(ofSize: 15)))
+            }
+        }
+        let open = button(TripMode.t("افتح الخطة", "Open the plan"), filled: true, action: #selector(openTrip))
+        open.accessibilityIdentifier = id
+        views.append(open)
+        return card(views)
+    }
+
+    @objc private func openTrip(_ sender: UIButton) {
+        if let id = sender.accessibilityIdentifier { TripMode.open(id) }
+    }
+
+    @objc private func planTrip() { (tabBarController as? RootTabController)?.openWeb("itinerary") }
+
+    private func toolsCard() -> UIView {
+        let tools: [(String, String, Selector)] = [
+            ("🕋", TripMode.t("القبلة", "Qibla"), #selector(qibla)),
+            ("🕌", TripMode.t("أقرب مسجد", "Nearest mosque"), #selector(mosques)),
+            ("🍽️", TripMode.t("حلال قريب", "Halal nearby"), #selector(halal)),
+            ("✨", TripMode.t("خطّط رحلة", "Plan a trip"), #selector(planTrip)),
+        ]
+        let grid = UIStackView()
+        grid.axis = .vertical
+        grid.spacing = 10
+        for pair in stride(from: 0, to: tools.count, by: 2) {
+            let row = UIStackView()
+            row.axis = .horizontal
+            row.spacing = 10
+            row.distribution = .fillEqually
+            for (icon, title, action) in tools[pair..<min(pair + 2, tools.count)] {
+                var c = UIButton.Configuration.filled()
+                c.title = "\(icon)  \(title)"
+                c.baseBackgroundColor = .secondarySystemGroupedBackground
+                c.baseForegroundColor = TripMode.navy
+                c.cornerStyle = .large
+                c.contentInsets = NSDirectionalEdgeInsets(top: 18, leading: 8, bottom: 18, trailing: 8)
+                let b = UIButton(configuration: c)
+                b.addTarget(self, action: action, for: .touchUpInside)
+                row.addArrangedSubview(b)
+            }
+            grid.addArrangedSubview(row)
+        }
+        let head = label(TripMode.t("في الطريق", "On the go"), .boldSystemFont(ofSize: 18))
+        let wrap = UIStackView(arrangedSubviews: [head, grid])
+        wrap.axis = .vertical
+        wrap.spacing = 10
+        return wrap
+    }
+
+    @objc private func qibla() { navigationController?.pushViewController(QiblaController(), animated: true) }
+    @objc private func mosques() { navigationController?.pushViewController(NearbyController(kind: .mosques), animated: true) }
+    @objc private func halal() { navigationController?.pushViewController(NearbyController(kind: .halal), animated: true) }
+}
+
+/// «المزيد»: our pages (open in the planner tab), language, and about.
+final class MoreController: UITableViewController {
+    private let rows: [[(String, String)]] = [
+        [("👤", "account"), ("🧳", "my-trip"), ("🛂", "visa"), ("💱", "currency"), ("🗓️", "seasons"), ("🗺️", "maps")],
+        [("🌐", "lang")],
+        [("ℹ️", "about"), ("✉️", "contact"), ("🔒", "privacy"), ("📄", "terms"), ("🗑️", "privacy#delete")],
+    ]
+
+    init() { super.init(style: .insetGrouped) }
+    required init?(coder: NSCoder) { fatalError("not used") }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        title = TripMode.t("المزيد", "More")
+    }
+
+    private func title(_ key: String) -> String {
+        switch key {
+        case "account": return TripMode.t("حسابي", "My account")
+        case "my-trip": return TripMode.t("رحلتي: قائمة التجهيز", "My trip: checklist")
+        case "visa": return TripMode.t("التأشيرات", "Visas")
+        case "currency": return TripMode.t("العملات", "Currency")
+        case "seasons": return TripMode.t("أفضل وقت للسفر", "Best time to travel")
+        case "maps": return TripMode.t("الخرائط", "Maps")
+        case "lang": return TripMode.english ? "العربية" : "English"
+        case "about": return TripMode.t("عن سفرتنا", "About Sfrtna")
+        case "contact": return TripMode.t("تواصل معنا", "Contact us")
+        case "privacy": return TripMode.t("الخصوصية", "Privacy")
+        case "terms": return TripMode.t("الشروط", "Terms")
+        default: return TripMode.t("حذف حسابي وبياناتي", "Delete my account and data")
+        }
+    }
+
+    override func numberOfSections(in tableView: UITableView) -> Int { rows.count }
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { rows[section].count }
+
+    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        guard section == rows.count - 1 else { return nil }
+        let v = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
+        let b = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? ""
+        return TripMode.t("سفرتنا \(v) (\(b)) · نخطط ونقارن، والحجز يتم لدى الشركات نفسها.",
+                          "Sfrtna \(v) (\(b)) · We plan and compare; bookings are made with the companies themselves.")
+    }
+
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
+        let (icon, key) = rows[indexPath.section][indexPath.row]
+        cell.textLabel?.text = "\(icon)  \(title(key))"
+        cell.textLabel?.textAlignment = .natural
+        cell.accessoryType = .disclosureIndicator
+        if key == "privacy#delete" { cell.textLabel?.textColor = .systemRed }
+        return cell
+    }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let key = rows[indexPath.section][indexPath.row].1
+        guard let tabs = tabBarController as? RootTabController else { return }
+        if key == "lang" {
+            TripMode.english.toggle()
+            tabs.relabel()
+            tabs.openWeb("/\(TripMode.english ? "en" : "ar")/itinerary")
+            return
+        }
+        tabs.openWeb(key)
     }
 }
