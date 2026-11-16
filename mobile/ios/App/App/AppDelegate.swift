@@ -2333,7 +2333,8 @@ final class PlanCreateController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = TripMode.t("خطّط رحلتك", "Plan your trip")
+        // navigationItem only: «title» would rename the tab too.
+        navigationItem.title = TripMode.t("خطّط رحلتك", "Plan your trip")
         sections = [
             (TripMode.t("إلى أي مدينة؟", "Which city?"), [.city]),
             (TripMode.t("متى رحلتك؟", "When is your trip?"), [.from, .to]),

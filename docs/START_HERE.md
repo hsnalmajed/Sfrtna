@@ -109,18 +109,29 @@ iPhone app.
 ## ▶ Hand-off (15 Nov 2026) — current state
 
 **▶▶▶▶ NEXT (owner 16 Nov 14:35): NO beta week — finish the changes and
-submit straight to Apple.** Build in this order (Opus): 1) NATIVE trip-plan
-creation screen in the iOS app (city search, dates, who travels, interests →
-calls the planner API → shows the plan natively + «احفظ على جوالي»; any new
-/api route → edge-guard ROUTES); 2) WidgetKit home/lock-screen widget (next
-prayer + today's first stop; new Xcode target, check in ios.yml); 3) new
-App Store screenshots from the native screens (ios.yml shots → store sizes);
-4) fill the 2 «[after beta]» lines in `docs/app-store/review-reply.md` with
-REAL feedback already had (friends' verdict 14 Nov, owner's phone checks
-15–16 Nov) — no invented testers; 5) run `ios-store.yml` (listing.json);
-6) give the owner direct links + steps: reply in App Review thread, request a
-call, pick the new build, Submit for Review. Owner wants direct steps with
-links. No guarantee of approval — say so honestly if asked.
+submit straight to Apple.** Order (Opus): ~~1) native trip-plan screen~~
+**DONE 16 Nov** (PROJECT_NOTES «Native «خطّط» tab»; tabs: اليوم | خططي |
+خطّط native | الدليل = site | المزيد; shots check-plan-form/check-plan OK).
+**2) START HERE: WidgetKit widget** (next prayer + today's first stop;
+home small/medium + lock screen accessoryRectangular/Inline, iOS 16 target).
+Plan: App Group `group.com.sfrtna.app`; the app writes a snapshot (next 3
+days of prayer times from `PrayerCalc` at `Here` + kept plans' `days` stops)
+to shared UserDefaults on Today render / keep / remove / become active, then
+`WidgetCenter.reloadAllTimelines()`; widget = timeline entry per prayer.
+New target in project.pbxproj (extension + embed phase + entitlements for
+App and widget). **Risk:** ios.yml archives UNSIGNED (CODE_SIGNING_ALLOWED=NO)
+then signs at export → the app-group entitlement may be lost; check the
+export log (Report annotations) and that the widget shows data on TestFlight;
+if export can't carry it, decide with the owner (widget = prayer only via its
+own location, no app group). Then 3) new App Store screenshots from the
+native screens (check-today, check-plan, check-trip, qibla… → 1320×2868
+store sizes); 4) fill the 2 «[after beta]» lines in
+`docs/app-store/review-reply.md` with REAL feedback already had (friends'
+verdict 14 Nov, owner's phone checks 15–16 Nov) — no invented testers; also
+update listing.json review notes for the native «خطّط» tab; 5) run
+`ios-store.yml`; 6) owner: direct links + steps (reply in App Review thread,
+request a call, pick the newest build, Submit for Review). No guarantee of
+approval — say so honestly if asked.
 
 **▶▶▶ (16 Nov 15:00): Apple root fix P1+P2+P3 BUILT, P5 text + P7 draft
 written** (PROJECT_NOTES «Apple root fix — P1–P3 + P5»). Next: store
@@ -578,4 +589,4 @@ payout threshold $500 not met» (wire $500; PayPal/ACH $100).
 Waiting on the owner: Admitad ad space «Verifying» (14 Nov) → Active → flynas/Jazeera; Google Play ticket reply; Google-fares
 decision after the 6 Nov measurement; Android APK on a real phone.
 
-**Recommended model for the next chat: Opus 5.5** (Apple root fix P1+P2).
+**Recommended model for the next chat: Opus 5.5** (WidgetKit widget, Apple step 2).

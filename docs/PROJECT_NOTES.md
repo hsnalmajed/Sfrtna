@@ -2705,3 +2705,23 @@ the site was Arabic → native follows the site (Arabic default); «خططي» t
 **Left:** P4 widget + calendar (optional), store screenshots from the new
 screens, P6 external TestFlight week (owner invites ≥5), fill 2 feedback
 lines, upload listing (ios-store.yml), reply + request a call, submit.
+
+### Native «خطّط» tab — Apple step 1 of 6 (16 Nov 2026, commit f74c527)
+Owner 16 Nov 14:35: no beta week; finish the changes, then submit.
+- Tabs now: «اليوم» | «خططي» | «خطّط» (native, `PlanCreateController`) |
+  «الدليل» (the website, home → /attractions for UA `SfrtnaTabs/2`; tabs v1
+  builds keep → /itinerary) | «المزيد». `RootTabController.planTab=2, webTab=3`.
+- Questions: city (`CityPickerController`, list = `/app-cities.json` force-static
+  route, 365 cities, kept on the phone), arrive/leave (≤14 days), company,
+  interests (≤8), pace, prayer times + halal switches → POST /api/ai/plan with
+  `app: true` (Origin header; on 403 the call is repeated from the site's own
+  page in the web view, `PlanAPI.viaPage`). No new /api route.
+- Server: `src/lib/appPlan.ts` builds the same offline copy as the site's
+  «احفظ على جوالي» (id = offlinePlanId, words = dict.smart/tripMode).
+- `PlanResultController`: day sections (date · city · title), stops with
+  time/icon/why/tip/km, footer prayers + weather + wear; tap → Apple Maps.
+  «احفظ على جوالي» → `TripStore.keep(offline:)` → action sheet: reminders +
+  prayer alerts / reminders only / not now. Kept → «✓ محفوظة — افتحها».
+- CI: `-sfrPlan form|result` (Istanbul +40..+43 d) → shots check-plan-form,
+  check-plan (run 43863442594: both OK, plan built live with 14 places).
+- Fixed after the shots: the tab read «خطّط رحلتك» (root title) → navigationItem.title.
