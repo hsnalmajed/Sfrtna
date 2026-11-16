@@ -108,39 +108,20 @@ iPhone app.
 
 ## ▶ Hand-off (15 Nov 2026) — current state
 
-**▶▶▶▶ NEXT (owner 16 Nov 14:35): NO beta week — finish the changes and
-submit straight to Apple.** Order (Opus): ~~1) native trip-plan screen~~
-**DONE 16 Nov** (PROJECT_NOTES «Native «خطّط» tab»; tabs: اليوم | خططي |
-خطّط native | الدليل = site | المزيد; shots check-plan-form/check-plan OK).
-**2) Widget DONE 16 Nov** (commit 91c4c4b; owner registered App Group
-group.com.sfrtna.app + enabled it on com.sfrtna.app + new App ID
-com.sfrtna.app.widget 16:37; run 43877617396 uploaded to TestFlight, archive
-carries the app group). **Owner check (one step at a time, Sonnet OK):**
-install the newest TestFlight build → open the app once, allow location →
-add the Sfrtna widget (home + lock screen) → ONE screenshot; then plan +
-«احفظ على جوالي» a trip for today/tomorrow and see the stop line. Step 4
-(review-reply + listing notes) DONE in docs/app-store. **NEXT = step 3**
-(store screenshots from the native screens) → 5 → 6. Old brief:
-**WidgetKit widget** (next prayer + today's first stop;
-home small/medium + lock screen accessoryRectangular/Inline, iOS 16 target).
-Plan: App Group `group.com.sfrtna.app`; the app writes a snapshot (next 3
-days of prayer times from `PrayerCalc` at `Here` + kept plans' `days` stops)
-to shared UserDefaults on Today render / keep / remove / become active, then
-`WidgetCenter.reloadAllTimelines()`; widget = timeline entry per prayer.
-New target in project.pbxproj (extension + embed phase + entitlements for
-App and widget). **Risk:** ios.yml archives UNSIGNED (CODE_SIGNING_ALLOWED=NO)
-then signs at export → the app-group entitlement may be lost; check the
-export log (Report annotations) and that the widget shows data on TestFlight;
-if export can't carry it, decide with the owner (widget = prayer only via its
-own location, no app group). Then 3) new App Store screenshots from the
-native screens (check-today, check-plan, check-trip, qibla… → 1320×2868
-store sizes); 4) fill the 2 «[after beta]» lines in
-`docs/app-store/review-reply.md` with REAL feedback already had (friends'
-verdict 14 Nov, owner's phone checks 15–16 Nov) — no invented testers; also
-update listing.json review notes for the native «خطّط» tab; 5) run
-`ios-store.yml`; 6) owner: direct links + steps (reply in App Review thread,
-request a call, pick the newest build, Submit for Review). No guarantee of
-approval — say so honestly if asked.
+**▶▶▶▶▶ OWNER'S DECISION 16 Nov 18:13 (overrides ALL Apple work below):
+iPhone = EXACTLY the Android app, no native-only additions** («التطبيق
+اصبح سيء جدا»). Done: mobile/ios + capacitor.config.json + ios.yml restored
+to 969efef9 (14 Nov: site in the shell, booking inside, share-binary; no
+tabs, no trip mode, no widget); listing.json restored to before P5; reply
+rewritten (`docs/app-store/review-reply.md`, answers for the SAME app; honest
+note: Apple asked for big changes, a reply alone may be refused). Kept but
+UNUSED: SfrtnaWidget/ files, App.entitlements, site code (IosTabsGuard only
+for UA SfrtnaTabs, TripModeCard only with app feature trip-mode, appPlan /
+app-cities) — delete only if the owner asks. App Group + widget App ID stay
+registered (harmless). **NEXT (owner steps, one at a time, Sonnet OK):**
+TestFlight build from this push → owner checks it looks like Android →
+paste the reply in the App Review thread of build 27 → request a call →
+pick the new build → Submit for Review. Android = unchanged.
 
 **▶▶▶ (16 Nov 15:00): Apple root fix P1+P2+P3 BUILT, P5 text + P7 draft
 written** (PROJECT_NOTES «Apple root fix — P1–P3 + P5»). Next: store
@@ -598,4 +579,4 @@ payout threshold $500 not met» (wire $500; PayPal/ACH $100).
 Waiting on the owner: Admitad ad space «Verifying» (14 Nov) → Active → flynas/Jazeera; Google Play ticket reply; Google-fares
 decision after the 6 Nov measurement; Android APK on a real phone.
 
-**Recommended model for the next chat: Opus 5.5** (App Store screenshots + submit, Apple steps 3, 5, 6).
+**Recommended model for the next chat: Sonnet 5.5** (owner steps: reply to App Review + submit).

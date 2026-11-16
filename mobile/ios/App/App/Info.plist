@@ -25,26 +25,13 @@
 		<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>نستخدم موقعك لنعرف اتجاه القبلة، ولنجد أقرب مسجد ومطعم حلال، ولنقترح أقرب مطار ونعرض مكانك على خريطة المدينة. لا نحفظه ولا نرسله لأي جهة.</string>
+	<string>نستخدم موقعك التقريبي لنقترح أقرب مطار ولنعرض مكانك على خريطة المدينة. لا نحفظه ولا نرسله لأي جهة.</string>
 	<key>CFBundleAllowMixedLocalizations</key>
 	<true/>
 	<key>CFBundleLocalizations</key>
 	<array>
 		<string>ar</string>
 		<string>en</string>
-	</array>
-	<key>UIApplicationShortcutItems</key>
-	<array>
-		<dict>
-			<key>UIApplicationShortcutItemType</key>
-			<string>com.sfrtna.app.tripmode</string>
-			<key>UIApplicationShortcutItemTitle</key>
-			<string>وضع الرحلة</string>
-			<key>UIApplicationShortcutItemSubtitle</key>
-			<string>خططك بدون إنترنت · القبلة</string>
-			<key>UIApplicationShortcutItemIconSymbolName</key>
-			<string>safari</string>
-		</dict>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>

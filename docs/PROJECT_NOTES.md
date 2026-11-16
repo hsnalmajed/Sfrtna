@@ -2741,3 +2741,12 @@ Owner 16 Nov 14:35: no beta week; finish the changes, then submit.
   made by the owner in developer.apple.com (App Group can't be made by API).
 - review-reply.md filled (real feedback: friends 14 Nov, phone checks);
   listing.json review notes: native Plan tab + widget step.
+
+### Owner's decision 16 Nov 18:13 — iPhone back to the Android app
+Owner: the native tabs made the app «سيء جدا جدا جدا»; wants Android and
+iPhone the same, improve some points and explain to Apple instead of a root
+change. Asked: «exactly like Android, no additions» (not «same look + hidden
+extras»). Restored mobile/ios, capacitor.config.json, ios.yml to 969efef9
+and listing.json to 1b5a324f^. Reply rewritten for the same app. Widget,
+native planner, trip mode, tabs: code kept in history (f74c527, 91c4c4b,
+8c10440, 382fa8d) if ever wanted again.
