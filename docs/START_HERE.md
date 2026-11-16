@@ -112,15 +112,15 @@ iPhone app.
 submit straight to Apple.** Order (Opus): ~~1) native trip-plan screen~~
 **DONE 16 Nov** (PROJECT_NOTES «Native «خطّط» tab»; tabs: اليوم | خططي |
 خطّط native | الدليل = site | المزيد; shots check-plan-form/check-plan OK).
-**2) Widget BUILT 16 Nov (commit 91c4c4b): compiles, embedded
-(SfrtnaWidget.appex), archive carries the app group (ad-hoc signed before
-export). BLOCKED at export: «No profiles for com.sfrtna.app.widget» — the
-App Group + widget App ID must exist in developer.apple.com (ASC API can't
-create app groups). Owner steps (one at a time): register App Group
-group.com.sfrtna.app → enable it on App ID com.sfrtna.app → new App ID
-com.sfrtna.app.widget with that group → then re-run ios.yml
-(gh api -X POST …/ios.yml/dispatches -f ref=main) and read the Report
-annotations. Until then NO new TestFlight build uploads.** Old brief:
+**2) Widget DONE 16 Nov** (commit 91c4c4b; owner registered App Group
+group.com.sfrtna.app + enabled it on com.sfrtna.app + new App ID
+com.sfrtna.app.widget 16:37; run 43877617396 uploaded to TestFlight, archive
+carries the app group). **Owner check (one step at a time, Sonnet OK):**
+install the newest TestFlight build → open the app once, allow location →
+add the Sfrtna widget (home + lock screen) → ONE screenshot; then plan +
+«احفظ على جوالي» a trip for today/tomorrow and see the stop line. Step 4
+(review-reply + listing notes) DONE in docs/app-store. **NEXT = step 3**
+(store screenshots from the native screens) → 5 → 6. Old brief:
 **WidgetKit widget** (next prayer + today's first stop;
 home small/medium + lock screen accessoryRectangular/Inline, iOS 16 target).
 Plan: App Group `group.com.sfrtna.app`; the app writes a snapshot (next 3
@@ -598,4 +598,4 @@ payout threshold $500 not met» (wire $500; PayPal/ACH $100).
 Waiting on the owner: Admitad ad space «Verifying» (14 Nov) → Active → flynas/Jazeera; Google Play ticket reply; Google-fares
 decision after the 6 Nov measurement; Android APK on a real phone.
 
-**Recommended model for the next chat: Opus 5.5** (WidgetKit widget, Apple step 2).
+**Recommended model for the next chat: Opus 5.5** (App Store screenshots + submit, Apple steps 3, 5, 6).
