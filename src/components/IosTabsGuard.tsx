@@ -12,6 +12,9 @@ import type { Locale } from "@/lib/types";
  * «Apple rejection — root-cause study»): a link to one opens our site in a
  * Safari sheet (?sfr_out=1, handled by the app), and the home page becomes
  * the planner. Renders nothing; does nothing in browsers or other apps.
+ *
+ * From «SfrtnaTabs/2» (16 Nov 2026) the planner is a native tab of its own,
+ * so this tab is «الدليل»: the home page becomes the city guides instead.
  */
 const OUTSIDE = new Set(["results", "hotel-results", "multicity-results", "discover-results", "budget", "services"]);
 
@@ -22,6 +25,11 @@ function section(path: string): string {
 
 function inTabs(): boolean {
   return typeof document !== "undefined" && document.documentElement.classList.contains("in-ios-tabs");
+}
+
+/** The tab's first page: the guides (native planner, tabs 2+) or the planner (tabs 1). */
+function tabHome(locale: Locale): string {
+  return /SfrtnaTabs\/([2-9]|\d{2,})/.test(navigator.userAgent) ? `/${locale}/attractions` : `/${locale}/itinerary`;
 }
 
 function openOutside(href: string) {
@@ -55,13 +63,13 @@ export default function IosTabsGuard({ locale }: { locale: Locale }) {
     if (!inTabs()) return;
     const part = section(pathname);
     if (part === "") {
-      router.replace(`/${locale}/itinerary`);
+      router.replace(tabHome(locale));
       return;
     }
     if (!OUTSIDE.has(part)) return;
     openOutside(window.location.href);
     if (window.history.length > 1) router.back();
-    else router.replace(`/${locale}/itinerary`);
+    else router.replace(tabHome(locale));
   }, [pathname, locale, router]);
 
   return null;

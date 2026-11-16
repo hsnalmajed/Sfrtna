@@ -168,6 +168,9 @@ jobs:
           shot check-qibla 18 -sfrTrip qibla
           shot check-mosques 25 -sfrTrip mosques
           shot check-halal 25 -sfrTrip halal
+          # The native «خطّط» tab: the questions (Istanbul filled in), then the plan it builds.
+          shot check-plan-form 20 -sfrPlan form
+          shot check-plan 45 -sfrPlan result
           t 30 xcrun simctl terminate "$UDID" com.sfrtna.app || true
           cat "$OUT/checks.txt"
 

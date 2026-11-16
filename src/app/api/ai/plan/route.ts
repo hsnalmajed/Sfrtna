@@ -6,6 +6,7 @@ import { cachedJson } from "@/lib/edgeCache";
 import { readGuide } from "@/lib/guide";
 import { guidePlanReady } from "@/lib/guidePlan";
 import { buildRoutePlan } from "@/lib/routePlan";
+import { appOfflinePlan } from "@/lib/appPlan";
 import type { GuideFile } from "@/lib/guideTypes";
 
 export const dynamic = "force-dynamic";
@@ -17,8 +18,12 @@ async function hash(text: string): Promise<string> {
 
 /** «خطتي الذكية»: a plan for the city, dates and answers (src/lib/ai/plan.ts). */
 export async function POST(request: Request) {
-  const req = cleanPlanRequest(await request.json().catch(() => null));
+  const body: unknown = await request.json().catch(() => null);
+  const req = cleanPlanRequest(body);
   if (!req) return NextResponse.json({ ok: false, reason: "bad_request" }, { status: 400 });
+  // The iPhone app's native «خطّط» screen also takes the offline copy (src/lib/appPlan.ts).
+  const forApp = (body as { app?: unknown }).app === true;
+  const extra = (plan: SmartPlan) => (forApp ? { offline: appOfflinePlan(plan, req.locale) } : {});
   // Our own guide first: built here by rules from stored data, no AI call
   // and no cost per visitor (src/lib/guidePlan.ts).
   const guide = await readGuide(req.slug);
@@ -26,7 +31,7 @@ export async function POST(request: Request) {
     // One city, or a route across the country when the trip is longer than the city needs (routePlan.ts).
     const plan = await buildRoutePlan(req, guide as GuideFile);
     if (!plan) return NextResponse.json({ ok: false, reason: "bad_request" }, { status: 400 });
-    return NextResponse.json({ ok: true, plan, fresh: true }, { headers: { "Cache-Control": "no-store" } });
+    return NextResponse.json({ ok: true, plan, fresh: true, ...extra(plan) }, { headers: { "Cache-Control": "no-store" } });
   }
   if (!aiConfigured()) return NextResponse.json({ ok: false, reason: "off" }, { status: 503 });
   // The same city, dates and answers get the same plan for a day: no second
@@ -48,5 +53,5 @@ export async function POST(request: Request) {
     return r;
   });
   if (!plan) return NextResponse.json({ ok: false, reason: failure || "failed" }, { status: failure === "busy" ? 429 : 502 });
-  return NextResponse.json({ ok: true, plan, fresh: spent }, { headers: { "Cache-Control": "no-store" } });
+  return NextResponse.json({ ok: true, plan, fresh: spent, ...extra(plan) }, { headers: { "Cache-Control": "no-store" } });
 }
