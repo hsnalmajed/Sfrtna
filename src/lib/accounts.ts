@@ -428,3 +428,26 @@ export async function appleRevoke(refresh: string): Promise<boolean> {
     return false;
   }
 }
+
+/**
+ * Health check of the Sign in with Apple key, no secret in the answer:
+ * a made-up code makes Apple say «invalid_grant» when our client secret is
+ * accepted, «invalid_client» when the key / ids are wrong.
+ */
+export async function appleKeyCheck(): Promise<{ vars: boolean; signed: boolean; apple: string }> {
+  const vars = !!(process.env.APPLE_TEAM_ID && process.env.APPLE_KEY_ID && process.env.APPLE_P8);
+  const secret = await appleClientSecret();
+  if (!secret) return { vars, signed: false, apple: "" };
+  try {
+    const res = await fetch("https://appleid.apple.com/auth/token", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({ client_id: APPLE_BUNDLE_ID, client_secret: secret, code: "sfrtna-check", grant_type: "authorization_code" }),
+      signal: AbortSignal.timeout(8000),
+    });
+    const j = (await res.json().catch(() => ({}))) as { error?: string };
+    return { vars, signed: true, apple: `${res.status} ${j.error || ""}`.trim() };
+  } catch (e) {
+    return { vars, signed: true, apple: `fetch ${(e as Error).name}` };
+  }
+}

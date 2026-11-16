@@ -1,6 +1,7 @@
 import { viatorProbe } from "@/lib/viator";
 import { readJson } from "@/lib/edgeCache";
 import { NextResponse } from "next/server";
+import { appleKeyCheck } from "@/lib/accounts";
 import { configuredProviders } from "@/lib/providers";
 import { travelpayouts } from "@/lib/providers/travelpayouts";
 import { hereUsage, takeHere } from "@/lib/providers/hereQuota";
@@ -173,6 +174,7 @@ export async function GET(req: Request) {
     const [dep, ret] = ex.split(",");
     return NextResponse.json(await exactCoverage(dep, ret));
   }
+  if (new URL(req.url).searchParams.get("apple") === "1") return NextResponse.json(await appleKeyCheck());
   const sc = new URL(req.url).searchParams.get("seasoncov");
   if (sc !== null) return NextResponse.json(await seasonCoverage(Number(sc) || 0));
   const faresMonth = new URL(req.url).searchParams.get("fares");

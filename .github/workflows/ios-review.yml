@@ -18,6 +18,13 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
+      - name: Sign in with Apple key check (live Worker)
+        env:
+          SMOKE_TOKEN: ${{ secrets.SMOKE_TOKEN }}
+        run: |
+          B=https://sfrtna.almajedhsn.workers.dev
+          r=$(curl -s -m 30 "$B/api/health?apple=1" -H "User-Agent: Mozilla/5.0 SfrtnaSmoke/1" -H "x-sfrtna-smoke: $SMOKE_TOKEN" -H "Origin: $B" -H "Referer: $B/ar" -H "Sec-Fetch-Site: same-origin" -H "Sec-Fetch-Mode: cors")
+          echo "::warning::apple key: $r"
       - run: node scripts/ios/asc-review.mjs
         env:
           SUBMIT: ${{ inputs.submit == 'yes' && '1' || '' }}
