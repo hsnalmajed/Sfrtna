@@ -2625,3 +2625,49 @@ mode → opens it from «وضع الرحلة»; qibla; reminders switch. Then 2�
 of real TestFlight feedback → reply to Apple's 9 questions (draft «Apple 4.3
 rejection — 14 Nov» + this section) + review notes («open any plan → احفظ
 على جوالي → Airplane mode → More → وضع الرحلة») → owner resubmits.
+
+### Apple rejection — root-cause study + plan to cover it (16 Nov 2026 11:20)
+Owner 16 Nov 11:16: «all I want is to meet Apple's conditions so the app is
+approved» → study the rejection precisely and cover every cause. Exact
+Apple text NOT re-read (App Store Connect not signed in in Chrome); cited
+guidelines + 9 questions from «iPhone app REJECTED — 13 Nov» above.
+**What the reviewer saw (build 27, 3 Nov):** a Capacitor shell whose first
+and every screen is sfrtna.com loaded live (`server.url`), incl. the
+partner's white-label flight search widget (FlightMetasearch / tpwgt, the
+same widget on thousands of affiliate sites/apps), hotel search, discover.
+No native screen except the opening and an offline notice.
+**Cause → cover:**
+| Apple cites | Why it hit us | What covers it |
+|---|---|---|
+| 4.3(a) duplicate | same content/UI as other apps: our site + the white-label flight widget | iOS app shows NO white-label widget; our own UI only |
+| 4.3(b) saturated category | reads as «another flight/hotel price-comparison app» | iOS app = a different product: family trip COMPANION (plan + during the trip), booking only as outbound links (Safari) |
+| 4.2.6 template / app generator | remote-URL web shell with no native screens = looks generated | native home + tab bar + native features; own developer account (true); reply says we wrote the code (Capacitor = open-source framework) |
+| (4.2 implied) minimum functionality | nothing a browser can't do | trip mode (built 16 Nov) + native prayer times + widget + calendar, offline |
+| Process: 9 questions, beta testing, «no resubmit without significant changes» | none answered; no external beta | 7-day external TestFlight with real feedback log, full reply + call request; ARB appeal if rejected again |
+**Work packages (in order, Opus):**
+- **P1 Native home (iOS only):** UITabBarController: «اليوم» (native: next
+  prayer for where you are, today's plan from kept plans, qibla, nearby),
+  «خططي» (native kept plans, offline), «خطّط» (web: city guide + smart
+  planner pages only), «المزيد» (native: settings/language/about/privacy/
+  delete account). App opens on «اليوم», never on the website home.
+- **P2 No booking engine inside the iOS app:** web views in the app allow
+  only guide/planner/account/legal paths; flights/hotels/discover/results
+  pages and the tpwgt widget are not reachable (link → Safari). Site CSS
+  class `in-ios` (UA SfrtnaApp/iOS) hides booking tabs. Android + site
+  unchanged.
+- **P3 Native prayer times** (Swift, same method rules as guidePlan
+  `prayerMethod`, current location, offline) + optional daily prayer alerts
+  where you are; **P4 Home-screen + lock-screen widget** (WidgetKit target:
+  next prayer + today's first stop; new Xcode target by hand, check in CI);
+  add-trip-to-Calendar (EventKit).
+- **P5 Store listing:** subtitle/description/screenshots = the companion
+  (offline plan, prayer, qibla, halal, reminders); App Review notes: steps
+  (open → اليوم → plan a trip → احفظ على جوالي → Airplane mode → خططي).
+- **P6 External TestFlight beta 7 days** (owner invites ≥5 friends; form or
+  feedback button) → log feedback + what changed (answers Q4 honestly).
+- **P7 Reply to the 9 questions** (draft «Apple 4.3 rejection — 14 Nov»,
+  updated), request a phone call, then submit the new build. Rejected
+  again → App Review Board appeal with the same facts.
+Business cost (owner accepted by «meet Apple's conditions»): flight/hotel
+commission from INSIDE the iOS app falls (booking via Safari links only).
+No guarantee: Apple decides; this removes every cited cause.

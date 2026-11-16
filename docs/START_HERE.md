@@ -108,7 +108,14 @@ iPhone app.
 
 ## ▶ Hand-off (15 Nov 2026) — current state
 
-**▶▶ NOW (16 Nov, item 2 Apple): «وضع الرحلة» BUILT** (PROJECT_NOTES «iPhone
+**▶▶▶ NEXT SECTION (owner 16 Nov 11:16): cover Apple's rejection at the root.**
+Study + plan: PROJECT_NOTES «Apple rejection — root-cause study» (table +
+P1–P7). Start P1 (native home/tab bar, iOS only) + P2 (no booking engine /
+white-label widget inside the iOS app; site + Android unchanged), then P3–P5,
+then P6 beta 7 days, P7 reply + submit. Ask the owner to paste Apple's
+exact rejection text (only the guideline paragraphs) at the start. **Opus 5.5.**
+
+**▶▶ (16 Nov, item 2 Apple): «وضع الرحلة» BUILT** (PROJECT_NOTES «iPhone
 «وضع الرحلة» — 16 Nov»): iPhone keeps a plan offline («احفظ على جوالي»
 under the smart plan, no account), reminders + prayer alerts in the city's
 time (local notifications), qibla, nearest mosques / halal; More sheet,
@@ -550,4 +557,4 @@ payout threshold $500 not met» (wire $500; PayPal/ACH $100).
 Waiting on the owner: Admitad ad space «Verifying» (14 Nov) → Active → flynas/Jazeera; Google Play ticket reply; Google-fares
 decision after the 6 Nov measurement; Android APK on a real phone.
 
-**Recommended model for the next chat: Sonnet 5.5** (owner's TestFlight check, step by step); Opus 5.5 for fixes it finds and the Apple reply.
+**Recommended model for the next chat: Opus 5.5** (Apple root fix P1+P2).
