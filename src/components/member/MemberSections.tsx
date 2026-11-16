@@ -15,7 +15,9 @@ import CurrencySelect from "@/components/CurrencySelect";
 import { daysUntil, stepHref, tripCityName, tripSearchHref, tripSteps } from "@/components/member/tripLinks";
 
 const card = "rounded-3xl bg-white p-5 shadow-[var(--shadow-card)] ring-1 ring-navy-950/5";
-const h2 = "mb-3 flex items-center gap-2 font-display text-lg font-extrabold text-navy-900";
+const h2 = "mb-2 flex items-center gap-2 font-display text-lg font-extrabold text-navy-900";
+/** An empty section: a visible white card, compact (owner 17 Nov: grey on grey read as empty gaps). */
+const empty = "rounded-2xl bg-white px-4 py-3 text-sm leading-relaxed text-navy-600 ring-1 ring-navy-950/5";
 
 /** «حسابي» for a signed-in traveller: trips, favourites, searches, profile. */
 export default function MemberSections({ locale }: { locale: Locale }) {
@@ -60,7 +62,7 @@ function Trips({ locale, trips, currency }: { locale: Locale; trips: Item<Trip>[
     <section id="trips" className="scroll-mt-24">
       <h2 className={h2}>🧳 {t.myTrips}</h2>
       {list.length === 0 ? (
-        <p className="rounded-3xl bg-mist-50 p-5 text-sm leading-relaxed text-navy-700">{t.noTrips}</p>
+        <p className={empty}>{t.noTrips}</p>
       ) : (
         <ul className="space-y-3">
           {list.map(({ data: trip }) => {
@@ -137,7 +139,7 @@ function Favs({ locale, favs }: { locale: Locale; favs: Item<Fav>[] }) {
     <section id="favs" className="scroll-mt-24">
       <h2 className={h2}>❤️ {t.myFavs}</h2>
       {favs.length === 0 ? (
-        <p className="rounded-3xl bg-mist-50 p-5 text-sm leading-relaxed text-navy-700">{t.noFavs}</p>
+        <p className={empty}>{t.noFavs}</p>
       ) : (
         <ul className="grid gap-2 sm:grid-cols-2">
           {favs.map(({ key, data: f }) => {
@@ -187,7 +189,7 @@ function Searches({ locale, searches }: { locale: Locale; searches: Item<SavedSe
     <section id="searches" className="scroll-mt-24">
       <h2 className={h2}>🔎 {t.mySearches}</h2>
       {list.length === 0 ? (
-        <p className="rounded-3xl bg-mist-50 p-5 text-sm leading-relaxed text-navy-700">{t.noSearches}</p>
+        <p className={empty}>{t.noSearches}</p>
       ) : (
         <ul className="grid gap-2 sm:grid-cols-2">
           {list.map(({ key, data: s }) => (

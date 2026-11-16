@@ -462,11 +462,11 @@ function SignedIn({ locale, user }: { locale: Locale; user: AccountUser }) {
       <TripMailSwitch locale={locale} />
 
       <section id="plans" className="scroll-mt-24">
-        <h2 className="mb-3 font-display text-lg font-extrabold text-navy-900">🗺️ {t.myPlans}</h2>
+        <h2 className="mb-2 font-display text-lg font-extrabold text-navy-900">🗺️ {t.myPlans}</h2>
         {plans === null ? (
           <p className="text-sm text-navy-500">{t.loading}</p>
         ) : plans.length === 0 ? (
-          <div className="rounded-3xl bg-mist-50 p-5 text-sm leading-relaxed text-navy-700">
+          <div className="rounded-2xl bg-white px-4 py-3 text-sm leading-relaxed text-navy-600 ring-1 ring-navy-950/5">
             <p>{t.noPlans}</p>
             <Link href={`/${locale}/itinerary`} className="mt-3 inline-block rounded-full bg-sun-400 px-5 py-2.5 font-extrabold text-navy-950 hover:bg-sun-300">
               {t.makePlan}
