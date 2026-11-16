@@ -114,10 +114,16 @@ OK (Istanbul stops 24–28 Nov in the iPhone calendar). Account page empty
 sections fixed (white compact cards, 6d1e547). ios-store.yml: build 49
 attached to version 1.0; review notes NOT updated by the script (it skips
 once added) → owner pastes `docs/app-store/listing.json` reviewNotes by hand.
-**NEXT (Sonnet, owner steps one at a time):** 0) recommended first (Opus,
-small): revoke the Apple token on account deletion (guideline 5.1.1(v)):
-owner makes Keys → + → Sign in with Apple key → Runtime vars → code in the
-delete route; 1) App Store Connect → app → version 1.0 → App Review
+**17 Nov 00:40 — Apple token revoke CODE DONE:** iOS plugin returns
+`code` (authorizationCode) → `/api/auth/apple` swaps it at Apple /auth/token
+(ES256 client secret, `appleClientSecret` in accounts.ts) → refresh token in
+DO table `apple_tokens`; `/api/auth/delete` → `appleRevoke`. Inactive until
+Runtime vars APPLE_TEAM_ID / APPLE_KEY_ID / APPLE_P8 exist (sign-in unaffected).
+Swift changed → new ios.yml build; attach IT (not 49) to version 1.0.
+**NEXT (Sonnet, owner steps one at a time):** 0a) owner: Apple Developer
+Keys → + → Sign in with Apple key (primary App ID com.sfrtna.app) → download
+.p8 → Cloudflare Runtime vars (APPLE_P8 = file text, secret) → Claude checks;
+0b) attach the new build to 1.0 (ios-store.yml or by hand); 1) App Store Connect → app → version 1.0 → App Review
 Information → Notes = reviewNotes; 2) App Review thread of build 27 → paste
 the reply body of `docs/app-store/review-reply.md`; 3) optional «Request a
 call»; 4) Add for Review → Submit. No guarantee of approval.

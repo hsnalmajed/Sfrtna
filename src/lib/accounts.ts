@@ -72,7 +72,8 @@ interface AccountsStub {
   googleSignIn(sub: string, email: string | null, name: string | null): Promise<SignedIn>;
   userFor(token: string): Promise<AccountUser | null>;
   signOut(token: string): Promise<{ ok: true }>;
-  deleteAccount(token: string): Promise<{ ok: boolean }>;
+  deleteAccount(token: string): Promise<{ ok: boolean; appleRefresh?: string }>;
+  appleTokenSet(token: string, refresh: string): Promise<{ ok: boolean }>;
   plansList(token: string): Promise<SavedPlan[] | null>;
   planSave(token: string, title: string, data: SavedPlanData): Promise<{ ok: true; id: string } | Fail>;
   planDelete(token: string, id: string): Promise<{ ok: true } | Fail>;
@@ -357,5 +358,73 @@ export async function verifyAppleToken(
     return { sub: p.sub, email: p.email && verified ? p.email.toLowerCase() : null };
   } catch {
     return null;
+  }
+}
+
+// ── Apple token revoke on account deletion (17 Nov 2026, guideline 5.1.1(v)) ─
+// Needs a «Sign in with Apple» key from the developer account, as Runtime vars
+// APPLE_TEAM_ID, APPLE_KEY_ID and APPLE_P8 (the .p8 file's text). Without them
+// sign-in works as before and deletion simply has nothing to revoke.
+
+const b64url = (bytes: Uint8Array): string =>
+  btoa(String.fromCharCode(...bytes)).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+
+/** The ES256 client secret Apple asks for on /auth/token and /auth/revoke, or null if the key is not set. */
+async function appleClientSecret(): Promise<string | null> {
+  const team = process.env.APPLE_TEAM_ID || "";
+  const kid = process.env.APPLE_KEY_ID || "";
+  const p8 = process.env.APPLE_P8 || "";
+  if (!team || !kid || !p8) return null;
+  try {
+    const der = p8
+      .replace(/\\n/g, "\n")
+      .replace(/-----(BEGIN|END) PRIVATE KEY-----/g, "")
+      .replace(/\s+/g, "");
+    const raw = Uint8Array.from(atob(der), (c) => c.charCodeAt(0));
+    const key = await crypto.subtle.importKey("pkcs8", raw, { name: "ECDSA", namedCurve: "P-256" }, false, ["sign"]);
+    const now = Math.floor(Date.now() / 1000);
+    const enc = (o: object) => b64url(new TextEncoder().encode(JSON.stringify(o)));
+    const head = `${enc({ alg: "ES256", kid })}.${enc({ iss: team, iat: now, exp: now + 600, aud: "https://appleid.apple.com", sub: APPLE_BUNDLE_ID })}`;
+    const sig = new Uint8Array(await crypto.subtle.sign({ name: "ECDSA", hash: "SHA-256" }, key, new TextEncoder().encode(head)));
+    return `${head}.${b64url(sig)}`;
+  } catch {
+    return null;
+  }
+}
+
+/** Swaps the app's one-time authorization code for Apple's refresh token, or null. */
+export async function appleRefreshToken(code: string): Promise<string | null> {
+  if (typeof code !== "string" || !code || code.length > 2000) return null;
+  const secret = await appleClientSecret();
+  if (!secret) return null;
+  try {
+    const res = await fetch("https://appleid.apple.com/auth/token", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({ client_id: APPLE_BUNDLE_ID, client_secret: secret, code, grant_type: "authorization_code" }),
+      signal: AbortSignal.timeout(8000),
+    });
+    if (!res.ok) return null;
+    const json = (await res.json()) as { refresh_token?: string };
+    return typeof json.refresh_token === "string" ? json.refresh_token : null;
+  } catch {
+    return null;
+  }
+}
+
+/** Revokes a member's Apple refresh token (account deleted). True when Apple accepted it. */
+export async function appleRevoke(refresh: string): Promise<boolean> {
+  const secret = await appleClientSecret();
+  if (!secret) return false;
+  try {
+    const res = await fetch("https://appleid.apple.com/auth/revoke", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({ client_id: APPLE_BUNDLE_ID, client_secret: secret, token: refresh, token_type_hint: "refresh_token" }),
+      signal: AbortSignal.timeout(8000),
+    });
+    return res.ok;
+  } catch {
+    return false;
   }
 }

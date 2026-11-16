@@ -787,10 +787,11 @@ public class SfrtnaAppPlugin: CAPPlugin, CAPBridgedPlugin {
     @objc func appleSignIn(_ call: CAPPluginCall) {
         guard let nonce = call.getString("nonce"), nonce.count >= 16 else { call.reject("bad_nonce"); return }
         DispatchQueue.main.async {
-            AppleSignIn.start(nonce: nonce, window: self.bridge?.viewController?.view.window) { token, name, error in
+            AppleSignIn.start(nonce: nonce, window: self.bridge?.viewController?.view.window) { token, name, code, error in
                 if let token = token {
                     var out: [String: Any] = ["idToken": token]
                     if let name = name, !name.isEmpty { out["name"] = name }
+                    if let code = code, !code.isEmpty { out["code"] = code }
                     call.resolve(out)
                 } else {
                     call.reject(error ?? "apple_failed")
@@ -1592,14 +1593,14 @@ import CryptoKit
 final class AppleSignIn: NSObject, ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding {
     private static var current: AppleSignIn?
     private let window: UIWindow?
-    private let done: (String?, String?, String?) -> Void
+    private let done: (String?, String?, String?, String?) -> Void
 
-    private init(window: UIWindow?, done: @escaping (String?, String?, String?) -> Void) {
+    private init(window: UIWindow?, done: @escaping (String?, String?, String?, String?) -> Void) {
         self.window = window
         self.done = done
     }
 
-    static func start(nonce: String, window: UIWindow?, done: @escaping (String?, String?, String?) -> Void) {
+    static func start(nonce: String, window: UIWindow?, done: @escaping (String?, String?, String?, String?) -> Void) {
         let me = AppleSignIn(window: window, done: done)
         current = me
         let request = ASAuthorizationAppleIDProvider().createRequest()
@@ -1618,20 +1619,23 @@ final class AppleSignIn: NSObject, ASAuthorizationControllerDelegate, ASAuthoriz
     func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
         guard let cred = authorization.credential as? ASAuthorizationAppleIDCredential,
               let data = cred.identityToken, let token = String(data: data, encoding: .utf8) else {
-            finish(nil, nil, "no_token")
+            finish(nil, nil, nil, "no_token")
             return
         }
         let name = cred.fullName.map { PersonNameComponentsFormatter().string(from: $0) }
-        finish(token, name, nil)
+        // One-time code: the server swaps it for a refresh token, so deleting
+        // the account can revoke it at Apple (guideline 5.1.1(v)).
+        let code = cred.authorizationCode.flatMap { String(data: $0, encoding: .utf8) }
+        finish(token, name, code, nil)
     }
 
     func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
         let cancelled = (error as? ASAuthorizationError)?.code == .canceled
-        finish(nil, nil, cancelled ? "cancelled" : "apple_failed")
+        finish(nil, nil, nil, cancelled ? "cancelled" : "apple_failed")
     }
 
-    private func finish(_ token: String?, _ name: String?, _ error: String?) {
-        done(token, name, error)
+    private func finish(_ token: String?, _ name: String?, _ code: String?, _ error: String?) {
+        done(token, name, code, error)
         AppleSignIn.current = nil
     }
 }

@@ -32,7 +32,7 @@ interface SfrtnaAppPlugin {
   openTripMode(options: { target?: string }): Promise<void>;
   haptic(options: { kind: "success" | "light" }): Promise<void>;
   /** Sign in with Apple, the phone's own sheet (iPhone builds from 16 Nov 2026, feature «apple»). */
-  appleSignIn(options: { nonce: string }): Promise<{ idToken: string; name?: string }>;
+  appleSignIn(options: { nonce: string }): Promise<{ idToken: string; name?: string; code?: string }>;
   /** The plan's stops into the phone's calendar (iPhone builds from 16 Nov 2026, feature «calendar»). */
   addToCalendar(options: { title: string; events: CalendarStop[] }): Promise<{ added: number; granted: boolean }>;
 }
@@ -221,7 +221,7 @@ export async function appleInApp(): Promise<boolean> {
 }
 
 /** Sign in with Apple on the phone: the identity token (bound to `nonce`) and the name Apple gave, or null. */
-export async function appleSignInInApp(nonce: string): Promise<{ idToken: string; name?: string } | null> {
+export async function appleSignInInApp(nonce: string): Promise<{ idToken: string; name?: string; code?: string } | null> {
   const app = plugin();
   if (!app || !(await appleInApp())) return null;
   try {

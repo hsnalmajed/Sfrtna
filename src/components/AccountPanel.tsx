@@ -148,7 +148,7 @@ export function SignInForm({
     try {
       const r = await appleSignInInApp(nonce);
       if (!r) return;
-      const res = await fetch("/api/auth/apple", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ idToken: r.idToken, nonce, name: r.name }) });
+      const res = await fetch("/api/auth/apple", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ idToken: r.idToken, nonce, name: r.name, code: r.code }) });
       const json = (await res.json()) as { ok: boolean; user?: AccountUser };
       if (json.ok && json.user) onSignedIn(json.user);
       else setError(t.appleFailed);

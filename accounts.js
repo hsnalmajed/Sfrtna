@@ -104,6 +104,7 @@ export class Accounts extends DurableObject {
       CREATE TABLE IF NOT EXISTS feedback (id INTEGER PRIMARY KEY AUTOINCREMENT, created INTEGER NOT NULL, user TEXT, kind TEXT NOT NULL, area TEXT NOT NULL, rating INTEGER, text TEXT NOT NULL, email TEXT, contact INTEGER NOT NULL, ctx TEXT NOT NULL, ip TEXT);
       CREATE INDEX IF NOT EXISTS feedback_created ON feedback(created);
       CREATE INDEX IF NOT EXISTS feedback_ip ON feedback(ip, created);
+      CREATE TABLE IF NOT EXISTS apple_tokens (user TEXT PRIMARY KEY, refresh TEXT NOT NULL, at INTEGER NOT NULL);
     `);
     // One time: until 16 Nov 2026 every claim was written but answered «taken»,
     // so no row in «mails» stands for a mail that was really sent. Clear them,
@@ -398,9 +399,20 @@ export class Accounts extends DurableObject {
     return { ok: true };
   }
 
+  /** Apple's refresh token for the signed-in member (kept only to revoke it on deletion). */
+  async appleTokenSet(token, refresh) {
+    const user = await this.userFor(token);
+    if (!user || typeof refresh !== "string" || !refresh) return { ok: false };
+    this.sql.exec("INSERT OR REPLACE INTO apple_tokens (user, refresh, at) VALUES (?, ?, ?)", user.id, refresh, Date.now());
+    return { ok: true };
+  }
+
   async deleteAccount(token) {
     const user = await this.userFor(token);
     if (!user) return { ok: false };
+    // Handed back once so the caller can revoke it at Apple; never stored again.
+    const apple = this.one("SELECT refresh FROM apple_tokens WHERE user = ?", user.id);
+    this.sql.exec("DELETE FROM apple_tokens WHERE user = ?", user.id);
     this.sql.exec("DELETE FROM plans WHERE user = ?", user.id);
     this.sql.exec("DELETE FROM items WHERE user = ?", user.id);
     this.sql.exec("DELETE FROM consent WHERE user = ?", user.id);
@@ -411,7 +423,7 @@ export class Accounts extends DurableObject {
     if (user.email) this.sql.exec("DELETE FROM codes WHERE email = ?", user.email);
     this.sql.exec("UPDATE feedback SET user = NULL, email = NULL WHERE user = ?", user.id);
     this.sql.exec("DELETE FROM users WHERE id = ?", user.id);
-    return { ok: true };
+    return apple ? { ok: true, appleRefresh: apple.refresh } : { ok: true };
   }
 
   /**
