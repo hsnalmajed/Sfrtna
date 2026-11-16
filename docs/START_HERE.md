@@ -108,6 +108,17 @@ iPhone app.
 
 ## ▶ Hand-off (15 Nov 2026) — current state
 
+**▶ Play setup DONE 16 Nov 05:10** — all «Finish setting up» items, store
+listing (texts = listing-draft.md; icon/feature graphic/7 screenshots made from
+`ios-shots` store-*.png, cropped to 1080×2160, hotels shot dropped), closed
+test «Alpha» (SA+AE+KW+QA+BH+OM, list «Sfrtna team», feedback info@sfrtna.com,
+release 28 (1.0.0)), advertising ID = No; 14 changes SUBMITTED for review.
+Privacy page got «#delete» section (used as Play deletion URL). Data safety:
+Name, Email, App interactions (required), search history, other UGC, Device
+IDs; collected, not shared. **Owner next:** add testers to «Sfrtna team» until
+12+ opted in (14-day clock starts then) → apply for production ~3 weeks.
+Then item 2 below (Apple), **Opus 5.5**.
+
 **OWNER'S ORDER 16 Nov 02:40 (overrides NEXT 1/NEXT 2 order below):**
 1) Google Play setup to 100% — «Finish setting up your app» + store listing
    (see «Next Play steps» below; owner steps, **Sonnet 5.5**);
