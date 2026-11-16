@@ -90,6 +90,21 @@ export interface OfflinePlan {
   notices: TripNotice[];
   /** The days in short for the app's «اليوم» screen. */
   days: { date: string; city: string; stops: { time: string; name: string }[] }[];
+  /** Every stop with its time, for «أضف إلى تقويم جوالي» (iPhone, feature «calendar»). */
+  events: CalendarStop[];
+}
+
+/** One stop as a phone-calendar event, in the city's own time zone. */
+export interface CalendarStop {
+  date: string;
+  time: string;
+  minutes: number;
+  tz?: string;
+  title: string;
+  place: string;
+  notes: string;
+  lat?: number;
+  lon?: number;
 }
 
 const esc = (s: unknown) =>
@@ -303,5 +318,22 @@ export function buildOfflinePlan(input: OfflinePlanInput): OfflinePlan {
       city: d.city?.name ?? input.city.name,
       stops: d.items.filter((it) => isStop(it) && it.time).map((it) => ({ time: it.time, name: it.name })),
     })),
+    events: input.days.flatMap((d) => {
+      const city = d.city?.name ?? input.city.name;
+      const tz = TZ[d.city?.slug ?? input.city.slug];
+      return d.items
+        .filter((it) => isStop(it) && /^\d{1,2}:\d{2}$/.test(it.time ?? ""))
+        .map((it) => ({
+          date: d.date,
+          time: it.time,
+          minutes: Math.min(Math.max(it.durationMin || 60, 15), 360),
+          tz,
+          title: `${it.kind === "meal" ? "🍽️" : it.icon ?? "📍"} ${it.name}`,
+          place: [it.localName && it.localName !== it.name ? it.localName : "", it.area, city].filter(Boolean).join("، "),
+          notes: [it.why, it.tip, mapHref(it) ? `${input.words.onMap}: ${mapHref(it)}` : ""].filter(Boolean).join("\n"),
+          lat: it.lat,
+          lon: it.lon,
+        }));
+    }),
   };
 }

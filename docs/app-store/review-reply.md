@@ -1,18 +1,17 @@
 # Reply to App Review (4.3(a), 4.3(b), 4.2.6) — 16 Nov 2026 (owner's version)
 
-Owner's decision 16 Nov 18:13: the iPhone app stays the SAME as the Android
-app (no native-only tabs, no widget); we answer Apple's 9 questions and
-explain why the app is different, instead of rebuilding it. Paste in App
-Store Connect, App Review, the message thread of build 1.0 (27). Then
-request a phone call (App Review contact form, «Request a call»). Honest
-note: Apple asked for «significant changes» before a resubmission; a reply
-alone may be refused again.
+Owner 16 Nov 18:23: the app keeps the same look as the site and Android;
+the iPhone gets its own better way to use features we already have («احفظ
+على جوالي» offline + prayer alerts + trip reminders, and «أضف الخطة إلى
+تقويم جوالي»). Paste in App Store Connect, App Review, the message thread of
+build 1.0 (27), with the new build. Then request a phone call (App Review
+contact form, «Request a call») and submit. Honest note: no guarantee.
 
 ---
 
 Hello, and thank you for the review.
 
-We would like to explain what Sfrtna is and why it is not a copy of another app. Answers to your questions:
+We would like to explain what Sfrtna is, and what we changed for the iPhone since build 27. Sfrtna is a planning service for Arabic-speaking families; the iPhone app now adds things the website and our Android app do not have: the trip plan kept on the phone and usable with no internet, prayer alerts in the visited city's own time zone, trip reminders as notifications, and the plan's stops added to the iPhone calendar with their times and places. Answers to your questions:
 
 **1. What does the app do?**
 Sfrtna plans a whole trip in Arabic for families from Saudi Arabia and the Gulf. It starts from the traveller's budget: it suggests destinations that fit the budget and the season, then shows visa rules for Saudi passport holders, currency, the best time to travel, a city guide for 365 cities written in Arabic, and a day-by-day trip plan. The plan is built around the five prayers in the destination's own time, Friday prayer, halal meals and travelling with children, and it can move across several cities of a country with the road time between them. The traveller can save the plan, download it as a PDF, receive it by e-mail, and get reminders before the trip. Flight and hotel prices come from partner companies, and bookings are made on the companies' own sites.
@@ -32,7 +31,9 @@ Friends and family who used the app and the site this month, our own tests on iP
 - Arabic letters were clipped in the route banner → we fixed the text rendering.
 
 **5. Can the app work on its own?**
-Yes. Destination ideas, visa rules, seasons, the city guide, the trip plan, saved plans and reminders all work inside the app without another app. Only the final booking is done on the partner company's own site.
+Yes. Destination ideas, visa rules, seasons, the city guide and the trip plan all work inside the app. On iPhone, a kept plan opens fully offline, its alerts work without a connection, and its stops live in the iPhone calendar. Only the final booking is done on the partner company's own site.
+
+**What is only in the iPhone app (please try it):** open a trip plan (for example Istanbul, four days), tap "Keep on my phone", switch on the prayer alerts and reminders, tap "Add the plan to my calendar", then turn on Airplane Mode and open the plan again.
 
 **6. Could it be an in-app purchase or feature of another app?**
 No. It is our only app and our own product.
@@ -41,7 +42,7 @@ No. It is our only app and our own product.
 No. This is our only app on the account.
 
 **8. Does it share code, SDKs or content with third-party apps?**
-The app uses the open-source Capacitor runtime to show our own pages, plus our own Swift code for the safe area, sharing files and printing. The guide, the trip plans and the budget tools are our own code and data. Flight prices are shown through a partner's search, and the booking happens on the partner's site.
+The app uses the open-source Capacitor runtime to show our own pages, plus our own Swift code for the iPhone-only parts: offline plans, local notifications in the city's time zone, the calendar events (EventKit), the share sheet and the safe area. The guide, the trip plans and the budget tools are our own code and data. Flight prices are shown through a partner's search, and the booking happens on the partner's site.
 
 **9. Was it made for a client or with an app-generation service?**
 No. We, the owner of this developer account, write and run Sfrtna ourselves. It was not made from a template or an app builder.

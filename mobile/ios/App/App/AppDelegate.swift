@@ -1,5 +1,6 @@
 import UIKit
 import Capacitor
+import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -7,7 +8,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        // Trip mode's reminders (TripAlerts): shown even while the app is open,
+        // and a tap opens the plan they belong to.
+        UNUserNotificationCenter.current().delegate = self
         return true
     }
 
@@ -26,7 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
-        // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        // (Scenes are on: SceneDelegate.sceneDidBecomeActive does the work.)
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
@@ -40,6 +43,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                           sessionRole: connectingSceneSession.role)
         config.delegateClass = SceneDelegate.self
         return config
+    }
+}
+
+extension AppDelegate: UNUserNotificationCenterDelegate {
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification,
+                                withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler([.banner, .list, .sound])
+    }
+
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse,
+                                withCompletionHandler completionHandler: @escaping () -> Void) {
+        let plan = response.notification.request.content.userInfo["plan"] as? String
+        DispatchQueue.main.async { TripMode.open(plan ?? "") }
+        completionHandler()
     }
 }
 
@@ -118,7 +135,11 @@ class MainViewController: CAPBridgeViewController {
                 source: "window.__sfrCheck=\(json);" + MainViewController.checkScript,
                 injectionTime: .atDocumentEnd, forMainFrameOnly: true))
         }
+        // CI only: -sfrTrip opens trip mode ("" list, qibla, mosques, halal)
+        // once the opening ends, so the simulator can photograph it.
+        if let trip = arg("-sfrTrip") { TripMode.pending = trip == "list" ? "" : trip }
         startIntro()
+        NotificationCenter.default.addObserver(self, selector: #selector(openTripModeRequest), name: TripMode.openRequest, object: nil)
         monitor.pathUpdateHandler = { [weak self] path in
             DispatchQueue.main.async { self?.network(up: path.status == .satisfied) }
         }
@@ -197,7 +218,11 @@ class MainViewController: CAPBridgeViewController {
         }
         webView?.configuration.websiteDataStore.httpCookieStore.getAllCookies { cookies in
             let lang = cookies.first { $0.name == "sfrtna_lang" && $0.domain.hasSuffix("sfrtna.com") }?.value
-            DispatchQueue.main.async { begin(lang.map { $0 == "en" } ?? phoneEnglish) }
+            DispatchQueue.main.async {
+                let english = lang.map { $0 == "en" } ?? phoneEnglish
+                TripMode.english = english
+                begin(english)
+            }
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) { begin(phoneEnglish) }
         // Leaves once the first page has loaded (and the line has been read).
@@ -217,6 +242,31 @@ class MainViewController: CAPBridgeViewController {
         intro = nil
         loadingWatch = nil
         o.finish()
+        // A reminder tapped or the home-screen shortcut used while the app was closed.
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) { [weak self] in self?.openTripModeRequest() }
+    }
+
+    // MARK: Trip mode
+
+    /// TripMode.open(…) from a reminder, the home-screen shortcut, the
+    /// offline screen or the site. Waits for the opening to finish.
+    @objc func openTripModeRequest() {
+        guard Thread.isMainThread else {
+            DispatchQueue.main.async { [weak self] in self?.openTripModeRequest() }
+            return
+        }
+        guard intro == nil, view.window != nil, let target = TripMode.pending else { return }
+        TripMode.pending = nil
+        if let nav = presentedViewController as? TripNavController {
+            nav.go(target)
+            return
+        }
+        let openNav = { [weak self] in
+            guard let self = self else { return }
+            let nav = TripNavController(target: target)
+            self.present(nav, animated: true)
+        }
+        if presentedViewController != nil { dismiss(animated: false, completion: openNav) } else { openNav() }
     }
 
     // MARK: Safe area
@@ -295,6 +345,7 @@ class MainViewController: CAPBridgeViewController {
             let o = OfflineOverlay(frame: view.bounds)
             o.autoresizingMask = [.flexibleWidth, .flexibleHeight]
             o.onRetry = { [weak self] in self?.webView?.reload() }
+            o.onTripMode = { TripMode.open("") }
             view.addSubview(o)
             offline = o
         }
@@ -501,6 +552,7 @@ final class TaglineFlightView: UIView {
 
 final class OfflineOverlay: UIView {
     var onRetry: (() -> Void)?
+    var onTripMode: (() -> Void)?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -523,7 +575,21 @@ final class OfflineOverlay: UIView {
         button.layer.cornerRadius = 14
         button.contentEdgeInsets = UIEdgeInsets(top: 12, left: 28, bottom: 12, right: 28)
         button.addTarget(self, action: #selector(retry), for: .touchUpInside)
-        let stack = UIStackView(arrangedSubviews: [title, body, button])
+        // Kept plans, qibla: they work without the internet (trip mode).
+        let trip = UIButton(type: .system)
+        let kept = TripStore.count()
+        trip.setTitle(arabic
+            ? "🧭 خططك المحفوظة على الجوال (\(kept))"
+            : "🧭 Your plans on this phone (\(kept))", for: .normal)
+        trip.isHidden = kept == 0
+        trip.titleLabel?.font = .boldSystemFont(ofSize: 16)
+        trip.setTitleColor(.white, for: .normal)
+        trip.layer.cornerRadius = 14
+        trip.layer.borderWidth = 1
+        trip.layer.borderColor = UIColor.white.withAlphaComponent(0.5).cgColor
+        trip.contentEdgeInsets = UIEdgeInsets(top: 12, left: 22, bottom: 12, right: 22)
+        trip.addTarget(self, action: #selector(tripMode), for: .touchUpInside)
+        let stack = UIStackView(arrangedSubviews: [title, body, button, trip])
         stack.axis = .vertical
         stack.alignment = .center
         stack.spacing = 16
@@ -540,6 +606,7 @@ final class OfflineOverlay: UIView {
     required init?(coder: NSCoder) { fatalError("not used") }
 
     @objc private func retry() { onRetry?() }
+    @objc private func tripMode() { onTripMode?() }
 }
 
 @objc(SfrtnaAppPlugin)
@@ -550,6 +617,14 @@ public class SfrtnaAppPlugin: CAPPlugin, CAPBridgedPlugin {
         CAPPluginMethod(name: "info", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "shareFile", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "print", returnType: CAPPluginReturnPromise),
+        // «وضع الرحلة» (16 Nov 2026), see TripMode below.
+        CAPPluginMethod(name: "keepPlan", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "forgetPlan", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "planState", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "setAlerts", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "openTripMode", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "haptic", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "addToCalendar", returnType: CAPPluginReturnPromise),
     ]
 
     static let ourHosts: Set<String> = ["sfrtna.com", "www.sfrtna.com"]
@@ -584,7 +659,137 @@ public class SfrtnaAppPlugin: CAPPlugin, CAPBridgedPlugin {
 
     @objc func info(_ call: CAPPluginCall) {
         let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
-        call.resolve(["platform": "ios", "version": version, "features": ["share", "share-binary", "print"]])
+        call.resolve(["platform": "ios", "version": version, "features": ["share", "share-binary", "print", "trip-mode", "haptics", "calendar"]])
+    }
+
+    // MARK: Trip mode calls from the site (src/lib/nativeApp.ts)
+
+    /// A plan kept on the phone: the page the site drew for it (offline,
+    /// self-contained) and its reminders. The alert switches survive updates.
+    @objc func keepPlan(_ call: CAPPluginCall) {
+        guard let id = TripStore.cleanId(call.getString("id")),
+              let html = call.getString("html"), !html.isEmpty, html.utf8.count <= 3_000_000 else {
+            call.reject("bad_plan")
+            return
+        }
+        let old = TripStore.load(id)
+        if old == nil && TripStore.count() >= TripStore.maxPlans {
+            call.reject("full")
+            return
+        }
+        let notices: [[String: String]] = (call.getArray("notices") ?? []).prefix(400).compactMap { value in
+            guard let o = value as? JSObject else { return nil }
+            var out: [String: String] = [:]
+            for key in ["kind", "date", "time", "tz", "title", "body"] {
+                if let s = o[key] as? String { out[key] = String(s.prefix(300)) }
+            }
+            return out
+        }
+        func text(_ key: String) -> String { String((call.getString(key) ?? "").prefix(200)) }
+        var plan: [String: Any] = [
+            "id": id, "title": text("title"), "subtitle": text("subtitle"),
+            "from": text("from"), "to": text("to"), "lang": text("lang"),
+            "html": html, "notices": notices,
+            "savedAt": ISO8601DateFormatter().string(from: Date()),
+        ]
+        plan["remind"] = old?["remind"] as? Bool ?? false
+        plan["prayers"] = old?["prayers"] as? Bool ?? false
+        guard TripStore.save(plan) else {
+            call.reject("write_failed")
+            return
+        }
+        TripAlerts.rescheduleAll()
+        call.resolve(TripStore.state(plan))
+    }
+
+    @objc func forgetPlan(_ call: CAPPluginCall) {
+        guard let id = TripStore.cleanId(call.getString("id")) else { call.reject("bad_id"); return }
+        TripStore.remove(id)
+        TripAlerts.rescheduleAll()
+        call.resolve(TripStore.state(nil))
+    }
+
+    @objc func planState(_ call: CAPPluginCall) {
+        guard let id = TripStore.cleanId(call.getString("id")) else { call.reject("bad_id"); return }
+        call.resolve(TripStore.state(TripStore.load(id)))
+    }
+
+    /// Turning a switch on asks for the phone's permission (only then).
+    @objc func setAlerts(_ call: CAPPluginCall) {
+        guard let id = TripStore.cleanId(call.getString("id")) else { call.reject("bad_id"); return }
+        TripAlerts.set(id: id, remind: call.getBool("remind") ?? false, prayers: call.getBool("prayers") ?? false) { state, granted in
+            var out = state
+            out["granted"] = granted
+            call.resolve(out)
+        }
+    }
+
+    /// target: "qibla", "mosques", "halal", a kept plan's id, or nothing (the list).
+    @objc func openTripMode(_ call: CAPPluginCall) {
+        let target = call.getString("target") ?? ""
+        DispatchQueue.main.async {
+            TripMode.open(target)
+            call.resolve()
+        }
+    }
+
+    /// «أضف الخطة إلى تقويم جوالي» (16 Nov 2026): every stop as an event in
+    /// the phone's calendar, at its time in the city's own time zone, with an
+    /// alert 30 minutes before. Asks for calendar access only now (iOS 17:
+    /// add-only access, the app never reads the calendar).
+    @objc func addToCalendar(_ call: CAPPluginCall) {
+        let items: [JSObject] = (call.getArray("events") ?? []).prefix(300).compactMap { $0 as? JSObject }
+        let store = EKEventStore()
+        let done: (Bool) -> Void = { granted in
+            guard granted else { call.resolve(["added": 0, "granted": false]); return }
+            let day = DateFormatter()
+            day.locale = Locale(identifier: "en_US_POSIX")
+            day.calendar = Calendar(identifier: .gregorian)
+            day.dateFormat = "yyyy-MM-dd HH:mm"
+            var added = 0
+            for o in items {
+                guard let date = o["date"] as? String, let time = o["time"] as? String, let title = o["title"] as? String else { continue }
+                day.timeZone = (o["tz"] as? String).flatMap { TimeZone(identifier: $0) } ?? .current
+                let hm = time.count == 4 ? "0" + time : time
+                guard let start = day.date(from: "\(date.prefix(10)) \(hm.prefix(5))") else { continue }
+                let minutes = (o["minutes"] as? NSNumber)?.doubleValue ?? 60
+                let ev = EKEvent(eventStore: store)
+                ev.title = String(title.prefix(200))
+                ev.startDate = start
+                ev.endDate = start.addingTimeInterval(max(15, min(minutes, 360)) * 60)
+                ev.timeZone = day.timeZone
+                ev.location = (o["place"] as? String).map { String($0.prefix(300)) }
+                ev.notes = (o["notes"] as? String).map { String($0.prefix(1000)) }
+                if let lat = (o["lat"] as? NSNumber)?.doubleValue, let lon = (o["lon"] as? NSNumber)?.doubleValue {
+                    let loc = EKStructuredLocation(title: ev.location ?? ev.title)
+                    loc.geoLocation = CLLocation(latitude: lat, longitude: lon)
+                    ev.structuredLocation = loc
+                }
+                ev.addAlarm(EKAlarm(relativeOffset: -30 * 60))
+                ev.calendar = store.defaultCalendarForNewEvents
+                if (try? store.save(ev, span: .thisEvent, commit: false)) != nil { added += 1 }
+            }
+            try? store.commit()
+            DispatchQueue.main.async { UINotificationFeedbackGenerator().notificationOccurred(.success) }
+            call.resolve(["added": added, "granted": true])
+        }
+        if #available(iOS 17.0, *) {
+            store.requestWriteOnlyAccessToEvents { granted, _ in done(granted) }
+        } else {
+            store.requestAccess(to: .event) { granted, _ in done(granted) }
+        }
+    }
+
+    @objc func haptic(_ call: CAPPluginCall) {
+        let kind = call.getString("kind") ?? "light"
+        DispatchQueue.main.async {
+            if kind == "success" {
+                UINotificationFeedbackGenerator().notificationOccurred(.success)
+            } else {
+                UIImpactFeedbackGenerator(style: .light).impactOccurred()
+            }
+            call.resolve()
+        }
     }
 
     @objc func shareFile(_ call: CAPPluginCall) {
@@ -629,5 +834,733 @@ public class SfrtnaAppPlugin: CAPPlugin, CAPBridgedPlugin {
             controller.present(animated: true)
             call.resolve()
         }
+    }
+}
+
+// MARK: - Trip mode («وضع الرحلة», 16 Nov 2026)
+//
+// What the phone app adds to the site (App Review 4.3 / 4.2.6, owner's
+// decision 15 Nov): a plan kept ON the phone that opens with no internet,
+// reminders before and during the trip and prayer alerts in the city's own
+// time (local notifications, permission asked only when switched on), the
+// qibla compass, and the nearest mosques / halal restaurants. The site draws
+// the plan's offline page and its reminder list (src/lib/tripMode.ts) and
+// hands them over through the plugin above; everything here works offline
+// except the nearby search.
+
+import CoreLocation
+import EventKit
+import MapKit
+
+enum TripMode {
+    /// The language the visitor last used on the site (set from the
+    /// sfrtna_lang cookie at launch), else the phone's.
+    static var english = !(Locale.preferredLanguages.first?.hasPrefix("ar") ?? true)
+    static func t(_ ar: String, _ en: String) -> String { english ? en : ar }
+    static let navy = UIColor(red: 0x0B / 255, green: 0x2D / 255, blue: 0x5B / 255, alpha: 1)
+    static let gold = UIColor(red: 0xF8 / 255, green: 0xB8 / 255, blue: 0x40 / 255, alpha: 1)
+    static let openRequest = Notification.Name("SfrtnaOpenTripMode")
+    /// Waiting to be shown ("" = the trip mode list) until the main screen is ready.
+    static var pending: String?
+    static let shortcutType = "com.sfrtna.app.tripmode"
+
+    static func open(_ target: String) {
+        pending = target
+        NotificationCenter.default.post(name: openRequest, object: nil)
+    }
+
+    static func km(_ meters: CLLocationDistance) -> String {
+        if meters < 1000 { return english ? "\(Int(meters.rounded())) m" : "\(Int(meters.rounded())) م" }
+        let f = NumberFormatter()
+        f.locale = Locale(identifier: "en")
+        f.maximumFractionDigits = meters < 10_000 ? 1 : 0
+        let n = f.string(from: NSNumber(value: meters / 1000)) ?? "\(Int(meters / 1000))"
+        return english ? "\(n) km" : "\(n) كم"
+    }
+}
+
+/// Kept plans: one JSON file each in Application Support/plans (backed up
+/// with the phone, never sent anywhere).
+enum TripStore {
+    static let maxPlans = 30
+
+    static var dir: URL {
+        let base = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
+            .appendingPathComponent("plans", isDirectory: true)
+        try? FileManager.default.createDirectory(at: base, withIntermediateDirectories: true)
+        return base
+    }
+
+    static func cleanId(_ s: String?) -> String? {
+        guard let s = s, !s.isEmpty, s.count <= 100,
+              s.range(of: "^[A-Za-z0-9_-]+$", options: .regularExpression) != nil else { return nil }
+        return s
+    }
+
+    private static func file(_ id: String) -> URL { dir.appendingPathComponent(id + ".json") }
+
+    private static func read(_ url: URL) -> [String: Any]? {
+        guard let data = try? Data(contentsOf: url),
+              let obj = try? JSONSerialization.jsonObject(with: data) else { return nil }
+        return obj as? [String: Any]
+    }
+
+    static func load(_ id: String) -> [String: Any]? { read(file(id)) }
+
+    static func save(_ plan: [String: Any]) -> Bool {
+        guard let id = cleanId(plan["id"] as? String), JSONSerialization.isValidJSONObject(plan),
+              let data = try? JSONSerialization.data(withJSONObject: plan) else { return false }
+        do {
+            try data.write(to: file(id), options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
+            return true
+        } catch {
+            return false
+        }
+    }
+
+    static func remove(_ id: String) { try? FileManager.default.removeItem(at: file(id)) }
+
+    private static func files() -> [URL] {
+        ((try? FileManager.default.contentsOfDirectory(at: dir, includingPropertiesForKeys: nil)) ?? [])
+            .filter { $0.pathExtension == "json" }
+    }
+
+    static func count() -> Int { files().count }
+
+    /// Soonest trip first; trips already over go last.
+    static func all() -> [[String: Any]] {
+        let today = ISO8601DateFormatter.day.string(from: Date())
+        return files().compactMap { read($0) }.sorted { a, b in
+            let (fa, fb) = (a["from"] as? String ?? "", b["from"] as? String ?? "")
+            let (pa, pb) = ((a["to"] as? String ?? "") < today, (b["to"] as? String ?? "") < today)
+            return pa == pb ? fa < fb : !pa
+        }
+    }
+
+    static func state(_ p: [String: Any]?) -> [String: Any] {
+        ["kept": p != nil, "remind": p?["remind"] as? Bool ?? false, "prayers": p?["prayers"] as? Bool ?? false]
+    }
+}
+
+extension ISO8601DateFormatter {
+    static let day: ISO8601DateFormatter = {
+        let f = ISO8601DateFormatter()
+        f.formatOptions = [.withFullDate]
+        f.timeZone = .current
+        return f
+    }()
+}
+
+/// Local notifications for kept plans. Each notice carries its date, time
+/// and the city's time zone, so a reminder fires at the right moment
+/// wherever the phone is when it is set.
+enum TripAlerts {
+    static let prefix = "plan."
+
+    static func set(id: String, remind: Bool, prayers: Bool, done: @escaping ([String: Any], Bool) -> Void) {
+        guard var plan = TripStore.load(id) else {
+            done(TripStore.state(nil), false)
+            return
+        }
+        let finish: (Bool) -> Void = { granted in
+            plan["remind"] = remind && granted
+            plan["prayers"] = prayers && granted
+            _ = TripStore.save(plan)
+            rescheduleAll()
+            done(TripStore.state(plan), granted)
+        }
+        guard remind || prayers else {
+            finish(true)
+            return
+        }
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, _ in
+            DispatchQueue.main.async { finish(granted) }
+        }
+    }
+
+    static func fireDate(_ n: [String: Any]) -> Date? {
+        guard let date = n["date"] as? String, let time = n["time"] as? String else { return nil }
+        let d = date.split(separator: "-").compactMap { Int($0) }
+        let t = time.split(separator: ":").compactMap { Int($0) }
+        guard d.count == 3, t.count == 2 else { return nil }
+        var cal = Calendar(identifier: .gregorian)
+        if let tz = n["tz"] as? String, let zone = TimeZone(identifier: tz) { cal.timeZone = zone } else { cal.timeZone = .current }
+        return cal.date(from: DateComponents(year: d[0], month: d[1], day: d[2], hour: t[0], minute: t[1]))
+    }
+
+    /// Clears ours and schedules the next 60 switched-on notices of all kept plans.
+    static func rescheduleAll() {
+        let center = UNUserNotificationCenter.current()
+        center.getPendingNotificationRequests { pending in
+            center.removePendingNotificationRequests(withIdentifiers: pending.map { $0.identifier }.filter { $0.hasPrefix(prefix) })
+            let now = Date()
+            var items: [(Date, UNNotificationRequest)] = []
+            for plan in TripStore.all() {
+                let remind = plan["remind"] as? Bool ?? false
+                let prayers = plan["prayers"] as? Bool ?? false
+                guard remind || prayers, let id = plan["id"] as? String,
+                      let notices = plan["notices"] as? [[String: Any]] else { continue }
+                for (i, n) in notices.enumerated() {
+                    let isPrayer = (n["kind"] as? String) == "prayer"
+                    if isPrayer ? !prayers : !remind { continue }
+                    guard let at = fireDate(n), at > now.addingTimeInterval(30) else { continue }
+                    let content = UNMutableNotificationContent()
+                    content.title = n["title"] as? String ?? ""
+                    content.body = n["body"] as? String ?? ""
+                    content.sound = .default
+                    content.userInfo = ["plan": id]
+                    content.threadIdentifier = id
+                    let trigger = UNTimeIntervalNotificationTrigger(timeInterval: at.timeIntervalSince(now), repeats: false)
+                    items.append((at, UNNotificationRequest(identifier: "\(prefix)\(id).\(i)", content: content, trigger: trigger)))
+                }
+            }
+            for (_, request) in items.sorted(by: { $0.0 < $1.0 }).prefix(60) { center.add(request) }
+        }
+    }
+}
+
+// MARK: Screens
+
+/// Trip mode's own screens, in the site's language and direction.
+final class TripNavController: UINavigationController {
+    init(target: String) {
+        let dir: UISemanticContentAttribute = TripMode.english ? .forceLeftToRight : .forceRightToLeft
+        UIView.appearance(whenContainedInInstancesOf: [TripNavController.self]).semanticContentAttribute = dir
+        UINavigationBar.appearance(whenContainedInInstancesOf: [TripNavController.self]).semanticContentAttribute = dir
+        // init(nibName:bundle:) + setViewControllers: init(rootViewController:)
+        // can call back into an initializer this subclass does not have.
+        super.init(nibName: nil, bundle: nil)
+        setViewControllers([TripHomeController()], animated: false)
+        view.semanticContentAttribute = dir
+        navigationBar.semanticContentAttribute = dir
+        navigationBar.tintColor = TripMode.navy
+        modalPresentationStyle = .fullScreen
+        go(target)
+    }
+
+    required init?(coder: NSCoder) { fatalError("not used") }
+
+    func go(_ target: String) {
+        popToRootViewController(animated: false)
+        switch target {
+        case "": break
+        case "qibla": pushViewController(QiblaController(), animated: false)
+        case "mosques": pushViewController(NearbyController(kind: .mosques), animated: false)
+        case "halal": pushViewController(NearbyController(kind: .halal), animated: false)
+        default:
+            if let id = TripStore.cleanId(target), TripStore.load(id) != nil {
+                pushViewController(PlanViewerController(id: id), animated: false)
+            }
+        }
+    }
+}
+
+final class TripHomeController: UITableViewController {
+    private var plans: [[String: Any]] = []
+    // Owner 16 Nov 18:23: iPhone extras = kept plans + alerts + calendar only;
+    // the qibla and nearby lists stay in the code, not on screen.
+    private let tools: [(String, String, String)] = []
+    private let hiddenTools: [(String, String, String)] = [
+        ("qibla", "🧭", TripMode.t("اتجاه القبلة", "Qibla direction")),
+        ("mosques", "🕌", TripMode.t("أقرب المساجد", "Nearest mosques")),
+        ("halal", "🍽️", TripMode.t("مطاعم حلال قريبة", "Halal food nearby")),
+    ]
+
+    init() { super.init(style: .insetGrouped) }
+    required init?(coder: NSCoder) { fatalError("not used") }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        title = TripMode.t("وضع الرحلة", "Trip mode")
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(close))
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "tool")
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        plans = TripStore.all()
+        tableView.reloadData()
+    }
+
+    @objc private func close() { dismiss(animated: true) }
+
+    override func numberOfSections(in tableView: UITableView) -> Int { tools.isEmpty ? 1 : 2 }
+
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        section == 0 ? max(plans.count, 1) : tools.count
+    }
+
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        section == 0 ? TripMode.t("خططي على هذا الجوال", "My plans on this phone") : TripMode.t("في الطريق", "On the go")
+    }
+
+    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        section == 0
+            ? TripMode.t("الخطط هنا تفتح بدون إنترنت. لإضافة خطة: افتح خطة رحلتك في التطبيق واضغط «احفظ على جوالي».",
+                         "Plans here open with no internet. To add one, open your trip plan in the app and tap “Keep on my phone”.")
+            : TripMode.t("القبلة تعمل بدون إنترنت. البحث عن المساجد والمطاعم يحتاج اتصالاً، وتأكد من الحلال في المطعم نفسه.",
+                         "The qibla works offline. Finding mosques and restaurants needs a connection; check halal at the restaurant itself.")
+    }
+
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
+        cell.textLabel?.textAlignment = .natural
+        cell.detailTextLabel?.textAlignment = .natural
+        cell.textLabel?.font = .boldSystemFont(ofSize: 17)
+        cell.detailTextLabel?.textColor = .secondaryLabel
+        if indexPath.section == 1 {
+            let tool = tools[indexPath.row]
+            cell.textLabel?.text = "\(tool.1)  \(tool.2)"
+            cell.accessoryType = .disclosureIndicator
+            return cell
+        }
+        guard !plans.isEmpty else {
+            cell.textLabel?.text = TripMode.t("لا توجد خطط بعد", "No plans yet")
+            cell.textLabel?.textColor = .secondaryLabel
+            cell.selectionStyle = .none
+            return cell
+        }
+        let p = plans[indexPath.row]
+        let bell = (p["remind"] as? Bool ?? false) || (p["prayers"] as? Bool ?? false) ? "🔔 " : ""
+        cell.textLabel?.text = "🗺️  \(p["title"] as? String ?? "")"
+        cell.textLabel?.numberOfLines = 2
+        cell.detailTextLabel?.text = bell + (p["subtitle"] as? String ?? "")
+        cell.detailTextLabel?.numberOfLines = 2
+        cell.accessoryType = .disclosureIndicator
+        return cell
+    }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        if indexPath.section == 1 {
+            switch tools[indexPath.row].0 {
+            case "qibla": navigationController?.pushViewController(QiblaController(), animated: true)
+            case "mosques": navigationController?.pushViewController(NearbyController(kind: .mosques), animated: true)
+            default: navigationController?.pushViewController(NearbyController(kind: .halal), animated: true)
+            }
+            return
+        }
+        guard indexPath.row < plans.count, let id = plans[indexPath.row]["id"] as? String else { return }
+        navigationController?.pushViewController(PlanViewerController(id: id), animated: true)
+    }
+
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        guard indexPath.section == 0, indexPath.row < plans.count, let id = plans[indexPath.row]["id"] as? String else { return nil }
+        let remove = UIContextualAction(style: .destructive, title: TripMode.t("إزالة", "Remove")) { [weak self] _, _, done in
+            TripStore.remove(id)
+            TripAlerts.rescheduleAll()
+            self?.plans = TripStore.all()
+            self?.tableView.reloadData()
+            done(true)
+        }
+        return UISwipeActionsConfiguration(actions: [remove])
+    }
+}
+
+/// A kept plan, drawn from the page the site made for it — no network.
+final class PlanViewerController: UIViewController, WKNavigationDelegate {
+    private let id: String
+    private var web: WKWebView?
+
+    init(id: String) {
+        self.id = id
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) { fatalError("not used") }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .systemBackground
+        let plan = TripStore.load(id)
+        title = plan?["title"] as? String
+        let config = WKWebViewConfiguration()
+        config.websiteDataStore = .nonPersistent()
+        let wv = WKWebView(frame: view.bounds, configuration: config)
+        wv.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        wv.navigationDelegate = self
+        view.addSubview(wv)
+        web = wv
+        wv.loadHTMLString(plan?["html"] as? String ?? "", baseURL: nil)
+        refreshMenu()
+    }
+
+    /// Links in the plan (a place on the map) open outside: the Maps app or Safari.
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction,
+                 decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        // (#day links inside the page stay in the page.)
+        if navigationAction.navigationType == .linkActivated, let url = navigationAction.request.url,
+           ["http", "https", "tel", "maps"].contains(url.scheme?.lowercased() ?? "") {
+            UIApplication.shared.open(url)
+            decisionHandler(.cancel)
+            return
+        }
+        decisionHandler(.allow)
+    }
+
+    private func refreshMenu() {
+        guard let plan = TripStore.load(id) else { return }
+        let remind = plan["remind"] as? Bool ?? false
+        let prayers = plan["prayers"] as? Bool ?? false
+        let notices = plan["notices"] as? [[String: Any]] ?? []
+        let hasPrayers = notices.contains { ($0["kind"] as? String) == "prayer" }
+        var actions: [UIMenuElement] = [
+            UIAction(title: TripMode.t("ذكّرني قبل الرحلة وكل صباح", "Remind me before the trip and each morning"),
+                     image: UIImage(systemName: "bell"), state: remind ? .on : .off) { [weak self] _ in
+                self?.change(remind: !remind, prayers: prayers)
+            },
+        ]
+        if hasPrayers {
+            actions.append(UIAction(title: TripMode.t("أوقات الصلاة بتوقيت المدينة", "Prayer times in the city's time"),
+                                    image: UIImage(systemName: "moon.stars"), state: prayers ? .on : .off) { [weak self] _ in
+                self?.change(remind: remind, prayers: !prayers)
+            })
+        }
+        let item = UIBarButtonItem(title: nil, image: UIImage(systemName: remind || prayers ? "bell.fill" : "bell"),
+                                   primaryAction: nil, menu: UIMenu(title: TripMode.t("التنبيهات", "Alerts"), children: actions))
+        item.accessibilityLabel = TripMode.t("التنبيهات", "Alerts")
+        navigationItem.rightBarButtonItem = item
+    }
+
+    private func change(remind: Bool, prayers: Bool) {
+        TripAlerts.set(id: id, remind: remind, prayers: prayers) { [weak self] _, granted in
+            self?.refreshMenu()
+            if !granted { self?.askForSettings() }
+        }
+    }
+
+    private func askForSettings() {
+        let alert = UIAlertController(title: TripMode.t("التنبيهات متوقفة", "Notifications are off"),
+                                      message: TripMode.t("اسمح لسفرتنا بالتنبيهات من الإعدادات لتصلك تذكيرات رحلتك.",
+                                                          "Allow Sfrtna's notifications in Settings to get your trip reminders."),
+                                      preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: TripMode.t("الإعدادات", "Settings"), style: .default) { _ in
+            if let url = URL(string: UIApplication.openSettingsURLString) { UIApplication.shared.open(url) }
+        })
+        alert.addAction(UIAlertAction(title: TripMode.t("لاحقاً", "Later"), style: .cancel))
+        present(alert, animated: true)
+    }
+}
+
+/// The qibla: a needle that turns with the phone towards the Kaaba.
+final class QiblaController: UIViewController, CLLocationManagerDelegate {
+    private static let kaaba = CLLocation(latitude: 21.422487, longitude: 39.826206)
+    private let manager = CLLocationManager()
+    private let needle = UIView()
+    private let arrow = UIImageView(image: UIImage(systemName: "location.north.fill"))
+    private let status = UILabel()
+    private let detail = UILabel()
+    private let settings = UIButton(type: .system)
+    private var qibla: Double?
+    private var heading: Double?
+    private var aligned = false
+    private let feedback = UINotificationFeedbackGenerator()
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        title = TripMode.t("اتجاه القبلة", "Qibla direction")
+        view.backgroundColor = .systemBackground
+
+        let dial = UIView()
+        dial.layer.cornerRadius = 140
+        dial.layer.borderWidth = 2
+        dial.layer.borderColor = TripMode.navy.withAlphaComponent(0.25).cgColor
+        dial.backgroundColor = TripMode.navy.withAlphaComponent(0.04)
+        dial.translatesAutoresizingMaskIntoConstraints = false
+        needle.translatesAutoresizingMaskIntoConstraints = false
+        arrow.tintColor = TripMode.navy
+        arrow.contentMode = .scaleAspectFit
+        arrow.translatesAutoresizingMaskIntoConstraints = false
+        let kaabaMark = UILabel()
+        kaabaMark.text = "🕋"
+        kaabaMark.font = .systemFont(ofSize: 38)
+        kaabaMark.translatesAutoresizingMaskIntoConstraints = false
+        needle.addSubview(arrow)
+        needle.addSubview(kaabaMark)
+        dial.addSubview(needle)
+
+        for l in [status, detail] {
+            l.numberOfLines = 0
+            l.textAlignment = .center
+            l.translatesAutoresizingMaskIntoConstraints = false
+        }
+        status.font = .boldSystemFont(ofSize: 20)
+        status.textColor = TripMode.navy
+        detail.font = .systemFont(ofSize: 15)
+        detail.textColor = .secondaryLabel
+        settings.setTitle(TripMode.t("افتح الإعدادات", "Open Settings"), for: .normal)
+        settings.titleLabel?.font = .boldSystemFont(ofSize: 17)
+        settings.isHidden = true
+        settings.translatesAutoresizingMaskIntoConstraints = false
+        settings.addTarget(self, action: #selector(openSettings), for: .touchUpInside)
+
+        view.addSubview(dial)
+        view.addSubview(status)
+        view.addSubview(detail)
+        view.addSubview(settings)
+        let g = view.safeAreaLayoutGuide
+        NSLayoutConstraint.activate([
+            dial.widthAnchor.constraint(equalToConstant: 280),
+            dial.heightAnchor.constraint(equalToConstant: 280),
+            dial.centerXAnchor.constraint(equalTo: g.centerXAnchor),
+            dial.topAnchor.constraint(equalTo: g.topAnchor, constant: 36),
+            needle.topAnchor.constraint(equalTo: dial.topAnchor),
+            needle.bottomAnchor.constraint(equalTo: dial.bottomAnchor),
+            needle.leadingAnchor.constraint(equalTo: dial.leadingAnchor),
+            needle.trailingAnchor.constraint(equalTo: dial.trailingAnchor),
+            arrow.centerXAnchor.constraint(equalTo: needle.centerXAnchor),
+            arrow.centerYAnchor.constraint(equalTo: needle.centerYAnchor),
+            arrow.widthAnchor.constraint(equalToConstant: 110),
+            arrow.heightAnchor.constraint(equalToConstant: 110),
+            kaabaMark.centerXAnchor.constraint(equalTo: needle.centerXAnchor),
+            kaabaMark.topAnchor.constraint(equalTo: needle.topAnchor, constant: 10),
+            status.topAnchor.constraint(equalTo: dial.bottomAnchor, constant: 32),
+            status.leadingAnchor.constraint(equalTo: g.leadingAnchor, constant: 24),
+            status.trailingAnchor.constraint(equalTo: g.trailingAnchor, constant: -24),
+            detail.topAnchor.constraint(equalTo: status.bottomAnchor, constant: 10),
+            detail.leadingAnchor.constraint(equalTo: g.leadingAnchor, constant: 24),
+            detail.trailingAnchor.constraint(equalTo: g.trailingAnchor, constant: -24),
+            settings.topAnchor.constraint(equalTo: detail.bottomAnchor, constant: 16),
+            settings.centerXAnchor.constraint(equalTo: g.centerXAnchor),
+        ])
+
+        manager.delegate = self
+        manager.desiredAccuracy = kCLLocationAccuracyHundredMeters
+        manager.headingFilter = 1
+        status.text = TripMode.t("جارٍ تحديد موقعك…", "Finding where you are…")
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        start()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        manager.stopUpdatingLocation()
+        manager.stopUpdatingHeading()
+    }
+
+    private func start() {
+        switch manager.authorizationStatus {
+        case .notDetermined:
+            manager.requestWhenInUseAuthorization()
+        case .denied, .restricted:
+            status.text = TripMode.t("نحتاج موقعك لنعرف اتجاه القبلة", "We need your location to find the qibla")
+            detail.text = TripMode.t("اسمح لسفرتنا بالموقع أثناء الاستخدام من الإعدادات. لا نحفظ موقعك ولا نرسله.",
+                                     "Allow Sfrtna to use your location while using the app. It is never stored or sent.")
+            settings.isHidden = false
+        default:
+            settings.isHidden = true
+            manager.startUpdatingLocation()
+            if CLLocationManager.headingAvailable() { manager.startUpdatingHeading() }
+        }
+    }
+
+    @objc private func openSettings() {
+        if let url = URL(string: UIApplication.openSettingsURLString) { UIApplication.shared.open(url) }
+    }
+
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) { start() }
+
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let here = locations.last else { return }
+        let p1 = here.coordinate.latitude * .pi / 180, p2 = QiblaController.kaaba.coordinate.latitude * .pi / 180
+        let dl = (QiblaController.kaaba.coordinate.longitude - here.coordinate.longitude) * .pi / 180
+        let bearing = atan2(sin(dl) * cos(p2), cos(p1) * sin(p2) - sin(p1) * cos(p2) * cos(dl)) * 180 / .pi
+        qibla = (bearing + 360).truncatingRemainder(dividingBy: 360)
+        let dist = TripMode.km(here.distance(from: QiblaController.kaaba))
+        detail.text = TripMode.t("القبلة على \(Int(qibla!.rounded()))° من الشمال · مكة المكرمة على بُعد \(dist)",
+                                 "The qibla is \(Int(qibla!.rounded()))° from north · Makkah is \(dist) away")
+        update()
+    }
+
+    func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
+        heading = newHeading.trueHeading >= 0 ? newHeading.trueHeading : newHeading.magneticHeading
+        update()
+    }
+
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        if qibla == nil, manager.authorizationStatus != .denied {
+            status.text = TripMode.t("تعذّر تحديد موقعك الآن، حاول في مكان مفتوح", "Could not find your location; try in the open")
+        }
+    }
+
+    func locationManagerShouldDisplayHeadingCalibration(_ manager: CLLocationManager) -> Bool { true }
+
+    private func update() {
+        guard let q = qibla else { return }
+        guard let h = heading else {
+            needle.transform = CGAffineTransform(rotationAngle: CGFloat(q * .pi / 180))
+            status.text = TripMode.t("البوصلة غير متاحة؛ السهم يشير إلى القبلة إذا كان أعلى الجوال نحو الشمال",
+                                     "No compass; the arrow points to the qibla when the top of the phone faces north")
+            return
+        }
+        var diff = (q - h).truncatingRemainder(dividingBy: 360)
+        if diff > 180 { diff -= 360 }
+        if diff < -180 { diff += 360 }
+        UIView.animate(withDuration: 0.15) {
+            self.needle.transform = CGAffineTransform(rotationAngle: CGFloat(diff * .pi / 180))
+        }
+        let now = abs(diff) < 5
+        if now != aligned {
+            aligned = now
+            arrow.tintColor = now ? TripMode.gold : TripMode.navy
+            if now { feedback.notificationOccurred(.success) }
+        }
+        status.text = now
+            ? TripMode.t("✓ أنت باتجاه القبلة", "✓ You are facing the qibla")
+            : TripMode.t("أدِر الجوال حتى يشير السهم إلى الأعلى", "Turn the phone until the arrow points up")
+    }
+}
+
+/// The nearest mosques or halal restaurants around the traveller, opening
+/// walking directions in Maps.
+final class NearbyController: UITableViewController, CLLocationManagerDelegate {
+    enum Kind { case mosques, halal }
+    private let kind: Kind
+    private let manager = CLLocationManager()
+    private var here: CLLocation?
+    private var items: [MKMapItem] = []
+    private var message: String?
+    private var searching = false
+
+    init(kind: Kind) {
+        self.kind = kind
+        super.init(style: .insetGrouped)
+    }
+
+    required init?(coder: NSCoder) { fatalError("not used") }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        title = kind == .mosques ? TripMode.t("أقرب المساجد", "Nearest mosques") : TripMode.t("مطاعم حلال قريبة", "Halal food nearby")
+        manager.delegate = self
+        manager.desiredAccuracy = kCLLocationAccuracyHundredMeters
+        refreshControl = UIRefreshControl()
+        refreshControl?.addTarget(self, action: #selector(again), for: .valueChanged)
+        begin()
+    }
+
+    @objc private func again() {
+        here = nil
+        begin()
+    }
+
+    private func say(_ text: String?) {
+        message = text
+        refreshControl?.endRefreshing()
+        tableView.reloadData()
+    }
+
+    private func begin() {
+        switch manager.authorizationStatus {
+        case .notDetermined:
+            manager.requestWhenInUseAuthorization()
+        case .denied, .restricted:
+            say(TripMode.t("اسمح لسفرتنا بالموقع أثناء الاستخدام من الإعدادات لنجد ما حولك.",
+                            "Allow Sfrtna to use your location in Settings to find what is around you."))
+        default:
+            say(TripMode.t("جارٍ البحث حولك…", "Looking around you…"))
+            manager.requestLocation()
+        }
+    }
+
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        if here == nil, manager.authorizationStatus != .notDetermined { begin() }
+    }
+
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard here == nil, let loc = locations.last else { return }
+        here = loc
+        search(around: loc)
+    }
+
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        if here == nil { say(TripMode.t("تعذّر تحديد موقعك الآن. اسحب للأسفل للمحاولة مجدداً.", "Could not find your location. Pull down to try again.")) }
+    }
+
+    private func search(around loc: CLLocation) {
+        guard !searching else { return }
+        searching = true
+        let queries = kind == .mosques ? ["mosque", "masjid", "مسجد"] : ["halal restaurant", "halal food", "مطعم حلال"]
+        let group = DispatchGroup()
+        var found: [MKMapItem] = []
+        for q in queries {
+            group.enter()
+            let request = MKLocalSearch.Request()
+            request.naturalLanguageQuery = q
+            request.region = MKCoordinateRegion(center: loc.coordinate, latitudinalMeters: 8000, longitudinalMeters: 8000)
+            request.resultTypes = .pointOfInterest
+            // Food: restaurants only (no cafés, taxi ranks or shops).
+            if kind == .halal { request.pointOfInterestFilter = MKPointOfInterestFilter(including: [.restaurant]) }
+            MKLocalSearch(request: request).start { response, _ in
+                DispatchQueue.main.async {
+                    found += response?.mapItems ?? []
+                    group.leave()
+                }
+            }
+        }
+        group.notify(queue: .main) { [weak self] in
+            guard let self = self else { return }
+            self.searching = false
+            var seen = Set<String>()
+            // Search by name also returns «… Information Center», fountains,
+            // museums and shops next to a mosque: not places to pray.
+            let notMosque = try? NSRegularExpression(pattern: "information|center|centre|fountain|çeşme|museum|müze|shop|store|parking|otopark|hotel|otel|cafe|restaurant", options: [.caseInsensitive])
+            self.items = found.filter { item in
+                if self.kind == .mosques, let re = notMosque, let name = item.name,
+                   re.firstMatch(in: name, range: NSRange(name.startIndex..., in: name)) != nil { return false }
+                let c = item.placemark.coordinate
+                let key = "\((item.name ?? "").lowercased())|\(Int(c.latitude * 2000))|\(Int(c.longitude * 2000))"
+                return seen.insert(key).inserted
+            }
+            .sorted { self.distance($0) < self.distance($1) }
+            .prefix(25)
+            .map { $0 }
+            self.say(self.items.isEmpty
+                ? TripMode.t("لم نجد نتائج قريبة، أو لا يوجد اتصال بالإنترنت. اسحب للأسفل للمحاولة مجدداً.",
+                             "Nothing found nearby, or no internet connection. Pull down to try again.")
+                : nil)
+        }
+    }
+
+    private func distance(_ item: MKMapItem) -> CLLocationDistance {
+        guard let here = here else { return 0 }
+        let c = item.placemark.coordinate
+        return here.distance(from: CLLocation(latitude: c.latitude, longitude: c.longitude))
+    }
+
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { items.count }
+
+    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        if let m = message { return m }
+        return kind == .halal
+            ? TripMode.t("اضغط مكاناً لتفتح الطريق إليه. تأكد من الحلال في المطعم نفسه قبل الطلب.",
+                         "Tap a place for walking directions. Check halal at the restaurant itself before ordering.")
+            : TripMode.t("اضغط مسجداً لتفتح الطريق إليه مشياً.", "Tap a mosque for walking directions.")
+    }
+
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
+        let item = items[indexPath.row]
+        let p = item.placemark
+        let street = [p.subThoroughfare, p.thoroughfare, p.locality].compactMap { $0 }.joined(separator: " ")
+        cell.textLabel?.text = item.name
+        cell.textLabel?.font = .boldSystemFont(ofSize: 16)
+        cell.textLabel?.textAlignment = .natural
+        // Distance first; the street (often Latin) isolated so the line keeps
+        // the reading direction (RLM sets it for Arabic): «350 م · street».
+        let line = [TripMode.km(distance(item)), street.isEmpty ? "" : "\u{2068}\(street)\u{2069}"].filter { !$0.isEmpty }.joined(separator: " · ")
+        cell.detailTextLabel?.text = (TripMode.english ? "" : "\u{200F}") + line
+        cell.detailTextLabel?.textColor = .secondaryLabel
+        cell.detailTextLabel?.textAlignment = .natural
+        cell.accessoryType = .disclosureIndicator
+        return cell
+    }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        items[indexPath.row].openInMaps(launchOptions: [MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeWalking])
     }
 }

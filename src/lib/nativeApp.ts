@@ -11,7 +11,7 @@
  * before a call goes native — anything else falls back to the browser way.
  */
 
-import type { OfflinePlan } from "@/lib/tripMode";
+import type { CalendarStop, OfflinePlan } from "@/lib/tripMode";
 
 const APP_UA = /SfrtnaApp\/(Android|iOS)/;
 
@@ -31,6 +31,8 @@ interface SfrtnaAppPlugin {
   setAlerts(options: { id: string; remind: boolean; prayers: boolean }): Promise<AppPlanState & { granted: boolean }>;
   openTripMode(options: { target?: string }): Promise<void>;
   haptic(options: { kind: "success" | "light" }): Promise<void>;
+  /** The plan's stops into the phone's calendar (iPhone builds from 16 Nov 2026, feature «calendar»). */
+  addToCalendar(options: { title: string; events: CalendarStop[] }): Promise<{ added: number; granted: boolean }>;
 }
 
 /** A plan kept on the phone, and its alert switches. */
@@ -210,6 +212,22 @@ export const keepPlanInApp = (plan: OfflinePlan) => tripCall((app) => app.keepPl
 export const forgetPlanInApp = (id: string) => tripCall((app) => app.forgetPlan({ id }));
 export const planStateInApp = (id: string) => tripCall((app) => app.planState({ id }));
 export const setPlanAlertsInApp = (id: string, remind: boolean, prayers: boolean) => tripCall((app) => app.setAlerts({ id, remind, prayers }));
+
+/** Can this app build put a plan in the phone's calendar? */
+export async function calendarInApp(): Promise<boolean> {
+  return plugin() !== null && (await appFeatures()).includes("calendar");
+}
+
+/** The plan's stops into the phone's calendar: how many were added, or null (not possible here). */
+export async function addToCalendarInApp(title: string, events: CalendarStop[]): Promise<{ added: number; granted: boolean } | null> {
+  const app = plugin();
+  if (!app || !(await calendarInApp())) return null;
+  try {
+    return await app.addToCalendar({ title, events });
+  } catch {
+    return null;
+  }
+}
 
 /** target: "qibla" | "mosques" | "halal" | a kept plan's id | undefined (the list). */
 export async function openTripModeInApp(target?: string): Promise<boolean> {

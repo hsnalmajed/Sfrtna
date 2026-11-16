@@ -108,20 +108,22 @@ iPhone app.
 
 ## ▶ Hand-off (15 Nov 2026) — current state
 
-**▶▶▶▶▶ OWNER'S DECISION 16 Nov 18:13 (overrides ALL Apple work below):
-iPhone = EXACTLY the Android app, no native-only additions** («التطبيق
-اصبح سيء جدا»). Done: mobile/ios + capacitor.config.json + ios.yml restored
-to 969efef9 (14 Nov: site in the shell, booking inside, share-binary; no
-tabs, no trip mode, no widget); listing.json restored to before P5; reply
-rewritten (`docs/app-store/review-reply.md`, answers for the SAME app; honest
-note: Apple asked for big changes, a reply alone may be refused). Kept but
-UNUSED: SfrtnaWidget/ files, App.entitlements, site code (IosTabsGuard only
-for UA SfrtnaTabs, TripModeCard only with app feature trip-mode, appPlan /
-app-cities) — delete only if the owner asks. App Group + widget App ID stay
-registered (harmless). **NEXT (owner steps, one at a time, Sonnet OK):**
-TestFlight build from this push → owner checks it looks like Android →
-paste the reply in the App Review thread of build 27 → request a call →
-pick the new build → Submit for Review. Android = unchanged.
+**▶▶▶▶▶ OWNER'S DECISION 16 Nov 18:23 (overrides ALL Apple work below):
+iPhone LOOKS like the site/Android (no native tabs, no widget); it only gets
+better iPhone ways to use features we already have.** Owner picked: «احفظ
+على جوالي» (offline) + prayer alerts + trip reminders, and «📅 أضف الخطة إلى
+تقويم جوالي» (EventKit, write-only, every stop at its time in the city's
+zone + alert 30 min). Not chosen: qibla / nearby lists (hidden: `tools = []`),
+widget, native planner. Base = 6b319a4b (trip mode inside the site), + feature
+«calendar» (`addToCalendar` plugin, `CalendarStop` events in OfflinePlan,
+button in TripModeCard; qibla/mosques/halal chips removed). listing.json
+review notes + review-reply.md rewritten (project idea + iPhone-only list +
+steps to try). Kept but UNUSED: SfrtnaWidget/, App.entitlements, IosTabsGuard
+(UA SfrtnaTabs only), appPlan/app-cities. **NEXT:** check ios.yml compiled +
+uploaded → owner (one step at a time, Sonnet OK): TestFlight → plan Istanbul
+→ «احفظ على جوالي» → alerts → «أضف الخطة إلى تقويم جوالي» → Airplane mode →
+open the plan; ONE screenshot of anything wrong → `ios-store.yml` (listing)
+→ paste reply in build 27's thread → request a call → pick new build → Submit.
 
 **▶▶▶ (16 Nov 15:00): Apple root fix P1+P2+P3 BUILT, P5 text + P7 draft
 written** (PROJECT_NOTES «Apple root fix — P1–P3 + P5»). Next: store

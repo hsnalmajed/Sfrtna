@@ -2750,3 +2750,11 @@ extras»). Restored mobile/ios, capacitor.config.json, ios.yml to 969efef9
 and listing.json to 1b5a324f^. Reply rewritten for the same app. Widget,
 native planner, trip mode, tabs: code kept in history (f74c527, 91c4c4b,
 8c10440, 382fa8d) if ever wanted again.
+
+### Owner 16 Nov 18:23 — iPhone = same look + iPhone-only use of our features
+Owner: not a root change; make existing features better/different on iPhone
+(e.g. plan into the phone calendar) and explain to Apple. Picked: keep on
+phone + alerts, and calendar. Built: base 6b319a4b + EventKit calendar
+(`addToCalendar`, feature «calendar»; events from `buildOfflinePlan`), qibla /
+nearby hidden, offline-screen button only with kept plans. Reply + review
+notes rewritten for this.

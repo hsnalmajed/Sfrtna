@@ -14,6 +14,21 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.makeKeyAndVisible()
 
         SceneDelegateProxy.shared.scene(scene, willConnectTo: session, options: connectionOptions)
+        // Opened from the home-screen shortcut «وضع الرحلة» (Info.plist).
+        if connectionOptions.shortcutItem?.type == TripMode.shortcutType { TripMode.open("") }
+    }
+
+    /// The phone keeps at most 64 waiting alerts: trip mode schedules the
+    /// next 60 of all kept plans, so each visit moves the window forward.
+    func sceneDidBecomeActive(_ scene: UIScene) {
+        TripAlerts.rescheduleAll()
+    }
+
+    func windowScene(_ windowScene: UIWindowScene, performActionFor shortcutItem: UIApplicationShortcutItem,
+                     completionHandler: @escaping (Bool) -> Void) {
+        let ours = shortcutItem.type == TripMode.shortcutType
+        if ours { TripMode.open("") }
+        completionHandler(ours)
     }
 
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {

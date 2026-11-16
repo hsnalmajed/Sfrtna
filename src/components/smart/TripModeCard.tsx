@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useDictionary } from "@/lib/dict/context";
 import {
+  addToCalendarInApp,
+  calendarInApp,
   forgetPlanInApp,
   hapticInApp,
   keepPlanInApp,
@@ -38,6 +40,7 @@ export default function TripModeCard({
 }) {
   const t = useDictionary().tripMode;
   const [available, setAvailable] = useState(false);
+  const [calendar, setCalendar] = useState(false);
   const [state, setState] = useState<AppPlanState | null>(null);
   const [busy, setBusy] = useState(false);
   const [note, setNote] = useState<string | null>(null);
@@ -51,6 +54,7 @@ export default function TripModeCard({
     void tripModeInApp().then(async (yes) => {
       if (!live || !yes) return;
       setAvailable(true);
+      void calendarInApp().then((c) => live && setCalendar(c));
       const s = await planStateInApp(planId);
       if (live && s) setState(s);
     });
@@ -104,6 +108,19 @@ export default function TripModeCard({
     else if (remind || prayers) hapticInApp("light");
   }
 
+  /** «أضف إلى تقويم جوالي»: every stop as an event with its time and place. */
+  async function toCalendar() {
+    setBusy(true);
+    setNote(null);
+    const plan = await makeRef.current();
+    const r = await addToCalendarInApp(plan.title, plan.events).catch(() => null);
+    setBusy(false);
+    if (!r) return setNote(t.failed);
+    if (!r.granted) return setNote(t.calendarDenied);
+    setNote(t.calendarDone.replace("{n}", String(r.added)));
+    hapticInApp("success");
+  }
+
   async function forget() {
     const s = await forgetPlanInApp(planId).catch(() => null);
     if (s) setState(s);
@@ -152,20 +169,16 @@ export default function TripModeCard({
             <button type="button" onClick={() => openTripModeInApp(planId)} className={chip}>
               {t.open}
             </button>
-            <button type="button" onClick={() => openTripModeInApp("qibla")} className={chip}>
-              {t.qibla}
-            </button>
-            <button type="button" onClick={() => openTripModeInApp("mosques")} className={chip}>
-              {t.mosques}
-            </button>
-            <button type="button" onClick={() => openTripModeInApp("halal")} className={chip}>
-              {t.halal}
-            </button>
           </div>
           <button type="button" onClick={forget} className="mt-3 text-xs font-bold text-white/60 underline underline-offset-4">
             {t.forget}
           </button>
         </>
+      )}
+      {calendar && (
+        <button type="button" onClick={toCalendar} disabled={busy} className={`${chip} mt-3`}>
+          {t.calendar}
+        </button>
       )}
       {note && (
         <p role="alert" className="mt-2 text-[13px] font-bold text-sun-300">
