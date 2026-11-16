@@ -1,0 +1,26 @@
+# By hand: why App Store Connect refuses «Update Review» / resubmit
+# (scripts/ios/asc-review.mjs). submit=yes also resubmits to App Review.
+name: iOS review check
+on:
+  workflow_dispatch:
+    inputs:
+      submit:
+        description: "yes = resubmit to App Review after the checks"
+        default: "no"
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: node scripts/ios/asc-review.mjs
+        env:
+          SUBMIT: ${{ inputs.submit == 'yes' && '1' || '' }}
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
