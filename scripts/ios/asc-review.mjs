@@ -127,7 +127,7 @@ if (process.env.SUBMIT === "1") {
           await api("PATCH", `/v1/reviewSubmissionItems/${it.id}`, { data: { type: "reviewSubmissionItems", id: it.id, attributes: { resolved: true } } });
           note("item marked resolved");
         } catch (e) {
-          note(`item resolve ✗ ${e.message}`);
+          for (let k = 0; k < e.message.length; k += 450) note(`item resolve ✗ ${e.message.slice(k, k + 450)}`);
         }
       }
       await api("PATCH", `/v1/reviewSubmissions/${open.id}`, { data: { type: "reviewSubmissions", id: open.id, attributes: { submitted: true } } });
