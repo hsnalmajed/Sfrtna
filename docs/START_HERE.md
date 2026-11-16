@@ -108,7 +108,21 @@ iPhone app.
 
 ## ▶ Hand-off (15 Nov 2026) — current state
 
-**▶▶▶ NOW (16 Nov 15:00): Apple root fix P1+P2+P3 BUILT, P5 text + P7 draft
+**▶▶▶▶ NEXT (owner 16 Nov 14:35): NO beta week — finish the changes and
+submit straight to Apple.** Build in this order (Opus): 1) NATIVE trip-plan
+creation screen in the iOS app (city search, dates, who travels, interests →
+calls the planner API → shows the plan natively + «احفظ على جوالي»; any new
+/api route → edge-guard ROUTES); 2) WidgetKit home/lock-screen widget (next
+prayer + today's first stop; new Xcode target, check in ios.yml); 3) new
+App Store screenshots from the native screens (ios.yml shots → store sizes);
+4) fill the 2 «[after beta]» lines in `docs/app-store/review-reply.md` with
+REAL feedback already had (friends' verdict 14 Nov, owner's phone checks
+15–16 Nov) — no invented testers; 5) run `ios-store.yml` (listing.json);
+6) give the owner direct links + steps: reply in App Review thread, request a
+call, pick the new build, Submit for Review. Owner wants direct steps with
+links. No guarantee of approval — say so honestly if asked.
+
+**▶▶▶ (16 Nov 15:00): Apple root fix P1+P2+P3 BUILT, P5 text + P7 draft
 written** (PROJECT_NOTES «Apple root fix — P1–P3 + P5»). Next: store
 screenshots from the new screens (ios.yml shots), optional P4 widget, then
 P6: owner invites ≥5 external TestFlight testers for a week → fill
