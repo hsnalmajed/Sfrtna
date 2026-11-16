@@ -1,3 +1,4 @@
+import HeroFeatures from "@/components/home/HeroFeatures";
 import { getDictionary } from "@/lib/dictionaries";
 import { seasonReasons } from "@/lib/travelSeason/reasons";
 import type { Locale } from "@/lib/types";
@@ -263,9 +264,11 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
             <span className="text-sun-400">{dict.hero.titleLine2}</span>
           </h1>
 
-          <p className="mt-3 max-w-xl text-balance text-sm font-medium text-white md:max-w-4xl lg:whitespace-nowrap drop-shadow-[0_1px_8px_rgba(4,24,47,0.95)] sm:text-base">
-            {dict.hero.subtitle}
-          </p>
+          <HeroFeatures
+            labels={dict.hero.features}
+            details={dict.hero.featuresDetail}
+            shortLabels={dict.hero.featuresShort}
+          />
 
           <div className="mt-5 flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
             {stats.map((s) => (
