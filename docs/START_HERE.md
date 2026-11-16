@@ -108,6 +108,20 @@ iPhone app.
 
 ## ▶ Hand-off (15 Nov 2026) — current state
 
+**▶▶▶▶▶▶▶ STATE 17 Nov 00:20 — iPhone ready to submit.** Owner tested on
+TestFlight: Sign in with Apple OK (account page), «أضف الخطة إلى تقويم جوالي»
+OK (Istanbul stops 24–28 Nov in the iPhone calendar). Account page empty
+sections fixed (white compact cards, 6d1e547). ios-store.yml: build 49
+attached to version 1.0; review notes NOT updated by the script (it skips
+once added) → owner pastes `docs/app-store/listing.json` reviewNotes by hand.
+**NEXT (Sonnet, owner steps one at a time):** 0) recommended first (Opus,
+small): revoke the Apple token on account deletion (guideline 5.1.1(v)):
+owner makes Keys → + → Sign in with Apple key → Runtime vars → code in the
+delete route; 1) App Store Connect → app → version 1.0 → App Review
+Information → Notes = reviewNotes; 2) App Review thread of build 27 → paste
+the reply body of `docs/app-store/review-reply.md`; 3) optional «Request a
+call»; 4) Add for Review → Submit. No guarantee of approval.
+
 **▶▶▶▶▶▶ Sign in with Apple BUILT 16 Nov 23:50 (same chat, owner asked):**
 `/api/auth/apple` (+ edge-guard), `verifyAppleToken` (Apple JWKS, aud
 com.sfrtna.app, sha256 nonce) → `googleSignIn("apple:"+sub)`; iOS plugin
@@ -612,4 +626,4 @@ payout threshold $500 not met» (wire $500; PayPal/ACH $100).
 Waiting on the owner: Admitad ad space «Verifying» (14 Nov) → Active → flynas/Jazeera; Google Play ticket reply; Google-fares
 decision after the 6 Nov measurement; Android APK on a real phone.
 
-**Recommended model for the next chat: Sonnet 5.5** (owner steps: reply to App Review + submit).
+**Recommended model for the next chat: Opus 5.5** for the Apple-token revoke (small), then Sonnet 5.5 for the submit steps.
