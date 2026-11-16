@@ -108,6 +108,18 @@ iPhone app.
 
 ## ▶ Hand-off (15 Nov 2026) — current state
 
+**▶▶ NOW (16 Nov, item 2 Apple): «وضع الرحلة» BUILT** (PROJECT_NOTES «iPhone
+«وضع الرحلة» — 16 Nov»): iPhone keeps a plan offline («احفظ على جوالي»
+under the smart plan, no account), reminders + prayer alerts in the city's
+time (local notifications), qibla, nearest mosques / halal; More sheet,
+offline screen and home-screen shortcut open it. Site part live (Release
+green); iOS build = TestFlight. **Owner next (one step at a time, Sonnet
+OK):** install the new TestFlight build → plan a trip → «احفظ على جوالي» →
+Airplane mode → More → «وضع الرحلة» → open the plan; try qibla + reminder
+switch; ONE screenshot of anything wrong. Then 2–3 days of TestFlight
+feedback → reply to Apple's 9 questions + review notes (Opus). Android
+port of trip mode = later.
+
 **▶ Play setup DONE 16 Nov 05:10** — all «Finish setting up» items, store
 listing (texts = listing-draft.md; icon/feature graphic/7 screenshots made from
 `ios-shots` store-*.png, cropped to 1080×2160, hotels shot dropped), closed
@@ -117,7 +129,6 @@ Privacy page got «#delete» section (used as Play deletion URL). Data safety:
 Name, Email, App interactions (required), search history, other UGC, Device
 IDs; collected, not shared. **Owner next:** add testers to «Sfrtna team» until
 12+ opted in (14-day clock starts then) → apply for production ~3 weeks.
-Then item 2 below (Apple), **Opus 5.5**.
 **Home 16 Nov (live):** hero subtitle → owner's 7 features (`HeroFeatures`,
 dict `hero.features/featuresDetail/featuresShort`), two still rows, no boxes;
 month name in the season panel = logo gold #f8b840. Owner rule: every new
@@ -184,7 +195,7 @@ Keep today's route map; tapping a city's number (1, 2…) opens that city on
 the map with ALL the plan's places there (numbered pins by day, tap a pin →
 name + day + «على الخريطة»), not only the list under the map. Goal: make
 the plan the reason to rely on the app. Same map in the app (later offline).
-**▶▶ NEXT 2 (owner's decision 15 Nov): iPhone app-only value** for Apple's 4.3 /
+**▶▶ NEXT 2 — BUILT 16 Nov (see NOW at the top); old brief kept:** iPhone app-only value for Apple's 4.3 /
 4.2.6 rejection, then the reply. Today `mobile/` = Capacitor 8 shell with NO
 native plugins. Build (plugins called via `src/lib/nativeApp.ts`, site keeps
 working in browsers) «وضع الرحلة»: 1) saved plans offline (Preferences/
@@ -539,4 +550,4 @@ payout threshold $500 not met» (wire $500; PayPal/ACH $100).
 Waiting on the owner: Admitad ad space «Verifying» (14 Nov) → Active → flynas/Jazeera; Google Play ticket reply; Google-fares
 decision after the 6 Nov measurement; Android APK on a real phone.
 
-**Recommended model for the next chat: Opus 5.5** (iPhone app-only features).
+**Recommended model for the next chat: Sonnet 5.5** (owner's TestFlight check, step by step); Opus 5.5 for fixes it finds and the Apple reply.

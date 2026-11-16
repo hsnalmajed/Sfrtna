@@ -1439,6 +1439,8 @@ final class NearbyController: UITableViewController, CLLocationManagerDelegate {
             request.naturalLanguageQuery = q
             request.region = MKCoordinateRegion(center: loc.coordinate, latitudinalMeters: 8000, longitudinalMeters: 8000)
             request.resultTypes = .pointOfInterest
+            // Food: restaurants only (no cafés, taxi ranks or shops).
+            if kind == .halal { request.pointOfInterestFilter = MKPointOfInterestFilter(including: [.restaurant]) }
             MKLocalSearch(request: request).start { response, _ in
                 DispatchQueue.main.async {
                     found += response?.mapItems ?? []
@@ -1450,7 +1452,12 @@ final class NearbyController: UITableViewController, CLLocationManagerDelegate {
             guard let self = self else { return }
             self.searching = false
             var seen = Set<String>()
+            // Search by name also returns «… Information Center», fountains,
+            // museums and shops next to a mosque: not places to pray.
+            let notMosque = try? NSRegularExpression(pattern: "information|center|centre|fountain|çeşme|museum|müze|shop|store|parking|otopark|hotel|otel|cafe|restaurant", options: [.caseInsensitive])
             self.items = found.filter { item in
+                if self.kind == .mosques, let re = notMosque, let name = item.name,
+                   re.firstMatch(in: name, range: NSRange(name.startIndex..., in: name)) != nil { return false }
                 let c = item.placemark.coordinate
                 let key = "\((item.name ?? "").lowercased())|\(Int(c.latitude * 2000))|\(Int(c.longitude * 2000))"
                 return seen.insert(key).inserted
@@ -1489,7 +1496,10 @@ final class NearbyController: UITableViewController, CLLocationManagerDelegate {
         cell.textLabel?.text = item.name
         cell.textLabel?.font = .boldSystemFont(ofSize: 16)
         cell.textLabel?.textAlignment = .natural
-        cell.detailTextLabel?.text = [TripMode.km(distance(item)), street].filter { !$0.isEmpty }.joined(separator: " · ")
+        // Distance first; the street (often Latin) isolated so the line keeps
+        // the reading direction (RLM sets it for Arabic): «350 م · street».
+        let line = [TripMode.km(distance(item)), street.isEmpty ? "" : "\u{2068}\(street)\u{2069}"].filter { !$0.isEmpty }.joined(separator: " · ")
+        cell.detailTextLabel?.text = (TripMode.english ? "" : "\u{200F}") + line
         cell.detailTextLabel?.textColor = .secondaryLabel
         cell.detailTextLabel?.textAlignment = .natural
         cell.accessoryType = .disclosureIndicator

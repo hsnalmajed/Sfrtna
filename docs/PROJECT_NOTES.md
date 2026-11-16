@@ -2582,3 +2582,46 @@ the app feels duplicated → reply only after app-only features are built.
    workerd: claim → true, repeat → false, cleanup once. Rule: never compare
    rowsWritten with an exact number.
 
+
+### iPhone «وضع الرحلة» — 16 Nov 2026 (App Review 4.3 / 4.2.6 answer, step 1)
+Built (commit 382fa8d; Release 43821414793 green; iOS run 43821414838).
+**Native, all in `mobile/ios/App/App/AppDelegate.swift`** (no new Xcode
+file entries), plugin `SfrtnaApp` features now `trip-mode`, `haptics`:
+- `keepPlan / forgetPlan / planState / setAlerts / openTripMode / haptic`.
+- `TripStore`: Application Support/plans/<id>.json (max 30 plans).
+- `TripAlerts`: local notifications; each notice = date + time + city tz
+  (absolute time-interval triggers, so right wherever the phone is); the
+  next 60 of all plans are scheduled, refreshed on `sceneDidBecomeActive`.
+  Permission asked only when a switch is turned on. Tap → that plan.
+- Screens: `TripNavController` (RTL/LTR from the site's last language
+  cookie) → list «خططي على هذا الجوال» (swipe to remove) + qibla + nearest
+  mosques + halal nearby; `PlanViewerController` (offline page, bell menu =
+  reminders / prayer alerts); `QiblaController` (CoreLocation heading,
+  gold arrow + haptic when aligned, distance to Makkah); `NearbyController`
+  (MKLocalSearch «mosque/masjid/مسجد», «halal restaurant/halal food/مطعم
+  حلال», 8 km, 25 nearest, tap = walking directions in Maps; footer: check
+  halal at the restaurant).
+- Entry points: More sheet «وضع الرحلة» (site), the plan card, offline
+  screen button, home-screen long-press shortcut, reminder tap.
+- Info.plist: location text now names qibla + mosque/halal.
+**Site:** `src/lib/tripMode.ts` (offline page: header, day chips, each day:
+weather, wear, prayers, notes, stops with «على الخريطة», day route;
+«قبل أن تسافر»; CSP none; ~17 KB for Istanbul 4 days) + reminders: week
+(20:00), 3 days (20:00, packing list), departure (07:00), each day's first
+stop −30 min in city tz, 5 prayers/day (separate switch). `TripModeCard`
+under the smart plan toolbar (only in builds with trip-mode; no account
+needed; follows swaps). Dict section `tripMode` (ar/en, in CLIENT_SECTIONS).
+Android: no change (feature not listed) → port later.
+Checked here: tsc, eslint, check-guard/client-words/rails/bundle-json;
+offline page rendered at 390 px (Chrome) for Istanbul 4 days: OK.
+Simulator (iOS run 43821414838, branch ios-shots check-trip/qibla/mosques/
+halal.png, location Sultanahmet): Swift compiled first time, all 4 screens
+OK, uploaded to TestFlight. Fixed after the shots: mosque list dropped
+«Information Center» / fountain rows (name filter); halal = restaurants
+only (cafés, «Taxi Way» out); Arabic distance line read «م 32» → RLM +
+isolated street. Simulator has no compass → qibla shows the no-compass text.
+**Next:** owner installs the TestFlight build → keeps a plan → airplane
+mode → opens it from «وضع الرحلة»; qibla; reminders switch. Then 2–3 days
+of real TestFlight feedback → reply to Apple's 9 questions (draft «Apple 4.3
+rejection — 14 Nov» + this section) + review notes («open any plan → احفظ
+على جوالي → Airplane mode → More → وضع الرحلة») → owner resubmits.
