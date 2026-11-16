@@ -108,6 +108,17 @@ iPhone app.
 
 ## ▶ Hand-off (15 Nov 2026) — current state
 
+**▶▶▶▶▶▶▶▶ STATE 17 Nov 01:35 — iPhone submit BLOCKED by Apple (hidden forms).**
+Done tonight: build 50 (Apple-token revoke code) attached to 1.0; review notes
+pasted; reply (short, 3,494 chars, all 9 answers) SENT in build 27's thread;
+DSA = non-trader (done). «Update Review» → «unexpected error». Root cause via
+`ios-review.yml` (scripts/ios/asc-review.mjs, API): appInfo compliance forms
+`PPM.compliance.form.SECURITYASF395E` + `AIGENERATEFD1DE` PENDING_COLLECT →
+NEW_APP_SUBMISSION_BLOCK; not shown anywhere in the UI (age rating, privacy,
+app info all complete). Owner wrote Developer Support 01:34: case
+**30000017675096**. **NEXT:** when Apple answers / forms appear → fill them →
+run `ios-review.yml` with submit=yes (or «Update Review»). Still open: 0a
+Sign in with Apple key → Runtime vars APPLE_TEAM_ID/APPLE_KEY_ID/APPLE_P8.
 **▶▶▶▶▶▶▶ STATE 17 Nov 00:20 — iPhone ready to submit.** Owner tested on
 TestFlight: Sign in with Apple OK (account page), «أضف الخطة إلى تقويم جوالي»
 OK (Istanbul stops 24–28 Nov in the iPhone calendar). Account page empty
