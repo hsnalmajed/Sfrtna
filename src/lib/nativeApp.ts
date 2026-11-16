@@ -11,6 +11,8 @@
  * before a call goes native — anything else falls back to the browser way.
  */
 
+import type { OfflinePlan } from "@/lib/tripMode";
+
 const APP_UA = /SfrtnaApp\/(Android|iOS)/;
 
 interface SfrtnaAppPlugin {
@@ -22,6 +24,20 @@ interface SfrtnaAppPlugin {
   /** Google's own silent sign-in on the phone (Credential Manager); app builds from 21 Oct 2026. */
   googleSilent(options: { clientId: string }): Promise<{ idToken: string }>;
   googleSignOut(): Promise<void>;
+  /** «وضع الرحلة» (iPhone builds from 16 Nov 2026, feature «trip-mode»). */
+  keepPlan(options: OfflinePlan): Promise<AppPlanState>;
+  forgetPlan(options: { id: string }): Promise<AppPlanState>;
+  planState(options: { id: string }): Promise<AppPlanState>;
+  setAlerts(options: { id: string; remind: boolean; prayers: boolean }): Promise<AppPlanState & { granted: boolean }>;
+  openTripMode(options: { target?: string }): Promise<void>;
+  haptic(options: { kind: "success" | "light" }): Promise<void>;
+}
+
+/** A plan kept on the phone, and its alert switches. */
+export interface AppPlanState {
+  kept: boolean;
+  remind: boolean;
+  prayers: boolean;
 }
 
 declare global {
@@ -161,4 +177,50 @@ export async function googleSignOutInApp(): Promise<void> {
   } catch {
     /* nothing to clear */
   }
+}
+
+// ── «وضع الرحلة» (16 Nov 2026) ────────────────────────────────────────────
+// The phone keeps a plan that opens with no internet, its reminders and
+// prayer alerts (local notifications), the qibla and the nearest mosques /
+// halal food. Only app builds whose `features` include «trip-mode».
+
+/** The id the app keeps a plan under: one per city (or route) and dates. */
+export function offlinePlanId(code: string, slug: string, from: string, to: string, route = false): string {
+  return `${route ? "r" : "c"}-${code}-${slug}-${from}-${to}`.replace(/[^A-Za-z0-9_-]/g, "").slice(0, 100);
+}
+
+/** Does this app build have trip mode? */
+export async function tripModeInApp(): Promise<boolean> {
+  return plugin() !== null && (await appFeatures()).includes("trip-mode");
+}
+
+async function tripCall<R>(run: (app: SfrtnaAppPlugin) => Promise<R>): Promise<R | null> {
+  const app = plugin();
+  if (!app || !(await tripModeInApp())) return null;
+  try {
+    return await run(app);
+  } catch (e) {
+    // «full»: 30 plans kept already. Anything else: treat as not done.
+    if (e && typeof e === "object" && "message" in e && String((e as { message: unknown }).message).includes("full")) throw new Error("full");
+    return null;
+  }
+}
+
+export const keepPlanInApp = (plan: OfflinePlan) => tripCall((app) => app.keepPlan(plan));
+export const forgetPlanInApp = (id: string) => tripCall((app) => app.forgetPlan({ id }));
+export const planStateInApp = (id: string) => tripCall((app) => app.planState({ id }));
+export const setPlanAlertsInApp = (id: string, remind: boolean, prayers: boolean) => tripCall((app) => app.setAlerts({ id, remind, prayers }));
+
+/** target: "qibla" | "mosques" | "halal" | a kept plan's id | undefined (the list). */
+export async function openTripModeInApp(target?: string): Promise<boolean> {
+  return (await tripCall((app) => app.openTripMode({ target: target ?? "" }).then(() => true))) === true;
+}
+
+/** A light tap / a success buzz, where the app can (no-op elsewhere). */
+export function hapticInApp(kind: "success" | "light" = "light"): void {
+  const app = plugin();
+  if (!app) return;
+  void appFeatures().then((f) => {
+    if (f.includes("haptics")) app.haptic({ kind }).catch(() => {});
+  });
 }

@@ -160,6 +160,13 @@ jobs:
           shot check-partner 40 -sfrPath "$HOTELS" -sfrDo partner
           shot check-print 20 -sfrPath "/ar" -sfrDo print
           shot check-share 20 -sfrPath "/ar" -sfrDo share
+          # Trip mode (native screens): Istanbul's Sultanahmet as the location.
+          t 30 xcrun simctl privacy "$UDID" grant location com.sfrtna.app > /dev/null 2>&1 || true
+          t 30 xcrun simctl location "$UDID" set 41.0054,28.9768 > /dev/null 2>&1 || true
+          shot check-trip 16 -sfrTrip list
+          shot check-qibla 18 -sfrTrip qibla
+          shot check-mosques 25 -sfrTrip mosques
+          shot check-halal 25 -sfrTrip halal
           t 30 xcrun simctl terminate "$UDID" com.sfrtna.app || true
           cat "$OUT/checks.txt"
 

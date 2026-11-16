@@ -15,6 +15,7 @@ import { replayTips } from "@/components/FirstTips";
 import SocialLinks from "@/components/SocialLinks";
 import { useMyTrip } from "@/lib/myTrip";
 import { tripCityName } from "@/components/member/tripLinks";
+import { openTripModeInApp, tripModeInApp } from "@/lib/nativeApp";
 
 /**
  * The phone app's own navigation: a tab bar at the bottom of the screen.
@@ -115,6 +116,12 @@ export default function AppTabBar({ locale }: { locale: Locale }) {
     if (history.state?.sfrtnaSheet) history.back();
     else setMoreOpen(false);
   };
+
+  // «وضع الرحلة»: iPhone builds that have it (kept plans offline, qibla…).
+  const [tripMode, setTripMode] = useState(false);
+  useEffect(() => {
+    void tripModeInApp().then(setTripMode);
+  }, []);
 
   const myTrip = useMyTrip();
   const home = `/${locale}`;
@@ -260,6 +267,23 @@ export default function AppTabBar({ locale }: { locale: Locale }) {
               </span>
               <span aria-hidden="true" className="text-white/40 rtl:rotate-180">›</span>
             </Link>
+            {tripMode && (
+              <button
+                type="button"
+                onClick={() => {
+                  setMoreOpen(false);
+                  void openTripModeInApp();
+                }}
+                className="mt-2 flex w-full items-center gap-3 rounded-2xl bg-sun-50 px-4 py-3.5 text-start ring-1 ring-sun-300 active:scale-[0.99]"
+              >
+                <span className="text-2xl leading-none" aria-hidden="true">🧭</span>
+                <span className="min-w-0 flex-1">
+                  <span className="block text-sm font-extrabold text-navy-900">{dict.tripMode.title}</span>
+                  <span className="block truncate text-xs text-navy-900/60">{dict.tripMode.menuSub}</span>
+                </span>
+                <span aria-hidden="true" className="text-navy-900/30 rtl:rotate-180">›</span>
+              </button>
+            )}
             <AccountLink locale={locale} variant="sheet" onNavigate={go} />
             <p className="mt-5 px-1 pb-2 text-xs font-bold text-navy-900/50">{dict.nav.tools}</p>
             <div className="grid grid-cols-3 gap-2">

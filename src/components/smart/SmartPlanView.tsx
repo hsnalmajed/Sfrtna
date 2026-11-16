@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { Locale } from "@/lib/types";
 import { useDictionary } from "@/lib/dict/context";
-import { appCanShareFiles, inApp, printPage, shareBlobInApp, shareImageInApp } from "@/lib/nativeApp";
+import { appCanShareFiles, hapticInApp, inApp, offlinePlanId, printPage, shareBlobInApp, shareImageInApp } from "@/lib/nativeApp";
 import { downloadText, safeFileName, toKMLDays } from "@/lib/mapExport";
 import { PENDING_PLAN_KEY, refreshAccount, useAccount } from "@/lib/useAccount";
 import { findCity } from "@/lib/cities";
@@ -13,6 +13,7 @@ import ViatorOffers from "@/components/ViatorOffers";
 import TripServices from "@/components/TripServices";
 import ScrollRow from "@/components/ui/ScrollRow";
 import MailPlanButton, { type PlanForMail } from "@/components/MailPlanButton";
+import TripModeCard from "@/components/smart/TripModeCard";
 import type { PlanAnswers, PlanDay, PlanItem, SmartPlan } from "@/lib/ai/plan";
 
 type T = ReturnType<typeof useDictionary>["smart"];
@@ -272,7 +273,10 @@ export default function SmartPlanView({
           ok: boolean;
           reason?: string;
         };
-        if (j.ok) return setSaveState("saved");
+        if (j.ok) {
+          hapticInApp("success");
+          return setSaveState("saved");
+        }
         if (j.reason === "too_many") return setSaveState("full");
         if (res.status < 500) break;
       } catch {
@@ -423,6 +427,56 @@ export default function SmartPlanView({
     [days, plan.from, plan.to],
   );
   const mailName = route && country ? (isAr ? country.nameAr : country.nameEn) : plan.city.name;
+
+  // ── «وضع الرحلة» (iPhone app): the plan kept on the phone, offline ──
+  const tm = dict.tripMode;
+  const offlineId = offlinePlanId(plan.city.code, plan.city.slug, plan.from, plan.to, Boolean(route));
+  const offlineVersion = useMemo(() => days.map((d) => d.items.map((i) => i.key ?? i.name).join(",")).join("|"), [days]);
+  const makeOffline = async () => {
+    const { buildOfflinePlan } = await import("@/lib/tripMode");
+    return buildOfflinePlan({
+      locale,
+      id: offlineId,
+      title,
+      subtitle,
+      summary: plan.summary,
+      place: mailName,
+      city: plan.city,
+      from: plan.from,
+      to: plan.to,
+      days,
+      essentials: plan.essentials,
+      words: {
+        day: t.day,
+        prayersTitle: t.prayersTitle,
+        prayers: t.prayers,
+        weather: t.weather,
+        wear: t.wear,
+        packing: t.packing,
+        etiquette: t.etiquette,
+        transport: t.transport,
+        money: t.money,
+        phrases: t.phrases,
+        safety: t.safety,
+        emergency: t.emergency,
+        onMap: tm.onMap,
+        dayRoute: tm.dayRoute,
+        before: tm.before,
+        offlineBadge: tm.offlineBadge,
+        keptOn: tm.keptOn,
+        nWeekTitle: tm.nWeekTitle,
+        nWeekBody: tm.nWeekBody,
+        nThreeTitle: tm.nThreeTitle,
+        nThreeBody: tm.nThreeBody,
+        nDepartTitle: tm.nDepartTitle,
+        nDepartBody: tm.nDepartBody,
+        nDayTitle: tm.nDayTitle,
+        nDayBody: tm.nDayBody,
+        nPrayerTitle: tm.nPrayerTitle,
+        nPrayerBody: tm.nPrayerBody,
+      },
+    });
+  };
 
   // ── Before you travel ──────────────────────────────────────────────
   const ess = plan.essentials;
@@ -785,6 +839,7 @@ export default function SmartPlanView({
           {t.imageFailed}
         </p>
       )}
+      <TripModeCard planId={offlineId} version={offlineVersion} hasPrayers={days.some((d) => Boolean(d.prayers))} make={makeOffline} />
 
       {/* Days: a strip to move between them, or every day one after another. */}
       <div ref={top} className="sticky top-0 z-10 -mx-4 mt-4 bg-mist-50/95 px-4 py-2 backdrop-blur print:hidden">
