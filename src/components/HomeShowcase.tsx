@@ -149,6 +149,23 @@ type TabKey = "season" | "tools" | "how" | "plan";
  * instead of interrupting it, and the destination photos inside it sit on the
  * dark ground they were shot against.
  */
+/**
+ * The month's name in gold wherever the panel names it (owner, 16 Nov):
+ * the tab, the app's panel title and the «all cities» button. The gold is
+ * the light gold of the logo's sun (#f8b840), not the button orange.
+ */
+function goldMonth(text: string, month: string) {
+  const at = month ? text.indexOf(month) : -1;
+  if (at < 0) return text;
+  return (
+    <>
+      {text.slice(0, at)}
+      <span className="text-[#f8b840]">{month}</span>
+      {text.slice(at + month.length)}
+    </>
+  );
+}
+
 export default function HomeShowcase({
   locale,
   seasonCities,
@@ -569,7 +586,7 @@ export default function HomeShowcase({
                     <Icon name="plane" className="h-[1.1rem] w-[1.1rem]" />
                   </>
                 )}
-                {t.key === "season" ? dict.seasonTitle : t.label}
+                {t.key === "season" ? goldMonth(dict.seasonTitle, dict.monthName) : t.label}
               </button>
             ))}
         </ScrollRow>
@@ -580,7 +597,7 @@ export default function HomeShowcase({
             <div className="max-w-2xl">
               {/* In the app the tab strip is gone, so the panel names itself. */}
               <h2 className="app-only font-display text-h3 font-extrabold text-white">
-                {active === "plan" ? dict.tabPlan : dict.seasonTitle}
+                {active === "plan" ? dict.tabPlan : goldMonth(dict.seasonTitle, dict.monthName)}
               </h2>
               <p className="web-only text-sm leading-relaxed text-white/65">{blurb[active]}</p>
             </div>
@@ -593,7 +610,7 @@ export default function HomeShowcase({
               >
                 {allCities
                   ? dict.seasonFewerCities
-                  : dict.seasonAllCities.replace("{count}", String(seasonCities.length))}
+                  : goldMonth(dict.seasonAllCities.replace("{count}", String(seasonCities.length)), dict.monthName)}
                 <span aria-hidden="true" className={`transition ${allCities ? "-rotate-90" : ""}`}>
                   {arrow}
                 </span>
