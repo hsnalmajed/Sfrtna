@@ -117,8 +117,10 @@ DSA = non-trader (done). «Update Review» → «unexpected error». Root cause 
 NEW_APP_SUBMISSION_BLOCK; not shown anywhere in the UI (age rating, privacy,
 app info all complete). Owner wrote Developer Support 01:34: case
 **30000017675096**. **NEXT:** when Apple answers / forms appear → fill them →
-run `ios-review.yml` with submit=yes (or «Update Review»). Still open: 0a
-Sign in with Apple key → Runtime vars APPLE_TEAM_ID/APPLE_KEY_ID/APPLE_P8.
+run `ios-review.yml` with submit=yes (or «Update Review»). Sign in with
+Apple key DONE 01:50 (key H67V5U9Z2X, team 69U9GNVS8H, Runtime secrets set);
+live check `/api/health?apple=1` (in ios-review.yml) = 400 invalid_grant =
+Apple accepts our client secret → revoke on deletion is active.
 **▶▶▶▶▶▶▶ STATE 17 Nov 00:20 — iPhone ready to submit.** Owner tested on
 TestFlight: Sign in with Apple OK (account page), «أضف الخطة إلى تقويم جوالي»
 OK (Istanbul stops 24–28 Nov in the iPhone calendar). Account page empty
