@@ -134,7 +134,11 @@ hills/islets/lakes) + fill from our map; write.ts drops extras the writer
 doesn't know; `names.ts` (guide.yml step) = Arabic name for every written
 place; restaurants: more halal signals, halal never cut (applies as the
 scheduled restaurants runs refresh). Measured (depth.mjs) after run 1:
-guide<15 102→1, no plan 45→14 (writing unfinished). **NEXT:** read guide
+guide<15 102→1, no plan 45→14 (writing unfinished). **OWNER 17 Nov 23:51: start G («Been» visited map) NOW in a new chat,
+in parallel** (guide run 44170581200 works alone till ~00:20 UTC; it only
+touches public/data/guide — don't edit those files meanwhile). G = PROJECT_NOTES
+«Owner's notes of 14 Nov» G + audit §7 round 8. When the run is done, the
+same chat does round 1's close below. **Round 1 close:** read guide
 run «deep» on the 103 thin cities (dispatched 17 Nov ~21:15 UTC, `/tmp`
 list = facts.txt slugs) → `node scripts/coverage/depth.mjs` → if no-plan
 > 0, dispatch `task=write` with `only` = cities whose top-40 has unwritten
@@ -693,4 +697,4 @@ payout threshold $500 not met» (wire $500; PayPal/ACH $100).
 Waiting on the owner: Admitad ad space «Verifying» (14 Nov) → Active → flynas/Jazeera; Google Play ticket reply; Google-fares
 decision after the 6 Nov measurement; Android APK on a real phone.
 
-**Recommended model for the next chat: Opus 5.5** (finish plan depth round 1: read results, refill, spot-check plans).
+**Recommended model for the next chat: Opus 5.5** (G «Been» map now; then close plan depth round 1).
