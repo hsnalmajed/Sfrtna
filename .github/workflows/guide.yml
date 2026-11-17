@@ -12,7 +12,7 @@ on:
   workflow_dispatch:
     inputs:
       task:
-        description: "probe | facts | write | costs | all"
+        description: "probe | facts | write | names | costs | all | deep (facts + write + names, no costs)"
         type: string
         default: all
       only:
@@ -45,14 +45,20 @@ jobs:
         if: inputs.task == 'probe'
         run: npx --yes tsx@4 scripts/guide/probe.ts
       - name: Facts (OpenStreetMap + Wikidata)
-        if: inputs.task == 'facts' || inputs.task == 'all' || github.event_name == 'schedule'
+        if: inputs.task == 'facts' || inputs.task == 'deep' || inputs.task == 'all' || github.event_name == 'schedule'
         run: npx --yes tsx@4 scripts/guide/build-facts-wd.ts ${{ inputs.only && format('--only {0}', inputs.only) || '' }}
       - name: City costs (Gemini)
         if: inputs.task == 'costs' || inputs.task == 'all' || github.event_name == 'schedule'
         run: npx --yes tsx@4 scripts/guide/costs.ts ${{ inputs.only && inputs.only != 'all' && format('--only {0}', inputs.only) || '' }}
       - name: Write-ups (Gemini)
-        if: inputs.task == 'write' || inputs.task == 'all' || github.event_name == 'schedule'
+        if: inputs.task == 'write' || inputs.task == 'deep' || inputs.task == 'all' || github.event_name == 'schedule'
         run: npx --yes tsx@4 scripts/guide/write.ts ${{ inputs.only && inputs.only != 'all' && format('--only {0}', inputs.only) || '' }}
+      # 17 Nov 2026: an Arabic name for every written place (names.ts).
+      - name: Arabic names (Gemini)
+        if: inputs.task == 'names' || inputs.task == 'write' || inputs.task == 'deep' || inputs.task == 'all' || github.event_name == 'schedule'
+        env:
+          STOP_AFTER_MIN: "60"
+        run: npx --yes tsx@4 scripts/guide/names.ts ${{ inputs.only && inputs.only != 'all' && format('--only {0}', inputs.only) || '' }}
       # 6 Nov 2026: saved before the push, so a failed push loses nothing
       # (14 days; download it from the run page).
       - name: Save the result

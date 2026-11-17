@@ -27,7 +27,8 @@ for (const [c, slugs] of rows)
       s,
       guide: g.length,
       planReady: pos.filter((p) => p.d).length >= 6, // guidePlanReady()
-      guideArName: g.filter((p) => p.a).length,
+      guideArName: g.filter((p) => p.a || p.an).length,
+      writtenNoAr: g.filter((p) => p.d && !p.a && !p.an).length,
       places: pl.length,
       famous: pl.filter((p) => (p.f || 0) >= 3).length,
       placeArName: pl.filter((p) => p.a || /[؀-ۿ]/.test(p.n)).length,
@@ -45,10 +46,12 @@ const q = (f) => {
 const perCountry = {};
 rows.forEach(([, s]) => (perCountry[s.length] = (perCountry[s.length] || 0) + 1));
 console.log(`countries ${rows.length} · cities ${st.length} · cities per country ${JSON.stringify(perCountry)}`);
-console.log(`no smart plan (guide < 6): ${st.filter((x) => !x.planReady).length}`);
-for (const k of ["guide", "places", "famous", "placeArName", "restaurants", "halal", "photos"]) console.log(`${k}: ${q((x) => x[k])}`);
+console.log(`no smart plan (guide < 6): ${st.filter((x) => !x.planReady).length} · guide < 15: ${st.filter((x) => x.guide < 15).length}`);
+for (const k of ["guide", "guideArName", "places", "famous", "placeArName", "restaurants", "halal", "photos"]) console.log(`${k}: ${q((x) => x[k])}`);
 const tot = (k) => st.reduce((a, x) => a + x[k], 0);
-console.log(`places with an Arabic name: ${tot("placeArName")} of ${tot("places")}`);
+console.log(`places with an Arabic name: ${tot("placeArName")} of ${tot("places")} · guide: ${tot("guideArName")} of ${tot("guide")} · written without one: ${tot("writtenNoAr")}`);
+console.log(`halal-tagged restaurants: ${tot("halal")} · cities with none: ${st.filter((x) => !x.halal).length}`);
+console.log(`guide < 15: ${st.filter((x) => x.guide < 15).map((x) => `${x.s}:${x.guide}`).join(",")}`);
 console.log(`no gallery: ${st.filter((x) => !x.photos).map((x) => x.s).join(",")}`);
 console.log(`no smart plan: ${st.filter((x) => !x.planReady).map((x) => x.s).join(",")}`);
 if (only) for (const x of st.filter((x) => only.includes(x.c))) console.log(JSON.stringify(x));

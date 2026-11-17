@@ -17,12 +17,79 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { cityPoint, liveSlugs, stagedSlugs } from "../lib/cityPoints";
+import { CITY_NAMES_EN } from "./cityNames";
 import { GROUPS, type Group, type GuideFile, type GuidePlace } from "@/lib/guideTypes";
 
 const DIR = join(process.cwd(), "public/data/guide");
 const RADIUS_KM = 20;
 const MIN_LINKS = 4;
 const KEEP = 150;
+/**
+ * Round «عمق الخطة» (owner, 17 Nov): no city under 15 guide places and none
+ * without a plan. Below THIN kept places a city asks Wikidata again for
+ * lesser-known items (1 article), then fills from our own map's places
+ * (public/data/places, OpenStreetMap) up to THIN.
+ */
+const THIN = 30;
+/**
+ * A region or an island, not a town: the centre and radius of the area a
+ * visitor tours (Bali's island centre missed Kuta, Uluwatu and Tanah Lot;
+ * Göreme, not the valley's edge, is Cappadocia's base; Perito Moreno is 78 km
+ * from El Calafate). The centre also decides which city a place belongs to.
+ */
+const AREA: Record<string, { lat?: number; lon?: number; km: number }> = {
+  bali: { lat: -8.65, lon: 115.17, km: 45 },
+  cappadocia: { lat: 38.643, lon: 34.829, km: 35 },
+  ella: { km: 30 },
+  langkawi: { lat: 6.35, lon: 99.75, km: 30 },
+  "phu-quoc": { lat: 10.23, lon: 103.96, km: 35 },
+  galapagos: { km: 60 },
+  "punta-cana": { km: 30 },
+  "los-cabos": { lat: 22.98, lon: -109.8, km: 30 },
+  varadero: { km: 25 },
+  "labuan-bajo": { km: 50 },
+  lombok: { km: 40 },
+  nadi: { km: 30 },
+  "koh-samui": { km: 25 },
+  phuket: { km: 30 },
+  jeju: { km: 45 },
+  goa: { km: 40 },
+  krabi: { km: 30 },
+  queenstown: { km: 40 },
+  bariloche: { km: 40 },
+  "el-calafate": { km: 85 },
+  "foz-do-iguacu": { km: 30 },
+  arusha: { km: 40 },
+  mendoza: { km: 40 },
+  kazbegi: { km: 25 },
+  gabala: { km: 25 },
+  maafushi: { km: 25 },
+  boracay: { km: 25 },
+  "puerto-princesa": { km: 40 },
+  alula: { km: 35 },
+  abha: { km: 30 },
+  taif: { km: 30 },
+  salalah: { km: 35 },
+  nizwa: { km: 30 },
+  "sharm-el-sheikh": { km: 30 },
+  hurghada: { km: 30 },
+};
+/**
+ * Wikidata puts Hong Kong's and Macau's landmarks in China (P17 = CN), so the
+ * country check threw nearly all of them out (Hong Kong had 4 places). Here
+ * the territory's own box decides instead (north edge below Shenzhen).
+ */
+const BOX: Record<string, [number, number, number, number]> = {
+  HK: [22.15, 22.52, 113.83, 114.45],
+  MO: [22.1, 22.22, 113.52, 113.6],
+};
+/** Our visit area: the city's centre, or its AREA. */
+function centreOf(slug: string) {
+  const c = cityPoint(slug);
+  const a = AREA[slug];
+  if (!c) return undefined;
+  return { ...c, lat: a?.lat ?? c.lat, lon: a?.lon ?? c.lon, km: a?.km ?? RADIUS_KM };
+}
 const UA = "SfrtnaGuide/1.0 (https://sfrtna.com; info@sfrtna.com)";
 const WDQS = "https://query.wikidata.org/sparql";
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
@@ -211,14 +278,14 @@ interface Row {
   img?: string;
 }
 
-async function cityItems(lat: number, lon: number): Promise<Row[] | null> {
+async function cityItems(lat: number, lon: number, radiusKm = RADIUS_KM, minLinks = MIN_LINKS): Promise<Row[] | null> {
   const rows = await sparql<B>(`SELECT ?item ?sl ?coord ?class ?ar ?en ?whs ?vis ?web ?iso ?img WHERE {
     SERVICE wikibase:around {
       ?item wdt:P625 ?coord .
       bd:serviceParam wikibase:center "Point(${lon} ${lat})"^^geo:wktLiteral ;
-                      wikibase:radius "${RADIUS_KM}" .
+                      wikibase:radius "${radiusKm}" .
     }
-    ?item wikibase:sitelinks ?sl . FILTER(?sl >= ${MIN_LINKS})
+    ?item wikibase:sitelinks ?sl . FILTER(?sl >= ${minLinks})
     ?item wdt:P31 ?class .
     OPTIONAL { ?item rdfs:label ?ar . FILTER(LANG(?ar) = "ar") }
     OPTIONAL { ?item rdfs:label ?en . FILTER(LANG(?en) = "en") }
@@ -258,7 +325,7 @@ function nearestCity(lat: number, lon: number): string | undefined {
   let best: string | undefined;
   let d = Infinity;
   for (const s of LIVE) {
-    const c = cityPoint(s);
+    const c = centreOf(s);
     if (!c) continue;
     const x = (c.lon - lon) * Math.cos(((c.lat + lat) / 2) * (Math.PI / 180));
     const y = c.lat - lat;
@@ -318,6 +385,90 @@ async function commonsCredits(places: GuidePlace[]) {
   }
 }
 
+/** Our map's categories (public/data/places) as guide group + kind; the fame a place needs to count. */
+const OSM_KIND: Record<string, [Group, string | undefined, number]> = {
+  museum: ["museums", "museum", 1],
+  gallery: ["museums", "gallery", 2],
+  palace: ["history", "palace", 1],
+  castle: ["history", "castle", 1],
+  fort: ["history", "castle", 1],
+  archaeological_site: ["history", "ancient", 1],
+  ruins: ["history", "ancient", 1],
+  monument: ["history", "monument", 2],
+  city_gate: ["history", "monument", 1],
+  tomb: ["history", "monument", 2],
+  memorial: ["history", "monument", 3],
+  place_of_worship: ["religion", undefined, 2],
+  viewpoint: ["views", "observation", 2],
+  attraction: ["views", "landmark", 2],
+  beach: ["beach", "beach", 1],
+  garden: ["nature", "garden", 2],
+  park: ["nature", "park", 2],
+  zoo: ["family", "zoo", 1],
+  aquarium: ["family", "aquarium", 1],
+  theme_park: ["family", "themepark", 1],
+  water_park: ["family", "themepark", 1],
+  marketplace: ["markets", "market", 1],
+  mall: ["shopping", "mall", 2],
+};
+const GENERIC = /^(bridge|cave|park|beach|mosque|church|museum|garden|viewpoint|view|monument|memorial|temple|statue|fountain|playground|market|mall|tomb|ruins|fort|castle|tower|gate|square|lake|waterfall|island|pier|harbour|harbor|attraction|gallery|shrine|cemetery|plaza)$/;
+const MOSQUE = /mosque|masjid|cami|camii|jami|مسجد|جامع/i;
+const CHURCH = /church|cathedral|basilica|chapel|kilise|كنيسة|كاتدرائية/i;
+const TEMPLE = /temple|pagoda|wat |shrine|vihara|kovil|معبد/i;
+
+/**
+ * A thin city's guide filled from the places on our own map (OpenStreetMap,
+ * already collected for the city): the best-known first, one per spot and
+ * name, until THIN. Their write-ups come from write.ts like any other.
+ * Returns how many were added.
+ */
+export function fromOurMap(slug: string, kept: GuidePlace[], oldByQ: Map<string, GuidePlace>): number {
+  const f = join(process.cwd(), "public/data/places", `${slug}.json`);
+  if (!existsSync(f)) return 0;
+  const map = JSON.parse(readFileSync(f, "utf8")) as { i: string; n: string; e?: string; a?: string; k: string; y: number; x: number; f?: number }[];
+  if (!Array.isArray(map)) return 0;
+  const cityWords = new Set([slug.replace(/-/g, " "), (CITY_NAMES_EN[slug] ?? "").split(",")[0]].map((s) => s.toLowerCase()));
+  const norm = (s?: string) => (s ?? "").toLowerCase().replace(/[^\p{L}\p{N}]+/gu, " ").trim();
+  const names = new Set(kept.flatMap((p) => [norm(p.n), norm(p.e), norm(p.a)]).filter(Boolean));
+  const km = (a: { y: number; x: number }, b: { y: number; x: number }) =>
+    Math.hypot((a.x - b.x) * 111.32 * Math.cos((a.y * Math.PI) / 180), (a.y - b.y) * 110.57);
+  let added = 0;
+  const usable = map.filter((p) => OSM_KIND[p.k] && p.n && typeof p.y === "number").sort((a, b) => (b.f ?? 0) - (a.f ?? 0));
+  // The better-known first; a city still under 15 then takes any named one
+  // (write.ts drops a map place the writer does not know).
+  const pool = [...usable.filter((p) => (p.f ?? 0) >= OSM_KIND[p.k][2]), ...usable.filter((p) => (p.f ?? 0) < OSM_KIND[p.k][2])];
+  const strong = pool.length - usable.filter((p) => (p.f ?? 0) < OSM_KIND[p.k][2]).length;
+  for (const [idx, p] of pool.entries()) {
+    if (kept.length >= THIN || (idx >= strong && kept.length >= 15)) break;
+    const n = norm(p.e || p.n);
+    // «Bridge», «Cave»: a map label, not a place a guide can name.
+    if (!n.includes(" ") && GENERIC.test(n)) continue;
+    if (!n || cityWords.has(n) || cityWords.has(norm(p.n)) || names.has(n) || names.has(norm(p.n))) continue;
+    if (kept.some((k) => km(k, p) < 0.15)) continue;
+    const [g, kd0] = OSM_KIND[p.k];
+    const label = `${p.n} ${p.e ?? ""}`;
+    const kd = kd0 ?? (MOSQUE.test(label) ? "mosque" : CHURCH.test(label) ? "church" : TEMPLE.test(label) ? "temple" : undefined);
+    const prev = oldByQ.get(p.i);
+    kept.push({
+      ...(prev ?? {}),
+      i: p.i,
+      q: p.i,
+      n: p.n,
+      e: p.e ?? (/[؀-ۿ]/.test(p.n) ? undefined : p.n),
+      a: p.a ?? (/[؀-ۿ]/.test(p.n) ? p.n : undefined),
+      g,
+      kd,
+      y: p.y,
+      x: p.x,
+      sl: 0,
+    });
+    names.add(n);
+    names.add(norm(p.n));
+    added++;
+  }
+  return added;
+}
+
 async function main() {
   mkdirSync(DIR, { recursive: true });
   let slugs = process.argv.includes("--staged") ? stagedSlugs() : liveSlugs();
@@ -341,10 +492,10 @@ async function main() {
       break;
     }
     if (fresh(slug)) continue;
-    const pt = cityPoint(slug);
+    const pt = centreOf(slug);
     if (!pt) continue;
     const t0 = Date.now();
-    const items = await cityItems(pt.lat, pt.lon);
+    let items = await cityItems(pt.lat, pt.lon, pt.km);
     if (!items) {
       report.push(`${slug}: query failed`);
       continue;
@@ -353,17 +504,24 @@ async function main() {
     const path = join(DIR, `${slug}.json`);
     const old: GuideFile | null = existsSync(path) ? JSON.parse(readFileSync(path, "utf8")) : null;
     const oldByQ = new Map((old?.places ?? []).map((p) => [p.q, p]));
-    const places: GuidePlace[] = [];
-    const dropped: string[] = [];
-    const wrongPlace: string[] = [];
-    for (const r of items) {
+    let places: GuidePlace[] = [];
+    let dropped: string[] = [];
+    let wrongPlace: string[] = [];
+    const sift = (rows: Row[]) => {
+    places = [];
+    dropped = [];
+    wrongPlace = [];
+    for (const r of rows) {
+      // An item with neither an English nor an Arabic label would show as «Q123».
+      if (!r.en && !r.ar) continue;
       // Owner, 27 Oct: "a place shown in one city that belongs to another —
       // avoid at all costs". Not in this city's country (Kos for Bodrum), or
       // nearer another city we cover (Dubai's museum for Sharjah): not ours.
       // Former states (East Germany, Yugoslavia, USSR…) still carry their old
       // code on landmarks like the Berlin Wall: they say nothing about today.
       const nowIso = [...r.iso].filter((c) => !FORMER_STATES.has(c));
-      if (pt.code && nowIso.length && !nowIso.includes(pt.code)) {
+      const box = pt.code ? BOX[pt.code] : undefined;
+      if (box ? !(r.lat >= box[0] && r.lat <= box[1] && r.lon >= box[2] && r.lon <= box[3]) : pt.code && nowIso.length && !nowIso.includes(pt.code)) {
         if (r.sl >= 15) wrongPlace.push(`${r.en ?? r.q} (${[...r.iso].join(",")})`);
         continue;
       }
@@ -414,14 +572,33 @@ async function main() {
         im: r.img,
       });
     }
+    };
+    sift(items);
+    let thin = "";
+    if (places.length < THIN) {
+      // A thin city: ask again for items with a single article.
+      const more = await cityItems(pt.lat, pt.lon, pt.km, 1);
+      if (more) {
+        await classify([...new Set(more.flatMap((r) => [...r.classes]))]);
+        const have = new Set(items.map((r) => r.q));
+        items = [...items, ...more.filter((r) => !have.has(r.q))];
+        const before = places.length;
+        sift(items);
+        thin = ` thin: +${places.length - before} lesser-known`;
+      }
+    }
     const score = (p: GuidePlace) => p.sl + (p.wh ? 40 : 0) + (p.vis ? Math.min(30, Math.log10(p.vis) * 4) : 0);
     places.sort((a, b) => score(b) - score(a));
     const kept = places.slice(0, KEEP);
+    if (kept.length < THIN) {
+      const added = fromOurMap(slug, kept, oldByQ);
+      if (added) thin += ` +${added} from our map`;
+    }
     await commonsCredits(kept);
     const file: GuideFile = { v: 1, src: "wd", city: slug, factsAt: new Date().toISOString(), places: kept };
     writeFileSync(path, JSON.stringify(file));
     const by = Object.fromEntries(GROUPS.map((gr) => [gr, kept.filter((p) => p.g === gr).length]).filter(([, n]) => n));
-    report.push(`${slug}: ${Math.round((Date.now() - t0) / 1000)}s, ${items.length} known → ${kept.length} kept ${JSON.stringify(by)}; top: ${kept.slice(0, 6).map((p) => p.e || p.n).join(" | ")}`);
+    report.push(`${slug}: ${Math.round((Date.now() - t0) / 1000)}s, ${items.length} known → ${kept.length} kept${thin} ${JSON.stringify(by)}; top: ${kept.slice(0, 6).map((p) => p.e || p.n).join(" | ")}`);
     if (wrongPlace.length) report.push(`   other city/country: ${wrongPlace.slice(0, 30).join("; ")}`);
     if (dropped.length) report.push(`   dropped (famous): ${dropped.sort((a, b) => Number(b.split("|")[0]) - Number(a.split("|")[0])).slice(0, 30).map((d) => d.split("|")[1]).join("; ")}`);
     console.log(report[report.length - 1]);
@@ -431,7 +608,8 @@ async function main() {
   writeFileSync("scripts/guide/reports/facts.txt", `${new Date().toISOString()}\n${report.join("\n")}\n`);
 }
 
-main().catch((e) => {
+// GUIDE_NO_MAIN=1: import the helpers without running (local checks).
+if (!process.env.GUIDE_NO_MAIN) main().catch((e) => {
   console.error(e);
   process.exit(1);
 });

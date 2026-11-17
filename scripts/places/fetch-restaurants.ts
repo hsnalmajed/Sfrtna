@@ -52,7 +52,7 @@ export interface StoredRestaurant {
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 function query(lat: number, lon: number): string {
-  return `[out:json][timeout:90];(nwr(around:${RADIUS},${lat},${lon})["amenity"~"^(restaurant|cafe)$"]["name"];);out center;`;
+  return `[out:json][timeout:90];(nwr(around:${RADIUS},${lat},${lon})["amenity"~"^(restaurant|cafe)$"]["name"];nwr(around:${RADIUS},${lat},${lon})["amenity"="fast_food"]["name"]["diet:halal"~"^(yes|only)$"];);out center;`;
 }
 
 async function ask(lat: number, lon: number): Promise<El[] | null> {
@@ -103,7 +103,15 @@ function toStored(el: El): StoredRestaurant | null {
   if (t["name:en"] && t["name:en"] !== t.name) rec.e = t["name:en"];
   if (t["name:ar"]) rec.a = t["name:ar"];
   if (t.cuisine) rec.u = t.cuisine.slice(0, 60);
-  if (t["diet:halal"] === "yes" || t["diet:halal"] === "only") rec.h = 1;
+  // Halal (owner, 17 Nov: «more halal tags»): the diet tag, the older
+  // halal=* tag, a cuisine list that says halal, or a name that says so.
+  if (
+    ["yes", "only"].includes(t["diet:halal"] ?? "") ||
+    ["yes", "only"].includes(t.halal ?? "") ||
+    /(^|;)\s*halal\s*(;|$)/i.test(t.cuisine ?? "") ||
+    /\bhal[aâ]l\b|حلال|\bhelal\b/i.test(`${t.name} ${t["name:en"] ?? ""}`)
+  )
+    rec.h = 1;
   return rec;
 }
 
@@ -140,12 +148,15 @@ async function main() {
       continue;
     }
     const seen = new Set<string>();
-    const list = els
+    const all = els
       .map(toStored)
       .filter((r): r is StoredRestaurant => Boolean(r))
       .filter((r) => (seen.has(r.i) ? false : (seen.add(r.i), true)))
-      .sort((a, b) => b.f - a.f)
-      .slice(0, PER_CITY);
+      .sort((a, b) => b.f - a.f);
+    // A halal place is never cut by the size limit: the plan looks for one
+    // near every stop when the traveller asks for halal.
+    const top = all.slice(0, PER_CITY);
+    const list = [...top, ...all.slice(PER_CITY).filter((r) => r.h === 1).slice(0, 150)];
     writeFileSync(join(DIR, `${slug}.json`), JSON.stringify(list));
     markFetched(FETCHED_AT, slug);
     ok++;

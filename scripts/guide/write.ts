@@ -14,7 +14,7 @@
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { CITY_NAMES_EN } from "./cityNames";
-import { generate, listModels, ModelGone, pickModel, QuotaError } from "./gemini";
+import { generate, listModels, ModelGone, NAME_AR_RULE, pickModel, QuotaError } from "./gemini";
 import type { GuideFile, GuidePlace } from "@/lib/guideTypes";
 
 const DIR = join(process.cwd(), "public/data/guide");
@@ -44,7 +44,7 @@ const SCHEMA = {
     type: "object",
     properties: {
       q: S,
-      name_ar: { ...S, description: "the place's usual Arabic name (as Arabic media write it); empty if unsure" },
+      name_ar: { ...S, description: NAME_AR_RULE },
       ar: { ...S, description: "1–2 sentences in Modern Standard Arabic: what it is and why visit" },
       en: { ...S, description: "the same in English" },
       minutes: { type: "integer", description: "typical visit length in minutes" },
@@ -151,6 +151,12 @@ async function main() {
       for (const a of ans) {
         const p = file.places.find((x) => x.q === a.q) as GuidePlace | undefined;
         if (!p || !a.ar || !a.en) continue;
+        // A place taken from our map for a thin city (no Wikidata item) that
+        // the writer does not know is a map label, not a sight: drop it.
+        if (!a.known && p.sl === 0 && p.q.includes("/")) {
+          file.places = file.places.filter((x) => x !== p);
+          continue;
+        }
         p.d = a.ar.slice(0, 260);
         p.de = a.en.slice(0, 260);
         if (a.known && a.minutes >= 10 && a.minutes <= 600) p.m = a.minutes;

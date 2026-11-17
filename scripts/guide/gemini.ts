@@ -115,3 +115,7 @@ export async function generate<T>(opts: {
   }
   throw new Error("generate: gave up");
 }
+
+/** Owner, 17 Nov: every place in a plan has an Arabic name (Ella was «in English»). Used by write.ts and names.ts. */
+export const NAME_AR_RULE =
+  "the place's Arabic name as Arabic travel guides write it: the usual Arabic name when one exists; otherwise translate the generic word (Museum متحف, Temple معبد, Beach شاطئ, Park حديقة, Castle قلعة, Market سوق) and write the proper name in Arabic letters as it is pronounced locally. Never empty, never Latin letters.";
