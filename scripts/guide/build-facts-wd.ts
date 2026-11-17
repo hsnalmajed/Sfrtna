@@ -18,6 +18,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { cityPoint, liveSlugs, stagedSlugs } from "../lib/cityPoints";
 import { CITY_NAMES_EN } from "./cityNames";
+import { isTheAreaItself } from "./selfPlace";
 import { GROUPS, type Group, type GuideFile, type GuidePlace } from "@/lib/guideTypes";
 
 const DIR = join(process.cwd(), "public/data/guide");
@@ -590,6 +591,7 @@ async function main() {
         thin = ` thin: +${places.length - before} lesser-known`;
       }
     }
+    places = places.filter((p) => !isTheAreaItself(p, slug));
     const score = (p: GuidePlace) => p.sl + (p.wh ? 40 : 0) + (p.vis ? Math.min(30, Math.log10(p.vis) * 4) : 0);
     places.sort((a, b) => score(b) - score(a));
     const kept = places.slice(0, KEEP);

@@ -14,6 +14,7 @@
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { CITY_NAMES_EN } from "./cityNames";
+import { isTheAreaItself } from "./selfPlace";
 import { generate, listModels, ModelGone, NAME_AR_RULE, pickModel, QuotaError } from "./gemini";
 import type { GuideFile, GuidePlace } from "@/lib/guideTypes";
 
@@ -121,7 +122,7 @@ async function main() {
     // Extras written before 17 Nov's drop rule: unknown to the writer = no
     // visit length, best time or tip. Not a sight to plan.
     const before = file.places.length;
-    file.places = file.places.filter((p) => !(p.sl < 4 && p.d && !p.m && !p.bt && !p.tp));
+    file.places = file.places.filter((p) => !(p.sl < 4 && p.d && !p.m && !p.bt && !p.tp) && !isTheAreaItself(p, slug));
     if (file.places.length < before) writeFileSync(path, JSON.stringify(file));
     const todo = file.places.slice(0, top).filter((p) => !p.d);
     if (!todo.length) continue;
