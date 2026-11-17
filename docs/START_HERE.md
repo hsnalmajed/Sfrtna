@@ -129,6 +129,9 @@ city, Arabic names 3.6% (map) / 23.5% (guide), hotel live prices SHUT (SerpApi
 **NEXT = round 1 «عمق الخطة»** (table §7), after the owner answers the 3
 decisions at the end of the audit (hotel prices source, discover without a
 live price, allow sfrtna.com in Claude in Chrome for H).
+**Owner 17 Nov 20:31 — decision 2:** discover lists EVERY destination in
+budget; no live fare → shown WITHOUT a number + «شاهد السعر الحيّ» (opens the
+flight search). Decisions 1 (hotel prices) + 3 (Chrome) still open.
 Side topics (owner, later): Play needs 12 testers × 14 days (personal
 account); owner will issue his own CR «مؤسسة حسن علي الماجد» (name «سفرتنا»
 rejected by MC as taken; check SAIP trademark) → D-U-N-S (≤30 days) →
