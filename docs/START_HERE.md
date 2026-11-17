@@ -131,7 +131,9 @@ decisions at the end of the audit (hotel prices source, discover without a
 live price, allow sfrtna.com in Claude in Chrome for H).
 **Owner 17 Nov 20:31 — decision 2:** discover lists EVERY destination in
 budget; no live fare → shown WITHOUT a number + «شاهد السعر الحيّ» (opens the
-flight search). Decisions 1 (hotel prices) + 3 (Chrome) still open.
+flight search). **Decision 1 (20:40): no paid SerpApi — wait for 6 Dec**,
+and study a partner hotel-price API: RateHawk Affiliate API (we have an
+account, «Linked») first, Agoda (applied Oct) second. Decision 3 (Chrome) open.
 Side topics (owner, later): Play needs 12 testers × 14 days (personal
 account); owner will issue his own CR «مؤسسة حسن علي الماجد» (name «سفرتنا»
 rejected by MC as taken; check SAIP trademark) → D-U-N-S (≤30 days) →
