@@ -126,9 +126,11 @@ chips. Checked locally (Playwright, mocked plan); owner to try on the phone.
 with `node scripts/coverage/depth.mjs`). Key: 45 cities no plan, 52 countries 1
 city, Arabic names 3.6% (map) / 23.5% (guide), hotel live prices SHUT (SerpApi
 101/250 till 6 Dec), «اقترح لي وجهة» = cached fares + Google Explore only.
-**NEXT = round 1 «عمق الخطة»** (table §7), after the owner answers the 3
-decisions at the end of the audit (hotel prices source, discover without a
-live price, allow sfrtna.com in Claude in Chrome for H).
+**NEXT (owner 17 Nov 20:35): round 1 «عمق الخطة» NOW, to 100%, then G
+(«Been» visited map), then the rest of §7.** Round 1 targets: 45 cities
+without a plan → 0; ≥15 guide places per city; right centre/radius for
+islands/regions (Bali, Cappadocia, Ella, Maldives, Langkawi); Arabic name for
+every planned place; more halal tags. Measure before/after with depth.mjs.
 **Owner 17 Nov 20:31 — decision 2:** discover lists EVERY destination in
 budget; no live fare → shown WITHOUT a number + «شاهد السعر الحيّ» (opens the
 flight search). **Decision 1 (20:40): no paid SerpApi — wait for 6 Dec**,
