@@ -1,0 +1,4 @@
+2026-11-17T20:30:33.100Z
+bodrum: batch failed — Error: generate: gave up
+gemini-3.8-flash: daily quota reached — switching to gemini-3.5-flash-lite
+all done; 61 named in 11 calls
