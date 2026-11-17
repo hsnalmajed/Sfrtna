@@ -126,11 +126,21 @@ chips. Checked locally (Playwright, mocked plan); owner to try on the phone.
 with `node scripts/coverage/depth.mjs`). Key: 45 cities no plan, 52 countries 1
 city, Arabic names 3.6% (map) / 23.5% (guide), hotel live prices SHUT (SerpApi
 101/250 till 6 Dec), «اقترح لي وجهة» = cached fares + Google Explore only.
-**NEXT (owner 17 Nov 20:35): round 1 «عمق الخطة» NOW, to 100%, then G
-(«Been» visited map), then the rest of §7.** Round 1 targets: 45 cities
-without a plan → 0; ≥15 guide places per city; right centre/radius for
-islands/regions (Bali, Cappadocia, Ella, Maldives, Langkawi); Arabic name for
-every planned place; more halal tags. Measure before/after with depth.mjs.
+**NEXT (owner 17 Nov 20:35): round 1 «عمق الخطة» to 100%, then G
+(«Been» visited map), then the rest of §7.** Round 1 IN PROGRESS (17 Nov,
+PROJECT_NOTES «Plan depth round 1»). Built: AREA centre/radius (islands,
+regions), HK/MO box fix, thin city (<30) → Wikidata 1-article pass (no
+hills/islets/lakes) + fill from our map; write.ts drops extras the writer
+doesn't know; `names.ts` (guide.yml step) = Arabic name for every written
+place; restaurants: more halal signals, halal never cut (applies as the
+scheduled restaurants runs refresh). Measured (depth.mjs) after run 1:
+guide<15 102→1, no plan 45→14 (writing unfinished). **NEXT:** read guide
+run «deep» on the 103 thin cities (dispatched 17 Nov ~21:15 UTC, `/tmp`
+list = facts.txt slugs) → `node scripts/coverage/depth.mjs` → if no-plan
+> 0, dispatch `task=write` with `only` = cities whose top-40 has unwritten
+places; names backlog (~3.6k) clears via daily runs (60 min/day) — dispatch
+`task=names` if faster needed. Then spot-check plans (Bali, Cappadocia,
+Ella, Langkawi, Hong Kong) via ux-audit, write numbers in TEST_PLAN, close.
 **Owner 17 Nov 20:31 — decision 2:** discover lists EVERY destination in
 budget; no live fare → shown WITHOUT a number + «شاهد السعر الحيّ» (opens the
 flight search). **Decision 1 (20:40): no paid SerpApi — wait for 6 Dec**,
@@ -683,4 +693,4 @@ payout threshold $500 not met» (wire $500; PayPal/ACH $100).
 Waiting on the owner: Admitad ad space «Verifying» (14 Nov) → Active → flynas/Jazeera; Google Play ticket reply; Google-fares
 decision after the 6 Nov measurement; Android APK on a real phone.
 
-**Recommended model for the next chat: Opus 5.5** for the Apple-token revoke (small), then Sonnet 5.5 for the submit steps.
+**Recommended model for the next chat: Opus 5.5** (finish plan depth round 1: read results, refill, spot-check plans).

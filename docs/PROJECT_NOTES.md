@@ -2773,3 +2773,27 @@ focused city's own marker is hidden so its places stay tappable. Palette moved
 to `src/lib/dayColors.ts` (route image uses it too). Dict: `smart.map.*`.
 Later: same map offline in the app (tiles are not cached today).
 
+## Plan depth round 1 — 17 Nov 2026 (audit §7 round 1)
+
+- Before (depth.mjs): no plan 45, guide < 15: 102, guide Arabic names
+  7,713 / 19,700 (a or an), written without one 3,679, halal 885 (181 cities none).
+- `build-facts-wd.ts`: `AREA` (centre + km) for Bali (-8.65,115.17, 45 km —
+  the old island centre missed Kuta/Uluwatu; Ubud keeps its own places),
+  Cappadocia (Göreme, 35), Ella 30, Langkawi 30, Phu Quoc, El Calafate 85
+  (Perito Moreno), Labuan Bajo 50, Saudi/Omani/Egyptian resort cities…;
+  `BOX` for HK/MO (Wikidata says CN → Hong Kong had 4 places; now 150,
+  Macau 82). `THIN` = 30: second query with 1 article (lesser-known hills,
+  islets, lakes, wadis left out — GeoNames names), then `fromOurMap`
+  (public/data/places, OSM kinds → group/kind, generic labels skipped).
+  Items with no en/ar label dropped. `GUIDE_NO_MAIN=1` lets tsx import helpers.
+- `write.ts`: name_ar rule = never empty (usual name, else translated
+  generic word + proper name in Arabic letters, `NAME_AR_RULE` in gemini.ts);
+  an extra (sl < 4) the writer marks unknown is dropped, and older unknown
+  extras (no m/bt/tp) are removed when the city is processed.
+- `names.ts` + guide.yml step «Arabic names» (60 min): `an` for every written
+  place without one. Task `deep` = facts + write + names (no costs).
+- `fetch-restaurants.ts`: halal = diet:halal / halal=* / cuisine halal / name;
+  halal-tagged fast food fetched; halal places kept past the 300 cap.
+- After run 44140102923 (facts + 150 min write): guide < 15: 1 (al-wakrah 14),
+  no plan 14 (unwritten, budget), 1,752 places written. Run 2 cancelled (it
+  wrote unknown GeoNames hills — rule tightened), run 3 «deep» dispatched.
