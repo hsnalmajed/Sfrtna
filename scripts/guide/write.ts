@@ -139,9 +139,12 @@ async function main() {
         if (!Array.isArray(ans)) throw new Error("not a list");
         calls++;
       } catch (e) {
-        if ((e instanceof QuotaError && e.daily) || e instanceof ModelGone) {
+        // A model whose day is spent sometimes hangs instead of answering 429
+        // (17 Nov: gemini-3.8-flash, Labuan Bajo skipped twice) → next model.
+        const hung = (e as Error)?.name === "TimeoutError" && models.length > 0;
+        if ((e instanceof QuotaError && e.daily) || e instanceof ModelGone || hung) {
           const next = models.shift();
-          note(`${model}: ${e instanceof ModelGone ? "not available" : "daily quota reached"} after ${calls} calls${next ? ` — switching to ${next}` : ""}`);
+          note(`${model}: ${e instanceof ModelGone ? "not available" : hung ? "no answer in time" : "daily quota reached"} after ${calls} calls${next ? ` — switching to ${next}` : ""}`);
           writeFileSync(path, JSON.stringify(file));
           if (!next) return;
           model = next;
