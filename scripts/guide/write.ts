@@ -151,9 +151,10 @@ async function main() {
       for (const a of ans) {
         const p = file.places.find((x) => x.q === a.q) as GuidePlace | undefined;
         if (!p || !a.ar || !a.en) continue;
-        // A place taken from our map for a thin city (no Wikidata item) that
-        // the writer does not know is a map label, not a sight: drop it.
-        if (!a.known && p.sl === 0 && p.q.includes("/")) {
+        // A thin city's extra place (from our map, or a Wikidata item with
+        // under 4 articles, often a nameless wadi or hill) that the writer
+        // does not know is not a sight to plan: drop it.
+        if (!a.known && p.sl < 4) {
           file.places = file.places.filter((x) => x !== p);
           continue;
         }
