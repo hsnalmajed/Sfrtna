@@ -735,6 +735,15 @@ const ar = {
     dayOf: "اليوم {n} من {total}",
     routeOnMap: "الطريق على الخريطة",
     dayStops: "{n} في هذا اليوم",
+    map: {
+      title: "خريطة رحلتك",
+      hintRoute: "اضغط رقم مدينة لترى كل أماكنها في الخطة.",
+      hintPins: "كل دبوس مكان من خطتك بلون يومه. اضغطه لترى اسمه ويومه.",
+      whole: "كل المسار",
+      allDays: "كل الأيام",
+      goDay: "افتح اليوم",
+      attribution: "&copy; مساهمو OpenStreetMap",
+    },
   },
   feedback: {
     open: "شاركنا رأيك",

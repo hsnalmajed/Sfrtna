@@ -719,6 +719,15 @@ const en = {
     dayOf: "Day {n} of {total}",
     routeOnMap: "The way on the map",
     dayStops: "{n} this day",
+    map: {
+      title: "Your trip map",
+      hintRoute: "Tap a city's number to see all its places in the plan.",
+      hintPins: "Each pin is a place in your plan, in its day's colour. Tap it for its name and day.",
+      whole: "Whole route",
+      allDays: "All days",
+      goDay: "Open the day",
+      attribution: "&copy; OpenStreetMap contributors",
+    },
   },
   feedback: {
     open: "Share your feedback",

@@ -12,6 +12,7 @@
  * Drawn on a canvas in the browser: Arabic is shaped by the browser itself.
  * Loaded only on click. Tiles that fail leave plain land colour, never an error.
  */
+import { DAY_COLORS } from "@/lib/dayColors";
 
 export interface ImageStop {
   lat: number;
@@ -48,7 +49,7 @@ const HEAD = 200;
 const FOOT_ONE = 150;
 /** Room each route city takes in the footer (its line of places). */
 const FOOT_LINE = 50;
-const COLORS = ["#e11d48", "#2563eb", "#059669", "#d97706", "#7c3aed", "#0891b2", "#db2777", "#65a30d", "#ea580c", "#4f46e5", "#0d9488", "#b45309", "#9333ea", "#16a34a"];
+const COLORS = DAY_COLORS;
 const NAVY = "#0b1b33";
 const SUN = "#fbbf24";
 const FONT = '"Tajawal", "IBM Plex Sans Arabic", system-ui, sans-serif';

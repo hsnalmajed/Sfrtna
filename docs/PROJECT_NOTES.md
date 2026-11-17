@@ -2758,3 +2758,18 @@ phone + alerts, and calendar. Built: base 6b319a4b + EventKit calendar
 (`addToCalendar`, feature «calendar»; events from `buildOfflinePlan`), qibla /
 nearby hidden, offline-screen button only with kept plans. Reply + review
 notes rewritten for this.
+
+### Interactive plan map — 17 Nov 2026 (owner's NEXT 1 of 16 Nov 01:59)
+`src/components/smart/PlanMap.tsx` (chips, dynamic import) + `PlanMapCanvas.tsx`
+(react-leaflet, OSM tiles). Placed after TripModeCard, print:hidden, id
+`plan-map`. Route plan: cities numbered (navy circle, gold number, name tag),
+dashed line in order, places as small day-coloured dots; tapping a city (on
+the map, its chip, or its numbered pill in the cover ribbon, which now
+scrolls to the map) frames all its places as pins coloured by day and
+labelled with the day number (meals 🍽); a day chip shows only that day,
+labelled 1..n in order and joined. Pin popup: name, «اليوم N · time»,
+«على الخريطة» (Google Maps search by mapQuery), «افتح اليوم» (goDay). The
+focused city's own marker is hidden so its places stay tappable. Palette moved
+to `src/lib/dayColors.ts` (route image uses it too). Dict: `smart.map.*`.
+Later: same map offline in the app (tiles are not cached today).
+

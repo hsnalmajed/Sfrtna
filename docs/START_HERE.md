@@ -115,6 +115,15 @@ PRODUCT AUDIT (owner's notes 13–14 Nov A–H + «Friends' verdict»: coverage
 of flights/destinations/cities, city photos = nature + sights, hotels
 display, features visible on first visit, H) → one report with numbers →
 fix in rounds; 3) home hero (method in «Positioning + home hero»).
+**Step 1 DONE 17 Nov (Opus):** «خريطة رحلتك» in the plan (`smart/PlanMap.tsx`
++ `PlanMapCanvas.tsx`, leaflet, under TripModeCard): whole route = numbered
+cities + dashed line; tap a number (map, chip, or the cover ribbon) → that
+city's places as pins in day colours (`lib/dayColors.ts`, shared with the
+route image), day chips → one day numbered in order + its line; pin popup =
+name, day · time, «على الخريطة», «افتح اليوم». One-city plan = pins + day
+chips. Checked locally (Playwright, mocked plan); owner to try on the phone.
+**NEXT = step 2: FULL PRODUCT AUDIT** (read PROJECT_NOTES «Owner's notes of
+13 Nov», «Owner's notes of 14 Nov», «Friends' verdict» first).
 Side topics (owner, later): Play needs 12 testers × 14 days (personal
 account); owner will issue his own CR «مؤسسة حسن علي الماجد» (name «سفرتنا»
 rejected by MC as taken; check SAIP trademark) → D-U-N-S (≤30 days) →

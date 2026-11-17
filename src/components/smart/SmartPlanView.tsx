@@ -14,6 +14,7 @@ import TripServices from "@/components/TripServices";
 import ScrollRow from "@/components/ui/ScrollRow";
 import MailPlanButton, { type PlanForMail } from "@/components/MailPlanButton";
 import TripModeCard from "@/components/smart/TripModeCard";
+import PlanMap from "@/components/smart/PlanMap";
 import type { PlanAnswers, PlanDay, PlanItem, SmartPlan } from "@/lib/ai/plan";
 
 type T = ReturnType<typeof useDictionary>["smart"];
@@ -197,6 +198,12 @@ export default function SmartPlanView({
     el?.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
   }, [day]);
   const top = useRef<HTMLDivElement>(null);
+  /** The route city shown on the plan's map (null = the whole route). */
+  const [mapCity, setMapCity] = useState<string | null>(null);
+  const showCity = (slug: string) => {
+    setMapCity(slug);
+    document.getElementById("plan-map")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
   const goDay = (n: number) => {
     setShowAll(false);
     setDay(n);
@@ -763,7 +770,14 @@ export default function SmartPlanView({
                       {isAr ? "←" : "→"}
                     </span>
                   )}
-                  <span className="rounded-2xl bg-white px-3 py-1.5 text-navy-950">
+                  {/* Tap a city: its places on the plan's map below. */}
+                  <button
+                    type="button"
+                    onClick={() => showCity(l.slug)}
+                    aria-label={`${l.name} · ${t.map.title}`}
+                    className="flex items-center rounded-2xl bg-white py-1.5 pe-3 ps-1.5 text-start text-navy-950 hover:ring-2 hover:ring-sun-300"
+                  >
+                    <span className="me-1.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-navy-950 text-[11px] font-black text-sun-300">{i + 1}</span>
                     {/* A real space: without it «كاندي» and «يومان» are one word to the
                         browser, and the final ي joins the next letter (16 Nov). */}
                     <span className="font-display text-sm font-extrabold">{l.name}</span>{" "}
@@ -771,7 +785,7 @@ export default function SmartPlanView({
                       {counted(t.daysWord, l.days)}
                       {l.dayTrip ? ` · ${t.dayTrip}` : ""}
                     </span>
-                  </span>
+                  </button>
                 </li>
               ))}
             </ol>
@@ -840,6 +854,17 @@ export default function SmartPlanView({
         </p>
       )}
       <TripModeCard planId={offlineId} version={offlineVersion} hasPrayers={days.some((d) => Boolean(d.prayers))} make={makeOffline} />
+
+      {/* The plan on a live map: cities by number, then each city's places by day. */}
+      <PlanMap
+        days={days}
+        route={route}
+        homeSlug={plan.city.slug}
+        city={mapCity}
+        onCity={setMapCity}
+        onDay={goDay}
+        t={{ ...t.map, day: t.day, onMap: t.onMap }}
+      />
 
       {/* Days: a strip to move between them, or every day one after another. */}
       <div ref={top} className="sticky top-0 z-10 -mx-4 mt-4 bg-mist-50/95 px-4 py-2 backdrop-blur print:hidden">
