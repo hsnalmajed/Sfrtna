@@ -1,5 +1,4 @@
-2026-11-17T23:46:29.140Z
+2026-11-17T23:50:18.502Z
 model: gemini-3.8-flash (then gemini-3.5-flash, gemini-3.5-flash-lite, gemini-3.1-flash-lite, gemini-2.5-flash-lite, gemma-4-31b-it, gemma-4-26b-a4b-it); cities: 1
-labuan-bajo: batch failed — TimeoutError: The operation was aborted due to timeout
-labuan-bajo: done (0 written so far, 0 calls)
-all done; 0 places written in 0 calls
+labuan-bajo: done (13 written so far, 1 calls)
+all done; 13 places written in 1 calls
