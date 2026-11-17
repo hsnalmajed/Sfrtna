@@ -584,6 +584,9 @@ async function main() {
         items = [...items, ...more.filter((r) => !have.has(r.q))];
         const before = places.length;
         sift(items);
+        // A lesser-known hill, islet, lake or wadi (GeoNames imports: «Jabal
+        // Khayl», «Golo Weri») is a map name, not a sight to plan.
+        places = places.filter((p) => p.sl >= MIN_LINKS || !["mountain", "island", "lake", "water"].includes(p.kd ?? ""));
         thin = ` thin: +${places.length - before} lesser-known`;
       }
     }

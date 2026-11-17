@@ -118,6 +118,11 @@ async function main() {
   for (const slug of slugs) {
     const path = join(DIR, `${slug}.json`);
     const file = JSON.parse(readFileSync(path, "utf8")) as GuideFile;
+    // Extras written before 17 Nov's drop rule: unknown to the writer = no
+    // visit length, best time or tip. Not a sight to plan.
+    const before = file.places.length;
+    file.places = file.places.filter((p) => !(p.sl < 4 && p.d && !p.m && !p.bt && !p.tp));
+    if (file.places.length < before) writeFileSync(path, JSON.stringify(file));
     const todo = file.places.slice(0, top).filter((p) => !p.d);
     if (!todo.length) continue;
     const city = CITY_NAMES_EN[slug] ?? slug;
