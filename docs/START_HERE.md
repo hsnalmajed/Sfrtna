@@ -122,8 +122,13 @@ city's places as pins in day colours (`lib/dayColors.ts`, shared with the
 route image), day chips → one day numbered in order + its line; pin popup =
 name, day · time, «على الخريطة», «افتح اليوم». One-city plan = pins + day
 chips. Checked locally (Playwright, mocked plan); owner to try on the phone.
-**NEXT = step 2: FULL PRODUCT AUDIT** (read PROJECT_NOTES «Owner's notes of
-13 Nov», «Owner's notes of 14 Nov», «Friends' verdict» first).
+**Step 2 AUDIT DONE 17 Nov → `docs/AUDIT_2026-11-17.md`** (numbers; re-measure
+with `node scripts/coverage/depth.mjs`). Key: 45 cities no plan, 52 countries 1
+city, Arabic names 3.6% (map) / 23.5% (guide), hotel live prices SHUT (SerpApi
+101/250 till 6 Dec), «اقترح لي وجهة» = cached fares + Google Explore only.
+**NEXT = round 1 «عمق الخطة»** (table §7), after the owner answers the 3
+decisions at the end of the audit (hotel prices source, discover without a
+live price, allow sfrtna.com in Claude in Chrome for H).
 Side topics (owner, later): Play needs 12 testers × 14 days (personal
 account); owner will issue his own CR «مؤسسة حسن علي الماجد» (name «سفرتنا»
 rejected by MC as taken; check SAIP trademark) → D-U-N-S (≤30 days) →
