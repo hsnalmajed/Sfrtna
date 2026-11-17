@@ -1,19 +1,5 @@
-2026-11-17T23:31:40.576Z
-model: gemini-3.8-flash (then gemini-3.5-flash, gemini-3.5-flash-lite, gemini-3.1-flash-lite, gemini-2.5-flash-lite, gemma-4-31b-it, gemma-4-26b-a4b-it); cities: 11
+2026-11-17T23:46:29.140Z
+model: gemini-3.8-flash (then gemini-3.5-flash, gemini-3.5-flash-lite, gemini-3.1-flash-lite, gemini-2.5-flash-lite, gemma-4-31b-it, gemma-4-26b-a4b-it); cities: 1
 labuan-bajo: batch failed — TimeoutError: The operation was aborted due to timeout
 labuan-bajo: done (0 written so far, 0 calls)
-gemini-3.8-flash: daily quota reached after 0 calls — switching to gemini-3.5-flash
-al-wakrah: batch failed — Error: generate: gave up
-al-wakrah: done (0 written so far, 0 calls)
-gemini-3.5-flash: daily quota reached after 0 calls — switching to gemini-3.5-flash-lite
-puerto-princesa: done (0 written so far, 1 calls)
-arusha: done (0 written so far, 2 calls)
-gaborone: done (1 written so far, 3 calls)
-belize-city: done (4 written so far, 4 calls)
-suva: done (4 written so far, 5 calls)
-gemini-3.5-flash-lite: daily quota reached after 5 calls — switching to gemini-3.1-flash-lite
-honiara: done (8 written so far, 6 calls)
-varadero: done (16 written so far, 7 calls)
-liberia: done (16 written so far, 8 calls)
-port-moresby: done (17 written so far, 9 calls)
-all done; 17 places written in 9 calls
+all done; 0 places written in 0 calls
