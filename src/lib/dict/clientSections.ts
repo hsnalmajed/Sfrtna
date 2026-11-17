@@ -12,7 +12,7 @@ export const CLIENT_SECTIONS = [
   "account", "feedback", "tripMode", "myTrip", "tips", "member", "smart", "budgetAdvisor", "appInstall", "appWelcome", "recent", "share", "back", "categories", "combo", "consent", "currency", "discoverForm", "discoverResults",
   "filters", "footer", "form", "hotelForm", "hotelPrefs", "hotelResults", "itinerary", "modeSelect", "multicity",
   "nav", "nextSteps", "notFound", "plan", "productSelect", "results", "siteName", "siteNameAr",
-  "siteNameEn", "stayType", "travelSeasons", "travelers", "tripPlan", "visa",
+  "siteNameEn", "stayType", "travelSeasons", "travelers", "tripPlan", "visa", "visited",
 ] as const satisfies readonly (keyof Dictionary)[];
 
 /**

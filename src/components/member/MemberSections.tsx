@@ -12,12 +12,32 @@ import { tripKey } from "@/lib/memberItems";
 import AirportInput from "@/components/AirportInput";
 import TravelersPicker from "@/components/TravelersPicker";
 import CurrencySelect from "@/components/CurrencySelect";
+import { counted, useVisitedStats } from "@/lib/visitedMap";
 import { daysUntil, stepHref, tripCityName, tripSearchHref, tripSteps } from "@/components/member/tripLinks";
 
 const card = "rounded-3xl bg-white p-5 shadow-[var(--shadow-card)] ring-1 ring-navy-950/5";
 const h2 = "mb-2 flex items-center gap-2 font-display text-lg font-extrabold text-navy-900";
 /** An empty section: a visible white card, compact (owner 17 Nov: grey on grey read as empty gaps). */
 const empty = "rounded-2xl bg-white px-4 py-3 text-sm leading-relaxed text-navy-600 ring-1 ring-navy-950/5";
+
+/** «خريطتي»: the counts and the way in. */
+function MapCard({ locale }: { locale: Locale }) {
+  const t = useDictionary().visited;
+  const s = useVisitedStats();
+  return (
+    <section id="map" className="scroll-mt-24">
+      <h2 className={h2}>🌍 {t.title}</h2>
+      <Link href={`/${locale}/my-map`} className={`${card} flex items-center gap-3`}>
+        <span className="min-w-0 flex-1 text-sm text-navy-700">
+          {s.countries > 0
+            ? `${counted(t.countryForms, s.countries)} · ${s.worldPct}${locale === "ar" ? "٪" : "%"} ${t.statWorld}${s.cities ? ` · ${counted(t.cityForms, s.cities)}` : ""}`
+            : t.navSub}
+        </span>
+        <span aria-hidden="true" className="text-navy-900/30 rtl:rotate-180">›</span>
+      </Link>
+    </section>
+  );
+}
 
 /** «حسابي» for a signed-in traveller: trips, favourites, searches, profile. */
 export default function MemberSections({ locale }: { locale: Locale }) {
@@ -26,6 +46,7 @@ export default function MemberSections({ locale }: { locale: Locale }) {
     <>
       <Trips locale={locale} trips={member.trips} currency={member.profile?.currency} />
       <Favs locale={locale} favs={member.favs} />
+      <MapCard locale={locale} />
       <Searches locale={locale} searches={member.searches} />
       <ProfileForm locale={locale} profile={member.profile} ready={member.ready} />
     </>

@@ -14,6 +14,7 @@ import { openFeedback } from "@/components/feedback/events";
 import { replayTips } from "@/components/FirstTips";
 import SocialLinks from "@/components/SocialLinks";
 import { useMyTrip } from "@/lib/myTrip";
+import { counted, useVisitedStats } from "@/lib/visitedMap";
 import { tripCityName } from "@/components/member/tripLinks";
 import { openTripModeInApp, tripModeInApp } from "@/lib/nativeApp";
 
@@ -124,6 +125,7 @@ export default function AppTabBar({ locale }: { locale: Locale }) {
   }, []);
 
   const myTrip = useMyTrip();
+  const mapStats = useVisitedStats();
   const home = `/${locale}`;
   const isActive = (href: string) =>
     href === home ? pathname === home : pathname === href || pathname.startsWith(`${href}/`);
@@ -284,6 +286,24 @@ export default function AppTabBar({ locale }: { locale: Locale }) {
                 <span aria-hidden="true" className="text-navy-900/30 rtl:rotate-180">›</span>
               </button>
             )}
+            <Link
+              href={`/${locale}/my-map`}
+              onClick={(e) => go(e, `/${locale}/my-map`)}
+              className="mt-2 flex w-full items-center gap-3 rounded-2xl bg-sun-50 px-4 py-3.5 text-start ring-1 ring-sun-200 active:scale-[0.99]"
+            >
+              <span className="text-2xl leading-none" aria-hidden="true">🌍</span>
+              <span className="min-w-0 flex-1">
+                <span className="block text-sm font-extrabold text-navy-900">{dict.visited.title}</span>
+                <span className="block truncate text-xs text-navy-900/60">
+                  {mapStats.countries > 0
+                    ? dict.visited.navStats
+                        .replace("{countries}", counted(dict.visited.countryForms, mapStats.countries))
+                        .replace("{pct}", String(mapStats.worldPct))
+                    : dict.visited.navSub}
+                </span>
+              </span>
+              <span aria-hidden="true" className="text-navy-900/30 rtl:rotate-180">›</span>
+            </Link>
             <AccountLink locale={locale} variant="sheet" onNavigate={go} />
             <p className="mt-5 px-1 pb-2 text-xs font-bold text-navy-900/50">{dict.nav.tools}</p>
             <div className="grid grid-cols-3 gap-2">

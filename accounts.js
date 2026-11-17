@@ -50,7 +50,7 @@ const APP_CODE_SECONDS = 120;
 // Sessions are renewed while used: a traveller who opens the app now and
 // then stays signed in (owner, 21 Oct).
 const SESSION_RENEW_DAYS = 90;
-const ITEM_LIMITS = { profile: 1, fav: 200, search: 20, trip: 30 };
+const ITEM_LIMITS = { profile: 1, fav: 200, search: 20, trip: 30, been: 900 };
 const MAX_ITEM_BYTES = 4_000;
 const FEEDBACK_PER_HOUR = 6;
 const STATS_KEYS_PER_DAY = 3000;

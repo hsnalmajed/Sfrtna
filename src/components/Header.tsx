@@ -80,6 +80,7 @@ export default function Header({ locale }: { locale: Locale }) {
     { href: `/${locale}/services`, label: dict.nav.services },
     { href: `/${locale}/budget`, label: dict.nav.budget },
     { href: `/${locale}/itinerary`, label: dict.nav.itinerary },
+    { href: `/${locale}/my-map`, label: dict.nav.myMap },
   ];
 
   const isActive = (href: string) =>

@@ -3,7 +3,7 @@ import { accounts, sessionToken } from "@/lib/accounts";
 
 export const dynamic = "force-dynamic";
 
-const KINDS = ["profile", "fav", "search", "trip"];
+const KINDS = ["profile", "fav", "search", "trip", "been"];
 
 /** Removes one kept item. */
 export async function POST(request: Request) {

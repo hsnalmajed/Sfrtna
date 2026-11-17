@@ -62,7 +62,7 @@ export default function JoinHost({ locale }: { locale: Locale }) {
     return () => window.removeEventListener("keydown", onKey);
   }, [reason]);
 
-  const title = reason === "fav" ? t.joinFav : reason === "trip" ? t.joinTrip : t.joinGeneric;
+  const title = reason === "fav" ? t.joinFav : reason === "trip" ? t.joinTrip : reason === "map" ? t.joinMap : t.joinGeneric;
   const href = `/${locale}/account${next ? `?next=${encodeURIComponent(next)}` : ""}`;
 
   return (

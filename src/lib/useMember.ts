@@ -15,6 +15,7 @@ import {
   favHotelKey,
   searchKey,
   tripKey,
+  type Been,
   type Fav,
   type ItemKind,
   type Profile,
@@ -114,6 +115,7 @@ export function useMember() {
     favs: of<Fav>("fav"),
     searches: of<SavedSearch>("search"),
     trips: of<Trip>("trip"),
+    been: of<Been>("been"),
     isFav: (key: string) => s.items.some((i) => i.kind === "fav" && i.key === key),
     setProfile: (p: Profile) => (signedIn ? put("profile", "me", p) : Promise.resolve(false)),
     toggleFav: (fav: Fav) => {
@@ -124,6 +126,13 @@ export function useMember() {
     saveSearch: (q: SavedSearch) => (signedIn ? put("search", searchKey(q), q) : Promise.resolve(false)),
     saveTrip: (t: Trip) => (signedIn ? put("trip", tripKey(t), t) : Promise.resolve(false)),
     remove: (kind: ItemKind, key: string) => (signedIn ? remove(kind, key) : Promise.resolve(false)),
+    /** «خريطتي»: mark (on) or unmark one country / city / dream (src/lib/visitedMap.ts). */
+    setBeen: (key: string, on: boolean) => {
+      if (!signedIn) return Promise.resolve(false);
+      const has = s.items.some((i) => i.kind === "been" && i.key === key);
+      if (on === has) return Promise.resolve(true);
+      return on ? put("been", key, { at: Date.now() } satisfies Been) : remove("been", key);
+    },
   };
 }
 

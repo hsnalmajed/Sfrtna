@@ -9,9 +9,18 @@
  *   search   a search, to reopen on any device (site or app)
  *   trip     a flight the traveller went to book, with the steps left to
  *            get ready (hotel, trip services, plan, visa) ticked by them
+ *   been     «خريطتي»: one country or city they have visited, or a country
+ *            they dream of (src/lib/visitedMap.ts): key c:SA, t:TR/istanbul,
+ *            w:JP; data = when they marked it
  */
 
-export type ItemKind = "profile" | "fav" | "search" | "trip";
+export type ItemKind = "profile" | "fav" | "search" | "trip" | "been";
+
+/** «خريطتي» keys: a visited country, a visited city, a dream country. */
+export const BEEN_KEY = /^(?:[cw]:[A-Z]{2}|t:[A-Z]{2}\/[a-z0-9-]{1,60})$/;
+export interface Been {
+  at: number;
+}
 
 export interface Profile {
   origin?: string;
@@ -136,6 +145,11 @@ export function cleanItem(kind: unknown, key: unknown, data: unknown): { kind: I
         back: back && ISO.test(back) ? back : undefined,
       } satisfies SavedSearch,
     };
+  }
+  if (kind === "been") {
+    if (!BEEN_KEY.test(key)) return null;
+    const at = int(o.at, 1_700_000_000_000, 4_000_000_000_000);
+    return at ? { kind, key, data: { at } satisfies Been } : null;
   }
   if (kind === "trip") {
     const origin = str(o.origin, 3);

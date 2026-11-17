@@ -1,6 +1,6 @@
 /** Opening the «create your account» sheet and the small confirmation toast from anywhere. */
 
-export type JoinReason = "fav" | "trip" | "generic";
+export type JoinReason = "fav" | "trip" | "map" | "generic";
 export interface ToastMsg {
   text: string;
   href?: string;
