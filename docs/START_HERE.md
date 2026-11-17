@@ -121,6 +121,9 @@ run `ios-review.yml` with submit=yes (or «Update Review»). Sign in with
 Apple key DONE 01:50 (key H67V5U9Z2X, team 69U9GNVS8H, Runtime secrets set);
 live check `/api/health?apple=1` (in ios-review.yml) = 400 invalid_grant =
 Apple accepts our client secret → revoke on deletion is active.
+17 Nov 12:57 App Review replied «please resubmit»; 13:10 + 14:44 API retries
+still blocked by the same 2 forms → owner replied in the thread 14:45 with
+the codes + case number. Wait for Apple (support case or App Review).
 **▶▶▶▶▶▶▶ STATE 17 Nov 00:20 — iPhone ready to submit.** Owner tested on
 TestFlight: Sign in with Apple OK (account page), «أضف الخطة إلى تقويم جوالي»
 OK (Istanbul stops 24–28 Nov in the iPhone calendar). Account page empty
