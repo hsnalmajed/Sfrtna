@@ -50,6 +50,7 @@ const PAGES = [
   "/ar/services?code=TR&city=istanbul",
   "/ar/itinerary",
   "/ar/account",
+  "/ar/my-map",
   "/ar/about",
   "/ar/privacy",
   `/ar/results?${qs({ ...flight, tripRoute: "roundtrip", departDate: day(40), returnDate: day(47), budget: "6000", nights: "7" })}`,
