@@ -133,7 +133,9 @@ live price, allow sfrtna.com in Claude in Chrome for H).
 budget; no live fare → shown WITHOUT a number + «شاهد السعر الحيّ» (opens the
 flight search). **Decision 1 (20:40): no paid SerpApi — wait for 6 Dec**,
 and study a partner hotel-price API: RateHawk Affiliate API (we have an
-account, «Linked») first, Agoda (applied Oct) second. Decision 3 (Chrome) open.
+account, «Linked») first, Agoda (applied Oct) second — **owner 20:34: partner
+topic WAITS until the notes list (A–H, friends, hero) is finished.** Decision
+3 (Chrome) open.
 Side topics (owner, later): Play needs 12 testers × 14 days (personal
 account); owner will issue his own CR «مؤسسة حسن علي الماجد» (name «سفرتنا»
 rejected by MC as taken; check SAIP trademark) → D-U-N-S (≤30 days) →
