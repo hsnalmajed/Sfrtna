@@ -108,6 +108,18 @@ iPhone app.
 
 ## ▶ Hand-off (15 Nov 2026) — current state
 
+**▶▶▶▶▶▶▶▶▶ NEXT SECTION (owner 17 Nov 15:25, Opus): ALL owner's notes +
+improvements, live on the site (apps load sfrtna.com, so they get it too).**
+Order: 1) interactive route map in the plan (see «NEXT 1» below); 2) FULL
+PRODUCT AUDIT (owner's notes 13–14 Nov A–H + «Friends' verdict»: coverage
+of flights/destinations/cities, city photos = nature + sights, hotels
+display, features visible on first visit, H) → one report with numbers →
+fix in rounds; 3) home hero (method in «Positioning + home hero»).
+Side topics (owner, later): Play needs 12 testers × 14 days (personal
+account); owner will issue his own CR «مؤسسة حسن علي الماجد» (name «سفرتنا»
+rejected by MC as taken; check SAIP trademark) → D-U-N-S (≤30 days) →
+organization account = no tester rule; org legal name + address show on
+Play. Apple: waiting on case 30000017675096 / App Review thread.
 **▶▶▶▶▶▶▶▶ STATE 17 Nov 01:35 — iPhone submit BLOCKED by Apple (hidden forms).**
 Done tonight: build 50 (Apple-token revoke code) attached to 1.0; review notes
 pasted; reply (short, 3,494 chars, all 9 answers) SENT in build 27's thread;
