@@ -9,6 +9,11 @@ steps). Switch to Opus only if a mail needs code changed — then write the
 task under «For the build chat» below instead of coding here.
 
 ## How we work here
+- **Reply format for every mail (owner 18 Nov):** 1) مهمة / غير مهمة
+  (one line why); 2) if important: the steps, one at a time, with every
+  link to open written out; 3) if waiting is needed: say exactly how long
+  or which mail to wait for; 4) end with «انتقل للإيميل التالي» when
+  nothing is left now. Goal: fast, exact mail triage.
 - Owner pastes only the relevant lines of a mail (sender, date, the ask) or
   ONE screenshot. Claude: what it means, what to do, a ready reply if one is
   needed (English or Arabic as the thread), and updates the table below.
