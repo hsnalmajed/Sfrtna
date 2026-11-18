@@ -26,3 +26,4 @@ here; add any new one the day it arrives.
 
 ## State 18 Nov 22:27
 Done: release gate, App Privacy, TestFlight test, build 51 attached, review notes. Waiting: China forms to clear (re-check 19 Nov ~22:15), then reply (`reply-2026-11-18.md`) + Resubmit. «خريطتي» NOT in review notes (owner agreed to wait: untested on the phone, also on the web) → add to the store description after approval.
+22:29 reply SENT in the App Review thread (build 51). 22:30 «Resubmit to App Review» is GREYED OUT — most likely the China forms until the availability change lands (≤24 h). Reminder set 19 Nov 22:20 → App Compliance + press Resubmit.
