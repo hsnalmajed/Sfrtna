@@ -53,6 +53,13 @@ const PAGES = [
 
 const failures = [];
 const passes = [];
+// Other sites the app's pages called for something other than a picture.
+// Pictures (Pexels, Wikimedia, map tiles) may answer with a cookie of their
+// own (__cf_bm, WMF-Uniq): Chromium keeps it, the app does not — WebKit
+// drops every third-party cookie, and the app's no-tracking rules
+// (AppDelegate.swift) block them again. So only cookies from hosts that ran
+// code or answered calls are counted below.
+const calledHosts = new Set();
 
 const browser = await chromium.launch();
 const context = await browser.newContext({
@@ -94,6 +101,7 @@ for (const [name, path, opts = {}] of PAGES) {
     if (ours(url)) return;
     const type = req.resourceType();
     const host = new URL(url).host;
+    if (!["image", "font", "media"].includes(type)) calledHosts.add(host);
     if (type === "script") bad.push(`script from ${host}`);
     else if (type === "document" && req.frame() !== page.mainFrame()) bad.push(`frame from ${host}`);
     else if (TRACKERS.test(host)) bad.push(`${type} to ${host}`);
@@ -159,9 +167,14 @@ for (const [name, path, opts = {}] of PAGES) {
 }
 
 const cookies = await context.cookies();
-const foreign = cookies.filter((c) => !ours(`https://${c.domain.replace(/^\./, "")}`) || /^_ga|^_gid|^_gcl/.test(c.name));
+const foreign = cookies.filter((c) => {
+  const d = c.domain.replace(/^\./, "");
+  if (/^_ga|^_gid|^_gcl|^_fbp/.test(c.name)) return true;
+  if (ours(`https://${d}`)) return false;
+  return TRACKERS.test(d) || [...calledHosts].some((h) => h === d || h.endsWith(`.${d}`));
+});
 if (foreign.length) failures.push(`✗ cookies from other sites / analytics: ${foreign.map((c) => `${c.name}@${c.domain}`).slice(0, 8).join(", ")}`);
-else passes.push(`✓ no cookie from another site (${cookies.length} of our own)`);
+else passes.push(`✓ no tracking cookie (${cookies.length} cookies in all; picture hosts' own are dropped by WebKit in the app)`);
 
 await browser.close();
 
