@@ -2827,3 +2827,41 @@ Later: same map offline in the app (tiles are not cached today).
 - Ways in: «المزيد» card with counts, header tools, «حسابي» card.
 - Open for the owner: Israel/Palestine shapes are Natural Earth's as-is;
   cities = our 365 only (no free-text city yet).
+- **18 Nov 05:09 owner: «فاشلة»** (phone screenshot: «تعذّر الحفظ» where
+  the map should be). Root cause: `/data/*` is refused from browsers by
+  edge-worker.js (anti-scraping); world-map.json lived there; `next dev`
+  doesn't apply the guard so the local check passed → moved to
+  `public/geo/` (130091f). LESSON: any file the BROWSER fetches must live
+  outside public/data; check new pages on staging/live, not only next dev.
+  Owner also: Been looks much better; wants a coloured interactive map,
+  country → its cities, % of countries and % of cities per country, and
+  something MORE distinctive than Been that makes travellers invite friends.
+
+### «خريطتي 2» — plan (owner 18 Nov: better than Been + growth)
+What Been's own reviewers miss (App Store reviews): compare with friends,
+ranking among users, accounts/sync, timeline by year, year-end recap to
+share, accurate city pins, auto-fill from trips. We beat it there.
+**Round A — look + core (one chat, Opus):**
+1. Map = the hero, first on the page, full width, tall (phone ~60vh),
+   stats strip UNDER it (Been's order). Gold been / light-blue dream /
+   city pins on top; smooth zoom; optional globe look later.
+2. «+ أضف دولة» big button → search sheet → country → its cities as
+   checkboxes at once (+ «متى؟» year, optional). Same sheet from a map tap
+   and from the list (expand the row, no map needed).
+3. Stats tab: world %, each continent x/total with a bar, Gulf 6 and Arab
+   22 progress, «استكشافك لكل دولة» = every visited country with its cities
+   % bar, most-explored country, newest country.
+4. Years: optional year per country/city → «رحلاتي عبر السنين» timeline +
+   «سفراتك في 2026» recap picture.
+5. Badges (logo colours): first country, 5/10/25/50, all Gulf, 3 / all
+   continents, 5 cities in one country, islands (Maldives, Bali…).
+6. Share: story 1080×1920 + post 1080×1350; numbers + map + badges.
+**Round B — growth:**
+7. «قارن خريطتك بصديق»: opt-in share link `/[locale]/my-map/c/<id>`
+   (first name, countries + cities only; off by default; revoke). Friend
+   sees the map → «اصنع خريطتك وقارن» → after marking: in common / only
+   you / only him / who leads. Needs a public read API (edge-guard ROUTES).
+8. Community numbers (aggregate, shown only at ≥ 50 members): «زارها N من
+   مسافري سفرتنا», «زرت دولاً أكثر من X٪ من مسافرينا».
+9. Dreams → action: «ابحث عن رحلة» (prefilled), ready plan, best season.
+10. Suggest marks from «رحلتي» / saved plans («سافرت إلى إسطنبول؟ أضفها»).
