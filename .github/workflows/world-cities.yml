@@ -1,0 +1,33 @@
+name: World cities («خريطتي»)
+# Builds public/geo/cities/<CC>.json from Wikidata (scripts/world/build-cities.mjs).
+# Run by hand; the list changes slowly (re-run a few times a year).
+on:
+  workflow_dispatch:
+    inputs:
+      only:
+        description: "Country codes, comma-separated (empty = all)"
+        required: false
+        default: ""
+permissions:
+  contents: write
+concurrency:
+  group: world-cities
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Build the city lists
+        env:
+          ONLY: ${{ inputs.only }}
+        run: node scripts/world/build-cities.mjs
+      - name: Push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898299+github-actions[bot]@users.noreply.github.com"
+          bash scripts/ci/push-to-main.sh "World cities for «خريطتي»" public/geo/cities
