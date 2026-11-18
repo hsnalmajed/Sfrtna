@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-13T08:57:29.679Z",
+ "generatedAt": "2026-11-18T14:56:04.045Z",
  "destinations": [
   {
    "id": "riyadh",
@@ -1933,16 +1933,7 @@
    "name": "Dammam",
    "latitude": 26.43678,
    "longitude": 50.104,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "taif",
-   "countryCode": "SA",
-   "name": "Taif",
-   "latitude": 21.27028,
-   "longitude": 40.41583,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
    "qa": false
   },
   {
@@ -1951,7 +1942,7 @@
    "name": "Bodrum",
    "latitude": 37.0344,
    "longitude": 27.43065,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
    "qa": false
   },
   {
@@ -1960,7 +1951,7 @@
    "name": "Kutaisi",
    "latitude": 42.25968,
    "longitude": 42.66337,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
    "qa": false
   },
   {
@@ -1969,7 +1960,7 @@
    "name": "Osh",
    "latitude": 40.51727,
    "longitude": 72.80499,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
    "qa": false
   },
   {
@@ -1978,7 +1969,7 @@
    "name": "Kochi",
    "latitude": 9.9679,
    "longitude": 76.24444,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
    "qa": false
   },
   {
@@ -1987,7 +1978,7 @@
    "name": "Bengaluru",
    "latitude": 12.97679,
    "longitude": 77.59008,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
    "qa": false
   },
   {
@@ -1996,16 +1987,7 @@
    "name": "Maafushi",
    "latitude": 3.94116,
    "longitude": 73.49001,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "paro",
-   "countryCode": "BT",
-   "name": "Paro",
-   "latitude": 27.43077,
-   "longitude": 89.41299,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
    "qa": false
   },
   {
@@ -2014,16 +1996,7 @@
    "name": "Dhaka",
    "latitude": 23.76439,
    "longitude": 90.38901,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "shenzhen",
-   "countryCode": "CN",
-   "name": "Shenzhen",
-   "latitude": 22.54457,
-   "longitude": 114.05454,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
    "qa": false
   },
   {
@@ -2032,16 +2005,7 @@
    "name": "Chengdu",
    "latitude": 30.65987,
    "longitude": 104.06332,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "sapporo",
-   "countryCode": "JP",
-   "name": "Sapporo",
-   "latitude": 43.06194,
-   "longitude": 141.35429,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
    "qa": false
   },
   {
@@ -2050,7 +2014,7 @@
    "name": "Fukuoka",
    "latitude": 33.5899,
    "longitude": 130.40175,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
    "qa": false
   },
   {
@@ -2059,16 +2023,7 @@
    "name": "Okinawa",
    "latitude": 26.21223,
    "longitude": 127.67915,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "taipei",
-   "countryCode": "TW",
-   "name": "Taipei",
-   "latitude": 25.03752,
-   "longitude": 121.56368,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
    "qa": false
   },
   {
@@ -2077,7 +2032,7 @@
    "name": "Hong Kong",
    "latitude": 22.28183,
    "longitude": 114.15828,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
    "qa": false
   },
   {
@@ -2086,7 +2041,7 @@
    "name": "Macau",
    "latitude": 22.19383,
    "longitude": 113.53999,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
    "qa": false
   },
   {
@@ -2095,7 +2050,7 @@
    "name": "Krabi",
    "latitude": 8.05924,
    "longitude": 98.91243,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
    "qa": false
   },
   {
@@ -2104,7 +2059,7 @@
    "name": "Ko Samui",
    "latitude": 9.50715,
    "longitude": 99.99576,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
    "qa": false
   },
   {
@@ -2113,7 +2068,7 @@
    "name": "Kota Kinabalu",
    "latitude": 5.97801,
    "longitude": 116.0729,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
    "qa": false
   },
   {
@@ -2122,7 +2077,7 @@
    "name": "Lombok",
    "latitude": -8.58377,
    "longitude": 116.10685,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
    "qa": false
   },
   {
@@ -2131,7 +2086,7 @@
    "name": "Labuan Bajo",
    "latitude": -8.49364,
    "longitude": 119.87536,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
    "qa": false
   },
   {
@@ -2140,7 +2095,7 @@
    "name": "Nha Trang",
    "latitude": 12.23488,
    "longitude": 109.19414,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
    "qa": false
   },
   {
@@ -2149,7 +2104,7 @@
    "name": "Phu Quoc",
    "latitude": 10.21635,
    "longitude": 103.95879,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
    "qa": false
   },
   {
@@ -2158,7 +2113,7 @@
    "name": "Puerto Princesa",
    "latitude": 9.73986,
    "longitude": 118.74382,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
    "qa": false
   },
   {
@@ -2167,16 +2122,7 @@
    "name": "Luang Prabang",
    "latitude": 19.88874,
    "longitude": 102.1359,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "vientiane",
-   "countryCode": "LA",
-   "name": "Vientiane",
-   "latitude": 17.9641,
-   "longitude": 102.61337,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
    "qa": false
   },
   {
@@ -2185,7 +2131,7 @@
    "name": "Bandar Seri Begawan",
    "latitude": 4.88955,
    "longitude": 114.94176,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
    "qa": false
   },
   {
@@ -2194,16 +2140,7 @@
    "name": "Bordeaux",
    "latitude": 44.84123,
    "longitude": -0.58004,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "strasbourg",
-   "countryCode": "FR",
-   "name": "Strasbourg",
-   "latitude": 48.58461,
-   "longitude": 7.75071,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
    "qa": false
   },
   {
@@ -2212,7 +2149,7 @@
    "name": "Pisa",
    "latitude": 43.71594,
    "longitude": 10.40186,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
    "qa": false
   },
   {
@@ -2221,7 +2158,7 @@
    "name": "Bologna",
    "latitude": 44.49382,
    "longitude": 11.34263,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
    "qa": false
   },
   {
@@ -2230,7 +2167,7 @@
    "name": "Palermo",
    "latitude": 38.11123,
    "longitude": 13.35244,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
    "qa": false
   },
   {
@@ -2239,16 +2176,7 @@
    "name": "Málaga",
    "latitude": 36.76479,
    "longitude": -4.4422,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "valencia",
-   "countryCode": "ES",
-   "name": "Valencia",
-   "latitude": 39.46971,
-   "longitude": -0.37634,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
    "qa": false
   },
   {
@@ -2257,7 +2185,7 @@
    "name": "Ibiza",
    "latitude": 38.91007,
    "longitude": 1.43045,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
    "qa": false
   },
   {
@@ -2266,7 +2194,7 @@
    "name": "Palma de Mallorca",
    "latitude": 39.56958,
    "longitude": 2.65007,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
    "qa": false
   },
   {
@@ -2275,7 +2203,7 @@
    "name": "Faro",
    "latitude": 37.01629,
    "longitude": -7.93518,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
    "qa": false
   },
   {
@@ -2284,16 +2212,7 @@
    "name": "Glasgow",
    "latitude": 55.86115,
    "longitude": -4.25017,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "birmingham",
-   "countryCode": "GB",
-   "name": "Birmingham",
-   "latitude": 52.4949,
-   "longitude": -1.85184,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
    "qa": false
   },
   {
@@ -2302,7 +2221,7 @@
    "name": "Belfast",
    "latitude": 54.59639,
    "longitude": -5.93018,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
    "qa": false
   },
   {
@@ -2311,7 +2230,7 @@
    "name": "Cork",
    "latitude": 51.89851,
    "longitude": -8.47264,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
    "qa": false
   },
   {
@@ -2320,7 +2239,7 @@
    "name": "Düsseldorf",
    "latitude": 51.2254,
    "longitude": 6.77631,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
    "qa": false
   },
   {
@@ -2329,7 +2248,7 @@
    "name": "Cologne",
    "latitude": 50.93836,
    "longitude": 6.95997,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
    "qa": false
   },
   {
@@ -2338,16 +2257,7 @@
    "name": "Lausanne",
    "latitude": 46.52183,
    "longitude": 6.6327,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "zermatt",
-   "countryCode": "CH",
-   "name": "Zermatt",
-   "latitude": 46.02121,
-   "longitude": 7.74925,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
    "qa": false
   },
   {
@@ -2356,7 +2266,7 @@
    "name": "Brno",
    "latitude": 49.19224,
    "longitude": 16.61134,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
    "qa": false
   },
   {
@@ -2365,7 +2275,7 @@
    "name": "Gdańsk",
    "latitude": 54.34829,
    "longitude": 18.65402,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
    "qa": false
   },
   {
@@ -2374,7 +2284,7 @@
    "name": "Bratislava",
    "latitude": 48.1435,
    "longitude": 17.10829,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
    "qa": false
   },
   {
@@ -2383,7 +2293,7 @@
    "name": "Heraklion (Crete)",
    "latitude": 35.33908,
    "longitude": 25.13328,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
    "qa": false
   },
   {
@@ -2392,7 +2302,7 @@
    "name": "Rhodes",
    "latitude": 36.44372,
    "longitude": 28.22737,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
    "qa": false
   },
   {
@@ -2401,7 +2311,7 @@
    "name": "Corfu",
    "latitude": 39.62173,
    "longitude": 19.91809,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
    "qa": false
   },
   {
@@ -2410,16 +2320,7 @@
    "name": "Gothenburg",
    "latitude": 57.70723,
    "longitude": 11.96702,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "tallinn",
-   "countryCode": "EE",
-   "name": "Tallinn",
-   "latitude": 59.43724,
-   "longitude": 24.75727,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
    "qa": false
   },
   {
@@ -2428,43 +2329,7 @@
    "name": "Riga",
    "latitude": 56.9494,
    "longitude": 24.10518,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "vilnius",
-   "countryCode": "LT",
-   "name": "Vilnius",
-   "latitude": 54.68705,
-   "longitude": 25.28291,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "sofia",
-   "countryCode": "BG",
-   "name": "Sofia",
-   "latitude": 42.6977,
-   "longitude": 23.32174,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "varna",
-   "countryCode": "BG",
-   "name": "Varna",
-   "latitude": 43.20739,
-   "longitude": 27.91667,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "skopje",
-   "countryCode": "MK",
-   "name": "Skopje",
-   "latitude": 41.99621,
-   "longitude": 21.43189,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
    "qa": false
   },
   {
@@ -2473,7 +2338,7 @@
    "name": "Luxembourg",
    "latitude": 49.61128,
    "longitude": 6.1298,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
    "qa": false
   },
   {
@@ -2482,34 +2347,7 @@
    "name": "Monte Carlo",
    "latitude": 43.7403,
    "longitude": 7.42656,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "san-marino",
-   "countryCode": "SM",
-   "name": "San Marino",
-   "latitude": 43.9364,
-   "longitude": 12.4467,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "vatican-city",
-   "countryCode": "VA",
-   "name": "Vatican City",
-   "latitude": 41.90341,
-   "longitude": 12.45285,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "andorra-la-vella",
-   "countryCode": "AD",
-   "name": "Andorra la Vella",
-   "latitude": 42.49792,
-   "longitude": 1.50323,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
    "qa": false
   },
   {
@@ -2518,7 +2356,7 @@
    "name": "Giza",
    "latitude": 29.98708,
    "longitude": 31.21181,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
    "qa": false
   },
   {
@@ -2527,7 +2365,7 @@
    "name": "Hurghada",
    "latitude": 27.22256,
    "longitude": 33.83071,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
    "qa": false
   },
   {
@@ -2536,7 +2374,7 @@
    "name": "Agadir",
    "latitude": 30.42052,
    "longitude": -9.58385,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
    "qa": false
   },
   {
@@ -2545,34 +2383,7 @@
    "name": "Rabat",
    "latitude": 34.02185,
    "longitude": -6.84089,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "hammamet",
-   "countryCode": "TN",
-   "name": "Hammamet",
-   "latitude": 36.40066,
-   "longitude": 10.61906,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "algiers",
-   "countryCode": "DZ",
-   "name": "Algiers",
-   "latitude": 36.77293,
-   "longitude": 3.05884,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "oran",
-   "countryCode": "DZ",
-   "name": "Oran",
-   "latitude": 35.70444,
-   "longitude": -0.6503,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
    "qa": false
   },
   {
@@ -2581,7 +2392,7 @@
    "name": "Dar es Salaam",
    "latitude": -6.81608,
    "longitude": 39.28036,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
    "qa": false
   },
   {
@@ -2590,7 +2401,7 @@
    "name": "Addis Ababa",
    "latitude": 9.03581,
    "longitude": 38.75243,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
    "qa": false
   },
   {
@@ -2599,7 +2410,7 @@
    "name": "Entebbe",
    "latitude": 0.06117,
    "longitude": 32.46986,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
    "qa": false
   },
   {
@@ -2608,7 +2419,7 @@
    "name": "Kigali",
    "latitude": -1.95344,
    "longitude": 30.11401,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
    "qa": false
   },
   {
@@ -2617,6 +2428,870 @@
    "name": "Praslin",
    "latitude": -4.32507,
    "longitude": 55.73561,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "dakar",
+   "countryCode": "SN",
+   "name": "Dakar",
+   "latitude": 14.69342,
+   "longitude": -17.44794,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "gaborone",
+   "countryCode": "BW",
+   "name": "Gaborone",
+   "latitude": -24.65814,
+   "longitude": 25.90885,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "livingstone",
+   "countryCode": "ZM",
+   "name": "Livingstone",
+   "latitude": -17.85314,
+   "longitude": 25.86143,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "maputo",
+   "countryCode": "MZ",
+   "name": "Maputo",
+   "latitude": -25.96621,
+   "longitude": 32.56745,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "orlando",
+   "countryCode": "US",
+   "name": "Orlando",
+   "latitude": 28.54212,
+   "longitude": -81.37905,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "chicago",
+   "countryCode": "US",
+   "name": "Chicago",
+   "latitude": 41.87556,
+   "longitude": -87.62442,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "honolulu",
+   "countryCode": "US",
+   "name": "Honolulu",
+   "latitude": 21.30455,
+   "longitude": -157.85568,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "boston",
+   "countryCode": "US",
+   "name": "Boston",
+   "latitude": 42.35883,
+   "longitude": -71.05783,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "calgary",
+   "countryCode": "CA",
+   "name": "Calgary",
+   "latitude": 51.04561,
+   "longitude": -114.05754,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "quebec-city",
+   "countryCode": "CA",
+   "name": "Quebec City",
+   "latitude": 46.81374,
+   "longitude": -71.20841,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "ottawa",
+   "countryCode": "CA",
+   "name": "Ottawa",
+   "latitude": 45.42088,
+   "longitude": -75.69011,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "puerto-vallarta",
+   "countryCode": "MX",
+   "name": "Puerto Vallarta",
+   "latitude": 20.64072,
+   "longitude": -105.22031,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "punta-cana",
+   "countryCode": "DO",
+   "name": "Punta Cana",
+   "latitude": 18.55655,
+   "longitude": -68.36916,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "montego-bay",
+   "countryCode": "JM",
+   "name": "Montego Bay",
+   "latitude": 18.47246,
+   "longitude": -77.92174,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "kingston",
+   "countryCode": "JM",
+   "name": "Kingston",
+   "latitude": 17.97121,
+   "longitude": -76.79281,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "san-salvador",
+   "countryCode": "SV",
+   "name": "San Salvador",
+   "latitude": 13.69763,
+   "longitude": -89.19116,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "belize-city",
+   "countryCode": "BZ",
+   "name": "Belize City",
+   "latitude": 17.50028,
+   "longitude": -88.19887,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "nassau",
+   "countryCode": "BS",
+   "name": "Nassau",
+   "latitude": 25.07823,
+   "longitude": -77.33834,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "foz-do-iguacu",
+   "countryCode": "BR",
+   "name": "Foz do Iguaçu",
+   "latitude": -25.5304,
+   "longitude": -54.58307,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "florianopolis",
+   "countryCode": "BR",
+   "name": "Florianópolis",
+   "latitude": -27.5973,
+   "longitude": -48.54961,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "buenos-aires",
+   "countryCode": "AR",
+   "name": "Buenos Aires",
+   "latitude": -34.60956,
+   "longitude": -58.38879,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "mendoza",
+   "countryCode": "AR",
+   "name": "Mendoza",
+   "latitude": -32.88942,
+   "longitude": -68.84462,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "bariloche",
+   "countryCode": "AR",
+   "name": "Bariloche",
+   "latitude": -41.13348,
+   "longitude": -71.31015,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "el-calafate",
+   "countryCode": "AR",
+   "name": "El Calafate",
+   "latitude": -50.33874,
+   "longitude": -72.27372,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "santiago",
+   "countryCode": "CL",
+   "name": "Santiago",
+   "latitude": -33.4377,
+   "longitude": -70.65107,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "easter-island",
+   "countryCode": "CL",
+   "name": "Easter Island",
+   "latitude": -27.14812,
+   "longitude": -109.42734,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "lima",
+   "countryCode": "PE",
+   "name": "Lima",
+   "latitude": -12.04598,
+   "longitude": -77.03059,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "arequipa",
+   "countryCode": "PE",
+   "name": "Arequipa",
+   "latitude": -16.39887,
+   "longitude": -71.53696,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "bogota",
+   "countryCode": "CO",
+   "name": "Bogotá",
+   "latitude": 4.65338,
+   "longitude": -74.08363,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "medellin",
+   "countryCode": "CO",
+   "name": "Medellín",
+   "latitude": 6.26973,
+   "longitude": -75.60256,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "cartagena",
+   "countryCode": "CO",
+   "name": "Cartagena",
+   "latitude": 10.42656,
+   "longitude": -75.54417,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "quito",
+   "countryCode": "EC",
+   "name": "Quito",
+   "latitude": -0.22016,
+   "longitude": -78.51233,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "guayaquil",
+   "countryCode": "EC",
+   "name": "Guayaquil",
+   "latitude": -2.19006,
+   "longitude": -79.88687,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "galapagos",
+   "countryCode": "EC",
+   "name": "Galápagos",
+   "latitude": -0.74717,
+   "longitude": -90.31342,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "montevideo",
+   "countryCode": "UY",
+   "name": "Montevideo",
+   "latitude": -34.90589,
+   "longitude": -56.19131,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "punta-del-este",
+   "countryCode": "UY",
+   "name": "Punta del Este",
+   "latitude": -34.96323,
+   "longitude": -54.944,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "la-paz",
+   "countryCode": "BO",
+   "name": "La Paz",
+   "latitude": -16.49555,
+   "longitude": -68.13362,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "santa-cruz",
+   "countryCode": "BO",
+   "name": "Santa Cruz de la Sierra",
+   "latitude": -17.78342,
+   "longitude": -63.18209,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "perth",
+   "countryCode": "AU",
+   "name": "Perth",
+   "latitude": -31.9559,
+   "longitude": 115.86058,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "adelaide",
+   "countryCode": "AU",
+   "name": "Adelaide",
+   "latitude": -34.92818,
+   "longitude": 138.59993,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "cairns",
+   "countryCode": "AU",
+   "name": "Cairns",
+   "latitude": -16.92067,
+   "longitude": 145.77219,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "auckland",
+   "countryCode": "NZ",
+   "name": "Auckland",
+   "latitude": -36.85209,
+   "longitude": 174.76318,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "christchurch",
+   "countryCode": "NZ",
+   "name": "Christchurch",
+   "latitude": -43.53095,
+   "longitude": 172.63643,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "queenstown",
+   "countryCode": "NZ",
+   "name": "Queenstown",
+   "latitude": -45.03219,
+   "longitude": 168.661,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "nadi",
+   "countryCode": "FJ",
+   "name": "Nadi",
+   "latitude": -17.79927,
+   "longitude": 177.41785,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "honiara",
+   "countryCode": "SB",
+   "name": "Honiara",
+   "latitude": -9.43108,
+   "longitude": 159.95526,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "taif",
+   "countryCode": "SA",
+   "name": "Taif",
+   "latitude": 21.27028,
+   "longitude": 40.41583,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "shenzhen",
+   "countryCode": "CN",
+   "name": "Shenzhen",
+   "latitude": 22.54457,
+   "longitude": 114.05454,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "sapporo",
+   "countryCode": "JP",
+   "name": "Sapporo",
+   "latitude": 43.06194,
+   "longitude": 141.35429,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "taipei",
+   "countryCode": "TW",
+   "name": "Taipei",
+   "latitude": 25.03752,
+   "longitude": 121.56368,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "vientiane",
+   "countryCode": "LA",
+   "name": "Vientiane",
+   "latitude": 17.9641,
+   "longitude": 102.61337,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "strasbourg",
+   "countryCode": "FR",
+   "name": "Strasbourg",
+   "latitude": 48.58461,
+   "longitude": 7.75071,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "valencia",
+   "countryCode": "ES",
+   "name": "Valencia",
+   "latitude": 39.46971,
+   "longitude": -0.37634,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "birmingham",
+   "countryCode": "GB",
+   "name": "Birmingham",
+   "latitude": 52.4949,
+   "longitude": -1.85184,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "zermatt",
+   "countryCode": "CH",
+   "name": "Zermatt",
+   "latitude": 46.02121,
+   "longitude": 7.74925,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "tallinn",
+   "countryCode": "EE",
+   "name": "Tallinn",
+   "latitude": 59.43724,
+   "longitude": 24.75727,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "vilnius",
+   "countryCode": "LT",
+   "name": "Vilnius",
+   "latitude": 54.68705,
+   "longitude": 25.28291,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "sofia",
+   "countryCode": "BG",
+   "name": "Sofia",
+   "latitude": 42.6977,
+   "longitude": 23.32174,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "varna",
+   "countryCode": "BG",
+   "name": "Varna",
+   "latitude": 43.20739,
+   "longitude": 27.91667,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "windhoek",
+   "countryCode": "NA",
+   "name": "Windhoek",
+   "latitude": -22.57761,
+   "longitude": 17.07727,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "victoria-falls",
+   "countryCode": "ZW",
+   "name": "Victoria Falls",
+   "latitude": -17.92794,
+   "longitude": 25.839,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "washington-dc",
+   "countryCode": "US",
+   "name": "Washington, D.C.",
+   "latitude": 38.8951,
+   "longitude": -77.03638,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "seattle",
+   "countryCode": "US",
+   "name": "Seattle",
+   "latitude": 47.60383,
+   "longitude": -122.33006,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "los-cabos",
+   "countryCode": "MX",
+   "name": "Los Cabos",
+   "latitude": 22.89389,
+   "longitude": -109.92006,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "santo-domingo",
+   "countryCode": "DO",
+   "name": "Santo Domingo",
+   "latitude": 18.47139,
+   "longitude": -69.89184,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "punta-arenas",
+   "countryCode": "CL",
+   "name": "Punta Arenas",
+   "latitude": -53.16257,
+   "longitude": -70.90782,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "wellington",
+   "countryCode": "NZ",
+   "name": "Wellington",
+   "latitude": -41.2888,
+   "longitude": 174.77721,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "suva",
+   "countryCode": "FJ",
+   "name": "Suva",
+   "latitude": -18.14159,
+   "longitude": 178.44217,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "skopje",
+   "countryCode": "MK",
+   "name": "Skopje",
+   "latitude": 41.99621,
+   "longitude": 21.43189,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "san-marino",
+   "countryCode": "SM",
+   "name": "San Marino",
+   "latitude": 43.9364,
+   "longitude": 12.4467,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "vatican-city",
+   "countryCode": "VA",
+   "name": "Vatican City",
+   "latitude": 41.90341,
+   "longitude": 12.45285,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "andorra-la-vella",
+   "countryCode": "AD",
+   "name": "Andorra la Vella",
+   "latitude": 42.49792,
+   "longitude": 1.50323,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "algiers",
+   "countryCode": "DZ",
+   "name": "Algiers",
+   "latitude": 36.77293,
+   "longitude": 3.05884,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "oran",
+   "countryCode": "DZ",
+   "name": "Oran",
+   "latitude": 35.70444,
+   "longitude": -0.6503,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "accra",
+   "countryCode": "GH",
+   "name": "Accra",
+   "latitude": 5.55711,
+   "longitude": -0.20124,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "lagos",
+   "countryCode": "NG",
+   "name": "Lagos",
+   "latitude": 6.45506,
+   "longitude": 3.39418,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "sal",
+   "countryCode": "CV",
+   "name": "Sal",
+   "latitude": 16.59869,
+   "longitude": -22.90503,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "havana",
+   "countryCode": "CU",
+   "name": "Havana",
+   "latitude": 23.1353,
+   "longitude": -82.35896,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "varadero",
+   "countryCode": "CU",
+   "name": "Varadero",
+   "latitude": 23.14958,
+   "longitude": -81.26002,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "san-jose",
+   "countryCode": "CR",
+   "name": "San José",
+   "latitude": 9.93274,
+   "longitude": -84.07967,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "liberia",
+   "countryCode": "CR",
+   "name": "Liberia",
+   "latitude": 10.63198,
+   "longitude": -85.43932,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "panama-city",
+   "countryCode": "PA",
+   "name": "Panama City",
+   "latitude": 8.97145,
+   "longitude": -79.53418,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "guatemala-city",
+   "countryCode": "GT",
+   "name": "Guatemala City",
+   "latitude": 14.64161,
+   "longitude": -90.51328,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "roatan",
+   "countryCode": "HN",
+   "name": "Roatán",
+   "latitude": 16.31674,
+   "longitude": -86.53748,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "bridgetown",
+   "countryCode": "BB",
+   "name": "Bridgetown",
+   "latitude": 13.09778,
+   "longitude": -59.61842,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "port-of-spain",
+   "countryCode": "TT",
+   "name": "Port of Spain",
+   "latitude": 10.65727,
+   "longitude": -61.51802,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "asuncion",
+   "countryCode": "PY",
+   "name": "Asunción",
+   "latitude": -25.28005,
+   "longitude": -57.63438,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "port-moresby",
+   "countryCode": "PG",
+   "name": "Port Moresby",
+   "latitude": -9.47433,
+   "longitude": 147.15995,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "apia",
+   "countryCode": "WS",
+   "name": "Apia",
+   "latitude": -13.83452,
+   "longitude": -171.7631,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "nukualofa",
+   "countryCode": "TO",
+   "name": "Nukuʻalofa",
+   "latitude": -21.13434,
+   "longitude": -175.20181,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "port-vila",
+   "countryCode": "VU",
+   "name": "Port Vila",
+   "latitude": -17.7415,
+   "longitude": 168.31502,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "koror",
+   "countryCode": "PW",
+   "name": "Koror",
+   "latitude": 7.34328,
+   "longitude": 134.47668,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "hammamet",
+   "countryCode": "TN",
+   "name": "Hammamet",
+   "latitude": 36.40066,
+   "longitude": 10.61906,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "georgetown",
+   "countryCode": "GY",
+   "name": "Georgetown",
+   "latitude": 6.80326,
+   "longitude": -58.14554,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "paramaribo",
+   "countryCode": "SR",
+   "name": "Paramaribo",
+   "latitude": 5.82476,
+   "longitude": -55.17039,
+   "coordinateSource": "OpenStreetMap Nominatim, via src/data/cityCoords.ts",
+   "qa": false
+  },
+  {
+   "id": "paro",
+   "countryCode": "BT",
+   "name": "Paro",
+   "latitude": 27.43077,
+   "longitude": 89.41299,
    "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
    "qa": false
   },
@@ -2639,686 +3314,11 @@
    "qa": false
   },
   {
-   "id": "dakar",
-   "countryCode": "SN",
-   "name": "Dakar",
-   "latitude": 14.69342,
-   "longitude": -17.44794,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "accra",
-   "countryCode": "GH",
-   "name": "Accra",
-   "latitude": 5.55711,
-   "longitude": -0.20124,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "lagos",
-   "countryCode": "NG",
-   "name": "Lagos",
-   "latitude": 6.45506,
-   "longitude": 3.39418,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "windhoek",
-   "countryCode": "NA",
-   "name": "Windhoek",
-   "latitude": -22.57761,
-   "longitude": 17.07727,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "gaborone",
-   "countryCode": "BW",
-   "name": "Gaborone",
-   "latitude": -24.65814,
-   "longitude": 25.90885,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "livingstone",
-   "countryCode": "ZM",
-   "name": "Livingstone",
-   "latitude": -17.85314,
-   "longitude": 25.86143,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "victoria-falls",
-   "countryCode": "ZW",
-   "name": "Victoria Falls",
-   "latitude": -17.92794,
-   "longitude": 25.839,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "maputo",
-   "countryCode": "MZ",
-   "name": "Maputo",
-   "latitude": -25.96621,
-   "longitude": 32.56745,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "sal",
-   "countryCode": "CV",
-   "name": "Sal",
-   "latitude": 16.59869,
-   "longitude": -22.90503,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "orlando",
-   "countryCode": "US",
-   "name": "Orlando",
-   "latitude": 28.54212,
-   "longitude": -81.37905,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "chicago",
-   "countryCode": "US",
-   "name": "Chicago",
-   "latitude": 41.87556,
-   "longitude": -87.62442,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "washington-dc",
-   "countryCode": "US",
-   "name": "Washington, D.C.",
-   "latitude": 38.8951,
-   "longitude": -77.03638,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "seattle",
-   "countryCode": "US",
-   "name": "Seattle",
-   "latitude": 47.60383,
-   "longitude": -122.33006,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "honolulu",
-   "countryCode": "US",
-   "name": "Honolulu",
-   "latitude": 21.30455,
-   "longitude": -157.85568,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "boston",
-   "countryCode": "US",
-   "name": "Boston",
-   "latitude": 42.35883,
-   "longitude": -71.05783,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "calgary",
-   "countryCode": "CA",
-   "name": "Calgary",
-   "latitude": 51.04561,
-   "longitude": -114.05754,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "quebec-city",
-   "countryCode": "CA",
-   "name": "Quebec City",
-   "latitude": 46.81374,
-   "longitude": -71.20841,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "ottawa",
-   "countryCode": "CA",
-   "name": "Ottawa",
-   "latitude": 45.42088,
-   "longitude": -75.69011,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "los-cabos",
-   "countryCode": "MX",
-   "name": "Los Cabos",
-   "latitude": 22.89389,
-   "longitude": -109.92006,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "puerto-vallarta",
-   "countryCode": "MX",
-   "name": "Puerto Vallarta",
-   "latitude": 20.64072,
-   "longitude": -105.22031,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "havana",
-   "countryCode": "CU",
-   "name": "Havana",
-   "latitude": 23.1353,
-   "longitude": -82.35896,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "varadero",
-   "countryCode": "CU",
-   "name": "Varadero",
-   "latitude": 23.14958,
-   "longitude": -81.26002,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "punta-cana",
-   "countryCode": "DO",
-   "name": "Punta Cana",
-   "latitude": 18.55655,
-   "longitude": -68.36916,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "santo-domingo",
-   "countryCode": "DO",
-   "name": "Santo Domingo",
-   "latitude": 18.47139,
-   "longitude": -69.89184,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "montego-bay",
-   "countryCode": "JM",
-   "name": "Montego Bay",
-   "latitude": 18.47246,
-   "longitude": -77.92174,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "kingston",
-   "countryCode": "JM",
-   "name": "Kingston",
-   "latitude": 17.97121,
-   "longitude": -76.79281,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "san-jose",
-   "countryCode": "CR",
-   "name": "San José",
-   "latitude": 9.93274,
-   "longitude": -84.07967,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "liberia",
-   "countryCode": "CR",
-   "name": "Liberia",
-   "latitude": 10.63198,
-   "longitude": -85.43932,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "panama-city",
-   "countryCode": "PA",
-   "name": "Panama City",
-   "latitude": 8.97145,
-   "longitude": -79.53418,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "guatemala-city",
-   "countryCode": "GT",
-   "name": "Guatemala City",
-   "latitude": 14.64161,
-   "longitude": -90.51328,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "san-salvador",
-   "countryCode": "SV",
-   "name": "San Salvador",
-   "latitude": 13.69763,
-   "longitude": -89.19116,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "roatan",
-   "countryCode": "HN",
-   "name": "Roatán",
-   "latitude": 16.31674,
-   "longitude": -86.53748,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "belize-city",
-   "countryCode": "BZ",
-   "name": "Belize City",
-   "latitude": 17.50028,
-   "longitude": -88.19887,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "nassau",
-   "countryCode": "BS",
-   "name": "Nassau",
-   "latitude": 25.07823,
-   "longitude": -77.33834,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "bridgetown",
-   "countryCode": "BB",
-   "name": "Bridgetown",
-   "latitude": 13.09778,
-   "longitude": -59.61842,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "port-of-spain",
-   "countryCode": "TT",
-   "name": "Port of Spain",
-   "latitude": 10.65727,
-   "longitude": -61.51802,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "foz-do-iguacu",
-   "countryCode": "BR",
-   "name": "Foz do Iguaçu",
-   "latitude": -25.5304,
-   "longitude": -54.58307,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "florianopolis",
-   "countryCode": "BR",
-   "name": "Florianópolis",
-   "latitude": -27.5973,
-   "longitude": -48.54961,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "buenos-aires",
-   "countryCode": "AR",
-   "name": "Buenos Aires",
-   "latitude": -34.60956,
-   "longitude": -58.38879,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "mendoza",
-   "countryCode": "AR",
-   "name": "Mendoza",
-   "latitude": -32.88942,
-   "longitude": -68.84462,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "bariloche",
-   "countryCode": "AR",
-   "name": "Bariloche",
-   "latitude": -41.13348,
-   "longitude": -71.31015,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "el-calafate",
-   "countryCode": "AR",
-   "name": "El Calafate",
-   "latitude": -50.33874,
-   "longitude": -72.27372,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "santiago",
-   "countryCode": "CL",
-   "name": "Santiago",
-   "latitude": -33.4377,
-   "longitude": -70.65107,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "punta-arenas",
-   "countryCode": "CL",
-   "name": "Punta Arenas",
-   "latitude": -53.16257,
-   "longitude": -70.90782,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "easter-island",
-   "countryCode": "CL",
-   "name": "Easter Island",
-   "latitude": -27.14812,
-   "longitude": -109.42734,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "lima",
-   "countryCode": "PE",
-   "name": "Lima",
-   "latitude": -12.04598,
-   "longitude": -77.03059,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
    "id": "cusco",
    "countryCode": "PE",
    "name": "Cusco",
    "latitude": -13.51709,
    "longitude": -71.97854,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "arequipa",
-   "countryCode": "PE",
-   "name": "Arequipa",
-   "latitude": -16.39887,
-   "longitude": -71.53696,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "bogota",
-   "countryCode": "CO",
-   "name": "Bogotá",
-   "latitude": 4.65338,
-   "longitude": -74.08363,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "medellin",
-   "countryCode": "CO",
-   "name": "Medellín",
-   "latitude": 6.26973,
-   "longitude": -75.60256,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "cartagena",
-   "countryCode": "CO",
-   "name": "Cartagena",
-   "latitude": 10.42656,
-   "longitude": -75.54417,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "quito",
-   "countryCode": "EC",
-   "name": "Quito",
-   "latitude": -0.22016,
-   "longitude": -78.51233,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "guayaquil",
-   "countryCode": "EC",
-   "name": "Guayaquil",
-   "latitude": -2.19006,
-   "longitude": -79.88687,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "galapagos",
-   "countryCode": "EC",
-   "name": "Galápagos",
-   "latitude": -0.74717,
-   "longitude": -90.31342,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "montevideo",
-   "countryCode": "UY",
-   "name": "Montevideo",
-   "latitude": -34.90589,
-   "longitude": -56.19131,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "punta-del-este",
-   "countryCode": "UY",
-   "name": "Punta del Este",
-   "latitude": -34.96323,
-   "longitude": -54.944,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "la-paz",
-   "countryCode": "BO",
-   "name": "La Paz",
-   "latitude": -16.49555,
-   "longitude": -68.13362,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "santa-cruz",
-   "countryCode": "BO",
-   "name": "Santa Cruz de la Sierra",
-   "latitude": -17.78342,
-   "longitude": -63.18209,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "asuncion",
-   "countryCode": "PY",
-   "name": "Asunción",
-   "latitude": -25.28005,
-   "longitude": -57.63438,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "georgetown",
-   "countryCode": "GY",
-   "name": "Georgetown",
-   "latitude": 6.80326,
-   "longitude": -58.14554,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "paramaribo",
-   "countryCode": "SR",
-   "name": "Paramaribo",
-   "latitude": 5.82476,
-   "longitude": -55.17039,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "perth",
-   "countryCode": "AU",
-   "name": "Perth",
-   "latitude": -31.9559,
-   "longitude": 115.86058,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "adelaide",
-   "countryCode": "AU",
-   "name": "Adelaide",
-   "latitude": -34.92818,
-   "longitude": 138.59993,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "cairns",
-   "countryCode": "AU",
-   "name": "Cairns",
-   "latitude": -16.92067,
-   "longitude": 145.77219,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "auckland",
-   "countryCode": "NZ",
-   "name": "Auckland",
-   "latitude": -36.85209,
-   "longitude": 174.76318,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "wellington",
-   "countryCode": "NZ",
-   "name": "Wellington",
-   "latitude": -41.2888,
-   "longitude": 174.77721,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "christchurch",
-   "countryCode": "NZ",
-   "name": "Christchurch",
-   "latitude": -43.53095,
-   "longitude": 172.63643,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "queenstown",
-   "countryCode": "NZ",
-   "name": "Queenstown",
-   "latitude": -45.03219,
-   "longitude": 168.661,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "nadi",
-   "countryCode": "FJ",
-   "name": "Nadi",
-   "latitude": -17.79927,
-   "longitude": 177.41785,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "suva",
-   "countryCode": "FJ",
-   "name": "Suva",
-   "latitude": -18.14159,
-   "longitude": 178.44217,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "port-moresby",
-   "countryCode": "PG",
-   "name": "Port Moresby",
-   "latitude": -9.47433,
-   "longitude": 147.15995,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "apia",
-   "countryCode": "WS",
-   "name": "Apia",
-   "latitude": -13.83452,
-   "longitude": -171.7631,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "nukualofa",
-   "countryCode": "TO",
-   "name": "Nukuʻalofa",
-   "latitude": -21.13434,
-   "longitude": -175.20181,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "port-vila",
-   "countryCode": "VU",
-   "name": "Port Vila",
-   "latitude": -17.7415,
-   "longitude": 168.31502,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "honiara",
-   "countryCode": "SB",
-   "name": "Honiara",
-   "latitude": -9.43108,
-   "longitude": 159.95526,
-   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
-   "qa": false
-  },
-  {
-   "id": "koror",
-   "countryCode": "PW",
-   "name": "Koror",
-   "latitude": 7.34328,
-   "longitude": 134.47668,
    "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
    "qa": false
   },
@@ -3329,6 +3329,510 @@
    "latitude": 6.88705,
    "longitude": 158.24061,
    "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch2.staged.json",
+   "qa": false
+  },
+  {
+   "id": "nuwara-eliya",
+   "countryCode": "LK",
+   "name": "Nuwara Eliya",
+   "latitude": 6.97397,
+   "longitude": 80.76699,
+   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch3.staged.json",
+   "qa": false
+  },
+  {
+   "id": "sigiriya",
+   "countryCode": "LK",
+   "name": "Sigiriya",
+   "latitude": 7.94981,
+   "longitude": 80.74635,
+   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch3.staged.json",
+   "qa": false
+  },
+  {
+   "id": "bentota",
+   "countryCode": "LK",
+   "name": "Bentota",
+   "latitude": 6.42153,
+   "longitude": 79.99785,
+   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch3.staged.json",
+   "qa": false
+  },
+  {
+   "id": "negombo",
+   "countryCode": "LK",
+   "name": "Negombo",
+   "latitude": 7.20943,
+   "longitude": 79.83312,
+   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch3.staged.json",
+   "qa": false
+  },
+  {
+   "id": "trincomalee",
+   "countryCode": "LK",
+   "name": "Trincomalee",
+   "latitude": 8.57643,
+   "longitude": 81.2345,
+   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch3.staged.json",
+   "qa": false
+  },
+  {
+   "id": "mirissa",
+   "countryCode": "LK",
+   "name": "Mirissa",
+   "latitude": 5.94936,
+   "longitude": 80.45581,
+   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch3.staged.json",
+   "qa": false
+  },
+  {
+   "id": "al-khobar",
+   "countryCode": "SA",
+   "name": "Al Khobar",
+   "latitude": 26.304,
+   "longitude": 50.19602,
+   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch3.staged.json",
+   "qa": false
+  },
+  {
+   "id": "tabuk",
+   "countryCode": "SA",
+   "name": "Tabuk",
+   "latitude": 28.40125,
+   "longitude": 36.56705,
+   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch3.staged.json",
+   "qa": false
+  },
+  {
+   "id": "yanbu",
+   "countryCode": "SA",
+   "name": "Yanbu",
+   "latitude": 24.08902,
+   "longitude": 38.06871,
+   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch3.staged.json",
+   "qa": false
+  },
+  {
+   "id": "al-baha",
+   "countryCode": "SA",
+   "name": "Al Baha",
+   "latitude": 20.01379,
+   "longitude": 41.46564,
+   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch3.staged.json",
+   "qa": false
+  },
+  {
+   "id": "jazan",
+   "countryCode": "SA",
+   "name": "Jazan",
+   "latitude": 16.89472,
+   "longitude": 42.55798,
+   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch3.staged.json",
+   "qa": false
+  },
+  {
+   "id": "hail",
+   "countryCode": "SA",
+   "name": "Hail",
+   "latitude": 27.52087,
+   "longitude": 41.6986,
+   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch3.staged.json",
+   "qa": false
+  },
+  {
+   "id": "al-ahsa",
+   "countryCode": "SA",
+   "name": "Al Ahsa",
+   "latitude": 25.36966,
+   "longitude": 49.58652,
+   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch3.staged.json",
+   "qa": false
+  },
+  {
+   "id": "najran",
+   "countryCode": "SA",
+   "name": "Najran",
+   "latitude": 17.54398,
+   "longitude": 44.22468,
+   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch3.staged.json",
+   "qa": false
+  },
+  {
+   "id": "umluj",
+   "countryCode": "SA",
+   "name": "Umluj",
+   "latitude": 25.03028,
+   "longitude": 37.26223,
+   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch3.staged.json",
+   "qa": false
+  },
+  {
+   "id": "fethiye",
+   "countryCode": "TR",
+   "name": "Fethiye",
+   "latitude": 36.62212,
+   "longitude": 29.11534,
+   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch3.staged.json",
+   "qa": false
+  },
+  {
+   "id": "uzungol",
+   "countryCode": "TR",
+   "name": "Uzungol",
+   "latitude": 40.61913,
+   "longitude": 40.29481,
+   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch3.staged.json",
+   "qa": false
+  },
+  {
+   "id": "sapanca",
+   "countryCode": "TR",
+   "name": "Sapanca",
+   "latitude": 40.69161,
+   "longitude": 30.26738,
+   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch3.staged.json",
+   "qa": false
+  },
+  {
+   "id": "bolu",
+   "countryCode": "TR",
+   "name": "Bolu",
+   "latitude": 40.7333,
+   "longitude": 31.61105,
+   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch3.staged.json",
+   "qa": false
+  },
+  {
+   "id": "ankara",
+   "countryCode": "TR",
+   "name": "Ankara",
+   "latitude": 39.92078,
+   "longitude": 32.85405,
+   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch3.staged.json",
+   "qa": false
+  },
+  {
+   "id": "kusadasi",
+   "countryCode": "TR",
+   "name": "Kusadasi",
+   "latitude": 37.86324,
+   "longitude": 27.26687,
+   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch3.staged.json",
+   "qa": false
+  },
+  {
+   "id": "borjomi",
+   "countryCode": "GE",
+   "name": "Borjomi",
+   "latitude": 41.84124,
+   "longitude": 43.38387,
+   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch3.staged.json",
+   "qa": false
+  },
+  {
+   "id": "sighnaghi",
+   "countryCode": "GE",
+   "name": "Sighnaghi",
+   "latitude": 41.61899,
+   "longitude": 45.92281,
+   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch3.staged.json",
+   "qa": false
+  },
+  {
+   "id": "gudauri",
+   "countryCode": "GE",
+   "name": "Gudauri",
+   "latitude": 42.47656,
+   "longitude": 44.47703,
+   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch3.staged.json",
+   "qa": false
+  },
+  {
+   "id": "mestia",
+   "countryCode": "GE",
+   "name": "Mestia",
+   "latitude": 43.04376,
+   "longitude": 42.72445,
+   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch3.staged.json",
+   "qa": false
+  },
+  {
+   "id": "sheki",
+   "countryCode": "AZ",
+   "name": "Sheki",
+   "latitude": 41.20322,
+   "longitude": 47.18033,
+   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch3.staged.json",
+   "qa": false
+  },
+  {
+   "id": "shamakhi",
+   "countryCode": "AZ",
+   "name": "Shamakhi",
+   "latitude": 40.63412,
+   "longitude": 48.63834,
+   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch3.staged.json",
+   "qa": false
+  },
+  {
+   "id": "qusar",
+   "countryCode": "AZ",
+   "name": "Qusar",
+   "latitude": 41.43034,
+   "longitude": 48.43273,
+   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch3.staged.json",
+   "qa": false
+  },
+  {
+   "id": "jajce",
+   "countryCode": "BA",
+   "name": "Jajce",
+   "latitude": 44.33967,
+   "longitude": 17.27118,
+   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch3.staged.json",
+   "qa": false
+  },
+  {
+   "id": "konjic",
+   "countryCode": "BA",
+   "name": "Konjic",
+   "latitude": 43.65444,
+   "longitude": 17.96066,
+   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch3.staged.json",
+   "qa": false
+  },
+  {
+   "id": "genting-highlands",
+   "countryCode": "MY",
+   "name": "Genting Highlands",
+   "latitude": 3.42368,
+   "longitude": 101.7934,
+   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch3.staged.json",
+   "qa": false
+  },
+  {
+   "id": "cameron-highlands",
+   "countryCode": "MY",
+   "name": "Cameron Highlands",
+   "latitude": 4.47069,
+   "longitude": 101.37769,
+   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch3.staged.json",
+   "qa": false
+  },
+  {
+   "id": "ipoh",
+   "countryCode": "MY",
+   "name": "Ipoh",
+   "latitude": 4.59868,
+   "longitude": 101.09002,
+   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch3.staged.json",
+   "qa": false
+  },
+  {
+   "id": "kuching",
+   "countryCode": "MY",
+   "name": "Kuching",
+   "latitude": 1.55976,
+   "longitude": 110.3454,
+   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch3.staged.json",
+   "qa": false
+  },
+  {
+   "id": "bandung",
+   "countryCode": "ID",
+   "name": "Bandung",
+   "latitude": -6.92185,
+   "longitude": 107.60708,
+   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch3.staged.json",
+   "qa": false
+  },
+  {
+   "id": "bogor",
+   "countryCode": "ID",
+   "name": "Bogor",
+   "latitude": -6.59636,
+   "longitude": 106.79732,
+   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch3.staged.json",
+   "qa": false
+  },
+  {
+   "id": "lake-toba",
+   "countryCode": "ID",
+   "name": "Lake Toba",
+   "latitude": 2.66176,
+   "longitude": 98.93918,
+   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch3.staged.json",
+   "qa": false
+  },
+  {
+   "id": "hua-hin",
+   "countryCode": "TH",
+   "name": "Hua Hin",
+   "latitude": 12.56993,
+   "longitude": 99.95734,
+   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch3.staged.json",
+   "qa": false
+  },
+  {
+   "id": "ayutthaya",
+   "countryCode": "TH",
+   "name": "Ayutthaya",
+   "latitude": 14.35354,
+   "longitude": 100.56457,
+   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch3.staged.json",
+   "qa": false
+  },
+  {
+   "id": "chiang-rai",
+   "countryCode": "TH",
+   "name": "Chiang Rai",
+   "latitude": 19.90689,
+   "longitude": 99.83327,
+   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch3.staged.json",
+   "qa": false
+  },
+  {
+   "id": "dahab",
+   "countryCode": "EG",
+   "name": "Dahab",
+   "latitude": 28.49636,
+   "longitude": 34.51457,
+   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch3.staged.json",
+   "qa": false
+  },
+  {
+   "id": "marsa-alam",
+   "countryCode": "EG",
+   "name": "Marsa Alam",
+   "latitude": 25.06999,
+   "longitude": 34.89382,
+   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch3.staged.json",
+   "qa": false
+  },
+  {
+   "id": "el-gouna",
+   "countryCode": "EG",
+   "name": "El Gouna",
+   "latitude": 27.39893,
+   "longitude": 33.67416,
+   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch3.staged.json",
+   "qa": false
+  },
+  {
+   "id": "fujairah",
+   "countryCode": "AE",
+   "name": "Fujairah",
+   "latitude": 25.12446,
+   "longitude": 56.33551,
+   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch3.staged.json",
+   "qa": false
+  },
+  {
+   "id": "al-ain",
+   "countryCode": "AE",
+   "name": "Al Ain",
+   "latitude": 24.22487,
+   "longitude": 55.74522,
+   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch3.staged.json",
+   "qa": false
+  },
+  {
+   "id": "wadi-rum",
+   "countryCode": "JO",
+   "name": "Wadi Rum",
+   "latitude": 29.57478,
+   "longitude": 35.42183,
+   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch3.staged.json",
+   "qa": false
+  },
+  {
+   "id": "jerash",
+   "countryCode": "JO",
+   "name": "Jerash",
+   "latitude": 32.28124,
+   "longitude": 35.901,
+   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch3.staged.json",
+   "qa": false
+  },
+  {
+   "id": "sur",
+   "countryCode": "OM",
+   "name": "Sur",
+   "latitude": 22.56931,
+   "longitude": 59.52955,
+   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch3.staged.json",
+   "qa": false
+  },
+  {
+   "id": "khasab",
+   "countryCode": "OM",
+   "name": "Khasab",
+   "latitude": 26.18413,
+   "longitude": 56.24698,
+   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch3.staged.json",
+   "qa": false
+  },
+  {
+   "id": "zell-am-see",
+   "countryCode": "AT",
+   "name": "Zell am See",
+   "latitude": 47.32396,
+   "longitude": 12.79632,
+   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch3.staged.json",
+   "qa": false
+  },
+  {
+   "id": "hallstatt",
+   "countryCode": "AT",
+   "name": "Hallstatt",
+   "latitude": 47.53479,
+   "longitude": 13.59889,
+   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch3.staged.json",
+   "qa": false
+  },
+  {
+   "id": "heviz",
+   "countryCode": "HU",
+   "name": "Heviz",
+   "latitude": 46.7906,
+   "longitude": 17.18345,
+   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch3.staged.json",
+   "qa": false
+  },
+  {
+   "id": "khiva",
+   "countryCode": "UZ",
+   "name": "Khiva",
+   "latitude": 41.37751,
+   "longitude": 60.36346,
+   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch3.staged.json",
+   "qa": false
+  },
+  {
+   "id": "annecy",
+   "countryCode": "FR",
+   "name": "Annecy",
+   "latitude": 45.89923,
+   "longitude": 6.12888,
+   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch3.staged.json",
+   "qa": false
+  },
+  {
+   "id": "como",
+   "countryCode": "IT",
+   "name": "Como",
+   "latitude": 45.81156,
+   "longitude": 9.08304,
+   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch3.staged.json",
+   "qa": false
+  },
+  {
+   "id": "amalfi",
+   "countryCode": "IT",
+   "name": "Amalfi",
+   "latitude": 40.63367,
+   "longitude": 14.60261,
+   "coordinateSource": "OpenStreetMap Nominatim, via scripts/geo/out/batch3.staged.json",
    "qa": false
   },
   {
@@ -7882,16 +8386,6 @@
    "station": true
   },
   {
-   "id": "st-00041036",
-   "countryCode": "",
-   "name": "Taif",
-   "latitude": 21.479,
-   "longitude": 40.549,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
    "id": "st-00017290",
    "countryCode": "",
    "name": "Bodrum",
@@ -8042,16 +8536,6 @@
    "station": true
   },
   {
-   "id": "st-00055773",
-   "countryCode": "",
-   "name": "PAGRI",
-   "latitude": 27.73,
-   "longitude": 89.08,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
    "id": "st-00041923",
    "countryCode": "",
    "name": "Dhaka",
@@ -8087,36 +8571,6 @@
    "name": "WENJIANG",
    "latitude": 30.75,
    "longitude": 103.87,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00047412",
-   "countryCode": "",
-   "name": "Sapporo",
-   "latitude": 43.06,
-   "longitude": 141.328,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00047421",
-   "countryCode": "",
-   "name": "Suttsu",
-   "latitude": 42.795,
-   "longitude": 140.223,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00047407",
-   "countryCode": "",
-   "name": "Asahikawa",
-   "latitude": 43.757,
-   "longitude": 142.372,
    "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
    "qa": false,
    "station": true
@@ -8242,36 +8696,6 @@
    "station": true
   },
   {
-   "id": "st-00048940",
-   "countryCode": "",
-   "name": "VientianeCapital",
-   "latitude": 17.97,
-   "longitude": 102.571,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00048352",
-   "countryCode": "",
-   "name": "NongKhai",
-   "latitude": 17.865,
-   "longitude": 102.747,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00048354",
-   "countryCode": "",
-   "name": "UdonThani",
-   "latitude": 17.383,
-   "longitude": 102.8,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
    "id": "st-00096315",
    "countryCode": "",
    "name": "BRUNEI",
@@ -8318,36 +8742,6 @@
    "latitude": 44.432,
    "longitude": -1.248,
    "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00007190",
-   "countryCode": "",
-   "name": "STRASBOURG_ENTZHEIM",
-   "latitude": 48.549,
-   "longitude": 7.64,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-ghcn-GME00127750",
-   "countryCode": "",
-   "name": "RHEINAU-MEMPRECHTSHOFEN",
-   "latitude": 48.6708,
-   "longitude": 7.9956,
-   "coordinateSource": "NOAA GHCN-Daily station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-ghcn-GME00122770",
-   "countryCode": "",
-   "name": "OHLSBACH",
-   "latitude": 48.4339,
-   "longitude": 7.9933,
-   "coordinateSource": "NOAA GHCN-Daily station position (calibration point)",
    "qa": false,
    "station": true
   },
@@ -8417,36 +8811,6 @@
    "name": "MALAGAAEROPUERTO",
    "latitude": 36.666,
    "longitude": -4.482,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00008285",
-   "countryCode": "",
-   "name": "VALENCIA",
-   "latitude": 39.481,
-   "longitude": -0.366,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00008284",
-   "countryCode": "",
-   "name": "VALENCIAAEROPUERTO",
-   "latitude": 39.485,
-   "longitude": -0.475,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00008286",
-   "countryCode": "",
-   "name": "CASTELLONALMASSORA",
-   "latitude": 39.957,
-   "longitude": -0.072,
    "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
    "qa": false,
    "station": true
@@ -8558,36 +8922,6 @@
    "latitude": 55.4767,
    "longitude": -4.5658,
    "coordinateSource": "NOAA GHCN-Daily station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-ghcn-UK000000000",
-   "countryCode": "",
-   "name": "CET CENTRAL ENGLAND",
-   "latitude": 52.42,
-   "longitude": -1.83,
-   "coordinateSource": "NOAA GHCN-Daily station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-ghcn-UKE00105909",
-   "countryCode": "",
-   "name": "WELLESBOURNE",
-   "latitude": 52.2058,
-   "longitude": -1.6031,
-   "coordinateSource": "NOAA GHCN-Daily station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00003544",
-   "countryCode": "",
-   "name": "ChurchLawford",
-   "latitude": 52.359,
-   "longitude": -1.331,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
    "qa": false,
    "station": true
   },
@@ -8732,36 +9066,6 @@
    "station": true
   },
   {
-   "id": "st-00006748",
-   "countryCode": "",
-   "name": "Zermatt",
-   "latitude": 46.029,
-   "longitude": 7.753,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00006728",
-   "countryCode": "",
-   "name": "Graechen",
-   "latitude": 46.195,
-   "longitude": 7.837,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00006722",
-   "countryCode": "",
-   "name": "EvoleneVilla",
-   "latitude": 46.112,
-   "longitude": 7.509,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
    "id": "st-00011723",
    "countryCode": "",
    "name": "BrnoTurany",
@@ -8882,36 +9186,6 @@
    "station": true
   },
   {
-   "id": "st-00026038",
-   "countryCode": "",
-   "name": "Tallinn-Harku",
-   "latitude": 59.398,
-   "longitude": 24.603,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-ghcn-ENE00175051",
-   "countryCode": "",
-   "name": "TALLINN",
-   "latitude": 59.3981,
-   "longitude": 24.6028,
-   "coordinateSource": "NOAA GHCN-Daily station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00026029",
-   "countryCode": "",
-   "name": "Pakri",
-   "latitude": 59.389,
-   "longitude": 24.04,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
    "id": "st-00026422",
    "countryCode": "",
    "name": "RigaLu",
@@ -8938,96 +9212,6 @@
    "latitude": 56.557,
    "longitude": 23.964,
    "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00026736",
-   "countryCode": "",
-   "name": "OSHMYANY",
-   "latitude": 54.429,
-   "longitude": 25.924,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00026645",
-   "countryCode": "",
-   "name": "LYNTUPY",
-   "latitude": 55.049,
-   "longitude": 26.307,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00026832",
-   "countryCode": "",
-   "name": "LIDA",
-   "latitude": 53.902,
-   "longitude": 25.323,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00015614",
-   "countryCode": "",
-   "name": "Sofia",
-   "latitude": 42.654,
-   "longitude": 23.383,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00015600",
-   "countryCode": "",
-   "name": "MurgashPeak",
-   "latitude": 42.833,
-   "longitude": 23.669,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00064215",
-   "countryCode": "",
-   "name": "MusalaPeak",
-   "latitude": 42.179,
-   "longitude": 23.585,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00015552",
-   "countryCode": "",
-   "name": "Varna",
-   "latitude": 43.213,
-   "longitude": 27.953,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00015655",
-   "countryCode": "",
-   "name": "Burgas",
-   "latitude": 42.498,
-   "longitude": 27.483,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-ghcn-ROE00100901",
-   "countryCode": "",
-   "name": "CALARASI",
-   "latitude": 44.2,
-   "longitude": 27.3331,
-   "coordinateSource": "NOAA GHCN-Daily station position (calibration point)",
    "qa": false,
    "station": true
   },
@@ -9062,66 +9246,6 @@
    "station": true
   },
   {
-   "id": "st-00016149",
-   "countryCode": "",
-   "name": "Rimini_Miramare",
-   "latitude": 44.024,
-   "longitude": 12.613,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00016148",
-   "countryCode": "",
-   "name": "Cervia",
-   "latitude": 44.229,
-   "longitude": 12.292,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00016179",
-   "countryCode": "",
-   "name": "Frontone",
-   "latitude": 43.517,
-   "longitude": 12.728,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00007627",
-   "countryCode": "",
-   "name": "ST_GIRONS",
-   "latitude": 43.005,
-   "longitude": 1.107,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00007635",
-   "countryCode": "",
-   "name": "CARCASSONNE",
-   "latitude": 43.215,
-   "longitude": 2.296,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-ghcn-SPE00120161",
-   "countryCode": "",
-   "name": "HUESCA",
-   "latitude": 42.0831,
-   "longitude": 0.3264,
-   "coordinateSource": "NOAA GHCN-Daily station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
    "id": "st-00060250",
    "countryCode": "",
    "name": "AGADIRINEZGANNE",
@@ -9137,76 +9261,6 @@
    "name": "ESSAOUIRA",
    "latitude": 31.51,
    "longitude": -9.773,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00060720",
-   "countryCode": "",
-   "name": "Kelibia",
-   "latitude": 36.85,
-   "longitude": 11.083,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00060390",
-   "countryCode": "",
-   "name": "AlgerDarElBeida",
-   "latitude": 36.69,
-   "longitude": 3.217,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00060437",
-   "countryCode": "",
-   "name": "Medea",
-   "latitude": 36.281,
-   "longitude": 2.732,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00060395",
-   "countryCode": "",
-   "name": "TiziOuzou",
-   "latitude": 36.724,
-   "longitude": 4.019,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00060490",
-   "countryCode": "",
-   "name": "OranSennia",
-   "latitude": 35.631,
-   "longitude": -0.604,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00060520",
-   "countryCode": "",
-   "name": "SidiBelAbbes",
-   "latitude": 35.174,
-   "longitude": -0.595,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00060531",
-   "countryCode": "",
-   "name": "TlemcenZenata",
-   "latitude": 35.019,
-   "longitude": -1.445,
    "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
    "qa": false,
    "station": true
@@ -9242,46 +9296,6 @@
    "station": true
   },
   {
-   "id": "st-00067085",
-   "countryCode": "",
-   "name": "ANTANANARIVO",
-   "latitude": -18.867,
-   "longitude": 47.5,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00067083",
-   "countryCode": "",
-   "name": "IVATO",
-   "latitude": -18.8,
-   "longitude": 47.483,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00067107",
-   "countryCode": "",
-   "name": "ANTSIRABE",
-   "latitude": -19.817,
-   "longitude": 47.067,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00067012",
-   "countryCode": "",
-   "name": "NOSYBE",
-   "latitude": -13.317,
-   "longitude": 48.317,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
    "id": "st-00061641",
    "countryCode": "",
    "name": "Dakar",
@@ -9307,66 +9321,6 @@
    "name": "Bambey",
    "latitude": 14.7,
    "longitude": -16.46,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00065472",
-   "countryCode": "",
-   "name": "Accra",
-   "latitude": 5.6,
-   "longitude": -0.167,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00065473",
-   "countryCode": "",
-   "name": "Tema",
-   "latitude": 5.617,
-   "longitude": 0,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00065459",
-   "countryCode": "",
-   "name": "Koforidua",
-   "latitude": 6.083,
-   "longitude": -0.25,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00065203",
-   "countryCode": "",
-   "name": "LagosRoof",
-   "latitude": 6.58,
-   "longitude": 3.06,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00065210",
-   "countryCode": "",
-   "name": "IjebuOde",
-   "latitude": 6.4,
-   "longitude": 3.93,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00065213",
-   "countryCode": "",
-   "name": "Abeokuta",
-   "latitude": 7.2,
-   "longitude": 3,
    "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
    "qa": false,
    "station": true
@@ -9447,66 +9401,6 @@
    "name": "CHICAGO BOTANIC GARDEN",
    "latitude": 42.14,
    "longitude": -87.7853,
-   "coordinateSource": "NOAA GHCN-Daily station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00072405",
-   "countryCode": "",
-   "name": "WASHINGTON_REAGAN_AP",
-   "latitude": 38.848,
-   "longitude": -77.034,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-ghcn-USC00186350",
-   "countryCode": "",
-   "name": "NATL ARBORETUM DC",
-   "latitude": 38.9133,
-   "longitude": -76.97,
-   "coordinateSource": "NOAA GHCN-Daily station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-ghcn-USC00182325",
-   "countryCode": "",
-   "name": "DALECARLIA RSVR",
-   "latitude": 38.9386,
-   "longitude": -77.1133,
-   "coordinateSource": "NOAA GHCN-Daily station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-ghcn-USW00094290",
-   "countryCode": "",
-   "name": "SEATTLE SAND PT WFO",
-   "latitude": 47.6872,
-   "longitude": -122.2553,
-   "coordinateSource": "NOAA GHCN-Daily station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00072793",
-   "countryCode": "",
-   "name": "SEATTLE_TACOMA_INTL_AP",
-   "latitude": 47.444,
-   "longitude": -122.314,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-ghcn-USC00454169",
-   "countryCode": "",
-   "name": "KENT",
-   "latitude": 47.4172,
-   "longitude": -122.2433,
    "coordinateSource": "NOAA GHCN-Daily station position (calibration point)",
    "qa": false,
    "station": true
@@ -9662,26 +9556,6 @@
    "station": true
   },
   {
-   "id": "st-00078486",
-   "countryCode": "",
-   "name": "SantoDomingo",
-   "latitude": 18.473,
-   "longitude": -69.871,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00078485",
-   "countryCode": "",
-   "name": "LasAmericas",
-   "latitude": 18.433,
-   "longitude": -69.68,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
    "id": "st-00078388",
    "countryCode": "",
    "name": "MontegoBaySangster",
@@ -9702,61 +9576,11 @@
    "station": true
   },
   {
-   "id": "st-00078764",
+   "id": "st-00078663",
    "countryCode": "",
-   "name": "TobiasBolanosPalmaAirport",
-   "latitude": 9.95,
-   "longitude": -84.133,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00078762",
-   "countryCode": "",
-   "name": "JuanSantamariaInternationalAir",
-   "latitude": 9.983,
-   "longitude": -84.167,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00078767",
-   "countryCode": "",
-   "name": "PuertoLimon",
-   "latitude": 9.95,
-   "longitude": -83.017,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00078774",
-   "countryCode": "",
-   "name": "DanielOduberInternationalAirpo",
-   "latitude": 10.583,
-   "longitude": -85.533,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00078641",
-   "countryCode": "",
-   "name": "La_Aurora",
-   "latitude": 14.586,
-   "longitude": -90.528,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00078649",
-   "countryCode": "",
-   "name": "La_Fragua",
-   "latitude": 14.966,
-   "longitude": -89.584,
+   "name": "ILOPANGO",
+   "latitude": 13.699,
+   "longitude": -89.118,
    "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
    "qa": false,
    "station": true
@@ -9767,16 +9591,6 @@
    "name": "SantaAna",
    "latitude": 13.983,
    "longitude": -89.548,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00078663",
-   "countryCode": "",
-   "name": "ILOPANGO",
-   "latitude": 13.699,
-   "longitude": -89.118,
    "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
    "qa": false,
    "station": true
@@ -9827,36 +9641,6 @@
    "name": "LyndenPindlingIntlAirport",
    "latitude": 25.05,
    "longitude": -77.467,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00078954",
-   "countryCode": "",
-   "name": "Charnocks",
-   "latitude": 13.085,
-   "longitude": -59.487,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00078970",
-   "countryCode": "",
-   "name": "Piarco",
-   "latitude": 10.589,
-   "longitude": -61.345,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00080423",
-   "countryCode": "",
-   "name": "Guiria",
-   "latitude": 10.583,
-   "longitude": -62.303,
    "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
    "qa": false,
    "station": true
@@ -9992,16 +9776,6 @@
    "station": true
   },
   {
-   "id": "st-00085934",
-   "countryCode": "",
-   "name": "Carlosibanezaeropuertopuntaare",
-   "latitude": -53.002,
-   "longitude": -70.839,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
    "id": "st-00085469",
    "countryCode": "",
    "name": "Isladepascuaad",
@@ -10037,16 +9811,6 @@
    "name": "Huayan",
    "latitude": -11.453,
    "longitude": -77.122,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00022301",
-   "countryCode": "",
-   "name": "Sicuani",
-   "latitude": -14.237,
-   "longitude": -71.237,
    "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
    "qa": false,
    "station": true
@@ -10222,86 +9986,6 @@
    "station": true
   },
   {
-   "id": "st-00086218",
-   "countryCode": "",
-   "name": "Asuncion",
-   "latitude": -25.236,
-   "longitude": -57.515,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00086221",
-   "countryCode": "",
-   "name": "Paraguari",
-   "latitude": -25.627,
-   "longitude": -57.146,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00087162",
-   "countryCode": "",
-   "name": "FORMOSA_AERO",
-   "latitude": -26.212,
-   "longitude": -58.229,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00081001",
-   "countryCode": "",
-   "name": "GTBotanicalGardens",
-   "latitude": 6.809,
-   "longitude": -58.146,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00081002",
-   "countryCode": "",
-   "name": "Cheddijaganairport",
-   "latitude": 6.489,
-   "longitude": -58.25,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00081058",
-   "countryCode": "",
-   "name": "Newamsterdam",
-   "latitude": 6.247,
-   "longitude": -57.515,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00081200",
-   "countryCode": "",
-   "name": "ZorgEnHoop",
-   "latitude": 5.811,
-   "longitude": -55.187,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00081225",
-   "countryCode": "",
-   "name": "JAPengelInt",
-   "latitude": 5.449,
-   "longitude": -55.204,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
    "id": "st-00094608",
    "countryCode": "",
    "name": "PerthMetro",
@@ -10392,26 +10076,6 @@
    "station": true
   },
   {
-   "id": "st-00093439",
-   "countryCode": "",
-   "name": "Wellington_Aero_AWS",
-   "latitude": -41.331,
-   "longitude": 174.806,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00093420",
-   "countryCode": "",
-   "name": "Paraparaumu_Aero_AWS",
-   "latitude": -40.904,
-   "longitude": 174.985,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
    "id": "st-00093781",
    "countryCode": "",
    "name": "Christchurch_Aero_AWS",
@@ -10482,26 +10146,6 @@
    "station": true
   },
   {
-   "id": "st-00091762",
-   "countryCode": "",
-   "name": "Samoa_Apia",
-   "latitude": -13.816,
-   "longitude": -171.78,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
-   "id": "st-00091765",
-   "countryCode": "",
-   "name": "PAGO_PAGO_WSO_AP",
-   "latitude": -14.331,
-   "longitude": -170.714,
-   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
-   "qa": false,
-   "station": true
-  },
-  {
    "id": "st-00091517",
    "countryCode": "",
    "name": "Honiara",
@@ -10522,6 +10166,746 @@
    "station": true
   },
   {
+   "id": "st-00041036",
+   "countryCode": "",
+   "name": "Taif",
+   "latitude": 21.479,
+   "longitude": 40.549,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00047412",
+   "countryCode": "",
+   "name": "Sapporo",
+   "latitude": 43.06,
+   "longitude": 141.328,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00047421",
+   "countryCode": "",
+   "name": "Suttsu",
+   "latitude": 42.795,
+   "longitude": 140.223,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00047407",
+   "countryCode": "",
+   "name": "Asahikawa",
+   "latitude": 43.757,
+   "longitude": 142.372,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00048940",
+   "countryCode": "",
+   "name": "VientianeCapital",
+   "latitude": 17.97,
+   "longitude": 102.571,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00048352",
+   "countryCode": "",
+   "name": "NongKhai",
+   "latitude": 17.865,
+   "longitude": 102.747,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00048354",
+   "countryCode": "",
+   "name": "UdonThani",
+   "latitude": 17.383,
+   "longitude": 102.8,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00007190",
+   "countryCode": "",
+   "name": "STRASBOURG_ENTZHEIM",
+   "latitude": 48.549,
+   "longitude": 7.64,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-ghcn-GME00127750",
+   "countryCode": "",
+   "name": "RHEINAU-MEMPRECHTSHOFEN",
+   "latitude": 48.6708,
+   "longitude": 7.9956,
+   "coordinateSource": "NOAA GHCN-Daily station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-ghcn-GME00122770",
+   "countryCode": "",
+   "name": "OHLSBACH",
+   "latitude": 48.4339,
+   "longitude": 7.9933,
+   "coordinateSource": "NOAA GHCN-Daily station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00008285",
+   "countryCode": "",
+   "name": "VALENCIA",
+   "latitude": 39.481,
+   "longitude": -0.366,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00008284",
+   "countryCode": "",
+   "name": "VALENCIAAEROPUERTO",
+   "latitude": 39.485,
+   "longitude": -0.475,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00008286",
+   "countryCode": "",
+   "name": "CASTELLONALMASSORA",
+   "latitude": 39.957,
+   "longitude": -0.072,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-ghcn-UK000000000",
+   "countryCode": "",
+   "name": "CET CENTRAL ENGLAND",
+   "latitude": 52.42,
+   "longitude": -1.83,
+   "coordinateSource": "NOAA GHCN-Daily station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-ghcn-UKE00105909",
+   "countryCode": "",
+   "name": "WELLESBOURNE",
+   "latitude": 52.2058,
+   "longitude": -1.6031,
+   "coordinateSource": "NOAA GHCN-Daily station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00003544",
+   "countryCode": "",
+   "name": "ChurchLawford",
+   "latitude": 52.359,
+   "longitude": -1.331,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00006748",
+   "countryCode": "",
+   "name": "Zermatt",
+   "latitude": 46.029,
+   "longitude": 7.753,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00006728",
+   "countryCode": "",
+   "name": "Graechen",
+   "latitude": 46.195,
+   "longitude": 7.837,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00006722",
+   "countryCode": "",
+   "name": "EvoleneVilla",
+   "latitude": 46.112,
+   "longitude": 7.509,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00026038",
+   "countryCode": "",
+   "name": "Tallinn-Harku",
+   "latitude": 59.398,
+   "longitude": 24.603,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-ghcn-ENE00175051",
+   "countryCode": "",
+   "name": "TALLINN",
+   "latitude": 59.3981,
+   "longitude": 24.6028,
+   "coordinateSource": "NOAA GHCN-Daily station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00026029",
+   "countryCode": "",
+   "name": "Pakri",
+   "latitude": 59.389,
+   "longitude": 24.04,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00026736",
+   "countryCode": "",
+   "name": "OSHMYANY",
+   "latitude": 54.429,
+   "longitude": 25.924,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00026645",
+   "countryCode": "",
+   "name": "LYNTUPY",
+   "latitude": 55.049,
+   "longitude": 26.307,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00026832",
+   "countryCode": "",
+   "name": "LIDA",
+   "latitude": 53.902,
+   "longitude": 25.323,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00015614",
+   "countryCode": "",
+   "name": "Sofia",
+   "latitude": 42.654,
+   "longitude": 23.383,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00015600",
+   "countryCode": "",
+   "name": "MurgashPeak",
+   "latitude": 42.833,
+   "longitude": 23.669,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00064215",
+   "countryCode": "",
+   "name": "MusalaPeak",
+   "latitude": 42.179,
+   "longitude": 23.585,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00015552",
+   "countryCode": "",
+   "name": "Varna",
+   "latitude": 43.213,
+   "longitude": 27.953,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00015655",
+   "countryCode": "",
+   "name": "Burgas",
+   "latitude": 42.498,
+   "longitude": 27.483,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-ghcn-ROE00100901",
+   "countryCode": "",
+   "name": "CALARASI",
+   "latitude": 44.2,
+   "longitude": 27.3331,
+   "coordinateSource": "NOAA GHCN-Daily station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00072405",
+   "countryCode": "",
+   "name": "WASHINGTON_REAGAN_AP",
+   "latitude": 38.848,
+   "longitude": -77.034,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-ghcn-USC00186350",
+   "countryCode": "",
+   "name": "NATL ARBORETUM DC",
+   "latitude": 38.9133,
+   "longitude": -76.97,
+   "coordinateSource": "NOAA GHCN-Daily station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-ghcn-USC00182325",
+   "countryCode": "",
+   "name": "DALECARLIA RSVR",
+   "latitude": 38.9386,
+   "longitude": -77.1133,
+   "coordinateSource": "NOAA GHCN-Daily station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-ghcn-USW00094290",
+   "countryCode": "",
+   "name": "SEATTLE SAND PT WFO",
+   "latitude": 47.6872,
+   "longitude": -122.2553,
+   "coordinateSource": "NOAA GHCN-Daily station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00072793",
+   "countryCode": "",
+   "name": "SEATTLE_TACOMA_INTL_AP",
+   "latitude": 47.444,
+   "longitude": -122.314,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-ghcn-USC00454169",
+   "countryCode": "",
+   "name": "KENT",
+   "latitude": 47.4172,
+   "longitude": -122.2433,
+   "coordinateSource": "NOAA GHCN-Daily station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00078486",
+   "countryCode": "",
+   "name": "SantoDomingo",
+   "latitude": 18.473,
+   "longitude": -69.871,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00078485",
+   "countryCode": "",
+   "name": "LasAmericas",
+   "latitude": 18.433,
+   "longitude": -69.68,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00085934",
+   "countryCode": "",
+   "name": "Carlosibanezaeropuertopuntaare",
+   "latitude": -53.002,
+   "longitude": -70.839,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00093439",
+   "countryCode": "",
+   "name": "Wellington_Aero_AWS",
+   "latitude": -41.331,
+   "longitude": 174.806,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00093420",
+   "countryCode": "",
+   "name": "Paraparaumu_Aero_AWS",
+   "latitude": -40.904,
+   "longitude": 174.985,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00016149",
+   "countryCode": "",
+   "name": "Rimini_Miramare",
+   "latitude": 44.024,
+   "longitude": 12.613,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00016148",
+   "countryCode": "",
+   "name": "Cervia",
+   "latitude": 44.229,
+   "longitude": 12.292,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00016179",
+   "countryCode": "",
+   "name": "Frontone",
+   "latitude": 43.517,
+   "longitude": 12.728,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00007627",
+   "countryCode": "",
+   "name": "ST_GIRONS",
+   "latitude": 43.005,
+   "longitude": 1.107,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00007635",
+   "countryCode": "",
+   "name": "CARCASSONNE",
+   "latitude": 43.215,
+   "longitude": 2.296,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-ghcn-SPE00120161",
+   "countryCode": "",
+   "name": "HUESCA",
+   "latitude": 42.0831,
+   "longitude": 0.3264,
+   "coordinateSource": "NOAA GHCN-Daily station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00060390",
+   "countryCode": "",
+   "name": "AlgerDarElBeida",
+   "latitude": 36.69,
+   "longitude": 3.217,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00060437",
+   "countryCode": "",
+   "name": "Medea",
+   "latitude": 36.281,
+   "longitude": 2.732,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00060395",
+   "countryCode": "",
+   "name": "TiziOuzou",
+   "latitude": 36.724,
+   "longitude": 4.019,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00060490",
+   "countryCode": "",
+   "name": "OranSennia",
+   "latitude": 35.631,
+   "longitude": -0.604,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00060520",
+   "countryCode": "",
+   "name": "SidiBelAbbes",
+   "latitude": 35.174,
+   "longitude": -0.595,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00060531",
+   "countryCode": "",
+   "name": "TlemcenZenata",
+   "latitude": 35.019,
+   "longitude": -1.445,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00065472",
+   "countryCode": "",
+   "name": "Accra",
+   "latitude": 5.6,
+   "longitude": -0.167,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00065473",
+   "countryCode": "",
+   "name": "Tema",
+   "latitude": 5.617,
+   "longitude": 0,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00065459",
+   "countryCode": "",
+   "name": "Koforidua",
+   "latitude": 6.083,
+   "longitude": -0.25,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00065203",
+   "countryCode": "",
+   "name": "LagosRoof",
+   "latitude": 6.58,
+   "longitude": 3.06,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00065210",
+   "countryCode": "",
+   "name": "IjebuOde",
+   "latitude": 6.4,
+   "longitude": 3.93,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00065213",
+   "countryCode": "",
+   "name": "Abeokuta",
+   "latitude": 7.2,
+   "longitude": 3,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00078764",
+   "countryCode": "",
+   "name": "TobiasBolanosPalmaAirport",
+   "latitude": 9.95,
+   "longitude": -84.133,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00078762",
+   "countryCode": "",
+   "name": "JuanSantamariaInternationalAir",
+   "latitude": 9.983,
+   "longitude": -84.167,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00078767",
+   "countryCode": "",
+   "name": "PuertoLimon",
+   "latitude": 9.95,
+   "longitude": -83.017,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00078774",
+   "countryCode": "",
+   "name": "DanielOduberInternationalAirpo",
+   "latitude": 10.583,
+   "longitude": -85.533,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00078641",
+   "countryCode": "",
+   "name": "La_Aurora",
+   "latitude": 14.586,
+   "longitude": -90.528,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00078649",
+   "countryCode": "",
+   "name": "La_Fragua",
+   "latitude": 14.966,
+   "longitude": -89.584,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00078954",
+   "countryCode": "",
+   "name": "Charnocks",
+   "latitude": 13.085,
+   "longitude": -59.487,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00078970",
+   "countryCode": "",
+   "name": "Piarco",
+   "latitude": 10.589,
+   "longitude": -61.345,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00080423",
+   "countryCode": "",
+   "name": "Guiria",
+   "latitude": 10.583,
+   "longitude": -62.303,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00086218",
+   "countryCode": "",
+   "name": "Asuncion",
+   "latitude": -25.236,
+   "longitude": -57.515,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00086221",
+   "countryCode": "",
+   "name": "Paraguari",
+   "latitude": -25.627,
+   "longitude": -57.146,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00087162",
+   "countryCode": "",
+   "name": "FORMOSA_AERO",
+   "latitude": -26.212,
+   "longitude": -58.229,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00091762",
+   "countryCode": "",
+   "name": "Samoa_Apia",
+   "latitude": -13.816,
+   "longitude": -171.78,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00091765",
+   "countryCode": "",
+   "name": "PAGO_PAGO_WSO_AP",
+   "latitude": -14.331,
+   "longitude": -170.714,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
    "id": "st-00091408",
    "countryCode": "",
    "name": "KOROR_WSO",
@@ -10532,11 +10916,751 @@
    "station": true
   },
   {
+   "id": "st-00060720",
+   "countryCode": "",
+   "name": "Kelibia",
+   "latitude": 36.85,
+   "longitude": 11.083,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00081001",
+   "countryCode": "",
+   "name": "GTBotanicalGardens",
+   "latitude": 6.809,
+   "longitude": -58.146,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00081002",
+   "countryCode": "",
+   "name": "Cheddijaganairport",
+   "latitude": 6.489,
+   "longitude": -58.25,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00081058",
+   "countryCode": "",
+   "name": "Newamsterdam",
+   "latitude": 6.247,
+   "longitude": -57.515,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00081200",
+   "countryCode": "",
+   "name": "ZorgEnHoop",
+   "latitude": 5.811,
+   "longitude": -55.187,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00081225",
+   "countryCode": "",
+   "name": "JAPengelInt",
+   "latitude": 5.449,
+   "longitude": -55.204,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00055773",
+   "countryCode": "",
+   "name": "PAGRI",
+   "latitude": 27.73,
+   "longitude": 89.08,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00067085",
+   "countryCode": "",
+   "name": "ANTANANARIVO",
+   "latitude": -18.867,
+   "longitude": 47.5,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00067083",
+   "countryCode": "",
+   "name": "IVATO",
+   "latitude": -18.8,
+   "longitude": 47.483,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00067107",
+   "countryCode": "",
+   "name": "ANTSIRABE",
+   "latitude": -19.817,
+   "longitude": 47.067,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00067012",
+   "countryCode": "",
+   "name": "NOSYBE",
+   "latitude": -13.317,
+   "longitude": 48.317,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00022301",
+   "countryCode": "",
+   "name": "Sicuani",
+   "latitude": -14.237,
+   "longitude": -71.237,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
    "id": "st-00091348",
    "countryCode": "",
    "name": "POHNPEI_WSO",
    "latitude": 6.967,
    "longitude": 158.217,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00043422",
+   "countryCode": "",
+   "name": "MahaIllupallama",
+   "latitude": 8.117,
+   "longitude": 80.45,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00043421",
+   "countryCode": "",
+   "name": "Anuradhapura",
+   "latitude": 8.333,
+   "longitude": 80.417,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00043418",
+   "countryCode": "",
+   "name": "Trincomalee",
+   "latitude": 8.583,
+   "longitude": 81.25,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00043415",
+   "countryCode": "",
+   "name": "Vavuniya",
+   "latitude": 8.75,
+   "longitude": 80.5,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00043497",
+   "countryCode": "",
+   "name": "Hambantota",
+   "latitude": 6.117,
+   "longitude": 81.133,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00040375",
+   "countryCode": "",
+   "name": "Tabuk",
+   "latitude": 28.376,
+   "longitude": 36.607,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00040439",
+   "countryCode": "",
+   "name": "Yenbo",
+   "latitude": 24.14,
+   "longitude": 38.064,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00041055",
+   "countryCode": "",
+   "name": "Al-Baha",
+   "latitude": 20.295,
+   "longitude": 41.643,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00041084",
+   "countryCode": "",
+   "name": "Bisha",
+   "latitude": 19.991,
+   "longitude": 42.619,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00040394",
+   "countryCode": "",
+   "name": "Hail",
+   "latitude": 27.434,
+   "longitude": 41.691,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00040420",
+   "countryCode": "",
+   "name": "Al-Ahsa",
+   "latitude": 25.298,
+   "longitude": 49.486,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00041128",
+   "countryCode": "",
+   "name": "Najran",
+   "latitude": 17.611,
+   "longitude": 44.414,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00017296",
+   "countryCode": "",
+   "name": "Fethiye",
+   "latitude": 36.627,
+   "longitude": 29.124,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00017924",
+   "countryCode": "",
+   "name": "Koycegiz",
+   "latitude": 36.97,
+   "longitude": 28.687,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00017089",
+   "countryCode": "",
+   "name": "Bayburt",
+   "latitude": 40.255,
+   "longitude": 40.221,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00017666",
+   "countryCode": "",
+   "name": "Ispir",
+   "latitude": 40.487,
+   "longitude": 41,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00017069",
+   "countryCode": "",
+   "name": "Sakarya",
+   "latitude": 40.768,
+   "longitude": 30.393,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00017662",
+   "countryCode": "",
+   "name": "Geyve",
+   "latitude": 40.521,
+   "longitude": 30.296,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00017066",
+   "countryCode": "",
+   "name": "Kocaeli",
+   "latitude": 40.766,
+   "longitude": 29.917,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00017070",
+   "countryCode": "",
+   "name": "Bolu",
+   "latitude": 40.733,
+   "longitude": 31.602,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00017072",
+   "countryCode": "",
+   "name": "Duzce",
+   "latitude": 40.844,
+   "longitude": 31.149,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00017015",
+   "countryCode": "",
+   "name": "Akcakoca",
+   "latitude": 41.089,
+   "longitude": 31.138,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00017130",
+   "countryCode": "",
+   "name": "Ankara_Bolge",
+   "latitude": 39.973,
+   "longitude": 32.864,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00017135",
+   "countryCode": "",
+   "name": "Kirikkale",
+   "latitude": 39.843,
+   "longitude": 33.518,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00017664",
+   "countryCode": "",
+   "name": "Kizilcahamam",
+   "latitude": 40.473,
+   "longitude": 32.644,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00017232",
+   "countryCode": "",
+   "name": "Kusadasi",
+   "latitude": 37.86,
+   "longitude": 27.265,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00017854",
+   "countryCode": "",
+   "name": "Selcuk",
+   "latitude": 37.942,
+   "longitude": 27.367,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00017234",
+   "countryCode": "",
+   "name": "Aydin",
+   "latitude": 37.84,
+   "longitude": 27.838,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00037515",
+   "countryCode": "",
+   "name": "Borjomi",
+   "latitude": 41.833,
+   "longitude": 43.4,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00037409",
+   "countryCode": "",
+   "name": "MtaSabueti",
+   "latitude": 42.033,
+   "longitude": 43.467,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00037514",
+   "countryCode": "",
+   "name": "Akhaltsikhe",
+   "latitude": 41.65,
+   "longitude": 43,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00037651",
+   "countryCode": "",
+   "name": "Dedoplistskaro",
+   "latitude": 41.467,
+   "longitude": 46.1,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00037553",
+   "countryCode": "",
+   "name": "Telavi",
+   "latitude": 41.933,
+   "longitude": 45.517,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00037531",
+   "countryCode": "",
+   "name": "Gori",
+   "latitude": 41.983,
+   "longitude": 44.117,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00037279",
+   "countryCode": "",
+   "name": "Zugdidi",
+   "latitude": 42.517,
+   "longitude": 41.883,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00040700",
+   "countryCode": "",
+   "name": "ParsabadAirport",
+   "latitude": 39.607,
+   "longitude": 47.876,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00014544",
+   "countryCode": "",
+   "name": "BUGOJNO",
+   "latitude": 44.062,
+   "longitude": 17.451,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00014542",
+   "countryCode": "",
+   "name": "Banjaluka",
+   "latitude": 44.794,
+   "longitude": 17.206,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00014537",
+   "countryCode": "",
+   "name": "SANSKI_MOST",
+   "latitude": 44.766,
+   "longitude": 16.668,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00096413",
+   "countryCode": "",
+   "name": "Kuching",
+   "latitude": 1.49,
+   "longitude": 110.353,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00096535",
+   "countryCode": "",
+   "name": "StasiunMeteorologiPaloh",
+   "latitude": 1.74,
+   "longitude": 109.3,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00048475",
+   "countryCode": "",
+   "name": "HuaHin",
+   "latitude": 12.586,
+   "longitude": 99.962,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00048465",
+   "countryCode": "",
+   "name": "PhetchaBuri",
+   "latitude": 12.999,
+   "longitude": 100.061,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00048500",
+   "countryCode": "",
+   "name": "PrachuapKhirikhan",
+   "latitude": 11.833,
+   "longitude": 99.833,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00048425",
+   "countryCode": "",
+   "name": "SuphanBuri",
+   "latitude": 14.474,
+   "longitude": 100.139,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00048426",
+   "countryCode": "",
+   "name": "LopBuri",
+   "latitude": 14.8,
+   "longitude": 100.628,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00048303",
+   "countryCode": "",
+   "name": "ChiangRai",
+   "latitude": 19.961,
+   "longitude": 99.881,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00048310",
+   "countryCode": "",
+   "name": "Phayao",
+   "latitude": 19.133,
+   "longitude": 99.9,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00048315",
+   "countryCode": "",
+   "name": "ThaWangPha",
+   "latitude": 19.111,
+   "longitude": 100.803,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00040875",
+   "countryCode": "",
+   "name": "Bandarabbas",
+   "latitude": 27.215,
+   "longitude": 56.373,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00011343",
+   "countryCode": "",
+   "name": "Sonnblick",
+   "latitude": 47.054,
+   "longitude": 12.957,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00011155",
+   "countryCode": "",
+   "name": "Feuerkogel",
+   "latitude": 47.817,
+   "longitude": 13.718,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00011012",
+   "countryCode": "",
+   "name": "Kremsmuenster",
+   "latitude": 48.055,
+   "longitude": 14.131,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00012920",
+   "countryCode": "",
+   "name": "Keszthely",
+   "latitude": 46.736,
+   "longitude": 17.239,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00012915",
+   "countryCode": "",
+   "name": "ZalaegerszegNagykutas",
+   "latitude": 46.926,
+   "longitude": 16.813,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00012925",
+   "countryCode": "",
+   "name": "Nagykanizsa",
+   "latitude": 46.456,
+   "longitude": 16.971,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00038396",
+   "countryCode": "",
+   "name": "Urgench",
+   "latitude": 41.567,
+   "longitude": 60.633,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00038264",
+   "countryCode": "",
+   "name": "Nukus",
+   "latitude": 42.483,
+   "longitude": 59.617,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00007490",
+   "countryCode": "",
+   "name": "MEYTHET",
+   "latitude": 45.928,
+   "longitude": 6.094,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00007491",
+   "countryCode": "",
+   "name": "CHAMBERY_AIX",
+   "latitude": 45.641,
+   "longitude": 5.878,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00006771",
+   "countryCode": "",
+   "name": "Stabio",
+   "latitude": 45.843,
+   "longitude": 8.932,
+   "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
+   "qa": false,
+   "station": true
+  },
+  {
+   "id": "st-00006770",
+   "countryCode": "",
+   "name": "Lugano",
+   "latitude": 46.004,
+   "longitude": 8.96,
    "coordinateSource": "WMO 1991–2020 normals station position (calibration point)",
    "qa": false,
    "station": true
