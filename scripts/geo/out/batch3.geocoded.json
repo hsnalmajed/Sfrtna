@@ -1,0 +1,1286 @@
+{
+ "source": "OpenStreetMap Nominatim",
+ "retrievedAt": "2026-11-18T13:27:31+00:00",
+ "cities": {
+  "nuwara-eliya": {
+   "country": "LK",
+   "query": "Nuwara Eliya",
+   "plain": {
+    "lat": 7.0124,
+    "lon": 80.75716,
+    "display_name": "Nuwara Eliya District, Central Province, Sri Lanka",
+    "osm_type": "relation",
+    "osm_id": 5351796,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Nuwara+Eliya&countrycodes=lk&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 6.97397,
+    "lon": 80.76699,
+    "display_name": "Nuwara Eliya, Nuwara Eliya District, Central Province, 10000, Sri Lanka",
+    "osm_type": "node",
+    "osm_id": 44240758,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Nuwara+Eliya&countrycodes=lk&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "sigiriya": {
+   "country": "LK",
+   "query": "Sigiriya",
+   "plain": {
+    "lat": 7.94981,
+    "lon": 80.74635,
+    "display_name": "Sigiriya, Matale District, Central Province, 21120, Sri Lanka",
+    "osm_type": "node",
+    "osm_id": 2051197997,
+    "type": "village",
+    "url": "https://nominatim.openstreetmap.org/search?q=Sigiriya%2C+Matale&countrycodes=lk&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 7.94981,
+    "lon": 80.74635,
+    "display_name": "Sigiriya, Matale District, Central Province, 21120, Sri Lanka",
+    "osm_type": "node",
+    "osm_id": 2051197997,
+    "type": "village",
+    "url": "https://nominatim.openstreetmap.org/search?q=Sigiriya%2C+Matale&countrycodes=lk&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "bentota": {
+   "country": "LK",
+   "query": "Bentota",
+   "plain": {
+    "lat": 6.42153,
+    "lon": 79.99785,
+    "display_name": "Bentota, Galle District, Southern Province, 12080, Sri Lanka",
+    "osm_type": "node",
+    "osm_id": 1606175319,
+    "type": "town",
+    "url": "https://nominatim.openstreetmap.org/search?q=Bentota&countrycodes=lk&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 6.42153,
+    "lon": 79.99785,
+    "display_name": "Bentota, Galle District, Southern Province, 12080, Sri Lanka",
+    "osm_type": "node",
+    "osm_id": 1606175319,
+    "type": "town",
+    "url": "https://nominatim.openstreetmap.org/search?q=Bentota&countrycodes=lk&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "negombo": {
+   "country": "LK",
+   "query": "Negombo",
+   "plain": {
+    "lat": 7.20943,
+    "lon": 79.83312,
+    "display_name": "Negombo, Gampaha District, Western Province, 11500, Sri Lanka",
+    "osm_type": "node",
+    "osm_id": 2064194449,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Negombo&countrycodes=lk&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 7.20943,
+    "lon": 79.83312,
+    "display_name": "Negombo, Gampaha District, Western Province, 11500, Sri Lanka",
+    "osm_type": "node",
+    "osm_id": 2064194449,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Negombo&countrycodes=lk&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "trincomalee": {
+   "country": "LK",
+   "query": "Trincomalee",
+   "plain": {
+    "lat": 8.57643,
+    "lon": 81.2345,
+    "display_name": "Trincomalee, Trincomalee District, Eastern Province, 32100, Sri Lanka",
+    "osm_type": "node",
+    "osm_id": 335253618,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Trincomalee&countrycodes=lk&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 8.57643,
+    "lon": 81.2345,
+    "display_name": "Trincomalee, Trincomalee District, Eastern Province, 32100, Sri Lanka",
+    "osm_type": "node",
+    "osm_id": 335253618,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Trincomalee&countrycodes=lk&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "mirissa": {
+   "country": "LK",
+   "query": "Mirissa",
+   "plain": {
+    "lat": 5.94936,
+    "lon": 80.45581,
+    "display_name": "Mirissa, Matara District, Southern Province, 81740, Sri Lanka",
+    "osm_type": "node",
+    "osm_id": 50769618,
+    "type": "town",
+    "url": "https://nominatim.openstreetmap.org/search?q=Mirissa%2C+Matara&countrycodes=lk&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 5.94936,
+    "lon": 80.45581,
+    "display_name": "Mirissa, Matara District, Southern Province, 81740, Sri Lanka",
+    "osm_type": "node",
+    "osm_id": 50769618,
+    "type": "town",
+    "url": "https://nominatim.openstreetmap.org/search?q=Mirissa%2C+Matara&countrycodes=lk&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "al-khobar": {
+   "country": "SA",
+   "query": "Al Khobar",
+   "plain": {
+    "lat": 26.304,
+    "lon": 50.19602,
+    "display_name": "Al Khobar, Khobar Governorate, Eastern Province, 34436, Saudi Arabia",
+    "osm_type": "node",
+    "osm_id": 32441763,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Al+Khobar&countrycodes=sa&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 26.304,
+    "lon": 50.19602,
+    "display_name": "Al Khobar, Khobar Governorate, Eastern Province, 34436, Saudi Arabia",
+    "osm_type": "node",
+    "osm_id": 32441763,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Al+Khobar&countrycodes=sa&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "tabuk": {
+   "country": "SA",
+   "query": "Tabuk",
+   "plain": {
+    "lat": 28.40125,
+    "lon": 36.56705,
+    "display_name": "Tabuk, Tabuk Governorate, Tabuk Province, 71411, Saudi Arabia",
+    "osm_type": "node",
+    "osm_id": 5418190413,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Tabuk%2C+Tabuk+Province&countrycodes=sa&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 28.40125,
+    "lon": 36.56705,
+    "display_name": "Tabuk, Tabuk Governorate, Tabuk Province, 71411, Saudi Arabia",
+    "osm_type": "node",
+    "osm_id": 5418190413,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Tabuk%2C+Tabuk+Province&countrycodes=sa&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "yanbu": {
+   "country": "SA",
+   "query": "Yanbu",
+   "plain": {
+    "lat": 24.08902,
+    "lon": 38.06871,
+    "display_name": "Yanbu`, Yanbu, Medina Province, 46424, Saudi Arabia",
+    "osm_type": "node",
+    "osm_id": 3148037089,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Yanbu&countrycodes=sa&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 24.08902,
+    "lon": 38.06871,
+    "display_name": "Yanbu`, Yanbu, Medina Province, 46424, Saudi Arabia",
+    "osm_type": "node",
+    "osm_id": 3148037089,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Yanbu&countrycodes=sa&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "al-baha": {
+   "country": "SA",
+   "query": "Al Bahah",
+   "plain": {
+    "lat": 20.23727,
+    "lon": 41.46155,
+    "display_name": "Al-Bahah Province, Saudi Arabia",
+    "osm_type": "relation",
+    "osm_id": 3679888,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Al+Bahah&countrycodes=sa&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 20.01379,
+    "lon": 41.46564,
+    "display_name": "Al Bahah, Al-Bahah Province, 65521, Saudi Arabia",
+    "osm_type": "node",
+    "osm_id": 295921642,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Al+Bahah&countrycodes=sa&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "jazan": {
+   "country": "SA",
+   "query": "Jizan",
+   "plain": {
+    "lat": 16.89472,
+    "lon": 42.55798,
+    "display_name": "Jizan, Jazan, Jazan Province, 82723, Saudi Arabia",
+    "osm_type": "node",
+    "osm_id": 288992209,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Jizan&countrycodes=sa&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 16.89472,
+    "lon": 42.55798,
+    "display_name": "Jizan, Jazan, Jazan Province, 82723, Saudi Arabia",
+    "osm_type": "node",
+    "osm_id": 288992209,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Jizan&countrycodes=sa&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "hail": {
+   "country": "SA",
+   "query": "Hail",
+   "plain": {
+    "lat": 27.82895,
+    "lon": 40.81831,
+    "display_name": "Hail, Ḥa'il Province, Saudi Arabia",
+    "osm_type": "relation",
+    "osm_id": 12413060,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Hail&countrycodes=sa&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 27.52087,
+    "lon": 41.6986,
+    "display_name": "Ha'il, Hail, Ḥa'il Province, 55421, Saudi Arabia",
+    "osm_type": "node",
+    "osm_id": 346801397,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Hail&countrycodes=sa&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "al-ahsa": {
+   "country": "SA",
+   "query": "Hofuf",
+   "plain": {
+    "lat": 25.36966,
+    "lon": 49.58652,
+    "display_name": "Al-Hofuf, Al Ahsa Governorate, Eastern Province, 36361-7365, Saudi Arabia",
+    "osm_type": "node",
+    "osm_id": 208501048,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Hofuf%2C+Al+Ahsa&countrycodes=sa&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 25.36966,
+    "lon": 49.58652,
+    "display_name": "Al-Hofuf, Al Ahsa Governorate, Eastern Province, 36361-7365, Saudi Arabia",
+    "osm_type": "node",
+    "osm_id": 208501048,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Hofuf%2C+Al+Ahsa&countrycodes=sa&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "najran": {
+   "country": "SA",
+   "query": "Najran",
+   "plain": {
+    "lat": 18.0,
+    "lon": 45.66667,
+    "display_name": "Najran Region, Saudi Arabia",
+    "osm_type": "relation",
+    "osm_id": 3667317,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Najran&countrycodes=sa&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 17.54398,
+    "lon": 44.22468,
+    "display_name": "Najran, Najran Region, 66261, Saudi Arabia",
+    "osm_type": "node",
+    "osm_id": 982548735,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Najran&countrycodes=sa&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "umluj": {
+   "country": "SA",
+   "query": "Umluj",
+   "plain": {
+    "lat": 25.23396,
+    "lon": 37.49833,
+    "display_name": "Umluj, Tabuk Province, 48512, Saudi Arabia",
+    "osm_type": "relation",
+    "osm_id": 12420154,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Umluj%2C+Tabuk+Province&countrycodes=sa&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 25.03028,
+    "lon": 37.26223,
+    "display_name": "Umluj, Tabuk Province, Saudi Arabia",
+    "osm_type": "node",
+    "osm_id": 973472834,
+    "type": "town",
+    "url": "https://nominatim.openstreetmap.org/search?q=Umluj%2C+Tabuk+Province&countrycodes=sa&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "fethiye": {
+   "country": "TR",
+   "query": "Fethiye",
+   "plain": {
+    "lat": 36.62212,
+    "lon": 29.11534,
+    "display_name": "Fethiye, Muğla, Aegean Region, Turkey",
+    "osm_type": "relation",
+    "osm_id": 1827656,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Fethiye&countrycodes=tr&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 36.62212,
+    "lon": 29.11534,
+    "display_name": "Fethiye, Muğla, Aegean Region, Turkey",
+    "osm_type": "relation",
+    "osm_id": 1827656,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Fethiye&countrycodes=tr&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "uzungol": {
+   "country": "TR",
+   "query": "Uzungöl",
+   "plain": {
+    "lat": 40.61913,
+    "lon": 40.29481,
+    "display_name": "Uzungöl, Çaykara, Trabzon, Black Sea Region, Turkey",
+    "osm_type": "relation",
+    "osm_id": 5471859,
+    "type": "lake",
+    "url": "https://nominatim.openstreetmap.org/search?q=Uzung%C3%B6l%2C+%C3%87aykara&countrycodes=tr&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": null,
+   "chosen": "plain"
+  },
+  "sapanca": {
+   "country": "TR",
+   "query": "Sapanca",
+   "plain": {
+    "lat": 40.69306,
+    "lon": 30.27342,
+    "display_name": "Sapanca, Prof. Dr. Mehmet Abuç Caddesi, Göl, Hacımercan, Sapanca, Sakarya, Marmara Region, 54600, Turkey",
+    "osm_type": "node",
+    "osm_id": 2694271807,
+    "type": "station",
+    "url": "https://nominatim.openstreetmap.org/search?q=Sapanca&countrycodes=tr&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 40.69161,
+    "lon": 30.26738,
+    "display_name": "Sapanca, Sakarya, Marmara Region, 54600, Turkey",
+    "osm_type": "relation",
+    "osm_id": 1775628,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Sapanca&countrycodes=tr&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "bolu": {
+   "country": "TR",
+   "query": "Bolu",
+   "plain": {
+    "lat": 40.7333,
+    "lon": 31.61105,
+    "display_name": "Bolu, Black Sea Region, Turkey",
+    "osm_type": "relation",
+    "osm_id": 1795630,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Bolu%2C+Bolu&countrycodes=tr&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 40.7333,
+    "lon": 31.61105,
+    "display_name": "Bolu, Black Sea Region, Turkey",
+    "osm_type": "relation",
+    "osm_id": 1795630,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Bolu%2C+Bolu&countrycodes=tr&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "ankara": {
+   "country": "TR",
+   "query": "Ankara",
+   "plain": {
+    "lat": 39.92078,
+    "lon": 32.85405,
+    "display_name": "Ankara, Çankaya, Ankara, Central Anatolia Region, 06420, Turkey",
+    "osm_type": "node",
+    "osm_id": 25869410,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Ankara&countrycodes=tr&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 39.92078,
+    "lon": 32.85405,
+    "display_name": "Ankara, Çankaya, Ankara, Central Anatolia Region, 06420, Turkey",
+    "osm_type": "node",
+    "osm_id": 25869410,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Ankara&countrycodes=tr&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "kusadasi": {
+   "country": "TR",
+   "query": "Kuşadası",
+   "plain": {
+    "lat": 37.86324,
+    "lon": 27.26687,
+    "display_name": "Kuşadası, Aydın, Aegean Region, Turkey",
+    "osm_type": "relation",
+    "osm_id": 1814656,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Ku%C5%9Fadas%C4%B1&countrycodes=tr&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 37.86324,
+    "lon": 27.26687,
+    "display_name": "Kuşadası, Aydın, Aegean Region, Turkey",
+    "osm_type": "relation",
+    "osm_id": 1814656,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Ku%C5%9Fadas%C4%B1&countrycodes=tr&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "borjomi": {
+   "country": "GE",
+   "query": "Borjomi",
+   "plain": {
+    "lat": 41.84124,
+    "lon": 43.38387,
+    "display_name": "Borjomi, Borjomi Municipality, Samtskhe-Javakheti, Georgia",
+    "osm_type": "relation",
+    "osm_id": 17409709,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Borjomi&countrycodes=ge&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 41.84124,
+    "lon": 43.38387,
+    "display_name": "Borjomi, Borjomi Municipality, Samtskhe-Javakheti, Georgia",
+    "osm_type": "relation",
+    "osm_id": 17409709,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Borjomi&countrycodes=ge&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "sighnaghi": {
+   "country": "GE",
+   "query": "Sighnaghi",
+   "plain": {
+    "lat": 41.61899,
+    "lon": 45.92281,
+    "display_name": "Sighnaghi, Signagi Municipality, Kakheti, Georgia",
+    "osm_type": "relation",
+    "osm_id": 16768135,
+    "type": "town",
+    "url": "https://nominatim.openstreetmap.org/search?q=Sighnaghi&countrycodes=ge&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 41.61899,
+    "lon": 45.92281,
+    "display_name": "Sighnaghi, Signagi Municipality, Kakheti, Georgia",
+    "osm_type": "relation",
+    "osm_id": 16768135,
+    "type": "town",
+    "url": "https://nominatim.openstreetmap.org/search?q=Sighnaghi&countrycodes=ge&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "gudauri": {
+   "country": "GE",
+   "query": "Gudauri",
+   "plain": {
+    "lat": 42.47656,
+    "lon": 44.47703,
+    "display_name": "Gudauri, Kazbegi Municipality, Mtskheta-Mtianeti, Georgia",
+    "osm_type": "way",
+    "osm_id": 537488614,
+    "type": "village",
+    "url": "https://nominatim.openstreetmap.org/search?q=Gudauri%2C+Mtskheta-Mtianeti&countrycodes=ge&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 42.47656,
+    "lon": 44.47703,
+    "display_name": "Gudauri, Kazbegi Municipality, Mtskheta-Mtianeti, Georgia",
+    "osm_type": "way",
+    "osm_id": 537488614,
+    "type": "village",
+    "url": "https://nominatim.openstreetmap.org/search?q=Gudauri%2C+Mtskheta-Mtianeti&countrycodes=ge&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "mestia": {
+   "country": "GE",
+   "query": "Mestia",
+   "plain": {
+    "lat": 43.04376,
+    "lon": 42.72445,
+    "display_name": "Mestia, Mestia Municipality, Samegrelo-Upper Svaneti, Georgia",
+    "osm_type": "way",
+    "osm_id": 628347610,
+    "type": "town",
+    "url": "https://nominatim.openstreetmap.org/search?q=Mestia&countrycodes=ge&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 43.04376,
+    "lon": 42.72445,
+    "display_name": "Mestia, Mestia Municipality, Samegrelo-Upper Svaneti, Georgia",
+    "osm_type": "way",
+    "osm_id": 628347610,
+    "type": "town",
+    "url": "https://nominatim.openstreetmap.org/search?q=Mestia&countrycodes=ge&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "sheki": {
+   "country": "AZ",
+   "query": "Shaki",
+   "plain": {
+    "lat": 41.20322,
+    "lon": 47.18033,
+    "display_name": "Shaki, Azerbaijan",
+    "osm_type": "relation",
+    "osm_id": 3912204,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Shaki%2C+Azerbaijan&countrycodes=az&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 41.20322,
+    "lon": 47.18033,
+    "display_name": "Shaki, Azerbaijan",
+    "osm_type": "relation",
+    "osm_id": 3912204,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Shaki%2C+Azerbaijan&countrycodes=az&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "shamakhi": {
+   "country": "AZ",
+   "query": "Shamakhi",
+   "plain": {
+    "lat": 40.63412,
+    "lon": 48.63834,
+    "display_name": "Shamakhi, Shamakhi District, Azerbaijan",
+    "osm_type": "way",
+    "osm_id": 201790148,
+    "type": "town",
+    "url": "https://nominatim.openstreetmap.org/search?q=Shamakhi&countrycodes=az&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 40.63412,
+    "lon": 48.63834,
+    "display_name": "Shamakhi, Shamakhi District, Azerbaijan",
+    "osm_type": "way",
+    "osm_id": 201790148,
+    "type": "town",
+    "url": "https://nominatim.openstreetmap.org/search?q=Shamakhi&countrycodes=az&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "qusar": {
+   "country": "AZ",
+   "query": "Qusar",
+   "plain": {
+    "lat": 41.44987,
+    "lon": 48.28889,
+    "display_name": "Qusar District, Azerbaijan",
+    "osm_type": "relation",
+    "osm_id": 3764571,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Qusar%2C+Azerbaijan&countrycodes=az&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 41.43034,
+    "lon": 48.43273,
+    "display_name": "Gusar, Qusar District, Azerbaijan",
+    "osm_type": "way",
+    "osm_id": 181056967,
+    "type": "town",
+    "url": "https://nominatim.openstreetmap.org/search?q=Qusar%2C+Azerbaijan&countrycodes=az&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "jajce": {
+   "country": "BA",
+   "query": "Jajce",
+   "plain": {
+    "lat": 44.33967,
+    "lon": 17.27118,
+    "display_name": "Jajce, Jajce Municipality, Central Bosnia Canton, Federation of Bosnia and Herzegovina, 70101, Bosnia and Herzegovina",
+    "osm_type": "node",
+    "osm_id": 2419009186,
+    "type": "town",
+    "url": "https://nominatim.openstreetmap.org/search?q=Jajce&countrycodes=ba&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 44.33967,
+    "lon": 17.27118,
+    "display_name": "Jajce, Jajce Municipality, Central Bosnia Canton, Federation of Bosnia and Herzegovina, 70101, Bosnia and Herzegovina",
+    "osm_type": "node",
+    "osm_id": 2419009186,
+    "type": "town",
+    "url": "https://nominatim.openstreetmap.org/search?q=Jajce&countrycodes=ba&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "konjic": {
+   "country": "BA",
+   "query": "Konjic",
+   "plain": {
+    "lat": 43.65444,
+    "lon": 17.96066,
+    "display_name": "Konjic, City of Konjic, Herzegovina-Neretva County, Federation of Bosnia and Herzegovina, 88400, Bosnia and Herzegovina",
+    "osm_type": "node",
+    "osm_id": 89089929,
+    "type": "town",
+    "url": "https://nominatim.openstreetmap.org/search?q=Konjic&countrycodes=ba&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 43.65444,
+    "lon": 17.96066,
+    "display_name": "Konjic, City of Konjic, Herzegovina-Neretva County, Federation of Bosnia and Herzegovina, 88400, Bosnia and Herzegovina",
+    "osm_type": "node",
+    "osm_id": 89089929,
+    "type": "town",
+    "url": "https://nominatim.openstreetmap.org/search?q=Konjic&countrycodes=ba&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "genting-highlands": {
+   "country": "MY",
+   "query": "Genting Highlands",
+   "plain": {
+    "lat": 3.42368,
+    "lon": 101.7934,
+    "display_name": "Genting Highlands, Bentong, Pahang, 69000, Malaysia",
+    "osm_type": "node",
+    "osm_id": 254072956,
+    "type": "town",
+    "url": "https://nominatim.openstreetmap.org/search?q=Genting+Highlands%2C+Pahang&countrycodes=my&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 3.42368,
+    "lon": 101.7934,
+    "display_name": "Genting Highlands, Bentong, Pahang, 69000, Malaysia",
+    "osm_type": "node",
+    "osm_id": 254072956,
+    "type": "town",
+    "url": "https://nominatim.openstreetmap.org/search?q=Genting+Highlands%2C+Pahang&countrycodes=my&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "cameron-highlands": {
+   "country": "MY",
+   "query": "Cameron Highlands",
+   "plain": {
+    "lat": 4.47069,
+    "lon": 101.37769,
+    "display_name": "Tanah Rata, Cameron Highlands, Pahang, 39000, Malaysia",
+    "osm_type": "node",
+    "osm_id": 254074510,
+    "type": "town",
+    "url": "https://nominatim.openstreetmap.org/search?q=Tanah+Rata%2C+Cameron+Highlands&countrycodes=my&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 4.47069,
+    "lon": 101.37769,
+    "display_name": "Tanah Rata, Cameron Highlands, Pahang, 39000, Malaysia",
+    "osm_type": "node",
+    "osm_id": 254074510,
+    "type": "town",
+    "url": "https://nominatim.openstreetmap.org/search?q=Tanah+Rata%2C+Cameron+Highlands&countrycodes=my&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "ipoh": {
+   "country": "MY",
+   "query": "Ipoh",
+   "plain": {
+    "lat": 4.59868,
+    "lon": 101.09002,
+    "display_name": "Ipoh, Kinta, Perak, Malaysia",
+    "osm_type": "relation",
+    "osm_id": 18225051,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Ipoh&countrycodes=my&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 4.59868,
+    "lon": 101.09002,
+    "display_name": "Ipoh, Kinta, Perak, Malaysia",
+    "osm_type": "relation",
+    "osm_id": 18225051,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Ipoh&countrycodes=my&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "kuching": {
+   "country": "MY",
+   "query": "Kuching",
+   "plain": {
+    "lat": 1.55976,
+    "lon": 110.3454,
+    "display_name": "Kuching, Kuching Division, Sarawak, 93000, Malaysia",
+    "osm_type": "node",
+    "osm_id": 4834272899,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Kuching&countrycodes=my&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 1.55976,
+    "lon": 110.3454,
+    "display_name": "Kuching, Kuching Division, Sarawak, 93000, Malaysia",
+    "osm_type": "node",
+    "osm_id": 4834272899,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Kuching&countrycodes=my&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "bandung": {
+   "country": "ID",
+   "query": "Bandung",
+   "plain": {
+    "lat": -6.92185,
+    "lon": 107.60708,
+    "display_name": "Bandung City, West Java, Indonesia",
+    "osm_type": "relation",
+    "osm_id": 13290062,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Bandung&countrycodes=id&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": -6.92185,
+    "lon": 107.60708,
+    "display_name": "Bandung City, West Java, Indonesia",
+    "osm_type": "relation",
+    "osm_id": 13290062,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Bandung&countrycodes=id&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "bogor": {
+   "country": "ID",
+   "query": "Bogor",
+   "plain": {
+    "lat": -6.59636,
+    "lon": 106.79732,
+    "display_name": "Bogor, West Java, Indonesia",
+    "osm_type": "relation",
+    "osm_id": 14745927,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Bogor&countrycodes=id&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": -6.59636,
+    "lon": 106.79732,
+    "display_name": "Bogor, West Java, Indonesia",
+    "osm_type": "relation",
+    "osm_id": 14745927,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Bogor&countrycodes=id&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "lake-toba": {
+   "country": "ID",
+   "query": "Lake Toba",
+   "plain": {
+    "lat": 2.66176,
+    "lon": 98.93918,
+    "display_name": "Parapat, Girsang Sipangan Bolon, Simalungun, North Sumatra, Indonesia",
+    "osm_type": "node",
+    "osm_id": 1308406074,
+    "type": "town",
+    "url": "https://nominatim.openstreetmap.org/search?q=Parapat%2C+Simalungun&countrycodes=id&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 2.66176,
+    "lon": 98.93918,
+    "display_name": "Parapat, Girsang Sipangan Bolon, Simalungun, North Sumatra, Indonesia",
+    "osm_type": "node",
+    "osm_id": 1308406074,
+    "type": "town",
+    "url": "https://nominatim.openstreetmap.org/search?q=Parapat%2C+Simalungun&countrycodes=id&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "hua-hin": {
+   "country": "TH",
+   "query": "Hua Hin",
+   "plain": {
+    "lat": 12.56993,
+    "lon": 99.95734,
+    "display_name": "Hua Hin City Municipality, Hua Hin District, Prachuap Khiri Khan Province, 77110, Thailand",
+    "osm_type": "relation",
+    "osm_id": 20008042,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Hua+Hin&countrycodes=th&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 12.56993,
+    "lon": 99.95734,
+    "display_name": "Hua Hin City Municipality, Hua Hin District, Prachuap Khiri Khan Province, 77110, Thailand",
+    "osm_type": "relation",
+    "osm_id": 20008042,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Hua+Hin&countrycodes=th&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "ayutthaya": {
+   "country": "TH",
+   "query": "Ayutthaya",
+   "plain": {
+    "lat": 14.31895,
+    "lon": 100.51117,
+    "display_name": "Phra Nakhon Si Ayutthaya Province, Thailand",
+    "osm_type": "relation",
+    "osm_id": 1908806,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Ayutthaya&countrycodes=th&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 14.35354,
+    "lon": 100.56457,
+    "display_name": "Phra Nakhon Si Ayutthaya City Municipality, Phra Nakhon Si Ayutthaya District, Phra Nakhon Si Ayutthaya Province, 13000, Thailand",
+    "osm_type": "relation",
+    "osm_id": 10839539,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Ayutthaya&countrycodes=th&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "chiang-rai": {
+   "country": "TH",
+   "query": "Chiang Rai",
+   "plain": {
+    "lat": 19.75895,
+    "lon": 99.67346,
+    "display_name": "Chiang Rai Province, Thailand",
+    "osm_type": "relation",
+    "osm_id": 1908772,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Chiang+Rai&countrycodes=th&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 19.90689,
+    "lon": 99.83327,
+    "display_name": "Chiang Rai City Municipality, Tha Sai, Mueang Chiang Rai District, Chiang Rai Province, 57000, Thailand",
+    "osm_type": "relation",
+    "osm_id": 18158228,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Chiang+Rai&countrycodes=th&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "dahab": {
+   "country": "EG",
+   "query": "Dahab",
+   "plain": {
+    "lat": 28.49636,
+    "lon": 34.51457,
+    "display_name": "Dahab, South Sinai, 55555, Egypt",
+    "osm_type": "node",
+    "osm_id": 27043265,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Dahab&countrycodes=eg&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 28.49636,
+    "lon": 34.51457,
+    "display_name": "Dahab, South Sinai, 55555, Egypt",
+    "osm_type": "node",
+    "osm_id": 27043265,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Dahab&countrycodes=eg&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "marsa-alam": {
+   "country": "EG",
+   "query": "Marsa Alam",
+   "plain": {
+    "lat": 25.06999,
+    "lon": 34.89382,
+    "display_name": "Marsa Alam City, Red Sea, 84721, Egypt",
+    "osm_type": "way",
+    "osm_id": 756293880,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Marsa+Alam&countrycodes=eg&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 25.06999,
+    "lon": 34.89382,
+    "display_name": "Marsa Alam City, Red Sea, 84721, Egypt",
+    "osm_type": "way",
+    "osm_id": 756293880,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Marsa+Alam&countrycodes=eg&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "el-gouna": {
+   "country": "EG",
+   "query": "El Gouna",
+   "plain": {
+    "lat": 27.39893,
+    "lon": 33.67416,
+    "display_name": "El Gouna, Red Sea, 84513, Egypt",
+    "osm_type": "node",
+    "osm_id": 27133981,
+    "type": "town",
+    "url": "https://nominatim.openstreetmap.org/search?q=El+Gouna%2C+Red+Sea&countrycodes=eg&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 27.39893,
+    "lon": 33.67416,
+    "display_name": "El Gouna, Red Sea, 84513, Egypt",
+    "osm_type": "node",
+    "osm_id": 27133981,
+    "type": "town",
+    "url": "https://nominatim.openstreetmap.org/search?q=El+Gouna%2C+Red+Sea&countrycodes=eg&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "fujairah": {
+   "country": "AE",
+   "query": "Fujairah",
+   "plain": {
+    "lat": 25.12446,
+    "lon": 56.33551,
+    "display_name": "Fujairah City, Fujairah Emirate, United Arab Emirates",
+    "osm_type": "way",
+    "osm_id": 872858707,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Fujairah+City&countrycodes=ae&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 25.12446,
+    "lon": 56.33551,
+    "display_name": "Fujairah City, Fujairah Emirate, United Arab Emirates",
+    "osm_type": "way",
+    "osm_id": 872858707,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Fujairah+City&countrycodes=ae&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "al-ain": {
+   "country": "AE",
+   "query": "Al Ain",
+   "plain": {
+    "lat": 24.22487,
+    "lon": 55.74522,
+    "display_name": "Al Ain, Al Mu'tarid, Al Ain, Abu Dhabi Emirate, United Arab Emirates",
+    "osm_type": "node",
+    "osm_id": 82799640,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Al+Ain&countrycodes=ae&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 24.22487,
+    "lon": 55.74522,
+    "display_name": "Al Ain, Al Mu'tarid, Al Ain, Abu Dhabi Emirate, United Arab Emirates",
+    "osm_type": "node",
+    "osm_id": 82799640,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Al+Ain&countrycodes=ae&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "wadi-rum": {
+   "country": "JO",
+   "query": "Wadi Rum",
+   "plain": {
+    "lat": 29.57478,
+    "lon": 35.42183,
+    "display_name": "Wadi Rum Village, Al Quairah Sub-District, Quairah District, Aqaba, Jordan",
+    "osm_type": "way",
+    "osm_id": 133897691,
+    "type": "village",
+    "url": "https://nominatim.openstreetmap.org/search?q=Wadi+Rum+Village%2C+Aqaba&countrycodes=jo&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 29.57478,
+    "lon": 35.42183,
+    "display_name": "Wadi Rum Village, Al Quairah Sub-District, Quairah District, Aqaba, Jordan",
+    "osm_type": "way",
+    "osm_id": 133897691,
+    "type": "village",
+    "url": "https://nominatim.openstreetmap.org/search?q=Wadi+Rum+Village%2C+Aqaba&countrycodes=jo&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "jerash": {
+   "country": "JO",
+   "query": "Jerash",
+   "plain": {
+    "lat": 32.28124,
+    "lon": 35.901,
+    "display_name": "Jerash, Jerash Sub-District, Qasabah Jerash, Jarash, Jordan",
+    "osm_type": "relation",
+    "osm_id": 8475054,
+    "type": "town",
+    "url": "https://nominatim.openstreetmap.org/search?q=Jerash&countrycodes=jo&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 32.28124,
+    "lon": 35.901,
+    "display_name": "Jerash, Jerash Sub-District, Qasabah Jerash, Jarash, Jordan",
+    "osm_type": "relation",
+    "osm_id": 8475054,
+    "type": "town",
+    "url": "https://nominatim.openstreetmap.org/search?q=Jerash&countrycodes=jo&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "sur": {
+   "country": "OM",
+   "query": "Sur",
+   "plain": {
+    "lat": 22.56931,
+    "lon": 59.52955,
+    "display_name": "Sur, Jalaan Bani Bu ALi Province, Ash Sharqiyah South Governorate, 411, Oman",
+    "osm_type": "node",
+    "osm_id": 1716933902,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Sur%2C+Ash+Sharqiyah+South&countrycodes=om&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 22.56931,
+    "lon": 59.52955,
+    "display_name": "Sur, Jalaan Bani Bu ALi Province, Ash Sharqiyah South Governorate, 411, Oman",
+    "osm_type": "node",
+    "osm_id": 1716933902,
+    "type": "city",
+    "url": "https://nominatim.openstreetmap.org/search?q=Sur%2C+Ash+Sharqiyah+South&countrycodes=om&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "khasab": {
+   "country": "OM",
+   "query": "Khasab",
+   "plain": {
+    "lat": 26.18413,
+    "lon": 56.24698,
+    "display_name": "Khasab Province, Musandam Governorate, 811, Oman",
+    "osm_type": "relation",
+    "osm_id": 19556469,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Khasab%2C+Musandam&countrycodes=om&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 26.18413,
+    "lon": 56.24698,
+    "display_name": "Khasab Province, Musandam Governorate, 811, Oman",
+    "osm_type": "relation",
+    "osm_id": 19556469,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Khasab%2C+Musandam&countrycodes=om&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "zell-am-see": {
+   "country": "AT",
+   "query": "Zell am See",
+   "plain": {
+    "lat": 47.32396,
+    "lon": 12.79632,
+    "display_name": "Zell am See, Bezirk Zell am See, Salzburg, 5700, Austria",
+    "osm_type": "relation",
+    "osm_id": 945962,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Zell+am+See&countrycodes=at&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 47.32396,
+    "lon": 12.79632,
+    "display_name": "Zell am See, Bezirk Zell am See, Salzburg, 5700, Austria",
+    "osm_type": "relation",
+    "osm_id": 945962,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Zell+am+See&countrycodes=at&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "hallstatt": {
+   "country": "AT",
+   "query": "Hallstatt",
+   "plain": {
+    "lat": 47.53479,
+    "lon": 13.59889,
+    "display_name": "Hallstatt, Bezirk Gmunden, Upper Austria, Austria",
+    "osm_type": "relation",
+    "osm_id": 546245,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Hallstatt%2C+Gmunden&countrycodes=at&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 47.53479,
+    "lon": 13.59889,
+    "display_name": "Hallstatt, Bezirk Gmunden, Upper Austria, Austria",
+    "osm_type": "relation",
+    "osm_id": 546245,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Hallstatt%2C+Gmunden&countrycodes=at&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "heviz": {
+   "country": "HU",
+   "query": "Hévíz",
+   "plain": {
+    "lat": 46.7906,
+    "lon": 17.18345,
+    "display_name": "Hévíz, Keszthelyi járás, Zala, Transdanubia, 8380, Hungary",
+    "osm_type": "relation",
+    "osm_id": 1360478,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=H%C3%A9v%C3%ADz%2C+Zala&countrycodes=hu&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 46.7906,
+    "lon": 17.18345,
+    "display_name": "Hévíz, Keszthelyi járás, Zala, Transdanubia, 8380, Hungary",
+    "osm_type": "relation",
+    "osm_id": 1360478,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=H%C3%A9v%C3%ADz%2C+Zala&countrycodes=hu&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "khiva": {
+   "country": "UZ",
+   "query": "Khiva",
+   "plain": {
+    "lat": 41.37751,
+    "lon": 60.36346,
+    "display_name": "Khiva, Xorazm Region, 220900, Uzbekistan",
+    "osm_type": "way",
+    "osm_id": 110260748,
+    "type": "town",
+    "url": "https://nominatim.openstreetmap.org/search?q=Khiva&countrycodes=uz&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 41.37751,
+    "lon": 60.36346,
+    "display_name": "Khiva, Xorazm Region, 220900, Uzbekistan",
+    "osm_type": "way",
+    "osm_id": 110260748,
+    "type": "town",
+    "url": "https://nominatim.openstreetmap.org/search?q=Khiva&countrycodes=uz&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "annecy": {
+   "country": "FR",
+   "query": "Annecy",
+   "plain": {
+    "lat": 45.89923,
+    "lon": 6.12888,
+    "display_name": "Annecy, Upper Savoy, Auvergne-Rhône-Alpes, Metropolitan France, France",
+    "osm_type": "relation",
+    "osm_id": 6791758,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Annecy&countrycodes=fr&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 45.89923,
+    "lon": 6.12888,
+    "display_name": "Annecy, Upper Savoy, Auvergne-Rhône-Alpes, Metropolitan France, France",
+    "osm_type": "relation",
+    "osm_id": 6791758,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Annecy&countrycodes=fr&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "como": {
+   "country": "IT",
+   "query": "Como",
+   "plain": {
+    "lat": 45.93959,
+    "lon": 9.14936,
+    "display_name": "Como, Lombardy, Italy",
+    "osm_type": "relation",
+    "osm_id": 45614,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Como%2C+Lombardia&countrycodes=it&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 45.81156,
+    "lon": 9.08304,
+    "display_name": "Como, Lombardy, 22100, Italy",
+    "osm_type": "relation",
+    "osm_id": 46085,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Como%2C+Lombardia&countrycodes=it&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  },
+  "amalfi": {
+   "country": "IT",
+   "query": "Amalfi",
+   "plain": {
+    "lat": 40.63367,
+    "lon": 14.60261,
+    "display_name": "Amalfi, Salerno, Campania, 84011, Italy",
+    "osm_type": "relation",
+    "osm_id": 40641,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Amalfi%2C+Salerno&countrycodes=it&format=jsonv2&limit=1&accept-language=en"
+   },
+   "city": {
+    "lat": 40.63367,
+    "lon": 14.60261,
+    "display_name": "Amalfi, Salerno, Campania, 84011, Italy",
+    "osm_type": "relation",
+    "osm_id": 40641,
+    "type": "administrative",
+    "url": "https://nominatim.openstreetmap.org/search?q=Amalfi%2C+Salerno&countrycodes=it&format=jsonv2&limit=1&accept-language=en&featureType=city"
+   },
+   "chosen": "city"
+  }
+ }
+}

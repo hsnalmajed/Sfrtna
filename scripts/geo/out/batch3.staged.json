@@ -1,0 +1,1098 @@
+{
+ "batch": "batch3.json",
+ "cities": {
+  "nuwara-eliya": {
+   "country": "LK",
+   "nameAr": "نوارا إليا",
+   "nameEn": "Nuwara Eliya",
+   "wikiTitle": "Nuwara Eliya",
+   "flags": [],
+   "lat": 6.97397,
+   "lon": 80.76699,
+   "geocode": "Nuwara Eliya, Nuwara Eliya District, Central Province, 10000, Sri Lanka",
+   "airport": {
+    "iata": "CMB",
+    "name": "Bandaranaike International Colombo Airport",
+    "km": 100,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 7.180759906768799,
+    "lon": 79.88410186767578,
+    "type": "large_airport"
+   }
+  },
+  "sigiriya": {
+   "country": "LK",
+   "nameAr": "سيجيريا",
+   "nameEn": "Sigiriya",
+   "wikiTitle": "Sigiriya",
+   "flags": [],
+   "lat": 7.94981,
+   "lon": 80.74635,
+   "geocode": "Sigiriya, Matale District, Central Province, 21120, Sri Lanka",
+   "airport": {
+    "iata": "CMB",
+    "name": "Bandaranaike International Colombo Airport",
+    "km": 128,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 7.180759906768799,
+    "lon": 79.88410186767578,
+    "type": "large_airport"
+   }
+  },
+  "bentota": {
+   "country": "LK",
+   "nameAr": "بينتوتا",
+   "nameEn": "Bentota",
+   "wikiTitle": "Bentota",
+   "flags": [],
+   "lat": 6.42153,
+   "lon": 79.99785,
+   "geocode": "Bentota, Galle District, Southern Province, 12080, Sri Lanka",
+   "airport": {
+    "iata": "CMB",
+    "name": "Bandaranaike International Colombo Airport",
+    "km": 85,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 7.180759906768799,
+    "lon": 79.88410186767578,
+    "type": "large_airport"
+   }
+  },
+  "negombo": {
+   "country": "LK",
+   "nameAr": "نيغومبو",
+   "nameEn": "Negombo",
+   "wikiTitle": "Negombo",
+   "flags": [],
+   "lat": 7.20943,
+   "lon": 79.83312,
+   "geocode": "Negombo, Gampaha District, Western Province, 11500, Sri Lanka",
+   "airport": {
+    "iata": "CMB",
+    "name": "Bandaranaike International Colombo Airport",
+    "km": 6,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 7.180759906768799,
+    "lon": 79.88410186767578,
+    "type": "large_airport"
+   }
+  },
+  "trincomalee": {
+   "country": "LK",
+   "nameAr": "ترينكومالي",
+   "nameEn": "Trincomalee",
+   "wikiTitle": "Trincomalee",
+   "flags": [
+    "gateway 215 km away"
+   ],
+   "lat": 8.57643,
+   "lon": 81.2345,
+   "geocode": "Trincomalee, Trincomalee District, Eastern Province, 32100, Sri Lanka",
+   "airport": {
+    "iata": "CMB",
+    "name": "Bandaranaike International Colombo Airport",
+    "km": 215,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 7.180759906768799,
+    "lon": 79.88410186767578,
+    "type": "large_airport"
+   }
+  },
+  "mirissa": {
+   "country": "LK",
+   "nameAr": "ميريسا",
+   "nameEn": "Mirissa",
+   "wikiTitle": "Mirissa",
+   "flags": [
+    "gateway 151 km away"
+   ],
+   "lat": 5.94936,
+   "lon": 80.45581,
+   "geocode": "Mirissa, Matara District, Southern Province, 81740, Sri Lanka",
+   "airport": {
+    "iata": "CMB",
+    "name": "Bandaranaike International Colombo Airport",
+    "km": 151,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 7.180759906768799,
+    "lon": 79.88410186767578,
+    "type": "large_airport"
+   }
+  },
+  "al-khobar": {
+   "country": "SA",
+   "nameAr": "الخبر",
+   "nameEn": "Al Khobar",
+   "wikiTitle": "Al Khobar",
+   "flags": [],
+   "lat": 26.304,
+   "lon": 50.19602,
+   "geocode": "Al Khobar, Khobar Governorate, Eastern Province, 34436, Saudi Arabia",
+   "airport": {
+    "iata": "DMM",
+    "name": "King Fahd International Airport",
+    "km": 44,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 26.4691,
+    "lon": 49.798209,
+    "type": "large_airport"
+   }
+  },
+  "tabuk": {
+   "country": "SA",
+   "nameAr": "تبوك",
+   "nameEn": "Tabuk",
+   "wikiTitle": "Tabuk",
+   "flags": [],
+   "lat": 28.40125,
+   "lon": 36.56705,
+   "geocode": "Tabuk, Tabuk Governorate, Tabuk Province, 71411, Saudi Arabia",
+   "airport": {
+    "iata": "TUU",
+    "name": "Prince Sultan bin Abdulaziz International Airport",
+    "km": 7,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 28.3711,
+    "lon": 36.624865,
+    "type": "large_airport"
+   }
+  },
+  "yanbu": {
+   "country": "SA",
+   "nameAr": "ينبع",
+   "nameEn": "Yanbu",
+   "wikiTitle": "Yanbu",
+   "flags": [],
+   "lat": 24.08902,
+   "lon": 38.06871,
+   "geocode": "Yanbu`, Yanbu, Medina Province, 46424, Saudi Arabia",
+   "airport": {
+    "iata": "YNB",
+    "name": "Prince Abdulmohsen Bin Abdulaziz International Airport",
+    "km": 6,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 24.144199,
+    "lon": 38.0634,
+    "type": "large_airport"
+   }
+  },
+  "al-baha": {
+   "country": "SA",
+   "nameAr": "الباحة",
+   "nameEn": "Al Baha",
+   "wikiTitle": "Al Bahah",
+   "flags": [],
+   "lat": 20.01379,
+   "lon": 41.46564,
+   "geocode": "Al Bahah, Al-Bahah Province, 65521, Saudi Arabia",
+   "airport": {
+    "iata": "ABT",
+    "name": "King Saud Bin Abdulaziz (Al Baha) Airport",
+    "km": 36,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 20.298506,
+    "lon": 41.636153,
+    "type": "medium_airport"
+   }
+  },
+  "jazan": {
+   "country": "SA",
+   "nameAr": "جازان",
+   "nameEn": "Jazan",
+   "wikiTitle": "Jizan",
+   "flags": [],
+   "lat": 16.89472,
+   "lon": 42.55798,
+   "geocode": "Jizan, Jazan, Jazan Province, 82723, Saudi Arabia",
+   "airport": {
+    "iata": "GIZ",
+    "name": "Jizan Regional Airport / King Abdullah bin Abdulaziz Airport",
+    "km": 3,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 16.9011,
+    "lon": 42.5858,
+    "type": "medium_airport"
+   }
+  },
+  "hail": {
+   "country": "SA",
+   "nameAr": "حائل",
+   "nameEn": "Hail",
+   "wikiTitle": "Hail",
+   "flags": [],
+   "lat": 27.52087,
+   "lon": 41.6986,
+   "geocode": "Ha'il, Hail, Ḥa'il Province, 55421, Saudi Arabia",
+   "airport": {
+    "iata": "HAS",
+    "name": "Hail International Airport",
+    "km": 9,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 27.437901,
+    "lon": 41.686298,
+    "type": "large_airport"
+   }
+  },
+  "al-ahsa": {
+   "country": "SA",
+   "nameAr": "الأحساء",
+   "nameEn": "Al Ahsa",
+   "wikiTitle": "Hofuf",
+   "flags": [],
+   "lat": 25.36966,
+   "lon": 49.58652,
+   "geocode": "Al-Hofuf, Al Ahsa Governorate, Eastern Province, 36361-7365, Saudi Arabia",
+   "airport": {
+    "iata": "HOF",
+    "name": "Al-Ahsa International Airport",
+    "km": 14,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 25.285299,
+    "lon": 49.485199,
+    "type": "large_airport"
+   }
+  },
+  "najran": {
+   "country": "SA",
+   "nameAr": "نجران",
+   "nameEn": "Najran",
+   "wikiTitle": "Najran",
+   "flags": [],
+   "lat": 17.54398,
+   "lon": 44.22468,
+   "geocode": "Najran, Najran Region, 66261, Saudi Arabia",
+   "airport": {
+    "iata": "EAM",
+    "name": "Najran Domestic Airport",
+    "km": 22,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 17.611401,
+    "lon": 44.419201,
+    "type": "medium_airport"
+   }
+  },
+  "umluj": {
+   "country": "SA",
+   "nameAr": "أملج",
+   "nameEn": "Umluj",
+   "wikiTitle": "Umluj",
+   "flags": [],
+   "lat": 25.03028,
+   "lon": 37.26223,
+   "geocode": "Umluj, Tabuk Province, Saudi Arabia",
+   "airport": {
+    "iata": "YNB",
+    "name": "Prince Abdulmohsen Bin Abdulaziz International Airport",
+    "km": 128,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 24.144199,
+    "lon": 38.0634,
+    "type": "large_airport"
+   }
+  },
+  "fethiye": {
+   "country": "TR",
+   "nameAr": "فتحية",
+   "nameEn": "Fethiye",
+   "wikiTitle": "Fethiye",
+   "flags": [],
+   "lat": 36.62212,
+   "lon": 29.11534,
+   "geocode": "Fethiye, Muğla, Aegean Region, Turkey",
+   "airport": {
+    "iata": "DLM",
+    "name": "Dalaman International Airport",
+    "km": 31,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 36.7131,
+    "lon": 28.7925,
+    "type": "large_airport"
+   }
+  },
+  "uzungol": {
+   "country": "TR",
+   "nameAr": "أوزنجول",
+   "nameEn": "Uzungol",
+   "wikiTitle": "Uzungöl",
+   "flags": [],
+   "lat": 40.61913,
+   "lon": 40.29481,
+   "geocode": "Uzungöl, Çaykara, Trabzon, Black Sea Region, Turkey",
+   "airport": {
+    "iata": "TZX",
+    "name": "Trabzon International Airport",
+    "km": 60,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 40.995098,
+    "lon": 39.7897,
+    "type": "medium_airport"
+   }
+  },
+  "sapanca": {
+   "country": "TR",
+   "nameAr": "صبنجة",
+   "nameEn": "Sapanca",
+   "wikiTitle": "Sapanca",
+   "flags": [],
+   "lat": 40.69161,
+   "lon": 30.26738,
+   "geocode": "Sapanca, Sakarya, Marmara Region, 54600, Turkey",
+   "airport": {
+    "iata": "SAW",
+    "name": "Istanbul Sabiha Gökçen International Airport",
+    "km": 84,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 40.898602,
+    "lon": 29.3092,
+    "type": "large_airport"
+   }
+  },
+  "bolu": {
+   "country": "TR",
+   "nameAr": "بولو",
+   "nameEn": "Bolu",
+   "wikiTitle": "Bolu",
+   "flags": [],
+   "lat": 40.7333,
+   "lon": 31.61105,
+   "geocode": "Bolu, Black Sea Region, Turkey",
+   "airport": {
+    "iata": "ESB",
+    "name": "Esenboğa International Airport",
+    "km": 135,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 40.128101,
+    "lon": 32.995098,
+    "type": "large_airport"
+   }
+  },
+  "ankara": {
+   "country": "TR",
+   "nameAr": "أنقرة",
+   "nameEn": "Ankara",
+   "wikiTitle": "Ankara",
+   "flags": [],
+   "lat": 39.92078,
+   "lon": 32.85405,
+   "geocode": "Ankara, Çankaya, Ankara, Central Anatolia Region, 06420, Turkey",
+   "airport": {
+    "iata": "ESB",
+    "name": "Esenboğa International Airport",
+    "km": 26,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 40.128101,
+    "lon": 32.995098,
+    "type": "large_airport"
+   }
+  },
+  "kusadasi": {
+   "country": "TR",
+   "nameAr": "كوشاداسي",
+   "nameEn": "Kusadasi",
+   "wikiTitle": "Kuşadası",
+   "flags": [],
+   "lat": 37.86324,
+   "lon": 27.26687,
+   "geocode": "Kuşadası, Aydın, Aegean Region, Turkey",
+   "airport": {
+    "iata": "ADB",
+    "name": "Adnan Menderes International Airport",
+    "km": 49,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 38.2924,
+    "lon": 27.157,
+    "type": "large_airport"
+   }
+  },
+  "borjomi": {
+   "country": "GE",
+   "nameAr": "بورجومي",
+   "nameEn": "Borjomi",
+   "wikiTitle": "Borjomi",
+   "flags": [],
+   "lat": 41.84124,
+   "lon": 43.38387,
+   "geocode": "Borjomi, Borjomi Municipality, Samtskhe-Javakheti, Georgia",
+   "airport": {
+    "iata": "TBS",
+    "name": "Tbilisi International Airport",
+    "km": 132,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 41.669201,
+    "lon": 44.9547,
+    "type": "large_airport"
+   }
+  },
+  "sighnaghi": {
+   "country": "GE",
+   "nameAr": "سيغناغي",
+   "nameEn": "Sighnaghi",
+   "wikiTitle": "Sighnaghi",
+   "flags": [],
+   "lat": 41.61899,
+   "lon": 45.92281,
+   "geocode": "Sighnaghi, Signagi Municipality, Kakheti, Georgia",
+   "airport": {
+    "iata": "TBS",
+    "name": "Tbilisi International Airport",
+    "km": 81,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 41.669201,
+    "lon": 44.9547,
+    "type": "large_airport"
+   }
+  },
+  "gudauri": {
+   "country": "GE",
+   "nameAr": "غوداوري",
+   "nameEn": "Gudauri",
+   "wikiTitle": "Gudauri",
+   "flags": [],
+   "lat": 42.47656,
+   "lon": 44.47703,
+   "geocode": "Gudauri, Kazbegi Municipality, Mtskheta-Mtianeti, Georgia",
+   "airport": {
+    "iata": "TBS",
+    "name": "Tbilisi International Airport",
+    "km": 98,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 41.669201,
+    "lon": 44.9547,
+    "type": "large_airport"
+   }
+  },
+  "mestia": {
+   "country": "GE",
+   "nameAr": "ميستيا",
+   "nameEn": "Mestia",
+   "wikiTitle": "Mestia",
+   "flags": [],
+   "lat": 43.04376,
+   "lon": 42.72445,
+   "geocode": "Mestia, Mestia Municipality, Samegrelo-Upper Svaneti, Georgia",
+   "airport": {
+    "iata": "KUT",
+    "name": "David the Builder Kutaisi International Airport",
+    "km": 98,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 42.177448,
+    "lon": 42.485353,
+    "type": "large_airport"
+   }
+  },
+  "sheki": {
+   "country": "AZ",
+   "nameAr": "شكي",
+   "nameEn": "Sheki",
+   "wikiTitle": "Shaki",
+   "flags": [],
+   "lat": 41.20322,
+   "lon": 47.18033,
+   "geocode": "Shaki, Azerbaijan",
+   "airport": {
+    "iata": "GBB",
+    "name": "Gabala International Airport",
+    "km": 63,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 40.808617,
+    "lon": 47.725389,
+    "type": "medium_airport"
+   }
+  },
+  "shamakhi": {
+   "country": "AZ",
+   "nameAr": "شماخي",
+   "nameEn": "Shamakhi",
+   "wikiTitle": "Shamakhi",
+   "flags": [],
+   "lat": 40.63412,
+   "lon": 48.63834,
+   "geocode": "Shamakhi, Shamakhi District, Azerbaijan",
+   "airport": {
+    "iata": "GYD",
+    "name": "Heydar Aliyev International Airport",
+    "km": 121,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 40.47278,
+    "lon": 50.050931,
+    "type": "large_airport"
+   }
+  },
+  "qusar": {
+   "country": "AZ",
+   "nameAr": "قوسار",
+   "nameEn": "Qusar",
+   "wikiTitle": "Qusar",
+   "flags": [
+    "gateway 173 km away"
+   ],
+   "lat": 41.43034,
+   "lon": 48.43273,
+   "geocode": "Gusar, Qusar District, Azerbaijan",
+   "airport": {
+    "iata": "GYD",
+    "name": "Heydar Aliyev International Airport",
+    "km": 173,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 40.47278,
+    "lon": 50.050931,
+    "type": "large_airport"
+   }
+  },
+  "jajce": {
+   "country": "BA",
+   "nameAr": "يايتسه",
+   "nameEn": "Jajce",
+   "wikiTitle": "Jajce",
+   "flags": [],
+   "lat": 44.33967,
+   "lon": 17.27118,
+   "geocode": "Jajce, Jajce Municipality, Central Bosnia Canton, Federation of Bosnia and Herzegovina, 70101, Bosnia and Herzegovina",
+   "airport": {
+    "iata": "SJJ",
+    "name": "Sarajevo International Airport",
+    "km": 102,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 43.8246,
+    "lon": 18.331499,
+    "type": "large_airport"
+   }
+  },
+  "konjic": {
+   "country": "BA",
+   "nameAr": "كونيتس",
+   "nameEn": "Konjic",
+   "wikiTitle": "Konjic",
+   "flags": [],
+   "lat": 43.65444,
+   "lon": 17.96066,
+   "geocode": "Konjic, City of Konjic, Herzegovina-Neretva County, Federation of Bosnia and Herzegovina, 88400, Bosnia and Herzegovina",
+   "airport": {
+    "iata": "SJJ",
+    "name": "Sarajevo International Airport",
+    "km": 35,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 43.8246,
+    "lon": 18.331499,
+    "type": "large_airport"
+   }
+  },
+  "genting-highlands": {
+   "country": "MY",
+   "nameAr": "مرتفعات جنتنج",
+   "nameEn": "Genting Highlands",
+   "wikiTitle": "Genting Highlands",
+   "flags": [],
+   "lat": 3.42368,
+   "lon": 101.7934,
+   "geocode": "Genting Highlands, Bentong, Pahang, 69000, Malaysia",
+   "airport": {
+    "iata": "KUL",
+    "name": "Kuala Lumpur International Airport",
+    "km": 76,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 2.74558,
+    "lon": 101.709999,
+    "type": "large_airport"
+   }
+  },
+  "cameron-highlands": {
+   "country": "MY",
+   "nameAr": "مرتفعات كاميرون",
+   "nameEn": "Cameron Highlands",
+   "wikiTitle": "Cameron Highlands",
+   "flags": [
+    "gateway 195 km away"
+   ],
+   "lat": 4.47069,
+   "lon": 101.37769,
+   "geocode": "Tanah Rata, Cameron Highlands, Pahang, 39000, Malaysia",
+   "airport": {
+    "iata": "KUL",
+    "name": "Kuala Lumpur International Airport",
+    "km": 195,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 2.74558,
+    "lon": 101.709999,
+    "type": "large_airport"
+   }
+  },
+  "ipoh": {
+   "country": "MY",
+   "nameAr": "إيبوه",
+   "nameEn": "Ipoh",
+   "wikiTitle": "Ipoh",
+   "flags": [
+    "gateway 217 km away"
+   ],
+   "lat": 4.59868,
+   "lon": 101.09002,
+   "geocode": "Ipoh, Kinta, Perak, Malaysia",
+   "airport": {
+    "iata": "KUL",
+    "name": "Kuala Lumpur International Airport",
+    "km": 217,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 2.74558,
+    "lon": 101.709999,
+    "type": "large_airport"
+   }
+  },
+  "kuching": {
+   "country": "MY",
+   "nameAr": "كوتشينغ",
+   "nameEn": "Kuching",
+   "wikiTitle": "Kuching",
+   "flags": [],
+   "lat": 1.55976,
+   "lon": 110.3454,
+   "geocode": "Kuching, Kuching Division, Sarawak, 93000, Malaysia",
+   "airport": {
+    "iata": "KCH",
+    "name": "Kuching International Airport",
+    "km": 8,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 1.487364,
+    "lon": 110.352859,
+    "type": "large_airport"
+   }
+  },
+  "bandung": {
+   "country": "ID",
+   "nameAr": "باندونغ",
+   "nameEn": "Bandung",
+   "wikiTitle": "Bandung",
+   "flags": [],
+   "lat": -6.92185,
+   "lon": 107.60708,
+   "geocode": "Bandung City, West Java, Indonesia",
+   "airport": {
+    "iata": "CGK",
+    "name": "Soekarno-Hatta International Airport",
+    "km": 137,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": -6.12557,
+    "lon": 106.655998,
+    "type": "large_airport"
+   }
+  },
+  "bogor": {
+   "country": "ID",
+   "nameAr": "بوغور",
+   "nameEn": "Bogor",
+   "wikiTitle": "Bogor",
+   "flags": [],
+   "lat": -6.59636,
+   "lon": 106.79732,
+   "geocode": "Bogor, West Java, Indonesia",
+   "airport": {
+    "iata": "CGK",
+    "name": "Soekarno-Hatta International Airport",
+    "km": 55,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": -6.12557,
+    "lon": 106.655998,
+    "type": "large_airport"
+   }
+  },
+  "lake-toba": {
+   "country": "ID",
+   "nameAr": "بحيرة توبا",
+   "nameEn": "Lake Toba",
+   "wikiTitle": "Lake Toba",
+   "flags": [],
+   "lat": 2.66176,
+   "lon": 98.93918,
+   "geocode": "Parapat, Girsang Sipangan Bolon, Simalungun, North Sumatra, Indonesia",
+   "airport": {
+    "iata": "KNO",
+    "name": "Kualanamu International Airport",
+    "km": 109,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 3.637847,
+    "lon": 98.870566,
+    "type": "large_airport"
+   }
+  },
+  "hua-hin": {
+   "country": "TH",
+   "nameAr": "هوا هين",
+   "nameEn": "Hua Hin",
+   "wikiTitle": "Hua Hin",
+   "flags": [
+    "gateway 150 km away"
+   ],
+   "lat": 12.56993,
+   "lon": 99.95734,
+   "geocode": "Hua Hin City Municipality, Hua Hin District, Prachuap Khiri Khan Province, 77110, Thailand",
+   "airport": {
+    "iata": "BKK",
+    "name": "Suvarnabhumi Airport",
+    "km": 150,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 13.6811,
+    "lon": 100.747002,
+    "type": "large_airport"
+   }
+  },
+  "ayutthaya": {
+   "country": "TH",
+   "nameAr": "أيوثايا",
+   "nameEn": "Ayutthaya",
+   "wikiTitle": "Ayutthaya",
+   "flags": [],
+   "lat": 14.35354,
+   "lon": 100.56457,
+   "geocode": "Phra Nakhon Si Ayutthaya City Municipality, Phra Nakhon Si Ayutthaya District, Phra Nakhon Si Ayutthaya Province, 13000, Thailand",
+   "airport": {
+    "iata": "BKK",
+    "name": "Suvarnabhumi Airport",
+    "km": 77,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 13.6811,
+    "lon": 100.747002,
+    "type": "large_airport"
+   }
+  },
+  "chiang-rai": {
+   "country": "TH",
+   "nameAr": "تشيانغ راي",
+   "nameEn": "Chiang Rai",
+   "wikiTitle": "Chiang Rai",
+   "flags": [],
+   "lat": 19.90689,
+   "lon": 99.83327,
+   "geocode": "Chiang Rai City Municipality, Tha Sai, Mueang Chiang Rai District, Chiang Rai Province, 57000, Thailand",
+   "airport": {
+    "iata": "CEI",
+    "name": "Mae Fah Luang - Chiang Rai International Airport",
+    "km": 7,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 19.952299,
+    "lon": 99.882896,
+    "type": "large_airport"
+   }
+  },
+  "dahab": {
+   "country": "EG",
+   "nameAr": "دهب",
+   "nameEn": "Dahab",
+   "wikiTitle": "Dahab",
+   "flags": [],
+   "lat": 28.49636,
+   "lon": 34.51457,
+   "geocode": "Dahab, South Sinai, 55555, Egypt",
+   "airport": {
+    "iata": "SSH",
+    "name": "Sharm El Sheikh International Airport",
+    "km": 59,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 27.977272,
+    "lon": 34.394717,
+    "type": "large_airport"
+   }
+  },
+  "marsa-alam": {
+   "country": "EG",
+   "nameAr": "مرسى علم",
+   "nameEn": "Marsa Alam",
+   "wikiTitle": "Marsa Alam",
+   "flags": [],
+   "lat": 25.06999,
+   "lon": 34.89382,
+   "geocode": "Marsa Alam City, Red Sea, 84721, Egypt",
+   "airport": {
+    "iata": "RMF",
+    "name": "Marsa Alam International Airport",
+    "km": 62,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 25.555548,
+    "lon": 34.59245,
+    "type": "large_airport"
+   }
+  },
+  "el-gouna": {
+   "country": "EG",
+   "nameAr": "الجونة",
+   "nameEn": "El Gouna",
+   "wikiTitle": "El Gouna",
+   "flags": [],
+   "lat": 27.39893,
+   "lon": 33.67416,
+   "geocode": "El Gouna, Red Sea, 84513, Egypt",
+   "airport": {
+    "iata": "HRG",
+    "name": "Hurghada International Airport",
+    "km": 28,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 27.176776,
+    "lon": 33.796692,
+    "type": "large_airport"
+   }
+  },
+  "fujairah": {
+   "country": "AE",
+   "nameAr": "الفجيرة",
+   "nameEn": "Fujairah",
+   "wikiTitle": "Fujairah",
+   "flags": [],
+   "lat": 25.12446,
+   "lon": 56.33551,
+   "geocode": "Fujairah City, Fujairah Emirate, United Arab Emirates",
+   "airport": {
+    "iata": "DXB",
+    "name": "Dubai International Airport",
+    "km": 98,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 25.24979,
+    "lon": 55.370992,
+    "type": "large_airport"
+   }
+  },
+  "al-ain": {
+   "country": "AE",
+   "nameAr": "العين",
+   "nameEn": "Al Ain",
+   "wikiTitle": "Al Ain",
+   "flags": [],
+   "lat": 24.22487,
+   "lon": 55.74522,
+   "geocode": "Al Ain, Al Mu'tarid, Al Ain, Abu Dhabi Emirate, United Arab Emirates",
+   "airport": {
+    "iata": "AUH",
+    "name": "Zayed International Airport",
+    "km": 114,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 24.440966,
+    "lon": 54.649237,
+    "type": "large_airport"
+   }
+  },
+  "wadi-rum": {
+   "country": "JO",
+   "nameAr": "وادي رم",
+   "nameEn": "Wadi Rum",
+   "wikiTitle": "Wadi Rum",
+   "flags": [],
+   "lat": 29.57478,
+   "lon": 35.42183,
+   "geocode": "Wadi Rum Village, Al Quairah Sub-District, Quairah District, Aqaba, Jordan",
+   "airport": {
+    "iata": "AQJ",
+    "name": "King Hussein International Airport",
+    "km": 39,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 29.611601,
+    "lon": 35.018101,
+    "type": "large_airport"
+   }
+  },
+  "jerash": {
+   "country": "JO",
+   "nameAr": "جرش",
+   "nameEn": "Jerash",
+   "wikiTitle": "Jerash",
+   "flags": [],
+   "lat": 32.28124,
+   "lon": 35.901,
+   "geocode": "Jerash, Jerash Sub-District, Qasabah Jerash, Jarash, Jordan",
+   "airport": {
+    "iata": "AMM",
+    "name": "Queen Alia International Airport",
+    "km": 63,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 31.7226009369,
+    "lon": 35.9931983948,
+    "type": "large_airport"
+   }
+  },
+  "sur": {
+   "country": "OM",
+   "nameAr": "صور",
+   "nameEn": "Sur",
+   "wikiTitle": "Sur",
+   "flags": [
+    "gateway 171 km away"
+   ],
+   "lat": 22.56931,
+   "lon": 59.52955,
+   "geocode": "Sur, Jalaan Bani Bu ALi Province, Ash Sharqiyah South Governorate, 411, Oman",
+   "airport": {
+    "iata": "MCT",
+    "name": "Muscat International Airport",
+    "km": 171,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 23.600218,
+    "lon": 58.285268,
+    "type": "large_airport"
+   }
+  },
+  "khasab": {
+   "country": "OM",
+   "nameAr": "خصب",
+   "nameEn": "Khasab",
+   "wikiTitle": "Khasab",
+   "flags": [
+    "gateway 353 km away"
+   ],
+   "lat": 26.18413,
+   "lon": 56.24698,
+   "geocode": "Khasab Province, Musandam Governorate, 811, Oman",
+   "airport": {
+    "iata": "MCT",
+    "name": "Muscat International Airport",
+    "km": 353,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 23.600218,
+    "lon": 58.285268,
+    "type": "large_airport"
+   }
+  },
+  "zell-am-see": {
+   "country": "AT",
+   "nameAr": "زيلامسي",
+   "nameEn": "Zell am See",
+   "wikiTitle": "Zell am See",
+   "flags": [],
+   "lat": 47.32396,
+   "lon": 12.79632,
+   "geocode": "Zell am See, Bezirk Zell am See, Salzburg, 5700, Austria",
+   "airport": {
+    "iata": "SZG",
+    "name": "Salzburg Airport",
+    "km": 54,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 47.793301,
+    "lon": 13.0043,
+    "type": "large_airport"
+   }
+  },
+  "hallstatt": {
+   "country": "AT",
+   "nameAr": "هالشتات",
+   "nameEn": "Hallstatt",
+   "wikiTitle": "Hallstatt",
+   "flags": [],
+   "lat": 47.53479,
+   "lon": 13.59889,
+   "geocode": "Hallstatt, Bezirk Gmunden, Upper Austria, Austria",
+   "airport": {
+    "iata": "SZG",
+    "name": "Salzburg Airport",
+    "km": 53,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 47.793301,
+    "lon": 13.0043,
+    "type": "large_airport"
+   }
+  },
+  "heviz": {
+   "country": "HU",
+   "nameAr": "هيفيز",
+   "nameEn": "Heviz",
+   "wikiTitle": "Hévíz",
+   "flags": [
+    "gateway 173 km away"
+   ],
+   "lat": 46.7906,
+   "lon": 17.18345,
+   "geocode": "Hévíz, Keszthelyi járás, Zala, Transdanubia, 8380, Hungary",
+   "airport": {
+    "iata": "BUD",
+    "name": "Budapest Liszt Ferenc International Airport",
+    "km": 173,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 47.43018,
+    "lon": 19.262393,
+    "type": "large_airport"
+   }
+  },
+  "khiva": {
+   "country": "UZ",
+   "nameAr": "خيوة",
+   "nameEn": "Khiva",
+   "wikiTitle": "Khiva",
+   "flags": [],
+   "lat": 41.37751,
+   "lon": 60.36346,
+   "geocode": "Khiva, Xorazm Region, 220900, Uzbekistan",
+   "airport": {
+    "iata": "UGC",
+    "name": "Urgench International Airport",
+    "km": 33,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 41.58274,
+    "lon": 60.64338,
+    "type": "large_airport"
+   }
+  },
+  "annecy": {
+   "country": "FR",
+   "nameAr": "آنسي",
+   "nameEn": "Annecy",
+   "wikiTitle": "Annecy",
+   "flags": [],
+   "lat": 45.89923,
+   "lon": 6.12888,
+   "geocode": "Annecy, Upper Savoy, Auvergne-Rhône-Alpes, Metropolitan France, France",
+   "airport": {
+    "iata": "GVA",
+    "name": "Geneva International Airport",
+    "km": 38,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 46.238098,
+    "lon": 6.10895,
+    "type": "large_airport"
+   }
+  },
+  "como": {
+   "country": "IT",
+   "nameAr": "كومو",
+   "nameEn": "Como",
+   "wikiTitle": "Como",
+   "flags": [],
+   "lat": 45.81156,
+   "lon": 9.08304,
+   "geocode": "Como, Lombardy, 22100, Italy",
+   "airport": {
+    "iata": "MXP",
+    "name": "Milan Malpensa International Airport",
+    "km": 34,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 45.6306,
+    "lon": 8.72811,
+    "type": "large_airport"
+   }
+  },
+  "amalfi": {
+   "country": "IT",
+   "nameAr": "أمالفي",
+   "nameEn": "Amalfi",
+   "wikiTitle": "Amalfi",
+   "flags": [],
+   "lat": 40.63367,
+   "lon": 14.60261,
+   "geocode": "Amalfi, Salerno, Campania, 84011, Italy",
+   "airport": {
+    "iata": "NAP",
+    "name": "Naples International Airport",
+    "km": 38,
+    "source": "owner list, confirmed in OurAirports",
+    "lat": 40.886002,
+    "lon": 14.2908,
+    "type": "large_airport"
+   }
+  }
+ },
+ "review": [
+  "trincomalee",
+  "mirissa",
+  "qusar",
+  "cameron-highlands",
+  "ipoh",
+  "hua-hin",
+  "sur",
+  "khasab",
+  "heviz"
+ ]
+}
