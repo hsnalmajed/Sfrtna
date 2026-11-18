@@ -28,7 +28,7 @@ task under «For the build chat» below instead of coding here.
 
 | # | With | Ref | Status | Waiting for / next step |
 |---|------|-----|--------|-------------------------|
-| 1 | Apple — App Review + Developer Support | case 30000017675096; submission e7a94ba9… | **18 Nov 14:58 REJECTED again (v1.0 build 50): 5.1.2(i) cookies without ATT + 2.1 info needed** (companies providing services + owner's relationship). «App Compliance — New» appeared in the sidebar | Build chat task below (no cookie prompt/tracking in iOS app) → fill App Compliance → reply to App Review with 2.1 answers → resubmit |
+| 1 | Apple — App Review + Developer Support | case 30000017675096; submission e7a94ba9… | 18 Nov 14:58 REJECTED (build 50): 5.1.2(i) + 2.1. **Root fix built 18 Nov (0221491)**: no tracking/cookies/partner scripts in the iOS app, flights open outside, native rules, CI gate | Follow `docs/app-store/presubmit-checklist.md` one step at a time: release green → App Compliance → App Privacy → TestFlight check → attach build + notes → reply + Resubmit |
 | 2 | Google Play — closed test | app com.sfrtna.app, track «Alpha» | Setup done 16 Nov, 14 changes submitted for review | Google's review mail; owner adds 12+ testers (14-day clock) → production ~3 weeks |
 | 3 | Google Play — account | tickets [7-5929000041524], [7-2716000041928] | Identity VERIFIED 13 Nov; ticket 7-2716000041928 CLOSED by Google 16 Nov («ID verification complete, you can publish») | Nothing — only if Google writes again |
 | 4 | Partnerize ↔ Expedia (login lost) | Partnerize #710723, Expedia 00045017 (auto-CLOSED 16 Nov, no fix) | Loop: each says the other handles login | 18 Nov 16:28 owner MAILED Partnerize Expedia desk → ticket **#712452** opened 16:29 (auto-ack) → wait for reply; no fix in ~5 work days → own new Partnerize account (owner said yes) |
@@ -47,33 +47,11 @@ task under «For the build chat» below instead of coding here.
 Closed: Stay22 (4 Nov, payout threshold $500 never met).
 
 ## For the build chat (paste there)
-- **ROOT FIX for Apple — owner 18 Nov 18:18: «حل جذري، كل الي صار غير مقبول»
-  (Opus). v1.0 (50) REJECTED 18 Nov 14:58: 5.1.2(i) cookies/tracking without
-  ATT + 2.1 info.** Root cause: the iOS app is our website in a web view, and
-  the website carries web-only things Apple treats as tracking. Build ONE
-  «iOS clean mode» (UA `SfrtnaApp/iOS`, decided in one place) that removes
-  ALL of it, then a guard so it can never come back:
-  1. No GA4, no consent/cookie banner (`Analytics.tsx`), no NavTracker
-     tracking, no third-party script at all in the iOS app: Stay22
-     (`Stay22LinkSwap`, `Stay22HotelMap`), tpwgt flight widget
-     (`FlightMetasearch.tsx`), jsdelivr etc. Only our own origin.
-  2. **Owner decision 18:18:** flights in the iOS app = search form stays in
-     the app; results + booking open OUTSIDE the app (Safari / system
-     browser) on the partner's site. Same for every partner/booking link
-     (hotels, cars, tours, eSIM): open externally, never inside the web view.
-  3. Guard test (CI, fails the build): load the main pages + a flight and a
-     hotel search with UA `SfrtnaApp/iOS`; fail on ANY request to a host other
-     than sfrtna.com, ANY cookie set, or the consent banner present.
-  4. App Store Connect: App Privacy = «Data Not Used to Track You» and data
-     types match; fill «App Compliance — New» (the hidden SECURITY/AIGENERATE
-     forms). Review notes: no tracking, no cookies, partner links open in
-     Safari, where to see it.
-  5. Full pre-submit audit against EVERY guideline Apple raised so far (4.3,
-     4.2.6, 4.8, 5.1.1(v) deletion, 5.1.2(i), 2.1, 2.1.0 completeness) →
-     checklist in docs/app-store/, all green before resubmit.
-  6. ONE complete reply covering everything (2.1 answers are drafted in the
-     mail chat; paste them into docs/app-store/review-reply.md), new ios.yml
-     build attached to 1.0, then resubmit. No piecemeal resubmits.
+- **ROOT FIX for Apple — BUILT 18 Nov in the mail chat (owner asked), commit
+  0221491:** «iOS clean mode» (`src/lib/iosClean.ts`) + native WebKit rules +
+  release gate `scripts/ios-clean-check.mjs`. Owner steps + reply + checklist:
+  `docs/app-store/presubmit-checklist.md`, `docs/app-store/reply-2026-11-18.md`.
+  Build chat: nothing to do unless the gate turns red.
 - **Admitad/Mitgo verification keeps dropping (18 Nov):** ad space «Sfrtna»
   went Active 15:57 → «Not verified» 16:09. `edge-worker.js` answers «/» with
   the `mitgo-verification` tag only when the UA matches /mitgo|admitad/;
