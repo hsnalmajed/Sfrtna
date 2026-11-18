@@ -2865,3 +2865,7 @@ share, accurate city pins, auto-fill from trips. We beat it there.
    مسافري سفرتنا», «زرت دولاً أكثر من X٪ من مسافرينا».
 9. Dreams → action: «ابحث عن رحلة» (prefilled), ready plan, best season.
 10. Suggest marks from «رحلتي» / saved plans («سافرت إلى إسطنبول؟ أضفها»).
+- 18 Nov 05:50 live check (ux-audit 02:44 UTC): map now loads on the live
+  site; search ignores tashkeel («عمان» → «عُمان», c680622). Seen: the
+  floating «رأيك» button covers the map's «+» (top-left) → move the zoom
+  buttons / hide the feedback button over the map in Round A.
