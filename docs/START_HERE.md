@@ -173,6 +173,13 @@ account); owner will issue his own CR «مؤسسة حسن علي الماجد» 
 rejected by MC as taken; check SAIP trademark) → D-U-N-S (≤30 days) →
 organization account = no tester rule; org legal name + address show on
 Play. Apple: waiting on case 30000017675096 / App Review thread.
+**▶▶▶▶▶▶▶▶▶ APPLE 18 Nov: REJECTED again (build 50: 5.1.2(i) cookies/tracking +
+2.1) → ROOT FIX LIVE (mail chat, 0221491 + d04bec8): «iOS clean mode»
+`src/lib/iosClean.ts` (no GA/banner/partner scripts in the iPhone app;
+flights + Stay22 list open outside), native WebKit no-tracking rules,
+release gate `scripts/ios-clean-check.mjs`. Build 51 on TestFlight. Owner
+steps = `docs/app-store/presubmit-checklist.md` (mail chat). Never add a
+third-party script/iframe without keeping it out of the iOS app.**
 **▶▶▶▶▶▶▶▶ STATE 17 Nov 01:35 — iPhone submit BLOCKED by Apple (hidden forms).**
 Done tonight: build 50 (Apple-token revoke code) attached to 1.0; review notes
 pasted; reply (short, 3,494 chars, all 9 answers) SENT in build 27's thread;

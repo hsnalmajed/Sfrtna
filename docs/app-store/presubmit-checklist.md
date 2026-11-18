@@ -9,15 +9,15 @@ here; add any new one the day it arrives.
 | 1 | 4.3(a)(b) Spam + 4.2.6 template (13 Nov) | Not a copy of other apps / a web wrapper | iPhone-only features: keep a plan offline, prayer + trip alerts in the city's time, add the plan to the iPhone calendar, PDF to the share sheet, Sign in with Apple | Owner tested on TestFlight 17 Nov (calendar, Apple sign-in) | ✅ built; listed in review notes |
 | 2 | 4.8 Login services | Sign in with Apple when another sign-in is offered | Black Apple button first on the sign-in screen | TestFlight 17 Nov | ✅ |
 | 3 | 5.1.1(v) Account deletion | Delete the account inside the app; revoke the Apple token | Account page «Delete my account»; Apple token revoked (key H67V5U9Z2X) | `/api/health?apple=1` = 400 invalid_grant (Apple accepts our secret) | ✅ |
-| 4 | 5.1.2(i) Tracking (18 Nov) | No cookies/tracking without ATT, or remove them | «iOS clean mode» (`src/lib/iosClean.ts`): no GA4, no cookie banner, no third-party script or frame; flights + Stay22 list open in the Safari sheet; native WebKit rules block third-party scripts/frames and cookies | `scripts/ios-clean-check.mjs` in release.yml (gate) — must be green on the release that is live | ⬜ until the release with commit 0221491 is green |
+| 4 | 5.1.2(i) Tracking (18 Nov) | No cookies/tracking without ATT, or remove them | «iOS clean mode» (`src/lib/iosClean.ts`): no GA4, no cookie banner, no third-party script or frame; flights + Stay22 list open in the Safari sheet; native WebKit rules block third-party scripts/frames and cookies | `scripts/ios-clean-check.mjs` in release.yml (gate) — must be green on the release that is live | ✅ release d04bec8 green 18 Nov (guard 8/8, control sees banner + widget in a browser) |
 | 5 | 5.1.2 App Privacy label | Label matches the app | «Data Not Used to Track You»; collected types match (email for the account, saved plans, search history — not linked to third parties) | Owner checks App Store Connect › App Privacy (screenshot to Claude) | ⬜ |
 | 6 | 2.1 Information needed (18 Nov) | Which companies provide the services; owner's relationship | `reply-2026-11-18.md` | Partner list matches what the app links to | ✅ text ready |
 | 7 | 2.1.0 App Completeness | Review must be able to use every feature | Review notes: steps for each iPhone-only feature, no login needed | Review notes in listing.json | ✅ (re-paste after edit) |
 | 8 | Hidden compliance forms (17 Nov) | `SECURITYASF395E`, `AIGENERATEFD1DE` blocked submission | Sidebar now shows «App Compliance — New» | Owner fills it; `ios-review.yml` shows no PENDING_COLLECT | ⬜ |
-| 9 | New build | The fixed shell (native rules) is in the build Apple reviews | ios.yml build from commit 0221491 or later, attached to 1.0 | TestFlight shows the build; owner opens it once: no cookie prompt, flights open in a Safari sheet | ⬜ |
+| 9 | New build | The fixed shell (native rules) is in the build Apple reviews | **Build 51** (ios.yml run 51, uploaded 18 Nov) — attach to 1.0 | TestFlight: owner opens it once: no cookie prompt, flights open in a Safari sheet | ⬜ owner |
 
 ## Order of owner steps (one at a time, in the mail chat)
-1. Wait for the release with 0221491 to be green (Claude checks).
+1. ~~Release green~~ ✅ (d04bec8, production live).
 2. App Store Connect › **App Compliance** → fill both forms (screenshot first).
 3. **App Privacy** → screenshot → Claude says what to change.
 4. TestFlight: install the new build → open a flight search → screenshot.
