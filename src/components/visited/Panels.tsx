@@ -1,13 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState, type ReactNode } from "react";
 import type { Locale } from "@/lib/types";
 import { useDictionary } from "@/lib/dict/context";
 import { COUNTRIES, CONTINENTS, flagEmoji, type Continent } from "@/lib/countries";
-import { COUNTRY_CITIES } from "@/lib/cities";
-import { citiesOf, ourCities, type MapCity } from "@/lib/visitedCities";
-import { ARAB, GULF, continentOf, counted, in195, type Visited, type VisitedStats } from "@/lib/visitedMap";
+import { ourCities, type MapCity } from "@/lib/visitedCities";
+import { ARAB, GULF, continentOf, in195, type Visited, type VisitedStats } from "@/lib/visitedMap";
 import { badgesOf } from "./badges";
 import Sheet from "./Sheet";
 
@@ -15,26 +14,27 @@ type T = ReturnType<typeof useDictionary>["visited"];
 const NAME = new Map(COUNTRIES.map((c) => [c.code, c]));
 const nm = (code: string, ar: boolean) => (ar ? NAME.get(code)?.nameAr : NAME.get(code)?.nameEn) ?? code;
 
-/** City names for a country's ticked ids (ours at once, the rest after the file loads). */
-function useCityNames(code: string, ids: Set<string> | undefined): Map<string, MapCity> {
-  const [list, setList] = useState<MapCity[]>(() => ourCities(code));
-  useEffect(() => {
-    let live = true;
-    if (ids && [...ids].some((i) => i.startsWith("q"))) void citiesOf(code).then((l) => live && setList(l));
-    return () => {
-      live = false;
-    };
-  }, [code, ids]);
-  return new Map(list.map((c) => [c.id, c]));
+/** A country's cities (the merged list once loaded, ours meanwhile). */
+export type CityLists = Map<string, MapCity[]>;
+function listOf(lists: CityLists, code: string): MapCity[] {
+  return lists.get(code) ?? ourCities(code);
+}
+/** Seen / total cities of a country, and the share (0–100). */
+export function cityShare(lists: CityLists, visited: Visited, code: string) {
+  const all = listOf(lists, code);
+  const ids = visited.cities.get(code) ?? new Set<string>();
+  const total = Math.max(all.length, ids.size);
+  return { seen: ids.size, total, pct: total ? Math.round((ids.size / total) * 100) : 0 };
 }
 
-function Bar({ now, total }: { now: number; total: number }) {
+function Bar({ pct, tone = "gold" }: { pct: number; tone?: "gold" | "blue" }) {
   return (
     <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-mist-100">
-      <div className="h-full rounded-full bg-[#f8b840] transition-[width] duration-700" style={{ width: `${total ? Math.min(100, (now / total) * 100) : 0}%` }} />
+      <div className={`h-full rounded-full transition-[width] duration-700 ${tone === "gold" ? "bg-[#f8b840]" : "bg-[#88b1e1]"}`} style={{ width: `${Math.min(100, pct)}%` }} />
     </div>
   );
 }
+const pctText = (n: number, ar: boolean) => `${n}${ar ? "٪" : "%"}`;
 
 // ── One country ─────────────────────────────────────────────────────────────
 export function CountrySheet({
@@ -43,10 +43,13 @@ export function CountrySheet({
   code,
   name,
   visited,
-  onAdd,
+  lists,
+  onBeen,
   onDream,
+  onRemoveCity,
+  onMoveToDream,
   onRemove,
-  onDeleteTrip,
+  onRemoveDream,
   onClose,
 }: {
   locale: Locale;
@@ -54,21 +57,26 @@ export function CountrySheet({
   code: string;
   name: string;
   visited: Visited;
-  onAdd: () => void;
+  lists: CityLists;
+  /** open the cities step (adds the country as visited) */
+  onBeen: () => void;
   onDream: () => void;
+  onRemoveCity: (id: string) => void;
+  onMoveToDream: () => void;
   onRemove: () => void;
-  onDeleteTrip: (index: number) => void;
+  onRemoveDream: () => void;
   onClose: () => void;
 }) {
   const ar = locale === "ar";
-  const trips = visited.countries.get(code);
+  const been = visited.countries.has(code);
+  const dream = !been && visited.dreams.has(code);
   const ids = visited.cities.get(code);
-  const names = useCityNames(code, ids);
-  const ourTotal = (COUNTRY_CITIES[code] ?? []).length;
-  const ourSeen = (COUNTRY_CITIES[code] ?? []).filter((c) => ids?.has(c.slug)).length;
+  const byId = new Map(listOf(lists, code).map((c) => [c.id, c]));
+  const share = cityShare(lists, visited, code);
   const [confirm, setConfirm] = useState(false);
   const cont = continentOf(code);
-  const contT = useContinentNames();
+  const contT = useDictionary().attractions.continents as Record<Continent, string>;
+
   return (
     <Sheet
       title={
@@ -80,87 +88,113 @@ export function CountrySheet({
       onClose={onClose}
       closeLabel={t.close}
     >
-      {cont && <p className="-mt-1 mb-3 text-xs font-bold text-navy-900/50">{contT[cont]}</p>}
-      {trips ? (
-        <>
-          <div className="flex items-center gap-3 rounded-2xl bg-[#061a33] p-4 text-white">
-            <span className="text-3xl" aria-hidden="true">✈️</span>
-            <div className="min-w-0 flex-1">
-              <p className="font-display text-lg font-extrabold">{t.beenTimes.replace("{times}", counted(t.timesForms, trips.length))}</p>
-              <p className="text-xs text-white/65">{ids?.size ? counted(t.cityForms, ids.size) : t.noCitiesYet}</p>
-            </div>
-            <button type="button" onClick={onAdd} className="min-h-11 shrink-0 rounded-full bg-[#f8b840] px-4 text-sm font-extrabold text-[#061a33] active:scale-95">
-              {t.addTrip}
-            </button>
-          </div>
-          <h3 className="mb-2 mt-5 text-sm font-extrabold text-navy-900">{t.trips}</h3>
-          <ul className="flex flex-wrap gap-2">
-            {trips.map((y, i) => (
-              <li key={i} className="flex items-center gap-1 rounded-full bg-mist-50 py-1 pe-1 ps-3 text-sm font-bold text-navy-900 ring-1 ring-navy-900/10">
-                {y || t.noYear}
-                {trips.length > 1 && (
-                  <button type="button" onClick={() => onDeleteTrip(i)} aria-label={t.deleteTrip} className="grid h-8 w-8 place-items-center rounded-full text-navy-900/40 hover:bg-white">
-                    ×
-                  </button>
-                )}
-              </li>
-            ))}
-          </ul>
-          <h3 className="mb-2 mt-5 text-sm font-extrabold text-navy-900">{t.citiesYou}</h3>
-          {ids?.size ? (
-            <div className="flex flex-wrap gap-2">
-              {[...ids].map((id) => {
-                const c = names.get(id);
-                const label = c ? (ar ? c.ar : c.en) : "…";
-                return c?.ours ? (
-                  <Link key={id} href={`/${locale}/attractions/${code}/${id}`} className="rounded-full bg-[#fff8e8] px-3 py-2 text-sm font-bold text-navy-900 ring-1 ring-[#f8b840]">
-                    📍 {label}
-                  </Link>
-                ) : (
-                  <span key={id} className="rounded-full bg-[#fff8e8] px-3 py-2 text-sm font-bold text-navy-900 ring-1 ring-[#f8b840]/60">
-                    📍 {label}
-                  </span>
-                );
-              })}
-            </div>
-          ) : (
-            <p className="text-sm text-navy-900/55">{t.noCitiesYet}</p>
-          )}
-          {ourTotal > 0 && (
-            <div className="mt-4">
-              <p className="text-xs font-bold text-navy-900/60">{t.explored.replace("{seen}", String(ourSeen)).replace("{total}", String(ourTotal))}</p>
-              <Bar now={ourSeen} total={ourTotal} />
-            </div>
-          )}
-        </>
-      ) : (
-        <div className="flex flex-col gap-2">
-          <button type="button" onClick={onAdd} className="min-h-12 rounded-2xl bg-[#f8b840] text-base font-extrabold text-[#061a33] active:scale-[0.98]">
-            ✈️ {t.add}
+      <div className="-mt-1 mb-4 flex items-center gap-2">
+        {cont && <span className="text-xs font-bold text-navy-900/50">{contT[cont]}</span>}
+        {been && <span className="rounded-full bg-[#fff3d6] px-2.5 py-0.5 text-xs font-extrabold text-[#8a5a00]">{t.statusBeen}</span>}
+        {dream && <span className="rounded-full bg-navy-50 px-2.5 py-0.5 text-xs font-extrabold text-navy-700">{t.statusDream}</span>}
+      </div>
+
+      {!been && !dream && (
+        <div className="grid gap-3 sm:grid-cols-2">
+          <button type="button" onClick={onBeen} className="rounded-2xl bg-[#061a33] p-4 text-start text-white ring-2 ring-[#f8b840] active:scale-[0.98]">
+            <span className="flex items-center gap-2 font-display text-lg font-extrabold">
+              <span className="grid h-9 w-9 place-items-center rounded-full bg-[#f8b840] text-lg text-[#061a33]" aria-hidden="true">
+                ✈️
+              </span>
+              {t.chooseBeen}
+            </span>
+            <span className="mt-1.5 block text-sm text-white/70">{t.chooseBeenBody}</span>
           </button>
-          <button
-            type="button"
-            onClick={onDream}
-            className={`min-h-12 rounded-2xl text-sm font-extrabold ring-1 active:scale-[0.98] ${visited.dreams.has(code) ? "bg-navy-50 text-navy-900 ring-navy-300" : "bg-white text-navy-900 ring-navy-900/15"}`}
-          >
-            {visited.dreams.has(code) ? t.wishOn : `⭐ ${t.wish}`}
+          <button type="button" onClick={onDream} className="rounded-2xl bg-white p-4 text-start ring-2 ring-[#88b1e1] active:scale-[0.98]">
+            <span className="flex items-center gap-2 font-display text-lg font-extrabold text-navy-950">
+              <span className="grid h-9 w-9 place-items-center rounded-full bg-[#88b1e1] text-lg" aria-hidden="true">
+                ⭐
+              </span>
+              {t.chooseDream}
+            </span>
+            <span className="mt-1.5 block text-sm text-navy-900/65">{t.chooseDreamBody}</span>
           </button>
         </div>
       )}
-      <div className="mt-5 flex flex-wrap gap-2">
-        {NAME.has(code) && (
+
+      {dream && (
+        <div className="flex flex-col gap-2">
+          <button type="button" onClick={onBeen} className="min-h-12 rounded-2xl bg-[#f8b840] text-base font-extrabold text-[#061a33] active:scale-[0.98]">
+            ✈️ {t.moveToBeen}
+          </button>
+          <button type="button" onClick={onRemoveDream} className="min-h-11 rounded-2xl text-sm font-bold text-navy-900/70 ring-1 ring-navy-900/15">
+            {t.removeDream}
+          </button>
+        </div>
+      )}
+
+      {been && (
+        <>
+          <div className="rounded-2xl bg-[#061a33] p-4 text-white">
+            <div className="flex items-baseline justify-between gap-3">
+              <p className="text-sm font-bold text-white/80">{t.citiesSeen.replace("{seen}", String(share.seen)).replace("{total}", String(share.total))}</p>
+              <p className="font-display text-2xl font-extrabold text-[#f8b840]">{pctText(share.pct, ar)}</p>
+            </div>
+            <div className="mt-2 h-2.5 overflow-hidden rounded-full bg-white/10">
+              <div className="h-full rounded-full bg-[#f8b840] transition-[width] duration-700" style={{ width: `${share.pct}%` }} />
+            </div>
+          </div>
+          <div className="mb-2 mt-5 flex items-center justify-between">
+            <h3 className="text-sm font-extrabold text-navy-900">{t.citiesYou}</h3>
+            <button type="button" onClick={onBeen} className="min-h-10 rounded-full bg-[#f8b840] px-4 text-sm font-extrabold text-[#061a33] active:scale-95">
+              {t.addCity}
+            </button>
+          </div>
+          {ids?.size ? (
+            <ul className="flex flex-wrap gap-2">
+              {[...ids].map((id) => {
+                const c = byId.get(id);
+                const label = c ? (ar ? c.ar : c.en) : "…";
+                return (
+                  <li key={id} className="flex items-center rounded-full bg-[#fff8e8] ps-3 ring-1 ring-[#f8b840]/70">
+                    {c?.ours ? (
+                      <Link href={`/${locale}/attractions/${code}/${id}`} className="py-2 text-sm font-bold text-navy-900">
+                        📍 {label}
+                      </Link>
+                    ) : (
+                      <span className="py-2 text-sm font-bold text-navy-900">📍 {label}</span>
+                    )}
+                    <button
+                      type="button"
+                      onClick={() => onRemoveCity(id)}
+                      aria-label={t.removeCity.replace("{city}", label)}
+                      className="grid h-10 w-10 place-items-center rounded-full text-lg leading-none text-navy-900/45 hover:text-red-600"
+                    >
+                      ×
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          ) : (
+            <p className="text-sm text-navy-900/55">{t.noCitiesYet}</p>
+          )}
+        </>
+      )}
+
+      {NAME.has(code) && (
+        <div className="mt-5 flex flex-wrap gap-2">
           <Link href={`/${locale}/attractions/${code}`} className="min-h-11 rounded-full bg-navy-50 px-4 py-2.5 text-sm font-bold text-navy-900 ring-1 ring-navy-200">
             {t.guide.replace("{country}", name)}
           </Link>
-        )}
-        {!trips && (
-          <Link href={`/${locale}/itinerary`} className="min-h-11 rounded-full bg-navy-50 px-4 py-2.5 text-sm font-bold text-navy-900 ring-1 ring-navy-200">
-            🗺️ {t.planTrip}
-          </Link>
-        )}
-      </div>
-      {trips && (
-        <div className="mt-6 border-t border-navy-900/10 pt-4">
+          {!been && (
+            <Link href={`/${locale}/itinerary`} className="min-h-11 rounded-full bg-navy-50 px-4 py-2.5 text-sm font-bold text-navy-900 ring-1 ring-navy-200">
+              🗺️ {t.planTrip}
+            </Link>
+          )}
+        </div>
+      )}
+
+      {been && (
+        <div className="mt-6 space-y-2 border-t border-navy-900/10 pt-4">
+          <button type="button" onClick={onMoveToDream} className="min-h-11 w-full rounded-2xl text-sm font-bold text-navy-900/75 ring-1 ring-navy-900/15">
+            ⭐ {t.moveToDream}
+          </button>
           {confirm ? (
             <button type="button" onClick={onRemove} className="min-h-11 w-full rounded-2xl bg-red-600 text-sm font-extrabold text-white">
               {t.removeConfirm}
@@ -176,12 +210,8 @@ export function CountrySheet({
   );
 }
 
-function useContinentNames(): Record<Continent, string> {
-  return useDictionary().attractions.continents as Record<Continent, string>;
-}
-
 // ── Lists ───────────────────────────────────────────────────────────────────
-export type ListKind = "countries" | "continents" | "cities" | "years" | "badges" | "dreams" | "gulf";
+export type ListKind = "countries" | "continents" | "cities" | "stats" | "badges" | "dreams";
 
 export function ListSheet({
   kind,
@@ -189,7 +219,9 @@ export function ListSheet({
   t,
   visited,
   stats,
+  lists,
   onCountry,
+  onAddDream,
   onClose,
 }: {
   kind: ListKind;
@@ -197,161 +229,166 @@ export function ListSheet({
   t: T;
   visited: Visited;
   stats: VisitedStats;
+  lists: CityLists;
   onCountry: (code: string) => void;
+  onAddDream: () => void;
   onClose: () => void;
 }) {
   const ar = locale === "ar";
-  const contT = useContinentNames();
-  const title = { countries: t.rowCountries, continents: t.rowContinents, cities: t.rowCities, years: t.rowYears, badges: t.rowBadges, dreams: t.rowDreams, gulf: t.rowGulf }[kind];
+  const contT = useDictionary().attractions.continents as Record<Continent, string>;
+  const title = { countries: t.rowCountries, continents: t.rowContinents, cities: t.rowCities, stats: t.rowStats, badges: t.rowBadges, dreams: t.rowDreams }[kind];
   const visitedCodes = [...visited.countries.keys()].sort((a, b) => nm(a, ar).localeCompare(nm(b, ar), ar ? "ar" : "en"));
-  const row = (code: string, right: React.ReactNode, sub?: React.ReactNode) => (
+
+  /** A country row: flag, name, its cities' share. */
+  const countryRow = (code: string, sub?: ReactNode, right?: ReactNode) => (
     <li key={code}>
-      <button type="button" onClick={() => onCountry(code)} className="flex min-h-14 w-full items-center gap-3 px-1 text-start active:bg-mist-50">
+      <button type="button" onClick={() => onCountry(code)} className="flex min-h-16 w-full items-center gap-3 px-1 py-2 text-start active:bg-mist-50">
         <span className="text-2xl" aria-hidden="true">{flagEmoji(code)}</span>
         <span className="min-w-0 flex-1">
           <span className="block truncate font-bold text-navy-950">{nm(code, ar)}</span>
-          {sub && <span className="block text-xs text-navy-900/55">{sub}</span>}
+          {sub}
         </span>
         {right}
         <span aria-hidden="true" className="text-navy-900/30 rtl:rotate-180">›</span>
       </button>
     </li>
   );
-
-  let body: React.ReactNode = null;
-  if (kind === "countries") {
-    body = (
-      <ul className="divide-y divide-navy-900/5">
-        {visitedCodes.map((code) => {
-          const trips = visited.countries.get(code)!;
-          const n = visited.cities.get(code)?.size ?? 0;
-          return row(
-            code,
-            trips.length > 1 ? <span className="rounded-full bg-[#fff3d6] px-2 py-0.5 text-xs font-extrabold text-[#8a5a00]">×{trips.length}</span> : null,
-            [n ? counted(t.cityForms, n) : null, trips.filter((y) => y).join(" · ") || null].filter(Boolean).join(" — ")
-          );
-        })}
-      </ul>
+  const shareRow = (code: string) => {
+    const s = cityShare(lists, visited, code);
+    return countryRow(
+      code,
+      <span className="block">
+        <span className="block text-xs text-navy-900/55">{t.citiesSeen.replace("{seen}", String(s.seen)).replace("{total}", String(s.total))}</span>
+        <Bar pct={s.pct} />
+      </span>,
+      <span className="w-12 shrink-0 text-center font-display text-base font-extrabold text-[#c48a10]">{pctText(s.pct, ar)}</span>
     );
+  };
+  const progress = (label: string, seen: number, total: number, flags?: string[]) => (
+    <li key={label} className="rounded-2xl bg-mist-50 p-3 ring-1 ring-navy-900/5">
+      <div className="flex items-baseline justify-between gap-2">
+        <span className="font-extrabold text-navy-950">{label}</span>
+        <span className="text-sm font-bold text-navy-900/60">
+          {t.badgesOf.replace("{n}", String(seen)).replace("{total}", String(total))} · {pctText(total ? Math.round((seen / total) * 100) : 0, ar)}
+        </span>
+      </div>
+      <Bar pct={total ? (seen / total) * 100 : 0} />
+      {flags && flags.length > 0 && <p className="mt-2 text-lg leading-relaxed">{flags.map((c) => flagEmoji(c)).join(" ")}</p>}
+    </li>
+  );
+
+  let body: ReactNode = null;
+  if (kind === "countries" || kind === "cities") {
+    body = visitedCodes.length ? <ul className="divide-y divide-navy-900/5">{visitedCodes.map(shareRow)}</ul> : <p className="py-6 text-center text-sm text-navy-900/60">{t.reportEmpty}</p>;
   } else if (kind === "continents") {
     body = (
-      <ul className="space-y-4">
+      <ul className="space-y-3">
         {CONTINENTS.map((cont) => {
           const all = COUNTRIES.filter((c) => c.continent === cont && in195(c.code));
-          const seen = all.filter((c) => visited.countries.has(c.code));
-          return (
-            <li key={cont}>
-              <div className="flex items-baseline justify-between">
-                <span className="font-extrabold text-navy-950">{contT[cont]}</span>
-                <span className="text-sm font-bold text-navy-900/60">
-                  {t.badgesOf.replace("{n}", String(seen.length)).replace("{total}", String(all.length))} · {Math.round((seen.length / all.length) * 100)}
-                  {ar ? "٪" : "%"}
-                </span>
-              </div>
-              <Bar now={seen.length} total={all.length} />
-              {seen.length > 0 && <p className="mt-1.5 text-lg leading-relaxed">{seen.map((c) => flagEmoji(c.code)).join(" ")}</p>}
-            </li>
-          );
+          const seen = all.filter((c) => visited.countries.has(c.code)).map((c) => c.code);
+          return progress(contT[cont], seen.length, all.length, seen);
         })}
       </ul>
     );
-  } else if (kind === "gulf") {
-    const block = (list: string[], label: string) => {
-      const seen = list.filter((c) => visited.countries.has(c));
-      return (
-        <section className="mb-5">
-          <div className="flex items-baseline justify-between">
-            <span className="font-extrabold text-navy-950">{label}</span>
-            <span className="text-sm font-bold text-navy-900/60">{t.badgesOf.replace("{n}", String(seen.length)).replace("{total}", String(list.length))}</span>
+  } else if (kind === "stats") {
+    const top = visitedCodes
+      .map((c) => ({ c, ...cityShare(lists, visited, c) }))
+      .filter((x) => x.seen > 0)
+      .sort((a, b) => b.pct - a.pct || b.seen - a.seen)
+      .slice(0, 5);
+    const arabSeen = ARAB.filter((c) => visited.countries.has(c));
+    const gulfSeen = GULF.filter((c) => visited.countries.has(c));
+    body = visitedCodes.length ? (
+      <div className="space-y-5">
+        <div className="rounded-2xl bg-[#061a33] p-5 text-center text-white">
+          <p className="font-display text-5xl font-extrabold text-[#f8b840]">{pctText(stats.worldPct, ar)}</p>
+          <p className="mt-1 text-sm font-bold text-white/70">{t.reportWorld}</p>
+          <div className="mt-4 grid grid-cols-3 gap-2 border-t border-white/10 pt-4">
+            <Num big={stats.countries} label={t.statCountries} />
+            <Num big={stats.cities} label={t.statCities} />
+            <Num big={stats.continents} label={t.statContinents} />
           </div>
-          <Bar now={seen.length} total={list.length} />
-          <div className="mt-2 flex flex-wrap gap-1.5">
-            {list.map((c) => (
-              <button
-                key={c}
-                type="button"
-                onClick={() => onCountry(c)}
-                className={`min-h-10 rounded-full px-3 text-sm font-bold ring-1 ${visited.countries.has(c) ? "bg-[#fff8e8] text-navy-900 ring-[#f8b840]" : "bg-white text-navy-900/50 ring-navy-900/10"}`}
-              >
-                {flagEmoji(c)} {nm(c, ar)}
-              </button>
-            ))}
-          </div>
+        </div>
+        <section>
+          <h3 className="mb-2 text-sm font-extrabold text-navy-900">{t.reportContinents}</h3>
+          <ul className="space-y-2">
+            {CONTINENTS.map((cont) => {
+              const all = COUNTRIES.filter((c) => c.continent === cont && in195(c.code));
+              return progress(contT[cont], all.filter((c) => visited.countries.has(c.code)).length, all.length);
+            })}
+          </ul>
         </section>
-      );
-    };
-    body = (
-      <>
-        {block(GULF, ar ? "دول الخليج" : "Gulf countries")}
-        {block(ARAB, ar ? "الدول العربية" : "Arab countries")}
-      </>
-    );
-  } else if (kind === "cities") {
-    body = (
-      <div className="space-y-4">
-        {visitedCodes
-          .filter((c) => visited.cities.get(c)?.size)
-          .map((code) => (
-            <CityGroup key={code} code={code} locale={locale} ids={visited.cities.get(code)!} onCountry={onCountry} />
-          ))}
-        {stats.cities === 0 && <p className="text-sm text-navy-900/60">{t.noCitiesYet}</p>}
+        <ul className="space-y-2">
+          {progress(t.reportArab, arabSeen.length, ARAB.length, arabSeen)}
+          {progress(t.reportGulf, gulfSeen.length, GULF.length, gulfSeen)}
+        </ul>
+        {top.length > 0 && (
+          <section>
+            <h3 className="mb-1 text-sm font-extrabold text-navy-900">{t.reportTop}</h3>
+            <ul className="divide-y divide-navy-900/5">{top.map((x) => shareRow(x.c))}</ul>
+          </section>
+        )}
       </div>
-    );
-  } else if (kind === "years") {
-    const byYear = new Map<number, string[]>();
-    for (const [code, trips] of visited.countries) for (const y of new Set(trips)) byYear.set(y, [...(byYear.get(y) ?? []), code]);
-    const years = [...byYear.keys()].sort((a, b) => (a === 0 ? 1 : b === 0 ? -1 : b - a));
-    body = (
-      <>
-        {years.every((y) => y === 0) && <p className="mb-3 rounded-2xl bg-mist-50 p-3 text-sm text-navy-900/70">{t.yearsNone}</p>}
-        <ol className="relative space-y-5 border-s-2 border-[#f8b840]/40 ps-5">
-          {years.map((y) => (
-            <li key={y} className="relative">
-              <span className="absolute -start-[1.72rem] top-1 h-3 w-3 rounded-full bg-[#f8b840] ring-4 ring-white" aria-hidden="true" />
-              <p className="font-display text-lg font-extrabold text-navy-950">{y || t.noYear}</p>
-              <div className="mt-1.5 flex flex-wrap gap-1.5">
-                {byYear.get(y)!.map((c) => (
-                  <button key={c} type="button" onClick={() => onCountry(c)} className="min-h-10 rounded-full bg-[#fff8e8] px-3 text-sm font-bold text-navy-900 ring-1 ring-[#f8b840]/60">
-                    {flagEmoji(c)} {nm(c, ar)}
-                  </button>
-                ))}
-              </div>
-            </li>
-          ))}
-        </ol>
-      </>
+    ) : (
+      <p className="py-6 text-center text-sm text-navy-900/60">{t.reportEmpty}</p>
     );
   } else if (kind === "badges") {
     const list = badgesOf(visited, stats);
+    const won = list.filter((b) => b.now >= b.need);
+    const next = list.filter((b) => b.now < b.need).sort((a, b) => b.now / b.need - a.now / a.need);
     body = (
-      <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-        {list.map((b) => {
-          const on = b.now >= b.need;
-          const bt = t.badges[b.id];
-          return (
-            <li key={b.id} className={`rounded-2xl p-3 text-center ring-1 ${on ? "bg-[#061a33] text-white ring-[#f8b840]" : "bg-mist-50 text-navy-900 ring-navy-900/10"}`}>
-              <span className={`mx-auto grid h-14 w-14 place-items-center rounded-full text-3xl ${on ? "bg-[#f8b840]/20" : "bg-white grayscale"}`} aria-hidden="true">
-                {b.icon}
-              </span>
-              <p className="mt-2 text-sm font-extrabold">{bt.name}</p>
-              <p className={`text-xs ${on ? "text-white/65" : "text-navy-900/55"}`}>{bt.how}</p>
-              {!on && (
-                <>
-                  <Bar now={b.now} total={b.need} />
-                  <p className="mt-1 text-[0.7rem] font-bold text-navy-900/50">{t.badgesOf.replace("{n}", String(b.now)).replace("{total}", String(b.need))}</p>
-                </>
-              )}
-            </li>
-          );
-        })}
-      </ul>
+      <div className="space-y-5">
+        <p className="rounded-2xl bg-[#fff8e8] p-3 text-sm leading-7 text-navy-900/80 ring-1 ring-[#f8b840]/40">🏅 {t.badgesIntro}</p>
+        <section>
+          <h3 className="mb-2 text-sm font-extrabold text-navy-900">
+            {t.badgesWon} ({won.length})
+          </h3>
+          {won.length ? (
+            <ul className="grid grid-cols-3 gap-2 sm:grid-cols-4">
+              {won.map((b) => (
+                <li key={b.id} className="rounded-2xl bg-[#061a33] p-2.5 text-center text-white ring-2 ring-[#f8b840]">
+                  <span className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-[#f8b840]/20 text-2xl" aria-hidden="true">
+                    {b.icon}
+                  </span>
+                  <p className="mt-1.5 text-xs font-extrabold leading-tight">{t.badges[b.id].name}</p>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-sm text-navy-900/60">{t.badgesNone}</p>
+          )}
+        </section>
+        <section>
+          <h3 className="mb-2 text-sm font-extrabold text-navy-900">
+            {t.badgesNext} ({next.length})
+          </h3>
+          <ul className="space-y-2">
+            {next.map((b) => (
+              <li key={b.id} className="flex items-center gap-3 rounded-2xl bg-mist-50 p-3 ring-1 ring-navy-900/5">
+                <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-white text-2xl grayscale" aria-hidden="true">
+                  {b.icon}
+                </span>
+                <div className="min-w-0 flex-1">
+                  <p className="text-sm font-extrabold text-navy-950">
+                    {t.badges[b.id].name} <span className="font-bold text-navy-900/55">— {t.badges[b.id].how}</span>
+                  </p>
+                  <Bar pct={(b.now / b.need) * 100} />
+                  <p className="mt-1 text-[0.7rem] font-bold text-navy-900/50">{t.badgeProgress.replace("{now}", String(b.now)).replace("{need}", String(b.need))}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </section>
+      </div>
     );
   } else if (kind === "dreams") {
     body = (
-      <ul className="divide-y divide-navy-900/5">
-        {[...visited.dreams].map((code) => row(code, <span aria-hidden="true">⭐</span>))}
-        {visited.dreams.size === 0 && <p className="text-sm text-navy-900/60">{t.wish}</p>}
-      </ul>
+      <>
+        <button type="button" onClick={onAddDream} className="mb-3 min-h-12 w-full rounded-2xl bg-[#88b1e1] text-base font-extrabold text-[#061a33] active:scale-[0.98]">
+          {t.addDream}
+        </button>
+        <ul className="divide-y divide-navy-900/5">{[...visited.dreams].map((code) => countryRow(code, undefined, <span aria-hidden="true">⭐</span>))}</ul>
+      </>
     );
   }
   return (
@@ -361,24 +398,11 @@ export function ListSheet({
   );
 }
 
-function CityGroup({ code, locale, ids, onCountry }: { code: string; locale: Locale; ids: Set<string>; onCountry: (c: string) => void }) {
-  const ar = locale === "ar";
-  const names = useCityNames(code, ids);
+function Num({ big, label }: { big: number; label: string }) {
   return (
-    <section>
-      <button type="button" onClick={() => onCountry(code)} className="mb-1.5 flex min-h-10 items-center gap-2 font-extrabold text-navy-950">
-        <span aria-hidden="true">{flagEmoji(code)}</span> {nm(code, ar)} <span className="text-xs font-bold text-navy-900/45">({ids.size})</span>
-      </button>
-      <div className="flex flex-wrap gap-1.5">
-        {[...ids].map((id) => {
-          const c = names.get(id);
-          return (
-            <span key={id} className="rounded-full bg-[#fff8e8] px-3 py-1.5 text-sm font-bold text-navy-900 ring-1 ring-[#f8b840]/60">
-              {c ? (ar ? c.ar : c.en) : "…"}
-            </span>
-          );
-        })}
-      </div>
-    </section>
+    <div>
+      <p className="font-display text-2xl font-extrabold">{big}</p>
+      <p className="text-[0.7rem] font-bold text-white/60">{label}</p>
+    </div>
   );
 }

@@ -2937,3 +2937,13 @@ NOT yet checked live: the signed-in flow on a real account (owner's phone).
 Next (Round B): compare with a friend link (owner hasn't answered the
 opt-in question), community numbers (≥50 members), dreams → flight search,
 suggest from «رحلتي».
+- **18 Nov 13:15 owner's notes → done same day:** no trip counts / years
+  anywhere (no year step, no «سنواتي», no years view); دولي + مدني = each
+  country with «زرت X من Y مدينة» + % (Y = merged list); country card =
+  status chip, % card, city chips with ×, «+ أضف مدينة», «انقلها إلى
+  أحلامي», remove; unvisited country = two big choices «زرتها» / «أحلم
+  بزيارتها»; dream = «انقلها إلى دولي» / remove; «الخليج والعرب» →
+  «إحصائياتي» (world %, continents, Arab, Gulf, most explored); badges
+  page = intro + «حصلت عليها» + «في الطريق إليك» with progress (loyal /
+  years badges dropped → 13); «أحلامي» has «+ أضف حلماً»; small countries
+  = diamonds (legend «دولة صغيرة»), cities view legend «مدينة زرتها».

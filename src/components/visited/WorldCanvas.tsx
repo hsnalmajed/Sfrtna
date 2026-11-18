@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { COUNTRIES } from "@/lib/countries";
 import type { Visited, WorldCountry, WorldMapFile } from "@/lib/visitedMap";
 
-export type MapView = "countries" | "cities" | "years";
+export type MapView = "countries" | "cities";
 export interface CityPoint {
   code: string;
   id: string;
@@ -24,9 +24,6 @@ export const NIGHT = {
   line: "#061a33",
   been: "#f8b840",
   wish: "#88b1e1",
-  older: "#b97f1c",
-  newer: "#ffd772",
-  noYear: "#d9a441",
 };
 
 const TINY = 9;
@@ -34,12 +31,6 @@ const NAME = new Map(COUNTRIES.map((c) => [c.code, c]));
 export function countryName(c: { c: string; ar?: string; en?: string }, ar: boolean): string {
   const k = NAME.get(c.c);
   return (ar ? k?.nameAr ?? c.ar : k?.nameEn ?? c.en) ?? c.c;
-}
-
-function mix(a: string, b: string, k: number): string {
-  const pa = [1, 3, 5].map((i) => parseInt(a.slice(i, i + 2), 16));
-  const pb = [1, 3, 5].map((i) => parseInt(b.slice(i, i + 2), 16));
-  return `#${pa.map((x, i) => Math.round(x + (pb[i] - x) * k).toString(16).padStart(2, "0")).join("")}`;
 }
 
 function fitBox(b: [number, number, number, number], frame: { w: number; h: number }, aspect: number, minW = 34): Box {
@@ -229,19 +220,8 @@ export default function WorldCanvas({
   };
 
   // ── Colours ───────────────────────────────────────────────────────────
-  const yearRange = useMemo(() => {
-    const ys = [...visited.countries.values()].flat().filter((y) => y > 0);
-    return ys.length ? [Math.min(...ys), Math.max(...ys)] : null;
-  }, [visited]);
   const fill = (code: string): string => {
-    const trips = visited.countries.get(code);
-    if (trips) {
-      if (view !== "years") return NIGHT.been;
-      const ys = trips.filter((y) => y > 0);
-      if (!ys.length || !yearRange) return NIGHT.noYear;
-      const span = Math.max(1, yearRange[1] - yearRange[0]);
-      return mix(NIGHT.older, NIGHT.newer, (Math.max(...ys) - yearRange[0]) / span);
-    }
+    if (visited.countries.has(code)) return NIGHT.been;
     if (view === "countries" && visited.dreams.has(code)) return NIGHT.wish;
     return NIGHT.land;
   };
@@ -298,7 +278,21 @@ export default function WorldCanvas({
           {world.countries
             .filter((c) => (c.b[2] - c.b[0]) * (c.b[3] - c.b[1]) < TINY && (close || fill(c.c) !== NIGHT.land))
             .map((c) => (
-              <circle key={c.c} data-code={c.c} cx={c.p[0]} cy={c.p[1]} r={px * 5} fill={fill(c.c)} stroke="#ffffff" strokeOpacity={0.5} strokeWidth={1} vectorEffect="non-scaling-stroke" />
+              // A diamond, so a small country is never taken for a city pin.
+              <rect
+                key={c.c}
+                data-code={c.c}
+                x={c.p[0] - px * 4.5}
+                y={c.p[1] - px * 4.5}
+                width={px * 9}
+                height={px * 9}
+                rx={px * 1.5}
+                transform={`rotate(45 ${c.p[0]} ${c.p[1]})`}
+                fill={fill(c.c)}
+                stroke="#061a33"
+                strokeWidth={1.2}
+                vectorEffect="non-scaling-stroke"
+              />
             ))}
         </g>
         {selected && byCode.get(selected)?.d && (

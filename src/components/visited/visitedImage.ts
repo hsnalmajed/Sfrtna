@@ -111,7 +111,7 @@ export async function drawVisitedImage(input: {
     { big: String(s.countries), small: t.statCountries },
     { big: String(s.cities), small: t.statCities },
     { big: String(s.continents), small: t.statContinents },
-    { big: String(s.trips), small: t.statTrips },
+    { big: String(badges.filter((b) => b.now >= b.need).length), small: t.statBadges },
   ];
   const colW = (W - 120) / cols.length;
   cols.forEach((c, i) => {

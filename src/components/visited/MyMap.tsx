@@ -14,7 +14,7 @@ import Tour, { TOUR_KEY } from "./Tour";
 import { badgesOf } from "./badges";
 import { shareVisitedImage } from "./visitedImage";
 
-const VIEWS: MapView[] = ["countries", "cities", "years"];
+const VIEWS: MapView[] = ["countries", "cities"];
 
 export function levelOf(levels: readonly string[], countries: number): string {
   const i = countries === 0 ? 0 : countries < 5 ? 1 : countries < 15 ? 2 : countries < 30 ? 3 : countries < 60 ? 4 : 5;
@@ -49,14 +49,16 @@ export default function MyMap({ locale }: { locale: Locale }) {
 
   const [view, setView] = useState<MapView>("countries");
   const [selected, setSelected] = useState<string | null>(null);
-  const [sheet, setSheet] = useState<null | { kind: "add"; start?: { code: string; city?: string } | null } | { kind: "country"; code: string } | { kind: "list"; list: ListKind }>(null);
+  const [sheet, setSheet] = useState<
+    null | { kind: "add"; mode?: "been" | "dream"; start?: { code: string; city?: string } | null } | { kind: "country"; code: string } | { kind: "list"; list: ListKind }
+  >(null);
   const [glow, setGlow] = useState<string | null>(null);
   const [tour, setTour] = useState(false);
   const [sharing, setSharing] = useState(false);
 
   // Cities of the visited countries (and the chosen one), for pins and names.
   const [cityLists, setCityLists] = useState<Map<string, MapCity[]>>(new Map());
-  const wanted = useMemo(() => [...new Set([...visited.cities.keys(), ...(selected ? [selected] : [])])].sort().join(","), [visited, selected]);
+  const wanted = useMemo(() => [...new Set([...visited.countries.keys(), ...visited.cities.keys(), ...(selected ? [selected] : [])])].sort().join(","), [visited, selected]);
   useEffect(() => {
     let live = true;
     const codes = wanted ? wanted.split(",") : [];
@@ -110,17 +112,25 @@ export default function MyMap({ locale }: { locale: Locale }) {
     return countryName(c ?? { c: code }, ar);
   };
 
-  const onSave = async (code: string, cities: Set<string>, trip: number | null) => {
-    const ok = await v.saveCountry(code, cities, trip);
+  const onSave = async (code: string, cities: Set<string>) => {
+    const isNew = !visited.countries.has(code);
+    const ok = await v.saveCountry(code, cities, isNew ? 0 : null);
     if (!ok) {
       showToast({ text: t.failed });
       return false;
     }
-    showToast({ text: `🎉 ${t.savedToast.replace("{country}", nameOf(code))}` });
+    if (isNew) showToast({ text: `🎉 ${t.savedToast.replace("{country}", nameOf(code))}` });
     setSelected(code);
-    setGlow(code);
-    window.setTimeout(() => setGlow(null), 3400);
+    if (isNew) {
+      setGlow(code);
+      window.setTimeout(() => setGlow(null), 3400);
+    }
     return true;
+  };
+  const onDream = async (code: string) => {
+    const ok = visited.dreams.has(code) ? true : await v.toggleDream(code);
+    if (!ok) showToast({ text: t.failed });
+    return ok;
   };
 
   const share = async () => {
@@ -139,19 +149,17 @@ export default function MyMap({ locale }: { locale: Locale }) {
 
   const badges = badgesOf(visited, s);
   const won = badges.filter((b) => b.now >= b.need).length;
-  const years = [...new Set([...visited.countries.values()].flat().filter((y) => y > 0))].sort();
-  const gulfSeen = ["SA", "AE", "KW", "QA", "BH", "OM"].filter((c) => visited.countries.has(c)).length;
-  const viewLabel = { countries: t.viewCountries, cities: t.viewCities, years: t.viewYears };
+  const viewLabel = { countries: t.viewCountries, cities: t.viewCities };
   const roundBtn = "grid h-11 w-11 place-items-center rounded-full bg-white/10 text-white ring-1 ring-white/15 transition hover:bg-white/15 active:scale-95";
+  const of = (n: number, total: number) => t.badgesOf.replace("{n}", String(n)).replace("{total}", String(total));
 
   const rows: { list: ListKind; icon: string; title: string; sub: string }[] = [
-    { list: "countries", icon: "🏳️", title: t.rowCountries, sub: `${s.countries + s.regions}` },
-    { list: "continents", icon: "🌐", title: t.rowContinents, sub: t.badgesOf.replace("{n}", String(s.continents)).replace("{total}", "6") },
-    { list: "cities", icon: "🏙️", title: t.rowCities, sub: `${s.cities}` },
-    { list: "years", icon: "📅", title: t.rowYears, sub: years.length ? (years.length > 1 ? `${years[0]} – ${years[years.length - 1]}` : String(years[0])) : "—" },
-    { list: "badges", icon: "🏅", title: t.rowBadges, sub: t.badgesOf.replace("{n}", String(won)).replace("{total}", String(badges.length)) },
-    { list: "gulf", icon: "🌴", title: t.rowGulf, sub: t.badgesOf.replace("{n}", String(gulfSeen)).replace("{total}", "6") },
-    { list: "dreams", icon: "⭐", title: t.rowDreams, sub: `${visited.dreams.size}` },
+    { list: "countries", icon: "🏳️", title: t.rowCountries, sub: counted(t.countryForms, s.countries + s.regions) },
+    { list: "cities", icon: "🏙️", title: t.rowCities, sub: counted(t.cityForms, s.cities) },
+    { list: "continents", icon: "🌐", title: t.rowContinents, sub: of(s.continents, 6) },
+    { list: "stats", icon: "📊", title: t.rowStats, sub: `${s.worldPct}${ar ? "٪" : "%"} ${t.statWorld}` },
+    { list: "badges", icon: "🏅", title: t.rowBadges, sub: of(won, badges.length) },
+    { list: "dreams", icon: "⭐", title: t.rowDreams, sub: String(visited.dreams.size) },
   ];
 
   return (
@@ -209,15 +217,16 @@ export default function MyMap({ locale }: { locale: Locale }) {
           )}
         </div>
         <div className="pointer-events-none absolute bottom-2 end-3 flex gap-3 text-[0.7rem] font-bold text-white/75">
-          {view === "years" ? (
+          <Legend color={NIGHT.been} text={t.legendBeen} />
+          {view === "countries" ? (
             <>
-              <Legend color={NIGHT.older} text={t.legendOlder} />
-              <Legend color={NIGHT.newer} text={t.legendNewer} />
+              <Legend color={NIGHT.wish} text={t.legendWish} />
+              <Legend color={NIGHT.been} text={t.legendSmall} diamond />
             </>
           ) : (
             <>
-              <Legend color={NIGHT.been} text={t.legendBeen} />
-              {view === "countries" && <Legend color={NIGHT.wish} text={t.legendWish} />}
+              <Legend color="#ffffff" text={t.legendCity} round />
+              {selected && <Legend color="#88b1e1" text={t.legendCityNot} round />}
             </>
           )}
         </div>
@@ -261,7 +270,7 @@ export default function MyMap({ locale }: { locale: Locale }) {
         <div className="mt-4 grid grid-cols-3 divide-x divide-white/10 border-t border-white/10 pt-4 text-center rtl:divide-x-reverse">
           <Mini big={s.cities} label={t.statCities} />
           <Mini big={s.continents} label={t.statContinents} />
-          <Mini big={s.trips} label={t.statTrips} />
+          <Mini big={won} label={t.statBadges} />
         </div>
         {s.regions > 0 && <p className="mt-3 text-center text-xs text-white/45">{t.regions.replace("{n}", String(s.regions))}</p>}
       </section>
@@ -288,7 +297,9 @@ export default function MyMap({ locale }: { locale: Locale }) {
         </button>
       )}
 
-      {sheet?.kind === "add" && <AddSheet t={t} ar={ar} visited={visited} start={sheet.start} onSave={onSave} onClose={() => setSheet(null)} />}
+      {sheet?.kind === "add" && (
+        <AddSheet t={t} ar={ar} visited={visited} mode={sheet.mode} start={sheet.start} onSave={onSave} onDream={onDream} onClose={() => setSheet(null)} />
+      )}
       {sheet?.kind === "country" && (
         <CountrySheet
           locale={locale}
@@ -296,17 +307,21 @@ export default function MyMap({ locale }: { locale: Locale }) {
           code={sheet.code}
           name={nameOf(sheet.code)}
           visited={visited}
-          onAdd={() => setSheet({ kind: "add", start: { code: sheet.code } })}
-          onDream={() => void v.toggleDream(sheet.code)}
+          lists={cityLists}
+          onBeen={() => setSheet({ kind: "add", start: { code: sheet.code } })}
+          onDream={() => void onDream(sheet.code)}
+          onRemoveCity={(id) => {
+            const next = new Set(visited.cities.get(sheet.code) ?? []);
+            next.delete(id);
+            void v.saveCountry(sheet.code, next, null);
+          }}
+          onMoveToDream={() => void v.moveToDream(sheet.code)}
           onRemove={async () => {
             await v.removeCountry(sheet.code);
             setSheet(null);
             setSelected(null);
           }}
-          onDeleteTrip={(i) => {
-            const trips = visited.countries.get(sheet.code) ?? [];
-            void v.setTrips(sheet.code, trips.filter((_, j) => j !== i));
-          }}
+          onRemoveDream={() => void v.toggleDream(sheet.code)}
           onClose={() => {
             setSheet(null);
             setSelected(null);
@@ -320,10 +335,12 @@ export default function MyMap({ locale }: { locale: Locale }) {
           t={t}
           visited={visited}
           stats={s}
+          lists={cityLists}
           onCountry={(code) => {
             setSelected(code);
             setSheet({ kind: "country", code });
           }}
+          onAddDream={() => setSheet({ kind: "add", mode: "dream" })}
           onClose={() => setSheet(null)}
         />
       )}
@@ -362,10 +379,13 @@ function Mini({ big, label }: { big: number; label: string }) {
   );
 }
 
-function Legend({ color, text }: { color: string; text: string }) {
+function Legend({ color, text, round, diamond }: { color: string; text: string; round?: boolean; diamond?: boolean }) {
   return (
     <span className="flex items-center gap-1">
-      <span className="h-2.5 w-2.5 rounded-sm" style={{ background: color }} />
+      <span
+        className={`h-2.5 w-2.5 ${round ? "rounded-full ring-2 ring-[#061a33]" : diamond ? "rotate-45 rounded-[2px] ring-1 ring-[#061a33]" : "rounded-sm"}`}
+        style={{ background: color }}
+      />
       {text}
     </span>
   );

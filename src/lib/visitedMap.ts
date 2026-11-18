@@ -165,6 +165,12 @@ export function useVisited() {
     return (await member.setBeen(countryKey(code), false)) && ok;
   }
 
+  /** Added as visited by mistake: it becomes a dream (its cities go). */
+  async function moveToDream(code: string) {
+    const ok = await removeCountry(code);
+    return (await member.setBeen(wishKey(code), true, { at: Date.now() })) && ok;
+  }
+
   async function toggleDream(code: string) {
     return member.setBeen(wishKey(code), !visited.dreams.has(code), { at: Date.now() });
   }
@@ -178,6 +184,7 @@ export function useVisited() {
     saveCountry,
     setTrips,
     removeCountry,
+    moveToDream,
     toggleDream,
   };
 }

@@ -6,7 +6,7 @@ const ISLANDS = new Set([
   "PG", "SB", "VU", "WS", "TO", "KI", "MH", "FM", "PW", "NR", "TV", "IE", "GB", "TL", "HT", "LC", "VC", "GD", "AG", "KN", "DM", "TW", "HK",
 ]);
 
-export type BadgeId = "first" | "c5" | "c10" | "c25" | "c50" | "gulf" | "arab" | "cont3" | "cont6" | "cities10" | "cities50" | "deep" | "islands" | "loyal" | "years";
+export type BadgeId = "first" | "c5" | "c10" | "c25" | "c50" | "gulf" | "arab" | "cont3" | "cont6" | "cities10" | "cities50" | "deep" | "islands";
 
 export interface Badge {
   id: BadgeId;
@@ -19,8 +19,6 @@ export interface Badge {
 export function badgesOf(v: Visited, s: VisitedStats): Badge[] {
   const codes = [...v.countries.keys()];
   const maxCities = Math.max(0, ...[...v.cities.values()].map((x) => x.size));
-  const maxTrips = Math.max(0, ...[...v.countries.values()].map((t) => t.length));
-  const years = new Set([...v.countries.values()].flat().filter((y) => y > 0)).size;
   const list: Badge[] = [
     { id: "first", icon: "🛂", now: s.countries, need: 1 },
     { id: "c5", icon: "🧳", now: s.countries, need: 5 },
@@ -35,8 +33,6 @@ export function badgesOf(v: Visited, s: VisitedStats): Badge[] {
     { id: "cities50", icon: "🌆", now: s.cities, need: 50 },
     { id: "deep", icon: "📍", now: maxCities, need: 5 },
     { id: "islands", icon: "🏝️", now: codes.filter((c) => ISLANDS.has(c) && (in195(c) || c === "HK" || c === "TW")).length, need: 3 },
-    { id: "loyal", icon: "💛", now: maxTrips, need: 3 },
-    { id: "years", icon: "📅", now: years, need: 5 },
   ];
   return list.map((b) => ({ ...b, now: Math.min(b.now, b.need) }));
 }
