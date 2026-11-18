@@ -152,10 +152,14 @@ on the phone open «خريطتي», sign in, follow the tour, add 2 countries wi
 cities (one twice), press share; ONE screenshot of anything wrong.
 **Next for the map (Round B):** compare-with-friend link (opt-in, owner's
 yes pending), community numbers, dreams → flight search, suggest from «رحلتي».
-**NEXT: audit §7 round 2 «مدن أكثر (F)»** — Sri Lanka 10 cities, then Saudi
-Arabia + the top 15 countries for Saudi travellers; no big tourist country
-with one city (52 countries have 1 today). Then rounds 3–7 (photos, hotels,
-flights H+B, flight+hotel C, features visible + home hero).
+**NOW: audit §7 round 2 «مدن أكثر (F)» — batch 3 STARTED 18 Nov**
+(PROJECT_NOTES «Round 2 «مدن أكثر» — batch 3»): 56 cities staged (Sri Lanka
+→10, Saudi +9, Saudi travellers' top countries); places + hotels runs
+started. Next chat continues the 7 steps listed there (climate needs a
+decision: CDS key on the owner's PC vs keyless stations + NASA POWER).
+Owner's tests of «خريطتي» wait for the final test round (owner 18 Nov).
+Then rounds 3–7 (photos, hotels, flights H+B, flight+hotel C, features
+visible + home hero).
 **Owner 17 Nov 20:31 — decision 2:** discover lists EVERY destination in
 budget; no live fare → shown WITHOUT a number + «شاهد السعر الحيّ» (opens the
 flight search). **Decision 1 (20:40): no paid SerpApi — wait for 6 Dec**,
@@ -708,4 +712,4 @@ payout threshold $500 not met» (wire $500; PayPal/ACH $100).
 Waiting on the owner: Admitad ad space «Verifying» (14 Nov) → Active → flynas/Jazeera; Google Play ticket reply; Google-fares
 decision after the 6 Nov measurement; Android APK on a real phone.
 
-**Recommended model for the next chat: Opus 5.5** (owner's map check → fixes; then round 2: more cities).
+**Recommended model for the next chat: Opus 5.5** (round 2 batch 3: data pipeline → publish 56 cities).

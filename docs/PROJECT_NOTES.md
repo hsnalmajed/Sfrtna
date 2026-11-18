@@ -2947,3 +2947,31 @@ suggest from «رحلتي».
   page = intro + «حصلت عليها» + «في الطريق إليك» with progress (loyal /
   years badges dropped → 13); «أحلامي» has «+ أضف حلماً»; small countries
   = diamonds (legend «دولة صغيرة»), cities view legend «مدينة زرتها».
+
+### Round 2 «مدن أكثر» — batch 3 (18 Nov 2026)
+- Home hero: «خريطتي» added to the features (eight, four + four on phone and
+  wide; globe icon; wide detail «الدول التي زرتها») — 94bd85d.
+- `scripts/geo/batch3.json`: 56 cities — LK +6 (nuwara-eliya, sigiriya,
+  bentota, negombo, trincomalee, mirissa → 10), SA +9 (al-khobar, tabuk,
+  yanbu, al-baha, jazan, hail, al-ahsa, najran, umluj), TR +6 (fethiye,
+  uzungol, sapanca, bolu, ankara, kusadasi), GE +4, AZ +3, BA +2, MY +4,
+  ID +3, TH +3, EG +3, AE +2, JO +2, OM +2, AT +2, HU +1, UZ +1, FR +1, IT +2.
+- Staged (geo-stage, `scripts/geo/out/batch3.staged.json`): all 56 placed
+  right; Khasab → KHS (Muscat 353 km through the UAE); far gateways kept
+  after review (CMB, GYD, KUL, BKK, MCT, BUD). geocode_cities.py now
+  retries Nominatim 5xx/429.
+- Started 18 Nov ~13:50 UTC: places.yml run 44317882885 and hotels.yml run
+  44317886744, both `staged=true missing_only=true`.
+- **Left for the next chat, in order:** (1) wait for places + hotels
+  (artifacts / pushes; re-dispatch if they hit the time limit); (2)
+  climate for the 56: ERA5-Land needs the CDS key (was run on the owner's
+  PC, run_build.bat; no workflow has it) — either the owner runs
+  run_build.bat, or keyless: `climate-stations.yml` (WMO/GHCN stations) +
+  `climate-power.yml` ids (NASA POWER) with merge_sources calibration; then
+  `node scripts/climate/generate_seasons.mts`; (3) trip types for the 56 in
+  `src/data/destinationTypes.ts` (bump version); (4) `python3
+  scripts/coverage/check.py` → `python3 scripts/geo/publish_staged.py`
+  (dry run, then `--apply`) → `npx tsx scripts/hotels/build-index.ts`;
+  (5) guide.yml task=deep only=<56 slugs> (facts + write + names);
+  restaurants.yml, photos.yml, partner-pages.yml; (6) `node
+  scripts/coverage/depth.mjs` + TEST_PLAN numbers; (7) live check.
