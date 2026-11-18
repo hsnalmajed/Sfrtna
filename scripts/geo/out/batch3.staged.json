@@ -932,20 +932,18 @@
    "nameAr": "خصب",
    "nameEn": "Khasab",
    "wikiTitle": "Khasab",
-   "flags": [
-    "gateway 353 km away"
-   ],
+   "flags": [],
    "lat": 26.18413,
    "lon": 56.24698,
    "geocode": "Khasab Province, Musandam Governorate, 811, Oman",
    "airport": {
-    "iata": "MCT",
-    "name": "Muscat International Airport",
-    "km": 353,
+    "iata": "KHS",
+    "name": "Khasab Airport",
+    "km": 2,
     "source": "owner list, confirmed in OurAirports",
-    "lat": 23.600218,
-    "lon": 58.285268,
-    "type": "large_airport"
+    "lat": 26.171,
+    "lon": 56.240601,
+    "type": "medium_airport"
    }
   },
   "zell-am-see": {
@@ -1092,7 +1090,6 @@
   "ipoh",
   "hua-hin",
   "sur",
-  "khasab",
   "heviz"
  ]
 }
