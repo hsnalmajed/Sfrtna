@@ -2869,3 +2869,45 @@ share, accurate city pins, auto-fill from trips. We beat it there.
   site; search ignores tashkeel («عمان» → «عُمان», c680622). Seen: the
   floating «رأيك» button covers the map's «+» (top-left) → move the zoom
   buttons / hide the feedback button over the map in Round A.
+
+### «خريطتي 2» — owner's spec 18 Nov 11:07 (OVERRIDES the plan above where they differ)
+Owner sent 2 Been screenshots (dark page: «been» title + share and «+»
+round buttons top; wide world map; 3 page dots under it; «In Total» card:
+0% World · ring · 0 Countries, «Out of 195 Countries»; then rows: My
+Countries (and non-UN territories), My Continents, My Regions, My Cities,
+My Airports, each with ›). He wants BETTER than Been, not a copy; ours
+feels «بدائية وصعبة». «اريد عمل جبار واحترافي جداً».
+1. **Place:** «خريطتي» lives in «أدوات المسافر» (footer column, header
+   tools menu, «المزيد» tools group; drop the separate gold card).
+2. **Sign-in required:** signed in → /my-map opens the map at once. Signed
+   out → the page shows a gate (what the map is + sign-in: Apple / Google /
+   e-mail code); after sign-in the traveller lands BACK on /my-map (never the
+   home page) — check every sign-in path keeps the return page, in the
+   site AND the apps. Improve sign-in itself so it is smooth for this.
+3. **First open = guided tour** (coach marks, 3–4 steps: the map, «+»,
+   numbers, share), skippable, once per account, replay from a «؟» button.
+4. **Layout:** top bar: title «خريطتي» + round share + round «+» (nice,
+   like Been's, in logo colours). Then a WIDE, tidy map first (full width,
+   tall); swipeable views under it with dots (e.g. countries / cities /
+   years). Then the totals card (world %, ring, countries of 195, cities,
+   continents). Then rows that open detail screens: دولي، قاراتي، مدني،
+   سنواتي، أوسمتي (Been has Countries/Continents/Regions/Cities/Airports).
+5. **Names on the map:** country names (Arabic/English per locale) on the
+   map, more as you zoom; city names next to their pins when zoomed.
+6. **«+» flow:** choose a country (search, tashkeel-insensitive) → then its
+   cities (search, tick) → save. Countries, cities AND continents counted
+   from that automatically.
+7. **Repeat trips:** a traveller may go to the same country again and see
+   another city → adding a country already marked opens it with its cities
+   ticked and adds the new ones; keep visits per country (trip with
+   optional year/month + its cities) so «زرتها 3 مرات» and the years
+   timeline work. Data model to design (today: keys c:/t:/w:, kind been).
+8. **Cities:** our 365 are too few for a «been» list — add a wider city
+   list (big cities of every country, Arabic + English names, coords;
+   public-domain/open data, licence noted in notes, never named to
+   visitors), ours first with a link to their guide.
+9. Everything else of Round A/B above still applies (stats by continent,
+   Gulf/Arab, per-country %, badges, story picture, compare with a friend,
+   community numbers, dreams → action, suggest from «رحلتي»).
+10. Quality bar: check on the LIVE site (ux-audit phone shots + the owner's
+    phone), RTL + EN, app view; no element under the «رأيك» button.

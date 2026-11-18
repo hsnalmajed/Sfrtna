@@ -139,7 +139,10 @@ open: Israel/Palestine shapes (Natural Earth as-is).
 **18 Nov 05:09 owner: «خريطتي» = «فاشلة»** — map never loaded live (file
 under /data, refused by the guard → moved to public/geo, 130091f) and he
 wants it BETTER than Been + a growth loop. **NEXT (Opus, owner's priority,
-before round 2): «خريطتي 2» Round A** — plan in PROJECT_NOTES «خريطتي 2 —
+before round 2): «خريطتي 2» — build to the OWNER'S SPEC of 18 Nov 11:07
+(PROJECT_NOTES «خريطتي 2 — owner's spec»: travel tools, sign-in gate that
+returns to the map, guided tour, Been-like wide map + names + «+» flow
+country → cities, repeat trips, wider city list), then Round A** — plan in PROJECT_NOTES «خريطتي 2 —
 plan» (map hero first, add-country sheet with cities, stats tab with
 continents/Gulf/per-country %, years + timeline, badges, story picture);
 then Round B (compare with a friend link, community numbers, dreams →
