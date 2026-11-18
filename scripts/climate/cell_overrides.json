@@ -456,6 +456,12 @@
   "mestia": {
    "withhold": "Mestia's town is at 1,401 m; its ERA5-Land cell averages 2,151 m and the best neighbour is the same cell, with no official station near enough. Winter highs come out ~4 °C too cold. Needs a station override (National Environmental Agency of Georgia, Mestia normals).",
    "decidedAt": "2026-11-18"
+  },
+  "jajce": {
+   "latitude": 44.4,
+   "longitude": 17.2,
+   "reason": "Own cell averages 820 m against the town's 384 m (+436 m). The neighbour 8.8 km away averages 715 m (+331 m), inside the 400 m rule.",
+   "decidedAt": "2026-11-19"
   }
  }
 }
