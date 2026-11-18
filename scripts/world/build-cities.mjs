@@ -19,40 +19,42 @@ const codes = [...fs.readFileSync(path.join(ROOT, "src/lib/countries.ts"), "utf8
 const only = (process.env.ONLY || "").split(",").filter(Boolean);
 fs.mkdirSync(OUT, { recursive: true });
 
-// Starts from the country's places with a population (cheap), then keeps
-// settlements: a city / town / human settlement / municipality, directly or
-// one subclass away. The capital always comes in.
-const query = (cc, min) => `
+// Written order, no optimiser (it otherwise starts from every item with a
+// population and times out): the city classes first (a few hundred
+// thousand items), then the country, then the population. The capital
+// comes in separately.
+const qidOf = (cc) => `SELECT ?k WHERE { ?k wdt:P297 "${cc}" . }`;
+const query = (qid, min) => `
 SELECT ?c (SAMPLE(?ar0) AS ?ar) (SAMPLE(?en0) AS ?en) (SAMPLE(?co) AS ?coord) (MAX(?p) AS ?pop) WHERE {
-  ?k wdt:P297 "${cc}" .
+  hint:Query hint:optimizer "None" .
   {
-    ?c wdt:P17 ?k ; wdt:P1082 ?p .
-    FILTER(?p >= ${min})
+    { VALUES ?t { wd:Q515 wd:Q1549591 wd:Q5119 wd:Q1637706 wd:Q200250 wd:Q3957 wd:Q7930989 wd:Q494721 wd:Q1093829 } }
+    UNION { ?t wdt:P279 wd:Q515 . } UNION { ?t wdt:P279 wd:Q3957 . }
     ?c wdt:P31 ?t .
-    { VALUES ?t { wd:Q515 wd:Q1549591 wd:Q5119 wd:Q3957 wd:Q1637706 wd:Q200250 wd:Q7930989 wd:Q486972 wd:Q15284 wd:Q532 } }
-    UNION { ?t wdt:P279 ?u . VALUES ?u { wd:Q515 wd:Q3957 wd:Q486972 wd:Q15284 wd:Q1549591 } }
-  } UNION { ?k wdt:P36 ?c . OPTIONAL { ?c wdt:P1082 ?p . } }
+    ?c wdt:P17 wd:${qid} .
+    ?c wdt:P1082 ?p .
+    FILTER(?p >= ${min})
+  } UNION { wd:${qid} wdt:P36 ?c . OPTIONAL { ?c wdt:P1082 ?p . } }
   ?c wdt:P625 ?co .
-  FILTER NOT EXISTS { ?c wdt:P576 ?gone . }
   OPTIONAL { ?c rdfs:label ?ar0 . FILTER(LANG(?ar0) = "ar") }
   OPTIONAL { ?c rdfs:label ?en0 . FILTER(LANG(?en0) = "en") }
 } GROUP BY ?c ORDER BY DESC(?pop) LIMIT 120`;
 
 async function sparql(q) {
-  for (let i = 0; i < 4; i++) {
+  for (let i = 0; i < 3; i++) {
     try {
       const res = await fetch("https://query.wikidata.org/sparql", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded", Accept: "application/sparql-results+json", "User-Agent": UA },
         body: `query=${encodeURIComponent(q)}`,
-        signal: AbortSignal.timeout(55_000),
+        signal: AbortSignal.timeout(90_000),
       });
       if (res.status === 429 || res.status >= 500) throw new Error(String(res.status));
       if (!res.ok) return null;
       return (await res.json()).results.bindings;
     } catch (e) {
       await new Promise((r) => setTimeout(r, 4000 * (i + 1)));
-      if (i === 3) console.warn("  failed:", e.message);
+      if (i === 2) console.warn("  failed:", e.message);
     }
   }
   return null;
@@ -61,8 +63,11 @@ async function sparql(q) {
 const r3 = (n) => Math.round(n * 1000) / 1000;
 let total = 0;
 for (const cc of only.length ? only : codes) {
-  let rows = await sparql(query(cc, 20000));
-  if (rows && rows.length < 8) rows = (await sparql(query(cc, 2000))) ?? rows;
+  const k = await sparql(qidOf(cc));
+  const qid = (k?.[0]?.k?.value.match(/Q\d+$/) ?? [])[0];
+  if (!qid) { console.log(cc, "— no country item"); continue; }
+  let rows = await sparql(query(qid, 20000));
+  if (rows && rows.length < 8) rows = (await sparql(query(qid, 2000))) ?? rows;
   if (!rows) { console.log(cc, "— no answer, kept old file"); continue; }
   const out = [];
   const seen = new Set();
