@@ -2975,3 +2975,20 @@ suggest from «رحلتي».
   (5) guide.yml task=deep only=<56 slugs> (facts + write + names);
   restaurants.yml, photos.yml, partner-pages.yml; (6) `node
   scripts/coverage/depth.mjs` + TEST_PLAN numbers; (7) live check.
+- **18 Nov, 2nd chat:** the 13:50 runs fetched NOTHING («cities to fetch: 0»):
+  `scripts/lib/cityPoints.ts` read only batch2.staged.json → now reads every
+  `scripts/geo/out/*.staged.json` (197a6b5). Re-dispatched staged+missing:
+  places 44327599888, hotels 44327605572 (14:44 UTC). Restaurants (staged)
+  after places (both hit Overpass).
+- Climate: **owner chose his PC (ERA5-Land, most accurate)**. station_plan +
+  destinations.json regenerated (426 cities, 782 station points; 90c7bad) and
+  copied into `C:\Sfrtna-climate\Sfrtna-climate` (NOT a git clone: copy the
+  repo's scripts/climate, scripts/geo/out, src/data/cityCoords.ts there; the
+  .py files were identical). 118 ids lack raw data. Owner runs
+  `1_DOWNLOAD.bat` → then `2_BUILD.bat` (or Claude runs the build steps via
+  device_bash, ≤3 min per call) → copy back src/data/climate/era5land.json +
+  normals.json (+hci.json, reports) → `node scripts/climate/generate_seasons.mts`.
+- Trip types for the 56 DONE (destinationTypes v1.4, 0b905be). Staged
+  paro, antananarivo, nosy-be, cusco, pohnpei are HELD since Oct (climate /
+  visa), not part of batch 3.
+

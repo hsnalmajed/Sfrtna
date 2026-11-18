@@ -155,8 +155,9 @@ yes pending), community numbers, dreams → flight search, suggest from «رحل
 **NOW: audit §7 round 2 «مدن أكثر (F)» — batch 3 STARTED 18 Nov**
 (PROJECT_NOTES «Round 2 «مدن أكثر» — batch 3»): 56 cities staged (Sri Lanka
 →10, Saudi +9, Saudi travellers' top countries); places + hotels runs
-started. Next chat continues the 7 steps listed there (climate needs a
-decision: CDS key on the owner's PC vs keyless stations + NASA POWER).
+re-run 14:44 UTC after a fix (first runs fetched 0). Climate = owner's PC
+(ERA5, owner's choice): owner runs 1_DOWNLOAD.bat, then build. Types DONE.
+Continue the steps in that section (2nd-chat lines).
 Owner's tests of «خريطتي» wait for the final test round (owner 18 Nov).
 Then rounds 3–7 (photos, hotels, flights H+B, flight+hotel C, features
 visible + home hero).
