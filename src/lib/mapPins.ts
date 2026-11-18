@@ -246,6 +246,16 @@ function toPlace(el: OverpassElement, locale: Locale): Place | null {
 
 export const STORED_PER_CITY = 500;
 export const STORED_RADIUS = 15000;
+/**
+ * Resort strips spread far along a coast: 15 km around the town holds almost
+ * nothing tagged (Marsa Alam had 2 places, Umluj 3), while the reefs, bays and
+ * islands visitors go to lie 20–50 km out. Same idea as AREA in
+ * scripts/guide/build-facts-wd.ts.
+ */
+export const STORED_RADIUS_BY: Record<string, number> = {
+  "marsa-alam": 50000,
+  umluj: 35000,
+};
 
 /** One place as stored: short keys, because a city file holds hundreds. */
 export interface StoredPlace {

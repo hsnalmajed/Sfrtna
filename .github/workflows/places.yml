@@ -26,6 +26,10 @@ on:
         description: "The staged cities (not live yet) instead of the live ones"
         type: boolean
         default: false
+      only:
+        description: "Only these cities (comma list)"
+        type: string
+        default: ""
 
 permissions:
   contents: write
@@ -48,12 +52,14 @@ jobs:
           cache: npm
 
       - name: Fetch places
+        env:
+          ONLY: ${{ inputs.only }}
         run: |
           npm ci --no-audit --no-fund
           FLAGS=""
           if [ "${{ github.event_name }}" = "push" ] || [ "${{ inputs.missing_only }}" = "true" ]; then FLAGS="--missing"; fi
           if [ "${{ inputs.staged }}" = "true" ]; then FLAGS="$FLAGS --staged"; fi
-          npx --yes tsx@4 scripts/places/fetch-places.ts $FLAGS
+          if [ -n "$ONLY" ]; then npx --yes tsx@4 scripts/places/fetch-places.ts $FLAGS --only "$ONLY"; else npx --yes tsx@4 scripts/places/fetch-places.ts $FLAGS; fi
 
       # 6 Nov 2026: saved before the push, so a failed push loses nothing
       # (14 days; download it from the run page).

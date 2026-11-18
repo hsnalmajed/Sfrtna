@@ -26,6 +26,7 @@ import {
   OVERPASS,
   STORED_PER_CITY,
   STORED_RADIUS,
+  STORED_RADIUS_BY,
   overpassQuery,
   toStoredPlace,
   type OverpassElement,
@@ -45,8 +46,8 @@ function arg(name: string): string | undefined {
   return i >= 0 ? process.argv[i + 1] : undefined;
 }
 
-async function ask(lat: number, lon: number): Promise<OverpassElement[] | null> {
-  const body = `data=${encodeURIComponent(overpassQuery(lat, lon, STORED_RADIUS))}`;
+async function ask(lat: number, lon: number, radius = STORED_RADIUS): Promise<OverpassElement[] | null> {
+  const body = `data=${encodeURIComponent(overpassQuery(lat, lon, radius))}`;
   for (let attempt = 0; attempt < 2; attempt++) {
     for (const url of OVERPASS) {
       try {
@@ -102,7 +103,7 @@ async function main() {
     }
     const point = cityPoint(slug);
     if (!point) continue;
-    const elements = await ask(point.lat, point.lon);
+    const elements = await ask(point.lat, point.lon, STORED_RADIUS_BY[slug]);
     if (elements === null) {
       failed.push(slug);
       console.log(`${n + 1}/${slugs.length} ${slug}: FAILED`);

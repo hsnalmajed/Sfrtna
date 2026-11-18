@@ -74,6 +74,8 @@ const AREA: Record<string, { lat?: number; lon?: number; km: number }> = {
   nizwa: { km: 30 },
   "sharm-el-sheikh": { km: 30 },
   hurghada: { km: 30 },
+  "marsa-alam": { km: 50 },
+  umluj: { km: 35 },
 };
 /**
  * Wikidata puts Hong Kong's and Macau's landmarks in China (P17 = CN), so the
