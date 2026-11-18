@@ -83,7 +83,7 @@ Admitad (11 Nov 14:20): ad space «Sfrtna», https://sfrtna.com, Content website
 categories Travel + Transportation, countries SA/AE/KW/QA/BH; meta tag
 `mitgo-verification` in [locale]/layout.tsx + edge-worker.js answers `/` for UA
 matching mitgo|admitad. Verify fails → read Cloudflare Events for the real UA. 15:03: account
-activated, ad space «Under review» → when Active: join flynas + Jazeera.
+activated, ad space «Under review» → when Active: join flynas + Jazeera. **18 Nov 15:57: ad space ACTIVE.**
 CJ (11 Nov 16:30): account made, agreements accepted, user + Network Profile
 (budget-first text) + property «Sfrtna – Trip budget planner & travel
 comparison» id 101926504 (Website; Content + Comparison) + Account info
