@@ -424,14 +424,16 @@
    "nameAr": "لابوان باجو",
    "nameEn": "Labuan Bajo",
    "wikiTitle": "Labuan Bajo",
-   "flags": [],
-   "lat": -8.49364,
-   "lon": 119.87536,
-   "geocode": "Labuan Bajo Port, Jalan Soekarno Hatta, Labuan Bajo, Manggarai Barat, East Nusa Tenggara, 86754, Indonesia",
+   "flags": [
+    "gateway 557 km away"
+   ],
+   "lat": -4.47192,
+   "lon": 122.90438,
+   "geocode": "Pelabuhan Feri Labuan, Labuan Bajo, Wakorumba Utara, Buton Utara, Southeast Sulawesi, Indonesia",
    "airport": {
     "iata": "LBJ",
     "name": "Komodo Airport",
-    "km": 2,
+    "km": 557,
     "source": "owner list, confirmed in OurAirports",
     "lat": -8.480694,
     "lon": 119.888306,
@@ -579,7 +581,7 @@
    "flags": [],
    "lat": 48.58461,
    "lon": 7.75071,
-   "geocode": "Strasbourg, Bas-Rhin, European Collectivity of Alsace, Grand Est, Metropolitan France, France",
+   "geocode": "Strasbourg, Bas-Rhin, European Collectivity of Alsace, Great East, Metropolitan France, France",
    "airport": {
     "iata": "SXB",
     "name": "Strasbourg Airport",
@@ -712,7 +714,7 @@
    "flags": [],
    "lat": 39.56958,
    "lon": 2.65007,
-   "geocode": "Palma de Mallorca, Palma, Balearic Islands, Spain",
+   "geocode": "Palma, Balearic Islands, Spain",
    "airport": {
     "iata": "PMI",
     "name": "Palma de Mallorca Airport",
@@ -997,7 +999,7 @@
    "flags": [],
    "lat": 39.62173,
    "lon": 19.91809,
-   "geocode": "Corfu, Municipality of Central Corfu and Diapontia Islands, Corfu Regional Unit, Ioanian Islands, Peloponnese, Western Greece and the Ionian, 491 00, Greece",
+   "geocode": "Corfu, Municipality of Central Corfu and Diapontia Islands, Corfu Regional Unit, Ionian Islands, Peloponnese, Western Greece and the Ionian, 491 00, Greece",
    "airport": {
     "iata": "CFU",
     "name": "Corfu Ioannis Kapodistrias International Airport",
@@ -1092,7 +1094,7 @@
    "flags": [],
    "lat": 42.6977,
    "lon": 23.32174,
-   "geocode": "Sofia, Sredec, Stolichna, Sofia-City, Bulgaria",
+   "geocode": "Sofia, Sredets District, Stolichna, Sofia-City, Bulgaria",
    "airport": {
     "iata": "SOF",
     "name": "Sofia Airport",
@@ -1111,7 +1113,7 @@
    "flags": [],
    "lat": 43.20739,
    "lon": 27.91667,
-   "geocode": "Varna, Odessos, Varna, Bulgaria",
+   "geocode": "Varna, Odessos District, Varna, Bulgaria",
    "airport": {
     "iata": "VAR",
     "name": "Varna Airport",
@@ -1622,8 +1624,8 @@
    "nameEn": "Victoria Falls",
    "wikiTitle": "Victoria Falls (city)",
    "flags": [],
-   "lat": -17.92794,
-   "lon": 25.839,
+   "lat": -17.92496,
+   "lon": 25.84664,
    "geocode": "Livingstone Way, Victoria Falls, Victoria Falls Municipality, Hwange, Matabeleland North Province, Zimbabwe",
    "airport": {
     "iata": "VFA",
@@ -2312,10 +2314,10 @@
    "airport": {
     "iata": "SCL",
     "name": "Comodoro Arturo Merino Benítez International Airport",
-    "km": 13,
+    "km": 14,
     "source": "owner list, confirmed in OurAirports",
-    "lat": -33.393001556396484,
-    "lon": -70.78579711914062,
+    "lat": -33.390252,
+    "lon": -70.794697,
     "type": "large_airport"
    }
   },
@@ -2666,14 +2668,16 @@
    "nameAr": "بيرث",
    "nameEn": "Perth",
    "wikiTitle": "Perth",
-   "flags": [],
-   "lat": -31.9559,
-   "lon": 115.86058,
-   "geocode": "Perth, Western Australia, 6000, Australia",
+   "flags": [
+    "gateway 2959 km away"
+   ],
+   "lat": -41.57302,
+   "lon": 147.17198,
+   "geocode": "Perth, Tasmania, 7300, Australia",
    "airport": {
     "iata": "PER",
     "name": "Perth International Airport",
-    "km": 10,
+    "km": 2959,
     "source": "owner list, confirmed in OurAirports",
     "lat": -31.94029998779297,
     "lon": 115.96700286865234,
@@ -2954,7 +2958,7 @@
    "flags": [],
    "lat": 6.88705,
    "lon": 158.24061,
-   "geocode": "Pohnpei, Roie Kousapw, Pohnpei, 96941, Federated States of Micronesia",
+   "geocode": "Pohnpei, Ipwal Kousapw, Pohnpei, 96941, Federated States of Micronesia",
    "airport": {
     "iata": "PNI",
     "name": "Pohnpei International Airport",
@@ -2966,5 +2970,8 @@
    }
   }
  },
- "review": []
+ "review": [
+  "labuan-bajo",
+  "perth"
+ ]
 }

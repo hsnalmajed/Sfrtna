@@ -1,6 +1,6 @@
 {
  "source": "OpenStreetMap Nominatim",
- "retrievedAt": "2026-10-13T08:49:34+00:00",
+ "retrievedAt": "2026-11-18T13:13:32+00:00",
  "cities": {
   "dammam": {
    "country": "SA",
@@ -75,12 +75,12 @@
    "country": "GE",
    "query": "Kutaisi",
    "plain": {
-    "lat": 42.25968,
-    "lon": 42.66337,
+    "lat": 42.27161,
+    "lon": 42.70545,
     "display_name": "Kutaisi, Imereti, 4600, Georgia",
     "osm_type": "relation",
-    "osm_id": 8742174,
-    "type": "city",
+    "osm_id": 2024547,
+    "type": "administrative",
     "url": "https://nominatim.openstreetmap.org/search?q=Kutaisi&countrycodes=ge&format=jsonv2&limit=1&accept-language=en"
    },
    "city": {
@@ -488,12 +488,12 @@
    "country": "ID",
    "query": "Labuan Bajo",
    "plain": {
-    "lat": -8.49364,
-    "lon": 119.87536,
-    "display_name": "Labuan Bajo Port, Jalan Soekarno Hatta, Labuan Bajo, Manggarai Barat, East Nusa Tenggara, 86754, Indonesia",
-    "osm_type": "node",
-    "osm_id": 3335120748,
-    "type": "ferry_terminal",
+    "lat": -4.47192,
+    "lon": 122.90438,
+    "display_name": "Pelabuhan Feri Labuan, Labuan Bajo, Wakorumba Utara, Buton Utara, Southeast Sulawesi, Indonesia",
+    "osm_type": "way",
+    "osm_id": 604129535,
+    "type": "service",
     "url": "https://nominatim.openstreetmap.org/search?q=Pelabuhan+Labuan+Bajo&countrycodes=id&format=jsonv2&limit=1&accept-language=en"
    },
    "city": null,
@@ -528,7 +528,7 @@
    "plain": {
     "lat": 10.22879,
     "lon": 104.01436,
-    "display_name": "Phú Quốc, An Giang Province, Vietnam",
+    "display_name": "Phú Quốc, Đặc khu Thổ Châu, An Giang Province, 92515, Vietnam",
     "osm_type": "relation",
     "osm_id": 7135978,
     "type": "historic",
@@ -666,7 +666,7 @@
    "plain": {
     "lat": 48.58461,
     "lon": 7.75071,
-    "display_name": "Strasbourg, Bas-Rhin, European Collectivity of Alsace, Grand Est, Metropolitan France, France",
+    "display_name": "Strasbourg, Bas-Rhin, European Collectivity of Alsace, Great East, Metropolitan France, France",
     "osm_type": "relation",
     "osm_id": 71033,
     "type": "administrative",
@@ -675,7 +675,7 @@
    "city": {
     "lat": 48.58461,
     "lon": 7.75071,
-    "display_name": "Strasbourg, Bas-Rhin, European Collectivity of Alsace, Grand Est, Metropolitan France, France",
+    "display_name": "Strasbourg, Bas-Rhin, European Collectivity of Alsace, Great East, Metropolitan France, France",
     "osm_type": "relation",
     "osm_id": 71033,
     "type": "administrative",
@@ -827,7 +827,7 @@
    "plain": {
     "lat": 39.56958,
     "lon": 2.65007,
-    "display_name": "Palma de Mallorca, Palma, Balearic Islands, Spain",
+    "display_name": "Palma, Balearic Islands, Spain",
     "osm_type": "relation",
     "osm_id": 341321,
     "type": "administrative",
@@ -836,7 +836,7 @@
    "city": {
     "lat": 39.56958,
     "lon": 2.65007,
-    "display_name": "Palma de Mallorca, Palma, Balearic Islands, Spain",
+    "display_name": "Palma, Balearic Islands, Spain",
     "osm_type": "relation",
     "osm_id": 341321,
     "type": "administrative",
@@ -1172,7 +1172,7 @@
    "plain": {
     "lat": 39.59134,
     "lon": 19.85962,
-    "display_name": "Corfu, Corfu Regional Unit, Ioanian Islands, Peloponnese, Western Greece and the Ionian, Greece",
+    "display_name": "Corfu, Corfu Regional Unit, Ionian Islands, Peloponnese, Western Greece and the Ionian, Greece",
     "osm_type": "relation",
     "osm_id": 966358,
     "type": "island",
@@ -1181,7 +1181,7 @@
    "city": {
     "lat": 39.62173,
     "lon": 19.91809,
-    "display_name": "Corfu, Municipality of Central Corfu and Diapontia Islands, Corfu Regional Unit, Ioanian Islands, Peloponnese, Western Greece and the Ionian, 491 00, Greece",
+    "display_name": "Corfu, Municipality of Central Corfu and Diapontia Islands, Corfu Regional Unit, Ionian Islands, Peloponnese, Western Greece and the Ionian, 491 00, Greece",
     "osm_type": "node",
     "osm_id": 1827940532,
     "type": "city",
@@ -1287,7 +1287,7 @@
    "plain": {
     "lat": 42.6977,
     "lon": 23.32174,
-    "display_name": "Sofia, Sredec, Stolichna, Sofia-City, Bulgaria",
+    "display_name": "Sofia, Sredets District, Stolichna, Sofia-City, Bulgaria",
     "osm_type": "relation",
     "osm_id": 4283101,
     "type": "administrative",
@@ -1296,7 +1296,7 @@
    "city": {
     "lat": 42.6977,
     "lon": 23.32174,
-    "display_name": "Sofia, Sredec, Stolichna, Sofia-City, Bulgaria",
+    "display_name": "Sofia, Sredets District, Stolichna, Sofia-City, Bulgaria",
     "osm_type": "relation",
     "osm_id": 4283101,
     "type": "administrative",
@@ -1310,7 +1310,7 @@
    "plain": {
     "lat": 43.20739,
     "lon": 27.91667,
-    "display_name": "Varna, Odessos, Varna, Bulgaria",
+    "display_name": "Varna, Odessos District, Varna, Bulgaria",
     "osm_type": "relation",
     "osm_id": 13477567,
     "type": "administrative",
@@ -1319,7 +1319,7 @@
    "city": {
     "lat": 43.20739,
     "lon": 27.91667,
-    "display_name": "Varna, Odessos, Varna, Bulgaria",
+    "display_name": "Varna, Odessos District, Varna, Bulgaria",
     "osm_type": "relation",
     "osm_id": 13477567,
     "type": "administrative",
@@ -1828,11 +1828,11 @@
    "country": "NA",
    "query": "Windhoek",
    "plain": {
-    "lat": -22.53356,
-    "lon": 17.04548,
+    "lat": -22.57761,
+    "lon": 17.07727,
     "display_name": "Windhoek, Khomas, Namibia",
-    "osm_type": "relation",
-    "osm_id": 8650326,
+    "osm_type": "way",
+    "osm_id": 29989621,
     "type": "administrative",
     "url": "https://nominatim.openstreetmap.org/search?q=Windhoek&countrycodes=na&format=jsonv2&limit=1&accept-language=en"
    },
@@ -1840,8 +1840,8 @@
     "lat": -22.57761,
     "lon": 17.07727,
     "display_name": "Windhoek, Khomas, Namibia",
-    "osm_type": "relation",
-    "osm_id": 8650326,
+    "osm_type": "way",
+    "osm_id": 29989621,
     "type": "administrative",
     "url": "https://nominatim.openstreetmap.org/search?q=Windhoek&countrycodes=na&format=jsonv2&limit=1&accept-language=en&featureType=city"
    },
@@ -1897,11 +1897,11 @@
    "country": "ZW",
    "query": "Victoria Falls (city)",
    "plain": {
-    "lat": -17.92794,
-    "lon": 25.839,
+    "lat": -17.92496,
+    "lon": 25.84664,
     "display_name": "Livingstone Way, Victoria Falls, Victoria Falls Municipality, Hwange, Matabeleland North Province, Zimbabwe",
     "osm_type": "way",
-    "osm_id": 30129421,
+    "osm_id": 852652378,
     "type": "trunk",
     "url": "https://nominatim.openstreetmap.org/search?q=Livingstone+Way%2C+Victoria+Falls&countrycodes=zw&format=jsonv2&limit=1&accept-language=en"
    },
@@ -3071,10 +3071,10 @@
    "plain": {
     "lat": -25.28005,
     "lon": -57.63438,
-    "display_name": "Asuncion, Región Oriental, Paraguay",
-    "osm_type": "relation",
-    "osm_id": 12556624,
-    "type": "administrative",
+    "display_name": "Asuncion, Asunción, Distrito Capital, Región Oriental, 001013, Paraguay",
+    "osm_type": "node",
+    "osm_id": 249854726,
+    "type": "city",
     "url": "https://nominatim.openstreetmap.org/search?q=Asunci%C3%B3n&countrycodes=py&format=jsonv2&limit=1&accept-language=en"
    },
    "city": {
@@ -3094,10 +3094,10 @@
    "plain": {
     "lat": 6.80326,
     "lon": -58.14554,
-    "display_name": "Georgetown, Plaisance-Industry Local Government, Demerara-Mahaica, Guyana",
+    "display_name": "City of Georgetown, Demerara-Mahaica, Guyana",
     "osm_type": "relation",
-    "osm_id": 18902918,
-    "type": "city",
+    "osm_id": 11210397,
+    "type": "administrative",
     "url": "https://nominatim.openstreetmap.org/search?q=Georgetown&countrycodes=gy&format=jsonv2&limit=1&accept-language=en"
    },
    "city": {
@@ -3140,19 +3140,19 @@
    "plain": {
     "lat": -31.9559,
     "lon": 115.86058,
-    "display_name": "Perth, Western Australia, 6000, Australia",
+    "display_name": "Perth, Cathedral Avenue, Perth, Western Australia, 6000, Australia",
     "osm_type": "node",
     "osm_id": 29277817,
-    "type": "city",
+    "type": "advertising_agency",
     "url": "https://nominatim.openstreetmap.org/search?q=Perth&countrycodes=au&format=jsonv2&limit=1&accept-language=en"
    },
    "city": {
-    "lat": -31.9559,
-    "lon": 115.86058,
-    "display_name": "Perth, Western Australia, 6000, Australia",
-    "osm_type": "node",
-    "osm_id": 29277817,
-    "type": "city",
+    "lat": -41.57302,
+    "lon": 147.17198,
+    "display_name": "Perth, Tasmania, 7300, Australia",
+    "osm_type": "relation",
+    "osm_id": 10604247,
+    "type": "administrative",
     "url": "https://nominatim.openstreetmap.org/search?q=Perth&countrycodes=au&format=jsonv2&limit=1&accept-language=en&featureType=city"
    },
    "chosen": "city"
@@ -3485,7 +3485,7 @@
    "plain": {
     "lat": 6.88705,
     "lon": 158.24061,
-    "display_name": "Pohnpei, Roie Kousapw, Pohnpei, 96941, Federated States of Micronesia",
+    "display_name": "Pohnpei, Ipwal Kousapw, Pohnpei, 96941, Federated States of Micronesia",
     "osm_type": "relation",
     "osm_id": 11779483,
     "type": "island",
