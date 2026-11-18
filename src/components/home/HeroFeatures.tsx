@@ -4,12 +4,13 @@ import Icon, { type IconName } from "@/components/ui/Icon";
  * Everything the site does, under the home headline.
  *
  * The owner wanted the old one-sentence subtitle replaced by what Sfrtna
- * offers, grouped the way the site groups it (the seven the owner picked on 16 Nov), each with its own icon, and without boxes or pills
- * around them. Nothing moves (owner, 16 Nov): two rows everywhere, four then
- * three; phones use shorter names so two rows fit at a readable size.
+ * offers, grouped the way the site groups it (the seven the owner picked on 16 Nov,
+ * plus «خريطتي» on 18 Nov), each with its own icon, and without boxes or pills
+ * around them. Nothing moves (owner, 16 Nov): two rows everywhere, four and
+ * four; phones use shorter names so two rows fit at a readable size.
  */
 const ICONS: IconName[] = [
-  "pin", "map", "sun", "idCard", "calendar", "ticket", "calculator",
+  "pin", "map", "sun", "idCard", "calendar", "ticket", "calculator", "globe",
 ];
 
 function Item({ icon, label, detail, small }: { icon: IconName; label: string; detail?: string; small?: boolean }) {

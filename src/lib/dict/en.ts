@@ -420,9 +420,9 @@ const en = {
     title: "From budget to booking, your whole trip in one place",
     subtitle:
       "Pick a destination or let us suggest one within your budget, and see its best season, sights, visa and currency.",
-    features: ["Destinations within your budget", "Sights", "Travel seasons", "Travel requirements", "Trip plan", "Trip services", "Budget advisor"],
-    featuresDetail: ["", "", "", "visas and currency", "", "tours, eSIM, transfers and luggage", ""],
-    featuresShort: ["Budget destinations", "Sights", "Seasons", "Visas and currency", "Trip plan", "Trip services", "Budget advisor"],
+    features: ["Destinations within your budget", "Sights", "Travel seasons", "Travel requirements", "Trip plan", "Trip services", "Budget advisor", "My map"],
+    featuresDetail: ["", "", "", "visas and currency", "", "tours, eSIM, transfers and luggage", "", "countries you visited"],
+    featuresShort: ["Budget destinations", "Sights", "Seasons", "Visas and currency", "Trip plan", "Trip services", "Budget advisor", "My map"],
   },
   modeSelect: {
     knownTitle: "I know my destination",
