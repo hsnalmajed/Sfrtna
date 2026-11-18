@@ -28,7 +28,7 @@ task under «For the build chat» below instead of coding here.
 
 | # | With | Ref | Status | Waiting for / next step |
 |---|------|-----|--------|-------------------------|
-| 1 | Apple — App Review + Developer Support | case 30000017675096; build 27 thread | Submit blocked by 2 hidden compliance forms (SECURITYASF395E, AIGENERATEFD1DE); owner replied in the thread 17 Nov 14:45 | 18 Nov 14:58 App Store Connect mail «There's an issue with your submission» (submission e7a94ba9…, v1.0) → owner opens App Review page, screenshot of the message → then forms / submit (build chat for ios-review.yml) |
+| 1 | Apple — App Review + Developer Support | case 30000017675096; submission e7a94ba9… | **18 Nov 14:58 REJECTED again (v1.0 build 50): 5.1.2(i) cookies without ATT + 2.1 info needed** (companies providing services + owner's relationship). «App Compliance — New» appeared in the sidebar | Build chat task below (no cookie prompt/tracking in iOS app) → fill App Compliance → reply to App Review with 2.1 answers → resubmit |
 | 2 | Google Play — closed test | app com.sfrtna.app, track «Alpha» | Setup done 16 Nov, 14 changes submitted for review | Google's review mail; owner adds 12+ testers (14-day clock) → production ~3 weeks |
 | 3 | Google Play — account | tickets [7-5929000041524], [7-2716000041928] | Identity VERIFIED 13 Nov; ticket 7-2716000041928 CLOSED by Google 16 Nov («ID verification complete, you can publish») | Nothing — only if Google writes again |
 | 4 | Partnerize ↔ Expedia (login lost) | Partnerize #710723, Expedia 00045017 (auto-CLOSED 16 Nov, no fix) | Loop: each says the other handles login | 18 Nov 16:28 owner MAILED Partnerize Expedia desk → ticket **#712452** opened 16:29 (auto-ack) → wait for reply; no fix in ~5 work days → own new Partnerize account (owner said yes) |
@@ -47,6 +47,22 @@ task under «For the build chat» below instead of coding here.
 Closed: Stay22 (4 Nov, payout threshold $500 never met).
 
 ## For the build chat (paste there)
+- **Apple App Review 18 Nov 14:58 — v1.0 (50) REJECTED again: 5.1.2(i) +
+  2.1 (details: PROJECT_NOTES to add).** 5.1.2(i): «the app accesses web
+  content you own where you collect cookies … you do not use App Tracking
+  Transparency». Apple's own way out: «if you do not collect cookies for
+  tracking, remove the cookie prompts». Our cookie prompt = consent banner in
+  `src/components/Analytics.tsx` (GA4, Consent Mode). Task: inside the iOS
+  app (UA `SfrtnaApp/iOS`) show NO consent banner and load NO GA4 / no
+  third-party tracking script (check partner widgets too, e.g. the flight
+  widget in FlightMetasearch.tsx, for cookies/trackers on iOS); App Privacy
+  in App Store Connect = «Data Not Used to Track You»; review notes say the
+  app does not track and has no cookie prompt. Then new ios.yml build →
+  attach to 1.0. 2.1: Apple asks which companies provide the services and
+  the owner's relationship to them → reply text drafted in the mail chat
+  (affiliate/comparison, bookings on providers' own sites). Also: App
+  Store Connect now shows «App Compliance — New» in the sidebar (likely the
+  2 hidden forms SECURITY/AIGENERATE) → fill before resubmit.
 - **Admitad/Mitgo verification keeps dropping (18 Nov):** ad space «Sfrtna»
   went Active 15:57 → «Not verified» 16:09. `edge-worker.js` answers «/» with
   the `mitgo-verification` tag only when the UA matches /mitgo|admitad/;
