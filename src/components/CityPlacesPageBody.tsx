@@ -1,4 +1,5 @@
 import { readGuide } from "@/lib/guide";
+import MapInvite from "@/components/visited/MapInvite";
 import { cityNeedsDays, guidePlanReady } from "@/lib/guidePlan";
 import { readGallery, galleryUrl, commonsUrl } from "@/lib/gallery";
 import { readableHours, type Group } from "@/lib/guideTypes";
@@ -485,6 +486,7 @@ export default async function CityPlacesPageBody({
         )}
         {/* After the reading: «مسافر إلى …؟» (item 5, never a window over the page). */}
         <GuideTripStrip locale={loc} code={country.code} slug={cityEntry.slug} placeName={cityName} airport={CITY_AIRPORTS[cityEntry.slug]?.iata} />
+        <MapInvite locale={loc} code={country.code} slug={cityEntry.slug} place={cityName} t={dict.visited} />
       </div>
     </div>
   );

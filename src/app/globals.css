@@ -1007,3 +1007,19 @@ html.in-app .sit-on-tabbar {
 [dir="rtl"] .truncate {
   padding-inline-end: 0.14em;
 }
+
+/* «خريطتي»: sheets rise, newly marked countries glow once. */
+@keyframes sheetUp {
+  from { transform: translateY(24px); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}
+.sfr-sheet { animation: sheetUp 0.28s cubic-bezier(0.2, 0.8, 0.2, 1); }
+@keyframes beenGlow {
+  0% { filter: drop-shadow(0 0 0 rgb(248 184 64 / 0)); }
+  40% { filter: drop-shadow(0 0 6px rgb(248 184 64 / 0.95)); }
+  100% { filter: drop-shadow(0 0 0 rgb(248 184 64 / 0)); }
+}
+.sfr-glow { animation: beenGlow 1.6s ease-out 2; }
+@media (prefers-reduced-motion: reduce) {
+  .sfr-sheet, .sfr-glow { animation: none; }
+}

@@ -18,6 +18,7 @@ import { currencyForCountry, findCurrency } from "@/lib/currencies";
 import TripCurrencyInline from "@/components/TripCurrencyInline";
 import BackLink from "@/components/BackLink";
 import GuideTripStrip from "@/components/member/GuideTripStrip";
+import MapInvite from "@/components/visited/MapInvite";
 import { CITY_AIRPORTS } from "@/data/cityAirports";
 
 /**
@@ -180,6 +181,7 @@ export default async function CountryAttractionsPage({
           placeName={loc === "ar" ? country.nameAr : country.nameEn}
           airport={cities.map((c) => CITY_AIRPORTS[c.slug]?.iata).find(Boolean)}
         />
+        <MapInvite locale={loc} code={country.code} place={loc === "ar" ? country.nameAr : country.nameEn} t={dict.visited} />
       </div>
     </div>
   );

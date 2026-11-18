@@ -127,11 +127,13 @@ export function useMember() {
     saveTrip: (t: Trip) => (signedIn ? put("trip", tripKey(t), t) : Promise.resolve(false)),
     remove: (kind: ItemKind, key: string) => (signedIn ? remove(kind, key) : Promise.resolve(false)),
     /** «خريطتي»: mark (on) or unmark one country / city / dream (src/lib/visitedMap.ts). */
-    setBeen: (key: string, on: boolean) => {
+    setBeen: (key: string, on: boolean, data?: Been) => {
       if (!signedIn) return Promise.resolve(false);
-      const has = s.items.some((i) => i.kind === "been" && i.key === key);
-      if (on === has) return Promise.resolve(true);
-      return on ? put("been", key, { at: Date.now() } satisfies Been) : remove("been", key);
+      const has = s.items.find((i) => i.kind === "been" && i.key === key);
+      if (!on) return has ? remove("been", key) : Promise.resolve(true);
+      const next = data ?? (has?.data as Been | undefined) ?? { at: Date.now() };
+      if (has && JSON.stringify(has.data) === JSON.stringify(next)) return Promise.resolve(true);
+      return put("been", key, next);
     },
   };
 }

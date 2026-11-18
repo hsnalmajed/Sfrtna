@@ -33,6 +33,32 @@ declare global {
 }
 
 /** Where to go after signing in: our own path only. */
+/**
+ * Where the traveller was when they chose to sign in through the phone's
+ * browser (Android app): the app comes back on «حسابي», so the page they
+ * started from is kept here and taken once (owner 18 Nov: after signing in
+ * from «خريطتي», land on «خريطتي», not elsewhere). 30 minutes at most.
+ */
+const RETURN_KEY = "sfr-return-to";
+export function rememberReturn(path: string): void {
+  try {
+    window.localStorage.setItem(RETURN_KEY, JSON.stringify({ path, at: Date.now() }));
+  } catch {
+    /* storage off: they land on «حسابي» */
+  }
+}
+function takeReturn(): string | null {
+  try {
+    const raw = window.localStorage.getItem(RETURN_KEY);
+    window.localStorage.removeItem(RETURN_KEY);
+    const r = raw ? (JSON.parse(raw) as { path?: string; at?: number }) : null;
+    if (r?.path?.startsWith("/") && !r.path.startsWith("//") && Date.now() - (r.at ?? 0) < 30 * 60_000) return r.path;
+  } catch {
+    /* nothing kept */
+  }
+  return null;
+}
+
 function nextPath(): string | null {
   const n = new URLSearchParams(window.location.search).get("next");
   return n && n.startsWith("/") && !n.startsWith("//") ? n : null;
@@ -69,7 +95,7 @@ export default function AccountPanel({ locale }: { locale: Locale }) {
       } catch {
         // The plan can be saved again from its page.
       }
-      const next = nextPath();
+      const next = nextPath() ?? takeReturn();
       if (next) {
         const url = new URL(next, window.location.origin);
         if (savedId) url.searchParams.set("saved", savedId);
@@ -161,6 +187,7 @@ export function SignInForm({
   async function appSignIn() {
     setOpening(true);
     setError("");
+    if (!window.location.pathname.endsWith("/account")) rememberReturn(window.location.pathname + window.location.search);
     const challenge = await newAppChallenge();
     const ok = await openAuthInApp(`${window.location.origin}/${locale}/account/app?c=${challenge}`);
     setOpening(false);

@@ -27,6 +27,7 @@ export default function Footer({ locale }: { locale: Locale }) {
   ];
   const tools = [
     { href: `/${locale}/itinerary`, label: dict.nav.itinerary },
+    { href: `/${locale}/my-map`, label: dict.nav.myMap },
     { href: `/${locale}/visa`, label: dict.nav.visa },
     { href: `/${locale}/currency`, label: dict.nav.currency },
     { href: `/${locale}/services`, label: dict.nav.services },
