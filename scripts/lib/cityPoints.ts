@@ -1,11 +1,11 @@
 // The centre of every city a data job may collect for: the live cities
 // (src/data/cityCoords.ts) and the staged ones waiting to go live
-// (scripts/geo/out/batch2.staged.json, see the coverage section in
+// (scripts/geo/out/*.staged.json, see the coverage section in
 // docs/PROJECT_NOTES.md). Staged cities are collected ahead of time so they
 // can go live complete; no page links to their files until they are added to
 // cityCoords.ts.
 
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { CITY_COORDS } from "@/data/cityCoords";
 
@@ -16,14 +16,20 @@ interface Point {
   code?: string;
 }
 
-const STAGED_FILE = join(process.cwd(), "scripts/geo/out/batch2.staged.json");
+// Every batch file (batch2, batch3, …), like publish_staged.py and
+// coverage/check.py. Reading one fixed file made batch 3's runs fetch
+// nothing («cities to fetch: 0», 18 Nov).
+const STAGED_DIR = join(process.cwd(), "scripts/geo/out");
 
 function loadStaged(): Record<string, Point> {
-  if (!existsSync(STAGED_FILE)) return {};
-  const json = JSON.parse(readFileSync(STAGED_FILE, "utf8")) as { cities: Record<string, Point> };
+  if (!existsSync(STAGED_DIR)) return {};
   const out: Record<string, Point> = {};
-  for (const [slug, c] of Object.entries(json.cities)) {
-    if (!(slug in CITY_COORDS) && typeof c.lat === "number" && typeof c.lon === "number") out[slug] = { lat: c.lat, lon: c.lon };
+  const files = readdirSync(STAGED_DIR).filter((f) => f.endsWith(".staged.json")).sort();
+  for (const f of files) {
+    const json = JSON.parse(readFileSync(join(STAGED_DIR, f), "utf8")) as { cities: Record<string, Point> };
+    for (const [slug, c] of Object.entries(json.cities)) {
+      if (!(slug in CITY_COORDS) && typeof c.lat === "number" && typeof c.lon === "number") out[slug] = { lat: c.lat, lon: c.lon };
+    }
   }
   return out;
 }
