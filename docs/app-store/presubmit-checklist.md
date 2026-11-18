@@ -14,7 +14,7 @@ here; add any new one the day it arrives.
 | 6 | 2.1 Information needed (18 Nov) | Which companies provide the services; owner's relationship | `reply-2026-11-18.md` | Partner list matches what the app links to | ✅ text ready |
 | 7 | 2.1.0 App Completeness | Review must be able to use every feature | Review notes: steps for each iPhone-only feature, no login needed | Review notes in listing.json | ✅ (re-paste after edit) |
 | 8 | Hidden compliance forms (17 Nov) | `SECURITYASF395E`, `AIGENERATEFD1DE` blocked submission | 18 Nov 21:54 seen: both forms are for **China mainland only** (Security Assessment, AI Generated Content — «Missing Info»). **China mainland REMOVED 18 Nov 22:15** (174 countries; Apple: takes effect within 24 h). 22:16: the China ICP box already gone, the 2 forms still listed → re-check ~19 Nov 22:15 | `ios-review.yml` shows no PENDING_COLLECT after the change | ⬜ |
-| 9 | New build | The fixed shell (native rules) is in the build Apple reviews | **Build 51** (ios.yml run 51, uploaded 18 Nov) — attach to 1.0 | TestFlight: owner opens it once: no cookie prompt, flights open in a Safari sheet | ⬜ owner |
+| 9 | New build | The fixed shell (native rules) is in the build Apple reviews | **Build 51** (ios.yml run 51, uploaded 18 Nov) — attach to 1.0 | TestFlight: owner opens it once: no cookie prompt, flights open in a Safari sheet | ✅ owner tested 18 Nov 22:21–22:23: «الأسعار الحيّة لرحلتك» card (6 sites + 8 airlines), no cookie banner; main button opened aviasales.com in the Safari sheet (✕, DMM–IST 24–30 Jan, 2 pax). Still to do: attach 51 to 1.0 |
 
 ## Order of owner steps (one at a time, in the mail chat)
 1. ~~Release green~~ ✅ (d04bec8, production live).

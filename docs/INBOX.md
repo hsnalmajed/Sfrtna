@@ -51,7 +51,7 @@ Closed: Stay22 (4 Nov, payout threshold $500 never met).
   0221491:** «iOS clean mode» (`src/lib/iosClean.ts`) + native WebKit rules +
   release gate `scripts/ios-clean-check.mjs`. Owner steps + reply + checklist:
   `docs/app-store/presubmit-checklist.md`, `docs/app-store/reply-2026-11-18.md`.
-  Build chat: nothing to do unless the gate turns red.
+  Build chat: nothing to do unless the gate turns red. Small later idea: Aviasales opens in USD — try its currency parameter (SAR) in `/api/go/tp?b=aviasales`.
 - **Admitad/Mitgo verification keeps dropping (18 Nov):** ad space «Sfrtna»
   went Active 15:57 → «Not verified» 16:09. `edge-worker.js` answers «/» with
   the `mitgo-verification` tag only when the UA matches /mitgo|admitad/;
