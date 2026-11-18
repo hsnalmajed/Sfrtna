@@ -37,7 +37,7 @@ task under «For the build chat» below instead of coding here.
 | 7 | impact.com | owner's Gmail account, sfrtna.com verified | «قيد المراجعة» since 11 Nov | Approved → apply Qatar, Skyscanner, Saudia/flyadeal/Turkish/Almosafer |
 | 8 | Admitad | PID2605420 | Ad space ACTIVE 18 Nov 15:57, then **Not verified** again at 16:09 (Mitgo re-checks; its checker likely fails on «/» → redirect to /ar) | Owner pressed Verify again; build chat fix below; Admitad store login (admitad.com) also failed to open for the owner |
 | 9 | CJ + Payoneer | Payoneer ticket #261112-010093 (closed 14 Nov, owner replied 18 Nov 16:14) | Address doc «Reopened»: page demands wrong name «HASSAN AU AHMED ALMAJED» + Olaya St 11465; Settings menu missing (account not approved). 18 Nov owner asked support to set name HASSAN ALI AHMED ALMAJED + his national address (Al Ahsa) | Wait for Payoneer's mail (1–2 work days) → upload Al Rajhi statement → CJ payee name = Payoneer name (resubmit W-8BEN if needed) → CJ payment → activate → Qatar |
-| 10 | Travelpayouts | ticket #254780 | Closed: Aviasales shows no Riyadh flights; TP will mail when RUH returns | Their mail only |
+| 10 | Travelpayouts | ticket #254780 | Closed. 16 Nov 15:52 Ingmar: Riyadh restrictions still in place, no timeline; they will mail when RUH returns | Their mail only (no reply needed) |
 | 11 | RateHawk | partner account «Linked» | Tax form review (Oct) | Confirm; hotel-price API study waits (owner 17 Nov) until notes list is done |
 | 12 | Agoda (direct) | application Oct | No reply | Check inbox / reapply |
 | 13 | Google Search Console | mail 9 Nov «pages not indexed» | Not studied | Owner pastes the mail lines → find the reason (build chat if code) |
