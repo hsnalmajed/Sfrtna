@@ -2797,3 +2797,33 @@ Later: same map offline in the app (tiles are not cached today).
 - After run 44140102923 (facts + 150 min write): guide < 15: 1 (al-wakrah 14),
   no plan 14 (unwritten, budget), 1,752 places written. Run 2 cancelled (it
   wrote unknown GeoNames hills — rule tightened), run 3 «deep» dispatched.
+- **Closed 18 Nov:** run 44198379874 («deep», 11 thin cities) + Labuan Bajo
+  write (model timeout → next model, `write.ts`) → no plan 0. Spot-check
+  found the area itself listed as a place → `scripts/guide/selfPlace.ts`
+  (country always; city's own island/region by name with 15+ articles),
+  in facts + write + applied to data (35 entries). Numbers: TEST_PLAN.
+
+## «خريطتي» — visited map (G), 18 Nov 2026
+
+- Page `/[locale]/my-map` (`components/visited/VisitedMap.tsx`), no new
+  library: `public/data/world-map.json` = Natural Earth 1:50m countries,
+  simplified, Equal Earth, pre-projected SVG paths (130 KB, 50 KB gz),
+  built by `scripts/world/build-world.mjs` (how to run in its header).
+  City dots placed in the browser with the same projection (`project` in
+  `lib/visitedMap.ts`). Tuvalu = a dot (not in 1:50m).
+- Marks: account item kind `been` (keys `c:SA`, `t:TR/istanbul`, `w:JP`,
+  data `{at}`; limit 900 in accounts.js). Signed out → localStorage
+  `sfr-been-v1`; moved into the account at sign-in; card «احفظ خريطتي» opens
+  JoinHost (reason `map`). City mark → country mark; country unmark → its
+  cities; visited removes dream.
+- Numbers: countries of 195 (COUNTRIES minus HK/MO/TW; those and
+  territories show as «مناطق أخرى»), % of the world, cities (of our 365),
+  continents of 6, level (0 / <5 / <15 / <30 / <60 / 60+).
+- Views: countries (gold = been, light blue = dream) / cities (country shade
+  = % of our cities seen); continent chips; tap a country → zoom + card
+  (been, dream, its cities, % explored, guide link); pan + pinch; small
+  countries as dots; only marked dots at world scale.
+- Share: canvas 1080×1350 → app share sheet / browser share / download.
+- Ways in: «المزيد» card with counts, header tools, «حسابي» card.
+- Open for the owner: Israel/Palestine shapes are Natural Earth's as-is;
+  cities = our 365 only (no free-text city yet).

@@ -262,3 +262,28 @@ Riyadh; its results show the airport and bus times. Test: a session-only
 site (results URL carries nothing) = keep Google; check by opening the
 results URL in a fresh tab. Tip: read the site's own search script for the
 redirect URL (as done for flynas) instead of guessing names.
+
+## Plan depth round 1 — closed 18 Nov 2026 (`node scripts/coverage/depth.mjs`)
+
+| Measure | 17 Nov before | 18 Nov after |
+|---|---|---|
+| Cities with no smart plan (guide < 6) | 45 | **0** |
+| Cities with guide < 15 | 102 | 12 (small capitals / islands: Port Moresby 11, Gaborone 10, Suva 10…) |
+| Guide places with an Arabic name | 7,713 / 19,700 | 9,482 / 21,685 (names backlog via daily runs) |
+| Halal-tagged restaurants | 885 (181 cities none) | same — fills as scheduled restaurant runs refresh |
+
+Spot-check (data, written places / with Arabic name): Bali 39/39, Cappadocia
+39/39, Ella 28/28, Langkawi 25/25, Hong Kong 41/41. Found: the area itself as
+a stop (Ella «Sri Lanka», Langkawi «Langkawi», Hong Kong «Hong Kong Island")
+→ `scripts/guide/selfPlace.ts`, 35 entries removed in 33 cities; Bled Island
+and Malacca Island (sights) kept; Victoria Falls kept. Labuan Bajo writer
+timed out twice (first model hangs when its day is spent) → a timeout now
+hands the batch to the next model; 13 places written.
+
+## «خريطتي» (G) — 18 Nov 2026
+
+Local (next dev + Chrome, iPhone 13, marks seeded): world / Türkiye zoom /
+cities view / share picture 1080×1350 checked by eye; no console errors.
+`ux-audit.yml` run 44202962790 (iPhone 13 + Pixel 7, web + app): page loads;
+only finding = taps < 44 px (continent chips, country rows, ticks) → fixed.
+Not testable here: signed-in save (account DO) — owner checks on the phone.

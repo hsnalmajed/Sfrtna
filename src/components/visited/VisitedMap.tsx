@@ -346,7 +346,7 @@ export default function VisitedMap({ locale }: { locale: Locale }) {
               role="tab"
               aria-selected={view === k}
               onClick={() => setView(k)}
-              className={`rounded-xl px-4 py-1.5 text-sm font-bold transition ${view === k ? "bg-white text-navy-900 shadow-sm" : "text-navy-900/55"}`}
+              className={`min-h-10 rounded-xl px-4 text-sm font-bold transition ${view === k ? "bg-white text-navy-900 shadow-sm" : "text-navy-900/55"}`}
             >
               {k === "countries" ? t.viewCountries : t.viewCities}
             </button>
@@ -361,7 +361,7 @@ export default function VisitedMap({ locale }: { locale: Locale }) {
                 setSelected(null);
                 setRegion(c);
               }}
-              className={`shrink-0 rounded-full px-3 py-1.5 text-xs font-bold ring-1 transition ${
+              className={`min-h-11 shrink-0 rounded-full px-3.5 text-xs font-bold ring-1 transition ${
                 region === c && !selected ? "bg-navy-900 text-white ring-navy-900" : "bg-white text-navy-900/70 ring-navy-900/10"
               }`}
             >
@@ -548,14 +548,14 @@ export default function VisitedMap({ locale }: { locale: Locale }) {
                   {rows.map((c) => {
                     const on = v.keys.has(countryKey(c.code));
                     return (
-                      <li key={c.code} className="flex items-center gap-2 rounded-xl bg-white px-3 py-2 ring-1 ring-navy-900/5">
+                      <li key={c.code} className="flex items-center gap-1 rounded-xl bg-white ps-3 ring-1 ring-navy-900/5">
                         <button
                           type="button"
                           onClick={() => {
                             setSelected(c.code);
                             mapRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
                           }}
-                          className="flex min-w-0 flex-1 items-center gap-2 text-start text-sm font-bold text-navy-900"
+                          className="flex min-h-11 min-w-0 flex-1 items-center gap-2 text-start text-sm font-bold text-navy-900"
                         >
                           <span aria-hidden="true">{flagEmoji(c.code)}</span>
                           <span className="truncate">{ar ? c.nameAr : c.nameEn}</span>
@@ -567,11 +567,16 @@ export default function VisitedMap({ locale }: { locale: Locale }) {
                           aria-checked={on}
                           aria-label={`${t.been}: ${ar ? c.nameAr : c.nameEn}`}
                           onClick={() => run(() => v.toggleCountry(c.code))}
-                          className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-sm font-black ring-1 transition active:scale-90 ${
-                            on ? "bg-[#f8b840] text-navy-990 ring-[#e0a030]" : "bg-white text-transparent ring-navy-900/20"
-                          }`}
+                          className="flex h-11 w-11 shrink-0 items-center justify-center active:scale-90"
                         >
-                          ✓
+                          <span
+                            aria-hidden="true"
+                            className={`flex h-7 w-7 items-center justify-center rounded-lg text-sm font-black ring-1 transition ${
+                              on ? "bg-[#f8b840] text-navy-990 ring-[#e0a030]" : "bg-white text-transparent ring-navy-900/20"
+                            }`}
+                          >
+                            ✓
+                          </span>
                         </button>
                       </li>
                     );

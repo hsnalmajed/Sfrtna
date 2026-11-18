@@ -126,25 +126,20 @@ chips. Checked locally (Playwright, mocked plan); owner to try on the phone.
 with `node scripts/coverage/depth.mjs`). Key: 45 cities no plan, 52 countries 1
 city, Arabic names 3.6% (map) / 23.5% (guide), hotel live prices SHUT (SerpApi
 101/250 till 6 Dec), «اقترح لي وجهة» = cached fares + Google Explore only.
-**NEXT (owner 17 Nov 20:35): round 1 «عمق الخطة» to 100%, then G
-(«Been» visited map), then the rest of §7.** Round 1 IN PROGRESS (17 Nov,
-PROJECT_NOTES «Plan depth round 1»). Built: AREA centre/radius (islands,
-regions), HK/MO box fix, thin city (<30) → Wikidata 1-article pass (no
-hills/islets/lakes) + fill from our map; write.ts drops extras the writer
-doesn't know; `names.ts` (guide.yml step) = Arabic name for every written
-place; restaurants: more halal signals, halal never cut (applies as the
-scheduled restaurants runs refresh). Measured (depth.mjs) after run 1:
-guide<15 102→1, no plan 45→14 (writing unfinished). **OWNER 17 Nov 23:51: start G («Been» visited map) NOW in a new chat,
-in parallel** (guide run 44170581200 works alone till ~00:20 UTC; it only
-touches public/data/guide — don't edit those files meanwhile). G = PROJECT_NOTES
-«Owner's notes of 14 Nov» G + audit §7 round 8. When the run is done, the
-same chat does round 1's close below. **Round 1 close:** read guide
-run «deep» on the 103 thin cities (dispatched 17 Nov ~21:15 UTC, `/tmp`
-list = facts.txt slugs) → `node scripts/coverage/depth.mjs` → if no-plan
-> 0, dispatch `task=write` with `only` = cities whose top-40 has unwritten
-places; names backlog (~3.6k) clears via daily runs (60 min/day) — dispatch
-`task=names` if faster needed. Then spot-check plans (Bali, Cappadocia,
-Ella, Langkawi, Hong Kong) via ux-audit, write numbers in TEST_PLAN, close.
+**18 Nov (Opus): round 1 «عمق الخطة» CLOSED + G «خريطتي» LIVE.** Round 1:
+no plan 45→0, guide<15 102→12 (small capitals/islands), area-itself places
+removed (`scripts/guide/selfPlace.ts`), writer timeout → next model; numbers
+in TEST_PLAN. G: `/[locale]/my-map` (PROJECT_NOTES «خريطتي — visited map»),
+account kind `been`, signed-out marks in the browser move to the account,
+share picture, «المزيد» card + header + «حسابي». Release green (73a19cf);
+tap-size fix + docs in the last push. **Owner (one step):** on the phone open
+المزيد → «خريطتي», mark a few countries + cities, press «احفظ خريطتي», sign
+in, then «شارك خريطتي»; ONE screenshot of anything wrong. Owner decision
+open: Israel/Palestine shapes (Natural Earth as-is).
+**NEXT: audit §7 round 2 «مدن أكثر (F)»** — Sri Lanka 10 cities, then Saudi
+Arabia + the top 15 countries for Saudi travellers; no big tourist country
+with one city (52 countries have 1 today). Then rounds 3–7 (photos, hotels,
+flights H+B, flight+hotel C, features visible + home hero).
 **Owner 17 Nov 20:31 — decision 2:** discover lists EVERY destination in
 budget; no live fare → shown WITHOUT a number + «شاهد السعر الحيّ» (opens the
 flight search). **Decision 1 (20:40): no paid SerpApi — wait for 6 Dec**,
@@ -697,4 +692,4 @@ payout threshold $500 not met» (wire $500; PayPal/ACH $100).
 Waiting on the owner: Admitad ad space «Verifying» (14 Nov) → Active → flynas/Jazeera; Google Play ticket reply; Google-fares
 decision after the 6 Nov measurement; Android APK on a real phone.
 
-**Recommended model for the next chat: Opus 5.5** (G «Been» map now; then close plan depth round 1).
+**Recommended model for the next chat: Opus 5.5** (round 2: more cities = data pipeline).
