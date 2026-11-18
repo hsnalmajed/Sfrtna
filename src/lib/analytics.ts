@@ -1,4 +1,5 @@
 import { rememberSearch } from "@/lib/recentSearches";
+import { isIosApp } from "@/lib/iosClean";
 /**
  * Google Analytics 4 — one place for every measurement call on the site.
  *
@@ -45,7 +46,15 @@ declare global {
 export function isMeasuredHost(): boolean {
   if (typeof window === "undefined") return false;
   const h = window.location.hostname;
-  return h === "sfrtna.com" || h.endsWith(".sfrtna.com");
+  if (h === "sfrtna.com" || h.endsWith(".sfrtna.com")) return true;
+  // The iOS clean-mode guard (scripts/ios-clean-check.mjs) runs on staging,
+  // where nothing is measured; this lets it switch measuring on to prove that
+  // the iPhone app still loads no Google Analytics and shows no cookie banner.
+  try {
+    return localStorage.getItem("sfr-measure-check") === "1";
+  } catch {
+    return false;
+  }
 }
 
 /** GA4 drops parameter values over 100 characters. */
@@ -99,6 +108,8 @@ function countEvent(event: string, params: Params): void {
 export function track(event: string, params: Params = {}): void {
   if (!isMeasuredHost()) return;
   countEvent(event, params);
+  // iPhone app: nothing for Google Analytics, not even queued (lib/iosClean.ts).
+  if (isIosApp()) return;
   try {
     // gtag may not have loaded yet; the queue is read in order when it does.
     window.dataLayer = window.dataLayer || [];

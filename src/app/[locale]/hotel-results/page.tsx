@@ -397,7 +397,7 @@ function HotelResultsContent() {
                     currency={currency}
                     nights={nights}
                     minStars={minStars}
-                    labels={{ list: t.viewList, map: t.viewMap, choose: t.viewChoose }}
+                    labels={{ list: t.viewList, map: t.viewMap, choose: t.viewChoose, out: t.allHotelsOut, outSub: t.allHotelsOutSub }}
                   />
                 </section>
               </div>

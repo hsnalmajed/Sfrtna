@@ -167,6 +167,14 @@ jobs:
           SMOKE_TOKEN: ${{ secrets.SMOKE_TOKEN }}
         run: node scripts/e2e.mjs "$STAGING_URL"
 
+      # Apple 5.1.2(i), 18 Nov 2026 (src/lib/iosClean.ts): the iPhone app must
+      # load no script, frame or cookie from another site. Holds the gate.
+      - name: iOS clean mode on staging
+        if: steps.guard.outputs.ready == 'true'
+        env:
+          SMOKE_TOKEN: ${{ secrets.SMOKE_TOKEN }}
+        run: node scripts/ios-clean-check.mjs "$STAGING_URL"
+
       - name: Deploy the same build to production
         if: steps.guard.outputs.ready == 'true' && (github.event_name == 'push' || github.event_name == 'schedule' || inputs.production)
         env:
@@ -181,3 +189,4 @@ jobs:
         run: |
           sleep 60
           node scripts/smoke.mjs "$PRODUCTION_URL"
+

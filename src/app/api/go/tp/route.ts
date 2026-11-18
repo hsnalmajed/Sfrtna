@@ -10,6 +10,7 @@ export const dynamic = "force-dynamic";
  * Our way out to Travelpayouts partners, through our affiliate link:
  *
  *   /api/go/tp?b=<klook|tiqets>&q=<what to search>   the partner's search
+ *   /api/go/tp?b=aviasales&s=<flight search code>   Aviasales' flight search
  *   /api/go/tp?b=<brand>&c=<country code>&p=<city slug>
  *       a page checked for that place, or the partner's own home when it is
  *       itself a search (see tripEssentials.ts)
@@ -72,9 +73,17 @@ export async function GET(req: NextRequest) {
       country: (sp.get("c") || "").toUpperCase(),
       city: sp.get("p") || "",
     });
+  } else if (brand === "aviasales") {
+    // The flight search on the partner's own site, for the trip as
+    // flightSearchCode writes it ("RUH1612IST2312c211"). Used by the iPhone
+    // app, where the widget does not run in our page (lib/iosClean.ts).
+    const code = sp.get("s") || "";
+    if (/^[A-Z]{3}\d{4}[A-Z]{3}(\d{4})?[wcf]?\d{1,3}$/.test(code)) plain = `https://www.aviasales.com/search/${code}`;
   }
   if (!plain) return NextResponse.json({ error: "bad request" }, { status: 400 });
-  const target = (await partnerLink(plain)) ?? plain;
+  // Without Travelpayouts' answer, the partner still gets our marker.
+  const fallback = brand === "aviasales" ? `${plain}?marker=${travelpayoutsMarker()}` : plain;
+  const target = (await partnerLink(plain)) ?? fallback;
   return NextResponse.redirect(target, {
     status: 302,
     headers: { "Cache-Control": "no-store", "X-Robots-Tag": "noindex" },

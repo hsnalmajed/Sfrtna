@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { convert, fetchRates } from "@/lib/rates";
+import { useIosApp } from "@/lib/iosClean";
 
 /**
  * A city's hotels, from Stay22's map widget: up to 99 hotels and rentals
@@ -82,7 +83,7 @@ export default function Stay22HotelMap({
   ...q
 }: Omit<Parameters<typeof stay22MapUrl>[0], "maxNightlyUsd" | "currency" | "view"> & {
   title: string;
-  labels: { list: string; map: string; choose: string };
+  labels: { list: string; map: string; choose: string; out: string; outSub: string };
   /** The traveller's budget for the whole stay, in `currency`; 0 for none. */
   budget: number;
   currency: string;
@@ -104,13 +105,48 @@ export default function Stay22HotelMap({
       live = false;
     };
   }, [known, budget, cur]);
+  // Stay22's frame is a partner page inside ours: never in the iPhone app,
+  // and never in the server HTML (the app gets the same HTML) — so nothing
+  // until the browser says which (lib/iosClean.ts).
+  const ios = useIosApp();
 
   const needsRate = budget > 0 && usdRate === undefined;
-  if (needsRate) return <div className="h-[640px] animate-pulse rounded-2xl bg-mist-200/70 sm:h-[720px]" />;
+  if (needsRate || ios === null) return <div className="h-[640px] animate-pulse rounded-2xl bg-mist-200/70 sm:h-[720px]" />;
   // No rate for an unusual currency: show the list without the cap rather
   // than with a wrong one.
   const maxNightlyUsd = budget > 0 && nights > 0 && usdRate ? (budget / nights) * usdRate : 0;
   const src = stay22MapUrl({ ...q, view, currency: usdRate === null ? "USD" : cur, maxNightlyUsd });
+  if (ios) {
+    // iPhone app: the same list, opened in the Safari sheet over the app.
+    const out = (v: "list" | "map") => stay22MapUrl({ ...q, view: v, currency: usdRate === null ? "USD" : cur, maxNightlyUsd });
+    return (
+      <div data-hotels-outside="" className="rounded-2xl bg-white p-4 shadow-sm ring-1 ring-black/5">
+        <p className="text-sm leading-relaxed text-navy-600">{labels.outSub}</p>
+        <div className="mt-3 flex flex-wrap gap-2">
+          <a
+            href={out("list")}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-partner="stay22"
+            data-placement="ios_hotels_outside"
+            className="rounded-xl bg-sun-400 px-5 py-2.5 text-sm font-extrabold text-navy-990 transition hover:bg-sun-300"
+          >
+            {labels.out} ↗
+          </a>
+          <a
+            href={out("map")}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-partner="stay22"
+            data-placement="ios_hotels_outside"
+            className="rounded-xl bg-mist-50 px-5 py-2.5 text-sm font-bold text-navy-900 ring-1 ring-mist-200"
+          >
+            {labels.map} ↗
+          </a>
+        </div>
+      </div>
+    );
+  }
   const tabs: { v: "list" | "map"; label: string; icon: string }[] = [
     { v: "list", label: labels.list, icon: "☰" },
     { v: "map", label: labels.map, icon: "⌖" },

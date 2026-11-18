@@ -17,6 +17,7 @@ import {
 } from "@/lib/analytics";
 import type { Locale } from "@/lib/types";
 import { useDictionary } from "@/lib/dict/context";
+import { isIosApp, useIosApp } from "@/lib/iosClean";
 
 /**
  * GA4 tag, the site-wide click listener and the consent banner.
@@ -141,9 +142,14 @@ export default function Analytics({ locale }: { locale: Locale }) {
 
   useEffect(() => {
     if (!isMeasuredHost()) return;
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- host is only known in the browser
-    setMeasured(true);
-    setAskConsent(readConsent() === null);
+    // iPhone app: no Google Analytics and no cookie banner at all (Apple
+    // 5.1.2(i), 18 Nov 2026 — see lib/iosClean.ts). Only our own anonymous
+    // counts (countStat → /api/stats: no identifier, no cookie) still run.
+    if (!isIosApp()) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- host is only known in the browser
+      setMeasured(true);
+      setAskConsent(readConsent() === null);
+    }
     document.addEventListener("click", onClick, { capture: true });
     countVisit(locale);
     // Middle-click / ctrl-click on a partner link opens it too.
@@ -238,6 +244,8 @@ gtag('js',new Date());gtag('config','${GA_ID}');`}
 
 /** Footer link that reopens the banner so a visitor can change their mind. */
 export function ConsentSettingsButton({ label, className }: { label: string; className?: string }) {
+  // No cookie choice to make in the iPhone app (nothing is stored there).
+  if (useIosApp() !== false) return null;
   return (
     <button
       type="button"

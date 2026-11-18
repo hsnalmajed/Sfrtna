@@ -8,7 +8,9 @@ import Link from "next/link";
 import { useDictionary } from "@/lib/dict/context";
 import { CABINS, type Cabin, type RoomType, type Locale, type MultiCityLegInput, type SearchParams, type TripType } from "@/lib/types";
 import TripCurrencyInline from "@/components/TripCurrencyInline";
-import FlightMetasearch, { warmFlightSearch } from "@/components/FlightMetasearch";
+import FlightMetasearch from "@/components/FlightMetasearch";
+import FlightsOutside from "@/components/FlightsOutside";
+import { useIosApp } from "@/lib/iosClean";
 import FlightResultsGuide from "@/components/FlightResultsGuide";
 import NextStepTabs, { markStep } from "@/components/NextStepTabs";
 import MultiCityTabs from "@/components/MultiCityTabs";
@@ -33,10 +35,10 @@ import SaveTripCard from "@/components/member/SaveTripCard";
 
 
 export default function ResultsPage() {
-  // Outside the Suspense boundary, so the static page's own <head> already
-  // asks for the flight widget's script and opens its connections — fetched
-  // alongside the page's code instead of after it has hydrated.
-  warmFlightSearch();
+  // The widget's script used to be preloaded from the server HTML here. Not
+  // any more: the same HTML goes to the iPhone app, which must never fetch a
+  // partner's script (lib/iosClean.ts). The search form (TripPlanner) warms
+  // it in the browser instead, and FlightMetasearch on mount.
   return (
     <Suspense fallback={null}>
       <ResultsContent />
@@ -361,6 +363,22 @@ function ResultsContent() {
     return p.toString();
   }, [search, isMulti, legsRaw, mcLegs, isCombo, q]);
 
+
+  const ios = useIosApp();
+  const flightRoute =
+          search.origin && search.destination && search.departDate
+            ? {
+                origin: search.origin,
+                destination: search.destination,
+                departDate: search.departDate,
+                returnDate: isMulti ? "" : search.returnDate || "",
+                adults: search.adults,
+                children: search.childrenAges?.length ?? 0,
+                childrenAges: search.childrenAges ?? [],
+                infants: search.infants ?? 0,
+              }
+            : undefined;
+
   return (
     <div className="bg-mist-50">
       {/* ── The trip band ───────────────────────────────────────────────
@@ -525,6 +543,16 @@ function ResultsContent() {
           currency={search.currency}
         />
       )}
+      {/* In the iPhone app the live results open on the partner's own site
+          (lib/iosClean.ts); the guide and the widget below run in browsers
+          and in the Android app only. Nothing until it is known which. */}
+      {ios === true && flightRoute && (
+        <div className="mt-5">
+          <FlightsOutside locale={locale} route={flightRoute} code={flightSearchCode(search)} currency={search.currency} />
+        </div>
+      )}
+      {ios === false && (
+      <>
       <FlightResultsGuide
         locale={locale}
         budget={flightBudget}
@@ -540,20 +568,7 @@ function ResultsContent() {
         directOnly={Boolean(search.directFlightsOnly)}
         initialOut={(q.get("dep") || "").split(",").filter(Boolean)}
         bagIncluded={Boolean(search.baggageIncluded)}
-        route={
-          search.origin && search.destination && search.departDate
-            ? {
-                origin: search.origin,
-                destination: search.destination,
-                departDate: search.departDate,
-                returnDate: isMulti ? "" : search.returnDate || "",
-                adults: search.adults,
-                children: search.childrenAges?.length ?? 0,
-                childrenAges: search.childrenAges ?? [],
-                infants: search.infants ?? 0,
-              }
-            : undefined
-        }
+        route={flightRoute}
       />
 
 
@@ -562,6 +577,8 @@ function ResultsContent() {
       <div className="mt-5">
         <FlightMetasearch locale={locale} prefill={flightSearchCode(search)} hideSearchForm />
       </div>
+      </>
+      )}
 
       {isCombo && (destinationCity || destinationAirport) && search.returnDate && (
         <ComboHotelSection

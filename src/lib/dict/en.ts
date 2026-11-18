@@ -1114,6 +1114,8 @@ const en = {
     moreHotelsLater: "No more pages right now. Every hotel in the city is in the list below.",
     allHotelsTitle: "Every hotel and apartment in {city}",
     allHotelsSub: "The full list from our partners, with photos, prices and a map.",
+    allHotelsOut: "Open the full list",
+    allHotelsOutSub: "Opens in a sheet over the app, with photos, prices and a map.",
     topHotelsTitle: "Top hotels in {city} with every site's price",
   },
   home: {
@@ -1480,6 +1482,10 @@ const en = {
     fallbackNoLive: "We could not fetch fares this moment. Try again, or open the same trip directly:",
     fallbackAirlines: "Airlines on this route:",
     fallbackAirlinesSub: "Opens your same search narrowed to that airline, and you book on its own site from there.",
+    // iPhone app: flights open on the partner's own site (lib/iosClean.ts).
+    outTitle: "Live fares for your trip",
+    outSub: "Pick a site: it opens this same trip on that company's own site, in a sheet over the app, where you book directly.",
+    outMain: "Search every airline and agency",
     fallbackBook: "Book",
     fallbackRetry: "Try again",
     fallbackTotal: "Price for all travellers",
@@ -1743,7 +1749,7 @@ const en = {
       "To show search results and available prices, to run and improve the service and understand its use in aggregate, and to protect it from abuse. We send booking partners only the search details needed to fetch prices. We never sell or rent your information, and we show no ads.",
     privacyCookiesTitle: "Cookies",
     privacyCookiesBody:
-      "We use cookies the service needs to work and to remember preferences such as language. Measurement cookies are used only with your consent, and you can change your choice at any time.",
+      "We use cookies the service needs to work and to remember preferences such as language. Measurement cookies are used only with your consent, and you can change your choice at any time. In the iPhone app we use no measurement cookies and no third-party tools at all, and we do not track you; partner sites open in a separate Safari sheet over the app.",
     privacyCookiesChange: "Change your cookie choice",
     privacyLocationTitle: "Location",
     privacyLocationBody:

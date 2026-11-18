@@ -2,6 +2,7 @@
 
 import Script from "next/script";
 import { usePathname } from "next/navigation";
+import { useIosApp } from "@/lib/iosClean";
 
 /**
  * Stay22 LinkSwap: turns plain Booking/Agoda/Expedia/Trip.com links into
@@ -15,6 +16,9 @@ import { usePathname } from "next/navigation";
  */
 export default function Stay22LinkSwap() {
   const path = usePathname() || "";
+  // Never in the iPhone app: a partner script in our page (lib/iosClean.ts).
+  const ios = useIosApp();
+  if (ios !== false) return null;
   if (!/\/(results|hotel-results)(\/|$)/.test(path)) return null;
   return (
     <>

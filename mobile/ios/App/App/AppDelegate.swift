@@ -92,6 +92,31 @@ class MainViewController: CAPBridgeViewController {
     private var loadingWatch: NSKeyValueObservation?
     private var loadsWatch: NSKeyValueObservation?
 
+    /// «iOS clean mode», backed natively (src/lib/iosClean.ts; Apple 5.1.2(i),
+    /// 18 Nov 2026): whatever a page asks for, no other site's script or
+    /// frame runs inside the app, and no other site's cookie is kept. Our
+    /// own pages, pictures and map tiles still load; partner sites open in
+    /// the Safari sheet (openOutside), which this does not touch.
+    private func installNoTrackingRules() {
+        guard let wv = webView else { return }
+        let rules = """
+        [
+          {"trigger": {"url-filter": ".*", "resource-type": ["script"], "load-type": ["third-party"]}, "action": {"type": "block"}},
+          {"trigger": {"url-filter": ".*", "resource-type": ["document"], "load-type": ["third-party"]}, "action": {"type": "block"}},
+          {"trigger": {"url-filter": ".*", "load-type": ["third-party"]}, "action": {"type": "block-cookies"}}
+        ]
+        """
+        WKContentRuleListStore.default()?.compileContentRuleList(
+            forIdentifier: "sfrtna-no-tracking", encodedContentRuleList: rules
+        ) { list, error in
+            guard let list = list else {
+                NSLog("Sfrtna: no-tracking rules not compiled: \(String(describing: error))")
+                return
+            }
+            DispatchQueue.main.async { wv.configuration.userContentController.add(list) }
+        }
+    }
+
     func openOutside(_ url: URL) {
         let safari = SFSafariViewController(url: url)
         safari.preferredControlTintColor = UIColor(red: 0x0B / 255, green: 0x2D / 255, blue: 0x5B / 255, alpha: 1)
@@ -111,6 +136,7 @@ class MainViewController: CAPBridgeViewController {
             uiProxy.host = self
             wv.uiDelegate = uiProxy
         }
+        installNoTrackingRules()
         installSafeArea()
         // Only for the simulator check in CI (ios.yml launches with this
         // argument): the welcome cards are marked seen, so the home page

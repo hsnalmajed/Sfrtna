@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { preconnect, preloadModule } from "react-dom";
 import type { Locale } from "@/lib/types";
+import { isIosApp } from "@/lib/iosClean";
 
 /**
  * Real flight results, inside our own page.
@@ -42,6 +43,9 @@ export const WIDGET_SRC = "https://tpwgt.com/wl_web/main.js?wl_id=22604";
  * so the results page starts searching the moment it opens.
  */
 export function warmFlightSearch() {
+  // Browser only, and never in the iPhone app: a preload in the server HTML
+  // would make the app fetch the partner's script too (lib/iosClean.ts).
+  if (typeof window === "undefined" || isIosApp()) return;
   preconnect("https://tpwgt.com");
   preconnect("https://tickets-api.eu-north-1.apistp.com");
   // A module script: only a module preload is reused when it is added.
@@ -71,8 +75,11 @@ export default function FlightMetasearch({
   /** The trip, as flightSearchCode writes it — e.g. "RUH1611IST23112". */
   prefill?: string | null;
 }) {
-  warmFlightSearch();
   useEffect(() => {
+    // The partner's live search runs in our page — never in the iPhone app,
+    // where flights open on the partner's own site instead (lib/iosClean.ts).
+    if (isIosApp()) return;
+    warmFlightSearch();
     // The widget takes its starting trip from this one parameter, and reads
     // it when its script runs — so it goes on the address before the script
     // is added, never after. With it there the traveller's own dates are
