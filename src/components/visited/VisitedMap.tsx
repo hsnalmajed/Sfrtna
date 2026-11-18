@@ -20,6 +20,7 @@ import {
   type WorldMapFile,
 } from "@/lib/visitedMap";
 import ScrollRow from "@/components/ui/ScrollRow";
+import { searchMatches } from "@/lib/search";
 import { shareVisitedImage } from "@/components/visited/visitedImage";
 
 type T = ReturnType<typeof useDictionary>["visited"];
@@ -304,7 +305,8 @@ export default function VisitedMap({ locale }: { locale: Locale }) {
   };
 
   const q = query.trim().toLowerCase();
-  const listed = COUNTRIES.filter((c) => !q || c.nameAr.includes(query.trim()) || c.nameEn.toLowerCase().includes(q));
+  // «عمان» finds «عُمان»: tashkeel, hamza forms, ة/ى ignored (lib/search.ts).
+  const listed = COUNTRIES.filter((c) => searchMatches([c.nameAr, c.nameEn, c.code], query));
 
   return (
     <div className="space-y-5">
