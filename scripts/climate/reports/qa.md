@@ -1,6 +1,6 @@
 # Quality test — scoring v1.2
 
-Climate: ERA5-Land hourly time-series (reanalysis-era5-land-timeseries), 1991–2020. Generated 2026-10-21T06:19:16.357Z.
+Climate: ERA5-Land hourly time-series (reanalysis-era5-land-timeseries), 1991–2020. Generated 2026-11-18T20:10:41.910Z.
 
 ## riyadh — city + desert — station RiyadhOld (WMO 40438), 8.3 km; destination's own grid cell: 24.60, 46.70 (4.6 km) — confidence high (100)
 
@@ -431,18 +431,18 @@ Climate: ERA5-Land hourly time-series (reanalysis-era5-land-timeseries), 1991–
 
 | Month | High | Low | Rain mm | Rain days | RH % | Heat index | Climate | Tourism | Final | Class | Reason |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| Jan | 21 | 8 | 144 | 13.5 | 72 | — | 17 | unavailable | 17 | ACCEPTABLE | Limited snow cover, some rain (about 14 days, 144 mm). |
-| Feb | 21 | 7 | 110 | 12.0 | 73 | — | 18 | unavailable | 18 | ACCEPTABLE | Limited snow cover, little rain. |
-| Mar | 18 | 5 | 121 | 12.6 | 76 | — | 18 | unavailable | 18 | ACCEPTABLE | Limited snow cover, some rain (about 13 days, 121 mm). |
-| Apr | 14 | 2 | 117 | 12.5 | 81 | — | 18 | unavailable | 18 | ACCEPTABLE | Limited snow cover, some rain (about 13 days, 117 mm). |
-| May | 10 | 0 | 144 | 15.1 | 88 | — | 31 | unavailable | 31 | ACCEPTABLE | Limited snow cover, some rain (about 15 days, 144 mm). |
-| Jun | 6 | -3 | 119 | 14.1 | 91 | — | 85 | unavailable | 89 | VERY_GOOD (start) | Good snow cover, some rain (about 14 days, 119 mm). |
-| Jul | 5 | -3 | 113 | 13.3 | 90 | — | 93 | unavailable | 97 | VERY_GOOD (end) | Good snow cover, some rain (about 13 days, 113 mm). |
-| Aug | 7 | -2 | 120 | 14.2 | 90 | — | 86 | unavailable | 90 | GOOD | Good snow cover, some rain (about 14 days, 120 mm). |
-| Sep | 9 | 0 | 145 | 15.1 | 86 | — | 70 | unavailable | 70 | GOOD | Good snow cover, some rain (about 15 days, 145 mm). |
-| Oct | 13 | 2 | 158 | 16.5 | 81 | — | 29 | unavailable | 29 | ACCEPTABLE | Limited snow cover, some rain (about 17 days, 158 mm). |
-| Nov | 16 | 4 | 147 | 16.0 | 75 | — | 16 | unavailable | 16 | ACCEPTABLE | Limited snow cover, some rain (about 16 days, 147 mm). |
-| Dec | 19 | 7 | 155 | 16.5 | 72 | — | 16 | unavailable | 16 | ACCEPTABLE | Limited snow cover, some rain (about 17 days, 155 mm). |
+| Jan | 18 | 8 | 144 | 13.5 | 72 | — | 17 | unavailable | 17 | ACCEPTABLE | Limited snow cover, some rain (about 14 days, 144 mm). |
+| Feb | 18 | 7 | 110 | 12.0 | 73 | — | 18 | unavailable | 18 | ACCEPTABLE | Limited snow cover, little rain. |
+| Mar | 15 | 5 | 121 | 12.6 | 76 | — | 18 | unavailable | 18 | ACCEPTABLE | Limited snow cover, some rain (about 13 days, 121 mm). |
+| Apr | 12 | 2 | 117 | 12.5 | 81 | — | 19 | unavailable | 19 | ACCEPTABLE | Limited snow cover, some rain (about 13 days, 117 mm). |
+| May | 8 | -0 | 144 | 15.1 | 88 | — | 40 | unavailable | 40 | ACCEPTABLE | Limited snow cover, some rain (about 15 days, 144 mm). |
+| Jun | 3 | -3 | 119 | 14.1 | 91 | — | 92 | unavailable | 96 | EXCELLENT (start) | Good snow cover, some rain (about 14 days, 119 mm). |
+| Jul | 2 | -4 | 113 | 13.3 | 90 | — | 98 | unavailable | 100 | EXCELLENT (peak) | Good snow cover, some rain (about 13 days, 113 mm). |
+| Aug | 4 | -3 | 120 | 14.2 | 90 | — | 97 | unavailable | 100 | EXCELLENT (end) | Good snow cover, some rain (about 14 days, 120 mm). |
+| Sep | 6 | -1 | 145 | 15.1 | 86 | — | 80 | unavailable | 80 | GOOD | Good snow cover, some rain (about 15 days, 145 mm). |
+| Oct | 10 | 1 | 158 | 16.5 | 81 | — | 37 | unavailable | 37 | ACCEPTABLE | Limited snow cover, some rain (about 17 days, 158 mm). |
+| Nov | 14 | 3 | 147 | 16.0 | 75 | — | 16 | unavailable | 16 | ACCEPTABLE | Limited snow cover, some rain (about 16 days, 147 mm). |
+| Dec | 17 | 6 | 155 | 16.5 | 72 | — | 16 | unavailable | 16 | ACCEPTABLE | Limited snow cover, some rain (about 17 days, 155 mm). |
 
 ## zermatt — mountain + ski — station Zermatt (WMO 06748), 0.9 km; elevation-matched ERA5-Land cell (cell_overrides.json): 45.90, 7.70 (14.0 km) — confidence high (75)
 

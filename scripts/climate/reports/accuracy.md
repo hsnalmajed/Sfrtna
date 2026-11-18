@@ -2,12 +2,12 @@
 
 Method: leave-own-station-out. Stations within 10 km of each tested city are hidden; its figures are rebuilt from stations within 150 km and compared with its real station. Target: 90% of city-months within ±2 °C.
 
-- Average high: ERA5-Land as it is — MAE 1.97 °C, within ±2 °C: 60% (236 cities)
-- Average high: station-calibrated — MAE 0.82 °C, within ±2 °C: 91% (165 cities)
-- Average high: regional median only (cities with no station within 150 km) — MAE 0.99 °C, within ±2 °C: 88% (235 cities)
-- Average low: ERA5-Land as it is — MAE 1.24 °C, within ±2 °C: 83% (236 cities)
-- Average low: station-calibrated — MAE 1.10 °C, within ±2 °C: 85% (165 cities)
-- Average low: regional median only (cities with no station within 150 km) — MAE 1.22 °C, within ±2 °C: 84% (235 cities)
+- Average high: ERA5-Land as it is — MAE 2.01 °C, within ±2 °C: 59% (261 cities)
+- Average high: station-calibrated — MAE 0.82 °C, within ±2 °C: 92% (185 cities)
+- Average high: regional median only (cities with no station within 150 km) — MAE 1.03 °C, within ±2 °C: 87% (260 cities)
+- Average low: ERA5-Land as it is — MAE 1.26 °C, within ±2 °C: 82% (261 cities)
+- Average low: station-calibrated — MAE 1.11 °C, within ±2 °C: 84% (185 cities)
+- Average low: regional median only (cities with no station within 150 km) — MAE 1.23 °C, within ±2 °C: 84% (260 cities)
 
 | City | Calibrated MAE (high) | Raw MAE (high) |
 |---|---|---|
@@ -18,31 +18,35 @@ Method: leave-own-station-out. Stations within 10 km of each tested city are hid
 | almaty | 2.96 | 3.89 |
 | ras-al-khaimah | 2.79 | 3.82 |
 | bandar-seri-begawan | 2.42 | 4.56 |
+| kutaisi | 2.4 | 2.31 |
 | ibiza | 2.34 | 0.82 |
+| sighnaghi | 2.34 | 0.62 |
 | dakar | 2.19 | 0.75 |
-| kutaisi | 2.01 | 2.31 |
 | florence | 1.84 | 3.1 |
 | kotor | 1.79 | 5.34 |
-| dammam | 1.7 | 3.24 |
+| borjomi | 1.76 | 7.07 |
+| bolu | 1.73 | 3.9 |
 | dubai | 1.69 | 0.18 |
+| dammam | 1.68 | 3.24 |
 | honolulu | 1.65 | 3.68 |
 | budapest | 1.64 | 2.17 |
-| zagreb | 1.59 | 0.97 |
 | bergen | 1.58 | 2.91 |
 | casablanca | 1.56 | 1.03 |
 | marseille | 1.52 | 2.44 |
 | cartagena | 1.49 | 1.93 |
+| kusadasi | 1.48 | 1.72 |
 | bengaluru | 1.47 | 1.66 |
 | interlaken | 1.45 | 1.96 |
 | san-francisco | 1.41 | 0.87 |
+| zagreb | 1.41 | 0.97 |
 | djerba | 1.37 | 1.09 |
 | manama | 1.36 | 3.28 |
+| tbilisi | 1.33 | 1.87 |
 | copenhagen | 1.31 | 0.52 |
 | jeddah | 1.3 | 2.45 |
-| accra | 1.3 | 2.21 |
 | chicago | 1.3 | 2.66 |
+| accra | 1.3 | 2.21 |
 | monte-carlo | 1.26 | 3.64 |
-| galle | 1.25 | 1.56 |
 | paphos | 1.23 | 2.43 |
 | miami | 1.22 | 2.1 |
 | dubrovnik | 1.22 | 3.06 |
@@ -56,69 +60,82 @@ Method: leave-own-station-out. Stations within 10 km of each tested city are hid
 | rome | 1.13 | 0.88 |
 | colombo | 1.11 | 1.4 |
 | vatican-city | 1.11 | 0.88 |
-| bursa | 1.1 | 2.28 |
 | istanbul | 1.04 | 1.73 |
+| galle | 1.04 | 1.56 |
 | tromso | 1.03 | 3.56 |
 | abha | 1.02 | 2.56 |
+| antalya | 1.0 | 1.88 |
 | jeju | 1.0 | 2.74 |
 | montevideo | 1.0 | 2.04 |
-| milan | 0.99 | 1.61 |
 | sousse | 0.98 | 0.98 |
 | gdansk | 0.98 | 0.5 |
 | rabat | 0.98 | 0.75 |
+| sarajevo | 0.95 | 2.26 |
 | luxembourg | 0.95 | 0.75 |
 | reykjavik | 0.94 | 1.61 |
 | kandy | 0.9 | 2.12 |
 | nadi | 0.9 | 2.13 |
-| izmir | 0.88 | 1.05 |
 | bodrum | 0.87 | 4.62 |
+| fethiye | 0.86 | 4.33 |
 | munich | 0.85 | 1.41 |
+| izmir | 0.83 | 1.05 |
 | prague | 0.83 | 0.78 |
 | bled | 0.83 | 1.98 |
-| sarajevo | 0.82 | 2.26 |
 | sharjah | 0.81 | 1.6 |
 | boston | 0.8 | 0.61 |
+| bursa | 0.79 | 2.28 |
 | vancouver | 0.78 | 1.95 |
 | lucerne | 0.76 | 1.33 |
 | delhi | 0.76 | 0.98 |
 | varna | 0.76 | 1.61 |
-| pattaya | 0.74 | 1.3 |
 | bukhara | 0.74 | 0.28 |
 | novi-sad | 0.73 | 0.38 |
 | riyadh | 0.72 | 0.83 |
+| milan | 0.71 | 1.61 |
 | larnaca | 0.71 | 1.08 |
+| al-ahsa | 0.71 | 1.45 |
+| sapanca | 0.7 | 3.59 |
+| hua-hin | 0.7 | 1.22 |
+| pattaya | 0.69 | 1.3 |
 | san-salvador | 0.69 | 2.66 |
 | santiago | 0.69 | 1.54 |
 | georgetown | 0.69 | 2.75 |
+| al-khobar | 0.69 | 2.58 |
+| chiang-rai | 0.69 | 2.16 |
 | tashkent | 0.67 | 1.66 |
 | cordoba | 0.66 | 1.82 |
 | foz-do-iguacu | 0.65 | 0.91 |
-| salzburg | 0.63 | 1.4 |
+| al-ain | 0.63 | 1.46 |
+| salzburg | 0.62 | 1.4 |
 | perth | 0.62 | 1.07 |
-| geneva | 0.61 | 1.85 |
+| ankara | 0.62 | 1.48 |
+| annecy | 0.58 | 2.62 |
 | quebec-city | 0.57 | 0.26 |
 | cebu | 0.56 | 3.25 |
+| heviz | 0.54 | 0.83 |
 | makkah | 0.53 | 3.81 |
 | lahore | 0.51 | 0.73 |
 | suva | 0.51 | 3.2 |
 | vientiane | 0.5 | 1.83 |
 | christchurch | 0.49 | 1.35 |
+| fujairah | 0.49 | 1.84 |
 | vienna | 0.48 | 0.72 |
 | brno | 0.48 | 1.09 |
 | london | 0.47 | 1.57 |
+| bangkok | 0.47 | 1.77 |
 | new-york | 0.47 | 0.82 |
 | melbourne | 0.47 | 1.03 |
 | hammamet | 0.45 | 1.65 |
 | edinburgh | 0.44 | 2.17 |
-| sapporo | 0.44 | 2.19 |
+| geneva | 0.44 | 1.85 |
 | bratislava | 0.44 | 0.63 |
+| sapporo | 0.44 | 2.19 |
 | paramaribo | 0.42 | 1.03 |
-| bangkok | 0.41 | 1.77 |
 | fukuoka | 0.41 | 2.07 |
+| como | 0.41 | 1.72 |
 | nice | 0.4 | 1.95 |
 | toronto | 0.4 | 1.36 |
 | belize-city | 0.39 | 2.25 |
-| lyon | 0.37 | 1.38 |
 | tokyo | 0.37 | 1.47 |
 | madrid | 0.36 | 0.77 |
 | seville | 0.36 | 1.01 |
@@ -137,8 +154,8 @@ Method: leave-own-station-out. Stations within 10 km of each tested city are hid
 | ljubljana | 0.29 | 1.75 |
 | punta-cana | 0.29 | 2.84 |
 | guangzhou | 0.28 | 0.88 |
-| seattle | 0.28 | 1.34 |
 | mendoza | 0.28 | 1.53 |
+| seattle | 0.28 | 1.34 |
 | wellington | 0.28 | 2.38 |
 | oxford | 0.27 | 1.23 |
 | hamburg | 0.27 | 0.57 |
@@ -148,12 +165,14 @@ Method: leave-own-station-out. Stations within 10 km of each tested city are hid
 | barcelona | 0.26 | 2.24 |
 | tunis | 0.24 | 1.62 |
 | ottawa | 0.24 | 0.54 |
-| chiang-mai | 0.23 | 2.54 |
+| negombo | 0.24 | 1.83 |
 | busan | 0.23 | 2.18 |
 | sydney | 0.22 | 2.1 |
 | astana | 0.22 | 0.82 |
 | belfast | 0.22 | 1.28 |
+| chiang-mai | 0.21 | 2.54 |
 | washington-dc | 0.21 | 1.35 |
+| trincomalee | 0.21 | 1.79 |
 | cappadocia | 0.2 | 0.5 |
 | granada | 0.19 | 2.32 |
 | berlin | 0.19 | 0.81 |
@@ -165,6 +184,7 @@ Method: leave-own-station-out. Stations within 10 km of each tested city are hid
 | brisbane | 0.18 | 1.96 |
 | dhaka | 0.18 | 1.23 |
 | orlando | 0.18 | 1.57 |
+| lyon | 0.17 | 1.38 |
 | osaka | 0.17 | 1.61 |
 | strasbourg | 0.17 | 1.07 |
 | cologne | 0.16 | 1.27 |
