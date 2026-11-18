@@ -1,62 +1,10 @@
-2026-11-18T21:29:28.804Z
-model: gemini-3.8-flash (then gemini-3.5-flash, gemini-3.5-flash-lite, gemini-3.1-flash-lite, gemini-2.5-flash-lite, gemma-4-31b-it, gemma-4-26b-a4b-it); cities: 48
-gemini-3.8-flash: no answer in time after 0 calls — switching to gemini-3.5-flash
-nuwara-eliya: batch failed — Error: generate: gave up
-nuwara-eliya: done (14 written so far, 1 calls)
-gemini-3.5-flash: no answer in time after 1 calls — switching to gemini-3.5-flash-lite
-sigiriya: done (29 written so far, 2 calls)
-bentota: done (44 written so far, 3 calls)
-trincomalee: done (58 written so far, 5 calls)
-mirissa: done (71 written so far, 6 calls)
-al-khobar: done (82 written so far, 7 calls)
-tabuk: done (91 written so far, 8 calls)
-yanbu: done (106 written so far, 9 calls)
+2026-11-18T22:58:11.451Z
+model: gemini-3.8-flash (then gemini-3.5-flash, gemini-3.5-flash-lite, gemini-3.1-flash-lite, gemini-2.5-flash-lite, gemma-4-31b-it, gemma-4-26b-a4b-it); cities: 6
+gemini-3.8-flash: daily quota reached after 0 calls — switching to gemini-3.5-flash
+negombo: done (8 written so far, 1 calls)
 al-baha: batch failed — Error: generate: gave up
-al-baha: done (106 written so far, 9 calls)
-jazan: done (119 written so far, 10 calls)
-hail: done (130 written so far, 11 calls)
-al-ahsa: done (140 written so far, 13 calls)
-najran: done (157 written so far, 15 calls)
-umluj: done (159 written so far, 16 calls)
-fethiye: batch failed — Error: generate: gave up
-fethiye: done (174 written so far, 17 calls)
-sapanca: done (189 written so far, 18 calls)
-bolu: batch failed — Error: generate: gave up
-bolu: done (189 written so far, 18 calls)
-ankara: done (229 written so far, 21 calls)
-kusadasi: done (268 written so far, 24 calls)
-borjomi: done (288 written so far, 26 calls)
-sighnaghi: done (311 written so far, 28 calls)
-gudauri: done (329 written so far, 30 calls)
-sheki: done (354 written so far, 33 calls)
-shamakhi: done (373 written so far, 35 calls)
-qusar: batch failed — Error: generate: gave up
-qusar: done (374 written so far, 36 calls)
-cameron-highlands: done (389 written so far, 37 calls)
-ipoh: batch failed — Error: generate: gave up
-ipoh: done (404 written so far, 38 calls)
-kuching: done (438 written so far, 41 calls)
-bandung: done (477 written so far, 44 calls)
-bogor: done (504 written so far, 47 calls)
-lake-toba: done (518 written so far, 48 calls)
-hua-hin: batch failed — Error: generate: gave up
-hua-hin: done (533 written so far, 49 calls)
-ayutthaya: done (573 written so far, 52 calls)
-chiang-rai: done (605 written so far, 55 calls)
-dahab: done (620 written so far, 56 calls)
-marsa-alam: done (622 written so far, 57 calls)
-el-gouna: done (633 written so far, 58 calls)
-fujairah: done (669 written so far, 61 calls)
-al-ain: done (699 written so far, 63 calls)
-wadi-rum: done (714 written so far, 64 calls)
-jerash: done (742 written so far, 66 calls)
-sur: done (757 written so far, 67 calls)
-khasab: done (772 written so far, 68 calls)
-heviz: done (806 written so far, 71 calls)
-khiva: batch failed — Error: generate: gave up
-khiva: done (821 written so far, 72 calls)
-annecy: batch failed — Error: generate: gave up
-annecy: done (845 written so far, 74 calls)
-como: done (885 written so far, 77 calls)
-amalfi: done (925 written so far, 80 calls)
-all done; 925 places written in 80 calls
+al-baha: done (8 written so far, 1 calls)
+gemini-3.5-flash: daily quota reached after 1 calls — switching to gemini-3.5-flash-lite
+bolu: done (23 written so far, 2 calls)
+qusar: done (35 written so far, 3 calls)
+all done; 35 places written in 3 calls
