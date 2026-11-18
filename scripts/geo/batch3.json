@@ -1,0 +1,527 @@
+{
+ "about": "Batch 3 «مدن أكثر» (owner 17–18 Nov 2026, audit §7 round 2): 56 cities — Sri Lanka to 10, Saudi Arabia +9, and the countries Saudi travellers visit most (Türkiye, Georgia, Azerbaijan, Bosnia, Malaysia, Indonesia, Thailand, Egypt, UAE, Jordan, Oman, Austria, Hungary, Uzbekistan, France, Italy). Staged only: a city goes live when every data item it needs is complete (scripts/coverage/check.py).",
+ "countries": {
+  "LK": [
+   [
+    "nuwara-eliya",
+    "نوارا إليا",
+    "Nuwara Eliya",
+    "Nuwara Eliya"
+   ],
+   [
+    "sigiriya",
+    "سيجيريا",
+    "Sigiriya",
+    "Sigiriya"
+   ],
+   [
+    "bentota",
+    "بينتوتا",
+    "Bentota",
+    "Bentota"
+   ],
+   [
+    "negombo",
+    "نيغومبو",
+    "Negombo",
+    "Negombo"
+   ],
+   [
+    "trincomalee",
+    "ترينكومالي",
+    "Trincomalee",
+    "Trincomalee"
+   ],
+   [
+    "mirissa",
+    "ميريسا",
+    "Mirissa",
+    "Mirissa"
+   ]
+  ],
+  "SA": [
+   [
+    "al-khobar",
+    "الخبر",
+    "Al Khobar",
+    "Al Khobar"
+   ],
+   [
+    "tabuk",
+    "تبوك",
+    "Tabuk",
+    "Tabuk"
+   ],
+   [
+    "yanbu",
+    "ينبع",
+    "Yanbu",
+    "Yanbu"
+   ],
+   [
+    "al-baha",
+    "الباحة",
+    "Al Baha",
+    "Al Bahah"
+   ],
+   [
+    "jazan",
+    "جازان",
+    "Jazan",
+    "Jizan"
+   ],
+   [
+    "hail",
+    "حائل",
+    "Hail",
+    "Hail"
+   ],
+   [
+    "al-ahsa",
+    "الأحساء",
+    "Al Ahsa",
+    "Hofuf"
+   ],
+   [
+    "najran",
+    "نجران",
+    "Najran",
+    "Najran"
+   ],
+   [
+    "umluj",
+    "أملج",
+    "Umluj",
+    "Umluj"
+   ]
+  ],
+  "TR": [
+   [
+    "fethiye",
+    "فتحية",
+    "Fethiye",
+    "Fethiye"
+   ],
+   [
+    "uzungol",
+    "أوزنجول",
+    "Uzungol",
+    "Uzungöl"
+   ],
+   [
+    "sapanca",
+    "صبنجة",
+    "Sapanca",
+    "Sapanca"
+   ],
+   [
+    "bolu",
+    "بولو",
+    "Bolu",
+    "Bolu"
+   ],
+   [
+    "ankara",
+    "أنقرة",
+    "Ankara",
+    "Ankara"
+   ],
+   [
+    "kusadasi",
+    "كوشاداسي",
+    "Kusadasi",
+    "Kuşadası"
+   ]
+  ],
+  "GE": [
+   [
+    "borjomi",
+    "بورجومي",
+    "Borjomi",
+    "Borjomi"
+   ],
+   [
+    "sighnaghi",
+    "سيغناغي",
+    "Sighnaghi",
+    "Sighnaghi"
+   ],
+   [
+    "gudauri",
+    "غوداوري",
+    "Gudauri",
+    "Gudauri"
+   ],
+   [
+    "mestia",
+    "ميستيا",
+    "Mestia",
+    "Mestia"
+   ]
+  ],
+  "AZ": [
+   [
+    "sheki",
+    "شكي",
+    "Sheki",
+    "Shaki"
+   ],
+   [
+    "shamakhi",
+    "شماخي",
+    "Shamakhi",
+    "Shamakhi"
+   ],
+   [
+    "qusar",
+    "قوسار",
+    "Qusar",
+    "Qusar"
+   ]
+  ],
+  "BA": [
+   [
+    "jajce",
+    "يايتسه",
+    "Jajce",
+    "Jajce"
+   ],
+   [
+    "konjic",
+    "كونيتس",
+    "Konjic",
+    "Konjic"
+   ]
+  ],
+  "MY": [
+   [
+    "genting-highlands",
+    "مرتفعات جنتنج",
+    "Genting Highlands",
+    "Genting Highlands"
+   ],
+   [
+    "cameron-highlands",
+    "مرتفعات كاميرون",
+    "Cameron Highlands",
+    "Cameron Highlands"
+   ],
+   [
+    "ipoh",
+    "إيبوه",
+    "Ipoh",
+    "Ipoh"
+   ],
+   [
+    "kuching",
+    "كوتشينغ",
+    "Kuching",
+    "Kuching"
+   ]
+  ],
+  "ID": [
+   [
+    "bandung",
+    "باندونغ",
+    "Bandung",
+    "Bandung"
+   ],
+   [
+    "bogor",
+    "بوغور",
+    "Bogor",
+    "Bogor"
+   ],
+   [
+    "lake-toba",
+    "بحيرة توبا",
+    "Lake Toba",
+    "Lake Toba"
+   ]
+  ],
+  "TH": [
+   [
+    "hua-hin",
+    "هوا هين",
+    "Hua Hin",
+    "Hua Hin"
+   ],
+   [
+    "ayutthaya",
+    "أيوثايا",
+    "Ayutthaya",
+    "Ayutthaya"
+   ],
+   [
+    "chiang-rai",
+    "تشيانغ راي",
+    "Chiang Rai",
+    "Chiang Rai"
+   ]
+  ],
+  "EG": [
+   [
+    "dahab",
+    "دهب",
+    "Dahab",
+    "Dahab"
+   ],
+   [
+    "marsa-alam",
+    "مرسى علم",
+    "Marsa Alam",
+    "Marsa Alam"
+   ],
+   [
+    "el-gouna",
+    "الجونة",
+    "El Gouna",
+    "El Gouna"
+   ]
+  ],
+  "AE": [
+   [
+    "fujairah",
+    "الفجيرة",
+    "Fujairah",
+    "Fujairah"
+   ],
+   [
+    "al-ain",
+    "العين",
+    "Al Ain",
+    "Al Ain"
+   ]
+  ],
+  "JO": [
+   [
+    "wadi-rum",
+    "وادي رم",
+    "Wadi Rum",
+    "Wadi Rum"
+   ],
+   [
+    "jerash",
+    "جرش",
+    "Jerash",
+    "Jerash"
+   ]
+  ],
+  "OM": [
+   [
+    "sur",
+    "صور",
+    "Sur",
+    "Sur"
+   ],
+   [
+    "khasab",
+    "خصب",
+    "Khasab",
+    "Khasab"
+   ]
+  ],
+  "AT": [
+   [
+    "zell-am-see",
+    "زيلامسي",
+    "Zell am See",
+    "Zell am See"
+   ],
+   [
+    "hallstatt",
+    "هالشتات",
+    "Hallstatt",
+    "Hallstatt"
+   ]
+  ],
+  "HU": [
+   [
+    "heviz",
+    "هيفيز",
+    "Heviz",
+    "Hévíz"
+   ]
+  ],
+  "UZ": [
+   [
+    "khiva",
+    "خيوة",
+    "Khiva",
+    "Khiva"
+   ]
+  ],
+  "FR": [
+   [
+    "annecy",
+    "آنسي",
+    "Annecy",
+    "Annecy"
+   ]
+  ],
+  "IT": [
+   [
+    "como",
+    "كومو",
+    "Como",
+    "Como"
+   ],
+   [
+    "amalfi",
+    "أمالفي",
+    "Amalfi",
+    "Amalfi"
+   ]
+  ]
+ },
+ "gatewayNote": "Gateway = the airport travellers fly into, checked by stage_batch.py against OurAirports (scheduled service). Small local airports with few flights are avoided (Fujairah → DXB, Al Ain → AUH, Khasab → MCT, Ipoh/Cameron → KUL).",
+ "gateways": {
+  "nuwara-eliya": "CMB",
+  "sigiriya": "CMB",
+  "bentota": "CMB",
+  "negombo": "CMB",
+  "trincomalee": "CMB",
+  "mirissa": "CMB",
+  "al-khobar": "DMM",
+  "tabuk": "TUU",
+  "yanbu": "YNB",
+  "al-baha": "ABT",
+  "jazan": "GIZ",
+  "hail": "HAS",
+  "al-ahsa": "HOF",
+  "najran": "EAM",
+  "umluj": "YNB",
+  "fethiye": "DLM",
+  "uzungol": "TZX",
+  "sapanca": "SAW",
+  "bolu": "ESB",
+  "ankara": "ESB",
+  "kusadasi": "ADB",
+  "borjomi": "TBS",
+  "sighnaghi": "TBS",
+  "gudauri": "TBS",
+  "mestia": "KUT",
+  "sheki": "GBB",
+  "shamakhi": "GYD",
+  "qusar": "GYD",
+  "jajce": "SJJ",
+  "konjic": "SJJ",
+  "genting-highlands": "KUL",
+  "cameron-highlands": "KUL",
+  "ipoh": "KUL",
+  "kuching": "KCH",
+  "bandung": "CGK",
+  "bogor": "CGK",
+  "lake-toba": "KNO",
+  "hua-hin": "BKK",
+  "ayutthaya": "BKK",
+  "chiang-rai": "CEI",
+  "dahab": "SSH",
+  "marsa-alam": "RMF",
+  "el-gouna": "HRG",
+  "fujairah": "DXB",
+  "al-ain": "AUH",
+  "wadi-rum": "AQJ",
+  "jerash": "AMM",
+  "sur": "MCT",
+  "khasab": "MCT",
+  "zell-am-see": "SZG",
+  "hallstatt": "SZG",
+  "heviz": "BUD",
+  "khiva": "UGC",
+  "annecy": "GVA",
+  "como": "MXP",
+  "amalfi": "NAP"
+ },
+ "geocodeNote": "Places that are an area, not one town, are placed at their main village or resort (Cameron Highlands: Tanah Rata; Lake Toba: Parapat; Wadi Rum: Wadi Rum Village).",
+ "geocodeQueries": {
+  "sigiriya": [
+   "Sigiriya, Matale",
+   "lk"
+  ],
+  "mirissa": [
+   "Mirissa, Matara",
+   "lk"
+  ],
+  "uzungol": [
+   "Uzungöl, Çaykara",
+   "tr"
+  ],
+  "gudauri": [
+   "Gudauri, Mtskheta-Mtianeti",
+   "ge"
+  ],
+  "genting-highlands": [
+   "Genting Highlands, Pahang",
+   "my"
+  ],
+  "cameron-highlands": [
+   "Tanah Rata, Cameron Highlands",
+   "my"
+  ],
+  "lake-toba": [
+   "Parapat, Simalungun",
+   "id"
+  ],
+  "el-gouna": [
+   "El Gouna, Red Sea",
+   "eg"
+  ],
+  "wadi-rum": [
+   "Wadi Rum Village, Aqaba",
+   "jo"
+  ],
+  "hallstatt": [
+   "Hallstatt, Gmunden",
+   "at"
+  ],
+  "qusar": [
+   "Qusar, Azerbaijan",
+   "az"
+  ],
+  "sheki": [
+   "Shaki, Azerbaijan",
+   "az"
+  ],
+  "sur": [
+   "Sur, Ash Sharqiyah South",
+   "om"
+  ],
+  "fujairah": [
+   "Fujairah City",
+   "ae"
+  ],
+  "al-ahsa": [
+   "Hofuf, Al Ahsa",
+   "sa"
+  ],
+  "tabuk": [
+   "Tabuk, Tabuk Province",
+   "sa"
+  ],
+  "bolu": [
+   "Bolu, Bolu",
+   "tr"
+  ],
+  "como": [
+   "Como, Lombardia",
+   "it"
+  ],
+  "amalfi": [
+   "Amalfi, Salerno",
+   "it"
+  ],
+  "heviz": [
+   "Hévíz, Zala",
+   "hu"
+  ],
+  "khasab": [
+   "Khasab, Musandam",
+   "om"
+  ],
+  "umluj": [
+   "Umluj, Tabuk Province",
+   "sa"
+  ]
+ }
+}
