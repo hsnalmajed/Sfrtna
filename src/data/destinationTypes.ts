@@ -15,7 +15,7 @@
 
 import type { DestinationType } from "../lib/travelSeason/config.ts";
 
-export const DESTINATION_TYPES_VERSION = "1.3";
+export const DESTINATION_TYPES_VERSION = "1.4";
 
 export const DESTINATION_TYPES: Record<string, DestinationType[]> = {
   // Saudi Arabia
@@ -500,6 +500,69 @@ export const DESTINATION_TYPES: Record<string, DestinationType[]> = {
   koror: ["beach", "tropical"],
   // Micronesia
   pohnpei: ["nature", "tropical"],
+  // Batch 3 (18 Nov 2026) — Sri Lanka
+  "nuwara-eliya": ["mountain", "nature", "tropical"],
+  sigiriya: ["nature", "tropical"],
+  bentota: ["beach", "tropical"],
+  negombo: ["beach", "city", "tropical"],
+  trincomalee: ["beach", "tropical"],
+  mirissa: ["beach", "tropical"],
+  // Batch 3 — Saudi Arabia
+  "al-khobar": ["city", "beach"],
+  tabuk: ["city", "desert"],
+  yanbu: ["city", "beach"],
+  "al-baha": ["mountain", "nature"],
+  jazan: ["city", "beach"],
+  hail: ["city", "desert"],
+  "al-ahsa": ["city", "desert", "nature"],
+  najran: ["city", "desert"],
+  umluj: ["beach", "nature"],
+  // Batch 3 — Türkiye
+  fethiye: ["beach", "nature"],
+  uzungol: ["mountain", "nature"],
+  sapanca: ["nature"],
+  bolu: ["mountain", "nature"],
+  ankara: ["city"],
+  kusadasi: ["beach", "city"],
+  // Batch 3 — Georgia, Azerbaijan, Bosnia
+  borjomi: ["mountain", "nature"],
+  sighnaghi: ["nature"],
+  gudauri: ["mountain", "ski"],
+  mestia: ["mountain", "nature"],
+  sheki: ["city", "nature"],
+  shamakhi: ["nature"],
+  qusar: ["mountain", "nature"],
+  jajce: ["city", "nature"],
+  konjic: ["nature"],
+  // Batch 3 — Malaysia, Indonesia, Thailand
+  "genting-highlands": ["mountain", "nature", "tropical"],
+  "cameron-highlands": ["mountain", "nature", "tropical"],
+  ipoh: ["city", "tropical"],
+  kuching: ["city", "nature", "tropical"],
+  bandung: ["city", "mountain", "tropical"],
+  bogor: ["city", "nature", "tropical"],
+  "lake-toba": ["nature", "tropical"],
+  "hua-hin": ["beach", "tropical"],
+  ayutthaya: ["city", "tropical"],
+  "chiang-rai": ["city", "nature", "tropical"],
+  // Batch 3 — Egypt, UAE, Jordan, Oman
+  dahab: ["beach", "desert"],
+  "marsa-alam": ["beach", "desert"],
+  "el-gouna": ["beach", "desert"],
+  fujairah: ["beach", "nature"],
+  "al-ain": ["city", "desert"],
+  "wadi-rum": ["desert", "nature"],
+  jerash: ["city"],
+  sur: ["city", "beach"],
+  khasab: ["nature", "beach"],
+  // Batch 3 — Europe, Central Asia
+  "zell-am-see": ["mountain", "nature", "ski"],
+  hallstatt: ["nature", "mountain"],
+  heviz: ["nature"],
+  khiva: ["city", "desert"],
+  annecy: ["city", "nature", "mountain"],
+  como: ["city", "nature"],
+  amalfi: ["beach", "nature"],
 };
 
 /**
