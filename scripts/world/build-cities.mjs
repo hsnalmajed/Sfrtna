@@ -19,17 +19,24 @@ const codes = [...fs.readFileSync(path.join(ROOT, "src/lib/countries.ts"), "utf8
 const only = (process.env.ONLY || "").split(",").filter(Boolean);
 fs.mkdirSync(OUT, { recursive: true });
 
+// Starts from the country's places with a population (cheap), then keeps
+// settlements: a city / town / human settlement / municipality, directly or
+// one subclass away. The capital always comes in.
 const query = (cc, min) => `
-SELECT ?c (SAMPLE(?ar0) AS ?ar) (SAMPLE(?en0) AS ?en) (SAMPLE(?co) AS ?coord) (MAX(?p) AS ?pop) (SAMPLE(?cap0) AS ?cap) WHERE {
+SELECT ?c (SAMPLE(?ar0) AS ?ar) (SAMPLE(?en0) AS ?en) (SAMPLE(?co) AS ?coord) (MAX(?p) AS ?pop) WHERE {
   ?k wdt:P297 "${cc}" .
-  { ?c wdt:P17 ?k ; wdt:P31/wdt:P279* wd:Q515 . } UNION { ?c wdt:P17 ?k ; wdt:P31 wd:Q3957 . } UNION { ?k wdt:P36 ?c . BIND(1 AS ?cap0) }
+  {
+    ?c wdt:P17 ?k ; wdt:P1082 ?p .
+    FILTER(?p >= ${min})
+    ?c wdt:P31 ?t .
+    { VALUES ?t { wd:Q515 wd:Q1549591 wd:Q5119 wd:Q3957 wd:Q1637706 wd:Q200250 wd:Q7930989 wd:Q486972 wd:Q15284 wd:Q532 } }
+    UNION { ?t wdt:P279 ?u . VALUES ?u { wd:Q515 wd:Q3957 wd:Q486972 wd:Q15284 wd:Q1549591 } }
+  } UNION { ?k wdt:P36 ?c . OPTIONAL { ?c wdt:P1082 ?p . } }
   ?c wdt:P625 ?co .
-  OPTIONAL { ?c wdt:P1082 ?p . }
   FILTER NOT EXISTS { ?c wdt:P576 ?gone . }
   OPTIONAL { ?c rdfs:label ?ar0 . FILTER(LANG(?ar0) = "ar") }
   OPTIONAL { ?c rdfs:label ?en0 . FILTER(LANG(?en0) = "en") }
-} GROUP BY ?c HAVING (MAX(?p) >= ${min} || SAMPLE(?cap0) = 1)
-ORDER BY DESC(?pop) LIMIT 120`;
+} GROUP BY ?c ORDER BY DESC(?pop) LIMIT 120`;
 
 async function sparql(q) {
   for (let i = 0; i < 4; i++) {
@@ -38,7 +45,7 @@ async function sparql(q) {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded", Accept: "application/sparql-results+json", "User-Agent": UA },
         body: `query=${encodeURIComponent(q)}`,
-        signal: AbortSignal.timeout(70_000),
+        signal: AbortSignal.timeout(55_000),
       });
       if (res.status === 429 || res.status >= 500) throw new Error(String(res.status));
       if (!res.ok) return null;
