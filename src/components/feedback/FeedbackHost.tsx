@@ -180,8 +180,12 @@ export default function FeedbackHost({ locale }: { locale: Locale }) {
     }
   }
 
+  // «خريطتي» is a full-screen tool with its own buttons over the map and
+  // sheets (owner 18 Nov: nothing under «رأيك»); feedback stays in «المزيد».
+  const floating = !/\/my-map\/?$/.test(pathname);
   return (
     <>
+      {floating && (
       <button
         type="button"
         onClick={() => window.dispatchEvent(new CustomEvent(FEEDBACK_EVENT, { detail: { source: "floating" } }))}
@@ -191,6 +195,7 @@ export default function FeedbackHost({ locale }: { locale: Locale }) {
         <span aria-hidden="true">💬</span>
         {t.floating}
       </button>
+      )}
 
       {open && (
         <div className="fixed inset-0 z-[80] flex items-end justify-center sm:items-center print:hidden" role="dialog" aria-modal="true" aria-label={t.title}>
