@@ -2911,3 +2911,29 @@ feels «بدائية وصعبة». «اريد عمل جبار واحترافي �
    community numbers, dreams → action, suggest from «رحلتي»).
 10. Quality bar: check on the LIVE site (ux-audit phone shots + the owner's
     phone), RTL + EN, app view; no element under the «رأيك» button.
+
+### «خريطتي 2» — BUILT 18 Nov (same chat, owner insisted)
+Code: `src/components/visited/` — MyMap (page), WorldCanvas (night SVG map:
+names by zoom, city pins+names, small countries as dots, glow, swipe views
+countries/cities/years, pan/pinch, zoom buttons), AddSheet (country search
+→ cities → year; repeat trip «رحلة جديدة» / «تعديل المدن فقط»), Panels
+(CountrySheet + ListSheet: دولي، قاراتي، مدني، سنواتي، أوسمتي، الخليج
+والعرب، أحلامي), Tour (5 steps, `sfr-mymap-tour-v1`, «؟» replays),
+MapGate (signed out: SignInForm embedded, page becomes the map), badges.ts
+(15), visitedImage.ts (story 1080×1920), MapInvite (country + city guide
+pages → `/my-map?add=CC&city=slug`), MapPromo (home). Data:
+`lib/visitedMap.ts` (account only; c: data.v = trips' years, 0 = none),
+`lib/visitedCities.ts` (ours + public/geo/cities/<CC>.json, ≤12 km or
+same name = duplicate). Sign-in through the phone browser (Android app)
+returns to the page it started from (`rememberReturn` in AccountPanel).
+Placed: header tools, footer «أدوات المسافر», «المزيد» tools, home tools
++ promo, every country/city guide, «حسابي». Floating «رأيك» hidden on
+/my-map. World cities: `world-cities.yml` + scripts/world/build-cities.mjs
+(Wikidata CC0, class-first query with optimiser off — the population-first
+one timed out): 6,341 cities, 198 countries (LK 16, EG 119, JP 120).
+Checked: local Chrome (mocked account: tour, add Oman → Muscat, country
+card, badges, cities view, story picture) + live ux-audit (gate, app view).
+NOT yet checked live: the signed-in flow on a real account (owner's phone).
+Next (Round B): compare with a friend link (owner hasn't answered the
+opt-in question), community numbers (≥50 members), dreams → flight search,
+suggest from «رحلتي».

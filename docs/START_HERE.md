@@ -136,18 +136,15 @@ tap-size fix + docs in the last push. **Owner (one step):** on the phone open
 المزيد → «خريطتي», mark a few countries + cities, press «احفظ خريطتي», sign
 in, then «شارك خريطتي»; ONE screenshot of anything wrong. Owner decision
 open: Israel/Palestine shapes (Natural Earth as-is).
-**18 Nov 05:09 owner: «خريطتي» = «فاشلة»** — map never loaded live (file
-under /data, refused by the guard → moved to public/geo, 130091f) and he
-wants it BETTER than Been + a growth loop. **NEXT (Opus, owner's priority,
-before round 2): «خريطتي 2» — build to the OWNER'S SPEC of 18 Nov 11:07
-(PROJECT_NOTES «خريطتي 2 — owner's spec»: travel tools, sign-in gate that
-returns to the map, guided tour, Been-like wide map + names + «+» flow
-country → cities, repeat trips, wider city list), then Round A** — plan in PROJECT_NOTES «خريطتي 2 —
-plan» (map hero first, add-country sheet with cities, stats tab with
-continents/Gulf/per-country %, years + timeline, badges, story picture);
-then Round B (compare with a friend link, community numbers, dreams →
-action, suggest from «رحلتي»). Check on STAGING/live (ux-audit), not only
-next dev. After that: audit §7 round 2 «مدن أكثر (F)».
+**18 Nov: «خريطتي 2» BUILT + LIVE** to the owner's spec (PROJECT_NOTES
+«خريطتي 2 — BUILT 18 Nov»): account-only night map, «+» country → cities
+(6,341 world cities) → year, repeat trips, names on the map, 3 views,
+totals, 7 lists, 15 badges, tour, story picture, gate that signs in on the
+page, placed in travel tools / home / every guide page. **Owner (one step):**
+on the phone open «خريطتي», sign in, follow the tour, add 2 countries with
+cities (one twice), press share; ONE screenshot of anything wrong.
+**Next for the map (Round B):** compare-with-friend link (opt-in, owner's
+yes pending), community numbers, dreams → flight search, suggest from «رحلتي».
 **NEXT: audit §7 round 2 «مدن أكثر (F)»** — Sri Lanka 10 cities, then Saudi
 Arabia + the top 15 countries for Saudi travellers; no big tourist country
 with one city (52 countries have 1 today). Then rounds 3–7 (photos, hotels,
@@ -704,4 +701,4 @@ payout threshold $500 not met» (wire $500; PayPal/ACH $100).
 Waiting on the owner: Admitad ad space «Verifying» (14 Nov) → Active → flynas/Jazeera; Google Play ticket reply; Google-fares
 decision after the 6 Nov measurement; Android APK on a real phone.
 
-**Recommended model for the next chat: Opus 5.5** (round 2: more cities = data pipeline).
+**Recommended model for the next chat: Opus 5.5** (owner's map check → fixes; then round 2: more cities).
