@@ -47,22 +47,33 @@ task under «For the build chat» below instead of coding here.
 Closed: Stay22 (4 Nov, payout threshold $500 never met).
 
 ## For the build chat (paste there)
-- **Apple App Review 18 Nov 14:58 — v1.0 (50) REJECTED again: 5.1.2(i) +
-  2.1 (details: PROJECT_NOTES to add).** 5.1.2(i): «the app accesses web
-  content you own where you collect cookies … you do not use App Tracking
-  Transparency». Apple's own way out: «if you do not collect cookies for
-  tracking, remove the cookie prompts». Our cookie prompt = consent banner in
-  `src/components/Analytics.tsx` (GA4, Consent Mode). Task: inside the iOS
-  app (UA `SfrtnaApp/iOS`) show NO consent banner and load NO GA4 / no
-  third-party tracking script (check partner widgets too, e.g. the flight
-  widget in FlightMetasearch.tsx, for cookies/trackers on iOS); App Privacy
-  in App Store Connect = «Data Not Used to Track You»; review notes say the
-  app does not track and has no cookie prompt. Then new ios.yml build →
-  attach to 1.0. 2.1: Apple asks which companies provide the services and
-  the owner's relationship to them → reply text drafted in the mail chat
-  (affiliate/comparison, bookings on providers' own sites). Also: App
-  Store Connect now shows «App Compliance — New» in the sidebar (likely the
-  2 hidden forms SECURITY/AIGENERATE) → fill before resubmit.
+- **ROOT FIX for Apple — owner 18 Nov 18:18: «حل جذري، كل الي صار غير مقبول»
+  (Opus). v1.0 (50) REJECTED 18 Nov 14:58: 5.1.2(i) cookies/tracking without
+  ATT + 2.1 info.** Root cause: the iOS app is our website in a web view, and
+  the website carries web-only things Apple treats as tracking. Build ONE
+  «iOS clean mode» (UA `SfrtnaApp/iOS`, decided in one place) that removes
+  ALL of it, then a guard so it can never come back:
+  1. No GA4, no consent/cookie banner (`Analytics.tsx`), no NavTracker
+     tracking, no third-party script at all in the iOS app: Stay22
+     (`Stay22LinkSwap`, `Stay22HotelMap`), tpwgt flight widget
+     (`FlightMetasearch.tsx`), jsdelivr etc. Only our own origin.
+  2. **Owner decision 18:18:** flights in the iOS app = search form stays in
+     the app; results + booking open OUTSIDE the app (Safari / system
+     browser) on the partner's site. Same for every partner/booking link
+     (hotels, cars, tours, eSIM): open externally, never inside the web view.
+  3. Guard test (CI, fails the build): load the main pages + a flight and a
+     hotel search with UA `SfrtnaApp/iOS`; fail on ANY request to a host other
+     than sfrtna.com, ANY cookie set, or the consent banner present.
+  4. App Store Connect: App Privacy = «Data Not Used to Track You» and data
+     types match; fill «App Compliance — New» (the hidden SECURITY/AIGENERATE
+     forms). Review notes: no tracking, no cookies, partner links open in
+     Safari, where to see it.
+  5. Full pre-submit audit against EVERY guideline Apple raised so far (4.3,
+     4.2.6, 4.8, 5.1.1(v) deletion, 5.1.2(i), 2.1, 2.1.0 completeness) →
+     checklist in docs/app-store/, all green before resubmit.
+  6. ONE complete reply covering everything (2.1 answers are drafted in the
+     mail chat; paste them into docs/app-store/review-reply.md), new ios.yml
+     build attached to 1.0, then resubmit. No piecemeal resubmits.
 - **Admitad/Mitgo verification keeps dropping (18 Nov):** ad space «Sfrtna»
   went Active 15:57 → «Not verified» 16:09. `edge-worker.js` answers «/» with
   the `mitgo-verification` tag only when the UA matches /mitgo|admitad/;
