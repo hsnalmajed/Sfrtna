@@ -100,7 +100,7 @@ Payoneer's account-holder name exactly (resubmit W-8BEN if it changes).
 **Owner 12 Nov 15:50 (corrects 15:44): Saudi ID English name = «ALMAJED,
 HASSAN ALI A» (two S).** CJ name HASSAN ALI A ALMAJED is right; only
 Payoneer («HASSAN AU AHMED ALMAJED») needs support to correct it.
-Payoneer customer ID 108323605. 12 Nov 16:00 «we need more info»: address doc
+Payoneer customer ID 108323605. 18 Nov: new ticket #261118-013230 (name → HASSAN ALI AHMED ALMAJED + Al Ahsa national address). 12 Nov 16:00 «we need more info»: address doc
 rejected — the page requires the doc to show the WRONG name «HASSAN AU AHMED
 ALMAJED» + «Olaya Street, Riyadh, 11465», issued < 6 months. 16:28 owner asked
 support to correct the name to HASSAN ALI A ALMAJED (ticket #261112-010093,
