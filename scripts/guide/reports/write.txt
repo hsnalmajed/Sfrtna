@@ -1,6 +1,7 @@
-2026-11-18T23:38:25.699Z
-model: gemini-3.8-flash (then gemini-3.5-flash, gemini-3.5-flash-lite, gemini-3.1-flash-lite, gemini-2.5-flash-lite, gemma-4-31b-it, gemma-4-26b-a4b-it); cities: 1
+2026-11-18T23:40:41.331Z
+model: gemini-3.8-flash (then gemini-3.5-flash, gemini-3.5-flash-lite, gemini-3.1-flash-lite, gemini-2.5-flash-lite, gemma-4-31b-it, gemma-4-26b-a4b-it); cities: 2
 gemini-3.8-flash: daily quota reached after 0 calls — switching to gemini-3.5-flash
 gemini-3.5-flash: daily quota reached after 0 calls — switching to gemini-3.5-flash-lite
-al-baha: done (14 written so far, 1 calls)
-all done; 14 places written in 1 calls
+marsa-alam: done (14 written so far, 1 calls)
+umluj: done (15 written so far, 2 calls)
+all done; 15 places written in 2 calls

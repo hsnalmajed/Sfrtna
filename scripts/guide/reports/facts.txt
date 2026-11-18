@@ -1,13 +1,4 @@
-2026-11-18T22:53:37.592Z
-negombo: 11s, 232 known → 15 kept thin: +7 lesser-known +3 from our map {"history":1,"religion":9,"museums":1,"nature":2,"views":1,"family":1}; top: Negombo Fort | St. Sebastian’s Church | Negombo Lagoon | Aluthepola Vihara | Our Lady of Sorrows Church, Kandawala | Sri Saddharmagupta Piriven Vihara
-   dropped (famous): Negombo 47 (Q1549591→Q486972); Bandaranaike International Airport 43 (Q1248784→never)
-al-baha: 4s, 26 known → 14 kept thin: +0 lesser-known +14 from our map {"history":1,"nature":11,"views":2}; top: Thee Ain | Prince Sultan bin Salman Park | حديقة ذي عين | Raghdan park | View from the mountain | اكواخ ومزرعة الورد
-   dropped (famous): Al-Baha Province 57 (no group: Q15728204); Al Bahah 39 (Q486972→Q486972)
-umluj: 2s, 25 known → 2 kept thin: +0 lesser-known +2 from our map {"nature":1,"beach":1}; top: الدقم | حديقة الامير
-bolu: 12s, 131 known → 15 kept thin: +4 lesser-known +10 from our map {"religion":4,"museums":2,"nature":6,"views":1,"shopping":2}; top: Bolu Museum | Beyazıt Mosque | Kadı Mosque | Saraçhane Mosque, Bolu | İmaret Mosque | 12 Kasım Deprem Anıtı Parkı
-   dropped (famous): Bolu Province 89 (no group: Q48336); Bolu 76 (Q1549591→Q486972)
-marsa-alam: 4s, 31 known → 2 kept thin: +0 lesser-known +2 from our map {"views":1,"shopping":1}; top: Mall Joseph Amin Saad | Samadai reef
+2026-11-18T23:40:17.090Z
+marsa-alam: 4s, 109 known → 15 kept thin: +5 lesser-known +8 from our map {"history":3,"religion":1,"nature":1,"beach":3,"views":5,"shopping":2}; top: Elphinstone Reef | Mons Smaragdus | Hangaliya Mine | Abu Dabour | Nr 1 | Marsa Badawia
    dropped (famous): Marsa Alam 35 (Q317548→Q486972)
-qusar: 9s, 197 known → 16 kept thin: +3 lesser-known +6 from our map {"history":3,"religion":7,"museums":3,"nature":1,"views":1,"culture":1}; top: Mausoleum of Sheikh Juneyd | Hil mosque | Gunduzgala mosque | Mustafa Qazdal Mosque | Susay mosque | Subaba tomb
-   other city/country: Digah (→ guba); Guba District (→ guba); Guba (→ guba); Gyrmyzy Gasaba (→ guba); Alekseyevka (→ guba); Amsar (→ guba); Aşağı Tüləkəran (→ guba); Uçgün (→ guba); Hacıhüseynli (→ guba); Birinci Nügədi (→ guba)
-   dropped (famous): Qusar District 47 (no group: Q13417250); Qusar 40 (Q515→never)
+umluj: 2s, 44 known → 3 kept thin: +0 lesser-known +3 from our map {"nature":2,"beach":1}; top: الدقم | حديقة الامير | روضة المسكة
