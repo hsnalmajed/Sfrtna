@@ -36,7 +36,7 @@ task under «For the build chat» below instead of coding here.
 | 6 | Emirates programme | Partnerize + TradeTracker (Dubai form 8 Nov 10:58) | No reply yet | Compare replies → route button to the better one |
 | 7 | impact.com | owner's Gmail account, sfrtna.com verified | «قيد المراجعة» since 11 Nov | Approved → apply Qatar, Skyscanner, Saudia/flyadeal/Turkish/Almosafer |
 | 8 | Admitad | PID2605420 | Ad space «Verifying» (14 Nov); Mitgo mail 14 Nov 14:30 «not verified yet, complete verification» (seen 18 Nov); meta tag `mitgo-verification` still in layout.tsx | 18 Nov 15:21: owner ticked + Finish (meta tag matches abfa1f5d…) → wait ~15 min, check status → Active → join flynas, Jazeera |
-| 9 | CJ + Payoneer | Payoneer ticket #261112-010093 | W-8BEN done; Payoneer name read wrong («HASSAN AU AHMED») | Payoneer fixes name → CJ payment details (US + Payoneer) → activate → Qatar |
+| 9 | CJ + Payoneer | Payoneer ticket #261112-010093 | W-8BEN done; Payoneer name read wrong («HASSAN AU AHMED») | 14 Nov reminder «we need additional information» (seen 18 Nov) → owner opens Verification Center, screenshot; name change = self-service (Settings › Profile settings › Name and email) → address doc → CJ payment details (US + Payoneer) → activate → Qatar |
 | 10 | Travelpayouts | ticket #254780 | Closed: Aviasales shows no Riyadh flights; TP will mail when RUH returns | Their mail only |
 | 11 | RateHawk | partner account «Linked» | Tax form review (Oct) | Confirm; hotel-price API study waits (owner 17 Nov) until notes list is done |
 | 12 | Agoda (direct) | application Oct | No reply | Check inbox / reapply |
