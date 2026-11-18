@@ -39,6 +39,13 @@ Rules from now on:
    - Haiku 5.5 — not for this project's code (too risky); fine for a
      one-line question.
 
+## Two kinds of chats (owner 18 Nov)
+- **Mail chat** (partners, stores, tickets): reads `docs/INBOX.md` only —
+  opening: `محادثة بريد سفرتنا: اربط hsnalmajed/Sfrtna واستنسخه، واقرأ docs/INBOX.md فقط، ثم انتظر رسالتي.` (Sonnet).
+- **Build chat** (improvements, additions, fixes): the opening message above,
+  starts from «الخطوة التالية» (Opus). It does not handle mail; mail that
+  needs code arrives via INBOX «For the build chat».
+
 ## Owner's standing rules (must follow)
 
 - Always reply in **Arabic**. Act as developer, reviewer, CX expert, designer.
