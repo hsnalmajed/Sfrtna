@@ -374,7 +374,7 @@
    ]
   ]
  },
- "gatewayNote": "Gateway = the airport travellers fly into, checked by stage_batch.py against OurAirports (scheduled service). Small local airports with few flights are avoided (Fujairah → DXB, Al Ain → AUH, Khasab → MCT, Ipoh/Cameron → KUL).",
+ "gatewayNote": "Gateway = the airport travellers fly into, checked by stage_batch.py against OurAirports (scheduled service). Small local airports with few flights are avoided (Fujairah → DXB, Al Ain → AUH, Ipoh/Cameron → KUL). Khasab keeps its own airport (KHS): Muscat is 353 km away through the UAE. Far gateways accepted after review (18 Nov): Trincomalee, Mirissa (CMB), Qusar (GYD), Cameron Highlands, Ipoh (KUL), Hua Hin (BKK), Sur (MCT), Héviz (BUD) — the airports travellers actually fly into.",
  "gateways": {
   "nuwara-eliya": "CMB",
   "sigiriya": "CMB",
@@ -424,7 +424,7 @@
   "wadi-rum": "AQJ",
   "jerash": "AMM",
   "sur": "MCT",
-  "khasab": "MCT",
+  "khasab": "KHS",
   "zell-am-see": "SZG",
   "hallstatt": "SZG",
   "heviz": "BUD",
