@@ -2991,4 +2991,27 @@ suggest from «رحلتي».
 - Trip types for the 56 DONE (destinationTypes v1.4, 0b905be). Staged
   paro, antananarivo, nosy-be, cusco, pohnpei are HELD since Oct (climate /
   visa), not part of batch 3.
+- **18 Nov evening (same chat): CLIMATE + PUBLISH DONE.** Owner's PC
+  downloaded the 118 points (1_DOWNLOAD.bat). The VM behind device_bash
+  kills background jobs when a call ends → run build_normals/build_hci in
+  ≤175 s calls (both resume from raw/normals_cache, raw/hci_cache). PC copy's
+  src/data/climate was Oct-14 stale: take ONLY the new ids from its
+  era5land.json into the repo's (existing entries matched except
+  generatedAt), then merge_sources/validate in the container (needs
+  raw/power/*, raw/elevations.json, raw/cell_check.json copied from the PC),
+  normals.json back to the PC for build_hci, hci.json back, then
+  generate_seasons. Findings: station tables that are not rain →
+  `scripts/climate/data/station_rejects.json` (Al-Ahsa 40420, Lahore 41640,
+  La Aurora 78641); Coronet Peak now regional (height rule). Hallstatt point
+  moved to the village (OSM way/135659959) and its cell re-downloaded — still
+  +705 m. Withheld (needs `station_overrides`): genting-highlands, mestia
+  (cell_overrides), uzungol (+1,131 m), jajce (+436; neighbour 44.4/17.2 at
+  715 m would pass → set it in cell_overrides + one PC download), konjic
+  (+752), zell-am-see (+510; neighbour 1,210 m no help), hallstatt (+705).
+  Gateway flags of 8 cities checked (real distances to the listed hubs) →
+  `reviewed` in batch3.staged.json. **Published 48 (500c9dd), live 413.**
+  Hotel index rebuilt. Guide deep run 44388736207 (48 slugs) started 20:13
+  UTC. photos.yml is DISABLED (round 3). Negombo: hotels Overpass FAILED
+  twice → re-dispatched; when its file lands: publish_staged --apply,
+  build-index, guide deep only=negombo.
 

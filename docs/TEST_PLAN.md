@@ -287,3 +287,23 @@ cities view / share picture 1080×1350 checked by eye; no console errors.
 `ux-audit.yml` run 44202962790 (iPhone 13 + Pixel 7, web + app): page loads;
 only finding = taps < 44 px (continent chips, country rows, ticks) → fixed.
 Not testable here: signed-in save (account DO) — owner checks on the phone.
+
+## Round 2 «مدن أكثر» batch 3 — published 18 Nov 2026
+
+- Live cities 365 → **413** (133 countries; `python3 scripts/coverage/check.py`:
+  centre/airport/places/hotels 413/413, climate 410/413 = madeira, kazbegi,
+  valletta withheld as before). Release 44388721046 green (attempt 2; attempt
+  1 = two external «fetch failed», all other checks passed).
+- Added per country: LK +5 (4 → 9), SA +9, TR +5, GE +3, AZ +3, MY +2, ID +3,
+  TH +3, EG +3, AE +2, JO +2, OM +2, HU +1, UZ +1, FR +1, IT +2.
+- Waiting (8 of 56): negombo (hotel names: Overpass failed twice; re-run
+  dispatched); climate-withheld uzungol, mestia, jajce, konjic,
+  genting-highlands, zell-am-see, hallstatt.
+- Climate accuracy after adding 25 test cities (leave-own-station-out):
+  highs station-calibrated MAE 0.82 °C, 92% within ±2 °C (was 91%); regional
+  87% (was 88%); lows unchanged (84%).
+- Rain fixed on the live site: Lahore 2,038 → 699 mm/yr, Guatemala City
+  3,414 → 1,317 (station tables rejected, `data/station_rejects.json`).
+- Depth right after publish (`node scripts/coverage/depth.mjs`): the 48 new
+  cities have guide 0 / no smart plan until guide run 44388736207 (task deep)
+  finishes — re-measure then.
