@@ -29,8 +29,21 @@ AIRPORTS = "https://davidmegginson.github.io/ourairports-data/airports.csv"
 
 
 def get(url: str) -> bytes:
-    with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=60) as r:
-        return r.read()
+    """Fetch with retries: Nominatim answers 503 / 429 now and then (18 Nov
+    2026: «first byte timeout» stopped batch 3 at the first city)."""
+    import time
+    import urllib.error
+
+    for attempt in range(5):
+        try:
+            with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=60) as r:
+                return r.read()
+        except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError) as e:
+            code = getattr(e, "code", 0)
+            if attempt == 4 or (code and code < 500 and code != 429):
+                raise
+            time.sleep(5 * (attempt + 1))
+    raise RuntimeError("unreachable")
 
 
 def plain_name(q: str) -> str:
