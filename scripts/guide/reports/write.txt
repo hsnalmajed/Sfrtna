@@ -1,4 +1,24 @@
-2026-11-17T23:50:18.502Z
-model: gemini-3.8-flash (then gemini-3.5-flash, gemini-3.5-flash-lite, gemini-3.1-flash-lite, gemini-2.5-flash-lite, gemma-4-31b-it, gemma-4-26b-a4b-it); cities: 1
-labuan-bajo: done (13 written so far, 1 calls)
-all done; 13 places written in 1 calls
+2026-11-18T17:38:06.654Z
+model: gemini-3.8-flash (then gemini-3.5-flash, gemini-3.5-flash-lite, gemini-3.1-flash-lite, gemini-2.5-flash-lite, gemma-4-31b-it, gemma-4-26b-a4b-it); cities: 365
+dubai: batch failed — Error: generate: gave up
+dubai: done (0 written so far, 0 calls)
+singapore: batch failed — Error: generate: gave up
+singapore: done (0 written so far, 0 calls)
+valletta: batch failed — Error: generate: gave up
+valletta: done (0 written so far, 0 calls)
+jeju: batch failed — Error: generate: gave up
+jeju: done (0 written so far, 0 calls)
+gemini-3.8-flash: no answer in time after 0 calls — switching to gemini-3.5-flash
+bali: done (1 written so far, 1 calls)
+penang: batch failed — Error: generate: gave up
+penang: done (1 written so far, 1 calls)
+cappadocia: batch failed — Error: generate: gave up
+cappadocia: done (1 written so far, 1 calls)
+gemini-3.5-flash: no answer in time after 1 calls — switching to gemini-3.5-flash-lite
+montreal: done (2 written so far, 2 calls)
+phuket: done (3 written so far, 3 calls)
+djerba: done (4 written so far, 4 calls)
+nha-trang: done (19 written so far, 5 calls)
+boracay: done (20 written so far, 6 calls)
+al-wakrah: done (20 written so far, 7 calls)
+all done; 20 places written in 7 calls

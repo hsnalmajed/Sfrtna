@@ -1,26 +1,2 @@
-2026-11-17T23:25:19.809Z
-labuan-bajo: 12s, 1213 known → 15 kept thin: +3 lesser-known +5 from our map {"religion":1,"nature":9,"views":5}; top: Komodo National Park | Komodo Island | Rinca Island | Padar Besar Island | Gili Motang | Wai Sano
-   dropped (famous): Labuan Bajo 25 (Q3147563→Q486972)
-al-wakrah: 18s, 252 known → 15 kept thin: +0 lesser-known +15 from our map {"history":1,"museums":3,"nature":2,"views":1,"shopping":6,"markets":2}; top: Al Wakrah Souq | Max Mall | The Mall | Quality Mall | Kahrama Awareness Park | Souq Al-Haraj
-   other city/country: Doha (→ doha); Doha International Airport (→ doha); Al Thumama Stadium (→ doha); 2020 FIFA Club World Cup (→ doha); 2025 Qatar TotalEnergies Open (→ doha); 1995 FIFA World Youth Championship (→ doha); Qatar Open (→ doha); 2006 Asian Games (→ doha); Hamad bin Khalifa Stadium (→ doha); Ad-Dawhah (→ doha); Aspire Tower (→ doha); Khalifa International Stadium (→ doha); Jassim Bin Hamad Stadium (→ doha); Stadium 974 (→ doha); Museum of Islamic Art (→ doha); Qatar SC Stadium (→ doha); Hamad International Airport (→ doha); Qatar National Library (→ doha); Aspire Zone (→ doha); National Museum of Qatar (→ doha); Grand Hamad Stadium (→ doha); Souq Waqif (→ doha); 2014 FINA World Swimming Championships (→ doha); Doha Tower (→ doha); 2016 UCI Road World Championships (→ doha)
-   dropped (famous): Al Wakrah 56 (Q515→never); Al Janoub Stadium 41 (Q483110→never)
-puerto-princesa: 9s, 149 known → 15 kept thin: +5 lesser-known +7 from our map {"history":2,"religion":1,"museums":2,"nature":4,"views":2,"family":1,"shopping":2,"markets":1}; top: Palawan | Thumb Peak | Puerto Princesa Cathedral | Museum of Palawan | Plaza Cuartel historical marker | Plaza Cuartel
-   dropped (famous): Palawan 71 (no group: Q24746); Puerto Princesa 53 (Q29946056→Q486972); Aborlan 26 (Q24764→Q486972)
-arusha: 13s, 171 known → 15 kept thin: +2 lesser-known +9 from our map {"history":3,"religion":1,"nature":5,"views":3,"markets":3}; top: Mount Meru | Arusha National Park | Duluti Lake | Arusha Declaration Monument | St. Theresa’s Metropolitan Cathedral | Tululusia waterfalls
-   other city/country: International Criminal Tribunal for Rwanda (RW)
-   dropped (famous): Arusha 80 (Q1549591→Q486972); East African Federation 33 (no group: Q112074700)
-gaborone: 19s, 106 known → 15 kept thin: +5 lesser-known +5 from our map {"history":2,"religion":3,"museums":1,"nature":2,"views":5,"shopping":2}; top: Kgale Hill | Botswana National Museum | Christ the King Cathedral | Three Dikgosi Monument | National Botanical Garden | Taras Shevchenko monument, Gaborone
-   other city/country: Bechuanaland Protectorate (GB)
-   dropped (famous): Gaborone 164 (Q1549591→Q486972); Sir Seretse Khama International Airport 32 (Q1248784→never); Mogoditshane 30 (Q515→never); University of Botswana 28 (Q38723→Q2385804); Tlokweng 25 (Q7930989→Q486972)
-belize-city: 161s, 116 known → 16 kept thin: +7 lesser-known {"history":2,"religion":4,"museums":4,"nature":2,"beach":1,"views":2,"family":1}; top: St. John's Cathedral | Swing Bridge | Museum of Belize | Bliss Institute | Bird Island | Holy Redeemer Cathedral
-   dropped (famous): Belize City 89 (Q515→never); Belize River 28 (no group: Q4022); Philip S. W. Goldson International Airport 26 (Q644371→Q1248784)
-suva: 13s, 241 known → 15 kept thin: +1 lesser-known +8 from our map {"history":3,"religion":2,"museums":1,"nature":6,"shopping":2,"markets":1}; top: Fiji Museum | Nukulau | Thurston Gardens | Sacred Heart Cathedral, Suva | Suva Fiji Temple | Colo-i-Suva Forest Reserve
-   dropped (famous): Suva 141 (Q515→never); University of the South Pacific 30 (Q62078547→Q2385804); Nausori 29 (Q3957→Q486972); Central Division 28 (no group: Q15646524)
-honiara: 14s, 148 known → 15 kept thin: +6 lesser-known +7 from our map {"history":2,"religion":2,"museums":1,"nature":3,"views":4,"shopping":2,"markets":1}; top: Solomon Islands | Holy Cross Cathedral | Guadalcanal American Memorial | Cathedral Church of St Barnabas, Honiara | Mataniko Falls | Queen Elizabeth National Park
-   dropped (famous): Honiara 129 (Q515→never); Guadalcanal campaign 46 (no group: Q831663); Honiara International Airport 29 (Q644371→Q1248784)
-varadero: 16s, 133 known → 21 kept thin: +16 lesser-known +5 from our map {"history":1,"religion":1,"nature":1,"beach":13,"views":4,"markets":1}; top: Cueva de Saturno | Playa Camarioca | Playa Bacalao | Cayo Piedras del Norte Lighthouse | Punta Maya Lighthouse | Church of the Immaculate Conception, Cardenas
-   dropped (famous): Varadero 47 (Q515→never); Cárdenas 34 (Q515→never)
-liberia: 7s, 65 known → 15 kept thin: +3 lesser-known +11 from our map {"history":2,"religion":1,"museums":1,"nature":6,"views":5}; top: Africa Safari Adventure Park | Llanos de Cortés Waterfall | Museo de Sabanero | Cathedral of the Immaculate Conception | La Pipa Blue Pool | Al Sabanero
-   dropped (famous): Liberia 40 (no group: Q2292572)
-port-moresby: 10s, 131 known → 15 kept thin: +4 lesser-known +7 from our map {"history":2,"religion":2,"museums":1,"nature":1,"beach":1,"views":5,"markets":3}; top: Hohola Mosque | Papua New Guinea National Museum and Art Gallery | Japanese submarine Ro-33 | St. Mary's Cathedral, Port Moresby | National Capital Botanical Gardens | Ela Beach
-   dropped (famous): Port Moresby 154 (Q7930989→Q486972); Tok Pisin 92 (no group: Q1288568,Q33742,Q33289); Jacksons International Airport 30 (Q1248784→never); Territory of Papua 28 (no group: Q183366); National Capital District 26 (no group: Q1053630,Q192611)
+2026-11-18T17:12:52.857Z
+
