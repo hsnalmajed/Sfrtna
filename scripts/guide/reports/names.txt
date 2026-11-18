@@ -1,9 +1,2 @@
-2026-11-18T18:38:15.354Z
-gemini-3.8-flash: daily quota reached — switching to gemini-3.5-flash-lite
-belgrade: batch failed — Error: generate: gave up
-bled: batch failed — Error: generate: gave up
-bruges: batch failed — Error: generate: gave up
-bucharest: batch failed — Error: generate: gave up
-innsbruck: batch failed — Error: generate: gave up
-milan: batch failed — Error: generate: gave up
-time budget reached; 2167 named in 102 calls
+2026-11-18T21:29:29.476Z
+all done; 0 named in 0 calls
