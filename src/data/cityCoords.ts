@@ -438,6 +438,7 @@ export const CITY_COORDS: Record<string, Point & { code: string }> = {
   "annecy": { lat: 45.89923, lon: 6.12888, code: "FR" },
   "como": { lat: 45.81156, lon: 9.08304, code: "IT" },
   "amalfi": { lat: 40.63367, lon: 14.60261, code: "IT" },
+  "negombo": { lat: 7.20943, lon: 79.83312, code: "LK" },
 };
 
 /** Curated landmarks, keyed by "<country code>:<English name>". */

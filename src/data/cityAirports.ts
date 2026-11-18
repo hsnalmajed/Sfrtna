@@ -439,4 +439,5 @@ export const CITY_AIRPORTS: Record<string, { iata: string; km: number | null }> 
   "annecy": { iata: "GVA", km: 38 },
   "como": { iata: "MXP", km: 34 },
   "amalfi": { iata: "NAP", km: 38 },
+  "negombo": { iata: "CMB", km: 6 },
 };

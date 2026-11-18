@@ -199,6 +199,7 @@ export const COUNTRY_CITIES: Record<string, CityEntry[]> = {
     { slug: "bentota", nameAr: "بينتوتا", nameEn: "Bentota", wikiTitle: "Bentota" },
     { slug: "trincomalee", nameAr: "ترينكومالي", nameEn: "Trincomalee", wikiTitle: "Trincomalee" },
     { slug: "mirissa", nameAr: "ميريسا", nameEn: "Mirissa", wikiTitle: "Mirissa" },
+    { slug: "negombo", nameAr: "نيغومبو", nameEn: "Negombo", wikiTitle: "Negombo" },
   ],
   ID: [
     { slug: "bali", nameAr: "بالي", nameEn: "Bali", wikiTitle: "Denpasar" },
