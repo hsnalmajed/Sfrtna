@@ -1,0 +1,5 @@
+Note: No display specified. Defaulting to display: 70CBE5E4-73FE-4679-90A6-0B1944D3C8FD (screenID: 1, name: LCD)
+Recording started
+Recording completed. Writing to disk.
+
+Wrote video to: /Users/runner/work/_temp/shots/launch.mp4
