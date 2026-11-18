@@ -448,6 +448,14 @@
   },
   "valletta": {
    "withhold": "Malta's own station (Luqa) is in neither the WMO nor the GHCN normals used here; the correction comes from Sicilian stations 103–133 km away and leaves July highs near 27.5 °C, about 4 °C below Malta's summer. Needs a station override (Malta Meteorological Office normals). Withheld 14 Oct 2026."
+  },
+  "genting-highlands": {
+   "withhold": "Genting Highlands stands at 1,729 m; its ERA5-Land cell averages 764 m and no land neighbour is higher (769 m), and no official station lies within 150 km at a similar height. Figures would be ~5 °C too warm. Needs a station override (MetMalaysia Genting / Cameron Highlands normals).",
+   "decidedAt": "2026-11-18"
+  },
+  "mestia": {
+   "withhold": "Mestia's town is at 1,401 m; its ERA5-Land cell averages 2,151 m and the best neighbour is the same cell, with no official station near enough. Winter highs come out ~4 °C too cold. Needs a station override (National Environmental Agency of Georgia, Mestia normals).",
+   "decidedAt": "2026-11-18"
   }
  }
 }

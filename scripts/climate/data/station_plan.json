@@ -13551,8 +13551,8 @@
    ]
   },
   "hallstatt": {
-   "lat": 47.53479,
-   "lon": 13.59889,
+   "lat": 47.5627,
+   "lon": 13.64953,
    "country": "AT",
    "staged": true,
    "direct": [],
@@ -13560,21 +13560,21 @@
     {
      "id": "00011155",
      "source": "wmo",
-     "km": 32.6,
+     "km": 28.7,
      "elev": 1618.0,
      "name": "Feuerkogel"
     },
     {
      "id": "00011150",
      "source": "wmo",
-     "km": 52.5,
+     "km": 54.2,
      "elev": 430.0,
      "name": "Salzburg_Flughafen"
     },
     {
      "id": "00011012",
      "source": "wmo",
-     "km": 70.2,
+     "km": 65.5,
      "elev": 382.0,
      "name": "Kremsmuenster"
     }

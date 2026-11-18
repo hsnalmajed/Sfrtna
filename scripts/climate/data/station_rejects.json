@@ -1,0 +1,8 @@
+{
+ "about": "Station parameters left out of every merge because the published normals are plainly not that quantity (checked against the station's region and ERA5-Land, 18 Nov 2026). The station's other parameters are still used; a rejected parameter falls back to ERA5-Land for that city.",
+ "stations": {
+  "00040420": {"PRCP": "Al-Ahsa: 1,093 mm a year with 79 mm in July — the oasis gets ~80 mm a year and no summer rain (Dhahran 40416 and KFIA 40417: 0 mm June–September).", "DP01": "Al-Ahsa: 9–14 rain days every month, same table as the PRCP above."},
+  "00041640": {"PRCP": "Lahore: 2,038 mm a year peaking in December–January; Lahore's monsoon rain peaks in July–August (~650 mm a year). Its rain-day counts (peak July) are kept."},
+  "00078641": {"PRCP": "La Aurora (Guatemala City): 3,414 mm a year with 294 mm in January; the city gets ~1,300 mm with a dry season November–April.", "DP01": "La Aurora: 14.6 rain days in January, in the middle of the dry season — same table as the PRCP above."}
+ }
+}

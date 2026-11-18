@@ -113,6 +113,14 @@ def load_station_pool():
                 continue
             pool[f"ghcn:{sid}"] = {**s, "country": "", "kind": "ghcn", "sourceText": g["source"], "url": g["sourceUrl"],
                                    "files": None, "retrievedAt": g["retrievedAt"]}
+    # Parameters a station publishes wrongly (data/station_rejects.json): left
+    # out, so that city's figure falls back to ERA5-Land.
+    rp = HERE / "data" / "station_rejects.json"
+    if rp.exists():
+        for sid, bad in json.loads(rp.read_text(encoding="utf-8"))["stations"].items():
+            if sid in pool:
+                for el in bad:
+                    pool[sid].pop(el, None)
     return pool
 
 
