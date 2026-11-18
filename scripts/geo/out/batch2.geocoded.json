@@ -1,6 +1,6 @@
 {
  "source": "OpenStreetMap Nominatim",
- "retrievedAt": "2026-11-18T13:13:32+00:00",
+ "retrievedAt": "2026-11-18T13:33:10+00:00",
  "cities": {
   "dammam": {
    "country": "SA",
@@ -75,12 +75,12 @@
    "country": "GE",
    "query": "Kutaisi",
    "plain": {
-    "lat": 42.27161,
-    "lon": 42.70545,
+    "lat": 42.25968,
+    "lon": 42.66337,
     "display_name": "Kutaisi, Imereti, 4600, Georgia",
     "osm_type": "relation",
-    "osm_id": 2024547,
-    "type": "administrative",
+    "osm_id": 8742174,
+    "type": "city",
     "url": "https://nominatim.openstreetmap.org/search?q=Kutaisi&countrycodes=ge&format=jsonv2&limit=1&accept-language=en"
    },
    "city": {
@@ -882,7 +882,7 @@
    "city": {
     "lat": 55.86115,
     "lon": -4.25017,
-    "display_name": "Glasgow, Glasgow City, Scotland, G2 1AR, United Kingdom",
+    "display_name": "Glasgow, Glasgow City, Scotland, G2 1AL, United Kingdom",
     "osm_type": "node",
     "osm_id": 11127374,
     "type": "city",
@@ -3485,7 +3485,7 @@
    "plain": {
     "lat": 6.88705,
     "lon": 158.24061,
-    "display_name": "Pohnpei, Ipwal Kousapw, Pohnpei, 96941, Federated States of Micronesia",
+    "display_name": "Pohnpei, Sapwohn Kousapw, Pohnpei, 96941, Federated States of Micronesia",
     "osm_type": "relation",
     "osm_id": 11779483,
     "type": "island",

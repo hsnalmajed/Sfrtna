@@ -752,7 +752,7 @@
    "flags": [],
    "lat": 55.86115,
    "lon": -4.25017,
-   "geocode": "Glasgow, Glasgow City, Scotland, G2 1AR, United Kingdom",
+   "geocode": "Glasgow, Glasgow City, Scotland, G2 1AL, United Kingdom",
    "airport": {
     "iata": "GLA",
     "name": "Glasgow Airport",
@@ -2958,7 +2958,7 @@
    "flags": [],
    "lat": 6.88705,
    "lon": 158.24061,
-   "geocode": "Pohnpei, Ipwal Kousapw, Pohnpei, 96941, Federated States of Micronesia",
+   "geocode": "Pohnpei, Sapwohn Kousapw, Pohnpei, 96941, Federated States of Micronesia",
    "airport": {
     "iata": "PNI",
     "name": "Pohnpei International Airport",
