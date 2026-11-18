@@ -84,7 +84,7 @@ export default function VisitedMap({ locale }: { locale: Locale }) {
 
   useEffect(() => {
     let live = true;
-    fetch("/data/world-map.json")
+    fetch("/geo/world-map.json")
       .then((r) => (r.ok ? (r.json() as Promise<WorldMapFile>) : Promise.reject(new Error(String(r.status)))))
       .then((w) => live && setWorld(w))
       .catch(() => live && setFailed(true));

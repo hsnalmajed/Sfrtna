@@ -1,4 +1,4 @@
-// Builds public/data/world-map.json — the countries of «خريطتي» (the
+// Builds public/geo/world-map.json — the countries of «خريطتي» (the
 // visited-places map), already projected, so the page draws plain SVG paths
 // and the site needs no map library for it.
 //
@@ -76,6 +76,6 @@ for (const [code, ll] of Object.entries(POINTS)) {
 out.sort((a, b) => a.c.localeCompare(b.c));
 const k = proj.scale(), [tx, ty] = proj.translate();
 const file = { w: W, h: H, proj: { k, tx, ty }, sphere: draw({ type: "Sphere" }), countries: out };
-const dest = path.join(path.dirname(new URL(import.meta.url).pathname), "../../public/data/world-map.json");
+const dest = path.join(path.dirname(new URL(import.meta.url).pathname), "../../public/geo/world-map.json");
 fs.writeFileSync(dest, JSON.stringify(file));
 console.log(out.length, "countries", Math.round(fs.statSync(dest).size / 1024) + " KB");

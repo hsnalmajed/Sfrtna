@@ -2806,7 +2806,7 @@ Later: same map offline in the app (tiles are not cached today).
 ## «خريطتي» — visited map (G), 18 Nov 2026
 
 - Page `/[locale]/my-map` (`components/visited/VisitedMap.tsx`), no new
-  library: `public/data/world-map.json` = Natural Earth 1:50m countries,
+  library: `public/geo/world-map.json` = Natural Earth 1:50m countries,
   simplified, Equal Earth, pre-projected SVG paths (130 KB, 50 KB gz),
   built by `scripts/world/build-world.mjs` (how to run in its header).
   City dots placed in the browser with the same projection (`project` in

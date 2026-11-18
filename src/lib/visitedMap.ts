@@ -10,7 +10,7 @@
  * marks stay in this browser so the map works on the first visit; the page
  * then offers to keep them in an account, and they move there on sign-in.
  *
- * Shapes come from public/data/world-map.json (scripts/world/build-world.mjs),
+ * Shapes come from public/geo/world-map.json (scripts/world/build-world.mjs),
  * already projected with Equal Earth; `project` places a city with the same
  * formula and the file's scale and centre.
  *
