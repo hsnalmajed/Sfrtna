@@ -28,7 +28,7 @@ task under «For the build chat» below instead of coding here.
 
 | # | With | Ref | Status | Waiting for / next step |
 |---|------|-----|--------|-------------------------|
-| 1 | Apple — App Review + Developer Support | case 30000017675096; build 27 thread | Submit blocked by 2 hidden compliance forms (SECURITYASF395E, AIGENERATEFD1DE); owner replied in the thread 17 Nov 14:45 | Apple's answer → fill the forms → `ios-review.yml` submit=yes (build chat) |
+| 1 | Apple — App Review + Developer Support | case 30000017675096; build 27 thread | Submit blocked by 2 hidden compliance forms (SECURITYASF395E, AIGENERATEFD1DE); owner replied in the thread 17 Nov 14:45 | 18 Nov 14:58 App Store Connect mail «There's an issue with your submission» (submission e7a94ba9…, v1.0) → owner opens App Review page, screenshot of the message → then forms / submit (build chat for ios-review.yml) |
 | 2 | Google Play — closed test | app com.sfrtna.app, track «Alpha» | Setup done 16 Nov, 14 changes submitted for review | Google's review mail; owner adds 12+ testers (14-day clock) → production ~3 weeks |
 | 3 | Google Play — account | tickets [7-5929000041524], [7-2716000041928] | Identity VERIFIED 13 Nov; ticket 7-2716000041928 CLOSED by Google 16 Nov («ID verification complete, you can publish») | Nothing — only if Google writes again |
 | 4 | Partnerize ↔ Expedia (login lost) | Partnerize #710723, Expedia 00045017 (auto-CLOSED 16 Nov, no fix) | Loop: each says the other handles login | 18 Nov 16:28 owner MAILED Partnerize Expedia desk → ticket **#712452** opened 16:29 (auto-ack) → wait for reply; no fix in ~5 work days → own new Partnerize account (owner said yes) |
