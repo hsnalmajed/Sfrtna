@@ -82,9 +82,7 @@
    "nameAr": "ترينكومالي",
    "nameEn": "Trincomalee",
    "wikiTitle": "Trincomalee",
-   "flags": [
-    "gateway 215 km away"
-   ],
+   "flags": [],
    "lat": 8.57643,
    "lon": 81.2345,
    "geocode": "Trincomalee, Trincomalee District, Eastern Province, 32100, Sri Lanka",
@@ -96,16 +94,15 @@
     "lat": 7.180759906768799,
     "lon": 79.88410186767578,
     "type": "large_airport"
-   }
+   },
+   "reviewed": "18 Nov: geocode checked (town centre); gateway 215 km away is the real distance to the owner's listed international gateway"
   },
   "mirissa": {
    "country": "LK",
    "nameAr": "ميريسا",
    "nameEn": "Mirissa",
    "wikiTitle": "Mirissa",
-   "flags": [
-    "gateway 151 km away"
-   ],
+   "flags": [],
    "lat": 5.94936,
    "lon": 80.45581,
    "geocode": "Mirissa, Matara District, Southern Province, 81740, Sri Lanka",
@@ -117,7 +114,8 @@
     "lat": 7.180759906768799,
     "lon": 79.88410186767578,
     "type": "large_airport"
-   }
+   },
+   "reviewed": "18 Nov: geocode checked (town centre); gateway 151 km away is the real distance to the owner's listed international gateway"
   },
   "al-khobar": {
    "country": "SA",
@@ -523,9 +521,7 @@
    "nameAr": "قوسار",
    "nameEn": "Qusar",
    "wikiTitle": "Qusar",
-   "flags": [
-    "gateway 173 km away"
-   ],
+   "flags": [],
    "lat": 41.43034,
    "lon": 48.43273,
    "geocode": "Gusar, Qusar District, Azerbaijan",
@@ -537,7 +533,8 @@
     "lat": 40.47278,
     "lon": 50.050931,
     "type": "large_airport"
-   }
+   },
+   "reviewed": "18 Nov: geocode checked (town centre); gateway 173 km away is the real distance to the owner's listed international gateway"
   },
   "jajce": {
    "country": "BA",
@@ -601,9 +598,7 @@
    "nameAr": "مرتفعات كاميرون",
    "nameEn": "Cameron Highlands",
    "wikiTitle": "Cameron Highlands",
-   "flags": [
-    "gateway 195 km away"
-   ],
+   "flags": [],
    "lat": 4.47069,
    "lon": 101.37769,
    "geocode": "Tanah Rata, Cameron Highlands, Pahang, 39000, Malaysia",
@@ -615,16 +610,15 @@
     "lat": 2.74558,
     "lon": 101.709999,
     "type": "large_airport"
-   }
+   },
+   "reviewed": "18 Nov: geocode checked (town centre); gateway 195 km away is the real distance to the owner's listed international gateway"
   },
   "ipoh": {
    "country": "MY",
    "nameAr": "إيبوه",
    "nameEn": "Ipoh",
    "wikiTitle": "Ipoh",
-   "flags": [
-    "gateway 217 km away"
-   ],
+   "flags": [],
    "lat": 4.59868,
    "lon": 101.09002,
    "geocode": "Ipoh, Kinta, Perak, Malaysia",
@@ -636,7 +630,8 @@
     "lat": 2.74558,
     "lon": 101.709999,
     "type": "large_airport"
-   }
+   },
+   "reviewed": "18 Nov: geocode checked (town centre); gateway 217 km away is the real distance to the owner's listed international gateway"
   },
   "kuching": {
    "country": "MY",
@@ -719,9 +714,7 @@
    "nameAr": "هوا هين",
    "nameEn": "Hua Hin",
    "wikiTitle": "Hua Hin",
-   "flags": [
-    "gateway 150 km away"
-   ],
+   "flags": [],
    "lat": 12.56993,
    "lon": 99.95734,
    "geocode": "Hua Hin City Municipality, Hua Hin District, Prachuap Khiri Khan Province, 77110, Thailand",
@@ -733,7 +726,8 @@
     "lat": 13.6811,
     "lon": 100.747002,
     "type": "large_airport"
-   }
+   },
+   "reviewed": "18 Nov: geocode checked (town centre); gateway 150 km away is the real distance to the owner's listed international gateway"
   },
   "ayutthaya": {
    "country": "TH",
@@ -911,9 +905,7 @@
    "nameAr": "صور",
    "nameEn": "Sur",
    "wikiTitle": "Sur",
-   "flags": [
-    "gateway 171 km away"
-   ],
+   "flags": [],
    "lat": 22.56931,
    "lon": 59.52955,
    "geocode": "Sur, Jalaan Bani Bu ALi Province, Ash Sharqiyah South Governorate, 411, Oman",
@@ -925,7 +917,8 @@
     "lat": 23.600218,
     "lon": 58.285268,
     "type": "large_airport"
-   }
+   },
+   "reviewed": "18 Nov: geocode checked (town centre); gateway 171 km away is the real distance to the owner's listed international gateway"
   },
   "khasab": {
    "country": "OM",
@@ -989,9 +982,7 @@
    "nameAr": "هيفيز",
    "nameEn": "Heviz",
    "wikiTitle": "Hévíz",
-   "flags": [
-    "gateway 173 km away"
-   ],
+   "flags": [],
    "lat": 46.7906,
    "lon": 17.18345,
    "geocode": "Hévíz, Keszthelyi járás, Zala, Transdanubia, 8380, Hungary",
@@ -1003,7 +994,8 @@
     "lat": 47.43018,
     "lon": 19.262393,
     "type": "large_airport"
-   }
+   },
+   "reviewed": "18 Nov: geocode checked (town centre); gateway 173 km away is the real distance to the owner's listed international gateway"
   },
   "khiva": {
    "country": "UZ",
@@ -1082,14 +1074,5 @@
    }
   }
  },
- "review": [
-  "trincomalee",
-  "mirissa",
-  "qusar",
-  "cameron-highlands",
-  "ipoh",
-  "hua-hin",
-  "sur",
-  "heviz"
- ]
+ "review": []
 }

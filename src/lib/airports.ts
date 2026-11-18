@@ -358,6 +358,19 @@ export const AIRPORTS: Airport[] = [
   { iata: "NBE", nameAr: "مطار الحمامات الدولي", nameEn: "Enfidha - Hammamet International Airport", cityAr: "الحمامات", cityEn: "Hammamet", countryAr: "تونس", countryEn: "Tunisia" },
   { iata: "GEO", nameAr: "مطار جورج تاون الدولي", nameEn: "Cheddi Jagan International Airport", cityAr: "جورج تاون", cityEn: "Georgetown", countryAr: "غيانا", countryEn: "Guyana" },
   { iata: "PBM", nameAr: "مطار باراماريبو الدولي", nameEn: "Johan Adolf Pengel International Airport", cityAr: "باراماريبو", cityEn: "Paramaribo", countryAr: "سورينام", countryEn: "Suriname" },
+  // Coverage batch 2 gateways (owner's list, confirmed in OurAirports)
+  { iata: "ABT", nameAr: "مطار الباحة", nameEn: "King Saud Bin Abdulaziz (Al Baha) Airport", cityAr: "الباحة", cityEn: "Al Baha", countryAr: "السعودية", countryEn: "Saudi Arabia" },
+  { iata: "HOF", nameAr: "مطار الأحساء الدولي", nameEn: "Al-Ahsa International Airport", cityAr: "الأحساء", cityEn: "Al Ahsa", countryAr: "السعودية", countryEn: "Saudi Arabia" },
+  { iata: "EAM", nameAr: "مطار نجران", nameEn: "Najran Domestic Airport", cityAr: "نجران", cityEn: "Najran", countryAr: "السعودية", countryEn: "Saudi Arabia" },
+  { iata: "DLM", nameAr: "مطار فتحية الدولي", nameEn: "Dalaman International Airport", cityAr: "فتحية", cityEn: "Fethiye", countryAr: "تركيا", countryEn: "Turkey" },
+  { iata: "GBB", nameAr: "مطار شكي الدولي", nameEn: "Gabala International Airport", cityAr: "شكي", cityEn: "Sheki", countryAr: "أذربيجان", countryEn: "Azerbaijan" },
+  { iata: "KCH", nameAr: "مطار كوتشينغ الدولي", nameEn: "Kuching International Airport", cityAr: "كوتشينغ", cityEn: "Kuching", countryAr: "ماليزيا", countryEn: "Malaysia" },
+  { iata: "KNO", nameAr: "مطار بحيرة توبا الدولي", nameEn: "Kualanamu International Airport", cityAr: "بحيرة توبا", cityEn: "Lake Toba", countryAr: "إندونيسيا", countryEn: "Indonesia" },
+  { iata: "CEI", nameAr: "مطار تشيانغ راي الدولي", nameEn: "Mae Fah Luang - Chiang Rai International Airport", cityAr: "تشيانغ راي", cityEn: "Chiang Rai", countryAr: "تايلاند", countryEn: "Thailand" },
+  { iata: "RMF", nameAr: "مطار مرسى علم الدولي", nameEn: "Marsa Alam International Airport", cityAr: "مرسى علم", cityEn: "Marsa Alam", countryAr: "مصر", countryEn: "Egypt" },
+  { iata: "KHS", nameAr: "مطار خصب", nameEn: "Khasab Airport", cityAr: "خصب", cityEn: "Khasab", countryAr: "عُمان", countryEn: "Oman" },
+  { iata: "UGC", nameAr: "مطار خيوة الدولي", nameEn: "Urgench International Airport", cityAr: "خيوة", cityEn: "Khiva", countryAr: "أوزبكستان", countryEn: "Uzbekistan" },
+  { iata: "NAP", nameAr: "مطار أمالفي الدولي", nameEn: "Naples International Airport", cityAr: "أمالفي", cityEn: "Amalfi", countryAr: "إيطاليا", countryEn: "Italy" },
 ];
 
 /**
