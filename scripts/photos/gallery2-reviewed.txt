@@ -1,0 +1,25 @@
+# Cities whose gallery was eye-checked to the owner's standard (19 Nov 17:44).
+# One slug per line. The scheduled photo review appends to it.
+bangkok
+istanbul
+dubai
+paris
+kuala-lumpur
+antalya
+trabzon
+riyadh
+jeddah
+makkah
+madinah
+abu-dhabi
+cappadocia
+london
+cairo
+doha
+muscat
+amman
+sharjah
+alula
+bodrum
+izmir
+bursa
