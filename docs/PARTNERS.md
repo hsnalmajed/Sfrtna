@@ -139,4 +139,4 @@ Look up its official affiliate/partner page first, then the networks
 source of every rate and condition. Update this table in the same commit as
 any button change.
 
-- **Partnerize (own account, 19 Nov 2026):** signed up through Qatar Airways' join page — username `sfrtna_ksa`, e-mail almajedhsn@gmail.com, partner type Comparison/Review, vertical Travel, address = SPL national address (Al Mubarraz 36342). Separate from the Expedia Hub account «sfrtna-aeek» (that one has no Partnerize console login — Partnerize #712452). Status: e-mail verification sent → Qatar application pending; Emirates next.
+- **Partnerize (own account, 19 Nov 2026):** signed up through Qatar Airways' join page — username `sfrtna_ksa`, e-mail almajedhsn@gmail.com, partner type Comparison/Review, vertical Travel, address = SPL national address (Al Mubarraz 36342). Separate from the Expedia Hub account «sfrtna-aeek» (that one has no Partnerize console login — Partnerize #712452). Publisher ID 1100l442602 (e-mail verified, logged in 19 Nov 03:27). Next: complete profile → Qatar application → Emirates.
