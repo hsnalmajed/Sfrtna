@@ -43,3 +43,13 @@ venice
 florence
 athens
 lisbon
+bali
+singapore
+phuket
+tokyo
+seoul
+kyoto
+santorini
+edinburgh
+seville
+berlin
