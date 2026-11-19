@@ -92,8 +92,9 @@ never ran (and its UA match /mitgo|admitad/ would not have fired anyway).
 Bot Fight Mode cannot be skipped by WAF rules on Free; it does NOT trigger
 when an IP Access rule matches. IP Access rules are NOT offered in the new dashboard
 until a zone has one (Cloudflare docs), so: (1) owner 19 Nov: custom rule
-«Challenge empty user agent (not home)» = `(http.user_agent eq "" and
-http.request.uri.path ne "/")` → Managed Challenge, THEN Bot fight mode OFF
+«Challenge empty user agent (not home)» = `(len(http.user_agent) eq 0 and
+len(http.request.uri.path) gt 1)` → Managed Challenge (quotes pasted as curly
+failed), THEN Bot fight mode OFF + Browser integrity check OFF (16:19)
 (AI Labyrinth + AI-bot block rule stay; /api has edge-guard);
 (2) edge-worker.js answers «/» with the tag (200) for an EMPTY user agent
 too; (3) monitor.mjs: «mitgo-tag» (no-UA «/» → 200 + tag) and
