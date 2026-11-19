@@ -148,5 +148,28 @@ any button change.
   - **NH-Hotels Many GEOs** — APPLIED 19 Nov 04:29. 9.10 % per paid order; approval 90 %; hold ~110 d; **regions = Europe + Americas only (no Saudi/Gulf)** → low priority, don't rely on it until traffic GEO is confirmed.
   - **Kiwi.com Many GEOs** — APPLIED 19 Nov 04:30. 3 % per paid order; approval 93 %; regions ALL; EPC 19 €, CR ~2 %; avg moderation 3 d; forbidden: brand bidding, pop-under, adult. Note: virtual interlining — show as an alternative, not first choice.
   - **QEEQ WW** (car rental) — APPLIED 19 Nov 04:32. 4.22 % per paid order; **approval only 44 %**; hold ~63 d; regions incl. UAE + many; brand keywords forbidden. Also on Travelpayouts → compare before routing.
-  - Next: Emirates, flynas, Jazeera from the full catalog («Browse all programs»). Skipped: Skyluxtravel (US/CA only), AirHelp PT/BR (geo-limited; AirHelp already via Travelpayouts).
+  - **19 Nov 04:52 — 19 more applied** (catalog filtered Region = Saudi Arabia + Travel & Tourism → 30 programmes; owner: join everything useful). Commission as shown in the catalog card:
+    | Programme | Service | Commission |
+    |---|---|---|
+    | Etihad [CPS] WW | airline | 1.08 % |
+    | Traveloka [CPS] Many Geo | flights + hotels Asia | 0.31–3.15 % |
+    | Airpaz [CPS] Many Geos | flights Asia | 1.75 % |
+    | Eurowings WW | airline Europe | 1.53 % |
+    | Expedia AE SA | hotels/flights Gulf (conf. 8 % shown) | 0.70–4.20 % |
+    | Planetofhotels WW | hotels (conf. 23 %) | 4.93 % |
+    | Omio Many Geos | trains/buses Europe | 0.64–3.24 % |
+    | Italiarail [CPS] Many GEOs | trains Italy | 2.60–6.50 % |
+    | Infobus [CPS] WW | intercity buses | 0.76–6.15 % |
+    | KKday WW | activities Asia | 7.80 % |
+    | Memphis Tours WW | tours Egypt | 30 $ |
+    | Global YO WW | eSIM | 13 % |
+    | Flyfi WW | eSIM (auto-approved, joined) | 4 % |
+    | DiscoverCars WW | car rental (conf. 19 %) | 1.93–4.50 % |
+    | Myrentacar WW | car rental | 6.65 % |
+    | WoopDrive WW | car rental | 4.20–6 % |
+    | Compensair | flight compensation | 5–12 € |
+    | Lennuabi Many GEOs | flight compensation | 20 € |
+    | VisatoSingapore Many GEOs | Singapore visa | 20 % |
+    Skipped: City.Travel (join disabled), Palazzo Versace Dubai, Vegas, Sanatoriums, HostelPass.
+  - Next: search Emirates, flynas, Jazeera by name WITHOUT the Saudi filter (they did not appear under Region = Saudi Arabia). Approvals arrive by mail → build chat wires each one (route to the best payer per service). Skipped: Skyluxtravel (US/CA only), AirHelp PT/BR (geo-limited; AirHelp already via Travelpayouts).
   - Applying works while the ad space shows «unvalidated» (Mitgo re-check drops it; build-chat fix in INBOX).
