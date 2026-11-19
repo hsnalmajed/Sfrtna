@@ -47,6 +47,7 @@ task under «For the build chat» below instead of coding here.
 Closed: Stay22 (4 Nov, payout threshold $500 never met).
 
 ## For the build chat (paste there)
+- **Before April 2027 (Apple ITMS-90725, mail 18 Nov 19:10 on build 51):** build the iOS app with the iOS 27 SDK / Xcode 27 (`ios.yml` runner image + xcode-select). Warning only; build 51 is valid.
 - **Admitad programmes approved 19 Nov (wire them, route each service to the best payer, keep every company visible):** Flyfi (eSIM), WoopDrive (car rental), Compensair + Lennuabi (flight-delay compensation, next to AirHelp). Rates + rules in PARTNERS.md «Admitad programmes». More approvals will follow by mail.
 - **ROOT FIX for Apple — BUILT 18 Nov in the mail chat (owner asked), commit
   0221491:** «iOS clean mode» (`src/lib/iosClean.ts`) + native WebKit rules +
