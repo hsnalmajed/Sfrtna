@@ -1,3 +1,2 @@
-2026-11-19T01:15:25.561Z
-jajce: 58s, 910 known → 34 kept thin: +17 lesser-known {"history":9,"religion":14,"museums":2,"nature":9}; top: Pliva Waterfall | Balkana Lake | St. Mary’s Church with St. Luke’s Belltower | Jajce Citadel | Lisina | Church of St John in Podmilačje
-   dropped (famous): Jajce 47 (Q3257686→Q486972); Kingdom of Croatia 41 (no group: Q3024240,Q1250464); Mrkonjić Grad 38 (Q3257686→Q486972); Kneževo 25 (Q486972→Q486972)
+2026-11-19T17:20:13.338Z
+
