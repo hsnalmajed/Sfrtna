@@ -175,21 +175,28 @@ in X (+/−, back to ours) → nearest cities with their days (tick, +/−; days
 not given → first city). `/api/ai/plan` `preview:true` → `routeOptions`;
 `answers.split` validated in plan.ts, built exactly in routePlan.ts. Checked
 locally (Playwright 390 px, Istanbul 12 days → 7 + Bursa 3 + Sapanca 2).
-**▶ NOW = round 3 «الصور» — IN PROGRESS** (PROJECT_NOTES «Photos round 3 —
-19 Nov»). Built + live: nature-first ordering of the 331 galleries; collector
-`gallery2.ts` with Commons «n» photos (paths decoded, no space/wildlife/fruit/
-road shots, one photo per series). Two runs queued 19 Nov ~09:50 KSA:
-44474271797 (redo of the 34 thin cities) then 44474359127 (the 50 never
-collected + sheets of all unreviewed). **NEXT:** 1) when both are green,
-fetch branch `photo-review-v2` (v2-<slug>.jpg), Read each sheet, write drop
-lines in `scripts/photos/gallery2-drop.txt` (keep nature + famous sights;
-drop buildings, roads, flags, insides, close-ups; `*` = nothing fits; Commons
-candidates are noisy, so look at every one); 2) `npx tsx
-scripts/photos/gallery2.ts build <path>/gallery2.json` → `node
-scripts/coverage/depth.mjs` «no gallery» 84 → ~0 → commit → one sample sheet
-to the owner; 3) disable gallery2.yml (`gh api -X PUT
-.../workflows/gallery2.yml/disable`). Ghost run 44442033294 stays «queued»
-(GitHub, can't cancel) — harmless. photos.yml stays DISABLED.
+**▶ NOW = round 3 «الصور» — owner 19 Nov 10:31: «photos still bad: show the
+city's famous sights, nature, what makes it special — not meaningless
+buildings».** Root cause: galleries opened with untitled Pexels «Istanbul»
+shots (streets/buildings) and my 19 Nov reorder pushed famous mosques and
+museums to the end. FIXED + LIVE (8544f0b, 94e3562): build = sights in the
+guide's order of fame (each sight's own Pexels photos found BY NAME, caption
+= the sight, then its guide photo), Commons nature only after an eye check,
+≤4 general views last; collector searches the 10 most famous sights by name,
+only 2 general searches, no caps on famous worship/museums, no insides.
+Istanbul now: Hagia Sophia, Topkapı, Sultan Ahmed, Süleymaniye, Bosphorus…
+`gallery2.yml` (own concurrency group `gallery-v3`, hourly :23) re-collects
+every city without sights (never-collected first, ~15 cities/run, ~28 runs)
+and PUBLISHES after each run (push-to-main). Galleries 349, no gallery 57.
+**NEXT:** 1) Read 4–5 sheets on `photo-review-v2` (v2-kusadasi, annecy,
+fujairah, ankara, jerash; s# = sights by name) — if a sight's Pexels photos
+are wrong places/buildings, tighten the name match in `gallery2.ts`
+(words/GENERIC) before more runs; 2) check hourly runs fire (`gh api
+.../gallery2.yml/runs?event=schedule`); if not, dispatch by hand; 3) cities
+with no sights (jazan, umluj, dahab, el-gouna, bolu, …): review their n#
+sheets → drop lines → build; 4) when all rows have `s`, disable the workflow,
+send the owner Istanbul + 2 small cities as a before/after. Ghost run
+44442033294 stays «queued» (harmless). photos.yml stays DISABLED.
 Owner's tests of «خريطتي» wait for the final test round (owner 18 Nov).
 Then rounds 3–7 (photos, hotels, flights H+B, flight+hotel C, features
 visible + home hero).

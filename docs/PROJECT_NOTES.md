@@ -304,6 +304,13 @@ Travelpayouts.
   without query, more BAD words, one photo per file-name series.
 - Owner's notes 19 Nov built the same day: phone «خريطتي» card (name + hint +
   map) and the plan's «split» question (see START_HERE).
+- Owner 19 Nov 10:31: «still bad — not the city's sights and nature». Cause
+  in the LIVE galleries: Pexels views by city name led (anonymous streets,
+  captioned only with the city) and the morning reorder sent famous worship
+  and museums last. New rule: famous sights in fame order, each sight's own
+  photos searched by its name (alt must contain a distinctive word of the
+  name, GENERIC words like mosque/palace ignored), Commons nature only after
+  an eye check, ≤4 general views at the end. Auto-publish after each run.
 
 ### Places, speed, country page — 7 Oct (night)
 - City places are stored, not fetched live: `public/data/places/<slug>.json`
