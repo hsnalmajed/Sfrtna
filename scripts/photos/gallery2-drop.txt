@@ -3,22 +3,22 @@ riyadh s2 s4 s5 s6 s7 s10 s11 s12 s13 s14 s15 v2 v3 v7 l2 l11
 jeddah s1 s2 s3 s4 s5 s6 s7 s8 s9 s10 s11 s12 v1 v2 v4 v7 v8 v9 v13 v14 l4 l5 l6
 makkah v1 v3 v4 v7 v8 v9 v10 v12 v13 v14 v17 l1 l3 l4 l5
 madinah s3 s4 s5 v1 v2 v3 v4 v5 v7 v8 v9 v11 v12 v13 v16 v17 v18 v19 v20 v21 v22 v25 v26 v27 l7 l10 l11 l14 l17 l18
-alula v3 v4
+alula s1 s2 s3 s4 v4 v6 l3
 antalya s1 s2 s3 s4 s5 s7 s25 v1 v2 v3 v4 v7 v8 v9 v10 v11 v12 v13 v17 v18 v19 v20 v21 v23 v24 l1 l6
 cappadocia s8 s10 s15 s16 s17 s18 s20 v1 v2 v3 v4 v5 v7 v8 v9 v11 v13 v14 v15 v16 v17 v19 v20 v22 v23 v25 v26 v27 v28 v29 v30 l2 l4 l5 l8 l10 l12 l16 l17 l18 l19 l20 l24
 trabzon s3 s4 s5 s6 s8 s9 s10 s11 s12 s13 s14 s15 s16 s18 s21 s22 s23 s24 s25 v1 v2 v3 v4 v5 v6 v8 v9 v10 v12 v13 v15 v16 v18 v19 v21 v22 v23 l4 l6 l7 l10 l11
-izmir v3 v4 v5 v6 v7 v8 v9 v10 v11 v14 v15 v16 v18 v20 v21 v22 v23 v24 v26 v27 v28 v29 v30 l6 l7 l11 l12 l16
-bursa v3 v4 v5 v6 v8 v9 v10 v12 v18 v20 v21 v27 v28 v29 l9 l11 l16 l17
-bodrum v5 v9 v10 v16 v19 v21 v25 v27
+izmir s1 s2 s3 s4 s5 s6 s8 s9 s10 s11 s12 s13 s16 s17 s18 s19 s20 s21 v1 v2 v3 v4 v6 v7 v8 v9 v10 v11 v12 v13 v15 v16 v17 v18 v19 v20 v21 v22 v23 v24 v27 v28 v29 l4 l6 l7 l8 l10 l11 l12 l13 l16
+bursa s4 s5 s8 s10 s11 s12 s13 s14 s15 s16 s17 s18 s19 v1 v2 v3 v4 v5 v6 v7 v8 v9 v11 v14 v15 v19 v20 v21 v22 v23 v24 l5 l9 l10 l11 l13 l14 l15 l16 l17
+bodrum s1 s5 s9 s10 s11 s12 s13 s14 v1 v2 v3 v5 v6 v7 v8 v9 v10 v11 v12 v14 v15 v17 v18 v19 v20 v22 v23 v24 v26 v27 l6 l7 l8 l11
 abu-dhabi s7 s8 s9 s10 s11 s12 v1 v2 v4 v5 v6 v7 v9 v10 v11 v12 v13 v14 v16 v17 v19 v20 v21 v22 v24 v25 v26 v28 v29 v30 l3 l4
-sharjah v2 v3 v4 v5 v8 v11 v12 v14 v16 v18 v19 v21 v23 v25 v28 v30 l2 l6 l8 l10
+sharjah s1 s2 s3 s4 s5 s6 s7 s8 s9 s10 s11 s12 s13 s14 s15 s16 s17 s18 s19 s20 s21 s22 s23 s24 v1 v2 v3 v4 v5 v6 v8 v9 v11 v12 v13 v14 v15 v16 v17 v18 v22 v23 v24 v25 v26 v27 v28 v30 l2 l6 l8 l10
 ras-al-khaimah v3 v5 v6 v7 v8 v9 v10 v12 v13 v14 v15 v17 v20 l5 l6 l7 l9 l10
-doha v1 v3 v5 v8 v9 v12 v15 v16 v17 v18 v19 v21 v24 v29 v30 l1 l6 l7
+doha s7 s8 s9 s10 s11 s12 s13 s14 s15 v1 v3 v4 v5 v7 v8 v9 v10 v11 v13 v14 v15 v16 v17 v18 v20 v21 v22 v23 v25 v26 v28 v29 v30 l6 l7
 kuwait-city v3 v6 v7 v8 v9 v10 v11 v14 v16 v22 v23 v26 v27 v28 l1 l5 l6
 manama v3 l3 l5 l6 l7 l8 l9 l10 l12 l13 l16 l17
-muscat v3 v4 v6 v7 v9 v11 v14 v22 v23 v24 v26 v27 v28 v29 v30 l6 l7 l9 l11
+muscat s2 s3 s4 s5 s6 s7 s8 s9 s10 v1 v2 v4 v6 v7 v8 v9 v10 v13 v14 v15 v16 v18 v19 v20 v21 l6 l7
 nizwa v3 v4 v6 v7 v8 v9
-cairo v5 v7 v8 v9 v13 v14 v17 v21 v23 v25 v27 v28 v29 v30 l12 l14 l19 l20 l22
+cairo s2 s3 s6 v1 v3 v4 v5 v6 v7 v8 v10 v11 v12 v13 v15 v18 v20 v21 v22 v23 v24 v25 v26 l8 l12 l14 l19
 luxor v5 v6 v8 v10 v11 v13 v14 v16 v17 v18 v20 v24 v25 v29 l3 l4 l6 l9 l10 l11 l12 l13 l14 l15 l17 l18 l20 l21 l22 l23 l24 l25
 aswan v6 v15 v16 v19 l2 l3 l4 l7 l10 l12 l13 l14 l15
 alexandria v2 v3 v6 v7 v8 v11 v12 v13 v17 v21 v23 v24 v25 v29 v30 l1 l3 l4 l5 l6 l10 l11 l18 l19 l20 l23 l24 l25
@@ -32,10 +32,10 @@ chefchaouen v1 v3 v4 v8 v10 v12 v13 v14 v20 v23 v24 v27 v28 v29
 tangier v2 v3 v5 v8 v9 v10 v13 v18 l2 l3 l8 l9
 agadir *
 rabat v3 v6 v7 v9 v13 v16 v17 v18 v19 v20 v21 v22 v23 v25 l11 l12 l16 l18 l19 l22 l23 l25
-amman v2 v4 v5 v6 v7 v9 v12 v13 v15 v17 v18 v21 v23 v25 v28 l2 l3 l7 l8 l11 l13 l18 l21 l22 l23 l25
+amman s2 s10 s11 s12 s14 s15 s16 s17 s18 s19 s20 s21 s22 s23 s24 s25 v1 v2 v3 v6 v7 v8 v9 v10 v11 v13 v15 v16 v17 v18 v19 v20 v23 l2 l3 l5 l8 l10 l11 l13 l18 l21 l22 l23 l24 l25
 petra v2 v4 v8 v9 v11 v12 v13 v14 v15 v16 v19 v23 v27 v28 v30 l2 l3 l7 l8 l10 l11 l14
 aqaba v2 v5 v6 v9 v10 v11 v14 v15 v16 v18 v19 v20 l2 l3
-london v1 v4 v5 v6 v7 v9 v10 v14 v16 v17 v18 v23 v24 v27 v29 l3 l11 l17 l19 l21
+london s1 s4 s5 s6 s7 s8 s9 s12 s15 s30 s31 s32 v1 v2 v3 v4 v5 v6 v7 v8 v9 v10 v11 v12 v13 v16 v17 v18 v20 v21 v22 v23 v26 v27 v28 v30 l3 l10 l13 l16 l18 l20 l24
 edinburgh v2 v5 v7 v8 v9 v10 v11 v13 v15 v18 v20 v24 v25 v27 v30 l3 l7 l8 l10 l11 l17 l18 l20 l25
 manchester v2 v5 v6 v8 v9 v10 v12 v13 v15 v16 v17 v21 v24 v26 l1 l8 l11 l15 l18 l21 l23 l24 l25
 oxford v1 v3 v9 v10 v13 v14 v15 v17 v18 v19 v21 v24 v26 v27 l5 l8 l11 l12 l15 l16 l17 l18 l19 l20 l21 l23 l24 l25

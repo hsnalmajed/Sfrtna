@@ -195,9 +195,16 @@ under KL, Sumela under «Kaymaklı» — every s# needs the eye. **Sheets now:**
 dispatch gallery2.yml with `inputs[only]=a,b,…` (no redo) → own concurrency
 group, sheets pushed to branch **`photo-sheets`** (chain can't cancel/wipe
 them). Cities with s# rows: `jq 'to_entries[]|select(.value.s)|.key'` on
-photo-review-v2's gallery2.json. **NEXT (~10 cities/chat):** london, cairo,
-baku, tbilisi, bali, male once the chain gives them s#; then bodrum, izmir,
-bursa, alula, fethiye, sharjah… Write one drop line per city (tags s#/v#/n#/l#;
+photo-review-v2's gallery2.json. **19 Nov 3rd chat: +10 live** (london,
+cairo, doha, muscat, amman, sharjah, alula, bodrum, izmir, bursa). Worst:
+sharjah (Russian/Armenian churches, Ajman), alula (Abu Dhabi's Qasr
+al-Watan), muscat (Makkah clock, La Scala). **OWNER'S STANDARD (19 Nov
+17:44): every photo must tell the city's beauty, sights and activities so it
+makes the traveller want to go** — drop dull/hazy skylines, tanks, caravans,
+statues, museum cases, B&W; keep coast, old town, markets, landmarks at
+their best, things to do. **NEXT (~10 cities/chat):** baku, tbilisi, bali,
+male, beirut, marrakech, rome, barcelona, singapore, phuket once they have
+s#; ready now: fethiye, salalah, manama, kuwait-city + list. Write one drop line per city (tags s#/v#/n#/l#;
 drop: interiors of no note, statues/close-ups, screens, traffic, wrong
 place, blank tiles, hazy/grey; keep ≤6 v), commit; the next run publishes.
 Lessons: guide fame lists odd «sights» (Stock Exchange) — drop by eye. Ghost
