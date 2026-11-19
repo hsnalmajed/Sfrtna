@@ -151,7 +151,7 @@ any button change.
   - **19 Nov 04:52 — 19 more applied** (catalog filtered Region = Saudi Arabia + Travel & Tourism → 30 programmes; owner: join everything useful). Commission as shown in the catalog card:
     | Programme | Service | Commission |
     |---|---|---|
-    | Etihad [CPS] WW | airline | 1.08 % |
+    | Etihad [CPS] WW | airline — **commission only for these origins (POS), others 0 %:** Saudi = RUH, JED, MED, ELQ (**not DMM**); also AUH, India + Indonesia cities, many EU/US/Asia hubs (list on the programme page, upd 3 Apr 2026). Cookie 30 d, deeplinks allowed, no brand SEM. Approval 38 %, hold ~93 d | 1.08 % |
     | Traveloka [CPS] Many Geo | flights + hotels Asia | 0.31–3.15 % |
     | Airpaz [CPS] Many Geos | flights Asia | 1.75 % |
     | Eurowings WW | airline Europe | 1.53 % |
