@@ -84,6 +84,18 @@ categories Travel + Transportation, countries SA/AE/KW/QA/BH; meta tag
 `mitgo-verification` in [locale]/layout.tsx + edge-worker.js answers `/` for UA
 matching mitgo|admitad. Verify fails → read Cloudflare Events for the real UA. 15:03: account
 activated, ad space «Under review» → when Active: join flynas + Jazeera. **18 Nov 15:57: ad space ACTIVE.**
+**19 Nov ROOT CAUSE of «Not verified» (Security Events, 18 Nov):** Mitgo's
+re-check = GET «/», NO user agent, HTTP/1.1, from ONE address
+3.126.213.103 (AWS Frankfurt, AS16509), every ~2 min 15:22–16:52 KSA; all
+48 sampled (≈96) got Bot Fight Mode «Managed Challenge» 403, so the Worker
+never ran (and its UA match /mitgo|admitad/ would not have fired anyway).
+Bot Fight Mode cannot be skipped by WAF rules on Free; it does NOT trigger
+when an IP Access rule matches. Fix: (1) zone IP Access rule «Allow»
+3.126.213.103, note «Mitgo/Admitad ad-space checker» (owner, 19 Nov);
+(2) edge-worker.js answers «/» with the tag (200) for an EMPTY user agent
+too; (3) monitor.mjs: «mitgo-tag» (no-UA «/» → 200 + tag) and
+«mitgo-blocked» (any challenged no-UA «/» request in the last hour → mail
+with the new address to allow). If Mitgo changes address, add the new one.
 CJ (11 Nov 16:30): account made, agreements accepted, user + Network Profile
 (budget-first text) + property «Sfrtna – Trip budget planner & travel
 comparison» id 101926504 (Website; Content + Comparison) + Account info

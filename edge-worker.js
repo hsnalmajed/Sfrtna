@@ -172,13 +172,23 @@ const worker = {
       );
     }
     // Admitad (Mitgo) site ownership (owner's publisher account, 11 Nov 2026):
-    // meta tag on the home page. "/" redirects visitors to /ar, so a checker
-    // that does not follow redirects gets the tag here. Checker user agent not
-    // published: match the network names. The tag is also in [locale]/layout.
+    // meta tag on the home page. "/" redirects visitors to /ar, so the
+    // checker gets the tag here, at "/" itself, with a 200. The tag is also
+    // in [locale]/layout.
+    // Found 19 Nov in Cloudflare's Security Events: the checker that
+    // re-tests the ad space (18 Nov 15:22–16:52 KSA, every ~2 min) sends NO
+    // user agent at all, from one AWS Frankfurt address (3.126.213.103,
+    // HTTP/1.1, GET "/") — so the old name match never fired, and Bot Fight
+    // Mode answered all of them with a 403 challenge before this Worker ran.
+    // The zone has an IP Access «Allow» rule for that address (the only thing
+    // Bot Fight Mode honours, see PARTNERS.md «Site verification»); here an
+    // empty user agent counts as the checker too. Browsers and search
+    // engines always send one, so they still get the redirect.
     const mitgoId = "abfa1f5d-e91a-4cb7-bd94-599367568a79";
-    if (url.pathname === "/" && /mitgo|admitad/i.test(request.headers.get("user-agent") || "")) {
+    const ua = (request.headers.get("user-agent") || "").trim();
+    if (url.pathname === "/" && (ua === "" || /mitgo|admitad/i.test(ua))) {
       return new Response(
-        `<!doctype html><html><head><meta name="mitgo-verification" content="${mitgoId}" /><meta name="robots" content="noindex"></head><body></body></html>`,
+        `<!doctype html><html><head><meta name="mitgo-verification" content="${mitgoId}" /><meta name="robots" content="noindex"><title>Sfrtna</title></head><body><a href="https://sfrtna.com/ar">Sfrtna</a></body></html>`,
         { headers: { "content-type": "text/html; charset=utf-8", "x-robots-tag": "noindex", "cache-control": "no-store" } },
       );
     }

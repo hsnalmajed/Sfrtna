@@ -116,6 +116,60 @@ await check("serpapi", "رصيد أسعار الفنادق (SerpApi)", async () 
   return `المتبقي ${serp.left} من ${serp.perMonth}`;
 });
 
+// Admitad (Mitgo) ad-space check: their checker asks for "/" with NO user
+// agent (Cloudflare Security Events, 18 Nov) and must get the tag with a 200
+// (edge-worker.js). Node's fetch always adds a user agent, so node:https is
+// used to send none at all.
+const MITGO_ID = "abfa1f5d-e91a-4cb7-bd94-599367568a79";
+await check("mitgo-tag", "وسم التحقق لشبكة Admitad على «/»", async () => {
+  const { request } = await import("node:https");
+  const { status, body } = await new Promise((resolve, reject) => {
+    const req = request(`${BASE}/`, { method: "GET", headers: { "x-sfrtna-smoke": TOKEN }, timeout: 30_000 }, (res) => {
+      let body = "";
+      res.on("data", (c) => (body += c));
+      res.on("end", () => resolve({ status: res.statusCode, body }));
+    });
+    req.on("timeout", () => req.destroy(new Error("انتهت المهلة")));
+    req.on("error", reject);
+    req.end();
+  });
+  if (status !== 200 || !body.includes(MITGO_ID)) throw new Error(`«/» بلا وكيل مستخدم ردّ ${status} بلا الوسم`);
+  return "200 + الوسم";
+});
+
+// The same checker seen by Cloudflare: any request to "/" with no user agent
+// that the zone challenged or blocked in the last hour means Bot Fight Mode
+// is again in front of it (the IP Access «Allow» rule for its address is
+// gone, or the checker moved to another address). Zone tag is not secret.
+const ZONE = "29f21642516a456694bf8a5e1f2e1c3e";
+await (async () => {
+  const token = process.env.CLOUDFLARE_API_TOKEN;
+  if (!token) return notes.push("حجب مدقق Admitad: مفتاح Cloudflare غير متاح لهذا الفحص");
+  try {
+    const res = await fetch("https://api.cloudflare.com/client/v4/graphql", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        query: `query($z:String!,$s:Time!,$e:Time!){viewer{zones(filter:{zoneTag:$z}){firewallEventsAdaptive(limit:50,filter:{datetime_geq:$s,datetime_leq:$e,clientRequestPath:"/",userAgent:""}){clientIP action source}}}}`,
+        variables: { z: ZONE, s: new Date(Date.now() - HOUR).toISOString(), e: new Date().toISOString() },
+      }),
+      signal: AbortSignal.timeout(30_000),
+    });
+    const j = await res.json();
+    if (j.errors?.length || !j.data) return notes.push(`حجب مدقق Admitad: لا صلاحية للقراءة (${String(j.errors?.[0]?.message ?? res.status).slice(0, 100)})`);
+    const events = (j.data.viewer.zones[0]?.firewallEventsAdaptive ?? []).filter((e) => !/allow|skip|log/i.test(e.action));
+    await check("mitgo-blocked", "مدقق Admitad يصل إلى الموقع دون تحدٍّ", async () => {
+      if (events.length) {
+        const ips = [...new Set(events.map((e) => e.clientIP))].join("، ");
+        throw new Error(`Cloudflare تحدّى ${events.length} طلباً من المدقق (${events[0].source}) من ${ips} — أضف العنوان إلى قواعد IP Access بإجراء Allow`);
+      }
+      return "لا تحدّيات في آخر ساعة";
+    });
+  } catch (err) {
+    notes.push(`حجب مدقق Admitad: تعذرت القراءة (${String(err).slice(0, 100)})`);
+  }
+})();
+
 // Worker errors, last hour. A token without analytics access is a note, not
 // a fault of the site.
 await (async () => {

@@ -54,7 +54,7 @@ Closed: Stay22 (4 Nov, payout threshold $500 never met).
   release gate `scripts/ios-clean-check.mjs`. Owner steps + reply + checklist:
   `docs/app-store/presubmit-checklist.md`, `docs/app-store/reply-2026-11-18.md`.
   Build chat: nothing to do unless the gate turns red. Small later idea: Aviasales opens in USD — try its currency parameter (SAR) in `/api/go/tp?b=aviasales`.
-- **⚠ PRIORITY — Admitad/Mitgo verification keeps dropping (18 Nov); 19 Nov 5 programmes rejected within 15 min, likely because of it:** ad space «Sfrtna»
+- **DONE 19 Nov (build chat): root cause = Bot Fight Mode challenged Mitgo's no-UA checker (3.126.213.103); fix in PARTNERS «Site verification» → owner adds IP Access Allow, then Verify.** Old note: Admitad/Mitgo verification keeps dropping (18 Nov); 19 Nov 5 programmes rejected within 15 min, likely because of it:** ad space «Sfrtna»
   went Active 15:57 → «Not verified» 16:09. `edge-worker.js` answers «/» with
   the `mitgo-verification` tag only when the UA matches /mitgo|admitad/;
   every other visitor to «/» is redirected to /ar. Read Cloudflare logs /
