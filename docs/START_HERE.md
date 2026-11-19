@@ -186,10 +186,18 @@ bangkok (views 4 → 29), istanbul (29 + 21), dubai (21 + 7) — drop lines in
 `scripts/photos/gallery2-drop.txt`. `gallery2.yml` now CHAINS itself (GitHub
 skipped the hourly runs) until `gallery2.ts left` = 0 (~375 cities, ~12/run),
 publishing after each run; unreviewed cities show sights-by-name + guide
-photos only. **NEXT (each build chat, ~10 cities):** fetch `photo-review-v2`,
-Read sheets of the most visited cities first (paris, kuala-lumpur, london,
-cairo, baku, tbilisi, antalya, trabzon, bali, cairo, maldives…; `--only`
-re-draws a reviewed city), write one drop line per city (tags s#/v#/n#/l#;
+photos only. **19 Nov 2nd chat: 10 more eye-checked + live** (paris,
+kuala-lumpur, antalya, trabzon, riyadh, jeddah, makkah, madinah, abu-dhabi,
+cappadocia; lines REWRITTEN whole — a re-collect renumbers v#/l#, so old lines
+of re-collected cities are stale). Name search fails often: Amman's blue
+mosque under Riyadh/Jeddah, Casablanca's Hassan II under Jeddah, Putra mosque
+under KL, Sumela under «Kaymaklı» — every s# needs the eye. **Sheets now:**
+dispatch gallery2.yml with `inputs[only]=a,b,…` (no redo) → own concurrency
+group, sheets pushed to branch **`photo-sheets`** (chain can't cancel/wipe
+them). Cities with s# rows: `jq 'to_entries[]|select(.value.s)|.key'` on
+photo-review-v2's gallery2.json. **NEXT (~10 cities/chat):** london, cairo,
+baku, tbilisi, bali, male once the chain gives them s#; then bodrum, izmir,
+bursa, alula, fethiye, sharjah… Write one drop line per city (tags s#/v#/n#/l#;
 drop: interiors of no note, statues/close-ups, screens, traffic, wrong
 place, blank tiles, hazy/grey; keep ≤6 v), commit; the next run publishes.
 Lessons: guide fame lists odd «sights» (Stock Exchange) — drop by eye. Ghost
