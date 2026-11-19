@@ -46,8 +46,10 @@ const only = new Set((arg("--only") ?? "").split(",").filter(Boolean));
 
 /** One photo. `s` = source: p Pexels (o = original URL), c Commons (o = "a/ab/File.jpg"). */
 export type Photo = {
-  /** v = Pexels view, n = Commons nature/view near the city (round 3), l = guide landmark. */
+  /** v = Pexels view of the city, n = Commons nature near it, l = a famous sight (guide place). */
   k: "v" | "l" | "n";
+  /** For sights: the place's rank in the guide (0 = most famous), so the gallery follows fame. */
+  f?: number;
   s: "p" | "c";
   o: string;
   w: number;
@@ -58,7 +60,7 @@ export type Photo = {
   /** Credit for Commons photos: "author · licence". */
   c?: string;
 };
-type Store = Record<string, { v: Photo[]; l: Photo[]; n?: Photo[] }>;
+type Store = Record<string, { v: Photo[]; l: Photo[]; n?: Photo[]; s?: Photo[] }>;
 type GuidePlace = {
   n?: string;
   e?: string;
@@ -187,12 +189,14 @@ async function pexels(
 /** File names that are not a view: insides, worship, statues, flags, transport, people. */
 const BAD_TITLE =
   /(interior|inside|innen|indoor|altar|nave|ceiling|dome interior|mihrab|minbar|church|cathedral|chapel|mosque|masjid|cami|synagogue|museum|exhibit|statue|sculpture|bust|plaque|inscription|grave|tomb|cemetery|flag|metro|station|bus|train|tram|car |cars|airport|aircraft|portrait|people|crowd|map|logo|sign|night|iss\d|view of earth|space station|astronaut|bird|dove|insect|butterfly|moth|dragonfly|frog|lizard|gecko|snake|beetle|spider|fish|coral|flower|orchid|fungi|mushroom|specimen|fauna|flora|animalia|plantae|shark|elephant|loxodonta|giraffe|monkey|baboon|fruit|prickly pear|fig at|pomegranate|apple at|food|dish|road,|street sign|traffic)/;
-/** Gallery order of guide kinds: nature and views lead, worship and museums close. */
-const ORDER = ["nature", "views", "beach", "history", "culture", "markets", "family", "shopping", "religion", "museums"];
-const landmarkRank = (g?: string) => {
-  const i = ORDER.indexOf(g ?? "");
-  return i < 0 ? ORDER.length - 2 : i;
-};
+/** Sights searched by name per city (one Pexels search each). */
+const SIGHTS = 10;
+/** Guide kinds that are not what a city is known for. */
+const NOT_A_SIGHT = new Set(["shopping", "family"]);
+/** Words that name a kind, not the sight (an alt saying «mosque» is not «Sultan Ahmed Mosque»). */
+const GENERIC = new Set(["mosque", "palace", "museum", "tower", "bridge", "square", "park", "beach", "lake", "mountain", "national", "street", "market", "church", "cathedral", "great", "grand", "old", "city", "town", "garden", "gardens", "island", "fort", "fortress", "castle", "temple", "river", "valley", "falls", "center", "centre", "district", "historic", "mount", "jabal", "masjid", "souq", "souk"]);
+/** Inside shots: never in a gallery. */
+const INSIDE = /(interior|inside|innen|indoor|altar|nave|ceiling|mihrab|minbar|exhibit|showcase|vitrine)/;
 const NATURE_CATS =
   /(landscape|mountain|beach|coast|sea|lake|river|waterfall|valley|desert|dune|island|bay|forest|park|garden|canyon|cliff|wadi|oasis|tea plantation|rice terrace|sunset|sunrise|panorama|view|skyline|old town|harbour|harbor|port)/;
 const MAX_NATURE = 25;
@@ -328,14 +332,16 @@ async function collect() {
   let budget = Number(arg("--max") ?? 180);
   // --redo: collect the --only cities again from scratch.
   if (process.argv.includes("--redo")) for (const s of only) delete store[s];
-  for (const c of cities()) {
+  // Cities never collected first, then those collected before the sights-by-name (19 Nov).
+  const order = [...cities()].sort((a, b) => Number(a.slug in store) - Number(b.slug in store));
+  for (const c of order) {
     if (only.size && !only.has(c.slug)) continue;
-    if (c.slug in store) continue;
+    if (store[c.slug]?.s) continue;
     const city = c.nameEn.replace(/\s*\(.*?\)\s*/g, " ").trim();
     const country = findCountry(c.code)?.nameEn ?? "";
     const centre = CITY_COORDS[c.slug];
     if (!centre) continue;
-    if (budget < 6) break;
+    if (budget < SIGHTS + 3) break;
 
     // Views: the city named in the caption, never people, animals or interiors.
     const views: Photo[] = [];
@@ -344,14 +350,9 @@ async function collect() {
       city.split(/[\s-]/).sort((a, b) => b.length - a.length)[0],
     );
     let stopped = false;
-    // Round 3 (owner, 14 Nov: "nature and famous sights, not buildings").
-    for (const q of [
-      `${city} ${country}`,
-      `${city} nature`,
-      `${city} landscape`,
-      `${city} beach`,
-      `${city} sunset`,
-    ]) {
+    // Owner 19 Nov: the gallery is the city's famous sights and nature, not
+    // untitled streets — two general searches only; the sights come below.
+    for (const q of [`${city} ${country}`, `${city} landscape`]) {
       budget--;
       const res = await pexels(q);
       if (res === null) {
@@ -383,8 +384,7 @@ async function collect() {
     // Landmarks: the guide's places with a Commons photo; Commons' own best first, then fame.
     const places = guide(c.slug).slice(0, 60);
     const info = await commonsInfo(places.map((p) => p.im!));
-    // Nature and sights first; at most 2 places of worship and 1 museum, never an inside shot.
-    const cap: Record<string, number> = { religion: 2, museums: 1 };
+    // In the guide's order of fame (Hagia Sophia before a side street); never an inside shot.
     const ranked = places
       .map((p, i) => ({ p, i, inf: info.get(p.im!) }))
       .filter(
@@ -392,17 +392,11 @@ async function collect() {
           r.inf &&
           r.inf.width >= 1200 &&
           r.inf.width >= r.inf.height * 0.9 &&
-          !BAD_TITLE.test(fold(r.p.im!)),
+          !INSIDE.test(fold(r.p.im!)),
       )
-      .sort((a, b) => b.inf!.quality - a.inf!.quality || a.i - b.i)
-      .filter((r) => {
-        const g = r.p.g ?? "";
-        if (!(g in cap)) return true;
-        return cap[g]-- > 0;
-      })
-      .slice(0, MAX_LANDMARKS)
-      .sort((a, b) => landmarkRank(a.p.g) - landmarkRank(b.p.g) || a.i - b.i);
-    const landmarks: Photo[] = ranked.map(({ p, inf }) => ({
+      .slice(0, MAX_LANDMARKS);
+    const landmarks: Photo[] = ranked.map(({ p, i, inf }) => ({
+      f: i,
       k: "l",
       s: "c",
       o: p.im!,
@@ -413,11 +407,34 @@ async function collect() {
       x: p.x!,
       c: [p.ia, p.il].filter(Boolean).join(" · ") || undefined,
     }));
-    const nature = await commonsNear({ an: c.nameAr, en: city }, centre, places);
-    store[c.slug] = { v: views, l: landmarks, n: nature };
+    // Each famous sight by its own name: professional photos captioned with the sight.
+    const sights: Photo[] = [];
+    const famous = places.map((p, i) => ({ p, i })).filter(({ p }) => !NOT_A_SIGHT.has(p.g ?? "")).slice(0, SIGHTS);
+    for (const { p, i } of famous) {
+      const name = (p.e || p.n)!;
+      const words = fold(name).split(/[^a-z\u00c0-\u024f]+/).filter((w) => w.length >= 4 && !GENERIC.has(w));
+      if (!words.length) continue;
+      budget--;
+      const res = await pexels(`${name} ${city}`);
+      if (res === null) break;
+      let got = 0;
+      for (const r of res) {
+        if (got >= 2) break;
+        const alt = fold(r.alt ?? "");
+        const o = r.src.original.split("?")[0];
+        if (seen.has(o) || r.width < 2000 || r.width < r.height * 1.2) continue;
+        if (!words.some((w) => alt.includes(w)) || UNFIT.test(alt) || ANIMALS.test(alt) || INSIDE.test(alt)) continue;
+        seen.add(o);
+        got++;
+        sights.push({ k: "l", s: "p", f: i, o, w: r.width, an: p.a || p.an || name, en: name, y: p.y!, x: p.x! });
+      }
+    }
+    // Commons nature near the city only where sights are few — it needs an eye check before it shows.
+    const nature = landmarks.length + sights.length < 8 ? await commonsNear({ an: c.nameAr, en: city }, centre, places) : [];
+    store[c.slug] = { v: views, l: landmarks, n: nature, s: sights };
     writeFileSync(FILE, JSON.stringify(store));
     console.log(
-      `${c.slug}: ${views.length} views, ${nature.length} nature, ${landmarks.length} landmarks (${ranked.filter((r) => r.inf!.quality).length} rated)`,
+      `${c.slug}: ${sights.length} sights, ${views.length} views, ${nature.length} nature, ${landmarks.length} landmarks (${ranked.filter((r) => r.inf!.quality).length} rated)`,
     );
   }
   writeFileSync(FILE, JSON.stringify(store));
@@ -458,6 +475,7 @@ async function sheets() {
   for (const [slug, row] of Object.entries(store)) {
     if (done.has(slug) || (only.size && !only.has(slug))) continue;
     const all = [
+      ...(row.s ?? []).map((p, i) => ({ p, tag: `s${i + 1}` })),
       ...(row.n ?? []).map((p, i) => ({ p, tag: `n${i + 1}` })),
       ...row.v.map((p, i) => ({ p, tag: `v${i + 1}` })),
       ...row.l.map((p, i) => ({ p, tag: `l${i + 1}` })),
@@ -520,26 +538,27 @@ function build(file: string) {
   for (const c of cities()) {
     const d = done.get(c.slug);
     const row = store[c.slug];
-    if (!d || d === "all" || !row) continue;
-    const keep = (list: Photo[], k: string) =>
-      list.filter((_, i) => !d.has(`${k}${i + 1}`));
-    // Nature (Commons) and views (Pexels) take turns, then landmarks with worship and museums last.
-    const nat = keep(row.n ?? [], "n").map((p) => ({ ...p, k: "v" as const }));
-    const v = keep(row.v, "v");
-    const views: Photo[] = [];
-    for (let i = 0; i < Math.max(nat.length, v.length); i++) {
-      if (nat[i]) views.push(nat[i]);
-      if (v[i]) views.push(v[i]);
-    }
-    const kind = new Map(guide(c.slug).map((p) => [p.im!, p.g]));
-    const landmarks = keep(row.l, "l")
+    if (d === "all" || !row) continue;
+    // Not looked at yet: only the sights by name (their own photos), no general views or Commons nature.
+    const seenByEye = d instanceof Set;
+    const keep = (list: Photo[], k: string) => list.filter((_, i) => !(seenByEye && d.has(`${k}${i + 1}`)));
+    // Owner 19 Nov: the city's famous sights in order of fame — each sight's own
+    // photos (by name), then its guide photo — then nature checked by eye, then
+    // at most four general views.
+    const rank = new Map(guide(c.slug).map((p, i) => [p.im!, i]));
+    const fame = (p: Photo) => p.f ?? rank.get(p.o) ?? 999;
+    const sights = [...keep(row.s ?? [], "s"), ...keep(row.l, "l")]
       .map((p, i) => ({ p, i }))
-      .sort((a, b) => landmarkRank(kind.get(a.p.o)) - landmarkRank(kind.get(b.p.o)) || a.i - b.i)
-      .map((r) => r.p);
-    const items = [...views, ...landmarks];
+      .sort((a, b) => fame(a.p) - fame(b.p) || Number(a.p.s === "c") - Number(b.p.s === "c") || a.i - b.i)
+      .map((r) => r.p)
+      .slice(0, 30);
+    const nat = seenByEye ? keep(row.n ?? [], "n").map((p) => ({ ...p, k: "v" as const })) : [];
+    const views = seenByEye ? keep(row.v, "v").slice(0, 4) : [];
+    const items = [...sights.slice(0, 8), ...nat.slice(0, 6), ...sights.slice(8), ...nat.slice(6, 10), ...views];
     if (items.length < 4) continue;
     const out = items.map((p) => ({
       ...p,
+      f: undefined,
       y: +p.y.toFixed(5),
       x: +p.x.toFixed(5),
     }));
