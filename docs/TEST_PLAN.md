@@ -315,3 +315,5 @@ Not testable here: signed-in save (account DO) — owner checks on the phone.
   plan ready. Restaurants: 53 of 56 had files; negombo, gudauri, ipoh run
   dispatched (missing only). Jajce: neighbour cell set (+331 m) → waits for
   the owner's PC download (1d_BETTER_CELLS.bat).
+- **Jajce published 19 Nov** (live 415, climate 412/415): cell 44.4/17.2
+  (+331 m), station-calibrated July high 27.0 / low 12.4 °C.

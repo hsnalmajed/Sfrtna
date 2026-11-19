@@ -152,17 +152,16 @@ on the phone open «خريطتي», sign in, follow the tour, add 2 countries wi
 cities (one twice), press share; ONE screenshot of anything wrong.
 **Next for the map (Round B):** compare-with-friend link (opt-in, owner's
 yes pending), community numbers, dreams → flight search, suggest from «رحلتي».
-**NOW: audit §7 round 2 «مدن أكثر (F)» batch 3 — 49 of 56 LIVE (live 414).**
+**NOW: audit §7 round 2 «مدن أكثر (F)» batch 3 — 50 of 56 LIVE (live 415).**
 19 Nov (Opus): Negombo published (8ed58c9); no smart plan 5 → 1 (umluj: open
 data has 3 places, nothing invented); marsa-alam/umluj wider area
 (`STORED_RADIUS_BY` in mapPins + guide AREA; places.yml takes «only»);
 live check OK (nuwara-eliya page + plan search, al-khobar, fethiye). Numbers
-in TEST_PLAN. **Left:** (a) Jajce: neighbour cell set in
-cell_overrides (repo + PC copy) → owner runs `1d_BETTER_CELLS.bat` on the PC
-→ Claude runs build_normals/build_hci in ≤175 s device_bash calls (see
-PROJECT_NOTES batch 3 «CLIMATE + PUBLISH DONE») → copy era5land/normals/hci
-back → generate_seasons → publish_staged --apply → build-index → guide deep
-only=jajce; (b) 6 others need station_overrides (official 1991–2020 normals
+in TEST_PLAN. **Jajce DONE 19 Nov** (neighbour cell, PC download, merge +
+hci on the PC, published; guide deep dispatched — check it got a plan).
+Method that worked: put the repo's era5land.json on the PC, run
+merge_sources + build_hci there (VM needs `pip install --user
+timezonefinder`), stage normals/hci back, generate_seasons. **Left:** (b) 6 others need station_overrides (official 1991–2020 normals
 with all month fields; GeoSphere klima-v2-1m for zell-am-see / Bad Goisern
 for hallstatt is reachable only from the owner's PC browser; mestia,
 uzungol, konjic, genting: no source found yet) — owner decision whether to

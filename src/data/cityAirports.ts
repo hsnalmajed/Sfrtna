@@ -440,4 +440,5 @@ export const CITY_AIRPORTS: Record<string, { iata: string; km: number | null }> 
   "como": { iata: "MXP", km: 34 },
   "amalfi": { iata: "NAP", km: 38 },
   "negombo": { iata: "CMB", km: 6 },
+  "jajce": { iata: "SJJ", km: 102 },
 };

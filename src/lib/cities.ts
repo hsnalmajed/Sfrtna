@@ -355,6 +355,7 @@ export const COUNTRY_CITIES: Record<string, CityEntry[]> = {
   BA: [
     { slug: "sarajevo", nameAr: "سراييفو", nameEn: "Sarajevo", wikiTitle: "Sarajevo" },
     { slug: "mostar", nameAr: "موستار", nameEn: "Mostar", wikiTitle: "Mostar" },
+    { slug: "jajce", nameAr: "يايتسه", nameEn: "Jajce", wikiTitle: "Jajce" },
   ],
   AL: [
     { slug: "tirana", nameAr: "تيرانا", nameEn: "Tirana", wikiTitle: "Tirana" },

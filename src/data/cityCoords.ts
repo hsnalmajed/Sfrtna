@@ -439,6 +439,7 @@ export const CITY_COORDS: Record<string, Point & { code: string }> = {
   "como": { lat: 45.81156, lon: 9.08304, code: "IT" },
   "amalfi": { lat: 40.63367, lon: 14.60261, code: "IT" },
   "negombo": { lat: 7.20943, lon: 79.83312, code: "LK" },
+  "jajce": { lat: 44.33967, lon: 17.27118, code: "BA" },
 };
 
 /** Curated landmarks, keyed by "<country code>:<English name>". */

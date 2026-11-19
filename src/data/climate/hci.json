@@ -4,7 +4,7 @@
   "computedFrom": "daily ERA5-Land 1991–2020 (highs, lows, dew point brought to the published monthly figures), ERA5 monthly cloud cover",
   "cloudSource": "Copernicus Climate Change Service (C3S), ERA5 monthly averaged reanalysis on single levels",
   "version": "1.0",
-  "generatedAt": "2026-11-18T20:07:49+00:00"
+  "generatedAt": "2026-11-19T01:12:09+00:00"
  },
  "destinations": {
   "abha": {
@@ -29530,149 +29530,149 @@
   "jajce": {
    "urban": [
     {
-     "mean": 54.6,
-     "goodShare": 0.032,
-     "poorShare": 0.108,
+     "mean": 54.9,
+     "goodShare": 0.041,
+     "poorShare": 0.106,
      "days": 930
     },
     {
-     "mean": 56.0,
-     "goodShare": 0.054,
-     "poorShare": 0.099,
+     "mean": 56.5,
+     "goodShare": 0.074,
+     "poorShare": 0.1,
      "days": 848
     },
     {
+     "mean": 61.7,
+     "goodShare": 0.248,
+     "poorShare": 0.075,
+     "days": 930
+    },
+    {
+     "mean": 67.4,
+     "goodShare": 0.483,
+     "poorShare": 0.063,
+     "days": 900
+    },
+    {
+     "mean": 73.9,
+     "goodShare": 0.706,
+     "poorShare": 0.022,
+     "days": 930
+    },
+    {
+     "mean": 75.5,
+     "goodShare": 0.737,
+     "poorShare": 0.003,
+     "days": 900
+    },
+    {
+     "mean": 74.6,
+     "goodShare": 0.703,
+     "poorShare": 0.001,
+     "days": 930
+    },
+    {
+     "mean": 75.3,
+     "goodShare": 0.737,
+     "poorShare": 0.001,
+     "days": 930
+    },
+    {
+     "mean": 77.2,
+     "goodShare": 0.789,
+     "poorShare": 0.01,
+     "days": 900
+    },
+    {
+     "mean": 72.9,
+     "goodShare": 0.614,
+     "poorShare": 0.026,
+     "days": 930
+    },
+    {
      "mean": 60.9,
-     "goodShare": 0.215,
-     "poorShare": 0.078,
-     "days": 930
-    },
-    {
-     "mean": 66.5,
-     "goodShare": 0.45,
-     "poorShare": 0.062,
+     "goodShare": 0.254,
+     "poorShare": 0.091,
      "days": 900
     },
     {
-     "mean": 73.7,
-     "goodShare": 0.698,
-     "poorShare": 0.018,
-     "days": 930
-    },
-    {
-     "mean": 76.1,
-     "goodShare": 0.758,
-     "poorShare": 0.006,
-     "days": 900
-    },
-    {
-     "mean": 75.6,
-     "goodShare": 0.752,
-     "poorShare": 0.001,
-     "days": 930
-    },
-    {
-     "mean": 76.5,
-     "goodShare": 0.79,
-     "poorShare": 0.001,
-     "days": 930
-    },
-    {
-     "mean": 77.4,
-     "goodShare": 0.783,
-     "poorShare": 0.011,
-     "days": 900
-    },
-    {
-     "mean": 72.2,
-     "goodShare": 0.587,
-     "poorShare": 0.028,
-     "days": 930
-    },
-    {
-     "mean": 60.5,
-     "goodShare": 0.233,
-     "poorShare": 0.094,
-     "days": 900
-    },
-    {
-     "mean": 54.3,
-     "goodShare": 0.04,
-     "poorShare": 0.114,
+     "mean": 54.7,
+     "goodShare": 0.045,
+     "poorShare": 0.115,
      "days": 930
     }
    ],
    "beach": [
     {
-     "mean": 36.4,
+     "mean": 36.6,
      "goodShare": 0.0,
-     "poorShare": 0.577,
+     "poorShare": 0.558,
      "days": 930
     },
     {
-     "mean": 37.4,
-     "goodShare": 0.0,
-     "poorShare": 0.541,
+     "mean": 38.0,
+     "goodShare": 0.002,
+     "poorShare": 0.521,
      "days": 848
     },
     {
-     "mean": 44.0,
-     "goodShare": 0.033,
-     "poorShare": 0.348,
+     "mean": 45.1,
+     "goodShare": 0.043,
+     "poorShare": 0.318,
      "days": 930
     },
     {
-     "mean": 52.3,
-     "goodShare": 0.16,
-     "poorShare": 0.222,
+     "mean": 53.4,
+     "goodShare": 0.181,
+     "poorShare": 0.203,
      "days": 900
     },
     {
-     "mean": 64.2,
-     "goodShare": 0.465,
-     "poorShare": 0.087,
+     "mean": 65.1,
+     "goodShare": 0.491,
+     "poorShare": 0.083,
      "days": 930
     },
     {
-     "mean": 74.9,
-     "goodShare": 0.764,
-     "poorShare": 0.018,
+     "mean": 75.0,
+     "goodShare": 0.77,
+     "poorShare": 0.02,
      "days": 900
     },
     {
-     "mean": 80.9,
-     "goodShare": 0.883,
-     "poorShare": 0.003,
+     "mean": 80.7,
+     "goodShare": 0.88,
+     "poorShare": 0.005,
      "days": 930
     },
     {
-     "mean": 82.0,
-     "goodShare": 0.898,
+     "mean": 81.5,
+     "goodShare": 0.891,
      "poorShare": 0.004,
      "days": 930
     },
     {
-     "mean": 70.0,
-     "goodShare": 0.608,
-     "poorShare": 0.057,
+     "mean": 70.6,
+     "goodShare": 0.632,
+     "poorShare": 0.056,
      "days": 900
     },
     {
-     "mean": 59.4,
-     "goodShare": 0.338,
-     "poorShare": 0.119,
+     "mean": 60.3,
+     "goodShare": 0.366,
+     "poorShare": 0.113,
      "days": 930
     },
     {
-     "mean": 42.8,
-     "goodShare": 0.026,
-     "poorShare": 0.387,
+     "mean": 43.5,
+     "goodShare": 0.032,
+     "poorShare": 0.372,
      "days": 900
     },
     {
-     "mean": 35.5,
+     "mean": 35.8,
      "goodShare": 0.0,
-     "poorShare": 0.587,
+     "poorShare": 0.575,
      "days": 930
     }
    ],
