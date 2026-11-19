@@ -248,10 +248,10 @@ async function commonsNear(
       action: "query",
       format: "json",
       formatversion: "2",
-      prop: "imageinfo|categories",
+      // Categories come from extmetadata: prop=categories stops at 500 per call (cut lists).
+      prop: "imageinfo",
       iiprop: "size|url|extmetadata",
-      iiextmetadatafilter: "Artist|LicenseShortName",
-      cllimit: "max",
+      iiextmetadatafilter: "Artist|LicenseShortName|Categories",
       titles: part.join("|"),
     }).toString();
     try {
@@ -261,17 +261,18 @@ async function commonsNear(
           pages?: {
             title: string;
             imageinfo?: { width: number; height: number; url: string; extmetadata?: Record<string, { value: string }> }[];
-            categories?: { title: string }[];
           }[];
         };
       };
       for (const p of body.query?.pages ?? []) {
         const ii = p.imageinfo?.[0];
         if (!ii || ii.width < 1600 || ii.width < ii.height * 1.2) continue;
-        const cats = (p.categories ?? []).map((c) => fold(c.title)).join(" | ");
+        const cats = fold(ii.extmetadata?.Categories?.value ?? "");
         const q = cats.includes("featured pictures") ? 3 : cats.includes("quality images") ? 2 : cats.includes("valued images") ? 1 : 0;
-        if (!q) continue;
         if (BAD_TITLE.test(cats.replace(/quality images[^|]*|featured pictures[^|]*|valued images[^|]*/g, ""))) continue;
+        const nat = NATURE_CATS.test(cats + " " + fold(p.title));
+        // Unrated files only when they are clearly a view; the eye check removes the rest.
+        if (!q && (!nat || ii.width < 2400)) continue;
         const o = ii.url.split("/wikipedia/commons/")[1];
         if (!o) continue;
         const md = ii.extmetadata ?? {};
@@ -288,7 +289,7 @@ async function commonsNear(
           x: pos.x,
           c: [artist, md.LicenseShortName?.value].filter(Boolean).join(" · ") || undefined,
           q,
-          nat: NATURE_CATS.test(cats + " " + fold(p.title)),
+          nat,
         });
       }
     } catch {
