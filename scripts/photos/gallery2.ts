@@ -186,7 +186,7 @@ async function pexels(
 
 /** File names that are not a view: insides, worship, statues, flags, transport, people. */
 const BAD_TITLE =
-  /(interior|inside|innen|indoor|altar|nave|ceiling|dome interior|mihrab|minbar|church|cathedral|chapel|mosque|masjid|cami|synagogue|museum|exhibit|statue|sculpture|bust|plaque|inscription|grave|tomb|cemetery|flag|metro|station|bus|train|tram|car |cars|airport|aircraft|portrait|people|crowd|map|logo|sign|night)/;
+  /(interior|inside|innen|indoor|altar|nave|ceiling|dome interior|mihrab|minbar|church|cathedral|chapel|mosque|masjid|cami|synagogue|museum|exhibit|statue|sculpture|bust|plaque|inscription|grave|tomb|cemetery|flag|metro|station|bus|train|tram|car |cars|airport|aircraft|portrait|people|crowd|map|logo|sign|night|iss\d|view of earth|space station|astronaut|bird|dove|insect|butterfly|moth|dragonfly|frog|lizard|gecko|snake|beetle|spider|fish|coral|flower|orchid|fungi|mushroom|specimen|fauna|flora|animalia|plantae)/;
 /** Gallery order of guide kinds: nature and views lead, worship and museums close. */
 const ORDER = ["nature", "views", "beach", "history", "culture", "markets", "family", "shopping", "religion", "museums"];
 const landmarkRank = (g?: string) => {
@@ -273,7 +273,8 @@ async function commonsNear(
         const nat = NATURE_CATS.test(cats + " " + fold(p.title));
         // Unrated files only when they are clearly a view; the eye check removes the rest.
         if (!q && (!nat || ii.width < 2400)) continue;
-        const o = ii.url.split("/wikipedia/commons/")[1];
+        // Same shape as the guide's paths: no tracking query, not percent-encoded.
+        const o = decodeURIComponent((ii.url.split("/wikipedia/commons/")[1] ?? "").split("?")[0]);
         if (!o) continue;
         const md = ii.extmetadata ?? {};
         const artist = (md.Artist?.value ?? "").replace(/<[^>]+>/g, "").trim().slice(0, 60);
