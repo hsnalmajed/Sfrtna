@@ -753,7 +753,7 @@ Aviasales and tell us when Riyadh data returns. Nothing to do until that mail.
 Stay22: CLOSED 4 Nov — account cleared, Payments page shows only «Minimum
 payout threshold $500 not met» (wire $500; PayPal/ACH $100).
 
-Waiting on the owner: Admitad — 19 Nov fix (PARTNERS «19 Nov ROOT CAUSE»: IP Access Allow 3.126.213.103 + no-UA tag + monitor) → Verify → re-apply to the 5 rejected; Google Play ticket reply; Google-fares
+Waiting on the owner: Admitad — 19 Nov fix (PARTNERS «19 Nov ROOT CAUSE»: custom rule no-UA ≠ «/» + Bot fight mode OFF + no-UA tag + monitor) → Verify → re-apply to the 5 rejected; Google Play ticket reply; Google-fares
 decision after the 6 Nov measurement; Android APK on a real phone.
 
 **Recommended model for the next chat: Opus 5.5** (round 3: review the photo sheets).

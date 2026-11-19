@@ -90,12 +90,15 @@ re-check = GET «/», NO user agent, HTTP/1.1, from ONE address
 48 sampled (≈96) got Bot Fight Mode «Managed Challenge» 403, so the Worker
 never ran (and its UA match /mitgo|admitad/ would not have fired anyway).
 Bot Fight Mode cannot be skipped by WAF rules on Free; it does NOT trigger
-when an IP Access rule matches. Fix: (1) zone IP Access rule «Allow»
-3.126.213.103, note «Mitgo/Admitad ad-space checker» (owner, 19 Nov);
+when an IP Access rule matches. IP Access rules are NOT offered in the new dashboard
+until a zone has one (Cloudflare docs), so: (1) owner 19 Nov: custom rule
+«Challenge empty user agent (not home)» = `(http.user_agent eq "" and
+http.request.uri.path ne "/")` → Managed Challenge, THEN Bot fight mode OFF
+(AI Labyrinth + AI-bot block rule stay; /api has edge-guard);
 (2) edge-worker.js answers «/» with the tag (200) for an EMPTY user agent
 too; (3) monitor.mjs: «mitgo-tag» (no-UA «/» → 200 + tag) and
 «mitgo-blocked» (any challenged no-UA «/» request in the last hour → mail
-with the new address to allow). If Mitgo changes address, add the new one.
+with the address).
 CJ (11 Nov 16:30): account made, agreements accepted, user + Network Profile
 (budget-first text) + property «Sfrtna – Trip budget planner & travel
 comparison» id 101926504 (Website; Content + Comparison) + Account info

@@ -139,8 +139,8 @@ await check("mitgo-tag", "وسم التحقق لشبكة Admitad على «/»", 
 
 // The same checker seen by Cloudflare: any request to "/" with no user agent
 // that the zone challenged or blocked in the last hour means Bot Fight Mode
-// is again in front of it (the IP Access «Allow» rule for its address is
-// gone, or the checker moved to another address). Zone tag is not secret.
+// is in front of it again (Bot Fight Mode turned back on, or the custom
+// rule lost its «not "/"» part). Zone tag is not secret.
 const ZONE = "29f21642516a456694bf8a5e1f2e1c3e";
 await (async () => {
   const token = process.env.CLOUDFLARE_API_TOKEN;
@@ -161,7 +161,7 @@ await (async () => {
     await check("mitgo-blocked", "مدقق Admitad يصل إلى الموقع دون تحدٍّ", async () => {
       if (events.length) {
         const ips = [...new Set(events.map((e) => e.clientIP))].join("، ");
-        throw new Error(`Cloudflare تحدّى ${events.length} طلباً من المدقق (${events[0].source}) من ${ips} — أضف العنوان إلى قواعد IP Access بإجراء Allow`);
+        throw new Error(`Cloudflare تحدّى ${events.length} طلباً من المدقق (${events[0].source}) من ${ips} — تأكد أن Bot fight mode مطفأ وأن القاعدة المخصّصة تستثني «/»`);
       }
       return "لا تحدّيات في آخر ساعة";
     });

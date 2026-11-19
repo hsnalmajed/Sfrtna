@@ -180,9 +180,11 @@ const worker = {
     // user agent at all, from one AWS Frankfurt address (3.126.213.103,
     // HTTP/1.1, GET "/") — so the old name match never fired, and Bot Fight
     // Mode answered all of them with a 403 challenge before this Worker ran.
-    // The zone has an IP Access «Allow» rule for that address (the only thing
-    // Bot Fight Mode honours, see PARTNERS.md «Site verification»); here an
-    // empty user agent counts as the checker too. Browsers and search
+    // Bot Fight Mode cannot be skipped on the Free plan (and the dashboard no
+    // longer offers IP Access rules to a zone that has none), so it is OFF;
+    // a custom rule challenges an empty user agent everywhere except "/"
+    // (PARTNERS.md «Site verification»). Here an empty user agent counts as
+    // the checker. Browsers and search
     // engines always send one, so they still get the redirect.
     const mitgoId = "abfa1f5d-e91a-4cb7-bd94-599367568a79";
     const ua = (request.headers.get("user-agent") || "").trim();
