@@ -57,6 +57,10 @@ jobs:
           git add gallery2.json v2-*.jpg v2-index.json 2>/dev/null || git add gallery2.json
           git commit -q -m "Gallery v2 candidates"
           git push -q -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" photo-review-v2
+      - name: Publish the galleries (famous sights by name; Commons nature waits for the eye check)
+        run: |
+          npx --yes tsx@4 scripts/photos/gallery2.ts build photo-review/gallery2.json
+          bash scripts/ci/push-to-main.sh "Photos: city galleries — famous sights first (automatic run)" public/data/gallery public/sitemap-images.xml
       - name: Sheets
         run: npx --yes tsx@4 scripts/photos/gallery2.ts sheets ${{ inputs.only && format('--only {0}', inputs.only) || '' }}
       - name: Push to the review branch
