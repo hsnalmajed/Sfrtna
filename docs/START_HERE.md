@@ -161,13 +161,14 @@ in TEST_PLAN. **Jajce DONE 19 Nov** (neighbour cell, PC download, merge +
 hci on the PC, published; guide deep dispatched — check it got a plan).
 Method that worked: put the repo's era5land.json on the PC, run
 merge_sources + build_hci there (VM needs `pip install --user
-timezonefinder`), stage normals/hci back, generate_seasons. **Left:** (b) 6 others need station_overrides (official 1991–2020 normals
-with all month fields; GeoSphere klima-v2-1m for zell-am-see / Bad Goisern
-for hallstatt is reachable only from the owner's PC browser; mestia,
-uzungol, konjic, genting: no source found yet) — owner decision whether to
-keep them held; (c) restaurants run for negombo, gudauri, ipoh (dispatched
-19 Nov) — check files landed; (d) itinerary link from a city page opens the
-planner empty (city not pre-filled) — small CX fix for round 7.
+timezonefinder`), stage normals/hci back, generate_seasons. **BATCH 3 CLOSED 19 Nov 04:57 (owner: «نعم»):** the 6 climate-withheld
+(zell-am-see, hallstatt, mestia, uzungol, konjic, genting-highlands) STAY
+HELD until official station normals exist; umluj stays without a smart plan.
+Small CX note for round 7: the city page's plan link opens the planner empty.
+**▶ NEXT = round 3 «الصور»** (city photos = nature + famous sights, not
+buildings; 82 cities have no gallery — list from `node
+scripts/coverage/depth.mjs`; photos.yml is DISABLED — read PROJECT_NOTES
+«Photos» + AUDIT_2026-11-17 §photos first, plan, then build).
 Owner's tests of «خريطتي» wait for the final test round (owner 18 Nov).
 Then rounds 3–7 (photos, hotels, flights H+B, flight+hotel C, features
 visible + home hero).
@@ -730,4 +731,4 @@ payout threshold $500 not met» (wire $500; PayPal/ACH $100).
 Waiting on the owner: Admitad ad space «Verifying» (14 Nov) → Active → flynas/Jazeera; Google Play ticket reply; Google-fares
 decision after the 6 Nov measurement; Android APK on a real phone.
 
-**Recommended model for the next chat: Opus 5.5** (Jajce climate after the owner's download, then round 3 photos).
+**Recommended model for the next chat: Opus 5.5** (round 3: city photos).
