@@ -307,3 +307,11 @@ Not testable here: signed-in save (account DO) — owner checks on the phone.
 - Depth right after publish (`node scripts/coverage/depth.mjs`): the 48 new
   cities have guide 0 / no smart plan until guide run 44388736207 (task deep)
   finishes — re-measure then.
+- **19 Nov re-measure (after guide 44388736207 + reruns):** live 414
+  (Negombo published, 8ed58c9). No smart plan: 5 → **1** (umluj — open data
+  holds 3 places; nothing invented). Fixes: al-baha writer timeout → rerun;
+  bolu, qusar, negombo deep rerun; marsa-alam + umluj wider area (resort
+  strips: places 50 / 35 km, `STORED_RADIUS_BY`) → marsa-alam places 2 → 22,
+  plan ready. Restaurants: 53 of 56 had files; negombo, gudauri, ipoh run
+  dispatched (missing only). Jajce: neighbour cell set (+331 m) → waits for
+  the owner's PC download (1d_BETTER_CELLS.bat).

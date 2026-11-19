@@ -152,14 +152,23 @@ on the phone open «خريطتي», sign in, follow the tour, add 2 countries wi
 cities (one twice), press share; ONE screenshot of anything wrong.
 **Next for the map (Round B):** compare-with-friend link (opt-in, owner's
 yes pending), community numbers, dreams → flight search, suggest from «رحلتي».
-**NOW: audit §7 round 2 «مدن أكثر (F)» batch 3 — 48 of 56 LIVE 18 Nov
-(500c9dd, release green; live 365 → 413).** PROJECT_NOTES «Round 2 «مدن
-أكثر» — batch 3» (18 Nov evening lines). Next chat: (1) guide deep run
-44388736207 done? → `node scripts/coverage/depth.mjs` (new 48 must get a
-smart plan; rerun deep for any left) + TEST_PLAN; (2) negombo hotels → publish
-+ build-index + guide; (3) restaurants for the 48 (push-run); (4) the 7
-climate-withheld cities need station overrides (jajce: neighbour cell + one
-PC download); (5) step 7 live check (city pages + plan for 3 new cities).
+**NOW: audit §7 round 2 «مدن أكثر (F)» batch 3 — 49 of 56 LIVE (live 414).**
+19 Nov (Opus): Negombo published (8ed58c9); no smart plan 5 → 1 (umluj: open
+data has 3 places, nothing invented); marsa-alam/umluj wider area
+(`STORED_RADIUS_BY` in mapPins + guide AREA; places.yml takes «only»);
+live check OK (nuwara-eliya page + plan search, al-khobar, fethiye). Numbers
+in TEST_PLAN. **Left:** (a) Jajce: neighbour cell set in
+cell_overrides (repo + PC copy) → owner runs `1d_BETTER_CELLS.bat` on the PC
+→ Claude runs build_normals/build_hci in ≤175 s device_bash calls (see
+PROJECT_NOTES batch 3 «CLIMATE + PUBLISH DONE») → copy era5land/normals/hci
+back → generate_seasons → publish_staged --apply → build-index → guide deep
+only=jajce; (b) 6 others need station_overrides (official 1991–2020 normals
+with all month fields; GeoSphere klima-v2-1m for zell-am-see / Bad Goisern
+for hallstatt is reachable only from the owner's PC browser; mestia,
+uzungol, konjic, genting: no source found yet) — owner decision whether to
+keep them held; (c) restaurants run for negombo, gudauri, ipoh (dispatched
+19 Nov) — check files landed; (d) itinerary link from a city page opens the
+planner empty (city not pre-filled) — small CX fix for round 7.
 Owner's tests of «خريطتي» wait for the final test round (owner 18 Nov).
 Then rounds 3–7 (photos, hotels, flights H+B, flight+hotel C, features
 visible + home hero).
@@ -722,4 +731,4 @@ payout threshold $500 not met» (wire $500; PayPal/ACH $100).
 Waiting on the owner: Admitad ad space «Verifying» (14 Nov) → Active → flynas/Jazeera; Google Play ticket reply; Google-fares
 decision after the 6 Nov measurement; Android APK on a real phone.
 
-**Recommended model for the next chat: Opus 5.5** (finish batch 3: guide/plans for the 48, negombo, withheld climate, live check).
+**Recommended model for the next chat: Opus 5.5** (Jajce climate after the owner's download, then round 3 photos).
