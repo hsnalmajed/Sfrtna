@@ -53,3 +53,13 @@ santorini
 edinburgh
 seville
 berlin
+baku
+tbilisi
+new-york
+osaka
+porto
+munich
+nice
+hanoi
+alexandria
+casablanca
