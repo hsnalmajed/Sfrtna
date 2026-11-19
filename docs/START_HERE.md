@@ -165,10 +165,20 @@ timezonefinder`), stage normals/hci back, generate_seasons. **BATCH 3 CLOSED 19 
 (zell-am-see, hallstatt, mestia, uzungol, konjic, genting-highlands) STAY
 HELD until official station normals exist; umluj stays without a smart plan.
 Small CX note for round 7: the city page's plan link opens the planner empty.
-**▶ NEXT = round 3 «الصور»** (city photos = nature + famous sights, not
-buildings; 82 cities have no gallery — list from `node
-scripts/coverage/depth.mjs`; photos.yml is DISABLED — read PROJECT_NOTES
-«Photos» + AUDIT_2026-11-17 §photos first, plan, then build).
+**▶ NOW = round 3 «الصور» — IN PROGRESS (19 Nov, Opus)** (PROJECT_NOTES
+«Photos round 3 — 19 Nov»). Built: `gallery2.ts` v3 = Commons best photos
+near the city + its nature places (`n#` tags, green on sheets), nature
+Pexels queries, worship ≤2 / museum ≤1, no insides; 331 live galleries
+RE-ORDERED (views → nature/sights → worship/museums last; same photos).
+`gallery2.yml` ENABLED again (hourly :23 collects the 50 never-collected
+cities, 36 a run; saves to branch `photo-review-v2` before the sheets).
+**NEXT:** 1) when the redo run of the 34 thin cities is done, fetch
+`photo-review-v2` (v2-<slug>.jpg), look at each sheet, write drop lines
+in `scripts/photos/gallery2-drop.txt` (nature + famous sights only; no
+buildings, flags, metro, insides; `*` = none fit); 2) same for the 50 once
+collected; 3) `gallery2.ts build photo-review/gallery2.json` → depth.mjs
+«no gallery» 84 → ~0 → one sample sheet to the owner; 4) disable
+gallery2.yml when all are reviewed. photos.yml stays DISABLED.
 Owner's tests of «خريطتي» wait for the final test round (owner 18 Nov).
 Then rounds 3–7 (photos, hotels, flights H+B, flight+hotel C, features
 visible + home hero).

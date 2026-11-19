@@ -277,6 +277,28 @@ Travelpayouts.
 - Same day: footer 3 columns on phones; homepage season cards no longer
   overlap badges on the city name (checked at 375 px).
 
+### Photos round 3 — 19 Nov (audit §3: «nature + famous sights, not buildings»)
+- Cause: galleries = Pexels by city name (skylines, night towers) + guide
+  landmarks by fame; guide kinds are religion 6,073 / history 5,461 /
+  museums 3,929 vs nature 4,522 → mosques, churches, museums led. 84 cities
+  had no gallery: 50 never collected (gallery2.yml disabled since 28 Oct),
+  31 rejected as too thin, 3 thin unreviewed.
+- `scripts/photos/gallery2.ts`: new `commonsNear` — Commons geosearch 10 km
+  around the centre + up to 4 guide nature/views/beach places; keeps
+  Featured/Quality/Valued (or unrated but clearly a view, ≥2400 px),
+  landscape ≥1600 px; drops insides, worship, statues, flags, transport,
+  people, night by title + categories (read from extmetadata Categories:
+  prop=categories is cut at 500 per call — first run found 0 for Abha).
+  Stored as `n` list (sheet tags n1…); build interleaves n and v, then
+  landmarks ordered nature → views → beach → history … religion, museums.
+  Pexels queries: city+country, nature, landscape, beach, sunset.
+  Landmarks at collect: worship ≤ 2, museums ≤ 1.
+- Re-collect of the 34 thin cities: 20–25 nature candidates each (Abha 0 → 25).
+- 331 live galleries re-ordered only (same photo set checked: 331/331).
+- gallery2.yml: collection pushed to `photo-review-v2` BEFORE sheets (a
+  50-min timeout in sheets lost one full run), timeout 150, sheets follow
+  «only», `checkout -B`.
+
 ### Places, speed, country page — 7 Oct (night)
 - City places are stored, not fetched live: `public/data/places/<slug>.json`
   (214 cities, 68k places, top 500 per city by fame) +
