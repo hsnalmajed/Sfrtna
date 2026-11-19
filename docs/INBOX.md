@@ -35,7 +35,7 @@ task under «For the build chat» below instead of coding here.
 | 5 | Qatar Airways programme | Partnerize / impact.com / CJ | Waits on 4 or impact.com / CJ approval | Apply once one network is active |
 | 6 | Emirates programme | Partnerize + TradeTracker (Dubai form 8 Nov 10:58) | No reply yet | Compare replies → route button to the better one |
 | 7 | impact.com | owner's Gmail account, sfrtna.com verified | «قيد المراجعة» since 11 Nov | Approved → apply Qatar, Skyscanner, Saudia/flyadeal/Turkish/Almosafer |
-| 8 | Admitad (PID2605420) | ad space «Sfrtna» | 19 Nov night: **25 programmes applied** (list + rates in PARTNERS.md «Admitad programmes»); Flyfi auto-approved; Emirates/flynas/Jazeera NOT in our catalog. Ad space flips to «unvalidated» (build-chat fix) but applying still works | Approval mails → record each in PARTNERS.md → build chat wires them |
+| 8 | Admitad (PID2605420) | ad space «Sfrtna» | 19 Nov night: **25 programmes applied** (list + rates in PARTNERS.md «Admitad programmes»); **approved now: Flyfi, Compensair, WoopDrive, Lennuabi**; Emirates/flynas/Jazeera NOT in our catalog. Ad space flips to «unvalidated» (build-chat fix) but applying still works | Approval mails → record each in PARTNERS.md → build chat wires them |
 | 9 | CJ + Payoneer | Payoneer NEW ticket **#261118-013230** (18 Nov 18:06, Support Center form; auto-ack «reply within 2 business days»; 18:14 owner replied with screenshot «no Settings in menu»; reminder set Fri 20 Nov 18:00); old #261112-010093 closed | Address doc «Reopened»: page demands wrong name «HASSAN AU AHMED ALMAJED» + Olaya St 11465; Settings missing (not approved). Asked: name HASSAN ALI AHMED ALMAJED + national address (Al Ahsa) | Wait for Payoneer's mail (1–2 work days) → upload Al Rajhi statement → CJ payee name = Payoneer name (resubmit W-8BEN if needed) → CJ payment → activate → Qatar |
 | 10 | Travelpayouts | ticket #254780 | Closed. 16 Nov 15:52 Ingmar: Riyadh restrictions still in place, no timeline; they will mail when RUH returns | Their mail only (no reply needed) |
 | 11 | RateHawk | partner account «Linked» | Tax form review (Oct) | Confirm; hotel-price API study waits (owner 17 Nov) until notes list is done |
@@ -47,6 +47,7 @@ task under «For the build chat» below instead of coding here.
 Closed: Stay22 (4 Nov, payout threshold $500 never met).
 
 ## For the build chat (paste there)
+- **Admitad programmes approved 19 Nov (wire them, route each service to the best payer, keep every company visible):** Flyfi (eSIM), WoopDrive (car rental), Compensair + Lennuabi (flight-delay compensation, next to AirHelp). Rates + rules in PARTNERS.md «Admitad programmes». More approvals will follow by mail.
 - **ROOT FIX for Apple — BUILT 18 Nov in the mail chat (owner asked), commit
   0221491:** «iOS clean mode» (`src/lib/iosClean.ts`) + native WebKit rules +
   release gate `scripts/ios-clean-check.mjs`. Owner steps + reply + checklist:
