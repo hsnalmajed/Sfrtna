@@ -19,6 +19,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 concurrency:
   group: gallery-v3
@@ -74,3 +75,11 @@ jobs:
           git add gallery2.json v2-*.jpg v2-index.json 2>/dev/null || git add gallery2.json
           git commit -q -m "Gallery v2 candidates"
           git push -q -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" photo-review-v2
+      - name: Next round (GitHub's hourly schedule skips runs; chain until every city has its sights)
+        if: ${{ !inputs.only }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          left=$(npx --yes tsx@4 scripts/photos/gallery2.ts left | tail -1)
+          echo "rows without sights: $left"
+          if [ "$left" -gt 0 ]; then gh api -X POST repos/${{ github.repository }}/actions/workflows/gallery2.yml/dispatches -f ref=main; fi

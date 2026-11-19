@@ -190,7 +190,7 @@ async function pexels(
 const BAD_TITLE =
   /(interior|inside|innen|indoor|altar|nave|ceiling|dome interior|mihrab|minbar|church|cathedral|chapel|mosque|masjid|cami|synagogue|museum|exhibit|statue|sculpture|bust|plaque|inscription|grave|tomb|cemetery|flag|metro|station|bus|train|tram|car |cars|airport|aircraft|portrait|people|crowd|map|logo|sign|night|iss\d|view of earth|space station|astronaut|bird|dove|insect|butterfly|moth|dragonfly|frog|lizard|gecko|snake|beetle|spider|fish|coral|flower|orchid|fungi|mushroom|specimen|fauna|flora|animalia|plantae|shark|elephant|loxodonta|giraffe|monkey|baboon|fruit|prickly pear|fig at|pomegranate|apple at|food|dish|road,|street sign|traffic)/;
 /** Sights searched by name per city (one Pexels search each). */
-const SIGHTS = 10;
+const SIGHTS = 12;
 /** Guide kinds that are not what a city is known for. */
 const NOT_A_SIGHT = new Set(["shopping", "family"]);
 /** Words that name a kind, not the sight (an alt saying «mosque» is not «Sultan Ahmed Mosque»). */
@@ -352,7 +352,7 @@ async function collect() {
     let stopped = false;
     // Owner 19 Nov: the gallery is the city's famous sights and nature, not
     // untitled streets — two general searches only; the sights come below.
-    for (const q of [`${city} ${country}`, `${city} landscape`]) {
+    for (const q of [`${city} skyline`, `${city} ${country}`]) {
       budget--;
       const res = await pexels(q);
       if (res === null) {
@@ -392,7 +392,8 @@ async function collect() {
           r.inf &&
           r.inf.width >= 1200 &&
           r.inf.width >= r.inf.height * 0.9 &&
-          !INSIDE.test(fold(r.p.im!)),
+          !INSIDE.test(fold(r.p.im!)) &&
+          !NOT_A_SIGHT.has(r.p.g ?? ""),
       )
       .slice(0, MAX_LANDMARKS);
     const landmarks: Photo[] = ranked.map(({ p, i, inf }) => ({
@@ -413,17 +414,19 @@ async function collect() {
     for (const { p, i } of famous) {
       const name = (p.e || p.n)!;
       const words = fold(name).split(/[^a-z\u00c0-\u024f]+/).filter((w) => w.length >= 4 && !GENERIC.has(w));
-      if (!words.length) continue;
+      // «Grand Palace»: no distinctive word, so the whole name must be in the photo's description.
+      const phrase = fold(name).replace(/\s*\(.*?\)\s*/g, " ").trim();
+      const matches = (alt: string) => (words.length ? words.some((w) => alt.includes(w)) : alt.includes(phrase));
       budget--;
       const res = await pexels(`${name} ${city}`);
       if (res === null) break;
       let got = 0;
       for (const r of res) {
-        if (got >= 2) break;
+        if (got >= 3) break;
         const alt = fold(r.alt ?? "");
         const o = r.src.original.split("?")[0];
         if (seen.has(o) || r.width < 2000 || r.width < r.height * 1.2) continue;
-        if (!words.some((w) => alt.includes(w)) || UNFIT.test(alt) || ANIMALS.test(alt) || INSIDE.test(alt)) continue;
+        if (!matches(alt) || UNFIT.test(alt) || ANIMALS.test(alt) || INSIDE.test(alt)) continue;
         seen.add(o);
         got++;
         sights.push({ k: "l", s: "p", f: i, o, w: r.width, an: p.a || p.an || name, en: name, y: p.y!, x: p.x! });
@@ -473,7 +476,7 @@ async function sheets() {
     );
   const index: string[] = [];
   for (const [slug, row] of Object.entries(store)) {
-    if (done.has(slug) || (only.size && !only.has(slug))) continue;
+    if (only.size ? !only.has(slug) : done.has(slug)) continue;
     const all = [
       ...(row.s ?? []).map((p, i) => ({ p, tag: `s${i + 1}` })),
       ...(row.n ?? []).map((p, i) => ({ p, tag: `n${i + 1}` })),
@@ -546,15 +549,37 @@ function build(file: string) {
     // photos (by name), then its guide photo — then nature checked by eye, then
     // at most four general views.
     const rank = new Map(guide(c.slug).map((p, i) => [p.im!, i]));
+    const kindOf = new Map(guide(c.slug).map((p) => [p.im!, p.g]));
     const fame = (p: Photo) => p.f ?? rank.get(p.o) ?? 999;
-    const sights = [...keep(row.s ?? [], "s"), ...keep(row.l, "l")]
-      .map((p, i) => ({ p, i }))
-      .sort((a, b) => fame(a.p) - fame(b.p) || Number(a.p.s === "c") - Number(b.p.s === "c") || a.i - b.i)
-      .map((r) => r.p)
-      .slice(0, 30);
-    const nat = seenByEye ? keep(row.n ?? [], "n").map((p) => ({ ...p, k: "v" as const })) : [];
-    const views = seenByEye ? keep(row.v, "v").slice(0, 4) : [];
-    const items = [...sights.slice(0, 8), ...nat.slice(0, 6), ...sights.slice(8), ...nat.slice(6, 10), ...views];
+    // Owner 19 Nov (Bangkok): «المناظر» = the city's famous scenes in professional
+    // photos (each sight by name, by fame), then nature and city views checked
+    // by eye; «المعالم» = each sight's own guide photo, by fame. No malls.
+    const byFame = (list: Photo[]) =>
+      list
+        .map((p, i) => ({ p, i }))
+        .sort((a, b) => fame(a.p) - fame(b.p) || a.i - b.i)
+        .map((r) => r.p);
+    // Round-robin over sights so one sight never fills the first screen.
+    const own = byFame(keep(row.s ?? [], "s"));
+    const rounds: Photo[] = [];
+    for (let r = 0; r < 3; r++) {
+      const once = new Set<number>();
+      for (const p of own) {
+        const f = fame(p);
+        if (once.has(f)) continue;
+        if (own.filter((q) => fame(q) === f).indexOf(p) === r) {
+          rounds.push(p);
+          once.add(f);
+        }
+      }
+    }
+    const nat = seenByEye ? keep(row.n ?? [], "n") : [];
+    const general = seenByEye ? keep(row.v, "v").slice(0, 6) : [];
+    const views = [...rounds, ...nat, ...general].slice(0, 36).map((p) => ({ ...p, k: "v" as const }));
+    const sights = byFame(keep(row.l, "l"))
+      .filter((p) => !NOT_A_SIGHT.has(kindOf.get(p.o) ?? ""))
+      .slice(0, 25);
+    const items = [...views, ...sights];
     if (items.length < 4) continue;
     const out = items.map((p) => ({
       ...p,
@@ -589,6 +614,12 @@ function writeImageSitemap() {
   );
 }
 
+/** How many cities still lack their sights-by-name (the workflow chains until 0). */
+function left() {
+  const store: Store = existsSync(FILE) ? JSON.parse(readFileSync(FILE, "utf8")) : {};
+  console.log(cities().filter((c) => CITY_COORDS[c.slug] && !store[c.slug]?.s).length);
+}
+
 const mode = process.argv[2];
 (mode === "collect"
   ? collect()
@@ -596,7 +627,9 @@ const mode = process.argv[2];
     ? sheets()
     : mode === "build"
       ? Promise.resolve(build(process.argv[3]))
-      : Promise.reject(new Error("collect | sheets | build"))
+      : mode === "left"
+        ? Promise.resolve(left())
+        : Promise.reject(new Error("collect | sheets | build | left"))
 ).catch((e) => {
   console.error(e);
   process.exit(1);
