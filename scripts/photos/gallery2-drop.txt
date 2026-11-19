@@ -328,3 +328,6 @@ asuncion v1 l1 l5 l6 l8
 nukualofa l1 l5
 georgetown v1 v2 v3 v4 v5 v6 l1 l4
 paramaribo l1 l4 l8 l10
+bangkok s15 s16 s17 s18 s21 s28 s29 v1 v2 v3 v5 v6 v7 v8 v9 v10 v12 v13 v14 v15 v16 v17 v18 v19 v21 v22 v23 v25 v26 v27 v29 l5 l11 l16 l17 l18 l19 l21 l22
+istanbul s4 s5 s8 s9 s16 s17 s18 s19 s28 s32 v1 v2 v3 v4 v5 v6 v7 v9 v11 v13 v15 v16 v17 v18 v19 v20 v21 v23 v24 v25 v26 v27 v29 v30 l9 l12 l17 l20
+dubai s1 s2 s13 s14 s15 s21 s22 s23 s24 v1 v2 v3 v4 v5 v6 v7 v8 v10 v11 v12 v14 v15 v16 v18 v19 v20 v21 v22 v23 v24 v26 v28 v30 l3 l5 l10 l11 l12 l13 l14 l15 l16 l17 l18 l19 l20

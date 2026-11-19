@@ -195,6 +195,8 @@ const SIGHTS = 12;
 const NOT_A_SIGHT = new Set(["shopping", "family"]);
 /** Words that name a kind, not the sight (an alt saying «mosque» is not «Sultan Ahmed Mosque»). */
 const GENERIC = new Set(["mosque", "palace", "museum", "tower", "bridge", "square", "park", "beach", "lake", "mountain", "national", "street", "market", "church", "cathedral", "great", "grand", "old", "city", "town", "garden", "gardens", "island", "fort", "fortress", "castle", "temple", "river", "valley", "falls", "center", "centre", "district", "historic", "mount", "jabal", "masjid", "souq", "souk"]);
+/** Not a view of the place: screens, charts, traffic (Bangkok's «Stock Exchange» = phone charts). */
+const SCREEN = /(phone|smartphone|screen|monitor|chart|graph|trading|stock market|laptop|traffic|crowded street)/;
 /** Inside shots: never in a gallery. */
 const INSIDE = /(interior|inside|innen|indoor|altar|nave|ceiling|mihrab|minbar|exhibit|showcase|vitrine)/;
 const NATURE_CATS =
@@ -416,7 +418,10 @@ async function collect() {
       const words = fold(name).split(/[^a-z\u00c0-\u024f]+/).filter((w) => w.length >= 4 && !GENERIC.has(w));
       // «Grand Palace»: no distinctive word, so the whole name must be in the photo's description.
       const phrase = fold(name).replace(/\s*\(.*?\)\s*/g, " ").trim();
-      const matches = (alt: string) => (words.length ? words.some((w) => alt.includes(w)) : alt.includes(phrase));
+      // A whole-phrase match («Grand Mosque») must also name the city or country (Dubai got Abu Dhabi's).
+      const place = [cityWord, fold(country)].filter((w) => w.length >= 3);
+      const matches = (alt: string) =>
+        words.length ? words.some((w) => alt.includes(w)) : alt.includes(phrase) && place.some((w) => alt.includes(w));
       budget--;
       const res = await pexels(`${name} ${city}`);
       if (res === null) break;
@@ -426,7 +431,7 @@ async function collect() {
         const alt = fold(r.alt ?? "");
         const o = r.src.original.split("?")[0];
         if (seen.has(o) || r.width < 2000 || r.width < r.height * 1.2) continue;
-        if (!matches(alt) || UNFIT.test(alt) || ANIMALS.test(alt) || INSIDE.test(alt)) continue;
+        if (!matches(alt) || SCREEN.test(alt) || UNFIT.test(alt) || ANIMALS.test(alt) || INSIDE.test(alt)) continue;
         seen.add(o);
         got++;
         sights.push({ k: "l", s: "p", f: i, o, w: r.width, an: p.a || p.an || name, en: name, y: p.y!, x: p.x! });
