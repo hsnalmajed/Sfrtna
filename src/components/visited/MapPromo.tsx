@@ -1,15 +1,23 @@
 import Link from "next/link";
 import type { Locale } from "@/lib/types";
 
-/** Home page: «خريطتي» shown as the feature it is (owner 18 Nov). */
-export default function MapPromo({ locale, t }: { locale: Locale; t: { homeTitle: string; homeBody: string; homeCta: string; gatePoints: readonly string[] } }) {
+/**
+ * Home page: «خريطتي» shown as the feature it is (owner 18 Nov). Phone (owner
+ * 19 Nov): only the name, one small hint and the map — the whole card opens
+ * the page, which signs in first and shows the tour on the first visit.
+ */
+export default function MapPromo({ locale, t }: { locale: Locale; t: { title: string; homeHint: string; homeTitle: string; homeBody: string; homeCta: string; gatePoints: readonly string[] } }) {
   return (
     <section className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
       <Link
         href={`/${locale}/my-map`}
         className="group grid overflow-hidden rounded-[2rem] bg-[#061a33] text-white shadow-xl ring-1 ring-white/10 transition hover:shadow-2xl md:grid-cols-[1fr_1.15fr]"
       >
-        <div className="p-6 sm:p-8">
+        <div className="px-5 pb-3 pt-5 md:hidden">
+          <h2 className="font-display text-2xl font-extrabold leading-snug">{t.title}</h2>
+          <p className="mt-1 text-xs font-bold text-white/65">{t.homeHint}</p>
+        </div>
+        <div className="hidden p-6 sm:p-8 md:block">
           <p className="inline-block rounded-full bg-[#f8b840]/15 px-3 py-1 text-xs font-extrabold text-[#f8b840]">🌍 {locale === "ar" ? "جديد" : "New"}</p>
           <h2 className="mt-3 font-display text-2xl font-extrabold leading-snug sm:text-3xl">{t.homeTitle}</h2>
           <p className="mt-2 leading-8 text-white/75">{t.homeBody}</p>
@@ -27,7 +35,7 @@ export default function MapPromo({ locale, t }: { locale: Locale; t: { homeTitle
             {t.homeCta}
           </span>
         </div>
-        <div className="relative min-h-52 bg-[#0a2547]">
+        <div className="relative aspect-[16/10] bg-[#0a2547] md:aspect-auto md:min-h-52">
           {/* eslint-disable-next-line @next/next/no-img-element -- a static SVG drawing */}
           <img src="/geo/preview.svg" alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover" />
         </div>

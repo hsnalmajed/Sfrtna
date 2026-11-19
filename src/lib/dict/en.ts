@@ -2210,6 +2210,7 @@ const en = {
     inviteCta: "Add to my map",
     homeTitle: "My map: colour the world with your trips",
     homeBody: "Mark the countries and cities you visited, see your share of the world, unlock badges and share your map.",
+    homeHint: "Tap the map to manage your map",
     homeCta: "Open my map",
   },
 } as const;
