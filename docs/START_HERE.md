@@ -165,20 +165,31 @@ timezonefinder`), stage normals/hci back, generate_seasons. **BATCH 3 CLOSED 19 
 (zell-am-see, hallstatt, mestia, uzungol, konjic, genting-highlands) STAY
 HELD until official station normals exist; umluj stays without a smart plan.
 Small CX note for round 7: the city page's plan link opens the planner empty.
-**▶ NOW = round 3 «الصور» — IN PROGRESS (19 Nov, Opus)** (PROJECT_NOTES
-«Photos round 3 — 19 Nov»). Built: `gallery2.ts` v3 = Commons best photos
-near the city + its nature places (`n#` tags, green on sheets), nature
-Pexels queries, worship ≤2 / museum ≤1, no insides; 331 live galleries
-RE-ORDERED (views → nature/sights → worship/museums last; same photos).
-`gallery2.yml` ENABLED again (hourly :23 collects the 50 never-collected
-cities, 36 a run; saves to branch `photo-review-v2` before the sheets).
-**NEXT:** 1) when the redo run of the 34 thin cities is done, fetch
-`photo-review-v2` (v2-<slug>.jpg), look at each sheet, write drop lines
-in `scripts/photos/gallery2-drop.txt` (nature + famous sights only; no
-buildings, flags, metro, insides; `*` = none fit); 2) same for the 50 once
-collected; 3) `gallery2.ts build photo-review/gallery2.json` → depth.mjs
-«no gallery» 84 → ~0 → one sample sheet to the owner; 4) disable
-gallery2.yml when all are reviewed. photos.yml stays DISABLED.
+**19 Nov (owner's notes, LIVE c8dcb6e):** (a) home «خريطتي» card on phones
+= name + small hint «اضغط على الخارطة لإدارة خارطتك» + map (MapPromo,
+`md:hidden`); tap → /my-map (gate signs in, tour on first visit — already so).
+(b) **plan asks before splitting days** (SmartPlanner step «split», after the
+dates, only when days − city needs ≥ 2 and the country has cities ≤300 km):
+«N days enough for X? other cities, back before your flight» yes/no → days
+in X (+/−, back to ours) → nearest cities with their days (tick, +/−; days
+not given → first city). `/api/ai/plan` `preview:true` → `routeOptions`;
+`answers.split` validated in plan.ts, built exactly in routePlan.ts. Checked
+locally (Playwright 390 px, Istanbul 12 days → 7 + Bursa 3 + Sapanca 2).
+**▶ NOW = round 3 «الصور» — IN PROGRESS** (PROJECT_NOTES «Photos round 3 —
+19 Nov»). Built + live: nature-first ordering of the 331 galleries; collector
+`gallery2.ts` with Commons «n» photos (paths decoded, no space/wildlife/fruit/
+road shots, one photo per series). Two runs queued 19 Nov ~09:50 KSA:
+44474271797 (redo of the 34 thin cities) then 44474359127 (the 50 never
+collected + sheets of all unreviewed). **NEXT:** 1) when both are green,
+fetch branch `photo-review-v2` (v2-<slug>.jpg), Read each sheet, write drop
+lines in `scripts/photos/gallery2-drop.txt` (keep nature + famous sights;
+drop buildings, roads, flags, insides, close-ups; `*` = nothing fits; Commons
+candidates are noisy, so look at every one); 2) `npx tsx
+scripts/photos/gallery2.ts build <path>/gallery2.json` → `node
+scripts/coverage/depth.mjs` «no gallery» 84 → ~0 → commit → one sample sheet
+to the owner; 3) disable gallery2.yml (`gh api -X PUT
+.../workflows/gallery2.yml/disable`). Ghost run 44442033294 stays «queued»
+(GitHub, can't cancel) — harmless. photos.yml stays DISABLED.
 Owner's tests of «خريطتي» wait for the final test round (owner 18 Nov).
 Then rounds 3–7 (photos, hotels, flights H+B, flight+hotel C, features
 visible + home hero).
@@ -741,4 +752,4 @@ payout threshold $500 not met» (wire $500; PayPal/ACH $100).
 Waiting on the owner: Admitad ad space «Verifying» (14 Nov) → Active → flynas/Jazeera; Google Play ticket reply; Google-fares
 decision after the 6 Nov measurement; Android APK on a real phone.
 
-**Recommended model for the next chat: Opus 5.5** (round 3: city photos).
+**Recommended model for the next chat: Opus 5.5** (round 3: review the photo sheets).

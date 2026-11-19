@@ -298,6 +298,12 @@ Travelpayouts.
 - gallery2.yml: collection pushed to `photo-review-v2` BEFORE sheets (a
   50-min timeout in sheets lost one full run), timeout 150, sheets follow
   «only», `checkout -B`.
+- Second look (19 Nov): first sheets showed blank nature tiles (Commons URL
+  kept `?utm_…` and %-encoding → thumbs 404) and ISS «View of Earth» shots
+  geotagged over Abha; then fruit, a shark, road series. Fixed: decoded path
+  without query, more BAD words, one photo per file-name series.
+- Owner's notes 19 Nov built the same day: phone «خريطتي» card (name + hint +
+  map) and the plan's «split» question (see START_HERE).
 
 ### Places, speed, country page — 7 Oct (night)
 - City places are stored, not fetched live: `public/data/places/<slug>.json`
