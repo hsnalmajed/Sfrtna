@@ -33,3 +33,13 @@ milan
 marrakesh
 petra
 luxor
+male
+zurich
+interlaken
+vienna
+madrid
+amsterdam
+venice
+florence
+athens
+lisbon
