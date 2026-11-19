@@ -23,3 +23,13 @@ alula
 bodrum
 izmir
 bursa
+rome
+barcelona
+fethiye
+salalah
+manama
+kuwait-city
+milan
+marrakesh
+petra
+luxor
