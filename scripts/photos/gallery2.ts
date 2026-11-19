@@ -186,7 +186,7 @@ async function pexels(
 
 /** File names that are not a view: insides, worship, statues, flags, transport, people. */
 const BAD_TITLE =
-  /(interior|inside|innen|indoor|altar|nave|ceiling|dome interior|mihrab|minbar|church|cathedral|chapel|mosque|masjid|cami|synagogue|museum|exhibit|statue|sculpture|bust|plaque|inscription|grave|tomb|cemetery|flag|metro|station|bus|train|tram|car |cars|airport|aircraft|portrait|people|crowd|map|logo|sign|night|iss\d|view of earth|space station|astronaut|bird|dove|insect|butterfly|moth|dragonfly|frog|lizard|gecko|snake|beetle|spider|fish|coral|flower|orchid|fungi|mushroom|specimen|fauna|flora|animalia|plantae)/;
+  /(interior|inside|innen|indoor|altar|nave|ceiling|dome interior|mihrab|minbar|church|cathedral|chapel|mosque|masjid|cami|synagogue|museum|exhibit|statue|sculpture|bust|plaque|inscription|grave|tomb|cemetery|flag|metro|station|bus|train|tram|car |cars|airport|aircraft|portrait|people|crowd|map|logo|sign|night|iss\d|view of earth|space station|astronaut|bird|dove|insect|butterfly|moth|dragonfly|frog|lizard|gecko|snake|beetle|spider|fish|coral|flower|orchid|fungi|mushroom|specimen|fauna|flora|animalia|plantae|shark|elephant|loxodonta|giraffe|monkey|baboon|fruit|prickly pear|fig at|pomegranate|apple at|food|dish|road,|street sign|traffic)/;
 /** Gallery order of guide kinds: nature and views lead, worship and museums close. */
 const ORDER = ["nature", "views", "beach", "history", "culture", "markets", "family", "shopping", "religion", "museums"];
 const landmarkRank = (g?: string) => {
@@ -298,7 +298,18 @@ async function commonsNear(
     }
     await new Promise((r) => setTimeout(r, 300));
   }
-  return hits
+  // One photo per series («X (1)», «X (2)», «…P1086456»): the same scene again is not another view.
+  const series = new Set<string>();
+  const once = hits.filter((h) => {
+    const key = fold(decodeURIComponent(h.o.split("/").pop() ?? ""))
+      .replace(/\.[a-z]+$/, "")
+      .replace(/[\s_-]*(\(\d+\)|\d{2,})[\s_)-]*$/g, "")
+      .replace(/\d+$/, "");
+    if (series.has(key)) return false;
+    series.add(key);
+    return true;
+  });
+  return once
     .sort((a, b) => Number(b.nat) - Number(a.nat) || b.q - a.q)
     .slice(0, MAX_NATURE)
     .map((h) => {
