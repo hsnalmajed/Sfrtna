@@ -22,7 +22,9 @@ permissions:
   actions: write
 
 concurrency:
-  group: gallery-v3
+  # «only» without «redo» = sheets for the eye check only: its own group, so the
+  # self-chaining collect run never cancels it (and it never touches the branch).
+  group: ${{ (inputs.only && !inputs.redo) && 'gallery-sheets' || 'gallery-v3' }}
   cancel-in-progress: false
 
 jobs:
@@ -46,8 +48,10 @@ jobs:
             git show origin/photo-review-v2:gallery2.json > photo-review/gallery2.json 2>/dev/null || true
           fi
       - name: Collect
+        if: ${{ !inputs.only || inputs.redo }}
         run: npx --yes tsx@4 scripts/photos/gallery2.ts collect --max 180 ${{ inputs.only && format('--only {0}', inputs.only) || '' }} ${{ inputs.redo && '--redo' || '' }}
       - name: Save the collection first (a slow sheet run must not lose it)
+        if: ${{ !inputs.only || inputs.redo }}
         run: |
           cd photo-review
           rm -f g-*.jpg c-*.jpg c2-*.jpg *.json.bak 2>/dev/null || true
@@ -59,12 +63,14 @@ jobs:
           git commit -q -m "Gallery v2 candidates"
           git push -q -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" photo-review-v2
       - name: Publish the galleries (famous sights by name; Commons nature waits for the eye check)
+        if: ${{ !inputs.only || inputs.redo }}
         run: |
           npx --yes tsx@4 scripts/photos/gallery2.ts build photo-review/gallery2.json
           bash scripts/ci/push-to-main.sh "Photos: city galleries — famous sights first (automatic run)" public/data/gallery public/sitemap-images.xml
       - name: Sheets
         run: npx --yes tsx@4 scripts/photos/gallery2.ts sheets ${{ inputs.only && format('--only {0}', inputs.only) || '' }}
       - name: Push to the review branch
+        if: ${{ !inputs.only || inputs.redo }}
         run: |
           cd photo-review
           rm -f g-*.jpg c-*.jpg c2-*.jpg *.json.bak 2>/dev/null || true
@@ -75,6 +81,16 @@ jobs:
           git add gallery2.json v2-*.jpg v2-index.json 2>/dev/null || git add gallery2.json
           git commit -q -m "Gallery v2 candidates"
           git push -q -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" photo-review-v2
+      - name: Sheets only → branch photo-sheets (kept apart from photo-review-v2)
+        if: ${{ inputs.only && !inputs.redo }}
+        run: |
+          cd photo-review
+          mkdir ../sheets-out && cp v2-*.jpg v2-index.json ../sheets-out/ && cd ../sheets-out
+          git init -q
+          git config user.name "Claude"; git config user.email "noreply@anthropic.com"
+          git checkout -q -B photo-sheets
+          git add . && git commit -q -m "Eye-check sheets: ${{ inputs.only }}"
+          git push -q -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" photo-sheets
       - name: Next round (GitHub's hourly schedule skips runs; chain until every city has its sights)
         if: ${{ !inputs.only }}
         env:
