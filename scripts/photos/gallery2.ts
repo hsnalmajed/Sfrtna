@@ -46,7 +46,8 @@ const only = new Set((arg("--only") ?? "").split(",").filter(Boolean));
 
 /** One photo. `s` = source: p Pexels (o = original URL), c Commons (o = "a/ab/File.jpg"). */
 export type Photo = {
-  k: "v" | "l";
+  /** v = Pexels view, n = Commons nature/view near the city (round 3), l = guide landmark. */
+  k: "v" | "l" | "n";
   s: "p" | "c";
   o: string;
   w: number;
@@ -57,7 +58,7 @@ export type Photo = {
   /** Credit for Commons photos: "author · licence". */
   c?: string;
 };
-type Store = Record<string, { v: Photo[]; l: Photo[] }>;
+type Store = Record<string, { v: Photo[]; l: Photo[]; n?: Photo[] }>;
 type GuidePlace = {
   n?: string;
   e?: string;
@@ -183,6 +184,129 @@ async function pexels(
   );
 }
 
+/** File names that are not a view: insides, worship, statues, flags, transport, people. */
+const BAD_TITLE =
+  /(interior|inside|innen|indoor|altar|nave|ceiling|dome interior|mihrab|minbar|church|cathedral|chapel|mosque|masjid|cami|synagogue|museum|exhibit|statue|sculpture|bust|plaque|inscription|grave|tomb|cemetery|flag|metro|station|bus|train|tram|car |cars|airport|aircraft|portrait|people|crowd|map|logo|sign|night)/;
+/** Gallery order of guide kinds: nature and views lead, worship and museums close. */
+const ORDER = ["nature", "views", "beach", "history", "culture", "markets", "family", "shopping", "religion", "museums"];
+const landmarkRank = (g?: string) => {
+  const i = ORDER.indexOf(g ?? "");
+  return i < 0 ? ORDER.length - 2 : i;
+};
+const NATURE_CATS =
+  /(landscape|mountain|beach|coast|sea|lake|river|waterfall|valley|desert|dune|island|bay|forest|park|garden|canyon|cliff|wadi|oasis|tea plantation|rice terrace|sunset|sunrise|panorama|view|skyline|old town|harbour|harbor|port)/;
+const MAX_NATURE = 25;
+
+/**
+ * Round 3: Commons' own best photos (Featured / Quality / Valued) taken near
+ * the city and near its nature places — mountains, coast, old streets — the
+ * scenes Pexels rarely has for small places. Never insides, worship, statues.
+ */
+async function commonsNear(
+  city: { an: string; en: string },
+  centre: { lat: number; lon: number },
+  places: GuidePlace[],
+): Promise<Photo[]> {
+  const points = [
+    { y: centre.lat, x: centre.lon },
+    ...places
+      .filter((p) => p.g === "nature" || p.g === "views" || p.g === "beach")
+      .slice(0, 4)
+      .map((p) => ({ y: p.y!, x: p.x! })),
+  ];
+  const files = new Map<string, { y: number; x: number }>();
+  for (const pt of points) {
+    const url = new URL("https://commons.wikimedia.org/w/api.php");
+    url.search = new URLSearchParams({
+      action: "query",
+      format: "json",
+      formatversion: "2",
+      list: "geosearch",
+      gscoord: `${pt.y}|${pt.x}`,
+      gsradius: "10000",
+      gsnamespace: "6",
+      gslimit: "500",
+    }).toString();
+    try {
+      const res = await fetch(url, { headers: { "User-Agent": UA } });
+      const body = (await res.json()) as { query?: { geosearch?: { title: string; lat: number; lon: number }[] } };
+      for (const g of body.query?.geosearch ?? []) {
+        if (/\.(jpe?g)$/i.test(g.title) && !BAD_TITLE.test(fold(g.title))) files.set(g.title, { y: g.lat, x: g.lon });
+      }
+    } catch {
+      /* this point is skipped */
+    }
+    await new Promise((r) => setTimeout(r, 300));
+  }
+  type Hit = Photo & { q: number; nat: boolean };
+  const hits: Hit[] = [];
+  const titles = [...files.keys()];
+  for (let i = 0; i < titles.length; i += 50) {
+    const part = titles.slice(i, i + 50);
+    const url = new URL("https://commons.wikimedia.org/w/api.php");
+    url.search = new URLSearchParams({
+      action: "query",
+      format: "json",
+      formatversion: "2",
+      prop: "imageinfo|categories",
+      iiprop: "size|url|extmetadata",
+      iiextmetadatafilter: "Artist|LicenseShortName",
+      cllimit: "max",
+      titles: part.join("|"),
+    }).toString();
+    try {
+      const res = await fetch(url, { headers: { "User-Agent": UA } });
+      const body = (await res.json()) as {
+        query?: {
+          pages?: {
+            title: string;
+            imageinfo?: { width: number; height: number; url: string; extmetadata?: Record<string, { value: string }> }[];
+            categories?: { title: string }[];
+          }[];
+        };
+      };
+      for (const p of body.query?.pages ?? []) {
+        const ii = p.imageinfo?.[0];
+        if (!ii || ii.width < 1600 || ii.width < ii.height * 1.2) continue;
+        const cats = (p.categories ?? []).map((c) => fold(c.title)).join(" | ");
+        const q = cats.includes("featured pictures") ? 3 : cats.includes("quality images") ? 2 : cats.includes("valued images") ? 1 : 0;
+        if (!q) continue;
+        if (BAD_TITLE.test(cats.replace(/quality images[^|]*|featured pictures[^|]*|valued images[^|]*/g, ""))) continue;
+        const o = ii.url.split("/wikipedia/commons/")[1];
+        if (!o) continue;
+        const md = ii.extmetadata ?? {};
+        const artist = (md.Artist?.value ?? "").replace(/<[^>]+>/g, "").trim().slice(0, 60);
+        const pos = files.get(p.title)!;
+        hits.push({
+          k: "n",
+          s: "c",
+          o,
+          w: ii.width,
+          an: city.an,
+          en: city.en,
+          y: pos.y,
+          x: pos.x,
+          c: [artist, md.LicenseShortName?.value].filter(Boolean).join(" · ") || undefined,
+          q,
+          nat: NATURE_CATS.test(cats + " " + fold(p.title)),
+        });
+      }
+    } catch {
+      /* this batch is skipped */
+    }
+    await new Promise((r) => setTimeout(r, 300));
+  }
+  return hits
+    .sort((a, b) => Number(b.nat) - Number(a.nat) || b.q - a.q)
+    .slice(0, MAX_NATURE)
+    .map((h) => {
+      const p: Photo & { q?: number; nat?: boolean } = { ...h };
+      delete p.q;
+      delete p.nat;
+      return p as Photo;
+    });
+}
+
 async function collect() {
   mkdirSync(DIR, { recursive: true });
   const store: Store = existsSync(FILE)
@@ -198,7 +322,7 @@ async function collect() {
     const country = findCountry(c.code)?.nameEn ?? "";
     const centre = CITY_COORDS[c.slug];
     if (!centre) continue;
-    if (budget < 4) break;
+    if (budget < 6) break;
 
     // Views: the city named in the caption, never people, animals or interiors.
     const views: Photo[] = [];
@@ -207,11 +331,13 @@ async function collect() {
       city.split(/[\s-]/).sort((a, b) => b.length - a.length)[0],
     );
     let stopped = false;
+    // Round 3 (owner, 14 Nov: "nature and famous sights, not buildings").
     for (const q of [
       `${city} ${country}`,
-      `${city} skyline`,
-      `${city} sunset`,
+      `${city} nature`,
       `${city} landscape`,
+      `${city} beach`,
+      `${city} sunset`,
     ]) {
       budget--;
       const res = await pexels(q);
@@ -244,15 +370,25 @@ async function collect() {
     // Landmarks: the guide's places with a Commons photo; Commons' own best first, then fame.
     const places = guide(c.slug).slice(0, 60);
     const info = await commonsInfo(places.map((p) => p.im!));
+    // Nature and sights first; at most 2 places of worship and 1 museum, never an inside shot.
+    const cap: Record<string, number> = { religion: 2, museums: 1 };
     const ranked = places
       .map((p, i) => ({ p, i, inf: info.get(p.im!) }))
       .filter(
         (r) =>
-          r.inf && r.inf.width >= 1200 && r.inf.width >= r.inf.height * 0.9,
+          r.inf &&
+          r.inf.width >= 1200 &&
+          r.inf.width >= r.inf.height * 0.9 &&
+          !BAD_TITLE.test(fold(r.p.im!)),
       )
       .sort((a, b) => b.inf!.quality - a.inf!.quality || a.i - b.i)
+      .filter((r) => {
+        const g = r.p.g ?? "";
+        if (!(g in cap)) return true;
+        return cap[g]-- > 0;
+      })
       .slice(0, MAX_LANDMARKS)
-      .sort((a, b) => a.i - b.i);
+      .sort((a, b) => landmarkRank(a.p.g) - landmarkRank(b.p.g) || a.i - b.i);
     const landmarks: Photo[] = ranked.map(({ p, inf }) => ({
       k: "l",
       s: "c",
@@ -264,10 +400,11 @@ async function collect() {
       x: p.x!,
       c: [p.ia, p.il].filter(Boolean).join(" · ") || undefined,
     }));
-    store[c.slug] = { v: views, l: landmarks };
+    const nature = await commonsNear({ an: c.nameAr, en: city }, centre, places);
+    store[c.slug] = { v: views, l: landmarks, n: nature };
     writeFileSync(FILE, JSON.stringify(store));
     console.log(
-      `${c.slug}: ${views.length} views, ${landmarks.length} landmarks (${ranked.filter((r) => r.inf!.quality).length} rated)`,
+      `${c.slug}: ${views.length} views, ${nature.length} nature, ${landmarks.length} landmarks (${ranked.filter((r) => r.inf!.quality).length} rated)`,
     );
   }
   writeFileSync(FILE, JSON.stringify(store));
@@ -308,6 +445,7 @@ async function sheets() {
   for (const [slug, row] of Object.entries(store)) {
     if (done.has(slug) || (only.size && !only.has(slug))) continue;
     const all = [
+      ...(row.n ?? []).map((p, i) => ({ p, tag: `n${i + 1}` })),
       ...row.v.map((p, i) => ({ p, tag: `v${i + 1}` })),
       ...row.l.map((p, i) => ({ p, tag: `l${i + 1}` })),
     ];
@@ -316,7 +454,7 @@ async function sheets() {
     const width = PER_ROW * (W + GAP) + GAP,
       height = 34 + rows * (H + 22);
     const layers: { input: Buffer; left: number; top: number }[] = [];
-    let svg = `<text x="6" y="24" font-size="20" font-weight="bold" font-family="sans-serif">${esc(slug)} — ${row.v.length} views, ${row.l.length} landmarks</text>`;
+    let svg = `<text x="6" y="24" font-size="20" font-weight="bold" font-family="sans-serif">${esc(slug)} — ${(row.n ?? []).length} nature, ${row.v.length} views, ${row.l.length} landmarks</text>`;
     // One at a time with a pause: Wikimedia refuses bursts (blank tiles).
     for (const [j, { p, tag }] of all.entries()) {
       const x = GAP + (j % PER_ROW) * (W + GAP),
@@ -341,7 +479,7 @@ async function sheets() {
         }
       }
       if (p.s === "c") await new Promise((r) => setTimeout(r, 250));
-      svg += `<rect x="${x}" y="${y}" width="${tag.length * 11 + 6}" height="22" fill="${p.k === "v" ? "#06c" : "#000"}"/><text x="${x + 3}" y="${y + 17}" font-size="16" font-weight="bold" fill="#ff0" font-family="sans-serif">${tag}</text><text x="${x}" y="${y + H + 15}" font-size="11" font-family="sans-serif">${esc(p.en.slice(0, 32))}</text>`;
+      svg += `<rect x="${x}" y="${y}" width="${tag.length * 11 + 6}" height="22" fill="${p.k === "v" ? "#06c" : p.k === "n" ? "#070" : "#000"}"/><text x="${x + 3}" y="${y + 17}" font-size="16" font-weight="bold" fill="#ff0" font-family="sans-serif">${tag}</text><text x="${x}" y="${y + H + 15}" font-size="11" font-family="sans-serif">${esc(p.en.slice(0, 32))}</text>`;
     }
     layers.push({
       input: Buffer.from(
@@ -372,7 +510,20 @@ function build(file: string) {
     if (!d || d === "all" || !row) continue;
     const keep = (list: Photo[], k: string) =>
       list.filter((_, i) => !d.has(`${k}${i + 1}`));
-    const items = [...keep(row.v, "v"), ...keep(row.l, "l")];
+    // Nature (Commons) and views (Pexels) take turns, then landmarks with worship and museums last.
+    const nat = keep(row.n ?? [], "n").map((p) => ({ ...p, k: "v" as const }));
+    const v = keep(row.v, "v");
+    const views: Photo[] = [];
+    for (let i = 0; i < Math.max(nat.length, v.length); i++) {
+      if (nat[i]) views.push(nat[i]);
+      if (v[i]) views.push(v[i]);
+    }
+    const kind = new Map(guide(c.slug).map((p) => [p.im!, p.g]));
+    const landmarks = keep(row.l, "l")
+      .map((p, i) => ({ p, i }))
+      .sort((a, b) => landmarkRank(kind.get(a.p.o)) - landmarkRank(kind.get(b.p.o)) || a.i - b.i)
+      .map((r) => r.p);
+    const items = [...views, ...landmarks];
     if (items.length < 4) continue;
     const out = items.map((p) => ({
       ...p,
