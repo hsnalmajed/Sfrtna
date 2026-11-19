@@ -21,7 +21,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: photo-candidates
+  group: gallery-v3
   cancel-in-progress: false
 
 jobs:
