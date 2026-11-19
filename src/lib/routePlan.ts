@@ -153,6 +153,54 @@ async function countryCities(code: string, except: string, locale: "ar" | "en"):
 }
 
 /** The plan for this request: one city, or a route when the trip is longer than the city needs. */
+/**
+ * Before the plan (owner 19 Nov 2026: «ask him first»): the days the chosen
+ * city needs and the cities of the same country he could add, nearest first,
+ * each with the days it needs. `pick` = our suggestion for the days left.
+ */
+export interface RouteOptions {
+  days: number;
+  needs: number;
+  city: string;
+  country: string;
+  options: { slug: string; name: string; needs: number; km: number }[];
+  pick: { slug: string; days: number }[];
+}
+
+export async function routeOptions(req: PlanRequest, guide: GuideFile): Promise<RouteOptions | null> {
+  const city = findCity(req.code, req.slug);
+  const centre = CITY_COORDS[req.slug];
+  if (!city || !centre) return null;
+  const ar = req.locale === "ar";
+  const days = Math.round((Date.parse(req.to) - Date.parse(req.from)) / 86_400_000) + 1;
+  const needs = cityNeedsDays(guide);
+  const country = findCountry(req.code);
+  const base = { days, needs, city: ar ? city.nameAr : city.nameEn, country: country ? (ar ? country.nameAr : country.nameEn) : "", options: [], pick: [] };
+  if (days - needs < 2) return base;
+  const others = (await countryCities(req.code, req.slug, req.locale)).filter((c) => km(centre, c) <= REACH_KM);
+  if (!others.length) return base;
+  // Our suggestion: the same chain buildRoutePlan follows (nearest to the last city).
+  const pick: { slug: string; days: number }[] = [];
+  let left = days - needs;
+  let last = { lat: centre.lat, lon: centre.lon };
+  const pool = [...others];
+  while (left >= 1 && pick.length < MAX_CITIES - 1) {
+    pool.sort((a, b) => km(last, a) - km(last, b));
+    const next = pool.find((c) => km(last, c) <= REACH_KM && left >= Math.min(2, c.needs));
+    if (!next) break;
+    pool.splice(pool.indexOf(next), 1);
+    const take = Math.min(next.needs, left);
+    pick.push({ slug: next.slug, days: take });
+    left -= take;
+    last = next;
+  }
+  const options = others
+    .map((c) => ({ slug: c.slug, name: c.name, needs: c.needs, km: Math.round(km(centre, c)) }))
+    .sort((a, b) => Number(pick.some((p) => p.slug === b.slug)) - Number(pick.some((p) => p.slug === a.slug)) || a.km - b.km)
+    .slice(0, 8);
+  return { ...base, options, pick };
+}
+
 export async function buildRoutePlan(req: PlanRequest, guide: GuideFile): Promise<SmartPlan | null> {
   const city = findCity(req.code, req.slug);
   const centre = CITY_COORDS[req.slug];
@@ -174,10 +222,23 @@ export async function buildRoutePlan(req: PlanRequest, guide: GuideFile): Promis
   if (!centre || days - needs0 < 2) return single();
   const others = await countryCities(req.code, req.slug, req.locale);
   // Which cities: the nearest the guide covers, one after another.
-  const picked: (PlanLeg & { guide: GuideFile })[] = [{ slug: req.slug, code: req.code, name: nameOf(city), days: needs0, lat: centre.lat, lon: centre.lon, needs: needs0, guide }];
-  let left = days - needs0;
+  const split = req.answers.split;
+  const picked: (PlanLeg & { guide: GuideFile })[] = [{ slug: req.slug, code: req.code, name: nameOf(city), days: split ? split[0].days : needs0, lat: centre.lat, lon: centre.lon, needs: needs0, guide }];
+  let left = days - picked[0].days;
   const pool = [...others];
-  while (left >= 1 && picked.length < MAX_CITIES) {
+  // The traveller's own days per city: exactly those cities, those days (any unknown city's days go to the first).
+  if (split) {
+    for (const s of split.slice(1)) {
+      const c = pool.find((x) => x.slug === s.slug);
+      if (!c) continue;
+      pool.splice(pool.indexOf(c), 1);
+      picked.push({ slug: c.slug, code: c.code, name: c.name, days: s.days, lat: c.lat, lon: c.lon, needs: c.needs, guide: c.guide });
+      left -= s.days;
+    }
+    picked[0].days += left;
+    left = 0;
+  }
+  while (!split && left >= 1 && picked.length < MAX_CITIES) {
     const last = picked[picked.length - 1];
     pool.sort((a, b) => km(last, a) - km(last, b));
     const next = pool.find((c) => km(last, c) <= REACH_KM && left >= Math.min(2, c.needs));

@@ -10,6 +10,7 @@ import HotelCityInput from "@/components/HotelCityInput";
 import SmartPlanView from "@/components/smart/SmartPlanView";
 import { track } from "@/lib/analytics";
 import type { PlanAnswers, SmartPlan } from "@/lib/ai/plan";
+import type { RouteOptions } from "@/lib/routePlan";
 
 const COMPANY = ["solo", "couple", "family_kids", "family_adults", "friends", "seniors"] as const;
 const INTERESTS = ["famous", "history", "islamic", "museums", "art", "oldtown", "nature", "mountains", "beaches", "relax", "kids", "malls", "souqs", "food", "modern", "photo", "night", "churches"] as const;
@@ -21,7 +22,7 @@ const SPEND = ["budget", "mid", "luxury"] as const;
 const DAY_PART = ["morning", "noon", "evening"] as const;
 const NEEDS = ["prayer", "avoid_crowds", "free_first", "less_walking", "stroller", "wheelchair"] as const;
 
-type Step = "where" | "dates" | "company" | "interests" | "day" | "food" | "move" | "about";
+type Step = "where" | "dates" | "split" | "company" | "interests" | "day" | "food" | "move" | "about";
 
 /** Opens the planner on a city page from anywhere on it (e.g. «أنشئ لي خطة»). */
 export const SMART_OPEN_EVENT = "sfr-smart-open";
@@ -68,10 +69,17 @@ export default function SmartPlanner({
   initial?: { code?: string; slug?: string; cityName?: string; from?: string; to?: string };
 }) {
   const t = useDictionary().smart;
-  const steps: Step[] = useMemo(
-    () => (standalone ? ["where", "dates", "company", "interests", "day", "food", "move", "about"] : ["dates", "company", "interests", "day", "food", "move", "about"]),
-    [standalone]
-  );
+  /** Days per city (owner 19 Nov): what the city needs and the cities he could add, fetched after the dates. */
+  const [route, setRoute] = useState<RouteOptions | null>(null);
+  const [splitStage, setSplitStage] = useState<"ask" | "main" | "others">("ask");
+  const [wantMore, setWantMore] = useState<boolean | null>(null);
+  const [mainDays, setMainDays] = useState(0);
+  const [extra, setExtra] = useState<Record<string, number>>({});
+  const offerSplit = Boolean(route && route.options.length && route.days - route.needs >= 2);
+  const steps: Step[] = useMemo(() => {
+    const list: Step[] = ["dates", ...(offerSplit ? (["split"] as const) : []), "company", "interests", "day", "food", "move", "about"];
+    return standalone ? ["where", ...list] : list;
+  }, [standalone, offerSplit]);
   const [city, setCity] = useState<{ code: string; slug: string; name: string } | null>(
     fixedSlug && fixedCode ? { code: fixedCode, slug: fixedSlug, name: fixedName ?? "" } : initial?.slug && initial.code ? { code: initial.code, slug: initial.slug, name: initial.cityName ?? "" } : null
   );
@@ -90,6 +98,46 @@ export default function SmartPlanner({
   const [savedKeys, setSavedKeys] = useState<string[][] | undefined>(undefined);
   /** The answers the shown plan was built from. */
   const [built, setBuilt] = useState<PlanAnswers | null>(null);
+
+  // The days this city needs and the cities he could add, for the question after the dates.
+  useEffect(() => {
+    const n = from && to ? Math.round((Date.parse(to) - Date.parse(from)) / 86_400_000) + 1 : 0;
+    if (!city || ready !== true || n < 3 || n > 14) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- no question without a city and dates
+      setRoute(null);
+      return;
+    }
+    let live = true;
+    fetch("/api/ai/plan", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ preview: true, code: city.code, slug: city.slug, from, to, locale, answers: blank }),
+    })
+      .then((r) => r.json() as Promise<{ ok: boolean; options?: RouteOptions | null }>)
+      .then((j) => {
+        if (!live) return;
+        const o = j.options ?? null;
+        setRoute(o);
+        setSplitStage("ask");
+        setWantMore(null);
+        if (o) {
+          setMainDays(o.needs);
+          setExtra(Object.fromEntries(o.pick.map((p) => [p.slug, p.days])));
+        }
+      })
+      .catch(() => live && setRoute(null));
+    return () => {
+      live = false;
+    };
+  }, [city, ready, from, to, locale]);
+
+  /** The approved split as the plan takes it: the city first, the left-over days back to it. */
+  const splitAnswer = (): PlanAnswers["split"] => {
+    if (!route) return undefined;
+    const others = route.options.filter((o) => extra[o.slug]).map((o) => ({ slug: o.slug, days: extra[o.slug] }));
+    const used = others.reduce((n, c) => n + c.days, 0);
+    return [{ slug: city!.slug, days: route.days - used }, ...others];
+  };
 
   // Is the plan ready for this city (our guide has its places written up)?
   useEffect(() => {
@@ -178,8 +226,47 @@ export default function SmartPlanner({
     if (s === "where") return Boolean(city) && ready === true;
     if (s === "dates") return days >= 1 && days <= 14;
     if (s === "interests") return a.interests.length > 0;
+    if (s === "split") return splitStage !== "ask" || wantMore !== null;
     return true;
-  }, [steps, step, city, ready, days, a.interests.length]);
+  }, [steps, step, city, ready, days, a.interests.length, splitStage, wantMore]);
+
+  /** «التالي»: inside the days question it walks its own three screens first. */
+  function next() {
+    if (steps[step] === "split" && route) {
+      if (splitStage === "ask" && wantMore) return setSplitStage("main");
+      if (splitStage === "ask" && wantMore === false) {
+        setA({ ...a, route: "single", split: undefined });
+        return setStep(step + 1);
+      }
+      if (splitStage === "main") {
+        // All the days in the city: one city after all.
+        if (mainDays >= route.days) {
+          setA({ ...a, route: "single", split: undefined });
+          return setStep(step + 1);
+        }
+        // Keep only what still fits the days left, nearest first.
+        let left = route.days - mainDays;
+        const fit: Record<string, number> = {};
+        for (const o of route.options) {
+          const d = Math.min(extra[o.slug] ?? 0, left);
+          if (d > 0) {
+            fit[o.slug] = d;
+            left -= d;
+          }
+        }
+        setExtra(fit);
+        return setSplitStage("others");
+      }
+      const split = splitAnswer();
+      setA({ ...a, route: split && split.length > 1 ? "multi" : "single", split: split && split.length > 1 ? split : undefined });
+      return setStep(step + 1);
+    }
+    setStep(step + 1);
+  }
+  function back() {
+    if (steps[step] === "split" && splitStage !== "ask") return setSplitStage(splitStage === "others" ? "main" : "ask");
+    setStep(step - 1);
+  }
 
   async function build(over?: { answers?: PlanAnswers; from?: string; to?: string; keys?: string[][] }) {
     if (!city) return;
@@ -274,6 +361,86 @@ export default function SmartPlanner({
             )}
           </>
         );
+      case "split": {
+        if (!route) return null;
+        const fill = (x: string, vars: Record<string, string | number>) => Object.entries(vars).reduce((s2, [k, v]) => s2.split(`{${k}}`).join(String(v)), x);
+        const nDays = (n: number) => fill(n === 1 ? t.split.day1 : n === 2 ? t.split.day2 : n <= 10 ? t.split.daysFew : t.split.daysMany, { n });
+        const stepper = (value: number, set: (n: number) => void, min: number, max: number, label: string) => (
+          <div className="flex items-center gap-2" role="group" aria-label={label}>
+            <button type="button" onClick={() => set(Math.max(min, value - 1))} disabled={value <= min} aria-label={t.split.less} className="grid h-11 w-11 place-items-center rounded-full bg-white text-xl font-extrabold text-navy-900 ring-1 ring-mist-300 disabled:opacity-40">
+              −
+            </button>
+            <span className="min-w-20 text-center text-base font-extrabold text-navy-950" aria-live="polite">
+              {nDays(value)}
+            </span>
+            <button type="button" onClick={() => set(Math.min(max, value + 1))} disabled={value >= max} aria-label={t.split.more} className="grid h-11 w-11 place-items-center rounded-full bg-white text-xl font-extrabold text-navy-900 ring-1 ring-mist-300 disabled:opacity-40">
+              +
+            </button>
+          </div>
+        );
+        const v = { city: route.city, country: route.country, needs: nDays(route.needs), days: nDays(route.days), left: nDays(route.days - route.needs) };
+        if (splitStage === "ask")
+          return (
+            <>
+              <h3 className="font-display text-xl font-extrabold text-navy-950">{fill(t.split.askQ, v)}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-navy-600">{fill(t.split.askHint, v)}</p>
+              <div className="mt-4 grid gap-2">
+                <button type="button" className={chip(wantMore === true)} onClick={() => setWantMore(true)}>
+                  {fill(t.split.yes, v)}
+                </button>
+                <button type="button" className={chip(wantMore === false)} onClick={() => setWantMore(false)}>
+                  {fill(t.split.no, v)}
+                </button>
+              </div>
+            </>
+          );
+        if (splitStage === "main")
+          return (
+            <>
+              <h3 className="font-display text-xl font-extrabold text-navy-950">{fill(t.split.mainQ, v)}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-navy-600">{fill(t.split.mainHint, v)}</p>
+              <div className="mt-5 flex justify-center">{stepper(mainDays, setMainDays, 1, route.days, route.city)}</div>
+              {mainDays !== route.needs && (
+                <button type="button" onClick={() => setMainDays(route.needs)} className="mx-auto mt-3 block text-sm font-bold text-sea-700 underline">
+                  {fill(t.split.backToOurs, v)}
+                </button>
+              )}
+            </>
+          );
+        const leftNow = route.days - mainDays - route.options.reduce((n, o) => n + (extra[o.slug] ?? 0), 0);
+        return (
+          <>
+            <h3 className="font-display text-xl font-extrabold text-navy-950">{fill(t.split.othersQ, { ...v, left: nDays(route.days - mainDays) })}</h3>
+            <p className="mt-2 text-sm leading-relaxed text-navy-600">{fill(t.split.othersHint, v)}</p>
+            <ul className="mt-4 space-y-2">
+              {route.options.map((o) => {
+                const on = Boolean(extra[o.slug]);
+                return (
+                  <li key={o.slug} className={`rounded-2xl bg-white p-3 ring-1 ${on ? "ring-navy-900" : "ring-mist-300"}`}>
+                    <label className="flex min-h-11 cursor-pointer items-center gap-3">
+                      <input
+                        type="checkbox"
+                        checked={on}
+                        disabled={!on && leftNow < 1}
+                        onChange={() => setExtra((p) => (on ? Object.fromEntries(Object.entries(p).filter(([k]) => k !== o.slug)) : { ...p, [o.slug]: Math.max(1, Math.min(o.needs, leftNow)) }))}
+                        className="h-5 w-5 accent-navy-900"
+                      />
+                      <span className="min-w-0 flex-1">
+                        <span className="block font-extrabold text-navy-950">{o.name}</span>
+                        <span className="block text-xs text-navy-500">{fill(t.split.optionLine, { needs: nDays(o.needs), km: o.km })}</span>
+                      </span>
+                    </label>
+                    {on && <div className="mt-2 flex justify-end">{stepper(extra[o.slug], (n) => setExtra((p) => ({ ...p, [o.slug]: n })), 1, extra[o.slug] + leftNow, o.name)}</div>}
+                  </li>
+                );
+              })}
+            </ul>
+            <p className="mt-4 rounded-2xl bg-sea-50 px-4 py-3 text-sm font-bold text-navy-800 ring-1 ring-sea-100">
+              {leftNow > 0 ? fill(t.split.leftToCity, { ...v, left: nDays(leftNow) }) : t.split.allGiven}
+            </p>
+          </>
+        );
+      }
       case "dates":
         return (
           <>
@@ -491,14 +658,14 @@ export default function SmartPlanner({
       <div className={standalone ? "mt-6" : "border-t border-mist-200 bg-white px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]"}>
         <div className="mx-auto flex max-w-lg gap-2">
           {step > 0 && (
-            <button type="button" onClick={() => setStep(step - 1)} className="min-h-12 rounded-full px-5 font-bold text-navy-700 ring-1 ring-mist-300">
+            <button type="button" onClick={back} className="min-h-12 rounded-full px-5 font-bold text-navy-700 ring-1 ring-mist-300">
               {t.back}
             </button>
           )}
           <button
             type="button"
             disabled={!can}
-            onClick={() => (last ? build() : setStep(step + 1))}
+            onClick={() => (last ? build() : next())}
             className="min-h-12 flex-1 rounded-full bg-sun-400 px-5 font-extrabold text-navy-950 shadow-[var(--shadow-sun)] transition hover:bg-sun-300 disabled:opacity-50"
           >
             {last ? (state === "error" ? t.retry : t.build) : t.next}

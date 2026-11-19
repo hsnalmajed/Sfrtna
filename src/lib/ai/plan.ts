@@ -64,6 +64,11 @@ export interface PlanAnswers {
   needs?: (typeof NEEDS)[number][];
   /** Long trip in a small country: several cities (default) or one city only. */
   route?: (typeof ROUTE)[number];
+  /**
+   * The days per city the traveller approved (owner 19 Nov: ask, don't
+   * decide): the chosen city first, then the other cities in the order picked.
+   */
+  split?: { slug: string; days: number }[];
 }
 
 /** «multi»: past the days a city needs, the plan moves on to the country's other cities. */
@@ -126,8 +131,23 @@ export function cleanPlanRequest(b: unknown): PlanRequest | null {
       leave: pickEnum(DAY_PART, a.leave) ?? "evening",
       needs: pickMany(NEEDS, a.needs, NEEDS.length),
       route: pickEnum(ROUTE, a.route) ?? "multi",
+      split: cleanSplit(a.split, slug, days),
     },
   };
+}
+
+/** The approved days per city, or nothing: the chosen city first, at most 5 cities, every day of the trip given out. */
+function cleanSplit(v: unknown, slug: string, days: number): PlanAnswers["split"] {
+  if (!Array.isArray(v) || v.length < 1 || v.length > 5) return undefined;
+  const out: { slug: string; days: number }[] = [];
+  for (const x of v) {
+    const o = x as Record<string, unknown>;
+    if (typeof o?.slug !== "string" || !/^[a-z0-9-]{2,60}$/.test(o.slug) || !Number.isInteger(o.days) || (o.days as number) < 1 || (o.days as number) > 14) return undefined;
+    if (out.some((c) => c.slug === o.slug)) return undefined;
+    out.push({ slug: o.slug, days: o.days as number });
+  }
+  if (out[0].slug !== slug || out.reduce((n, c) => n + c.days, 0) !== days) return undefined;
+  return out;
 }
 
 // ── What comes back ────────────────────────────────────────────────────────

@@ -5,7 +5,7 @@ import { takeAi } from "@/lib/ai/quota";
 import { cachedJson } from "@/lib/edgeCache";
 import { readGuide } from "@/lib/guide";
 import { guidePlanReady } from "@/lib/guidePlan";
-import { buildRoutePlan } from "@/lib/routePlan";
+import { buildRoutePlan, routeOptions } from "@/lib/routePlan";
 import { appOfflinePlan } from "@/lib/appPlan";
 import type { GuideFile } from "@/lib/guideTypes";
 
@@ -27,6 +27,11 @@ export async function POST(request: Request) {
   // Our own guide first: built here by rules from stored data, no AI call
   // and no cost per visitor (src/lib/guidePlan.ts).
   const guide = await readGuide(req.slug);
+  // Before the plan: the days the city needs and the cities he could add (the planner asks him).
+  if ((body as { preview?: unknown }).preview === true) {
+    const opts = guidePlanReady(guide) ? await routeOptions(req, guide as GuideFile) : null;
+    return NextResponse.json({ ok: true, options: opts }, { headers: { "Cache-Control": "no-store" } });
+  }
   if (guidePlanReady(guide)) {
     // One city, or a route across the country when the trip is longer than the city needs (routePlan.ts).
     const plan = await buildRoutePlan(req, guide as GuideFile);
