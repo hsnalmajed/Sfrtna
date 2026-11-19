@@ -27,7 +27,7 @@ concurrency:
 jobs:
   collect:
     runs-on: ubuntu-latest
-    timeout-minutes: 50
+    timeout-minutes: 150
     env:
       PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
     steps:
@@ -46,8 +46,19 @@ jobs:
           fi
       - name: Collect
         run: npx --yes tsx@4 scripts/photos/gallery2.ts collect --max 180 ${{ inputs.only && format('--only {0}', inputs.only) || '' }} ${{ inputs.redo && '--redo' || '' }}
+      - name: Save the collection first (a slow sheet run must not lose it)
+        run: |
+          cd photo-review
+          rm -f g-*.jpg c-*.jpg c2-*.jpg *.json.bak 2>/dev/null || true
+          ls
+          git init -q
+          git config user.name "Claude"; git config user.email "noreply@anthropic.com"
+          git checkout -q -B photo-review-v2
+          git add gallery2.json v2-*.jpg v2-index.json 2>/dev/null || git add gallery2.json
+          git commit -q -m "Gallery v2 candidates"
+          git push -q -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" photo-review-v2
       - name: Sheets
-        run: npx --yes tsx@4 scripts/photos/gallery2.ts sheets
+        run: npx --yes tsx@4 scripts/photos/gallery2.ts sheets ${{ inputs.only && format('--only {0}', inputs.only) || '' }}
       - name: Push to the review branch
         run: |
           cd photo-review
@@ -55,7 +66,7 @@ jobs:
           ls
           git init -q
           git config user.name "Claude"; git config user.email "noreply@anthropic.com"
-          git checkout -q -b photo-review-v2
+          git checkout -q -B photo-review-v2
           git add gallery2.json v2-*.jpg v2-index.json 2>/dev/null || git add gallery2.json
           git commit -q -m "Gallery v2 candidates"
           git push -q -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" photo-review-v2
