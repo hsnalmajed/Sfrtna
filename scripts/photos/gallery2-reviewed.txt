@@ -93,3 +93,13 @@ stockholm
 brussels
 dublin
 rio-de-janeiro
+hong-kong
+los-angeles
+las-vegas
+san-francisco
+miami
+melbourne
+naples
+valencia
+geneva
+oslo
