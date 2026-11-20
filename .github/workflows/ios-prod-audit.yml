@@ -1,0 +1,29 @@
+# By hand: what the iPhone app's web view contacts on the live site
+# (Apple 5.1.2(i)). Report only — scripts/ios-prod-audit.mjs.
+name: iOS live audit
+on:
+  workflow_dispatch:
+    inputs:
+      base:
+        description: "site to audit"
+        default: "https://sfrtna.com"
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - run: npx playwright install --with-deps webkit 2>&1 | tail -n 3
+      - name: Audit
+        env:
+          SMOKE_TOKEN: ${{ secrets.SMOKE_TOKEN }}
+        run: node scripts/ios-prod-audit.mjs "${{ inputs.base }}" | tee audit.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ios-prod-audit
+          path: audit.txt
