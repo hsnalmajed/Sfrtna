@@ -113,3 +113,13 @@ mykonos
 pattaya
 penang
 sochi
+agra
+chicago
+jaipur
+malaga
+marseille
+orlando
+sapanca
+toronto
+vancouver
+washington-dc
