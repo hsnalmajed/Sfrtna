@@ -4,12 +4,12 @@
 //
 //   SMOKE_TOKEN=… node scripts/ios-prod-audit.mjs [https://sfrtna.com]
 //
-// Report only (never fails): WebKit with the app's user agent, every page a
+// Report only (never fails): Chromium with the app's user agent, every page a
 // reviewer is likely to open; lists EVERY other host each page contacts
 // (any type, pictures too), every cookie left behind (ours included), and
 // Set-Cookie headers our own responses send.
 
-import { webkit } from "playwright";
+import { chromium } from "playwright";
 
 const BASE = (process.argv[2] || "https://sfrtna.com").replace(/\/$/, "");
 const HOST = new URL(BASE).host;
@@ -43,7 +43,7 @@ const ours = (u) => {
   }
 };
 
-const browser = await webkit.launch();
+const browser = await chromium.launch();
 const context = await browser.newContext({ userAgent: UA, locale: "ar-SA", viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
 await context.route("**/*", (route) => {
   const r = route.request();

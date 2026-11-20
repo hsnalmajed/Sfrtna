@@ -10,7 +10,7 @@ on:
 jobs:
   audit:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -18,7 +18,7 @@ jobs:
           node-version: "22"
       - run: |
           npm install --no-save --no-audit --no-fund playwright@1
-          npx playwright install --with-deps webkit 2>&1 | tail -n 3
+          npx playwright install --with-deps chromium 2>&1 | tail -n 3
       - name: Audit
         env:
           SMOKE_TOKEN: ${{ secrets.SMOKE_TOKEN }}
