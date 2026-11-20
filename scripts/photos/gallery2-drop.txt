@@ -24,7 +24,6 @@ tangier v2 v3 v5 v8 v9 v10 v13 v18 l2 l3 l8 l9
 agadir *
 rabat v3 v6 v7 v9 v13 v16 v17 v18 v19 v20 v21 v22 v23 v25 l11 l12 l16 l18 l19 l22 l23 l25
 amman s2 s10 s11 s12 s14 s15 s16 s17 s18 s19 s20 s21 s22 s23 s24 s25 v1 v2 v3 v6 v7 v8 v9 v10 v11 v13 v15 v16 v17 v18 v19 v20 v23 l2 l3 l5 l8 l10 l11 l13 l18 l21 l22 l23 l24 l25
-aqaba v2 v5 v6 v9 v10 v11 v14 v15 v16 v18 v19 v20 l2 l3
 london s1 s4 s5 s6 s7 s8 s9 s12 s15 s30 s31 s32 v1 v2 v3 v4 v5 v6 v7 v8 v9 v10 v11 v12 v13 v16 v17 v18 v20 v21 v22 v23 v26 v27 v28 v30 l3 l10 l13 l16 l18 l20 l24
 manchester v2 v5 v6 v8 v9 v10 v12 v13 v15 v16 v17 v21 v24 v26 l1 l8 l11 l15 l18 l21 l23 l24 l25
 oxford v1 v3 v9 v10 v13 v14 v15 v17 v18 v19 v21 v24 v26 v27 l5 l8 l11 l12 l15 l16 l17 l18 l19 l20 l21 l23 l24 l25
@@ -44,7 +43,6 @@ palma v2 v5 v6 v7 v11 v12 v13 v15 v16 v19 v20 v21 v24 v26 v28 l3 l8 l9 l11 l13 l
 pisa v3 v6 v9 v10 v11 v13 v16 v17 v20 v21 v24 v25 v26 v28 v29 v30 l7 l9 l10 l11 l12 l13 l14 l17 l19 l22 l23 l24
 bologna v5 v10 v11 v12 v16 v19 v20 l1 l3 l5 l6 l7 l10 l14 l19 l20 l21
 palermo v3 v5 v7 v9 v12 v15 v17 v18 v19 v22 v23 v25 v26 v28 v30 l6 l7 l8 l9 l12 l14 l15 l19 l20
-mykonos v1 v4 v5 v8 v10 v11 v12 v13 v14 v17 v18 v19 v20 v22 v23 v24 v26 v27 l3 l4 l5 l6 l9 l11 l12 l17 l18 l19 l20 l21 l24 l25
 thessaloniki v1 v3 v4 v6 v8 v10 v11 v13 v14 v16 v20 l4 l5 l8 l9 l10 l12 l16 l17 l19 l20 l21 l22 l23 l24
 heraklion v4 v5 v6 l3 l4 l6 l9 l11 l12 l13 l14 l16 l17 l18 l20 l21 l22 l23
 rhodes v3 v6 v7 v10 v11 v12 v16 v17 v20 v22 v23 v26 v28 l3 l5 l9 l11 l12 l13 l14 l19 l21 l22
@@ -69,11 +67,6 @@ ella v6 v8 v9 v10 v11 v12 v13 v14 v15 v16 l2 l3
 ubud v6 v7 l2 l3 l5 l6 l7 l14 l15 l18
 jakarta v1 v2 v5 v6 v7 v8 v10 v11 v14 v15 v16 v17 v18 v19 v24 v25 v26 v28 v30 l3 l4 l6 l7 l9 l11 l12 l17 l19 l20 l21 l22 l24
 yogyakarta v1 v2 v3 v4 v7 v8 v9 v10 v12 v13 v14 v15 v17 v18 v21 v22 v23 l2 l3 l6 l11 l18 l19 l20 l21 l23 l24 l25
-pattaya v1 v2 v4 v6 v7 v8 v9 v12 v13 v14 v15 v16 v17 v19 v20 v22 v23 v24 v26 v28 v29
-krabi v4 v8 v10 v12 v13 v19 v22 v23 v24 v25 v27 v29 l1
-koh-samui v1 v7 v9 v11 v12 v16
-penang v1 v2 v5 v6 v9 v10 v12 v13 v14 v15 v17 l1 l9 l10 l11 l14 l15 l16 l21 l22 l23 l24 l25
-langkawi v2 v3 v4 v8 v9 v10 v11 v13 v15 v16 l3
 malacca v1 v2 v3 v6 v7 v8 v10 v11 v13 v15 v16 v18 v19 v20 v21 v22 v26 v27 v29 l1 l3 l8 l9 l11 l13 l14 l17 l18 l19 l21 l25
 kota-kinabalu v2 v4 l2 l6 l9 l10 l11 l12 l14 l15
 osaka s4 s10 s11 s16 s19 s20 s21 s22 s23 s24 s25 v1 v3 v4 v5 v7 v8 v9 v10 v11 v12 v13 v14 v15 v16 v18 v19 v21 v22 v24 v25 v26 v27 v29 v30 l2 l6 l7 l9 l11 l12 l14 l17 l20 l22 l23
@@ -88,7 +81,6 @@ guangzhou v6 v7 v8 v10 v12 v13 v15 v17 v18 v19 v20 v23 v24 v25 v26 v28 l2 l3 l6 
 chengdu v1 v4 v6 v7 v8 v9 v10 v12 v13 v15 v16 v17 v18 l1 l2 l4 l5 l6 l8 l10 l11 l12 l13 l14 l15 l16 l18 l20 l21 l22 l23
 shenzhen v2 v4 v8 v13 v14 v15 v17 v18 v19 v20 v21 v23 v25 v26 v28 l1 l2 l3 l4 l5 l6 l7 l8 l9 l12 l13 l14 l15 l16 l17 l18 l19 l20 l21 l23 l24 l25
 hanoi s2 s3 s9 s11 s12 s14 s15 s22 s23 s24 s25 s28 s29 s30 s33 v1 v2 v3 v5 v6 v7 v9 v10 v11 v13 v14 v15 v16 v17 v18 v19 v20 v21 v22 v23 v26 v27 v28 v30 l5 l8 l10 l12 l13 l15 l17 l20 l22 l23
-ho-chi-minh-city v1 v2 v3 v4 v7 v8 v10 v14 v16 v17 v18 v22 v24 v25 v26 v27 l1 l3 l5 l6 l8 l10 l11 l12 l13 l15 l16 l18 l19 l20 l21 l23 l24 l25
 da-nang v1 v3 v8 v9 v12 v13 v15 v16 v17 v18 v19 v22 v23 v24 v27 v29 v30 l3 l5
 hoi-an v4 v6 v8 v10 v12 v16 v17 v18 v20 v23 l2 l3 l4
 nha-trang v1 v3 v5 v7 v8 v9 v10 v12 v14 v15 v16 v17 v18 v19 v21 v24 l2
@@ -117,7 +109,6 @@ durban v3 v4 v6 v9 v11 v12 v13 v15 v16 v17 l1 l3 l7
 nairobi v2 v5 v6 v9 v10 v11 v12 v13 v14 v15 v16 v17 v18 v19 v20 v21 v22 v23 v24 v25 v26 v27 l2 l4 l5 l7 l8 l9 l10
 mombasa v1 v3 v9 v10 v11 v12 v13 v14 l1 l3 l4 l5
 mexico-city v2 v6 v7 v8 v9 v10 v12 v13 v15 v17 v19 v20 v22 v23 v24 v26 v27 v29 l3 l5 l7 l9 l12 l13 l14 l15 l17 l18 l19 l20 l21 l22 l24
-cancun v4 v5 v6 v7 v9 v10 v13 l4
 guadalajara v1 v2 v3 v5 v6 v10 v12 v13 v14 v16 v17 v18 v19 v20 v21 v22 l3 l5 l6 l8 l9 l11
 puerto-vallarta v1 v3 v4 v7 v8 v14 v16 v17 v18 v19 v20 v21 v23 v24 v26 v28 v29 l1
 sao-paulo v3 v4 v5 v6 v7 v10 v12 v14 v15 v18 v19 v20 v21 v23 v24 v25 v26 v27 v28 l4 l7 l10 l15 l17 l18 l19 l20 l22 l24 l25
@@ -136,7 +127,6 @@ byblos v3 l1 l3 l7
 baalbek l1 l5
 moscow v3 v5 v7 v8 v9 v10 v12 v13 v20 v24 v25 v26 v28 v30 l5 l8 l9 l10 l11 l12 l15 l16 l17 l18 l20 l22 l24
 kazan v1 v8 v11 v13 v17 v18 v19 v20 v21 l2 l6 l8 l9 l10 l11 l12 l14 l15 l16 l18 l19 l20 l21 l22 l23 l24 l25
-sochi v1 v3 v6 v8 v12 v14 v16 v20 v21 v22 v24 v26 v27 v29 v30 l3 l4 l5 l7 l8
 sarajevo s1 s2 s3 s4 s5 s6 s7 s8 s9 s10 s11 s12 s15 s16 s17 s18 s19 s20 s21 l5 l8 l9 l10 l11 l12 l13 l14 l15 l16 l17 l18 l20 l24 l25 v2 v3 v4 v6 v7 v8 v9 v10 v11 v12 v13 v15 v17 v18 v19 v22 v23 v24 v25 v26 v27 v28
 mostar v2 v4 v5 v6 v8 v11 v12 v14 v15 v16 v18 v19 v21 v22 v26 v28 v29 l1 l4 l6 l7 l9 l10 l11 l12 l13
 tirana v1 v5 v6 v8 v9 v14 v16 v17 v18 v20 l1 l3 l5 l8 l11 l12 l14 l16 l17 l18 l19 l20 l21 l23 l24 l25
@@ -335,3 +325,13 @@ naples s5 s7 s8 s9 s11 s12 s13 s14 s16 s17 s18 s19 s20 s22 s23 v1 v4 v5 v8 v9 v1
 valencia s1 s2 s6 s7 s10 s11 s13 s14 s17 s19 s21 s22 s23 s24 s26 s27 v1 v2 v4 v5 v6 v7 v8 v9 v10 v11 v13 v14 v15 v16 v17 v19 v22 v24 v25 v26 v27 v28 v29 v30 l9 l10 l11 l13 l14 l17 l18 l19 l20 l22 l23 l25
 geneva s1 s3 s4 s5 s6 s8 s9 s10 s12 s13 s14 s15 s16 s17 s18 s20 s21 s22 s23 v3 v4 v5 v6 v9 v10 v12 v13 v14 v16 v17 v18 v19 v20 v21 v22 v23 l1 l2 l4 l6 l7 l9 l11 l14 l15 l18 l21 l22 l23 l24 l25
 oslo s1 s2 s3 s6 s7 s9 s10 s11 s12 s13 s14 s15 s16 s17 s18 s19 s20 s22 s23 v1 v2 v3 v4 v6 v7 v8 v10 v11 v13 v15 v16 v17 v18 v19 v21 v22 v23 v24 v25 v27 v28 v29 v30 l1 l6 l8 l11 l12 l14 l15 l16 l18 l21 l22 l23 l24 l25
+aqaba s1 s2 s3 s4 s5 s6 v2 v6 v8 v10 v11 v12 l2 l3
+langkawi s1 s2 s3 s4 s5 s7 v1 v3 v4 v6 v10 v11 v13 v14 l3 l8
+cancun s1 s3 s5 s6 s7 s8 s9 s11 s12 s13 s15 v3 v4 v5 v6 v10 v12 v13 v14 l4 l6
+ho-chi-minh-city s1 s4 s5 s8 s11 s13 s17 s19 s21 s22 s23 s24 s25 s26 v1 v2 v3 v4 v5 v6 v9 v10 v13 v15 v16 v17 v18 v19 v20 v21 v22 v23 v25 v26 v27 v28 v29 v30 l1 l11 l18 l19 l21 l22 l23 l24 l25
+koh-samui s2 s3 s6 s7 s8 s9 s10 s11 s12 s13 v1 v3 v6 v7 v8 v9 v10 v14 l7 l8
+krabi s2 s3 s5 v1 v2 v3 v5 v6 v7 v8 v9 v10 v11 v14 v15 v16 v17 v18 v19 v21 v23 v24 v25 v26 v27 v29 v30 l1 l4 l7 l8 l9 l10 l11 l12 l13
+mykonos s2 s3 s4 s5 s6 s7 s8 v1 v2 v3 v4 v6 v7 v8 v9 v11 v12 v15 v16 v18 v19 v20 v21 v22 v23 v24 v25 v26 v27 v29 v30 l2 l3 l4 l7 l8 l10 l11 l14 l16 l17 l18 l19 l20 l22 l23
+pattaya s3 s7 s9 s10 s11 s12 s13 s14 v1 v2 v5 v7 v9 v10 v11 v13 v14 v15 v16 v17 v18 v20 v21 v22 v23 v24 v25 v26 v27 l9 l10 l11 l12 l16
+penang s1 s2 s5 s7 s8 s11 s12 s13 s14 s15 s16 s17 s18 s19 s21 s22 s23 s24 s25 v1 v3 v5 v6 v7 v8 v11 v12 l7 l9 l10 l11 l13 l14 l18 l20 l21 l22 l23 l24 l25
+sochi s5 s6 s7 s8 s9 s10 s11 s12 s13 s15 v1 v3 v4 v5 v6 v7 v9 v10 v11 v13 v15 v16 v17 v18 v19 v21 v22 v24 v25 l4 l5 l7

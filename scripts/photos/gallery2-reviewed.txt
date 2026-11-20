@@ -103,3 +103,13 @@ naples
 valencia
 geneva
 oslo
+aqaba
+langkawi
+cancun
+ho-chi-minh-city
+koh-samui
+krabi
+mykonos
+pattaya
+penang
+sochi
