@@ -73,3 +73,13 @@ ras-al-khaimah
 colombo
 chiang-mai
 salzburg
+sarajevo
+prague
+budapest
+dubrovnik
+fes
+chefchaouen
+granada
+krakow
+sydney
+cape-town
