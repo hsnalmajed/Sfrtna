@@ -1,6 +1,3 @@
-2026-11-19T18:33:45.042Z
+2026-11-20T17:23:47.781Z
 gemini-3.8-flash: daily quota reached — switching to gemini-3.5-flash-lite
-seoul: batch failed — Error: generate: gave up
-valencia: batch failed — Error: generate: gave up
-vilnius: batch failed — Error: generate: gave up
-all done; 1343 named in 69 calls
+all done; 93 named in 11 calls

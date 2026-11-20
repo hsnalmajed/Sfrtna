@@ -1,26 +1,10 @@
-2026-11-19T18:03:57.755Z
+2026-11-20T17:20:27.405Z
 model: gemini-3.8-flash (then gemini-3.5-flash, gemini-3.5-flash-lite, gemini-3.1-flash-lite, gemini-2.5-flash-lite, gemma-4-31b-it, gemma-4-26b-a4b-it); cities: 415
 gemini-3.8-flash: daily quota reached after 0 calls — switching to gemini-3.5-flash
-dubai: done (1 written so far, 1 calls)
-kusadasi: done (1 written so far, 2 calls)
-singapore: done (2 written so far, 3 calls)
-valletta: done (3 written so far, 4 calls)
-jeju: done (4 written so far, 5 calls)
-penang: done (5 written so far, 6 calls)
-gemini-3.5-flash: daily quota reached after 6 calls — switching to gemini-3.5-flash-lite
-nuwara-eliya: batch failed — Error: generate: gave up
-nuwara-eliya: done (5 written so far, 6 calls)
-cappadocia: done (6 written so far, 7 calls)
-bogor: done (8 written so far, 8 calls)
-annecy: done (24 written so far, 10 calls)
-khiva: done (39 written so far, 11 calls)
-bandung: done (40 written so far, 12 calls)
-kuching: batch failed — Error: generate: gave up
-kuching: done (40 written so far, 12 calls)
-fethiye: batch failed — Error: generate: gave up
-fethiye: done (40 written so far, 12 calls)
-chiang-rai: done (40 written so far, 13 calls)
-ipoh: done (52 written so far, 14 calls)
-hua-hin: batch failed — Error: generate: gave up
-hua-hin: done (52 written so far, 14 calls)
-all done; 52 places written in 14 calls
+kusadasi: done (1 written so far, 1 calls)
+nuwara-eliya: done (16 written so far, 2 calls)
+kuching: done (16 written so far, 3 calls)
+fethiye: done (31 written so far, 4 calls)
+chiang-rai: done (32 written so far, 5 calls)
+hua-hin: done (47 written so far, 6 calls)
+all done; 47 places written in 6 calls
