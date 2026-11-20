@@ -1,5 +1,5 @@
 import HeroFeatures from "@/components/home/HeroFeatures";
-import MapPromo from "@/components/visited/MapPromo";
+import QuickTools from "@/components/home/QuickTools";
 import { getDictionary } from "@/lib/dictionaries";
 import { seasonReasons } from "@/lib/travelSeason/reasons";
 import type { Locale } from "@/lib/types";
@@ -347,7 +347,7 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
           }}
         />
       </section>
-      <MapPromo locale={loc} t={dict.visited} />
+      <QuickTools locale={loc} dict={dict} />
     </div>
   );
 }

@@ -1,5 +1,6 @@
 "use client";
 
+import { quickTools } from "@/lib/quickTools";
 import AccountLink from "@/components/AccountLink";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Link from "next/link";
@@ -128,14 +129,7 @@ export default function AppTabBar({ locale }: { locale: Locale }) {
   const isActive = (href: string) =>
     href === home ? pathname === home : pathname === href || pathname.startsWith(`${href}/`);
 
-  const tools = [
-    { href: `/${locale}/itinerary`, label: dict.nav.itinerary, icon: "🗺️" },
-    { href: `/${locale}/my-map`, label: dict.visited.title, icon: "🌍" },
-    { href: `/${locale}/visa`, label: dict.nav.visa, icon: "🛂" },
-    { href: `/${locale}/currency`, label: dict.nav.currency, icon: "💱" },
-    { href: `/${locale}/services`, label: dict.nav.services, icon: "🧳" },
-    { href: `/${locale}/budget`, label: dict.nav.budget, icon: "💰" },
-  ];
+  const tools = quickTools(locale, dict);
   const sitePages = [
     { href: `/${locale}/about`, label: dict.legal.aboutTitle },
     ...(CONTACT_EMAIL ? [{ href: `/${locale}/contact`, label: dict.legal.contactTitle }] : []),
