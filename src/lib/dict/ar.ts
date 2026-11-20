@@ -25,6 +25,7 @@ const ar = {
     currency: "تحويل العملة",
     budget: "مستشار الميزانية",
     services: "خدمات رحلتك",
+    toolsShort: { itinerary: "الخطة", budget: "الميزانية", visa: "التأشيرة", services: "الخدمات", currency: "العملة" },
     account: "حسابي",
     signIn: "تسجيل الدخول",
     planCta: "احجز رحلتك",

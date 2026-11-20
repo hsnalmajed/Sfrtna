@@ -20,6 +20,7 @@ const en = {
     currency: "Currency",
     budget: "Budget advisor",
     services: "Trip services",
+    toolsShort: { itinerary: "Plan", budget: "Budget", visa: "Visa", services: "Services", currency: "Currency" },
     account: "My account",
     signIn: "Sign in",
     planCta: "Book your trip",
