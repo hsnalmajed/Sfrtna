@@ -63,3 +63,13 @@ nice
 hanoi
 alexandria
 casablanca
+batumi
+beirut
+sharm-el-sheikh
+hurghada
+aswan
+giza
+ras-al-khaimah
+colombo
+chiang-mai
+salzburg
