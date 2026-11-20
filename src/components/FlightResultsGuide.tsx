@@ -310,6 +310,53 @@ function inAirAtNight(l: Leg): boolean {
   if (end < l.depHour) end += 24;
   return [1, 25].some((w) => l.depHour < w + 4 && end > w);
 }
+/**
+ * «الأفضل» is ours, not the partner's tag (owner, 20 Nov 2026: Saudia via
+ * Jeddah, 9 h 25, was «best» over a 3 h 55 non-stop costing 664 more — «غير
+ * صحيحة»). Each flight costs its fare plus the traveller's time: every hour
+ * on the way is worth HOUR_VALUE per traveller (100 SAR, owner 20 Nov), and
+ * a night in the air or at a stop, a stop over 4 h, or a change of airport
+ * count as extra hours. The lowest total is «الأفضل».
+ */
+const HOUR_VALUE: Record<string, number> = {
+  // 100 SAR in each currency (Gulf ones are pegged; the rest rounded).
+  SAR: 100, AED: 98, QAR: 97, OMR: 10.3, BHD: 10, KWD: 8.2, USD: 26.7, EUR: 25,
+  GBP: 21, JOD: 19, EGP: 1300, TRY: 1100, MYR: 120, IDR: 430000, INR: 2300,
+  PKR: 7400, THB: 900, LKR: 8000, MAD: 250, GEL: 72, AZN: 45,
+};
+const NIGHT_HOURS = 2;
+const LONG_STOP_HOURS = 2;
+const SELF_TRANSFER_HOURS = 4;
+function tripMinutes(f: Flight): number {
+  const sum = f.legs.reduce((s, l) => s + (l.minutes > 0 ? l.minutes : 0), 0);
+  return sum || f.avgMinutes * Math.max(1, f.legs.length);
+}
+function weighedHours(f: Flight): number {
+  const x = flightFacts(f);
+  return (
+    tripMinutes(f) / 60 +
+    (x.night ? NIGHT_HOURS : 0) +
+    (x.long ? LONG_STOP_HOURS : 0) +
+    (x.self ? SELF_TRANSFER_HOURS : 0)
+  );
+}
+/** «الأفضل» among `fits` (cheapest first): lowest fare + time, ties to the cheaper. */
+function pickBest(fits: Flight[], travelers: number, currency: string): Flight | null {
+  if (!fits.length) return null;
+  const n = Math.max(1, travelers);
+  // A currency we hold no value for: an hour = 5 % of the cheapest fare a head.
+  const hour = HOUR_VALUE[currency.toUpperCase()] ?? (fits[0].price / n) * 0.05;
+  let best = fits[0];
+  let bestCost = Infinity;
+  for (const f of fits) {
+    const cost = f.price + hour * n * weighedHours(f);
+    if (cost < bestCost - 0.5 || (Math.abs(cost - bestCost) <= 0.5 && f.price < best.price)) {
+      best = f;
+      bestCost = cost;
+    }
+  }
+  return best;
+}
 const factsCache = new WeakMap<Flight, ReturnType<typeof readFacts>>();
 function flightFacts(f: Flight) {
   let x = factsCache.get(f);
@@ -810,11 +857,22 @@ export default function FlightResultsGuide({
   const countBy = (facet: Facet, test: (f: Flight) => boolean) =>
     pool.filter((f) => passes(f, filters, facet) && test(f)).length;
   const prefsLabel = [directOnly ? t.chipDirect : "", bagPref ? t.chipBag : ""].filter(Boolean).join(" · ");
-  const bestFit = fits.find((f) => f.best) ?? fits[0] ?? null;
   const cheapestFit = fits[0] ?? null;
   const fastestFit = fits.length
     ? fits.reduce((a, b) => (b.avgMinutes > 0 && (a.avgMinutes === 0 || b.avgMinutes < a.avgMinutes) ? b : a))
     : null;
+  const bestFit = pickBest(fits, travelers, currency);
+  // Why it is «الأفضل», in one line under its badge.
+  const bestWhy = (() => {
+    if (!bestFit || !cheapestFit) return "";
+    const isFastest = fastestFit === bestFit;
+    if (bestFit === cheapestFit) return isFastest ? t.bestWhyBoth : t.bestWhyCheapest;
+    const saved = Math.round((tripMinutes(cheapestFit) - tripMinutes(bestFit)) / 60);
+    const more = money(bestFit.price - cheapestFit.price);
+    return saved >= 1
+      ? t.bestWhySaves.replace("{h}", String(saved)).replace("{amount}", more)
+      : t.bestWhyEasier.replace("{amount}", more);
+  })();
   const shown = tab === "cheapest" ? cheapestFit : tab === "fastest" ? fastestFit : bestFit;
   const others = fits.filter((f) => f !== shown);
   // Nothing within the budget among the flights found: said on the page
@@ -1191,6 +1249,7 @@ export default function FlightResultsGuide({
             featured
             badge={tab === "cheapest" ? (hasBudget ? t.badgeCheapest : t.tabCheapest) : tab === "fastest" ? (hasBudget ? t.badgeFastest : t.tabFastest) : t.pickBadge}
             aside={overToggle || null}
+            note={tab === "best" ? bestWhy : ""}
           />
 
           {/* Three flights in sight — the pick and the next two — and the
@@ -1380,6 +1439,7 @@ function FlightCard({
   featured = false,
   badge,
   aside,
+  note,
   foot,
   diff,
   overBy,
@@ -1395,6 +1455,8 @@ function FlightCard({
   featured?: boolean;
   badge?: string;
   aside?: React.ReactNode;
+  /** One line under the pick's badge: why it is «الأفضل». */
+  note?: string;
   foot?: React.ReactNode;
   diff?: number;
   overBy?: number;
@@ -1447,6 +1509,9 @@ function FlightCard({
       <div className="grid md:grid-cols-[minmax(0,1fr)_260px]">
         {/* The flight. */}
         <div className={`p-3 sm:p-5 ${featured ? "pt-6 sm:pt-7" : ""}`}>
+          {featured && note ? (
+            <p className="mb-3 rounded-xl bg-sun-50 px-3 py-2 text-sm font-bold leading-6 text-navy-900">{note}</p>
+          ) : null}
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="flex min-w-0 items-center gap-3">
               <div className="flex shrink-0 -space-x-2 rtl:space-x-reverse">
