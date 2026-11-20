@@ -153,3 +153,13 @@ kathmandu
 almaty
 warsaw
 helsinki
+nizwa
+split
+kotor
+bruges
+hoi-an
+siem-reap
+cologne
+madeira
+xian
+buenos-aires
