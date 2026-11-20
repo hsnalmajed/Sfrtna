@@ -31,7 +31,7 @@ const UA =
   "Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 SfrtnaApp/iOS";
 
 const TRACKERS =
-  /(googletagmanager|google-analytics|doubleclick|googlesyndication|facebook|fbcdn|clarity\.ms|hotjar|segment\.(io|com)|mixpanel|amplitude|stay22|tpwgt|apistp|travelpayouts|aviasales|tp\.media|emrld|tiktok|snap|criteo|taboola|outbrain)/i;
+  /(cloudflareinsights|accounts\.google|play\.google|googletagmanager|google-analytics|doubleclick|googlesyndication|facebook|fbcdn|clarity\.ms|hotjar|segment\.(io|com)|mixpanel|amplitude|stay22|tpwgt|apistp|travelpayouts|aviasales|tp\.media|emrld|tiktok|snap|criteo|taboola|outbrain)/i;
 
 const q = (o) => new URLSearchParams(o).toString();
 const PAGES = [
@@ -39,6 +39,10 @@ const PAGES = [
   ["home (en)", "/en"],
   ["city guide", "/ar/attractions/TR/istanbul"],
   ["privacy", "/ar/privacy"],
+  // Sign-in pages: Google's button (accounts.google.com, play.google.com
+  // logging) must never load in the app (2nd Apple note, 19 Nov 2026).
+  ["account", "/ar/account"],
+  ["my map", "/ar/my-map"],
   [
     "flight results",
     `/ar/results?${q({ tripType: "flight", origin: "DXB", destination: "IST", departDate: day(40), returnDate: day(47), adults: "2", currency: "SAR", budget: "0" })}`,

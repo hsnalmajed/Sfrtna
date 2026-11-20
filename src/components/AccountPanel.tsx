@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useDictionary } from "@/lib/dict/context";
 import type { Locale } from "@/lib/types";
+import { isIosApp } from "@/lib/iosClean";
 import { appFeatures, appleSignInInApp, googleSignOutInApp, inApp, openAuthInApp } from "@/lib/nativeApp";
 import JoinBenefits from "@/components/member/JoinBenefits";
 import MemberSections from "@/components/member/MemberSections";
@@ -212,7 +213,10 @@ export function SignInForm({
   // its sign-in inside an app's WebView, so the app offers email only.
   const googleId = !app ? methods.google : null;
   useEffect(() => {
-    if (!googleId || !googleBox.current) return;
+    // `app` is set by an effect, so the first run still sees false: ask the
+    // shell directly, or Google's script would load once inside the app
+    // (Apple 5.1.2(i): accounts.google.com + play.google.com logging).
+    if (!googleId || inApp() || isIosApp() || !googleBox.current) return;
     const box = googleBox.current;
     const draw = () => {
       if (!window.google) return;

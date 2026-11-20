@@ -190,3 +190,13 @@ jobs:
           sleep 60
           node scripts/smoke.mjs "$PRODUCTION_URL"
 
+      # Apple 5.1.2(i), 2nd note 19 Nov 2026: what Apple reviews is the app on
+      # sfrtna.com itself, where Cloudflare can add its own scripts (Web
+      # Analytics beacon, bot checks) that staging never shows. Same guard,
+      # on the real domain.
+      - name: iOS clean mode on sfrtna.com
+        if: steps.guard.outputs.ready == 'true' && (github.event_name == 'push' || github.event_name == 'schedule' || inputs.production)
+        env:
+          SMOKE_TOKEN: ${{ secrets.SMOKE_TOKEN }}
+        run: node scripts/ios-clean-check.mjs https://sfrtna.com
+
