@@ -143,3 +143,13 @@ kandy
 lyon
 palma
 rhodes
+al-khobar
+como
+amalfi
+frankfurt
+manchester
+zanzibar
+kathmandu
+almaty
+warsaw
+helsinki
