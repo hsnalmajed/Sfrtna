@@ -83,3 +83,13 @@ granada
 krakow
 sydney
 cape-town
+shanghai
+beijing
+saint-petersburg
+delhi
+mumbai
+copenhagen
+stockholm
+brussels
+dublin
+rio-de-janeiro
