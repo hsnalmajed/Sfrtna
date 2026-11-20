@@ -123,3 +123,13 @@ sapanca
 toronto
 vancouver
 washington-dc
+ankara
+busan
+hiroshima
+jeju
+lucerne
+mexico-city
+reykjavik
+taipei
+tunis
+zermatt
