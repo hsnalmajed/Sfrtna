@@ -12,7 +12,6 @@ import { PLAN_EVENT, HOME_TAB_EVENT, HOME_SEASON_EVENT, type PlanProduct } from 
 import TripPlanner from "@/components/TripPlanner";
 import RecentSearches from "@/components/RecentSearches";
 import ScrollRow from "@/components/ui/ScrollRow";
-import UpcomingTrip from "@/components/member/UpcomingTrip";
 import HotelPlanner from "@/components/HotelPlanner";
 import VisaBadge, { VISA_STYLES } from "@/components/VisaBadge";
 import VisaRequirementsDialog from "@/components/VisaRequirementsDialog";
@@ -625,8 +624,8 @@ export default function HomeShowcase({
           <div key={active} className="tab-fade">
             {active === "season" && (
               <>
-                {/* The trip being got ready, on whichever panel opens first. */}
-                <UpcomingTrip locale={locale} />
+                {/* No «رحلتك إلى …» card on the home page (owner, 21 Nov):
+                    a planned or booked trip lives in «رحلتي». */}
                 {allCities || seasonCities.length <= 6 ? (
                   <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-6">
                     {seasonCities.map((c) => cityCard(c))}
@@ -702,7 +701,6 @@ export default function HomeShowcase({
 
             {active === "plan" && (
               <div>
-                <UpcomingTrip locale={locale} />
                 <RecentSearches locale={locale} />
                 {/* Flights or hotels, then that search opens right here —
                     the choice shrinks to a switch once a form is showing. */}
