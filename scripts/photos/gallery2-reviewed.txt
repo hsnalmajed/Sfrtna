@@ -163,3 +163,13 @@ cologne
 madeira
 xian
 buenos-aires
+banff
+da-nang
+samarkand
+queenstown
+ubud
+agadir
+cartagena
+auckland
+ljubljana
+macau
