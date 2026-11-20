@@ -16,9 +16,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
-          cache: npm
-      - run: npm ci --no-audit --no-fund
-      - run: npx playwright install --with-deps webkit 2>&1 | tail -n 3
+      - run: |
+          npm install --no-save --no-audit --no-fund playwright@1
+          npx playwright install --with-deps webkit 2>&1 | tail -n 3
       - name: Audit
         env:
           SMOKE_TOKEN: ${{ secrets.SMOKE_TOKEN }}
