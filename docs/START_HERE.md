@@ -212,6 +212,16 @@ run 44442033294 «queued» = harmless. photos.yml stays DISABLED.
 Owner's tests of «خريطتي» wait for the final test round (owner 18 Nov).
 Then rounds 3–7 (photos, hotels, flights H+B, flight+hotel C, features
 visible + home hero).
+**20 Nov (build chat): flights «الأفضل» = OURS** (ff76f75, live): fare + 100
+SAR/traveller/hour on the way (+2 h night, +2 h stop > 4 h, +4 h airport
+change), lowest wins; one line under the pick says why. Live DMM→IST: best
+Pegasus non-stop 1,427 (saves 11 h for 365) vs cheapest Saudia 1,062. Owner
+approved next (not built): «متاحة في N مواقع» on each card, button «قارن
+المواقع واحجز», airline strip above the list. **Release RED since 20 Nov
+13:35 on every commit (deploy itself OK):** step «iOS clean mode on
+sfrtna.com» (added 508010a, mail chat) → «home: 1 frame(s) in the page» on
+production only (staging passes) — likely Cloudflare's own injected frame on
+the sfrtna.com zone; find its src and fix (mail chat's Apple 5.1.2 work).
 **Owner 17 Nov 20:31 — decision 2:** discover lists EVERY destination in
 budget; no live fare → shown WITHOUT a number + «شاهد السعر الحيّ» (opens the
 flight search). **Decision 1 (20:40): no paid SerpApi — wait for 6 Dec**,
