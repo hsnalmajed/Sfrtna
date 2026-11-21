@@ -203,3 +203,13 @@ oxford
 phu-quoc
 sapporo
 seattle
+bologna
+bordeaux
+brasov
+galle
+gdansk
+havana
+medellin
+nha-trang
+palermo
+yogyakarta
