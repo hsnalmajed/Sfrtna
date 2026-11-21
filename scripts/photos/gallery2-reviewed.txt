@@ -183,3 +183,13 @@ perth
 tashkent
 yerevan
 kazan
+belgrade
+bratislava
+luxembourg
+manila
+monte-carlo
+riga
+santiago
+sofia
+tallinn
+zagreb
