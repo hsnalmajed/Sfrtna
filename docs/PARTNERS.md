@@ -185,7 +185,7 @@ any button change.
     | WoopDrive WW | car rental | 4.20–6 % |
     | Compensair | flight compensation | 5–12 € |
     | Lennuabi Many GEOs | flight compensation | 20 € |
-    | VisatoSingapore Many GEOs | Singapore visa | 20 % |
+    | VisatoSingapore Many GEOs | Singapore visa | 20 % — **REJECTED 20 Nov 20:45 (no reason)** |
     Skipped: City.Travel (join disabled), Palazzo Versace Dubai, Vegas, Sanatoriums, HostelPass.
   - **REJECTED 19 Nov 12:49–13:04 (no reason, within 15 min):** Mytrip, Kiwi.com, Gotogate, Omio, Flight Network. Pattern = systematic → most likely the ad space shown «unvalidated» (Mitgo re-check fails). Fix verification first (build chat, PRIORITY), then ask Admitad support for the reason and re-apply.
   - **APPROVED (Joined, link ready) 19 Nov 05:01:** Flyfi WW (eSIM 4 %), Compensair (flight compensation 5–12 €), WoopDrive WW (car rental 4.20–6 %), Lennuabi Many GEOs (flight compensation 20 €). Build chat can wire these now (Admitad deeplink per programme). All others = awaiting advertiser.
