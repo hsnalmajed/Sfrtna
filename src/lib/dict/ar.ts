@@ -1176,6 +1176,7 @@ const ar = {
     tabSeason: "الأنسب هذا الشهر",
     tabTools: "قبل أن تحجز",
     tabHow: "كيف يعمل الموقع",
+    tabShort: { plan: "احجز", season: "الوجهات", tools: "قبل السفر", how: "كيف نعمل" },
     tabPlan: "احجز رحلتك",
     planSubtitle: "طيران أم فنادق؟ اختر، وابحث من هنا مباشرة.",
 

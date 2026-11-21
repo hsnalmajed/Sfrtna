@@ -1159,6 +1159,7 @@ const en = {
     tabSeason: "Best this month",
     tabTools: "Before you book",
     tabHow: "How it works",
+    tabShort: { plan: "Book", season: "Destinations", tools: "Before you go", how: "How it works" },
     tabPlan: "Book your trip",
     planSubtitle: "Flights or hotels? Pick one and search right here.",
 

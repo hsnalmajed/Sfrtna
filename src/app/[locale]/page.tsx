@@ -1,4 +1,3 @@
-import HeroFeatures from "@/components/home/HeroFeatures";
 import QuickTools from "@/components/home/QuickTools";
 import { getDictionary } from "@/lib/dictionaries";
 import { seasonReasons } from "@/lib/travelSeason/reasons";
@@ -260,22 +259,23 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
             ✈️ {dict.hero.badge}
           </p>
 
-          <h1 className="max-w-3xl font-display text-h1 font-black text-white drop-shadow-[0_2px_14px_rgba(4,24,47,0.85)]">
+          {/* Two lines on every screen (owner, 21 Nov): on a phone the type
+              follows the width, so «واحد» no longer drops to a third line. */}
+          <h1 className="max-w-3xl text-balance font-display text-[clamp(1.4rem,6.8vw,1.8rem)] font-black leading-[1.3] text-white drop-shadow-[0_2px_14px_rgba(4,24,47,0.85)] sm:text-h1">
             {dict.hero.titleLine1}
             <br />
             <span className="text-sun-400">{dict.hero.titleLine2}</span>
           </h1>
 
-          <HeroFeatures
-            labels={dict.hero.features}
-            details={dict.hero.featuresDetail}
-            shortLabels={dict.hero.featuresShort}
-          />
+          {/* The travel tools straight under the headline (owner, 21 Nov
+              2026): they replace the old list of feature names, which looked
+              tappable and was not, and the same tools at the page's end. */}
+          <QuickTools locale={loc} dict={dict} />
 
-          <div className="mt-5 flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+          <div className="mt-3 flex flex-wrap items-center justify-center gap-x-5 gap-y-1 sm:mt-4">
             {stats.map((s) => (
-              <p key={s.label} className="text-sm font-semibold text-white/90 drop-shadow-[0_1px_8px_rgba(4,24,47,0.9)]">
-                <span className="font-display text-xl font-black text-sun-400">{s.value}</span>{" "}
+              <p key={s.label} className="text-xs font-semibold text-white/90 drop-shadow-[0_1px_8px_rgba(4,24,47,0.9)] sm:text-sm">
+                <span className="font-display text-base font-black text-sun-400 sm:text-lg">{s.value}</span>{" "}
                 {s.label}
               </p>
             ))}
@@ -298,6 +298,7 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
             tabSeason: dict.home.tabSeason,
             tabTools: dict.home.tabTools,
             tabHow: dict.home.tabHow,
+            tabShort: dict.home.tabShort,
             tabPlan: dict.home.tabPlan,
             planSubtitle: dict.home.planSubtitle,
             flightsTitle: dict.productSelect.flightsTitle,
@@ -347,7 +348,6 @@ export default async function HomePage({ params, searchParams }: PageProps<"/[lo
           }}
         />
       </section>
-      <QuickTools locale={loc} dict={dict} />
     </div>
   );
 }

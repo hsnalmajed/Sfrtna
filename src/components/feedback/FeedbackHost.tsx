@@ -189,7 +189,7 @@ export default function FeedbackHost({ locale }: { locale: Locale }) {
       <button
         type="button"
         onClick={() => window.dispatchEvent(new CustomEvent(FEEDBACK_EVENT, { detail: { source: "floating" } }))}
-        className="lift-over-tabbar fixed bottom-4 end-3 z-[50] inline-flex h-10 items-center gap-1.5 rounded-full bg-navy-900/95 px-3.5 text-sm font-bold text-white shadow-[0_8px_24px_-8px_rgba(4,24,47,0.6)] ring-1 ring-white/15 backdrop-blur transition hover:bg-navy-800 print:hidden"
+        className="lift-over-tabbar fixed bottom-4 end-3 z-[50] inline-flex h-9 items-center gap-1 rounded-full bg-navy-900/95 px-3 text-xs font-bold sm:h-10 sm:gap-1.5 sm:px-3.5 sm:text-sm text-white shadow-[0_8px_24px_-8px_rgba(4,24,47,0.6)] ring-1 ring-white/15 backdrop-blur transition hover:bg-navy-800 print:hidden"
         aria-label={t.open}
       >
         <span aria-hidden="true">💬</span>

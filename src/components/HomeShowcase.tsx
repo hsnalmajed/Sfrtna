@@ -11,7 +11,6 @@ import Icon, { type IconName } from "@/components/ui/Icon";
 import { PLAN_EVENT, HOME_TAB_EVENT, HOME_SEASON_EVENT, type PlanProduct } from "@/lib/planEvents";
 import TripPlanner from "@/components/TripPlanner";
 import RecentSearches from "@/components/RecentSearches";
-import ScrollRow from "@/components/ui/ScrollRow";
 import HotelPlanner from "@/components/HotelPlanner";
 import VisaBadge, { VISA_STYLES } from "@/components/VisaBadge";
 import VisaRequirementsDialog from "@/components/VisaRequirementsDialog";
@@ -75,6 +74,8 @@ interface ShowcaseDict {
   tabSeason: string;
   tabTools: string;
   tabHow: string;
+  /** Phone names for the four tabs (owner, 21 Nov): all four in one row. */
+  tabShort: { plan: string; season: string; tools: string; how: string };
   tabPlan: string;
   planSubtitle: string;
   flightsTitle: string;
@@ -275,11 +276,11 @@ export default function HomeShowcase({
 
   // "Book your trip" first: it is the site's search now, and on a phone
   // the strip scrolls, so a tab at the far end is a tab nobody finds.
-  const tabs: { key: TabKey; label: string; hidden?: boolean }[] = [
-    { key: "plan", label: dict.tabPlan },
-    { key: "season", label: dict.tabSeason, hidden: seasonCities.length === 0 },
-    { key: "tools", label: dict.tabTools },
-    { key: "how", label: dict.tabHow },
+  const tabs: { key: TabKey; label: string; short: string; icon: IconName; hidden?: boolean }[] = [
+    { key: "plan", label: dict.tabPlan, short: dict.tabShort.plan, icon: "plane" },
+    { key: "season", label: dict.tabSeason, short: dict.tabShort.season, icon: "sun", hidden: seasonCities.length === 0 },
+    { key: "tools", label: dict.tabTools, short: dict.tabShort.tools, icon: "check" },
+    { key: "how", label: dict.tabHow, short: dict.tabShort.how, icon: "compass" },
   ];
 
   const blurb: Record<TabKey, string> = {
@@ -289,27 +290,17 @@ export default function HomeShowcase({
     plan: dict.planSubtitle,
   };
 
-  // The tab the visitor is on: a Travel Blue pill, its words in the brand's
-  // gold, with a sky-blue glow. The blue runs Travel Blue to navy rather
-  // than sky blue, because gold on sky blue is barely readable (about 1.6:1)
-  // and gold on this is comfortably so.
-  const selectedClass =
-    "bg-gradient-to-l from-sea-600 to-navy-900 text-sun-400 ring-2 ring-sea-400/70 shadow-[0_0_28px_-4px_var(--sea-400)]";
-
+  // One look for every tab (owner, 21 Nov 2026): the open tab alone is the
+  // header's sun orange, the rest are quiet white words with a gold icon —
+  // before, «احجز رحلتك» was always orange and the open tab only had a ring,
+  // so a visitor could not tell which one was open. Phones show all four in
+  // one row of equal buttons (icon over a short name) instead of a strip
+  // that hid two of them behind an arrow.
   const tabClass = (on: boolean) =>
-    `shrink-0 rounded-full px-4 py-2.5 text-sm font-bold transition duration-200 sm:px-5 sm:text-base ${
-      on ? selectedClass : "text-white/60 hover:bg-white/10 hover:text-white"
-    }`;
-
-  // "Book your trip" is not another thing to browse — it is the way out of
-  // browsing and into a search — so it is always the orange of the header's
-  // "Book your trip" button, whichever tab is open. Chosen, it keeps the
-  // orange and gains the selected tab's blue ring and glow.
-  const planTabClass = (on: boolean) =>
-    `relative inline-flex shrink-0 items-center gap-2 rounded-full bg-sun-400 px-5 py-2.5 text-sm font-extrabold text-navy-950 transition duration-200 hover:bg-sun-300 sm:px-6 sm:text-base ${
+    `flex min-h-12 min-w-0 flex-col items-center justify-center gap-1 rounded-2xl px-1 py-2 sm:shrink-0 sm:whitespace-nowrap text-[0.78rem] font-extrabold leading-tight transition duration-200 sm:min-h-0 sm:flex-row sm:gap-2 sm:rounded-full sm:px-5 sm:py-2.5 sm:text-base ${
       on
-        ? "ring-2 ring-sea-400 shadow-[0_0_28px_-4px_var(--sea-400)]"
-        : "shadow-[var(--shadow-sun)] hover:-translate-y-0.5"
+        ? "bg-sun-400 text-navy-950 shadow-[var(--shadow-sun)]"
+        : "text-white/80 hover:bg-white/10 hover:text-white"
     }`;
 
   const planChoices: { value: PlanProduct; icon: IconName; title: string; hint: string }[] = [
@@ -557,38 +548,37 @@ export default function HomeShowcase({
         {/* ── The strip ─────────────────────────────────────────────── */}
         {/* Not in the phone app: there the bottom bar's "Home" and "Book"
             are these two tabs, and a second set here only repeats them. */}
-        <ScrollRow
-          tone="dark"
-          outerClassName="web-only rounded-t-[2rem] border-b border-white/10 bg-white/[0.04]"
-          className="flex items-center gap-2 px-3 py-3 sm:px-5"
-        >
-          {tabs
-            .filter((t) => !t.hidden)
-            .map((t) => (
-              <button
-                key={t.key}
-                type="button"
-                onClick={() => setActive(t.key)}
-                aria-pressed={active === t.key}
-                className={t.key === "plan" ? planTabClass(active === t.key) : tabClass(active === t.key)}
-              >
-                {t.key === "plan" && (
-                  <>
-                    {/* A small beacon, so the eye finds it even in passing.
-                        Still when the visitor prefers reduced motion. */}
-                    {active !== "plan" && (
-                      <span className="absolute -top-0.5 -end-0.5 flex h-3 w-3" aria-hidden="true">
-                        <span className="absolute inline-flex h-full w-full rounded-full bg-sea-400 opacity-75 motion-safe:animate-ping" />
-                        <span className="relative inline-flex h-3 w-3 rounded-full bg-sea-400 ring-2 ring-navy-900" />
-                      </span>
-                    )}
-                    <Icon name="plane" className="h-[1.1rem] w-[1.1rem]" />
-                  </>
-                )}
-                {t.key === "season" ? goldMonth(dict.seasonTitle, dict.monthName) : t.label}
-              </button>
-            ))}
-        </ScrollRow>
+        <div className="web-only rounded-t-[2rem] border-b border-white/10 bg-white/[0.04]">
+          <div className="grid grid-cols-4 gap-1 p-2 sm:flex sm:items-center sm:gap-2 sm:overflow-x-auto sm:px-5 sm:py-3">
+            {tabs
+              .filter((t) => !t.hidden)
+              .map((t) => (
+                <button
+                  key={t.key}
+                  type="button"
+                  onClick={() => setActive(t.key)}
+                  aria-pressed={active === t.key}
+                  aria-label={t.label}
+                  className={tabClass(active === t.key)}
+                >
+                  <Icon
+                    name={t.icon}
+                    className={`h-5 w-5 shrink-0 sm:h-[1.1rem] sm:w-[1.1rem] ${active === t.key ? "" : "text-[#f8b840]"}`}
+                  />
+                  <span className="sm:hidden">{t.short}</span>
+                  {/* The month stays gold on the quiet tabs; on the orange
+                      one gold would vanish, so it takes the tab's navy. */}
+                  <span className="hidden sm:inline">
+                    {t.key === "season"
+                      ? active === "season"
+                        ? dict.seasonTitle
+                        : goldMonth(dict.seasonTitle, dict.monthName)
+                      : t.label}
+                  </span>
+                </button>
+              ))}
+          </div>
+        </div>
 
         {/* ── The panel ─────────────────────────────────────────────── */}
         <div className="p-4 sm:p-7">
