@@ -2,6 +2,7 @@
 
 import { quickTools } from "@/lib/quickTools";
 import AccountLink from "@/components/AccountLink";
+import Icon, { type IconName } from "@/components/ui/Icon";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -136,6 +137,15 @@ export default function AppTabBar({ locale }: { locale: Locale }) {
     { href: `/${locale}/privacy`, label: dict.legal.privacyTitle },
     { href: `/${locale}/terms`, label: dict.legal.termsTitle },
   ];
+  const contactPage = CONTACT_EMAIL ? { href: `/${locale}/contact`, label: dict.legal.contactTitle } : null;
+  const aboutPages = [
+    { href: `/${locale}/about`, label: dict.legal.aboutTitle, glyph: INFO },
+    { href: `/${locale}/privacy`, label: dict.legal.privacyTitle, glyph: LOCK },
+    { href: `/${locale}/terms`, label: dict.legal.termsTitle, glyph: DOC },
+  ];
+  const card = "overflow-hidden rounded-[1.25rem] bg-white shadow-[0_1px_2px_rgba(11,45,91,0.06)]";
+  const row = "flex min-h-[3.4rem] items-center gap-3 px-3.5 py-2.5 active:bg-mist-50";
+  const label = "mb-2 mt-5 px-1.5 text-xs font-extrabold text-navy-900/50";
   const moreActive = !moreOpen && [...tools, ...sitePages].some((t) => isActive(t.href));
 
   // Booking lives in the homepage's "book your trip" tab. On the homepage the
@@ -231,36 +241,59 @@ export default function AppTabBar({ locale }: { locale: Locale }) {
       {moreOpen && (
         <div className="fixed inset-0 z-[55] flex flex-col justify-end print:hidden" role="dialog" aria-modal="true" aria-label={dict.nav.more}>
           <button type="button" aria-label={dict.nav.close} onClick={closeMore} className="absolute inset-0 bg-navy-990/60 backdrop-blur-[2px]" />
-          <div className="app-sheet relative max-h-[80svh] overflow-y-auto rounded-t-3xl bg-white px-4 pt-2 text-navy-900 shadow-2xl">
-            <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-navy-900/15" aria-hidden="true" />
+          {/* «المزيد» (owner, 21 Nov 2026): one look for everything — a
+              title and close, the language first, then the account (sign in
+              right here), «رحلتي», the tools with the home page's navy and
+              gold icons, and plain grouped rows, settings-style. */}
+          <div className="app-sheet relative max-h-[82svh] overflow-y-auto rounded-t-[1.75rem] bg-mist-50 px-3.5 pt-2 text-navy-900 shadow-2xl">
+            <div className="mx-auto h-1 w-10 rounded-full bg-navy-900/15" aria-hidden="true" />
+            <div className="sticky -top-2 z-[1] -mx-3.5 flex items-center justify-between bg-mist-50 px-4 pb-3 pt-3">
+              <h2 className="font-display text-xl font-black">{dict.nav.more}</h2>
+              <button
+                type="button"
+                onClick={closeMore}
+                aria-label={dict.nav.close}
+                className="grid h-9 w-9 place-items-center rounded-full bg-white text-navy-900 shadow-[0_1px_3px_rgba(11,45,91,0.12)]"
+              >
+                <RowGlyph d="M6 6l12 12M18 6 6 18" />
+              </button>
+            </div>
 
-            <p className="px-1 pb-2 text-xs font-bold text-navy-900/50">{dict.nav.language}</p>
-            <div className="flex gap-2 rounded-2xl bg-mist-50 p-1 ring-1 ring-navy-900/5">
-              {(["ar", "en"] as const).map((l) => (
-                <button
-                  key={l}
-                  type="button"
-                  onClick={() => switchLanguage(l)}
-                  className={`flex-1 rounded-xl py-2.5 text-sm font-bold transition ${
-                    locale === l ? "bg-white text-navy-900 shadow-sm ring-1 ring-navy-900/10" : "text-navy-900/55"
-                  }`}
-                >
-                  {l === "ar" ? "العربية" : "English"}
-                </button>
-              ))}
+            <div className={`${card} flex items-center gap-3 py-2 pe-2 ps-3`}>
+              <RowIcon d={GLOBE} />
+              <span className="flex-1 text-[0.95rem] font-bold">{dict.nav.language}</span>
+              <span className="flex rounded-full bg-mist-100 p-[3px] text-[0.8rem] font-extrabold">
+                {(["ar", "en"] as const).map((l) => (
+                  <button
+                    key={l}
+                    type="button"
+                    onClick={() => switchLanguage(l)}
+                    aria-pressed={locale === l}
+                    className={`rounded-full px-3 py-1.5 transition ${locale === l ? "bg-white text-navy-900 shadow-sm" : "text-navy-900/55"}`}
+                  >
+                    {l === "ar" ? "العربية" : "English"}
+                  </button>
+                ))}
+              </span>
+            </div>
+
+            <div className="mt-2.5">
+              <AccountLink locale={locale} variant="sheet" onNavigate={go} />
             </div>
 
             <Link
               href={`/${locale}/my-trip`}
               onClick={(e) => go(e, `/${locale}/my-trip`)}
-              className="mt-3 flex w-full items-center gap-3 rounded-2xl bg-navy-990 px-4 py-3.5 text-start text-white active:scale-[0.99]"
+              className="mt-2.5 flex w-full items-center gap-3 rounded-[1.25rem] bg-gradient-to-l from-navy-990 to-navy-900 p-3.5 text-start text-white active:scale-[0.99]"
             >
-              <span className="text-2xl leading-none" aria-hidden="true">🧳</span>
-              <span className="min-w-0 flex-1">
-                <span className="block text-sm font-extrabold">{dict.myTrip.title}</span>
-                <span className="block truncate text-xs text-white/65">{myTrip ? tripCityName(myTrip, locale === "ar") : dict.myTrip.navSub}</span>
+              <span className="grid h-11 w-11 shrink-0 place-items-center rounded-[0.9rem] bg-[#f8b840]/15 text-[#f8b840]">
+                <Icon name="luggage" className="h-6 w-6" />
               </span>
-              <span aria-hidden="true" className="text-white/40 rtl:rotate-180">›</span>
+              <span className="min-w-0 flex-1">
+                <span className="block font-display text-base font-black">{dict.myTrip.title}</span>
+                <span className="block truncate text-xs text-white/70">{myTrip ? tripCityName(myTrip, locale === "ar") : dict.myTrip.navSub}</span>
+              </span>
+              <span className="rounded-full bg-sun-400 px-3 py-1.5 text-xs font-extrabold text-navy-950">{dict.nav.moreOpen}</span>
             </Link>
             {tripMode && (
               <button
@@ -269,83 +302,97 @@ export default function AppTabBar({ locale }: { locale: Locale }) {
                   setMoreOpen(false);
                   void openTripModeInApp();
                 }}
-                className="mt-2 flex w-full items-center gap-3 rounded-2xl bg-sun-50 px-4 py-3.5 text-start ring-1 ring-sun-300 active:scale-[0.99]"
+                className={`${card} ${row} mt-2.5 w-full text-start`}
               >
-                <span className="text-2xl leading-none" aria-hidden="true">🧭</span>
+                <RowIcon icon="compass" />
                 <span className="min-w-0 flex-1">
-                  <span className="block text-sm font-extrabold text-navy-900">{dict.tripMode.title}</span>
-                  <span className="block truncate text-xs text-navy-900/60">{dict.tripMode.menuSub}</span>
+                  <span className="block text-[0.95rem] font-bold">{dict.tripMode.title}</span>
+                  <span className="block truncate text-xs text-navy-900/55">{dict.tripMode.menuSub}</span>
                 </span>
-                <span aria-hidden="true" className="text-navy-900/30 rtl:rotate-180">›</span>
+                <Chevron />
               </button>
             )}
-            <AccountLink locale={locale} variant="sheet" onNavigate={go} />
-            <p className="mt-5 px-1 pb-2 text-xs font-bold text-navy-900/50">{dict.nav.tools}</p>
+
+            <p className={label}>{dict.nav.tools}</p>
             <div className="grid grid-cols-3 gap-2">
               {tools.map((t) => (
                 <Link
                   key={t.href}
                   href={t.href}
                   onClick={(e) => go(e, t.href)}
-                  className={`flex flex-col items-center gap-1.5 rounded-2xl px-2 py-3 text-center text-xs font-bold ring-1 transition active:scale-[0.98] ${
-                    isActive(t.href) ? "bg-sun-50 text-navy-900 ring-sun-300" : "bg-mist-50 text-navy-900 ring-navy-900/5"
+                  className={`flex flex-col items-center gap-2 rounded-[1.1rem] px-1 py-3 text-center font-display text-[0.8rem] font-extrabold leading-tight shadow-[0_1px_2px_rgba(11,45,91,0.06)] transition active:scale-[0.98] ${
+                    isActive(t.href) ? "bg-sun-50 ring-1 ring-sun-300" : "bg-white"
                   }`}
                 >
-                  <span className="text-2xl leading-none" aria-hidden="true">{t.icon}</span>
+                  <span className="grid h-11 w-11 place-items-center rounded-[0.9rem] bg-navy-900 text-[#f8b840]">
+                    <Icon name={t.glyph} className="h-6 w-6" />
+                  </span>
                   {t.label}
                 </Link>
               ))}
             </div>
 
-            <button
-              type="button"
-              onClick={() => {
-                setMoreOpen(false);
-                openFeedback({ source: "app_menu" });
-              }}
-              className="mt-5 flex w-full items-center gap-3 rounded-2xl bg-sun-50 px-4 py-3.5 text-start ring-1 ring-sun-300 active:scale-[0.99]"
-            >
-              <span className="text-2xl leading-none" aria-hidden="true">💬</span>
-              <span className="flex-1">
-                <span className="block text-sm font-extrabold text-navy-900">{dict.feedback.open}</span>
-                <span className="block text-xs text-navy-900/60">{dict.feedback.subtitle}</span>
-              </span>
-              <span aria-hidden="true" className="text-navy-900/30 rtl:rotate-180">›</span>
-            </button>
-
-            <div className="mt-3 flex items-center justify-between gap-3 rounded-2xl bg-mist-50 px-4 py-3 ring-1 ring-navy-900/5">
-              <span className="text-sm font-extrabold text-navy-900">{dict.footer.followHeading}</span>
-              <SocialLinks tone="light" />
+            <p className={label}>{dict.nav.moreSettings}</p>
+            <div className={card}>
+              <button
+                type="button"
+                onClick={() => {
+                  setMoreOpen(false);
+                  replayTips();
+                }}
+                className={`${row} w-full text-start`}
+              >
+                <RowIcon d={BULB} />
+                <span className="min-w-0 flex-1">
+                  <span className="block text-[0.95rem] font-bold">{dict.tips.replay}</span>
+                  <span className="block text-xs text-navy-900/55">{dict.tips.replaySub}</span>
+                </span>
+                <Chevron />
+              </button>
             </div>
 
-            <button
-              type="button"
-              onClick={() => {
-                setMoreOpen(false);
-                replayTips();
-              }}
-              className="mt-3 flex w-full items-center gap-3 rounded-2xl bg-mist-50 px-4 py-3 text-start text-sm font-semibold text-navy-900 ring-1 ring-navy-900/5"
-            >
-              <span className="text-xl leading-none" aria-hidden="true">💡</span>
-              <span className="flex-1">{dict.tips.replay}</span>
-            </button>
+            <p className={label}>{dict.nav.moreContact}</p>
+            <div className={`${card} divide-y divide-mist-100`}>
+              <button
+                type="button"
+                onClick={() => {
+                  setMoreOpen(false);
+                  openFeedback({ source: "app_menu" });
+                }}
+                className={`${row} w-full text-start`}
+              >
+                <RowIcon d={CHAT} warm />
+                <span className="min-w-0 flex-1">
+                  <span className="block text-[0.95rem] font-bold">{dict.feedback.open}</span>
+                  <span className="block text-xs text-navy-900/55">{dict.feedback.subtitle}</span>
+                </span>
+                <Chevron />
+              </button>
+              {contactPage && (
+                <Link href={contactPage.href} onClick={(e) => go(e, contactPage.href)} className={row}>
+                  <RowIcon d={MAIL} />
+                  <span className="flex-1 text-[0.95rem] font-bold">{contactPage.label}</span>
+                  <Chevron />
+                </Link>
+              )}
+            </div>
 
-            <div className="mt-3 divide-y divide-navy-900/5 overflow-hidden rounded-2xl bg-mist-50 ring-1 ring-navy-900/5">
-              {sitePages.map((p) => (
-                <Link
-                  key={p.href}
-                  href={p.href}
-                  onClick={(e) => go(e, p.href)}
-                  className="flex items-center justify-between px-4 py-3.5 text-sm font-semibold text-navy-900 active:bg-white"
-                >
-                  {p.label}
-                  <span aria-hidden="true" className="text-navy-900/30 rtl:rotate-180">›</span>
+            <p className={label}>{dict.nav.moreAbout}</p>
+            <div className={`${card} divide-y divide-mist-100`}>
+              {aboutPages.map((p) => (
+                <Link key={p.href} href={p.href} onClick={(e) => go(e, p.href)} className={row}>
+                  <RowIcon d={p.glyph} />
+                  <span className="flex-1 text-[0.95rem] font-bold">{p.label}</span>
+                  <Chevron />
                 </Link>
               ))}
             </div>
 
-            <p className="mt-4 px-1 text-2xs leading-relaxed text-navy-900/45">{dict.footer.disclaimer}</p>
-            <p className="mt-2 px-1 pb-4 text-2xs text-navy-900/35">
+            <div className="mt-5 flex justify-center">
+              <SocialLinks tone="light" />
+            </div>
+            <p className="mt-3 px-2 text-center text-2xs leading-relaxed text-navy-900/50">{dict.footer.disclaimer}</p>
+            <p className="mt-1.5 px-2 pb-5 text-center text-2xs text-navy-900/40">
               © {new Date().getFullYear()} {locale === "ar" ? dict.siteNameAr : dict.siteNameEn}
             </p>
           </div>
@@ -359,6 +406,39 @@ function TabIcon({ d }: { d: string }) {
   return (
     <svg viewBox="0 0 24 24" className="h-[1.4rem] w-[1.4rem]" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d={d} />
+    </svg>
+  );
+}
+
+const GLOBE = "M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z";
+const BULB = "M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z";
+const CHAT = "M5 5h14v10H9l-4 4z";
+const MAIL = "M3 5h18v14H3zM3 7l9 6 9-6";
+const INFO = "M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 11v5M12 8h.01";
+const LOCK = "M5 11h14v10H5zM8 11V8a4 4 0 0 1 8 0v3";
+const DOC = "M7 3h7l5 5v13H7zM14 3v5h5M10 13h6M10 17h6";
+
+function RowGlyph({ d }: { d: string }) {
+  return (
+    <svg viewBox="0 0 24 24" className="h-[1.15rem] w-[1.15rem]" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d={d} />
+    </svg>
+  );
+}
+
+/** The small square at the start of every «المزيد» row. */
+function RowIcon({ d, icon, warm }: { d?: string; icon?: IconName; warm?: boolean }) {
+  return (
+    <span className={`grid h-9 w-9 shrink-0 place-items-center rounded-[0.7rem] ${warm ? "bg-sun-50 text-sun-600" : "bg-mist-100 text-navy-900"}`}>
+      {icon ? <Icon name={icon} className="h-[1.15rem] w-[1.15rem]" /> : d ? <RowGlyph d={d} /> : null}
+    </span>
+  );
+}
+
+function Chevron() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-[1.05rem] w-[1.05rem] shrink-0 text-navy-900/30 ltr:rotate-180" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="m15 6-6 6 6 6" />
     </svg>
   );
 }

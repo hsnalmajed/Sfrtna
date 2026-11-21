@@ -233,6 +233,12 @@ strip. App: no tab strip (bottom bar), panel titled «أفضل الوجهات ف
 {month}» (unchanged). «رأيك» smaller on phones. Checked locally at 360/390/
 768/1440 + app UA, no sideways overflow. **Next:** owner checks on the phone
 (site + app); then rounds 3–7 as listed above.
+**«المزيد» (app sheet) REBUILT 21 Nov (owner approved):** title + close,
+language first, account card (signed out: Apple / Google / e-mail buttons
+that open /account?start=… and SignInForm starts that way at once; signed
+in: initial + e-mail row), «رحلتي», tools (navy/gold icons), grouped rows
+(settings / contact / about), social + disclaimer. `AppTabBar.tsx`,
+`AccountLink.tsx` (sheet variant), `AccountPanel.tsx` (start param).
 **Owner 17 Nov 20:31 — decision 2:** discover lists EVERY destination in
 budget; no live fare → shown WITHOUT a number + «شاهد السعر الحيّ» (opens the
 flight search). **Decision 1 (20:40): no paid SerpApi — wait for 6 Dec**,

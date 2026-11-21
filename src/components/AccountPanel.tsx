@@ -284,6 +284,30 @@ export function SignInForm({
   }
 
   const appButton = app && appAuth && (Boolean(methods.google) || methods.email);
+
+  // Arriving from the app's «المزيد» (owner, 21 Nov 2026): its Apple /
+  // Google / e-mail buttons open this page with «?start=», and the chosen
+  // way starts at once instead of asking for a second tap. Once only, and
+  // the parameter is dropped so a reload does not start it again.
+  const started = useRef(false);
+  useEffect(() => {
+    if (started.current) return;
+    const how = new URLSearchParams(window.location.search).get("start");
+    if (!how) return;
+    const ready = how === "apple" ? apple : how === "google" ? appButton : how === "email" ? methods.email : true;
+    if (!ready) return;
+    started.current = true;
+    const url = new URL(window.location.href);
+    url.searchParams.delete("start");
+    window.history.replaceState(window.history.state, "", url.pathname + url.search + url.hash);
+    // After this render, not inside it: the sign-in sets its own state.
+    window.setTimeout(() => {
+      if (how === "apple") void appleSignIn();
+      else if (how === "google") void appSignIn();
+      else if (how === "email") document.getElementById("acc-email")?.focus();
+    }, 0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- runs once, when the chosen way becomes available
+  }, [apple, appButton, methods.email]);
   const none = !googleId && !methods.email && !appButton && !(app && methods.google) && !apple;
   const input =
     "w-full rounded-2xl border border-mist-300 bg-white px-4 py-3 text-base text-navy-900 outline-none focus:border-sea-500 focus:ring-2 focus:ring-sea-200";

@@ -33,6 +33,10 @@ const en = {
     seasonsTab: "Seasons",
     more: "More",
     language: "Language",
+    moreSettings: "Settings",
+    moreContact: "Contact us",
+    moreAbout: "About Sfrtna",
+    moreOpen: "Open",
     close: "Close",
   },
   visa: {
@@ -937,6 +941,7 @@ const en = {
     sendFailed: "We could not send the email right now. Try again shortly.",
     googleFailed: "Google sign-in did not work. Try again.",
     apple: "Continue with Apple",
+    emailStart: "Sign in with email",
     appleOpening: "One moment…",
     appleFailed: "Sign in with Apple did not work. Try again.",
     off: "Sign-in is not available yet. It is coming soon.",
@@ -2013,6 +2018,7 @@ const en = {
     title: "Quick tip",
     gotIt: "Got it",
     replay: "Show the tips again",
+    replaySub: "The short guides on each page",
     replayDone: "The tips will show again on each page.",
     home: [
       ["🧭", "Book a flight, a hotel or both, at live prices from booking sites."],
