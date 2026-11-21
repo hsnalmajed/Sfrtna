@@ -170,12 +170,12 @@ any button change.
     | Etihad [CPS] WW | airline — **commission only for these origins (POS), others 0 %:** Saudi = RUH, JED, MED, ELQ (**not DMM**); also AUH, India + Indonesia cities, many EU/US/Asia hubs (list on the programme page, upd 3 Apr 2026). Cookie 30 d, deeplinks allowed, no brand SEM. Approval 38 %, hold ~93 d | 1.08 % |
     | Traveloka [CPS] Many Geo | flights + hotels Asia | 0.31–3.15 % |
     | Airpaz [CPS] Many Geos | flights Asia | 1.75 % |
-    | Eurowings WW | airline Europe | 1.53 % |
+    | Eurowings WW | airline Europe | 1.53 % — **REJECTED 21 Nov 00:52 («advertiser not interested»)** |
     | Expedia AE SA | hotels/flights Gulf (conf. 8 % shown) | 0.70–4.20 % |
     | Planetofhotels WW | hotels (conf. 23 %) | 4.93 % |
     | Omio Many Geos | trains/buses Europe | 0.64–3.24 % |
-    | Italiarail [CPS] Many GEOs | trains Italy | 2.60–6.50 % |
-    | Infobus [CPS] WW | intercity buses | 0.76–6.15 % |
+    | Italiarail [CPS] Many GEOs | trains Italy | 2.60–6.50 % — **APPROVED 21 Nov 00:51** |
+    | Infobus [CPS] WW | intercity buses | 0.76–6.15 % — **REJECTED 20 Nov 18:20 (no reason)** |
     | KKday WW | activities Asia | 7.80 % |
     | Memphis Tours WW | tours Egypt | 30 $ |
     | Global YO WW | eSIM | 13 % |
@@ -190,4 +190,5 @@ any button change.
   - **REJECTED 19 Nov 12:49–13:04 (no reason, within 15 min):** Mytrip, Kiwi.com, Gotogate, Omio, Flight Network. Pattern = systematic → most likely the ad space shown «unvalidated» (Mitgo re-check fails). Fix verification first (build chat, PRIORITY), then ask Admitad support for the reason and re-apply.
   - **APPROVED (Joined, link ready) 19 Nov 05:01:** Flyfi WW (eSIM 4 %), Compensair (flight compensation 5–12 €), WoopDrive WW (car rental 4.20–6 %), Lennuabi Many GEOs (flight compensation 20 €). Build chat can wire these now (Admitad deeplink per programme). All others = awaiting advertiser.
   - 19 Nov 04:58: catalog search (no region, no status filter) → **Emirates, flynas, Jazeera: 0 results on Admitad for our account** (Etihad only). Remaining routes: Emirates via CJ / TradeTracker / Partnerize join link; flynas + Jazeera: ask Admitad support whether the programmes still exist (earlier note «join flynas, Jazeera» came from Admitad's public list) or look for the airlines' own programmes. Approvals arrive by mail → build chat wires each one (route to the best payer per service). Skipped: Skyluxtravel (US/CA only), AirHelp PT/BR (geo-limited; AirHelp already via Travelpayouts).
+  - **21 Nov 04:55: orange «unvalidated» banner GONE** (owner's screenshot) → re-applying to the 5.
   - Applying works while the ad space shows «unvalidated» (Mitgo re-check drops it; build-chat fix in INBOX).
