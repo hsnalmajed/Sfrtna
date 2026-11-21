@@ -119,7 +119,20 @@ for (const [name, path, opts = {}] of PAGES) {
 
     if (await page.locator("[data-consent-banner]").count()) bad.push("cookie banner shown");
     if (await page.locator("#tpwl-tickets, #tpwl-main").count()) bad.push("partner flight widget in the page");
-    if (await page.locator("iframe").count()) bad.push(`${await page.locator("iframe").count()} frame(s) in the page`);
+    // Frames with another site's address. Cloudflare's own bot check on
+    // sfrtna.com adds a hidden blank frame of ours (no address, runs
+    // /cdn-cgi/challenge-platform on our domain): no other site, no tracking.
+    const frames = await page.evaluate(() =>
+      [...document.querySelectorAll("iframe")].map((f) => f.getAttribute("src") || "").filter((s) => {
+        if (!s || s === "about:blank") return false;
+        try {
+          return new URL(s, location.href).host !== location.host;
+        } catch {
+          return true;
+        }
+      }),
+    );
+    if (frames.length) bad.push(`frame(s) from another site: ${frames.slice(0, 3).join(" ")}`);
     if (opts.flights && !(await page.locator("[data-flights-outside]").count())) bad.push("no «open outside» flights panel");
     if (opts.hotels && !(await page.locator("[data-hotels-outside]").count())) bad.push("no «open outside» hotels panel");
 
