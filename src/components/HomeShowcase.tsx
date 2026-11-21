@@ -549,7 +549,7 @@ export default function HomeShowcase({
         {/* Not in the phone app: there the bottom bar's "Home" and "Book"
             are these two tabs, and a second set here only repeats them. */}
         <div className="web-only rounded-t-[2rem] border-b border-white/10 bg-white/[0.04]">
-          <div className="grid grid-cols-4 gap-1 p-2 sm:flex sm:items-center sm:gap-2 sm:overflow-x-auto sm:px-5 sm:py-3">
+          <div className="grid grid-cols-4 gap-1 p-2 sm:flex sm:items-center sm:gap-2 sm:px-5 sm:py-3">
             {tabs
               .filter((t) => !t.hidden)
               .map((t) => (
@@ -565,10 +565,10 @@ export default function HomeShowcase({
                     name={t.icon}
                     className={`h-5 w-5 shrink-0 sm:h-[1.1rem] sm:w-[1.1rem] ${active === t.key ? "" : "text-[#f8b840]"}`}
                   />
-                  <span className="sm:hidden">{t.short}</span>
+                  <span className="md:hidden">{t.short}</span>
                   {/* The month stays gold on the quiet tabs; on the orange
                       one gold would vanish, so it takes the tab's navy. */}
-                  <span className="hidden sm:inline">
+                  <span className="hidden md:inline">
                     {t.key === "season"
                       ? active === "season"
                         ? dict.seasonTitle
