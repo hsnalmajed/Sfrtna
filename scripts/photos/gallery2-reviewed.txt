@@ -193,3 +193,13 @@ santiago
 sofia
 tallinn
 zagreb
+bled
+bukhara
+goa
+gold-coast
+malacca
+mostar
+oxford
+phu-quoc
+sapporo
+seattle
