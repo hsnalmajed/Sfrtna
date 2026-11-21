@@ -592,8 +592,8 @@ export default function HomeShowcase({
 
         {/* ── The panel ─────────────────────────────────────────────── */}
         <div className="p-4 sm:p-7">
-          <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-            <div className="max-w-2xl">
+          <div className="mb-5 flex items-center justify-between gap-3">
+            <div className="min-w-0 max-w-2xl">
               {/* In the app the tab strip is gone, so the panel names itself. */}
               <h2 className="app-only font-display text-h3 font-extrabold text-white">
                 {active === "plan" ? dict.tabPlan : goldMonth(dict.seasonTitle, dict.monthName)}
@@ -605,11 +605,11 @@ export default function HomeShowcase({
                 type="button"
                 onClick={() => setAllCities((v) => !v)}
                 aria-expanded={allCities}
-                className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-white/10 px-4 py-2.5 text-sm font-bold text-white ring-1 ring-white/20 transition hover:bg-white/20"
+                className="inline-flex min-h-11 shrink-0 items-center gap-1 px-1 text-sm font-extrabold text-[#f8b840] transition hover:text-white"
               >
-                {allCities
-                  ? dict.seasonFewerCities
-                  : goldMonth(dict.seasonAllCities.replace("{count}", String(seasonCities.length)), dict.monthName)}
+                {/* A quiet «عرض الكل ←» at the title's end (owner, 21 Nov),
+                    not a big button under it. */}
+                {allCities ? dict.seasonFewerCities : dict.seasonAllCities.replace("{count}", String(seasonCities.length))}
                 <span aria-hidden="true" className={`transition ${allCities ? "-rotate-90" : ""}`}>
                   {arrow}
                 </span>

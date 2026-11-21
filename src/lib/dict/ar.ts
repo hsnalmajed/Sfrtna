@@ -1182,7 +1182,7 @@ const ar = {
 
     seasonTitle: "أفضل الوجهات في {month}",
     seasonSubtitle: "وجهات يكون هذا الشهر فيها «أفضل وقت للزيارة» أو «وقت ممتاز للزيارة».",
-    seasonAllCities: "تصفّح كل وجهات {month} ({count})",
+    seasonAllCities: "عرض الكل",
     seasonFewerCities: "عرض أقل",
     seasonCityWeather: "{high}° · {wet} أيام مطر",
     seasonFlight: "ابحث عن طيران",

@@ -1165,7 +1165,7 @@ const en = {
 
     seasonTitle: "Best places to be in {month}",
     seasonSubtitle: "Destinations where this month is the best or an excellent time to visit.",
-    seasonAllCities: "Browse all {month} destinations ({count})",
+    seasonAllCities: "See all",
     seasonFewerCities: "Show fewer",
     seasonCityWeather: "{high}° · {wet} rainy days",
     seasonFlight: "Search flights",

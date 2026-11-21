@@ -14,7 +14,7 @@ import Icon from "@/components/ui/Icon";
 export default function QuickTools({ locale, dict }: { locale: Locale; dict: Parameters<typeof quickTools>[1] & { nav: { menu: string } } }) {
   const tools = quickTools(locale, dict);
   return (
-    <nav aria-label={dict.nav.menu} className="mx-auto max-w-3xl px-3 pb-6 pt-8 sm:px-6">
+    <nav aria-label={dict.nav.menu} className="mx-auto max-w-3xl px-3 pb-20 pt-8 sm:px-6 sm:pb-6">
       <ul className="grid grid-cols-6 gap-1 sm:gap-4">
         {tools.map((t) => (
           <li key={t.href}>
