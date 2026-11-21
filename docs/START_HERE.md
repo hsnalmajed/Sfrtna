@@ -222,6 +222,21 @@ approved next (not built): «متاحة في N مواقع» on each card, button
 sfrtna.com» (added 508010a, mail chat) → «home: 1 frame(s) in the page» on
 production only (staging passes) — likely Cloudflare's own injected frame on
 the sfrtna.com zone; find its src and fix (mail chat's Apple 5.1.2 work).
+**▶▶▶ NEXT SECTION (owner 21 Nov 05:25): HOME HERO REDESIGN — «أريد تنفيذ
+احترافي», phone app + website.** Live now: hero = headline + static text
+list of 9 features (`HeroFeatures`, NOT tappable) + counts; home tools row
+(`home/QuickTools.tsx`, navy tiles + gold icons, 6 tools) at the page END;
+«عرض الكل» link in the season title. Owner + Claude agreed problems: the
+features appear twice, the top list looks tappable but isn't, tools sit at
+the bottom, no clear first step, no priority (plan + budget = our edge).
+Direction Claude proposed: headline → ONE big first-step box («إلى أين؟» +
+budget + dates → gold «خطّط رحلتي», honest: we plan/compare, partners book)
+→ small tappable tools row → counts → best destinations; bottom tools row
+removed. Method (owner's rule, 15 Nov): study the heroes of Almosafer,
+Wego, Booking, Airbnb, Kayak in Chrome first (phone + desktop, note what
+works); then 2–3 COMPLETE designs in a Design artifact (real photos from our
+hero set, our fonts, logo colours navy/light blue/sun orange/gold, phone +
+desktop, no emoji); owner picks; then build + live check. No chat sketches.
 **Owner 17 Nov 20:31 — decision 2:** discover lists EVERY destination in
 budget; no live fare → shown WITHOUT a number + «شاهد السعر الحيّ» (opens the
 flight search). **Decision 1 (20:40): no paid SerpApi — wait for 6 Dec**,
