@@ -1,24 +1,7 @@
-2026-11-22T16:45:36.458Z
+2026-11-23T20:21:56.064Z
 model: gemini-3.8-flash (then gemini-3.5-flash, gemini-3.5-flash-lite, gemini-3.1-flash-lite, gemini-2.5-flash-lite, gemma-4-31b-it, gemma-4-26b-a4b-it); cities: 415
 gemini-3.8-flash: daily quota reached after 0 calls — switching to gemini-3.5-flash
-kotor: done (0 written so far, 1 calls)
-jaipur: done (2 written so far, 2 calls)
-gemini-3.5-flash: no answer in time after 2 calls — switching to gemini-3.5-flash-lite
-santorini: done (5 written so far, 3 calls)
-panama-city: done (7 written so far, 4 calls)
-mostar: done (23 written so far, 6 calls)
-bursa: done (24 written so far, 7 calls)
-riyadh: done (25 written so far, 8 calls)
-varna: done (32 written so far, 9 calls)
-novi-sad: done (35 written so far, 10 calls)
-nairobi: done (38 written so far, 11 calls)
-antalya: done (40 written so far, 12 calls)
-accra: done (42 written so far, 13 calls)
-christchurch: done (44 written so far, 14 calls)
-cork: done (45 written so far, 15 calls)
-san-jose: done (46 written so far, 16 calls)
-faro: batch failed — Error: generate: gave up
-faro: done (46 written so far, 16 calls)
-cairns: done (50 written so far, 17 calls)
-gold-coast: done (51 written so far, 18 calls)
-all done; 51 places written in 18 calls
+kotor: done (1 written so far, 1 calls)
+faro: done (2 written so far, 2 calls)
+cairns: done (4 written so far, 3 calls)
+all done; 4 places written in 3 calls
