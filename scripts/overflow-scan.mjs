@@ -55,7 +55,7 @@ const JS = () => {
       out.push({ el, d: `${el.tagName.toLowerCase()}.${String(el.className).slice(0, 120)} «${(el.textContent || "").trim().slice(0, 40)}» L${Math.round(r.left)} R${Math.round(r.right)} vw${vw}` });
     }
   }
-  return { scrollW: document.documentElement.scrollWidth, items: out.slice(0, 10).map((o) => o.d) };
+  return { vw, scrollW: document.documentElement.scrollWidth, items: out.slice(0, 10).map((o) => o.d) };
 };
 let bad = 0;
 for (const [engine, device] of [[webkit, "iPhone 13"], [chromium, "Pixel 7"]]) {
@@ -83,12 +83,12 @@ for (const [engine, device] of [[webkit, "iPhone 13"], [chromium, "Pixel 7"]]) {
       await page.goto(BASE + path, { waitUntil: "load", timeout: 60_000 });
       await page.waitForTimeout(3000);
       for (let y = 0; y < 6; y++) {
-        await page.mouse.wheel(0, 900);
+        await page.evaluate(() => window.scrollBy(0, 900));
         await page.waitForTimeout(250);
       }
       const r = await page.evaluate(JS);
       const line = `${device} ${path.slice(0, 80)}`;
-      if (r.items.length || r.scrollW > 400) {
+      if (r.items.length || r.scrollW > r.vw + 1) {
         bad++;
         console.log(`::error title=Sideways ${device}::${line} scrollWidth=${r.scrollW} :: ${r.items.join(" || ")}`);
       } else console.log(`OK ${line}`);
