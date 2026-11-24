@@ -126,11 +126,9 @@ class MainViewController: CAPBridgeViewController {
     private var sidewaysWatch: NSKeyValueObservation?
 
     /// The page never moves sideways or zooms (owner, 24 Nov 2026: «the page
-    /// moves, it is not steady» on the hotel pages). Our pages fit the screen
-    /// (scripts/overflow-scan.mjs checks every page in WebKit), so while the
-    /// page is no wider than the screen any sideways shift — a bounce, a
-    /// stray pan — is put straight back. A page that really is wider is left
-    /// alone, so nothing on it becomes unreachable.
+    /// moves, it is not steady» on the hotel pages). Our pages are built to
+    /// fit the screen (scripts/overflow-scan.mjs checks every page in
+    /// WebKit); sideways scroll rows scroll inside themselves, not the page.
     private func lockSideways() {
         guard let sv = webView?.scrollView else { return }
         sv.alwaysBounceHorizontal = false
@@ -138,10 +136,17 @@ class MainViewController: CAPBridgeViewController {
         sv.minimumZoomScale = 1
         sv.maximumZoomScale = 1
         sv.bouncesZoom = false
-        sidewaysWatch = sv.observe(\.contentOffset, options: [.new]) { sv, _ in
-            let fits = sv.contentSize.width <= sv.bounds.width + 1
-            if fits && sv.contentOffset.x != -sv.adjustedContentInset.left {
-                sv.contentOffset = CGPoint(x: -sv.adjustedContentInset.left, y: sv.contentOffset.y)
+        // Always held at the page's start edge (owner's 2nd video, 24 Nov
+        // 17:29: on the phone the page was still ~10 pt wider than the
+        // screen, which iOS lets you pan even with overflow clipped). The
+        // start is the left edge in English, the right edge in Arabic.
+        sidewaysWatch = sv.observe(\.contentOffset, options: [.new]) { [weak self] sv, _ in
+            let minX = -sv.adjustedContentInset.left
+            let maxX = max(minX, sv.contentSize.width - sv.bounds.width + sv.adjustedContentInset.right)
+            let rtl = self?.webView?.url?.path.hasPrefix("/ar") ?? true
+            let target = rtl ? maxX : minX
+            if abs(sv.contentOffset.x - target) > 0.5 {
+                sv.contentOffset = CGPoint(x: target, y: sv.contentOffset.y)
             }
         }
     }
