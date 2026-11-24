@@ -609,7 +609,11 @@ function HotelDetail({
             {(key.length > 0 || hotel.locationRating) && (
               <section className="flex flex-col rounded-2xl bg-white p-4 shadow-sm ring-1 ring-black/5 sm:p-5 lg:order-none lg:col-start-1 lg:row-start-2">
                 <p className="mb-3 text-sm font-extrabold text-navy-950">{t.highlightsTitle}</p>
-                <ul className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:grid sm:flex-1 sm:grid-cols-3 sm:content-start sm:overflow-visible sm:px-0 xl:grid-cols-4">
+                <ScrollRow
+                  role="list"
+                  outerClassName="-mx-4 sm:mx-0 sm:flex-1"
+                  className="flex gap-2 px-4 pb-1 sm:grid sm:h-full sm:grid-cols-3 sm:content-start sm:overflow-visible sm:px-0 xl:grid-cols-4"
+                >
                   {key.map((k) => (
                     <li
                       key={k.label}
@@ -627,7 +631,7 @@ function HotelDetail({
                       </span>
                     </li>
                   ) : null}
-                </ul>
+                </ScrollRow>
                 {(hotel.checkInTime || hotel.checkOutTime) && (
                   <p className="mt-3 border-t border-mist-100 pt-3 text-xs font-semibold text-navy-600">
                     {hotel.checkInTime && (
