@@ -251,6 +251,10 @@ redirects straight to Google (chooser), /return makes the app code and
 ?f=1); e-mail stays in-app. **Owner CONFIRMED on iPhone 24 Nov 13:47**
 (chooser → back in the app signed in). Android: check once Play testing
 works. NEXT = rounds 3–7 (photos first, see «NOW = round 3»).
+**Play closed test (owner 24 Nov):** 12+ Android testers accepted and
+testing since **23 Nov** → 14-day rule met on **7 Dec 2026** → then guide
+the owner to «Apply for production» (Sonnet chat; Play asks test questions).
+Keep testers opted in until then.
 **Owner 17 Nov 20:31 — decision 2:** discover lists EVERY destination in
 budget; no live fare → shown WITHOUT a number + «شاهد السعر الحيّ» (opens the
 flight search). **Decision 1 (20:40): no paid SerpApi — wait for 6 Dec**,
