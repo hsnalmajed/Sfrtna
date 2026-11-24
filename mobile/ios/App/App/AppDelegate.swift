@@ -123,6 +123,29 @@ class MainViewController: CAPBridgeViewController {
         present(safari, animated: true)
     }
 
+    private var sidewaysWatch: NSKeyValueObservation?
+
+    /// The page never moves sideways or zooms (owner, 24 Nov 2026: «the page
+    /// moves, it is not steady» on the hotel pages). Our pages fit the screen
+    /// (scripts/overflow-scan.mjs checks every page in WebKit), so while the
+    /// page is no wider than the screen any sideways shift — a bounce, a
+    /// stray pan — is put straight back. A page that really is wider is left
+    /// alone, so nothing on it becomes unreachable.
+    private func lockSideways() {
+        guard let sv = webView?.scrollView else { return }
+        sv.alwaysBounceHorizontal = false
+        sv.showsHorizontalScrollIndicator = false
+        sv.minimumZoomScale = 1
+        sv.maximumZoomScale = 1
+        sv.bouncesZoom = false
+        sidewaysWatch = sv.observe(\.contentOffset, options: [.new]) { sv, _ in
+            let fits = sv.contentSize.width <= sv.bounds.width + 1
+            if fits && sv.contentOffset.x != -sv.adjustedContentInset.left {
+                sv.contentOffset = CGPoint(x: -sv.adjustedContentInset.left, y: sv.contentOffset.y)
+            }
+        }
+    }
+
     override open func capacitorDidLoad() {
         bridge?.registerPluginInstance(SfrtnaAppPlugin())
         view.backgroundColor = UIColor(red: 0x0B / 255, green: 0x2D / 255, blue: 0x5B / 255, alpha: 1)
@@ -138,6 +161,7 @@ class MainViewController: CAPBridgeViewController {
         }
         installNoTrackingRules()
         installSafeArea()
+        lockSideways()
         // Only for the simulator check in CI (ios.yml launches with this
         // argument): the welcome cards are marked seen, so the home page
         // and its top bar can be photographed. Users never pass arguments.
