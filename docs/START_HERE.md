@@ -165,7 +165,7 @@ SA); Xotelo (free, Tripadvisor-based) = terms unclear, ask before use.
 API mocked) = 0 elements sticking out → cause is native: iOS shell now locks
 sideways offset + zoom (`lockSideways` in AppDelegate.swift, TestFlight build
 of 24 Nov 16:3x); `<main>` overflow-x-clip; photo viewer = fixed frame +
-swipe. Owner to install the new TestFlight build and re-check. Run the scan
+swipe. 2nd video 17:29 still panned ~10 pt → lock now ALWAYS holds the start edge (ar = right), build **54**. Owner to install 1.0 (54) and re-check; if still moving, find the ~10 pt element on the device (Safari Web Inspector). Run the scan
 after any layout change.
 **▶▶▶▶▶▶▶▶▶▶ «HOTELS = BOOKING APP» ROUND 1 BUILT + PUSHED 24 Nov (same
 chat):** named search → city list with the searched hotel first in a navy
