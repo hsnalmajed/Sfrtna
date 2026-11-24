@@ -115,6 +115,20 @@ iPhone app.
 
 ## ▶ Hand-off (15 Nov 2026) — current state
 
+**▶▶▶▶▶▶▶▶▶▶▶ NEXT (owner 24 Nov 15:58, Opus, NEW CHAT): LOCAL HOTEL SITES
+STUDY** (a friend's tip: most countries have a local hotel app with most
+hotels + competitive prices). Deliverable = one table (Docs artifact) for
+our travellers' top destinations (Turkey, Indonesia, Malaysia, Thailand,
+Egypt, Georgia, Azerbaijan, UAE, Morocco, Sri Lanka… — use our search data /
+popular cities first): per country the leading LOCAL hotel booking sites;
+for each, from its OWN site only (no memory): affiliate programme? which
+network (we have Admitad PID2605420, impact, CJ, Travelpayouts, Expedia
+Partnerize), commission, deep link that lands on city + dates, price API for
+small partners?, conditions we meet or not. Then: (1) link-only ones →
+buttons on hotel page + list (name shown, partner tags), PARTNERS.md row
+each; (2) ones with a price API for us → same plan as RateHawk (list source).
+Owner rule: every trusted site linked, commission or not; never hide one.
+Show the table to the owner before building.
 **▶▶▶▶▶▶▶▶▶▶ «HOTELS = BOOKING APP» ROUND 1 BUILT + PUSHED 24 Nov (same
 chat):** named search → city list with the searched hotel first in a navy
 frame (`pinned` in HotelList; card links carry `open=1` → hotel page; list
