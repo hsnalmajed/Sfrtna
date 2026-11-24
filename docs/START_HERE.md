@@ -249,8 +249,8 @@ build). TikTok = @sfrtnaapp. **b23568d:** app Google = /account/app
 redirects straight to Google (chooser), /return makes the app code and
 303s into the app (iPhone sfrtna://, Android intent: + fallback page
 ?f=1); e-mail stays in-app. **Owner CONFIRMED on iPhone 24 Nov 13:47**
-(chooser → back in the app signed in). Android: check once Play testing
-works. NEXT = rounds 3–7 (photos first, see «NOW = round 3»).
+(chooser → back in the app signed in); **Android CONFIRMED 24 Nov 13:55**
+(Play closed-test app). NEXT = rounds 3–7 (photos first, see «NOW = round 3»).
 **Play closed test (owner 24 Nov):** 12+ Android testers accepted and
 testing since **23 Nov** → 14-day rule met on **7 Dec 2026** → then guide
 the owner to «Apply for production» (Sonnet chat; Play asks test questions).
