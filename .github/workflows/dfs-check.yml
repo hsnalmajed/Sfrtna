@@ -1,0 +1,26 @@
+# Live check of the hotel price source on production (by hand). Spends a few
+# paid searches on purpose. Lines start with CHECK in the log.
+name: Hotel source check
+on:
+  workflow_dispatch:
+    inputs:
+      cities:
+        description: "Cities, comma separated"
+        type: string
+        default: Istanbul,Riyadh
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Check
+        env:
+          SMOKE_TOKEN: ${{ secrets.SMOKE_TOKEN }}
+          CITIES: ${{ inputs.cities }}
+        run: node scripts/dfs-check.mjs

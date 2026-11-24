@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { hotelPrices } from "@/lib/providers/serpapi";
-import { dfsConfigured, dfsHotelPrices } from "@/lib/providers/dataforseo";
+import { dfsConfigured, dfsHotelPrices, dfsLastError } from "@/lib/providers/dataforseo";
 import { parseChildrenAges } from "@/lib/searchParamsUtil";
 import { arabicNameFor } from "@/lib/providers/localHotels";
 
@@ -73,5 +73,8 @@ export async function GET(req: NextRequest) {
   if (result && sp.get("lang") === "ar") {
     for (const h of result.hotels) h.nameAr = arabicNameFor(h.name) ?? undefined;
   }
-  return NextResponse.json({ result }, { headers: { "Cache-Control": "no-store" } });
+  // Site check only: which source answered, and DataForSEO's refusal if any.
+  const smokeOk = Boolean(smoke && req.headers.get("x-sfrtna-smoke") === smoke);
+  const check = smokeOk ? { via: dfs ? "dfs" : result ? "serp" : "none", dfsOn: dfsConfigured(), dfsError: dfsLastError() } : undefined;
+  return NextResponse.json({ result, ...(check ? { check } : {}) }, { headers: { "Cache-Control": "no-store" } });
 }

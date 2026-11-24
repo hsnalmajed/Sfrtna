@@ -58,6 +58,12 @@ async function isOwnCheck(): Promise<boolean> {
   }
 }
 
+/** The last refusal from DataForSEO, for the site check only (never shown to visitors). */
+let lastError = "";
+export function dfsLastError(): string {
+  return lastError;
+}
+
 async function post(path: string, task: Record<string, unknown>): Promise<Record<string, unknown> | null> {
   const a = auth();
   if (!a || (await isOwnCheck())) return null;
@@ -67,12 +73,20 @@ async function post(path: string, task: Record<string, unknown>): Promise<Record
       headers: { Authorization: a, "Content-Type": "application/json" },
       body: JSON.stringify([task]),
     });
-    if (!res.ok) return null;
-    const body = (await res.json()) as { tasks?: { status_code?: number; result?: Record<string, unknown>[] }[] };
+    if (!res.ok) {
+      lastError = `http ${res.status}`;
+      return null;
+    }
+    const body = (await res.json()) as { status_code?: number; status_message?: string; tasks?: { status_code?: number; status_message?: string; result?: Record<string, unknown>[] }[] };
     const t = body.tasks?.[0];
-    if (!t || t.status_code !== 20000) return null;
+    if (!t || t.status_code !== 20000) {
+      lastError = `${t?.status_code ?? body.status_code ?? "?"} ${t?.status_message ?? body.status_message ?? ""}`.slice(0, 200);
+      return null;
+    }
+    lastError = "";
     return t.result?.[0] ?? null;
-  } catch {
+  } catch (e) {
+    lastError = `fetch ${String(e).slice(0, 120)}`;
     return null;
   }
 }
