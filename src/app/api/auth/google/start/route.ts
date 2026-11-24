@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { googleClientId } from "@/lib/accounts";
-import { GOOGLE_NONCE_COOKIE, googleRedirectUri } from "@/lib/googleRedirect";
+import { GOOGLE_APP_COOKIE, GOOGLE_NONCE_COOKIE, googleRedirectUri } from "@/lib/googleRedirect";
 
 export const dynamic = "force-dynamic";
 
@@ -30,13 +30,14 @@ export async function GET(request: Request) {
     state: lang,
     hl: lang,
   }).toString();
-  return new NextResponse(null, {
-    status: 303,
-    headers: {
-      Location: google.toString(),
-      // SameSite=None: Google sends its answer back as a cross-site POST.
-      "Set-Cookie": `${GOOGLE_NONCE_COOKIE}=${nonce}; Path=/api/auth/google; Max-Age=600; HttpOnly; Secure; SameSite=None`,
-      "Cache-Control": "no-store",
-    },
-  });
+  const headers = new Headers({ Location: google.toString(), "Cache-Control": "no-store" });
+  // SameSite=None: Google sends its answer back as a cross-site POST.
+  const cookie = (name: string, value: string) =>
+    `${name}=${value}; Path=/api/auth/google; Max-Age=${value ? 600 : 0}; HttpOnly; Secure; SameSite=None`;
+  headers.append("Set-Cookie", cookie(GOOGLE_NONCE_COOKIE, nonce));
+  // Signing in for the app (src/lib/appAuth.ts): its PKCE challenge, so the
+  // answer can go straight back into the app.
+  const app = url.searchParams.get("app") || "";
+  headers.append("Set-Cookie", cookie(GOOGLE_APP_COOKIE, /^[A-Za-z0-9_-]{43}$/.test(app) ? app : ""));
+  return new NextResponse(null, { status: 303, headers });
 }
