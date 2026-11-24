@@ -50,9 +50,9 @@ const JS = () => {
     if (r.width <= 0 || r.height <= 0) continue;
     if ((r.right > vw + 1 || r.left < -1) && !cut(el)) {
       const s = getComputedStyle(el);
-      if (s.visibility === "hidden" || s.position === "fixed") continue;
+      if (s.visibility === "hidden" || s.display === "none") continue;
       if (out.some((o) => o.el.contains(el))) continue;
-      out.push({ el, d: `${el.tagName.toLowerCase()}.${String(el.className).slice(0, 120)} «${(el.textContent || "").trim().slice(0, 40)}» L${Math.round(r.left)} R${Math.round(r.right)} vw${vw}` });
+      out.push({ el, d: `${s.position === "fixed" ? "[fixed] " : ""}${el.tagName.toLowerCase()}.${String(el.className).slice(0, 120)} «${(el.textContent || "").trim().slice(0, 40)}» L${Math.round(r.left)} R${Math.round(r.right)} vw${vw}` });
     }
   }
   return { vw, scrollW: document.documentElement.scrollWidth, items: out.slice(0, 10).map((o) => o.d) };
