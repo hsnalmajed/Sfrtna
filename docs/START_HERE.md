@@ -269,6 +269,7 @@ totals, 7 lists, 15 badges, tour, story picture, gate that signs in on the
 page, placed in travel tools / home / every guide page. **Owner (one step):**
 on the phone open «خريطتي», sign in, follow the tour, add 2 countries with
 cities (one twice), press share; ONE screenshot of anything wrong.
+**25 Nov (05da725, live):** dream country → optional dream cities (key `d:CC/<city>`, shown under the country in «أحلامي» + edit in its panel).
 **Next for the map (Round B):** compare-with-friend link (opt-in, owner's
 yes pending), community numbers, dreams → flight search, suggest from «رحلتي».
 **NOW: audit §7 round 2 «مدن أكثر (F)» batch 3 — 50 of 56 LIVE (live 415).**
