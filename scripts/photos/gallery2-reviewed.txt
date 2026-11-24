@@ -411,3 +411,6 @@ honiara
 liberia
 port-moresby
 qusar
+lake-toba
+montego-bay
+nadi
