@@ -12,7 +12,7 @@ export interface SocialProfile {
 
 export const SOCIAL_PROFILES: SocialProfile[] = [
   { id: "instagram", label: "Instagram", url: "https://www.instagram.com/sfrtnaapp/" },
-  { id: "tiktok", label: "TikTok", url: "https://www.tiktok.com/@.sfrtna" },
+  { id: "tiktok", label: "TikTok", url: "https://www.tiktok.com/@sfrtnaapp" },
   { id: "snapchat", label: "Snapchat", url: "https://www.snapchat.com/add/sfrtnaapp" },
   { id: "x", label: "X", url: "https://x.com/Sfrtnaapp" },
 ];

@@ -63,6 +63,10 @@ export const ROUTES = {
   "/api/auth/email-code": { methods: ["POST"], caller: "page", heavy: true },
   "/api/auth/email-verify": { methods: ["POST"], caller: "page", heavy: true },
   "/api/auth/google": { methods: ["POST"], caller: "page", heavy: true },
+  // Google's redirect sign-in: the start is a link, the answer a form POST
+  // from accounts.google.com.
+  "/api/auth/google/start": { methods: ["GET"], caller: "link", heavy: true },
+  "/api/auth/google/return": { methods: ["POST"], caller: "link", heavy: true },
   "/api/auth/apple": { methods: ["POST"], caller: "page", heavy: true },
   "/api/auth/signout": { methods: ["POST"], caller: "page" },
   "/api/auth/delete": { methods: ["POST"], caller: "page", heavy: true },

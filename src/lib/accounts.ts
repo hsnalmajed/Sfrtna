@@ -252,7 +252,9 @@ const b64urlBytes = (s: string): Uint8Array<ArrayBuffer> => {
 
 /** The verified person behind a Google ID token, or null. */
 export async function verifyGoogleToken(
-  idToken: string
+  idToken: string,
+  /** The redirect sign-in sends a nonce; the token must carry the same one. */
+  nonce?: string
 ): Promise<{ sub: string; email: string | null; name: string | null } | null> {
   const clientId = googleClientId();
   if (!clientId || typeof idToken !== "string") return null;
@@ -285,8 +287,10 @@ export async function verifyGoogleToken(
       email?: string;
       email_verified?: boolean;
       name?: string;
+      nonce?: string;
     };
     if (p.aud !== clientId) return null;
+    if (nonce !== undefined && p.nonce !== nonce) return null;
     if (p.iss !== "accounts.google.com" && p.iss !== "https://accounts.google.com") return null;
     if (!p.exp || p.exp * 1000 < Date.now() || !p.sub) return null;
     const email = p.email && p.email_verified ? p.email.toLowerCase() : null;

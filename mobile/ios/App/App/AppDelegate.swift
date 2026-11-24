@@ -75,9 +75,9 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
 //  - the phone's safe area (notch / Dynamic Island, home bar) handed to the
 //    page as --safe-area-inset-* — the same CSS variables Android's
 //    SystemBars plugin sets, which the app's header and tab bar already use.
-// Sign-in is not offered in this first iOS build ("auth" is not in
-// `features`), so the account link stays hidden until Sign in with Apple
-// is added (App Store rule 4.8).
+// Sign-in: Apple (native sheet) and, since 24 Nov 2026, Google + e-mail
+// through our sign-in page in Apple's sign-in sheet («auth», openAuth).
+// App Store rule 4.8: Apple is offered whenever Google is.
 
 import SafariServices
 import Network
@@ -652,6 +652,7 @@ public class SfrtnaAppPlugin: CAPPlugin, CAPBridgedPlugin {
         CAPPluginMethod(name: "haptic", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "addToCalendar", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "appleSignIn", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "openAuth", returnType: CAPPluginReturnPromise),
     ]
 
     static let ourHosts: Set<String> = ["sfrtna.com", "www.sfrtna.com"]
@@ -686,7 +687,7 @@ public class SfrtnaAppPlugin: CAPPlugin, CAPBridgedPlugin {
 
     @objc func info(_ call: CAPPluginCall) {
         let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
-        call.resolve(["platform": "ios", "version": version, "features": ["share", "share-binary", "print", "trip-mode", "haptics", "calendar", "apple"]])
+        call.resolve(["platform": "ios", "version": version, "features": ["share", "share-binary", "print", "trip-mode", "haptics", "calendar", "apple", "auth"]])
     }
 
     // MARK: Trip mode calls from the site (src/lib/nativeApp.ts)
@@ -823,6 +824,35 @@ public class SfrtnaAppPlugin: CAPPlugin, CAPBridgedPlugin {
                     call.reject(error ?? "apple_failed")
                 }
             }
+        }
+    }
+
+    /// «المتابعة بحساب Google» in the iPhone app (owner, 24 Nov 2026: iPhone
+    /// users may use every way, not only Apple). Google refuses its sign-in
+    /// inside the app's WebView, so our own sign-in page opens in Apple's
+    /// secure sign-in sheet (ASWebAuthenticationSession); it ends at
+    /// sfrtna://auth?code=…, and the account page trades that code, with the
+    /// verifier only this app holds, for the app's session — the same round
+    /// trip as Android's Custom Tab (src/lib/appAuth.ts).
+    @objc func openAuth(_ call: CAPPluginCall) {
+        let raw = call.getString("url") ?? ""
+        guard raw.range(of: "^https://sfrtna\\.com/(ar|en)/account/app\\?c=[A-Za-z0-9_-]{43}$", options: .regularExpression) != nil,
+              let url = URL(string: raw) else {
+            call.reject("bad_url")
+            return
+        }
+        DispatchQueue.main.async {
+            WebSignIn.start(url: url, window: self.bridge?.viewController?.view.window) { [weak self] back in
+                guard let back = back, back.scheme == "sfrtna", back.host == "auth",
+                      let items = URLComponents(url: back, resolvingAgainstBaseURL: false)?.queryItems,
+                      let code = items.first(where: { $0.name == "code" })?.value,
+                      code.range(of: "^[a-f0-9]{64}$", options: .regularExpression) != nil else { return }
+                let lang = items.first(where: { $0.name == "lang" })?.value == "en" ? "en" : "ar"
+                if let page = URL(string: "https://sfrtna.com/\(lang)/account?app_code=\(code)") {
+                    self?.bridge?.webView?.load(URLRequest(url: page))
+                }
+            }
+            call.resolve()
         }
     }
 
@@ -1663,5 +1693,41 @@ final class AppleSignIn: NSObject, ASAuthorizationControllerDelegate, ASAuthoriz
     private func finish(_ token: String?, _ name: String?, _ code: String?, _ error: String?) {
         done(token, name, code, error)
         AppleSignIn.current = nil
+    }
+}
+
+// MARK: - Signing in on our page in Apple's sign-in sheet (24 Nov 2026)
+
+final class WebSignIn: NSObject, ASWebAuthenticationPresentationContextProviding {
+    private static var current: WebSignIn?
+    private let window: UIWindow?
+    private var session: ASWebAuthenticationSession?
+
+    private init(window: UIWindow?) {
+        self.window = window
+    }
+
+    static func start(url: URL, window: UIWindow?, done: @escaping (URL?) -> Void) {
+        current?.session?.cancel()
+        let me = WebSignIn(window: window)
+        current = me
+        let session = ASWebAuthenticationSession(url: url, callbackURLScheme: "sfrtna") { back, _ in
+            DispatchQueue.main.async {
+                done(back)
+                WebSignIn.current = nil
+            }
+        }
+        session.presentationContextProvider = me
+        // Shares Safari's sign-ins, so Google can list the phone's accounts.
+        session.prefersEphemeralWebBrowserSession = false
+        me.session = session
+        if !session.start() {
+            done(nil)
+            current = nil
+        }
+    }
+
+    func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
+        window ?? UIApplication.shared.connectedScenes.compactMap { ($0 as? UIWindowScene)?.windows.first { $0.isKeyWindow } }.first ?? UIWindow()
     }
 }

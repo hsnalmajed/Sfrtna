@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useDictionary } from "@/lib/dict/context";
 import type { Locale } from "@/lib/types";
-import { isIosApp } from "@/lib/iosClean";
 import { appFeatures, appleSignInInApp, googleSignOutInApp, inApp, openAuthInApp } from "@/lib/nativeApp";
 import JoinBenefits from "@/components/member/JoinBenefits";
 import MemberSections from "@/components/member/MemberSections";
@@ -133,6 +132,20 @@ export default function AccountPanel({ locale }: { locale: Locale }) {
       .finally(() => setExchanging(false));
   }, [afterSignIn]);
 
+  // Back from Google's own page (/api/auth/google/return set the session):
+  // finish like every other way — save a waiting plan, go back to the page
+  // the visitor came from.
+  const googleDone = useRef(false);
+  useEffect(() => {
+    if (googleDone.current || account.status !== "ready" || !account.user) return;
+    const url = new URL(window.location.href);
+    if (url.searchParams.get("google") !== "ok") return;
+    googleDone.current = true;
+    url.searchParams.delete("google");
+    window.history.replaceState(window.history.state, "", url.pathname + url.search + url.hash);
+    void afterSignIn(account.user);
+  }, [account.status, account.user, afterSignIn]);
+
   if (account.status === "loading" || exchanging) return <p className="py-10 text-center text-navy-500">{t.loading}</p>;
   if (account.user) return <SignedIn locale={locale} user={account.user} />;
   return (
@@ -199,7 +212,6 @@ export function SignInForm({
   const [step, setStep] = useState<"email" | "code">("email");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
-  const googleBox = useRef<HTMLDivElement>(null);
   const [app, setApp] = useState(false);
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect -- read once after mount (the app is known from the user agent)
@@ -209,44 +221,28 @@ export function SignInForm({
   const reasonText = (r: string | undefined) =>
     r === "wrong" ? t.wrongCode : r === "expired" ? t.expiredCode : r === "too_many" ? t.tooMany : r === "bad_email" ? t.badEmail : r === "off" ? t.off : t.sendFailed;
 
-  // Google's own button (Google Identity Services). Google does not allow
-  // its sign-in inside an app's WebView, so the app offers email only.
+  // Google on the site (owner, 24 Nov 2026): Google's own page with the list
+  // of the visitor's accounts, every time — like other sites. The button
+  // Google drew itself signed in at once as the last account, with no list.
+  // The session then stays until «تسجيل الخروج». The app keeps its own way
+  // (the phone's browser, below): Google refuses its sign-in in a WebView.
   const googleId = !app ? methods.google : null;
+  const googleStart = () => {
+    if (!window.location.pathname.endsWith("/account")) rememberReturn(window.location.pathname + window.location.search);
+    try {
+      window.localStorage.removeItem("sfr-no-auto");
+    } catch {
+      /* storage off */
+    }
+  };
+  // Back from Google with an answer it could not accept.
   useEffect(() => {
-    // `app` is set by an effect, so the first run still sees false: ask the
-    // shell directly, or Google's script would load once inside the app
-    // (Apple 5.1.2(i): accounts.google.com + play.google.com logging).
-    if (!googleId || inApp() || isIosApp() || !googleBox.current) return;
-    const box = googleBox.current;
-    const draw = () => {
-      if (!window.google) return;
-      window.google.accounts.id.initialize({
-        client_id: googleId,
-        locale,
-        callback: async ({ credential }) => {
-          setBusy(true);
-          setError("");
-          try {
-            const res = await fetch("/api/auth/google", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ credential }) });
-            const json = (await res.json()) as { ok: boolean; user?: AccountUser };
-            if (json.ok && json.user) onSignedIn(json.user);
-            else setError(t.googleFailed);
-          } catch {
-            setError(t.googleFailed);
-          } finally {
-            setBusy(false);
-          }
-        },
-      });
-      window.google.accounts.id.renderButton(box, { theme: "outline", size: "large", shape: "pill", text: "continue_with", width: Math.min(box.clientWidth || 320, 400), locale });
-    };
-    if (window.google) return draw();
-    const s = document.createElement("script");
-    s.src = "https://accounts.google.com/gsi/client";
-    s.async = true;
-    s.onload = draw;
-    document.head.appendChild(s);
-  }, [googleId, locale, onSignedIn, t.googleFailed]);
+    const url = new URL(window.location.href);
+    if (url.searchParams.get("google") !== "failed") return;
+    url.searchParams.delete("google");
+    window.history.replaceState(window.history.state, "", url.pathname + url.search + url.hash);
+    window.setTimeout(() => setError(t.googleFailed), 0);
+  }, [t.googleFailed]);
 
   async function sendCode(e?: React.FormEvent) {
     e?.preventDefault();
@@ -329,7 +325,16 @@ export function SignInForm({
         <div className="mt-6 space-y-5">
           {googleId && (
             <>
-              <div ref={googleBox} className="flex min-h-11 justify-center" aria-label={t.google} />
+              {/* A plain link to Google's own page (no Google script on
+                  our pages); its look follows Google's own button. */}
+              <a
+                href={`/api/auth/google/start?lang=${locale}`}
+                onClick={googleStart}
+                className="flex min-h-12 w-full items-center justify-center gap-3 rounded-full border border-[#747775] bg-white px-5 py-3 text-base font-bold text-[#1f1f1f] transition hover:bg-[#f8f9fa]"
+              >
+                <GoogleG />
+                {t.google}
+              </a>
               {methods.email && (
                 <div className="flex items-center gap-3 text-xs font-bold text-navy-400">
                   <span className="h-px flex-1 bg-mist-200" />
@@ -374,12 +379,7 @@ export function SignInForm({
                 disabled={opening}
                 className="flex min-h-12 w-full items-center justify-center gap-3 rounded-full border border-[#747775] bg-white px-5 py-3 text-base font-bold text-[#1f1f1f] transition hover:bg-[#f8f9fa] disabled:opacity-60"
               >
-                <svg aria-hidden="true" viewBox="0 0 48 48" className="h-5 w-5 shrink-0">
-                  <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z" />
-                  <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z" />
-                  <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z" />
-                  <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z" />
-                </svg>
+                <GoogleG />
                 {opening ? m.appOpening : m.appButton}
               </button>
               {methods.email && (
@@ -594,5 +594,17 @@ function SignedIn({ locale, user }: { locale: Locale; user: AccountUser }) {
         )}
       </div>
     </div>
+  );
+}
+
+/** Google's four-colour «G», as on Google's own button. */
+function GoogleG() {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 48 48" className="h-5 w-5 shrink-0">
+      <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z" />
+      <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z" />
+      <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z" />
+      <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z" />
+    </svg>
   );
 }
