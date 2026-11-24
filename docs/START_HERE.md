@@ -151,6 +151,13 @@ MakeMyTrip, Rakuten, Jalan, Yanolja, Etstur, Tatil, Travelstart, Ostrovok,
 Despegar, Rehlat, Cleartrip): per site check deep link in Chrome + programme,
 show only in its country (`countryCode` from tripCityFrom). Wego → Admitad
 deep link once our space is Active. Live prices / hotel count = RateHawk.
+**PHONES «page moves» (owner video 24 Nov 16:05, iPhone app, hotels):**
+`overflow-scan.yml` (WebKit iPhone 13 + Chromium Pixel 7, 25 pages, hotel
+API mocked) = 0 elements sticking out → cause is native: iOS shell now locks
+sideways offset + zoom (`lockSideways` in AppDelegate.swift, TestFlight build
+of 24 Nov 16:3x); `<main>` overflow-x-clip; photo viewer = fixed frame +
+swipe. Owner to install the new TestFlight build and re-check. Run the scan
+after any layout change.
 **▶▶▶▶▶▶▶▶▶▶ «HOTELS = BOOKING APP» ROUND 1 BUILT + PUSHED 24 Nov (same
 chat):** named search → city list with the searched hotel first in a navy
 frame (`pinned` in HotelList; card links carry `open=1` → hotel page; list
