@@ -1,4 +1,5 @@
 import Stay22LinkSwap from "@/components/Stay22LinkSwap";
+import WideWatch from "@/components/WideWatch";
 import { preconnect } from "react-dom";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -114,6 +115,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
           {/* «clip» here too: iPhone WebKit ignores it on html/body, so a page could still slide sideways in the app (owner, 24 Nov). */}
           <main className="flex-1 overflow-x-clip">{children}</main>
           <Footer locale={loc} />
+          <WideWatch />
           <AppTabBar locale={loc} />
           <IosTabsGuard locale={loc} />
           <AppInstallBanner />
