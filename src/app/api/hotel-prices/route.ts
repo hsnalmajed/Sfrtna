@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { hotelPrices } from "@/lib/providers/serpapi";
+import { dfsConfigured, dfsHotelPrices } from "@/lib/providers/dataforseo";
 import { parseChildrenAges } from "@/lib/searchParamsUtil";
 import { arabicNameFor } from "@/lib/providers/localHotels";
 
@@ -47,14 +48,26 @@ export async function GET(req: NextRequest) {
       .slice(0, 10);
   const smoke = process.env.SMOKE_TOKEN;
   const probe = Boolean(sp.get("probe") === "1" && smoke && req.headers.get("x-sfrtna-smoke") === smoke);
-  const result = await hotelPrices({
-    q, checkIn, checkOut, adults, childrenAges, token, minStars, maxPerNight, page, one, probe,
-    types: list("types"),
-    amenities: list("amen"),
-    rating: Number(sp.get("rating")) || 0,
-    freeCancel: sp.get("fc") === "1",
-    rentals: sp.get("vr") === "1",
-  });
+  const types = list("types");
+  const amenities = list("amen");
+  const rating = Number(sp.get("rating")) || 0;
+  const freeCancel = sp.get("fc") === "1";
+  const rentals = sp.get("vr") === "1";
+  // DataForSEO first when its account is set (24 Nov 2026): the same Google
+  // Hotels data, paid per search, so the list no longer shuts for the month.
+  // Its tokens (hotel ids, "more" pages) only work there; SerpApi's only on
+  // SerpApi. Filters only Google's own codes can express (property types,
+  // amenities) and the site check's probe stay on SerpApi.
+  const serpToken = Boolean(token && /^Ch[A-Za-z0-9_-]+$/.test(token) === false) || Boolean(page && !/^d\d{2,3}s\d{1,3}$/.test(page));
+  const useDfs = dfsConfigured() && !probe && !types.length && !amenities.length && !serpToken;
+  const dfs = useDfs
+    ? await dfsHotelPrices({ q, checkIn, checkOut, adults, childrenAges, token, minStars, maxPerNight, page, one, rating, freeCancel, rentals })
+    : null;
+  const result =
+    dfs ??
+    (page && /^d\d{2,3}s\d{1,3}$/.test(page)
+      ? null
+      : await hotelPrices({ q, checkIn, checkOut, adults, childrenAges, token, minStars, maxPerNight, page, one, probe, types, amenities, rating, freeCancel, rentals }));
   // The Arabic page shows Arabic names where every word is known (chains,
   // cities, «فندق»…); the hotel's own name stays for the booking sites.
   if (result && sp.get("lang") === "ar") {

@@ -146,11 +146,20 @@ Google Hotels were ALREADY linked (hotelPartnerLinks + extraHotelSites);
 added **Almosafer** (`City, Country` path — name alone hit Cappadocia,
 Italy) + **Wego** (city code, `WEGO_METRO`, only airport ≤40 km) in
 `extraHotelSites`, both checked in Chrome with 2 children; PARTNERS rows.
-**▶ NEXT: batch 2** = local sites per country (doc list: Traveloka, tiket,
-MakeMyTrip, Rakuten, Jalan, Yanolja, Etstur, Tatil, Travelstart, Ostrovok,
-Despegar, Rehlat, Cleartrip): per site check deep link in Chrome + programme,
-show only in its country (`countryCode` from tripCityFrom). Wego → Admitad
-deep link once our space is Active. Live prices / hotel count = RateHawk.
+**OWNER RULE 24 Nov 17:32 (strict): show hotels AND flights from ANY
+source, commission or not, but NOTHING without its live price + hotel data.**
+Link-only buttons are not the goal. **DataForSEO adapter BUILT 24 Nov**
+(`providers/dataforseo.ts`: city list by our city's coordinates, depth 54
+→ «more» d108/d140; Hotel Info = every site's price + rooms + reviews;
+hotels without a price dropped; no derived totals; prepaid; 6 h cache;
+own checks never spend). Active once Runtime secrets DATAFORSEO_LOGIN /
+DATAFORSEO_PASSWORD exist. **▶ NEXT:** (1) owner: DataForSEO account +
+deposit + secrets (one step at a time) → test a live answer (Istanbul list
++ one hotel), compare count/prices with Google Hotels in TEST_PLAN;
+(2) then remove/hide link-only hotel buttons (rule); (3) flights: same
+rule — price sources beyond Aviasales (RUH missing); (4) local leaders per
+country appear through Google's price list (market `location_code` 2682
+SA); Xotelo (free, Tripadvisor-based) = terms unclear, ask before use.
 **PHONES «page moves» (owner video 24 Nov 16:05, iPhone app, hotels):**
 `overflow-scan.yml` (WebKit iPhone 13 + Chromium Pixel 7, 25 pages, hotel
 API mocked) = 0 elements sticking out → cause is native: iOS shell now locks
