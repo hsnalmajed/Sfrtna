@@ -1,0 +1,29 @@
+name: Sideways scan (phones)
+
+on:
+  workflow_dispatch:
+    inputs:
+      base:
+        description: "Site to scan"
+        default: "https://sfrtna.almajedhsn.workers.dev"
+
+permissions:
+  contents: read
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install the browsers (iPhone engine + Android engine)
+        run: |
+          npm install --no-save --no-audit --no-fund playwright@1
+          npx playwright install --with-deps webkit chromium
+      - name: Scan every page
+        env:
+          SMOKE_TOKEN: ${{ secrets.SMOKE_TOKEN }}
+        run: node scripts/overflow-scan.mjs "${{ inputs.base }}"

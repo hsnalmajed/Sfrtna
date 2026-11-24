@@ -378,6 +378,7 @@ function Gallery({ hotel, t }: { hotel: HotelResult; t: T }) {
   const imgs = hotel.images;
   // Which photo is open full screen, or null.
   const [open, setOpen] = useState<number | null>(null);
+  const [x0, setX0] = useState<number | null>(null);
   const count = imgs.length;
   const step = useCallback((d: number) => setOpen((i) => (i === null ? i : (i + d + count) % count)), [count]);
   useEffect(() => {
@@ -463,9 +464,21 @@ function Gallery({ hotel, t }: { hotel: HotelResult; t: T }) {
               ✕
             </button>
           </div>
-          <div className="relative flex min-h-0 flex-1 items-center justify-center px-2 sm:px-16">
+          {/* A fixed frame (owner, 24 Nov: «the photo moves»): every photo fills
+              the same box, whatever its size, so nothing jumps while the next
+              one loads; a swipe steps like the arrows. */}
+          <div
+            className="relative min-h-0 flex-1 touch-pan-y overflow-hidden"
+            onTouchStart={(e) => setX0(e.touches[0].clientX)}
+            onTouchEnd={(e) => {
+              if (x0 == null) return;
+              const dx = e.changedTouches[0].clientX - x0;
+              setX0(null);
+              if (Math.abs(dx) > 40) step((dx < 0 ? 1 : -1) * (document.documentElement.dir === "rtl" ? -1 : 1));
+            }}
+          >
             {/* eslint-disable-next-line @next/next/no-img-element -- remote hotel photos, sized by the browser */}
-            <img src={imgs[open].full} alt={open === 0 ? hotel.name : ""} className="max-h-full max-w-full rounded-xl object-contain" />
+            <img key={open} src={imgs[open].full} alt={open === 0 ? hotel.name : ""} className="absolute inset-0 h-full w-full object-contain px-2 sm:px-16" />
             {count > 1 && (
               <>
                 <button type="button" onClick={() => step(-1)} className="absolute start-2 top-1/2 grid h-12 w-12 -translate-y-1/2 place-items-center rounded-full bg-white/15 text-2xl text-white hover:bg-white/25" aria-label={t.prevPhoto}>
@@ -478,7 +491,7 @@ function Gallery({ hotel, t }: { hotel: HotelResult; t: T }) {
             )}
           </div>
           {count > 1 && (
-            <ScrollRow tone="dark" className="flex justify-center gap-2 px-4 py-3">
+            <ScrollRow tone="dark" className="flex gap-2 px-4 py-3">
               {imgs.map((im, i) => (
                 <button
                   key={i}

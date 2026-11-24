@@ -111,7 +111,8 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
             this page's language reaches the browser, not both. */}
         <DictionaryProvider dict={clientDictionary(dict)}>
           <Header locale={loc} />
-          <main className="flex-1">{children}</main>
+          {/* «clip» here too: iPhone WebKit ignores it on html/body, so a page could still slide sideways in the app (owner, 24 Nov). */}
+          <main className="flex-1 overflow-x-clip">{children}</main>
           <Footer locale={loc} />
           <AppTabBar locale={loc} />
           <IosTabsGuard locale={loc} />
