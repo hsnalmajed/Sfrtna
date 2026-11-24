@@ -14,7 +14,8 @@ type T = ReturnType<typeof useDictionary>["visited"];
  * «+»: which country → which cities there. A country already on the map
  * opens with its cities ticked, so a later trip only adds the new ones
  * (owner 18 Nov 13:15: no years, no trip counts). `dream` mode picks a
- * country for «أحلامي» and stops there.
+ * country for «أحلامي», then, if the traveller wants, the cities there they
+ * dream of (owner 24 Nov 2026: city optional).
  */
 export default function AddSheet({
   t,
@@ -23,7 +24,7 @@ export default function AddSheet({
   mode = "been",
   start,
   onSave,
-  onDream,
+  onSaveDream,
   onClose,
 }: {
   t: T;
@@ -33,20 +34,12 @@ export default function AddSheet({
   /** open straight on this country (and tick this city) */
   start?: { code: string; city?: string } | null;
   onSave: (code: string, cities: Set<string>) => Promise<boolean>;
-  onDream: (code: string) => Promise<boolean>;
+  onSaveDream: (code: string, cities: Set<string>) => Promise<boolean>;
   onClose: () => void;
 }) {
   const [code, setCode] = useState<string | null>(start?.code ?? null);
   const [query, setQuery] = useState("");
-  const [busy, setBusy] = useState(false);
-  const pick = async (c: string) => {
-    if (mode === "dream") {
-      setBusy(true);
-      const ok = await onDream(c);
-      setBusy(false);
-      if (ok) onClose();
-      return;
-    }
+  const pick = (c: string) => {
     setCode(c);
     setQuery("");
   };
@@ -73,7 +66,7 @@ export default function AddSheet({
             const n = visited.cities.get(c.code)?.size ?? 0;
             return (
               <li key={c.code}>
-                <button type="button" disabled={busy} onClick={() => void pick(c.code)} className="flex min-h-14 w-full items-center gap-3 px-1 text-start active:bg-mist-50">
+                <button type="button" onClick={() => pick(c.code)} className="flex min-h-14 w-full items-center gap-3 px-1 text-start active:bg-mist-50">
                   <span className="text-2xl" aria-hidden="true">{flagEmoji(c.code)}</span>
                   <span className="min-w-0 flex-1 truncate text-[0.95rem] font-bold text-navy-950">{ar ? c.nameAr : c.nameEn}</span>
                   {been && (
@@ -83,7 +76,7 @@ export default function AddSheet({
                     </span>
                   )}
                   {!been && dream && <span className="rounded-full bg-navy-50 px-2.5 py-1 text-xs font-extrabold text-navy-700">{t.statusDream}</span>}
-                  {mode === "been" && <span aria-hidden="true" className="text-navy-900/30 rtl:rotate-180">›</span>}
+                  <span aria-hidden="true" className="text-navy-900/30 rtl:rotate-180">›</span>
                 </button>
               </li>
             );
@@ -92,7 +85,20 @@ export default function AddSheet({
       </Sheet>
     );
   }
-  return <CitiesStep key={code} t={t} ar={ar} code={code} visited={visited} startCity={start?.code === code ? start.city : undefined} onBack={start ? undefined : () => setCode(null)} onSave={onSave} onClose={onClose} />;
+  return (
+    <CitiesStep
+      key={code}
+      t={t}
+      ar={ar}
+      code={code}
+      visited={visited}
+      dream={mode === "dream"}
+      startCity={start?.code === code ? start.city : undefined}
+      onBack={start ? undefined : () => setCode(null)}
+      onSave={mode === "dream" ? onSaveDream : onSave}
+      onClose={onClose}
+    />
+  );
 }
 
 function CitiesStep({
@@ -100,6 +106,7 @@ function CitiesStep({
   ar,
   code,
   visited,
+  dream = false,
   startCity,
   onBack,
   onSave,
@@ -109,6 +116,8 @@ function CitiesStep({
   ar: boolean;
   code: string;
   visited: Visited;
+  /** cities dreamt of: optional, the country alone is a full answer */
+  dream?: boolean;
   startCity?: string;
   onBack?: () => void;
   onSave: (code: string, cities: Set<string>) => Promise<boolean>;
@@ -130,7 +139,7 @@ function CitiesStep({
     };
   }, [code]);
   const [ticked, setTicked] = useState<Set<string>>(() => {
-    const s = new Set(visited.cities.get(code) ?? []);
+    const s = new Set((dream ? visited.dreamCities : visited.cities).get(code) ?? []);
     if (startCity) s.add(startCity);
     return s;
   });
@@ -160,7 +169,13 @@ function CitiesStep({
     if (ok) onClose();
   };
 
-  const label = ticked.size ? t.saveWith.replace("{cities}", counted(t.cityForms, ticked.size)) : t.save;
+  const label = dream
+    ? ticked.size
+      ? t.saveDreamWith.replace("{cities}", counted(t.cityForms, ticked.size))
+      : t.saveDreamOnly.replace("{country}", name)
+    : ticked.size
+      ? t.saveWith.replace("{cities}", counted(t.cityForms, ticked.size))
+      : t.save;
 
   return (
     <Sheet
@@ -180,13 +195,16 @@ function CitiesStep({
           type="button"
           disabled={busy}
           onClick={save}
-          className="flex min-h-12 w-full items-center justify-center rounded-2xl bg-[#f8b840] text-base font-extrabold text-[#061a33] shadow-[0_8px_24px_-8px_rgb(248_184_64/0.7)] transition active:scale-[0.98] disabled:opacity-60"
+          className={`flex min-h-12 w-full items-center justify-center rounded-2xl text-base font-extrabold text-[#061a33] transition active:scale-[0.98] disabled:opacity-60 ${
+            dream ? "bg-[#88b1e1] shadow-[0_8px_24px_-8px_rgb(136_177_225/0.7)]" : "bg-[#f8b840] shadow-[0_8px_24px_-8px_rgb(248_184_64/0.7)]"
+          }`}
         >
           {busy ? t.saving : label}
         </button>
       }
     >
-      <h3 className="mb-2 text-sm font-extrabold text-navy-900">{t.pickCities.replace("{country}", name)}</h3>
+      <h3 className="mb-2 text-sm font-extrabold text-navy-900">{(dream ? t.pickDreamCities : t.pickCities).replace("{country}", name)}</h3>
+      {dream && <p className="-mt-1 mb-2 text-xs font-bold text-navy-900/55">{t.pickDreamCitiesHint}</p>}
       {cities.length > 8 && (
         <input
           type="search"
@@ -209,12 +227,12 @@ function CitiesStep({
                 aria-checked={on}
                 onClick={() => toggle(c.id)}
                 className={`flex min-h-12 w-full items-center gap-3 rounded-2xl px-3 text-start ring-1 transition active:scale-[0.99] ${
-                  on ? "bg-[#fff8e8] ring-[#f8b840]" : "bg-white ring-navy-900/10"
+                  on ? (dream ? "bg-[#eef4fb] ring-[#88b1e1]" : "bg-[#fff8e8] ring-[#f8b840]") : "bg-white ring-navy-900/10"
                 }`}
               >
                 <span
                   aria-hidden="true"
-                  className={`grid h-6 w-6 shrink-0 place-items-center rounded-lg text-sm font-black ${on ? "bg-[#f8b840] text-[#061a33]" : "bg-white text-transparent ring-1 ring-navy-900/25"}`}
+                  className={`grid h-6 w-6 shrink-0 place-items-center rounded-lg text-sm font-black ${on ? (dream ? "bg-[#88b1e1] text-[#061a33]" : "bg-[#f8b840] text-[#061a33]") : "bg-white text-transparent ring-1 ring-navy-900/25"}`}
                 >
                   ✓
                 </span>

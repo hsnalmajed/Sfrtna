@@ -16,9 +16,9 @@
 
 export type ItemKind = "profile" | "fav" | "search" | "trip" | "been";
 
-/** «خريطتي» keys: a visited country, a visited city, a dream country. */
-/** t:CC/<our city slug> or t:CC/q<Wikidata number> (public/geo/cities). */
-export const BEEN_KEY = /^(?:[cw]:[A-Z]{2}|t:[A-Z]{2}\/[a-z0-9-]{1,60})$/;
+/** «خريطتي» keys: a visited country, a visited city, a dream country, a dream city. */
+/** t:/d:CC/<our city slug> or q<Wikidata number> (public/geo/cities). */
+export const BEEN_KEY = /^(?:[cw]:[A-Z]{2}|[td]:[A-Z]{2}\/[a-z0-9-]{1,60})$/;
 export interface Been {
   at: number;
   /** Countries only: one entry per trip there, the year (0 = not given). */

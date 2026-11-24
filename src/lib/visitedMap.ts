@@ -10,6 +10,7 @@
  *   t:TR/istanbul   a visited city: our guide slug, or q<Wikidata number> from
  *                   public/geo/cities/<CC>.json (src/lib/visitedCities.ts)
  *   w:JP            a dream
+ *   d:JP/kyoto      a city in a dream country (optional, owner 24 Nov 2026)
  *
  * Shapes come from public/geo/world-map.json (scripts/world/build-world.mjs),
  * already projected with Equal Earth; `project` places a city with the same
@@ -72,6 +73,7 @@ export function in195(code: string): boolean {
 export const countryKey = (code: string) => `c:${code}`;
 export const wishKey = (code: string) => `w:${code}`;
 export const cityKey = (code: string, id: string) => `t:${code}/${id}`;
+export const dreamCityKey = (code: string, id: string) => `d:${code}/${id}`;
 
 /** «دولة واحدة», «دولتان», «5 دول», «12 دولة»: the right Arabic form. */
 export function counted(forms: { one: string; two: string; few: string; many: string }, n: number): string {
@@ -85,6 +87,8 @@ export interface Visited {
   /** visited cities per country: city ids */
   cities: Map<string, Set<string>>;
   dreams: Set<string>;
+  /** cities the traveller dreams of, per dream country (optional) */
+  dreamCities: Map<string, Set<string>>;
 }
 
 export interface VisitedStats {
@@ -98,14 +102,15 @@ export interface VisitedStats {
 }
 
 export function readVisited(items: { key: string; data: Been | undefined }[]): Visited {
-  const v: Visited = { countries: new Map(), cities: new Map(), dreams: new Set() };
+  const v: Visited = { countries: new Map(), cities: new Map(), dreams: new Set(), dreamCities: new Map() };
   for (const { key, data } of items) {
     if (key.startsWith("c:")) v.countries.set(key.slice(2), data?.v?.length ? data.v : [0]);
     else if (key.startsWith("w:")) v.dreams.add(key.slice(2));
-    else if (key.startsWith("t:")) {
+    else if (key.startsWith("t:") || key.startsWith("d:")) {
       const [code, id] = key.slice(2).split("/");
-      if (!v.cities.has(code)) v.cities.set(code, new Set());
-      v.cities.get(code)!.add(id);
+      const map = key.startsWith("t:") ? v.cities : v.dreamCities;
+      if (!map.has(code)) map.set(code, new Set());
+      map.get(code)!.add(id);
     }
   }
   return v;
@@ -147,7 +152,7 @@ export function useVisited() {
     const trips = visited.countries.get(code);
     const nextTrips = trips ? (trip === null ? trips : [...trips, trip]) : [trip ?? 0];
     ok = (await member.setBeen(countryKey(code), true, { at: Date.now(), v: nextTrips })) && ok;
-    if (visited.dreams.has(code)) ok = (await member.setBeen(wishKey(code), false)) && ok;
+    if (visited.dreams.has(code)) ok = (await clearDream(code)) && ok;
     const had = visited.cities.get(code) ?? new Set<string>();
     for (const id of had) if (!cityIds.has(id)) ok = (await member.setBeen(cityKey(code, id), false)) && ok;
     for (const id of cityIds) if (!had.has(id)) ok = (await member.setBeen(cityKey(code, id), true, { at: Date.now() })) && ok;
@@ -171,8 +176,26 @@ export function useVisited() {
     return (await member.setBeen(wishKey(code), true, { at: Date.now() })) && ok;
   }
 
+  /** A dream country leaves the list with its dream cities. */
+  async function clearDream(code: string) {
+    let ok = true;
+    for (const id of visited.dreamCities.get(code) ?? []) ok = (await member.setBeen(dreamCityKey(code, id), false)) && ok;
+    return (await member.setBeen(wishKey(code), false)) && ok;
+  }
+
   async function toggleDream(code: string) {
-    return member.setBeen(wishKey(code), !visited.dreams.has(code), { at: Date.now() });
+    if (visited.dreams.has(code)) return clearDream(code);
+    return member.setBeen(wishKey(code), true, { at: Date.now() });
+  }
+
+  /** «+» in dream mode: the country, and its dream cities exactly as ticked (none is fine). */
+  async function saveDream(code: string, cityIds: Set<string>) {
+    let ok = true;
+    if (!visited.dreams.has(code)) ok = (await member.setBeen(wishKey(code), true, { at: Date.now() })) && ok;
+    const had = visited.dreamCities.get(code) ?? new Set<string>();
+    for (const id of had) if (!cityIds.has(id)) ok = (await member.setBeen(dreamCityKey(code, id), false)) && ok;
+    for (const id of cityIds) if (!had.has(id)) ok = (await member.setBeen(dreamCityKey(code, id), true, { at: Date.now() })) && ok;
+    return ok;
   }
 
   return {
@@ -186,6 +209,7 @@ export function useVisited() {
     removeCountry,
     moveToDream,
     toggleDream,
+    saveDream,
   };
 }
 

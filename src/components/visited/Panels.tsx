@@ -119,6 +119,21 @@ export function CountrySheet({
 
       {dream && (
         <div className="flex flex-col gap-2">
+          {(visited.dreamCities.get(code)?.size ?? 0) > 0 && (
+            <ul className="mb-1 flex flex-wrap gap-1.5">
+              {[...(visited.dreamCities.get(code) ?? [])].map((id) => {
+                const c = byId.get(id);
+                return (
+                  <li key={id} className="rounded-full bg-[#eef4fb] px-3 py-1 text-sm font-bold text-navy-900 ring-1 ring-[#88b1e1]">
+                    ⭐ {c ? (ar ? c.ar : c.en) : id}
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+          <button type="button" onClick={onDream} className="min-h-11 rounded-2xl bg-[#88b1e1] text-sm font-extrabold text-[#061a33] active:scale-[0.98]">
+            ⭐ {t.dreamCitiesEdit}
+          </button>
           <button type="button" onClick={onBeen} className="min-h-12 rounded-2xl bg-[#f8b840] text-base font-extrabold text-[#061a33] active:scale-[0.98]">
             ✈️ {t.moveToBeen}
           </button>
@@ -387,7 +402,16 @@ export function ListSheet({
         <button type="button" onClick={onAddDream} className="mb-3 min-h-12 w-full rounded-2xl bg-[#88b1e1] text-base font-extrabold text-[#061a33] active:scale-[0.98]">
           {t.addDream}
         </button>
-        <ul className="divide-y divide-navy-900/5">{[...visited.dreams].map((code) => countryRow(code, undefined, <span aria-hidden="true">⭐</span>))}</ul>
+        <ul className="divide-y divide-navy-900/5">
+          {[...visited.dreams].map((code) => {
+            const byId = new Map(listOf(lists, code).map((c) => [c.id, c]));
+            const names = [...(visited.dreamCities.get(code) ?? [])].map((id) => {
+              const c = byId.get(id);
+              return c ? (ar ? c.ar : c.en) : null;
+            }).filter(Boolean);
+            return countryRow(code, names.length ? <span className="block truncate text-xs text-navy-900/55">{names.join(ar ? "، " : ", ")}</span> : undefined, <span aria-hidden="true">⭐</span>);
+          })}
+        </ul>
       </>
     );
   }

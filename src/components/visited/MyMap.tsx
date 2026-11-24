@@ -56,9 +56,9 @@ export default function MyMap({ locale }: { locale: Locale }) {
   const [tour, setTour] = useState(false);
   const [sharing, setSharing] = useState(false);
 
-  // Cities of the visited countries (and the chosen one), for pins and names.
+  // Cities of the visited and dreamt-of countries (and the chosen one), for pins and names.
   const [cityLists, setCityLists] = useState<Map<string, MapCity[]>>(new Map());
-  const wanted = useMemo(() => [...new Set([...visited.countries.keys(), ...visited.cities.keys(), ...(selected ? [selected] : [])])].sort().join(","), [visited, selected]);
+  const wanted = useMemo(() => [...new Set([...visited.countries.keys(), ...visited.cities.keys(), ...visited.dreamCities.keys(), ...(selected ? [selected] : [])])].sort().join(","), [visited, selected]);
   useEffect(() => {
     let live = true;
     const codes = wanted ? wanted.split(",") : [];
@@ -127,8 +127,8 @@ export default function MyMap({ locale }: { locale: Locale }) {
     }
     return true;
   };
-  const onDream = async (code: string) => {
-    const ok = visited.dreams.has(code) ? true : await v.toggleDream(code);
+  const onSaveDream = async (code: string, cities: Set<string>) => {
+    const ok = await v.saveDream(code, cities);
     if (!ok) showToast({ text: t.failed });
     return ok;
   };
@@ -298,7 +298,7 @@ export default function MyMap({ locale }: { locale: Locale }) {
       )}
 
       {sheet?.kind === "add" && (
-        <AddSheet t={t} ar={ar} visited={visited} mode={sheet.mode} start={sheet.start} onSave={onSave} onDream={onDream} onClose={() => setSheet(null)} />
+        <AddSheet t={t} ar={ar} visited={visited} mode={sheet.mode} start={sheet.start} onSave={onSave} onSaveDream={onSaveDream} onClose={() => setSheet(null)} />
       )}
       {sheet?.kind === "country" && (
         <CountrySheet
@@ -309,7 +309,7 @@ export default function MyMap({ locale }: { locale: Locale }) {
           visited={visited}
           lists={cityLists}
           onBeen={() => setSheet({ kind: "add", start: { code: sheet.code } })}
-          onDream={() => void onDream(sheet.code)}
+          onDream={() => setSheet({ kind: "add", mode: "dream", start: { code: sheet.code } })}
           onRemoveCity={(id) => {
             const next = new Set(visited.cities.get(sheet.code) ?? []);
             next.delete(id);
