@@ -263,3 +263,13 @@ sheki
 gabala
 borjomi
 kota-kinabalu
+algiers
+cebu
+chengdu
+hua-hin
+panama-city
+paphos
+shenzhen
+the-hague
+vilnius
+wellington
