@@ -253,3 +253,13 @@ baalbek
 lahore
 islamabad
 limassol
+hail
+najran
+jerash
+khasab
+ella
+nuwara-eliya
+sheki
+gabala
+borjomi
+kota-kinabalu
