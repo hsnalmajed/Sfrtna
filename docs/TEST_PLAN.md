@@ -317,3 +317,20 @@ Not testable here: signed-in save (account DO) — owner checks on the phone.
   the owner's PC download (1d_BETTER_CELLS.bat).
 - **Jajce published 19 Nov** (live 415, climate 412/415): cell 44.4/17.2
   (+331 m), station-calibrated July high 27.0 / low 12.4 °C.
+
+## Hotel price source: DataForSEO (24 Nov 2026)
+
+Live on production (`dfs-check.yml`, run 45465466635), 17–20 Dec 2026, 2 adults, SAR:
+
+| Check | Ours (DataForSEO) | Source (Google Hotels in Chrome, gl=sa) |
+| --- | --- | --- |
+| Riyadh list | 60 hotels first page (+ «more» to 140); before: ~20, paced shut till 6 Dec | 2,005 results for Riyadh |
+| Istanbul list | 60 hotels | — |
+| Crowne Plaza Riyadh Palace, sites | 16 rows (dupes removed after this run) | «All options» list |
+| Official site | 280 /night | 280 |
+| Vio.com / Etrip.net / goseek.com | 241 / 241 / 241 | 241 / 241 / 241 |
+| Agoda / Booking.com / Expedia.com / Hotels.com | 280 each | 280 each |
+
+Prices match the source site by site. Rooms 30, review topics 12, photos 8.
+Gaps: list rows carry one price (the hotel page carries every site);
+some hotels lack an address in Hotel Info (Somerset Maslak Istanbul).

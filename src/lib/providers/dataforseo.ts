@@ -156,7 +156,10 @@ function hotelOf(h: DfsHotel): HotelResult {
       };
     })
     .filter((o) => o.source && o.perNight !== null)
-    .sort((a, b) => (a.perNight ?? 0) - (b.perNight ?? 0));
+    .sort((a, b) => (a.perNight ?? 0) - (b.perNight ?? 0))
+    // Google lists a site again under its paid ad (seen 24 Nov: Booking.com,
+    // Expedia twice): one row per site, its lowest price.
+    .filter((o, i, all) => all.findIndex((x) => x.source.toLowerCase() === o.source.toLowerCase()) === i);
   const rooms: HotelRoom[] = [];
   for (const p of items) {
     for (const o of p.offers ?? []) {
