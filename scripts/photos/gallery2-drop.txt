@@ -390,3 +390,13 @@ trincomalee s1 s2 s5 s6 v3 l3 l4 l5 l6 l7
 khiva s2 s3 s4 s5 s6 s7 s8 v2 v3 v4 v5 v6 v8 v9 v10 v11 v12 v13 v16 v18 v19 v20 v21 v22 v23 v24 v25 v27 v28 v29 v30 l7 l11 l13 l15
 bogor s3 s4 s6 s7 s8 s9 s10 s11 v2 v3 v4 v5 l2 l3 l4 l6 l7 l8 l9 l10 l11 l12 l13
 bandung s5 s10 v1 v2 v3 v4 v5 v7 v9 v10 v11 v12 v13 v16 v17 v19 v20 v21 v22 v24 v25 v26 v27 v28 v29 l4 l6 l7 l10 l11 l12 l13 l14 l15 l17 l18 l19 l20 l22 l23 l24 l25
+negombo s3 s5 s6 v5 l3
+jajce s5 s9 s10 s11 s12 s13 s14 s15 s16 s17 s20 s21 s22 s23 l3 l6 l7 l8 l9 l10 l11
+sighnaghi s5 s6 s8 s9 s10 s11 s12 s13 v5 l3 l5 l7 l8 l9
+gudauri s9 s11 s12 s13 v1 v6 v7 v8 l1 l2 l8 l10
+shamakhi s1 s2 s3 s4 s5 s6 s7 s8 s9 s10 v2 l2 l6 l7 l9
+heviz s4 s5 s6 s7 s8 s9 s10 s11 s12 s13 s14 s15 s16 s17 s18 s19 s20 s22 s23 s24 s25 s26 l3 l4 l5 l6 l8 l9 l10 l11 l12
+puerto-princesa s4 s5 s6 s7 s8 s9 v2
+los-cabos s1 s2 s3 n1 n2 n3 n4 n5 n6 n7 n8 n9 n10 n11 n12 n17 n19 n22 n23 l1
+maafushi s1 n3 n5 n6 n7 n11 n17 n18 n25 v1 v2 l1 l2
+vientiane s1 s2 s3 s4 s5 s6 s8 s9 s10 s11 s12 l1 l3 l5 l6
