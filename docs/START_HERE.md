@@ -202,9 +202,12 @@ al-Watan), muscat (Makkah clock, La Scala). **OWNER'S STANDARD (19 Nov
 17:44): every photo must tell the city's beauty, sights and activities so it
 makes the traveller want to go** — drop dull/hazy skylines, tanks, caravans,
 statues, museum cases, B&W; keep coast, old town, markets, landmarks at
-their best, things to do. **NEXT (~10 cities/chat):** baku, tbilisi, bali,
-male, beirut, marrakech, rome, barcelona, singapore, phuket once they have
-s#; ready now: fethiye, salalah, manama, kuwait-city + list. Write one drop line per city (tags s#/v#/n#/l#;
+their best, things to do. **24 Nov: 365 of 415 reviewed (drop file = the record; 50 left)** (+abha, taif,
+al-ahsa, dammam, tabuk, yanbu, al-baha, dahab, el-gouna, bolu; Saudi cities
+have few/poor Commons photos — yanbu all n# dropped, dammam 6 kept).
+**NEXT (~10 cities/chat):** list the unreviewed = gallery2.json keys minus
+the drop file's slugs; Gulf favourites first (sur, al-wakrah, jazan, umluj,
+marsa-alam, djerba, hammamet, cameron-highlands, ipoh, kuching). Write one drop line per city (tags s#/v#/n#/l#;
 drop: interiors of no note, statues/close-ups, screens, traffic, wrong
 place, blank tiles, hazy/grey; keep ≤6 v), commit; the next run publishes.
 Lessons: guide fame lists odd «sights» (Stock Exchange) — drop by eye. Ghost

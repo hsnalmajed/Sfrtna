@@ -273,3 +273,13 @@ shenzhen
 the-hague
 vilnius
 wellington
+abha
+taif
+al-ahsa
+dammam
+tabuk
+yanbu
+al-baha
+dahab
+el-gouna
+bolu

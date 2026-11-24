@@ -361,3 +361,13 @@ shenzhen s1 s2 s3 s4 s5 s6 s7 s8 s9 s10 s11 s14 v1 v2 v5 v6 v7 v8 v10 v11 v12 v1
 the-hague s3 s5 s7 s8 s9 s10 s11 s12 s13 s14 s15 s16 s17 s18 s19 v1 v2 v3 v4 v5 v7 v8 v10 v11 v12 v13 v16 v17 v18 v20 v21 v22 v23 v24 v25 v26 v27 v29 v30 l2 l7 l10 l11 l12 l13 l14 l15 l16 l19 l20 l23 l24 l25
 vilnius s1 s2 s3 s4 s5 s6 s7 s8 s9 s10 s11 s12 s13 s14 s15 s16 s17 v4 v5 v7 v8 v11 v12 v13 v14 l3 l11 l12 l16 l17 l18 l22 l25
 wellington s1 s2 s3 s4 s5 s6 s7 s8 s9 s10 s11 s12 s13 s14 s16 s17 s18 s19 s20 s21 s22 s23 v3 v7 v8 v9 v11 v12 v13 v14 v15 v16 v17 v18 v19 v20 l4 l7 l8 l10 l11 l12
+abha n2 n3 l2
+taif n1 v1 v3 v4
+al-ahsa n1 n2 n3 n4 n5 n6 n7 n9 n13
+dammam n1 n2 n3 n6 n7 n8 n9 n10 n12 n13 n14 n15 n16 n17 n18 n19 n20 n21 n22 n23 v2 l1
+tabuk n1
+yanbu n1 n2 n3 n4 n5 n6 n7 n8 n9 n10 n11 n12 n13 n14 n15 n16 n17 n18 n19 n20 n21 n22 n23 n24 n25
+al-baha n2 n3 n5
+dahab n1 n4 n5 n6 n8 n9 n10 n11 n12 n13 n16 n17 n18 n19 n22 n23 n24 n25 v1 v3 v4 v7 v9 v10 v11 v12 v13 v14
+el-gouna n1 n8 n13 n14 n15 n16 n18 n19
+bolu n2 n3 n5 n6 n9 n12 n13 n16 n19 n23 n24 n25 v1 v2 v3 v4 v5 v6 v7 v8 v9 v10 v11 v12 v15 v18 v19 v20 v21 v23 v24 v25 v26 v27 v28 v30
