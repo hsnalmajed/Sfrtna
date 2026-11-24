@@ -394,3 +394,13 @@ puerto-princesa
 los-cabos
 maafushi
 vientiane
+kingston
+maputo
+livingstone
+suva
+grand-baie
+gaborone
+entebbe
+punta-arenas
+roatan
+port-vila

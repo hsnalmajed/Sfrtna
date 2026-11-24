@@ -400,3 +400,13 @@ puerto-princesa s4 s5 s6 s7 s8 s9 v2
 los-cabos s1 s2 s3 n1 n2 n3 n4 n5 n6 n7 n8 n9 n10 n11 n12 n17 n19 n22 n23 l1
 maafushi s1 n3 n5 n6 n7 n11 n17 n18 n25 v1 v2 l1 l2
 vientiane s1 s2 s3 s4 s5 s6 s8 s9 s10 s11 s12 l1 l3 l5 l6
+kingston s1 n1 n2 n3 n4 n5 n6 n7 n8 n9 n10 n11 n12 n13 n14 n15 n16 n17 n18 n19 n20 n21 n22 n23 n24 n25 v1 v2 v3 v4 v5 v6 v7 v8 v9 l1 l2 l4
+maputo s1 s2 s3 s4 s5 s6 s9 v2 l2 l5 l8 l9
+livingstone s1 s2 n1 n2 n3 n4 n5 n6 n10 n16 n17 n18 n19 n24 v1 l1 l2
+suva s4 s5 s8 v1 l1
+grand-baie s1 s3 s4 s5 s6 l1
+gaborone s5 s6 s7 s8 s9 s10 s11 s12 s14 v1 l2 l3
+entebbe s4 s5 s6 s7 l1 l4 l5
+punta-arenas s1 s2 s3 s4 s5 s6 s7 s8 s9 s10 s11 s12 s13 v1 l3 l4
+roatan s1 s2 s3 s4 s5 s6 n1 n4 n5 n8 n10 n11 n14 n15 n16 n17 n18 n19 n20 n22 n23 n24 n25 l1
+port-vila s3 s4 s5 s6 v1 v2 v3 v4 v5 v6 v7 v8 v9 l1 l2 l4 l6 l7
