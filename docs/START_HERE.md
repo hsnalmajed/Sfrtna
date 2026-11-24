@@ -129,6 +129,16 @@ buttons on hotel page + list (name shown, partner tags), PARTNERS.md row
 each; (2) ones with a price API for us → same plan as RateHawk (list source).
 Owner rule: every trusted site linked, commission or not; never hide one.
 Show the table to the owner before building.
+**24 Nov — ROUND 1 (GCC) DONE**, doc «دراسة مواقع الفنادق المحلية»
+https://claude.ai/artifact/BBaHrWVqm8pef81eAevLsj (rounds 2–4 = pending
+blocks in it). Found: Wego = Admitad 3% hotels (deep link
+`sa.wego.com/hotels/searches/{city}/{Y-M-D}/{Y-M-D}?guests=2`); Rehlat =
+own programme (form rehlat.com/en/affiliate, rate not published, dates not
+in URL); Almosafer = NO programme on its site, deep link works
+`almosafer.com/ar/hotels/{City}/{DD-MM-YYYY}/{DD-MM-YYYY}/2_adult`;
+Cleartrip ME needs its `dest_code`; almatar/Musafir/dnata/Discover Qatar
+link-only, deep links not checked yet; Gathern = rentals, no programme.
+Waiting: owner's OK on GCC → round 2 Asia.
 **▶▶▶▶▶▶▶▶▶▶ «HOTELS = BOOKING APP» ROUND 1 BUILT + PUSHED 24 Nov (same
 chat):** named search → city list with the searched hotel first in a navy
 frame (`pinned` in HotelList; card links carry `open=1` → hotel page; list
