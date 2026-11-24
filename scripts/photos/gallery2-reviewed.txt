@@ -233,3 +233,13 @@ nairobi
 okinawa
 pokhara
 punta-cana
+annecy
+bergen
+cairns
+foz-do-iguacu
+galapagos
+mahe
+luang-prabang
+rovaniemi
+tromso
+wadi-rum
