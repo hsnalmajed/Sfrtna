@@ -260,6 +260,12 @@ redirects straight to Google (chooser), /return makes the app code and
 testing since **23 Nov** → 14-day rule met on **7 Dec 2026** → then guide
 the owner to «Apply for production» (Sonnet chat; Play asks test questions).
 Keep testers opted in until then.
+**Phones fix 24 Nov (f96f039, live):** owner saw pages slide sideways +
+unreachable ✕ (hotels, both apps). html/body `overflow-x: clip`; apps: no
+zoom (viewport max-scale=1 set by the in-app script, touch-action
+manipulation); every `[role=dialog].fixed.inset-0` gets top safe-area
+padding in @layer components (own pt-* wins); hotel dates pill wraps.
+Owner to re-check on the phone.
 **Owner 17 Nov 20:31 — decision 2:** discover lists EVERY destination in
 budget; no live fare → shown WITHOUT a number + «شاهد السعر الحيّ» (opens the
 flight search). **Decision 1 (20:40): no paid SerpApi — wait for 6 Dec**,
