@@ -117,10 +117,10 @@ iPhone app.
 
 **▶▶▶▶▶▶▶▶▶▶▶ NEXT (owner 24 Nov 15:58, Opus, NEW CHAT): LOCAL HOTEL SITES
 STUDY** (a friend's tip: most countries have a local hotel app with most
-hotels + competitive prices). Deliverable = one table (Docs artifact) for
-our travellers' top destinations (Turkey, Indonesia, Malaysia, Thailand,
-Egypt, Georgia, Azerbaijan, UAE, Morocco, Sri Lanka… — use our search data /
-popular cities first): per country the leading LOCAL hotel booking sites;
+hotels + competitive prices). **Owner 24 Nov 15:58: ALL countries we cover,
+Gulf + Asia FIRST** (all 6 GCC, then every Asian country in our data, then
+Middle East/Africa, Europe, rest). Deliverable = one table (Docs artifact),
+filled in rounds by region (show the owner after each region): per country the leading LOCAL hotel booking sites;
 for each, from its OWN site only (no memory): affiliate programme? which
 network (we have Admitad PID2605420, impact, CJ, Travelpayouts, Expedia
 Partnerize), commission, deep link that lands on city + dates, price API for
