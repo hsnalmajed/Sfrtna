@@ -283,3 +283,12 @@ al-baha
 dahab
 el-gouna
 bolu
+sur
+al-wakrah
+umluj
+marsa-alam
+hammamet
+djerba
+cameron-highlands
+ipoh
+kuching
