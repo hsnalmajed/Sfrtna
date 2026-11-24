@@ -223,3 +223,13 @@ quebec-city
 fujairah
 al-ain
 kusadasi
+boracay
+budva
+heraklion
+kazbegi
+larnaca
+lombok
+nairobi
+okinawa
+pokhara
+punta-cana
