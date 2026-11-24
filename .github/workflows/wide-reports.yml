@@ -1,0 +1,23 @@
+name: Wide-page reports (apps)
+
+on:
+  workflow_dispatch:
+    inputs:
+      hours:
+        description: "Look back this many hours"
+        default: "24"
+
+permissions:
+  contents: read
+
+jobs:
+  read:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print the automatic wide-page reports
+        env:
+          SMOKE_TOKEN: ${{ secrets.SMOKE_TOKEN }}
+        run: |
+          curl -fsS -H "x-sfrtna-smoke: $SMOKE_TOKEN" -A "Mozilla/5.0 sfrtna-check" \
+            "https://sfrtna.com/api/feedback/recent?hours=${{ inputs.hours }}" \
+          | jq -r '.items[] | select((.text // "") | startswith("AUTO wide")) | "=== \(.ctx.page // "") \(.ctx.screen // "") \(.ctx.device // "")\n\(.text)"'
