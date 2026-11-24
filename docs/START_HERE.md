@@ -115,19 +115,46 @@ iPhone app.
 
 ## ▶ Hand-off (15 Nov 2026) — current state
 
-**▶▶▶▶▶▶▶▶▶▶ NEXT SECTION (owner 24 Nov 14:50, Opus, NEW CHAT): HOTELS =
-EXACTLY LIKE THE BOOKING APP.** Owner: «طريقة عرض الفنادق سيئة كثير وجاني
-نقد فيها كثير» → rebuild the hotels experience (site + apps) to match the
-Booking.com app 1:1 in layout and flow. Method (owner's rule: show before
-building): 1) ask the owner for his screenshots of the Booking app (results
-list, sort/filter/map bar, filters sheet, property page top + gallery,
-rooms/prices, booking panel) + the criticisms he got; 2) study Booking's
-mobile site in Chrome (same flows, 390 px + desktop); 3) map every Booking
-screen to ours (today: `HotelList.tsx`, `HotelPrices.tsx`, hotel-results
-page, `RoomBooking`) and list gaps; 4) mock-ups as images in chat (phone +
-desktop, our logo colours/fonts, real photos from our data) → owner
-approves → build → live check at 360/390/768/1440 + app. Honesty rules
-still apply: live partner prices only, we compare and partners book.
+**▶▶▶▶▶▶▶▶▶▶ NEXT = BUILD «HOTELS = BOOKING APP 1:1» (owner APPROVED 24 Nov
+15:28, Opus, NEW CHAT).** Study DONE (owner's Booking app shots: Lafif
+Al-Khaldia Madinah; Booking site in Chrome). Mock-ups = the spec:
+`docs/design/hotels-booking/` (hotels-phone-mockup.png = 4 phone screens,
+hotels-desktop-mockup.png, hotels.html = exact CSS: navy-700 score badge with
+cut corner, sun-500 buttons, gold search pill, green ✓ lines). Owner: «اريده
+بالضبط نفسه» — the traveller's journey must feel exactly like Booking's.
+Accepted differences ONLY: rating stays Google /5 (no ×2), no guest quotes
+(topic bars «الموقع 96% إيجابي» instead), no struck-through prices («أقل من
+المعتاد بـN%» only from `dealPct`), last step = sites sheet (we compare,
+partners book). Build in this order:
+1) **Named-hotel search (mode known) = Booking's flow:** today page.tsx
+   ~l.327 opens `HotelPrices` straight away. New: results LIST first, the
+   searched hotel FIRST with a distinct frame (2px navy-500 border + navy-50
+   fill, like Booking's blue-bordered card), then the city's other hotels
+   nearest to it / same level (HotelList for the hotel's city, distance from
+   the hotel's lat/lng); tap a card → hotel page.
+2) **List (`HotelList`/`HotelCard`), phone:** top pill (back ‹ · city ·
+   dates · guests, gold border) → sticky bar of 3 equal buttons ترتيب | تصفية
+   | الخريطة (orange dot when a filter/sort is on; each opens a bottom sheet /
+   full map) → «{city}: وجدنا N مكان إقامة» → cards like Booking's: photo
+   ~118 px on the start side with heart, name, stars, score badge + word +
+   reviews, distance, amenities line, deal tag, price block at the bottom
+   («6 ليالٍ، شخصان», total, «شامل الضرائب · أرخص من N مواقع»). Each card a
+   separate white block. Desktop = desktop mock (filters column + map card,
+   3-part card, «اعرض الأسعار»).
+3) **Hotel page (`HotelDetail` in HotelPrices.tsx):** top bar ‹ name ♡ ⇪;
+   title, stars, address + «اعرض على الخريطة», score box; photo grid 1 big +
+   4 small «+N» (opens gallery); highlights chips row; check-in/out + «بحثت
+   عن» box (blue links = edit); cheapest price box; reviews (score + topic
+   bars); surroundings (map + tabs of `nearby` with times); facilities; times;
+   STICKY bottom «✓ أسعار حية من N مواقع» + «اختر الغرفة» → rooms.
+4) **Rooms screen:** one card per room (name in navy-500, guests, beds,
+   size, amenity line, thumb) → option boxes (✓ free cancel date, ✓
+   breakfast, price for N nights, radio) → «اختر» → `RoomBooking` as a bottom
+   sheet: sites list, cheapest highlighted, «احجز» pills, note «نحن نقارن…».
+5) Checks: Playwright with mocked `/api/hotel-prices` (live prices SHUT
+   till 6 Dec; method PROJECT_NOTES «Hotels like Booking — 7 Nov») at
+   360/390/768/1440 + app UA, no sideways overflow, iOS clean mode untouched,
+   typegen → tsc → eslint → push → owner checks on the phone.
 
 **▶▶▶▶▶▶▶▶▶ NEXT SECTION (owner 17 Nov 15:25, Opus): ALL owner's notes +
 improvements, live on the site (apps load sfrtna.com, so they get it too).**

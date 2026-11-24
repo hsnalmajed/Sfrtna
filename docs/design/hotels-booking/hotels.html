@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:T;font-weight:700;src:url(../../../public/fonts/tajawal-ar-700.woff2)}
+@font-face{font-family:T;font-weight:800;src:url(../../../public/fonts/tajawal-ar-800.woff2)}
+@font-face{font-family:P;font-weight:400;src:url(../../../public/fonts/plex-ar-400.woff2)}
+@font-face{font-family:P;font-weight:500;src:url(../../../public/fonts/plex-ar-500.woff2)}
+@font-face{font-family:P;font-weight:600;src:url(../../../public/fonts/plex-ar-600.woff2)}
+@font-face{font-family:P;font-weight:700;src:url(../../../public/fonts/plex-ar-700.woff2)}
+:root{--n50:#eff5fc;--n100:#dbe8f7;--n500:#2e6cba;--n600:#1f5599;--n700:#17427a;--n950:#062653;--s50:#fff8ed;--s100:#ffeed4;--s500:#f9880b;--s600:#dd6906;--gold:#f8b840;--m50:#f7f9fc;--m100:#eef2f8;--m200:#dfe6ef;--m500:#6b7a90;--ok:#0f8a4a}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:P,sans-serif;background:#cfd8e4;color:var(--n950);padding:24px;display:flex;gap:28px;align-items:flex-start;flex-wrap:wrap}
+.ph{width:390px;height:844px;background:var(--m50);border-radius:34px;overflow:hidden;position:relative;box-shadow:0 10px 40px #06265333;border:8px solid #0b1b33;display:flex;flex-direction:column}
+.status{height:34px;display:flex;justify-content:space-between;align-items:center;padding:0 22px;font:600 13px P;background:#fff}
+.scroll{flex:1;overflow:hidden}
+h1,h2,h3,.d{font-family:T,P,sans-serif}
+.top{background:#fff;padding:8px 12px 10px;border-bottom:1px solid var(--m200)}
+.pill{display:flex;align-items:center;gap:10px;border:2px solid var(--gold);border-radius:12px;padding:9px 12px;font:600 13px P}
+.pill small{color:var(--m500);font-weight:500}
+.bar{display:flex;background:#fff;border-bottom:1px solid var(--m200)}
+.bar div{flex:1;text-align:center;padding:11px 0;font:600 14px P;color:var(--n950);display:flex;gap:6px;justify-content:center;align-items:center}
+.bar div+div{border-inline-start:1px solid var(--m200)}
+.dot{width:7px;height:7px;background:var(--s500);border-radius:50%;display:inline-block}
+.count{padding:10px 14px;font:500 12.5px P;color:var(--m500)}
+.count b{color:var(--n950)}
+.card{display:flex;gap:12px;background:#fff;margin:0 10px 10px;border-radius:14px;padding:10px;border:1px solid var(--m200)}
+.card.hl{border:2px solid var(--n500);background:var(--n50)}
+.img{width:118px;flex:none;border-radius:10px;position:relative;background:linear-gradient(160deg,#9fb4cf,#6d86a8);display:grid;place-items:center;color:#fff;font:600 11px P;min-height:190px}
+.heart{position:absolute;top:7px;inset-inline-start:7px;width:28px;height:28px;border-radius:50%;background:#fff;display:grid;place-items:center;color:var(--n950);font-size:14px}
+.info{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.name{font:800 15.5px/1.3 T;color:var(--n950)}
+.stars{color:var(--gold);font-size:12px;letter-spacing:1px}
+.rate{display:flex;align-items:center;gap:6px;font:500 12.5px P}
+.score{background:var(--n700);color:#fff;font:700 13px P;border-radius:7px 7px 7px 0;padding:3px 6px}
+.muted{color:var(--m500);font-size:12px}
+.ok{color:var(--ok);font:600 12.5px P}
+.price{margin-top:auto;text-align:left}
+.price .n{font:500 11.5px P;color:var(--m500)}
+.price .v{font:800 19px T;color:var(--n950)}
+.price .v s{font:500 13px P;color:#c23b3b;margin-inline-end:4px}
+.deal{display:inline-block;background:#e4f5ea;color:var(--ok);font:600 11px P;border-radius:6px;padding:2px 6px}
+.tag{display:inline-block;border:1px solid var(--m200);border-radius:6px;padding:1px 6px;font:500 11px P;color:var(--n700)}
+.foot{background:#fff;border-top:1px solid var(--m200);padding:10px 14px 18px}
+.btn{background:var(--s500);color:#fff;text-align:center;font:800 16px T;border-radius:12px;padding:13px}
+.btn.sm{font-size:15px;padding:10px}
+.hdr{display:flex;align-items:center;justify-content:space-between;background:#fff;padding:10px 14px;border-bottom:1px solid var(--m200);font:700 14px T}
+.hdr .ic{display:flex;gap:16px;font-size:18px;color:var(--n950)}
+.sec{background:#fff;padding:14px;margin-bottom:8px}
+.grid{display:grid;grid-template-columns:2fr 1fr 1fr;grid-template-rows:118px 72px;gap:4px;border-radius:12px;overflow:hidden;margin-top:12px}
+.grid div{background:linear-gradient(160deg,#9fb4cf,#6d86a8);display:grid;place-items:center;color:#fff;font:600 11px P}
+.grid .big{grid-row:span 2}
+.grid .more{background:#3c5374;font:700 15px P}
+.hi{display:flex;gap:8px;overflow:hidden;margin-top:10px}
+.hi div{flex:none;border:1px solid var(--m200);border-radius:10px;padding:8px 10px;font:600 12px P;display:flex;gap:6px;align-items:center}
+.two{display:flex;gap:10px}.two>div{flex:1}
+.lbl{font:600 12px P;color:var(--m500)}
+.lnk{color:var(--n500);font:600 14px P}
+.bars div{margin-top:8px}
+.bars .row{display:flex;justify-content:space-between;font:500 12.5px P}
+.track{height:7px;background:var(--m100);border-radius:9px;margin-top:4px}
+.track i{display:block;height:100%;background:var(--n600);border-radius:9px}
+.map{height:110px;border-radius:10px;background:repeating-linear-gradient(45deg,#e2e9f2 0 12px,#d7e0ec 12px 24px);position:relative;margin-top:10px}
+.map:after{content:"🏨";position:absolute;inset:0;display:grid;place-items:center;font-size:22px}
+.tabs{display:flex;gap:16px;border-bottom:1px solid var(--m200);margin-top:10px;font:600 13px P;color:var(--m500)}
+.tabs span{padding:8px 0}.tabs .on{color:var(--n600);border-bottom:2px solid var(--n600)}
+.near{display:flex;justify-content:space-between;font:500 12.5px P;padding:5px 0}
+.room{background:#fff;margin:0 10px 10px;border-radius:14px;padding:12px;border:1px solid var(--m200)}
+.rtop{display:flex;gap:10px}
+.rimg{width:64px;height:64px;border-radius:8px;background:linear-gradient(160deg,#9fb4cf,#6d86a8);flex:none}
+.rname{font:800 16px T;color:var(--n500)}
+.facts{font:500 12.5px/1.8 P}
+.chips{display:flex;flex-wrap:wrap;gap:4px 10px;font:500 12px P;color:var(--n700);margin-top:6px}
+.opt{border:1px solid var(--m200);border-radius:12px;padding:10px;margin-top:10px}
+.opt h4{font:800 14px T;display:flex;justify-content:space-between}
+.radio{width:18px;height:18px;border:2px solid var(--m500);border-radius:50%}
+.left{color:#c23b3b;font:600 12px P;margin-top:8px}
+.sheet{position:absolute;inset:auto 0 0 0;background:#fff;border-radius:20px 20px 0 0;padding:14px 14px 22px;box-shadow:0 -10px 30px #06265333}
+.dim{position:absolute;inset:0;background:#06265399}
+.grab{width:40px;height:4px;border-radius:4px;background:var(--m200);margin:0 auto 10px}
+.site{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--m100)}
+.logo{width:34px;height:34px;border-radius:8px;background:var(--m100);display:grid;place-items:center;font:700 11px P;color:var(--n700)}
+.site .p{margin-inline-start:auto;text-align:left}
+.go{background:var(--s500);color:#fff;font:700 13px P;border-radius:99px;padding:7px 14px}
+.best{background:var(--s50);border-radius:10px;padding:0 8px;border:1px solid var(--s100)}
+.cap{width:100%;font:700 15px T;color:var(--n950)}
+.note{font:500 11px P;color:var(--m500);text-align:center;padding:6px}
+/* desktop */
+.dk{width:1440px;background:var(--m50);border-radius:12px;overflow:hidden;box-shadow:0 10px 40px #06265333}
+.dk .nav{background:var(--n950);color:#fff;padding:14px 40px;display:flex;align-items:center;gap:12px;font:800 20px T}
+.dk .sb{background:var(--n950);padding:0 40px 22px}
+.dk .sbx{display:flex;background:#fff;border:3px solid var(--gold);border-radius:12px;overflow:hidden}
+.dk .sbx div{flex:1;padding:12px 14px;font:600 14px P;border-inline-start:1px solid var(--m200)}
+.dk .sbx .go2{flex:none;width:120px;background:var(--s500);color:#fff;font:800 17px T;display:grid;place-items:center}
+.dk .body{display:flex;gap:22px;padding:22px 40px}
+.dk aside{width:270px;flex:none}
+.fbox{background:#fff;border:1px solid var(--m200);border-radius:12px;padding:14px;margin-bottom:12px}
+.fbox h3{font:800 15px T;margin-bottom:8px}
+.fbox label{display:flex;justify-content:space-between;font:500 13px P;padding:4px 0}
+.fbox label span:first-child:before{content:"";display:inline-block;width:15px;height:15px;border:1.5px solid var(--m500);border-radius:4px;margin-inline-end:8px;vertical-align:-3px}
+.dk main{flex:1}
+.dcard{display:flex;gap:16px;background:#fff;border:1px solid var(--m200);border-radius:14px;padding:14px;margin-bottom:12px}
+.dcard .img{width:220px;min-height:220px}
+.dcard .mid{flex:1;display:flex;flex-direction:column;gap:6px}
+.dcard .end{width:230px;display:flex;flex-direction:column;align-items:flex-end;text-align:left;gap:4px;border-inline-start:1px solid var(--m100);padding-inline-start:14px}
+.sortrow{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.sortrow .s{border:1px solid var(--m200);background:#fff;border-radius:99px;padding:7px 14px;font:600 13px P}
+</style></head><body>
+
+<!-- 1. LIST -->
+<div class="ph" id="s1">
+ <div class="status"><span>3:01</span><span>●●● 42</span></div>
+ <div class="top"><div class="pill"><span>›</span><div style="flex:1">المدينة المنورة <small>· 6–12 ديسمبر · شخصان</small></div></div></div>
+ <div class="bar"><div>⇅ ترتيب <span class="dot"></span></div><div>☰ تصفية</div><div>🗺 الخريطة</div></div>
+ <div class="scroll">
+  <div class="count"><b>المدينة المنورة:</b> وجدنا 601 مكان إقامة · نقارن أسعارها من عدة مواقع</div>
+  <div class="card hl"><div class="img">صورة الفندق<span class="heart">♡</span></div><div class="info">
+   <div class="name">فندق مكارم برج المدينة</div><div class="stars">★★★★</div>
+   <div class="rate"><span class="score">4.6</span><b>ممتاز</b><span class="muted">· 2,044 تقييم</span></div>
+   <div class="muted">📍 0.5 كم من المسجد النبوي</div>
+   <div class="muted">واي فاي مجاني · موقف سيارات · مطعم</div>
+   <div><span class="deal">أقل من المعتاد بـ26%</span></div>
+   <div class="price"><div class="n">6 ليالٍ، شخصان</div><div class="v">4,320 ر.س</div><div class="n">شامل الضرائب · أرخص من 5 مواقع</div></div>
+  </div></div>
+  <div class="card"><div class="img">صورة الفندق<span class="heart">♡</span></div><div class="info">
+   <div class="name">دبل تري باي هيلتون المدينة</div><div class="stars">★★★★★</div>
+   <div class="rate"><span class="score">4.5</span><b>ممتاز</b><span class="muted">· 597 تقييم</span></div>
+   <div class="muted">📍 8.9 كم من المسجد النبوي</div>
+   <div class="muted">مسبح · واي فاي مجاني · نادٍ رياضي</div>
+   <div class="price"><div class="n">6 ليالٍ، شخصان</div><div class="v">4,537 ر.س</div><div class="n">شامل الضرائب · أرخص من 4 مواقع</div></div>
+  </div></div>
+ </div>
+</div>
+
+<!-- 2. HOTEL PAGE -->
+<div class="ph" id="s2">
+ <div class="status"><span>3:02</span><span>●●● 42</span></div>
+ <div class="hdr"><span>›</span><span>فندق مكارم برج المدينة</span><span class="ic">♡ ⇪</span></div>
+ <div class="scroll">
+  <div class="sec">
+   <div style="display:flex;justify-content:space-between;gap:8px"><div><h2 style="font:800 20px T">فندق مكارم برج المدينة</h2><div class="stars">★★★★</div><div class="muted">2779 مصعب بن عمير، المدينة المنورة · <span class="lnk" style="font-size:12px">اعرض على الخريطة</span></div></div><div style="text-align:center"><span class="score" style="font-size:16px;padding:6px 8px">4.6</span><div class="muted" style="font-size:11px">ممتاز</div></div></div>
+   <div class="grid"><div class="big">صورة</div><div>صورة</div><div>صورة</div><div>صورة</div><div class="more">+18</div></div>
+   <div class="hi"><div>🅿️ موقف مجاني</div><div>📶 واي فاي مجاني</div><div>🍳 مطعم</div><div>🕌 قريب من الحرم</div></div>
+  </div>
+  <div class="sec">
+   <div class="two"><div><div class="lbl">تسجيل الوصول</div><div class="lnk">الأحد 6 ديسمبر</div><div class="muted">من 3:00 م</div></div><div><div class="lbl">تسجيل المغادرة</div><div class="lnk">السبت 12 ديسمبر</div><div class="muted">حتى 12:00 م</div></div></div>
+   <div class="lbl" style="margin-top:10px">بحثت عن</div><div class="lnk">غرفة · شخصان · بدون أطفال</div>
+   <div style="border-top:1px solid var(--m100);margin-top:12px;padding-top:10px">
+    <span class="deal">أقل من المعتاد بـ26%</span>
+    <div class="muted" style="margin-top:6px">أرخص سعر لـ6 ليالٍ (6–12 ديسمبر)</div>
+    <div style="font:800 22px T">4,320 ر.س <span class="muted" style="font:500 12px P">من Agoda · شامل الضرائب</span></div>
+    <div class="ok">✓ إلغاء مجاني حتى 4 ديسمبر</div>
+   </div>
+  </div>
+  <div class="sec"><div style="display:flex;gap:8px;align-items:center"><span class="score">4.6</span><b>ممتاز</b><span class="muted">· 2,044 تقييم على Google</span></div>
+   <div class="bars"><div><div class="row"><span>الموقع</span><span>96% إيجابي</span></div><div class="track"><i style="width:96%"></i></div></div><div><div class="row"><span>النظافة</span><span>91% إيجابي</span></div><div class="track"><i style="width:91%"></i></div></div></div>
+  </div>
+ </div>
+ <div class="foot"><div class="ok" style="margin-bottom:6px">✓ أسعار حية من 5 مواقع — الحجز يتم لدى الموقع</div><div class="btn">اختر الغرفة</div></div>
+</div>
+
+<!-- 3. ROOMS -->
+<div class="ph" id="s3">
+ <div class="status"><span>3:18</span><span>●●● 42</span></div>
+ <div class="hdr"><span>›</span><span style="text-align:center">فندق مكارم برج المدينة<br><small class="muted">6–12 ديسمبر · شخصان</small></span><span class="ic">⇪</span></div>
+ <div class="scroll" style="padding-top:10px">
+  <div class="room"><div class="rtop"><div style="flex:1"><div class="rname">غرفة ديلوكس بسرير كينغ</div><div class="facts">👥 تتسع لشخصين<br>🛏 سرير مزدوج كبير جداً<br>⤢ المساحة: 30 م²</div></div><div class="rimg"></div></div>
+   <div class="chips"><span>📶 واي فاي مجاني</span><span>❄ مكيف</span><span>🚿 حمام خاص</span><span>📺 تلفاز</span></div>
+   <div class="opt"><h4>مرن بالكامل <span class="radio"></span></h4>
+    <div class="ok">✓ إلغاء مجاني حتى 4 ديسمبر</div><div class="ok">✓ شامل الإفطار</div>
+    <div class="muted" style="margin-top:6px">أرخص سعر لـ6 ليالٍ · من 4 مواقع</div><div style="font:800 20px T">4,610 ر.س</div><div class="muted">شامل الضرائب والرسوم</div>
+    <div class="btn sm" style="margin-top:8px">اختر</div></div>
+   <div class="opt"><h4>بدون إفطار <span class="radio"></span></h4><div class="muted">غير قابل للاسترداد</div><div style="font:800 20px T;margin-top:4px">4,320 ر.س</div></div>
+  </div>
+  <div class="room"><div class="rtop"><div style="flex:1"><div class="rname">جناح بإطلالة على المدينة</div><div class="facts">👥 تتسع لـ3<br>🛏 سريران منفصلان</div></div><div class="rimg"></div></div></div>
+ </div>
+</div>
+
+<!-- 4. SITES SHEET -->
+<div class="ph" id="s4">
+ <div class="status"><span>3:19</span><span>●●● 42</span></div>
+ <div class="hdr"><span>›</span><span>فندق مكارم برج المدينة</span><span class="ic">⇪</span></div>
+ <div class="scroll"></div>
+ <div class="dim"></div>
+ <div class="sheet"><div class="grab"></div>
+  <div style="display:flex;justify-content:space-between"><h3 style="font:800 17px T">احجز «ديلوكس كينغ · مرن»</h3><span>✕</span></div>
+  <div class="muted">6–12 ديسمبر · 6 ليالٍ · شخصان · الأسعار شاملة الضرائب</div>
+  <div class="site best"><span class="logo">A</span><div><b>Agoda</b><div class="ok" style="font-size:11.5px">✓ إلغاء مجاني · ✓ إفطار</div></div><div class="p"><b>4,610 ر.س</b><div class="muted" style="font-size:11px">الأرخص</div></div><span class="go">احجز</span></div>
+  <div class="site"><span class="logo">B</span><div><b>Booking.com</b><div class="ok" style="font-size:11.5px">✓ إلغاء مجاني</div></div><div class="p"><b>4,720 ر.س</b></div><span class="go">احجز</span></div>
+  <div class="site"><span class="logo">E</span><div><b>Expedia</b><div class="muted" style="font-size:11.5px">الإفطار غير مذكور</div></div><div class="p"><b>4,790 ر.س</b></div><span class="go">احجز</span></div>
+  <div class="site"><span class="logo">H</span><div><b>Hotels.com</b></div><div class="p"><b>4,805 ر.س</b></div><span class="go">احجز</span></div>
+  <div class="note">نحن نقارن الأسعار، والحجز والدفع يتمّان لدى الموقع الذي تختاره.</div>
+ </div>
+</div>
+
+<!-- 5. DESKTOP LIST -->
+<div class="dk" id="s5">
+ <div class="nav"><img src="../../../public/logo-icon.png" style="height:30px"> سفرتنا</div>
+ <div class="sb"><div class="sbx"><div>🏨 المدينة المنورة</div><div>📅 الأحد 6 ديسمبر — السبت 12 ديسمبر</div><div>👤 شخصان · غرفة واحدة</div><div class="go2">بحث</div></div></div>
+ <div class="body">
+  <aside>
+   <div class="fbox" style="padding:0;overflow:hidden"><div class="map" style="margin:0;height:120px"></div><div style="padding:10px;text-align:center" class="lnk">اعرض على الخريطة</div></div>
+   <div class="fbox"><h3>التصفية حسب</h3><div class="lbl">ميزانيتك (لليلة)</div><div class="track" style="margin:10px 0 14px"><i style="width:100%;background:var(--n500)"></i></div>
+    <h3>شائع</h3><label><span>أقل من 1 كم من الحرم</span><span class="muted">84</span></label><label><span>إلغاء مجاني</span><span class="muted">212</span></label><label><span>شامل الإفطار</span><span class="muted">96</span></label><label><span>5 نجوم</span><span class="muted">41</span></label>
+    <h3 style="margin-top:10px">تقييم الضيوف</h3><label><span>ممتاز: 4.5+</span><span class="muted">120</span></label><label><span>جيد جداً: 4+</span><span class="muted">260</span></label></div>
+  </aside>
+  <main>
+   <div class="sortrow"><h2 style="font:800 22px T">المدينة المنورة: وجدنا 601 مكان إقامة</h2><span class="s">⇅ ترتيب حسب: الأفضل لك</span></div>
+   <div class="dcard"><div class="img">صورة الفندق<span class="heart">♡</span></div><div class="mid">
+     <div class="name" style="font-size:19px;color:var(--n500)">فندق مكارم برج المدينة <span class="stars">★★★★</span></div>
+     <div class="muted"><span class="lnk" style="font-size:12px">وسط المدينة · اعرض على الخريطة</span> · 0.5 كم من المسجد النبوي</div>
+     <div class="chips"><span class="tag">موقف مجاني</span><span class="tag">خدمة الغرف</span><span class="tag">نادٍ رياضي</span></div>
+     <div style="border-inline-start:3px solid var(--m200);padding-inline-start:8px;margin-top:6px"><b style="font-size:13px">غرفة ديلوكس بسرير كينغ</b><div class="muted">1 سرير مزدوج كبير جداً</div><div class="ok">✓ إلغاء مجاني</div></div></div>
+    <div class="end"><div class="rate"><div style="text-align:left"><b>ممتاز</b><div class="muted">2,044 تقييم</div></div><span class="score" style="font-size:16px;padding:6px 8px">4.6</span></div><div class="muted">الموقع 4.8</div>
+     <div style="margin-top:auto" class="n muted">6 ليالٍ، شخصان</div><span class="deal">أقل من المعتاد بـ26%</span><div class="v" style="font:800 24px T">4,320 ر.س</div><div class="muted">شامل الضرائب · أرخص من 5 مواقع</div><div class="btn sm" style="width:100%;margin-top:6px">اعرض الأسعار ›</div></div></div>
+  </main>
+ </div>
+</div>
+</body></html>
