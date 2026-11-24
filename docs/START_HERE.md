@@ -138,7 +138,17 @@ in URL); Almosafer = NO programme on its site, deep link works
 `almosafer.com/ar/hotels/{City}/{DD-MM-YYYY}/{DD-MM-YYYY}/2_adult`;
 Cleartrip ME needs its `dest_code`; almatar/Musafir/dnata/Discover Qatar
 link-only, deep links not checked yet; Gathern = rentals, no programme.
-Waiting: owner's OK on GCC → round 2 Asia.
+**Owner 24 Nov 16:24: commission NOT required to link — list ALL linkable
+sites, mark commission ✓/✗/؟, check it while linking; today = ONE source,
+very few hotels, high prices.** Doc now holds the full list (global + Asia +
+ME/Africa/Turkey + Europe/Americas) + build plan. **▶ NEXT (Opus, new chat):
+BUILD batch 1** = deep-link buttons on every city's hotel list + hotel page
+for Booking (CJ), Agoda (partners.agoda.com / Travelpayouts), Trip.com
+(TP), Expedia (Partnerize), Hotels.com (TP), Wego (Admitad), Almosafer (no
+commission): verify each deep link (city + dates + guests) in Chrome while
+building, commission link if our account has it else plain link, PARTNERS
+row each. Batch 2 = local sites per country (list in the doc). Live prices
+stay RateHawk's plan.
 **▶▶▶▶▶▶▶▶▶▶ «HOTELS = BOOKING APP» ROUND 1 BUILT + PUSHED 24 Nov (same
 chat):** named search → city list with the searched hotel first in a navy
 frame (`pinned` in HotelList; card links carry `open=1` → hotel page; list
