@@ -1,3 +1,4 @@
-2026-11-23T20:22:39.491Z
-gemini-3.8-flash: daily quota reached — switching to gemini-3.5-flash-lite
-all done; 0 named in 2 calls
+2026-11-24T19:55:38.864Z
+hanoi: batch failed — Error: generate: gave up
+tokyo: batch failed — Error: generate: gave up
+all done; 0 named in 0 calls
