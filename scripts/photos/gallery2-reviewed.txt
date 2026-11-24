@@ -404,3 +404,10 @@ entebbe
 punta-arenas
 roatan
 port-vila
+apia
+koror
+santa-cruz
+honiara
+liberia
+port-moresby
+qusar
