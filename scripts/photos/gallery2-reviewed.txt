@@ -243,3 +243,13 @@ luang-prabang
 rovaniemi
 tromso
 wadi-rum
+glasgow
+belfast
+johannesburg
+phnom-penh
+adelaide
+byblos
+baalbek
+lahore
+islamabad
+limassol
