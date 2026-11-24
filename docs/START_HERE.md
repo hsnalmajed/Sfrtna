@@ -115,6 +115,20 @@ iPhone app.
 
 ## ▶ Hand-off (15 Nov 2026) — current state
 
+**▶▶▶▶▶▶▶▶▶▶ NEXT SECTION (owner 24 Nov 14:50, Opus, NEW CHAT): HOTELS =
+EXACTLY LIKE THE BOOKING APP.** Owner: «طريقة عرض الفنادق سيئة كثير وجاني
+نقد فيها كثير» → rebuild the hotels experience (site + apps) to match the
+Booking.com app 1:1 in layout and flow. Method (owner's rule: show before
+building): 1) ask the owner for his screenshots of the Booking app (results
+list, sort/filter/map bar, filters sheet, property page top + gallery,
+rooms/prices, booking panel) + the criticisms he got; 2) study Booking's
+mobile site in Chrome (same flows, 390 px + desktop); 3) map every Booking
+screen to ours (today: `HotelList.tsx`, `HotelPrices.tsx`, hotel-results
+page, `RoomBooking`) and list gaps; 4) mock-ups as images in chat (phone +
+desktop, our logo colours/fonts, real photos from our data) → owner
+approves → build → live check at 360/390/768/1440 + app. Honesty rules
+still apply: live partner prices only, we compare and partners book.
+
 **▶▶▶▶▶▶▶▶▶ NEXT SECTION (owner 17 Nov 15:25, Opus): ALL owner's notes +
 improvements, live on the site (apps load sfrtna.com, so they get it too).**
 Order: 1) interactive route map in the plan (see «NEXT 1» below); 2) FULL
