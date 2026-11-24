@@ -34,8 +34,8 @@ function hotel(i, rooms) {
     ...(rooms ? { rooms: [{ name: "Deluxe King Room With A Very Long Room Name City View", source: "Agoda", image: img, guests: 2, perNight: 770, total: 4620, link: "https://example.com/" }] } : {}),
   };
 }
-const JS = () => {
-  const vw = document.documentElement.clientWidth;
+const JS = (screenW) => {
+  const vw = Math.min(screenW, document.documentElement.clientWidth);
   const out = [];
   const cut = (el) => {
     for (let a = el.parentElement; a && a.tagName !== "MAIN" && a !== document.body; a = a.parentElement) {
@@ -55,7 +55,7 @@ const JS = () => {
       out.push({ el, d: `${s.position === "fixed" ? "[fixed] " : ""}${el.tagName.toLowerCase()}.${String(el.className).slice(0, 120)} «${(el.textContent || "").trim().slice(0, 40)}» L${Math.round(r.left)} R${Math.round(r.right)} vw${vw}` });
     }
   }
-  return { vw, scrollW: document.documentElement.scrollWidth, items: out.slice(0, 10).map((o) => o.d) };
+  return { vw, layoutW: document.documentElement.clientWidth, innerW: window.innerWidth, scrollW: document.documentElement.scrollWidth, items: out.slice(0, 10).map((o) => o.d) };
 };
 let bad = 0;
 for (const [engine, device] of [[webkit, "iPhone 13"], [chromium, "Pixel 7"]]) {
@@ -86,11 +86,11 @@ for (const [engine, device] of [[webkit, "iPhone 13"], [chromium, "Pixel 7"]]) {
         await page.evaluate(() => window.scrollBy(0, 900));
         await page.waitForTimeout(250);
       }
-      const r = await page.evaluate(JS);
+      const r = await page.evaluate(JS, devices[device].viewport.width);
       const line = `${device} ${path.slice(0, 80)}`;
-      if (r.items.length || r.scrollW > r.vw + 1) {
+      if (r.items.length || r.scrollW > r.vw + 1 || r.layoutW > r.vw + 1 || r.innerW > r.vw + 1) {
         bad++;
-        console.log(`::error title=Sideways ${device}::${line} scrollWidth=${r.scrollW} :: ${r.items.join(" || ")}`);
+        console.log(`::error title=Sideways ${device}::${line} scrollWidth=${r.scrollW} layout=${r.layoutW} inner=${r.innerW} :: ${r.items.join(" || ")}`);
       } else console.log(`OK ${line}`);
     } catch (e) {
       console.log(`::warning title=Page failed::${device} ${path} ${String(e).slice(0, 120)}`);
