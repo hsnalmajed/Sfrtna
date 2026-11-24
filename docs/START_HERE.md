@@ -126,7 +126,16 @@ page: Booking photo grid «+N», highlights row, stay box (dates + «بحثت ع
 STICKY «اختر الغرفة» bar on phones, section nav ≥sm only; rooms = one card
 each with option box + full «اختر» → RoomBooking sheet (unchanged). Checked
 locally (Playwright, mocked prices) 360/390/768/1440: no sideways overflow.
-dict keys `hotelResults.bk*`. **NEXT:** owner checks on the phone (live
+dict keys `hotelResults.bk*`. **HOTEL COUNT (owner 24 Nov 15:48 «عدد
+الفنادق قليل جداً»):** cause = SerpApi free 250/month for the whole site,
+~20 hotels a search, paced shut till 6 Dec. Owner chose RateHawk Affiliate
+API (PARTNERS row): owner MAILED his RateHawk account manager 24 Nov 15:56
+(sandbox key + 4 questions: search + deeplink to ZenHotels allowed? query
+limit, commission, conditions). Reply → mail chat pastes the lines to INBOX
+«For the build chat» → build chat: sandbox key in Runtime vars, region dump
+→ our city ids, `/api/hotel-prices` source #2 (edge-guard), same Booking
+cards; compare counts/prices with Booking in TEST_PLAN. No paid SerpApi
+(owner). **NEXT:** owner checks on the phone (live
 prices shut till 6 Dec → list may fall back to partners); round 2 = his
 notes + rooms facts (beds/size when Google gives them), score box beside
 the title on phones, map/surroundings tabs.
