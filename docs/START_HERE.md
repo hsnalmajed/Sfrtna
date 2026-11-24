@@ -239,6 +239,13 @@ that open /account?start=… and SignInForm starts that way at once; signed
 in: initial + e-mail row), «رحلتي», tools (navy/gold icons), grouped rows
 (settings / contact / about), social + disclaimer. `AppTabBar.tsx`,
 `AccountLink.tsx` (sheet variant), `AccountPanel.tsx` (start param).
+**Sign-in 24 Nov (313fb5b, live):** Google = redirect to Google's own page
+with `prompt=select_account` (`/api/auth/google/start` → form_post to
+`/return`, nonce cookie; redirect URI registered on client «Sfrtna Web»,
+project 455607676812 — on the owner's OTHER Google account); no GIS script.
+iPhone app: «auth» feature + `openAuth` (ASWebAuthenticationSession →
+sfrtna://auth) → Google + e-mail besides Apple (needs the new TestFlight
+build). TikTok = @sfrtnaapp. Owner to test on phone (site + iPhone).
 **Owner 17 Nov 20:31 — decision 2:** discover lists EVERY destination in
 budget; no live fare → shown WITHOUT a number + «شاهد السعر الحيّ» (opens the
 flight search). **Decision 1 (20:40): no paid SerpApi — wait for 6 Dec**,
