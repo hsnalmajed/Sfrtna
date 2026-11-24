@@ -1,4 +1,5 @@
 import { findAirport } from "@/lib/airports";
+import { CITY_AIRPORTS } from "@/data/cityAirports";
 
 /**
  * Suppliers directory (owner, 8 Nov 2026): trusted sites for each need,
@@ -402,24 +403,76 @@ export interface StayTrip {
 }
 
 /**
+ * Wego's hotel search takes a city code, not an airport: LHR opened an error
+ * page, LON opened London (checked 24 Nov 2026, as did CMB, IST, RUH, REK).
+ * Airports of a city with several of them map to its IATA metropolitan code.
+ */
+const WEGO_METRO: Record<string, string> = {
+  LHR: "LON", LGW: "LON", STN: "LON", LTN: "LON", LCY: "LON",
+  CDG: "PAR", ORY: "PAR", JFK: "NYC", EWR: "NYC", LGA: "NYC",
+  MXP: "MIL", LIN: "MIL", BGY: "MIL", FCO: "ROM", CIA: "ROM",
+  HND: "TYO", NRT: "TYO", KIX: "OSA", ITM: "OSA", ICN: "SEL", GMP: "SEL",
+  PEK: "BJS", PKX: "BJS", PVG: "SHA", SVO: "MOW", DME: "MOW", VKO: "MOW",
+  ARN: "STO", BMA: "STO", EZE: "BUE", AEP: "BUE", GRU: "SAO", CGH: "SAO",
+  GIG: "RIO", SDU: "RIO", ORD: "CHI", MDW: "CHI", IAD: "WAS", DCA: "WAS",
+  YYZ: "YTO", YUL: "YMQ", CGK: "JKT", HLP: "JKT", OTP: "BUH", KEF: "REK",
+  SAW: "IST", DMK: "BKK", TSA: "TPE",
+};
+
+/** DD-MM-YYYY, the date shape in Almosafer's hotel path. */
+const dmy = (iso: string) => iso.split("-").reverse().join("-");
+
+/**
  * Hotel search sites beyond the paying ones (hotelPartnerLinks): KAYAK opens
  * the city with dates and party; Google Hotels takes the city and dates in
  * words (it does not read the party from a query — checked 8 Nov).
+ *
+ * Added 24 Nov 2026 (owner: link every trusted site, commission or not):
+ *  - Almosafer: `/hotels/{City, Country}/{DD-MM-YYYY}/{DD-MM-YYYY}/{party}`,
+ *    party `2_adult` or `2_adult,2_child,5-9_age` (its own form writes
+ *    these). The country matters: "Cappadocia" alone opened a town in Italy,
+ *    "Cappadocia, Turkey" opened 804 stays there.
+ *  - Wego: `/hotels/searches/{city code}/{Y-M-D}/{Y-M-D}?guests=2:5:9`
+ *    (adults, then each child's age). Only when the city has its own
+ *    airport within 40 km, since the code names the airport's city.
+ *  Both read one room, so a party over several rooms goes as one group.
  */
-export function extraHotelSites(s: StayTrip): SupplierLink[] {
+export function extraHotelSites(s: StayTrip & { slug?: string; locale?: "ar" | "en" }): SupplierLink[] {
   const place = s.countryEn ? `${s.cityEn},${s.countryEn}` : s.cityEn;
   const ages = s.childrenAges.map((a) => Math.min(17, Math.max(0, Math.round(a))));
-  const kayak = `https://www.kayak.com/hotels/${encodeURI(place)}/${s.checkIn}/${s.checkOut}/${Math.max(1, s.adults)}adults${
+  const adults = Math.max(1, s.adults);
+  const kayak = `https://www.kayak.com/hotels/${encodeURI(place)}/${s.checkIn}/${s.checkOut}/${adults}adults${
     ages.length ? `/${ages.length}children-${ages.join("-")}` : ""
   }?sort=rank_a`;
   const g = new URL("https://www.google.com/travel/search");
   g.searchParams.set("hl", "en");
   if (s.currency) g.searchParams.set("curr", s.currency);
   g.searchParams.set("q", `hotels in ${s.cityEn} from ${s.checkIn} to ${s.checkOut}`);
-  return [
+  const lang = s.locale === "en" ? "en" : "ar";
+  const out: SupplierLink[] = [];
+
+  const party = `${adults}_adult${ages.length ? `,${ages.length}_child,${ages.join("-")}_age` : ""}`;
+  const almosaferPlace = s.countryEn ? `${s.cityEn}, ${s.countryEn}` : s.cityEn;
+  out.push({
+    id: "almosafer-hotels",
+    name: lang === "ar" ? "المسافر" : "Almosafer",
+    href: `https://www.almosafer.com/${lang}/hotels/${encodeURIComponent(almosaferPlace)}/${dmy(s.checkIn)}/${dmy(s.checkOut)}/${party}`,
+  });
+
+  const air = s.slug ? CITY_AIRPORTS[s.slug] : undefined;
+  if (air && air.km !== null && air.km <= 40) {
+    const code = (WEGO_METRO[air.iata] ?? air.iata).toLowerCase();
+    const w = new URL(`https://sa.wego.com/hotels/searches/${code}/${s.checkIn}/${s.checkOut}`);
+    w.searchParams.set("ulang", lang);
+    w.searchParams.set("guests", [adults, ...ages].join(":"));
+    out.push({ id: "wego-hotels", name: "Wego", href: w.toString() });
+  }
+
+  out.push(
     { id: "kayak-hotels", name: "KAYAK", href: kayak },
-    { id: "google-hotels", name: "Google Hotels", href: g.toString() },
-  ];
+    { id: "google-hotels", name: "Google Hotels", href: g.toString() }
+  );
+  return out;
 }
 
 /**

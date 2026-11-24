@@ -39,7 +39,9 @@ Status words: **Active** (tracked link live + payout set) · **Applied** ·
 | Saudia, flynas, flyadeal | Flights (Google link) | To check | — | — | — | To check | — |
 | flydubai | Flights (own link live) | Tradedoubler, CJ (Travelpayouts blog, not official) | 0.80%, cookie 30 d (same blog, updated 2022–25, not official) | needs confirmation | needs confirmation | Not applied | confirm on the network, then apply |
 | Gulf Air, Turkish, Kuwait, Oman Air, RJ, EgyptAir, Pegasus | Flights | To check | — | — | — | To check | own-link test done 9 Nov (Turkish, Kuwait, Oman Air, RJ, EgyptAir: keep Google; Gulf Air: own link, no public programme found 9 Nov; Pegasus: own link, no public programme found in a web search 9 Nov) |
-| Almosafer | Flights, hotels | To check | — | — | — | To check | — |
+| Almosafer | Flights, hotels | none on its own site (24 Nov: only «Almosafer Business»; old Kwanko/CJ listings closed or paused) | — | — | — | **Hotels LINKED 24 Nov, no commission** (`extraHotelSites`, city + dates + party) | ask Almosafer directly for an affiliate programme |
+| Wego | Hotels (meta) | Admitad (company.wego.com/affiliate-program) | 3% of hotel booking incl. tax (Wego's page, 24 Nov) | no brand bidding, no pop-ups, no coupons | ✓ once our Admitad space is Active | **Hotels LINKED 24 Nov, plain link** (city code, dates, guests `2:5:9`; cities with own airport ≤40 km) | apply to Wego in Admitad → swap to the Admitad deep link; API partner = mail Wego |
+| Local hotel sites (batch 2) | Hotels | per site — list + marks in doc «دراسة مواقع الفنادق المحلية» | — | — | — | Planned | Traveloka, tiket, MakeMyTrip, Rakuten, Jalan, Yanolja, Etstur, Tatil, Travelstart, Ostrovok, Despegar, Rehlat, Cleartrip: check deep link + programme while linking |
 | Skyscanner, KAYAK, Trip.com (flights) | Flights, hotels, cars | To check | — | — | — | To check | — |
 | Google Flights / Google Hotels | Flights, hotels | To check (no programme known) | — | — | — | To check | — |
 

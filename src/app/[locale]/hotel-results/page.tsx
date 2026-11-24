@@ -155,6 +155,8 @@ function HotelResultsContent() {
             // commission — KAYAK and Google Hotels with the dates filled in.
             mode === "discover" && cityAddress
               ? extraHotelSites({
+                  slug: (tripCityFrom(query) ?? tripCityFrom(label))?.slug,
+                  locale,
                   cityEn: cityAddress.split(", ")[0],
                   countryEn: cityAddress.split(", ")[1],
                   checkIn,
@@ -165,7 +167,7 @@ function HotelResultsContent() {
               : []
           )
         : [],
-    [complete, query, checkIn, checkOut, adults, childrenAges, rooms, mode, minStars, breakfast, stay, locale, hotelArea, cityAddress]
+    [complete, query, label, checkIn, checkOut, adults, childrenAges, rooms, mode, minStars, breakfast, stay, locale, hotelArea, cityAddress]
   );
 
   // The city of this stay, for the next-step tabs: the searched city, or

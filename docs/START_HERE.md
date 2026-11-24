@@ -140,15 +140,17 @@ Cleartrip ME needs its `dest_code`; almatar/Musafir/dnata/Discover Qatar
 link-only, deep links not checked yet; Gathern = rentals, no programme.
 **Owner 24 Nov 16:24: commission NOT required to link — list ALL linkable
 sites, mark commission ✓/✗/؟, check it while linking; today = ONE source,
-very few hotels, high prices.** Doc now holds the full list (global + Asia +
-ME/Africa/Turkey + Europe/Americas) + build plan. **▶ NEXT (Opus, new chat):
-BUILD batch 1** = deep-link buttons on every city's hotel list + hotel page
-for Booking (CJ), Agoda (partners.agoda.com / Travelpayouts), Trip.com
-(TP), Expedia (Partnerize), Hotels.com (TP), Wego (Admitad), Almosafer (no
-commission): verify each deep link (city + dates + guests) in Chrome while
-building, commission link if our account has it else plain link, PARTNERS
-row each. Batch 2 = local sites per country (list in the doc). Live prices
-stay RateHawk's plan.
+very few hotels, high prices.** Doc now holds the full list + build plan. **Batch 1 BUILT 24 Nov (same
+chat):** Booking, Expedia, Agoda, Hotels.com, Trip.com, ZenHotels, KAYAK,
+Google Hotels were ALREADY linked (hotelPartnerLinks + extraHotelSites);
+added **Almosafer** (`City, Country` path — name alone hit Cappadocia,
+Italy) + **Wego** (city code, `WEGO_METRO`, only airport ≤40 km) in
+`extraHotelSites`, both checked in Chrome with 2 children; PARTNERS rows.
+**▶ NEXT: batch 2** = local sites per country (doc list: Traveloka, tiket,
+MakeMyTrip, Rakuten, Jalan, Yanolja, Etstur, Tatil, Travelstart, Ostrovok,
+Despegar, Rehlat, Cleartrip): per site check deep link in Chrome + programme,
+show only in its country (`countryCode` from tripCityFrom). Wego → Admitad
+deep link once our space is Active. Live prices / hotel count = RateHawk.
 **▶▶▶▶▶▶▶▶▶▶ «HOTELS = BOOKING APP» ROUND 1 BUILT + PUSHED 24 Nov (same
 chat):** named search → city list with the searched hotel first in a navy
 frame (`pinned` in HotelList; card links carry `open=1` → hotel page; list
