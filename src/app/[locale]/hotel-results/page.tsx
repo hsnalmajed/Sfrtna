@@ -270,7 +270,7 @@ function HotelResultsContent() {
           <div className="mt-4 flex flex-wrap items-center gap-2">
             <Link
               href={editHref}
-              className="group inline-flex shrink-0 items-center gap-2 rounded-full bg-white py-1.5 pe-1.5 ps-3.5 text-[13px] font-bold text-navy-950 shadow-sm transition hover:ring-2 hover:ring-sun-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400"
+              className="group inline-flex max-w-full flex-wrap items-center gap-x-2 gap-y-1 rounded-[1.25rem] bg-white py-1.5 pe-1.5 ps-3.5 text-[13px] font-bold text-navy-950 shadow-sm transition hover:ring-2 hover:ring-sun-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400"
             >
               {complete && (
                 <>

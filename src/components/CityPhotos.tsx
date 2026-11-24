@@ -174,7 +174,7 @@ export default function CityPhotos({
           }}
         >
           {/* Top: views / landmarks, where we are, close. */}
-          <div className="flex items-center justify-between gap-3 px-3 pb-2 pt-[calc(0.6rem+var(--safe-area-inset-top,0px))] sm:px-5">
+          <div className="flex items-center justify-between gap-3 px-3 pb-2 pt-[0.6rem] sm:px-5">
             <div className="inline-flex rounded-full bg-white/10 p-1 ring-1 ring-white/15">
               {([
                 ["v", views, t.views],

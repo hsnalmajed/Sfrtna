@@ -89,7 +89,7 @@ export default function PhotoTour({
             go((dx < 0) !== isAr ? 1 : -1);
           }}
         >
-          <div className="flex items-center justify-between gap-3 px-4 pb-2 pt-[calc(0.75rem+var(--safe-area-inset-top,0px))]">
+          <div className="flex items-center justify-between gap-3 px-4 pb-2 pt-3">
             <p className="text-sm font-bold text-white/80">
               {cityName} · {t.of.replace("{n}", String(at! + 1)).replace("{total}", String(n))}
             </p>

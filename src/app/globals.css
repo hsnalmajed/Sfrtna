@@ -1023,3 +1023,27 @@ html.in-app .sit-on-tabbar {
 @media (prefers-reduced-motion: reduce) {
   .sfr-sheet, .sfr-glow { animation: none; }
 }
+
+/* Phones (owner, 24 Nov 2026: «the page moves left and right, sometimes I
+   cannot press ✕»): no page may ever slide sideways. «clip», not «hidden»:
+   it cuts what sticks out without making a scroll box, so sticky bars keep
+   working. */
+html,
+body {
+  overflow-x: clip;
+}
+
+/* In the apps the page runs under the status bar / notch: every full-screen
+   panel (photos, map, filters, sheets) starts below it, so its ✕ can be
+   tapped. In «components», so a panel with its own top padding keeps it. */
+@layer components {
+  html.in-app [role="dialog"].fixed.inset-0 {
+    padding-top: var(--safe-area-inset-top, 0px);
+  }
+}
+
+/* The apps never zoom by a double tap (a zoomed page slides sideways and
+   hides its buttons); see the viewport line set in the layout. */
+html.in-app {
+  touch-action: manipulation;
+}
