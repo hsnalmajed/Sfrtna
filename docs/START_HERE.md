@@ -153,9 +153,11 @@ Link-only buttons are not the goal. **DataForSEO adapter BUILT 24 Nov**
 → «more» d108/d140; Hotel Info = every site's price + rooms + reviews;
 hotels without a price dropped; no derived totals; prepaid; 6 h cache;
 own checks never spend). Active once Runtime secrets DATAFORSEO_LOGIN /
-DATAFORSEO_PASSWORD exist. **▶ NEXT:** (1) owner: DataForSEO account +
-deposit + secrets (one step at a time) → test a live answer (Istanbul list
-+ one hotel), compare count/prices with Google Hotels in TEST_PLAN;
+DATAFORSEO_PASSWORD exist. **LIVE 24 Nov 21:5x:** owner made the account
+($1 trial, business mail info@sfrtna.com) + both secrets; `dfs-check.yml`:
+Riyadh/Istanbul 60 hotels (was ~20), Crowne Plaza 16 sites = Google Hotels
+site by site (TEST_PLAN). **▶ NEXT:** (1) owner tops up the balance before
+the $1 runs out (~250 live calls) and checks on the phone;
 (2) then remove/hide link-only hotel buttons (rule); (3) flights: same
 rule — price sources beyond Aviasales (RUH missing); (4) local leaders per
 country appear through Google's price list (market `location_code` 2682
