@@ -213,3 +213,13 @@ medellin
 nha-trang
 palermo
 yogyakarta
+pisa
+cordoba
+strasbourg
+innsbruck
+thessaloniki
+bucharest
+quebec-city
+fujairah
+al-ain
+kusadasi
