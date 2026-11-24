@@ -87,6 +87,15 @@ function HotelResultsContent() {
   const complete = Boolean(query && checkIn && checkOut);
   // No list from Google (allowance paced out, or down): our partners' list.
   const [listDown, setListDown] = useState(false);
+  // A named hotel (Booking): the list of its city first, that hotel on top and
+  // framed apart; a card opens the hotel's own page (open=1).
+  const openHotel = sp.get("open") === "1";
+  const hotelListFirst = mode === "known" && !openHotel && Boolean(hotelArea);
+  const pinnedHref = useMemo(() => {
+    const p = new URLSearchParams(sp.toString());
+    p.set("open", "1");
+    return `/${locale}/hotel-results?${p.toString()}`;
+  }, [sp, locale]);
   const onListDown = useCallback(() => setListDown(true), []);
   const nights = complete ? nightsBetween(checkIn, checkOut) : 0;
   const listCommon = useMemo(
@@ -240,7 +249,7 @@ function HotelResultsContent() {
     <div className="bg-mist-50">
       {/* The same band as the flight results: navy, the place as the
           heading, and the search as a pill you tap to change it. */}
-      <section className="relative isolate overflow-hidden bg-gradient-to-b from-navy-900 to-navy-990 hero-pad pb-9 pt-24 sm:pt-28">
+      <section className="relative isolate overflow-hidden bg-gradient-to-b from-navy-900 to-navy-990 hero-pad pb-4 pt-20 sm:pb-9 sm:pt-28">
         <div
           className="absolute inset-0 -z-10 bg-[radial-gradient(90%_60%_at_85%_0%,rgb(255_166_48/0.14),transparent_70%)]"
           aria-hidden="true"
@@ -255,9 +264,9 @@ function HotelResultsContent() {
               {dict.itinerary.backToResults}
             </a>
           )}
-          <p className="eyebrow eyebrow-light mb-2.5">{mode === "known" ? t.eyebrowKnown : t.eyebrowDiscover}</p>
-          <h1 className="flex items-center gap-3 font-display text-h1 font-extrabold text-white">
-            <Icon name="hotel" className="h-8 w-8 shrink-0 text-sun-400" />
+          <p className="eyebrow eyebrow-light mb-2.5 hidden sm:block">{mode === "known" ? t.eyebrowKnown : t.eyebrowDiscover}</p>
+          <h1 className="flex items-center gap-2 font-display text-xl font-extrabold text-white sm:gap-3 sm:text-h1">
+            <Icon name="hotel" className="h-6 w-6 shrink-0 text-sun-400 sm:h-8 sm:w-8" />
             <bdi className="min-w-0 break-words">{label || query || "—"}</bdi>
           </h1>
           {hotelArea && (
@@ -267,7 +276,7 @@ function HotelResultsContent() {
             </p>
           )}
 
-          <div className="mt-4 flex flex-wrap items-center gap-2">
+          <div className="mt-2 flex flex-wrap items-center gap-2 sm:mt-4">
             <Link
               href={editHref}
               className="group inline-flex max-w-full flex-wrap items-center gap-x-2 gap-y-1 rounded-[1.25rem] bg-white py-1.5 pe-1.5 ps-3.5 text-[13px] font-bold text-navy-950 shadow-sm transition hover:ring-2 hover:ring-sun-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400"
@@ -324,7 +333,19 @@ function HotelResultsContent() {
           </div>
         ) : (
           <>
-            {mode === "known" ? (
+            {hotelListFirst && !listDown ? (
+              <HotelList
+                cityQuery={hotelCityPlace(hotelArea) ?? hotelArea}
+                citySlug={hcity ?? findHotelCity(hotelArea)?.slug}
+                cityName={areaLabel || hotelArea}
+                minStars={0}
+                maxPerNight={0}
+                breakfast={false}
+                c={listCommon}
+                onUnavailable={onListDown}
+                pinned={{ name: query, label: label || query, token, href: pinnedHref }}
+              />
+            ) : mode === "known" ? (
               <HotelPrices
                 query={query}
                 priceQuery={hotelArea ? `${query} ${hotelArea}` : query}

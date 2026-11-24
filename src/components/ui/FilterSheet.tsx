@@ -3,6 +3,7 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { useDictionary } from "@/lib/dict/context";
+import { BAR_BUTTON } from "./FilterPill";
 
 /**
  * Many filters behind one button, as Booking does on a phone (owner, 28 Oct:
@@ -29,7 +30,10 @@ export default function FilterSheet({
   onClear,
   top,
   extraActive = 0,
+  bar = false,
 }: {
+  /** Booking's results bar: an equal-width button, a dot when anything is set. */
+  bar?: boolean;
   label: string;
   groups: SheetGroup[];
   /** "اعرض 12 فندق" — the footer button. */
@@ -125,7 +129,7 @@ export default function FilterSheet({
         type="button"
         onClick={() => setOpen(true)}
         aria-haspopup="dialog"
-        className={`inline-flex min-h-10 shrink-0 items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-bold ring-1 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400 ${
+        className={bar ? BAR_BUTTON : `inline-flex min-h-10 shrink-0 items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-bold ring-1 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400 ${
           active ? "bg-navy-900 text-white ring-navy-900" : "bg-white text-navy-800 ring-mist-300 hover:ring-navy-300"
         }`}
       >
@@ -136,7 +140,12 @@ export default function FilterSheet({
           <circle cx="18" cy="18" r="2" />
         </svg>
         {label}
-        {active > 0 && <span className="rounded-full bg-sun-400 px-1.5 text-xs font-extrabold text-navy-950">{active}</span>}
+        {active > 0 &&
+          (bar ? (
+            <span className="h-2 w-2 rounded-full bg-sun-500" aria-label={String(active)} />
+          ) : (
+            <span className="rounded-full bg-sun-400 px-1.5 text-xs font-extrabold text-navy-950">{active}</span>
+          ))}
       </button>
       {open && createPortal(sheet, document.body)}
     </>

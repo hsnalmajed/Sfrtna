@@ -1,7 +1,7 @@
 "use client";
 
 import FavButton from "@/components/member/FavButton";
-import { nightsLabel } from "@/lib/format";
+import { countLabel, nightsLabel } from "@/lib/format";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
@@ -400,7 +400,7 @@ function Gallery({ hotel, t }: { hotel: HotelResult; t: T }) {
   if (!count) return <NoPhoto className="aspect-[16/9] w-full rounded-2xl" />;
   const [main, ...rest] = imgs;
   const tile = (i: number, node: React.ReactNode, cls: string) => (
-    <button key={i} type="button" onClick={() => setOpen(i)} className={`group relative block overflow-hidden ${cls}`} aria-label={t.photoOf.replace("{n}", String(i + 1)).replace("{count}", String(count))}>
+    <button key={i} type="button" onClick={() => setOpen(i)} className={`group relative block min-w-0 overflow-hidden ${cls}`} aria-label={t.photoOf.replace("{n}", String(i + 1)).replace("{count}", String(count))}>
       {node}
     </button>
   );
@@ -417,16 +417,23 @@ function Gallery({ hotel, t }: { hotel: HotelResult; t: T }) {
     ) : null;
   return (
     <div>
-      {/* Phone: one large photo and a row of three under it. */}
-      <div className="sm:hidden">
-        <div className="relative">
-          {tile(0, <Photo src={main.full} alt={hotel.name} eager className="aspect-[16/10] w-full rounded-2xl" />, "w-full rounded-2xl")}
-          {more}
-        </div>
-        {rest.length > 0 && (
-          <div className="mt-2 grid grid-cols-3 gap-2">
-            {rest.slice(0, 3).map((im, i) => tile(i + 1, <Photo src={im.thumb} alt="" className="aspect-[4/3] w-full rounded-xl" />, "rounded-xl"))}
-          </div>
+      {/* Phone (Booking's app): a large photo with one beside it, three under
+          them, the last one «+N» when there are more. */}
+      <div className="grid grid-cols-3 grid-rows-[9.5rem_5rem] gap-1 overflow-hidden rounded-xl sm:hidden">
+        {tile(0, <Photo src={main.full} alt={hotel.name} eager className="h-full w-full" />, `h-full w-full ${rest.length ? "col-span-2" : "col-span-3 row-span-2"}`)}
+        {rest.slice(0, 4).map((im, i) =>
+          tile(
+            i + 1,
+            <>
+              <Photo src={im.thumb || im.full} alt="" className="h-full w-full" />
+              {i === 3 && count > 5 && (
+                <span className="absolute inset-0 grid place-items-center bg-navy-950/60 text-base font-extrabold text-white" dir="ltr">
+                  +{count - 5}
+                </span>
+              )}
+            </>,
+            `h-full w-full ${i === 0 && rest.length < 4 ? "row-span-2" : ""}`
+          )
         )}
       </div>
       {/* Wider: a mosaic, the large photo beside four small ones. */}
@@ -550,7 +557,7 @@ function HotelDetail({
   return (
     <div>
       {/* Jump to a part of the page, as Booking does under its photos. */}
-      <nav aria-label={t.navOverview} className="sticky top-16 z-20 -mx-4 mb-4 border-b border-mist-200 bg-mist-50/95 backdrop-blur sm:mx-0 sm:rounded-xl sm:border sm:bg-white/95">
+      <nav aria-label={t.navOverview} className="sticky top-16 z-20 -mx-4 mb-4 hidden border-b sm:block border-mist-200 bg-mist-50/95 backdrop-blur sm:mx-0 sm:rounded-xl sm:border sm:bg-white/95">
         <ScrollRow className="flex gap-1 px-4">
           {nav.map((n) => (
             <a key={n.id} href={`#${n.id}`} className="inline-flex min-h-11 shrink-0 items-center whitespace-nowrap px-3 text-sm font-bold text-navy-700 hover:text-navy-950">
@@ -584,7 +591,7 @@ function HotelDetail({
           <div className="flex items-center gap-2">
             <FavButton locale={c.locale} fav={{ type: "hotel", name: hotel.name, area: "", label: hotel.nameAr || undefined }} />
             {best?.url && (
-              <a href="#hotel-prices" className="inline-flex min-h-11 items-center gap-1.5 rounded-xl bg-sun-400 px-5 text-sm font-extrabold text-navy-950 shadow-[var(--shadow-sun)] hover:bg-sun-300">
+              <a href="#hotel-prices" className="hidden min-h-11 items-center gap-1.5 rounded-xl bg-sun-400 sm:inline-flex px-5 text-sm font-extrabold text-navy-950 shadow-[var(--shadow-sun)] hover:bg-sun-300">
                 {t.bookNow}
               </a>
             )}
@@ -593,27 +600,27 @@ function HotelDetail({
 
         {/* Phone: photos, price, map, then what the hotel offers. Wide: photos
             and the offers in one column, price and map beside them, same height. */}
-        <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_300px] lg:grid-rows-[auto_1fr]">
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1fr)_300px] lg:grid-rows-[auto_1fr]">
           <div className="min-w-0 lg:col-start-1 lg:row-start-1">
             <Gallery hotel={hotel} t={t} />
           </div>
             {/* 3 · What the hotel offers, under the photos: it fills the column
                 beside the rating and the map (owner, 8 Nov: «الفراغ»). */}
             {(key.length > 0 || hotel.locationRating) && (
-              <section className="order-last flex flex-col rounded-2xl bg-white p-4 shadow-sm ring-1 ring-black/5 sm:p-5 lg:order-none lg:col-start-1 lg:row-start-2">
+              <section className="flex flex-col rounded-2xl bg-white p-4 shadow-sm ring-1 ring-black/5 sm:p-5 lg:order-none lg:col-start-1 lg:row-start-2">
                 <p className="mb-3 text-sm font-extrabold text-navy-950">{t.highlightsTitle}</p>
-                <ul className="grid flex-1 grid-cols-2 content-start gap-2 sm:grid-cols-3 xl:grid-cols-4">
+                <ul className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:grid sm:flex-1 sm:grid-cols-3 sm:content-start sm:overflow-visible sm:px-0 xl:grid-cols-4">
                   {key.map((k) => (
                     <li
                       key={k.label}
-                      className={`flex min-h-12 items-center gap-2.5 rounded-xl px-3 py-2 text-sm font-bold ring-1 ${k.free ? "bg-sea-50 text-sea-900 ring-sea-200" : "bg-mist-50 text-navy-800 ring-mist-200"}`}
+                      className={`flex min-h-12 shrink-0 items-center gap-2.5 rounded-xl px-3 py-2 text-sm font-bold ring-1 ${k.free ? "bg-sea-50 text-sea-900 ring-sea-200" : "bg-mist-50 text-navy-800 ring-mist-200"}`}
                     >
                       <span aria-hidden="true" className="text-base">{k.icon}</span>
                       <span className="leading-tight">{k.label}</span>
                     </li>
                   ))}
                   {hotel.locationRating ? (
-                    <li className="flex min-h-12 items-center gap-2.5 rounded-xl bg-mist-50 px-3 py-2 text-sm font-bold text-navy-800 ring-1 ring-mist-200">
+                    <li className="flex min-h-12 shrink-0 items-center gap-2.5 rounded-xl bg-mist-50 px-3 py-2 text-sm font-bold text-navy-800 ring-1 ring-mist-200">
                       <span aria-hidden="true" className="text-base">🗺️</span>
                       <span className="leading-tight">
                         {t.locationLabel}: {hotel.locationRating.toFixed(1)} / 5
@@ -690,7 +697,45 @@ function HotelDetail({
         </div>
       </div>
 
-      <div className="mt-5 flex flex-col gap-5">
+      {/* Booking: the stay you searched for, under the photos. */}
+      <section className="mt-4 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-black/5 sm:p-5">
+        <div className="grid grid-cols-2 gap-3">
+          {[
+            [t.bkCheckIn, c.checkIn, hotel.checkInTime],
+            [t.bkCheckOut, c.checkOut, hotel.checkOutTime],
+          ].map(([label, iso, time]) => (
+            <div key={label}>
+              <p className="text-xs font-bold text-navy-500">{label}</p>
+              <p className="font-display text-base font-extrabold text-navy-600">
+                {new Date(`${iso}T00:00:00Z`).toLocaleDateString(locale === "ar" ? "ar-u-ca-gregory-nu-latn" : "en-GB", { weekday: "short", day: "numeric", month: "short", timeZone: "UTC" })}
+              </p>
+              {time ? <p className="text-xs text-navy-500"><bdi>{time}</bdi></p> : null}
+            </div>
+          ))}
+        </div>
+        <p className="mt-3 text-xs font-bold text-navy-500">{t.bkYouSearched}</p>
+        <p className="font-display text-base font-extrabold text-navy-600">
+          {[
+            (c.rooms ?? 1) > 1 ? t.roomsCount.replace("{count}", String(c.rooms)) : t.bkRoomOne,
+            countLabel((c.party?.adults ?? c.adults) + (c.party?.childrenAges.length ?? c.childrenAges.length), { one: t.bkGuestOne, two: t.bkGuestTwo, few: t.bkGuestsFew, many: t.bkGuestsMany }),
+            nightsLabel(c.nights, t),
+          ].join(" · ")}
+        </p>
+      </section>
+
+      {/* Booking's phone bar: always in reach, opens the rooms. */}
+      {best && (
+        <div className="fixed inset-x-0 bottom-[var(--app-tabbar,0px)] z-30 border-t border-mist-200 bg-white px-4 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pt-2 shadow-[0_-8px_24px_-12px_rgb(10_30_60/0.25)] sm:hidden">
+          <p className="mb-1.5 text-xs font-bold text-emerald-700">
+            ✓ {t.bkLiveFrom.replace("{sites}", countLabel(offers.length, { one: t.bkSiteOne, two: t.bkSiteTwo, few: t.bkSitesFew, many: t.bkSitesMany }))}
+          </p>
+          <a href="#hotel-prices" className="flex min-h-12 items-center justify-center rounded-xl bg-sun-500 text-base font-extrabold text-white active:bg-sun-600">
+            {t.bkChooseRoom}
+          </a>
+        </div>
+      )}
+
+      <div className="mt-5 flex flex-col gap-5 pb-28 sm:pb-0">
         {/* 4 · The hotel's own description. */}
         {hotel.description && (
           <section className={box}>
@@ -907,7 +952,9 @@ function RoomsTable({ rooms, offers, c, hotel }: { rooms: NonNullable<HotelResul
         <p className="text-xs font-bold text-navy-500">{t.roomTypesCount.replace("{n}", String(rows.length))}</p>
       </div>
       <p className="mb-4 text-sm text-navy-600">{t.roomsSub.replace("{nights}", c.nights === 1 ? t.stayTotalOne : nightsLabel(c.nights, t))}</p>
-      <ul className="divide-y divide-mist-200 overflow-hidden rounded-2xl ring-1 ring-mist-300">
+      {/* Booking's rooms: a card per room, its option box with ✓ lines, the
+          price for the stay and «اختر» → the sites that sell it. */}
+      <ul className="space-y-3">
         {shown.map((r) => {
           const low = r.opts[0];
           const sites = new Set(r.opts.map((o) => o.source)).size;
@@ -915,56 +962,44 @@ function RoomsTable({ rooms, offers, c, hotel }: { rooms: NonNullable<HotelResul
           const anyBreakfast = r.opts.some((o) => o.breakfast);
           const isAny = r === anyRoom;
           return (
-            <li key={r.name} className="flex flex-col gap-3 bg-white p-3 transition hover:bg-mist-50/60 sm:flex-row sm:items-center sm:p-4">
-              <div className="flex min-w-0 flex-1 items-center gap-3">
-                {r.image ? (
-                  <Photo src={r.image} alt="" className="h-20 w-28 shrink-0 rounded-xl sm:h-24 sm:w-32" />
-                ) : (
-                  <span className="grid h-20 w-28 shrink-0 place-items-center rounded-xl bg-mist-100 text-2xl sm:h-24 sm:w-32" aria-hidden="true">
-                    🛏️
-                  </span>
-                )}
-                <div className="min-w-0 space-y-1">
-                  <p className="font-display text-[15px] font-extrabold leading-snug text-sea-900" dir="auto">
+            <li key={r.name} className="rounded-2xl bg-white p-3 ring-1 ring-mist-300 sm:p-4">
+              <div className="flex items-start gap-3">
+                <div className="min-w-0 flex-1 space-y-1">
+                  <p className="font-display text-base font-extrabold leading-snug text-navy-500" dir="auto">
                     <bdi>{r.name}</bdi>
                   </p>
                   {isAny && <p className="text-xs leading-snug text-navy-600">{t.anyRoomSub}</p>}
                   {r.guests ? (
-                    <p className="inline-flex items-center gap-1 text-xs font-semibold text-navy-600">
-                      <span aria-hidden="true">👤</span>
+                    <p className="flex items-center gap-1.5 text-[13px] text-navy-800">
+                      <span aria-hidden="true">👥</span>
                       {t.roomGuests.replace("{n}", String(r.guests))}
                     </p>
                   ) : null}
-                  {(anyCancel || anyBreakfast) && (
-                    <ul className="flex flex-wrap gap-x-3 gap-y-0.5 text-xs font-bold text-sea-800">
-                      {anyCancel && (
-                        <li className="inline-flex items-center gap-1">
-                          <Icon name="check" className="h-3 w-3" />
-                          {t.freeCancelOption}
-                        </li>
-                      )}
-                      {anyBreakfast && (
-                        <li className="inline-flex items-center gap-1">
-                          <Icon name="check" className="h-3 w-3" />
-                          {t.breakfastOption}
-                        </li>
-                      )}
-                    </ul>
-                  )}
                 </div>
+                {r.image ? (
+                  <Photo src={r.image} alt="" className="h-16 w-16 shrink-0 rounded-lg sm:h-20 sm:w-24" />
+                ) : (
+                  <span className="grid h-16 w-16 shrink-0 place-items-center rounded-lg bg-mist-100 text-xl" aria-hidden="true">🛏️</span>
+                )}
               </div>
-              <div className="flex items-center justify-between gap-4 border-t border-mist-100 pt-3 sm:justify-end sm:border-0 sm:pt-0">
-                <div className="text-start sm:text-end">
-                  <p className="text-[11px] font-semibold text-navy-500">{sites === 1 ? t.roomFromOne.replace("{site}", low.source) : t.roomFrom.replace("{n}", String(sites))}</p>
-                  <p className="whitespace-nowrap font-display text-xl font-black leading-tight text-navy-950">{money(low.total, locale)}</p>
-                </div>
+              <div className="mt-3 rounded-xl p-3 ring-1 ring-mist-300">
+                {(anyCancel || anyBreakfast) && (
+                  <ul className="mb-2 space-y-0.5 text-[13px] font-bold text-emerald-700">
+                    {anyCancel && <li>✓ {t.freeCancelOption}</li>}
+                    {anyBreakfast && <li>✓ {t.breakfastOption}</li>}
+                  </ul>
+                )}
+                <p className="text-xs text-navy-600">
+                  {sites === 1 ? t.roomFromOne.replace("{site}", low.source) : t.roomFrom.replace("{n}", String(sites))} · {c.nights === 1 ? t.stayTotalOne : nightsLabel(c.nights, t)}
+                </p>
+                <p className="font-display text-xl font-black leading-tight text-navy-950">{money(low.total, locale)}</p>
+                <p className="text-[11px] text-navy-500">{t.bkTaxes}</p>
                 <button
                   type="button"
                   onClick={() => setPicked(r)}
-                  className="inline-flex min-h-12 min-w-[112px] items-center justify-center gap-1.5 rounded-xl bg-sun-400 px-5 text-base font-extrabold text-navy-950 shadow-[var(--shadow-sun)] transition hover:bg-sun-300"
+                  className="mt-2.5 flex min-h-11 w-full items-center justify-center rounded-lg bg-sun-500 text-base font-extrabold text-white transition hover:bg-sun-600 sm:ms-auto sm:w-48"
                 >
                   {t.choose}
-                  <span aria-hidden="true">{locale === "ar" ? "←" : "→"}</span>
                 </button>
               </div>
             </li>

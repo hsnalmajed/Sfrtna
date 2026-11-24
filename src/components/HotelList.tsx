@@ -3,10 +3,10 @@
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import type { HotelResult, HotelSearch } from "@/lib/providers/serpapi";
-import { keyAmenities, otherAmenities } from "@/lib/hotelAmenities";
+import { keyAmenities } from "@/lib/hotelAmenities";
 import { CITY_COORDS } from "@/data/cityCoords";
 import Icon from "@/components/ui/Icon";
-import FilterPill from "@/components/ui/FilterPill";
+import FilterPill, { BAR_BUTTON } from "@/components/ui/FilterPill";
 import FilterSheet, { type SheetGroup } from "@/components/ui/FilterSheet";
 import FilterSidebar from "@/components/ui/FilterSidebar";
 import BudgetSlider from "@/components/ui/BudgetSlider";
@@ -27,16 +27,16 @@ import {
   activeCount,
   brandOf,
   hasFacility,
-  nearbyText,
   passes,
   priceBands,
   type FacetInput,
   type Facets,
   type Facility,
 } from "@/lib/hotelFacets";
-import { PriceRows, Photo, Shimmer, Stars, money, forRooms, ratingWord, rememberHotel, type Common } from "@/components/HotelPrices";
+import { Photo, Shimmer, Stars, money, forRooms, ratingWord, rememberHotel, type Common } from "@/components/HotelPrices";
 import { AMENITY_CODE, BREAKFAST_CODE, NO_HOTEL_PREFS, PLACE_TYPE_CODE, type HotelPrefs } from "@/lib/hotelPrefs";
 import { useDictionary } from "@/lib/dict/context";
+import { countLabel, nightsLabel } from "@/lib/format";
 import { track } from "@/lib/analytics";
 
 /**
@@ -71,7 +71,13 @@ export default function HotelList({
   prefs = NO_HOTEL_PREFS,
   c,
   onUnavailable,
+  pinned,
 }: {
+  /**
+   * The hotel the traveller searched for by name (Booking): shown first and
+   * framed apart, the others measured from it.
+   */
+  pinned?: { name: string; label: string; token?: string | null; href: string };
   /** What Google is asked: "Istanbul, Türkiye". */
   cityQuery: string;
   citySlug?: string;
@@ -93,6 +99,8 @@ export default function HotelList({
       const p = new URLSearchParams(sp.toString());
       for (const k of ["city", "label", "minStars", "breakfast", "page"]) p.delete(k);
       p.set("hmode", "known");
+      // Straight to the hotel's page (a named search without it opens the list first).
+      p.set("open", "1");
       p.set("hotel", h.name);
       if (c.locale === "ar" && h.nameAr) p.set("label", h.nameAr);
       if (h.token) p.set("token", h.token);
@@ -209,8 +217,13 @@ export default function HotelList({
   if (failed || !result) return null;
 
   // Distances from the place the traveller chose («قريب من»), else the centre.
-  const centre = prefs.nearTo ? { lat: prefs.nearTo.y, lon: prefs.nearTo.x } : citySlug ? CITY_COORDS[citySlug] : undefined;
-  const fromName = prefs.nearTo?.n ?? null;
+  const norm = (x: string) => x.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, " ").trim();
+  const isPinned = (h: HotelResult) =>
+    Boolean(pinned) && ((pinned?.token && h.token === pinned.token) || norm(h.name) === norm(pinned?.name ?? ""));
+  const pinHotel = pinned ? [...result.hotels, ...extra.hotels].find(isPinned) : undefined;
+  const pinAt = pinHotel?.lat != null && pinHotel.lng != null ? { lat: pinHotel.lat, lon: pinHotel.lng } : undefined;
+  const centre = prefs.nearTo ? { lat: prefs.nearTo.y, lon: prefs.nearTo.x } : pinAt ?? (citySlug ? CITY_COORDS[citySlug] : undefined);
+  const fromName = prefs.nearTo?.n ?? (pinAt && pinHotel ? (locale === "ar" && pinHotel.nameAr) || pinHotel.name : null);
   const seen = new Set<string>();
   let hotels = [...result.hotels, ...extra.hotels].filter((h) => {
     const key = h.token || h.name;
@@ -248,7 +261,6 @@ export default function HotelList({
   const count = (skip: keyof Facets, test: (x: FacetInput) => boolean) =>
     inputs.filter((x) => passes(x, facets, bands, skip) && test(x)).length;
   const fx = hp.facets;
-  const totalHeld = hotels.length;
   hotels = inputs.filter((x) => passes(x, facets, bands)).map((x) => x.hotel);
   const set = (patch: Partial<Facets>) => {
     setFacets((f) => ({ ...f, ...patch }));
@@ -507,36 +519,55 @@ export default function HotelList({
   ];
   return layout(
     <div className="space-y-3">
-      {/* Phone: the bar (filters, map, sort) and the quick chips stay in view while scrolling, as on Booking's app. */}
-      <div className="sticky top-16 z-20 -mx-4 space-y-2 border-b border-mist-200 bg-mist-50/95 px-4 py-2 backdrop-blur lg:static lg:mx-0 lg:border-0 lg:bg-transparent lg:p-0 lg:backdrop-blur-none">
-      {/* One control, like Booking's "Sort by" (owner, 27 Oct): the chosen order on the pill, every order in its sheet. */}
+      {/* Booking's bar: three equal buttons (sort · filter · map) that stay in
+          view on phones; wide screens keep the side column. */}
+      <div className="sticky top-16 z-20 -mx-4 border-y border-mist-200 bg-white lg:hidden">
+        <div className="flex divide-x divide-mist-200 rtl:divide-x-reverse">
+          <FilterPill<Sort>
+            label={hp.sortLabel}
+            options={sorts.map(([value, label]) => ({ value, label }))}
+            value={sort}
+            onChange={(v) => setSort(v === "all" ? "best" : v)}
+            locale={c.locale}
+            bar={{ label: t.bkSort, on: sort !== "best" }}
+          />
+          <FilterSheet
+            bar
+            label={t.bkFilter}
+            groups={budgetShown ? groups.filter((g) => g.key !== "price") : groups}
+            top={budget}
+            extraActive={facets.range ? 1 : 0}
+            results={fx.showResults.replace("{n}", String(hotels.length))}
+            onClear={() => setFacets(NO_FACETS)}
+          />
+          {mapHotels.length > 1 && (
+            <button type="button" onClick={() => setMapOpen(true)} className={BAR_BUTTON}>
+              <Icon name="pin" className="h-4 w-4" />
+              {t.bkMap}
+            </button>
+          )}
+        </div>
+      </div>
       <div className="flex flex-wrap items-center gap-2">
-        {filterBar}
-        {mapHotels.length > 1 && (
-          <button
-            type="button"
-            onClick={() => setMapOpen(true)}
-            className="inline-flex min-h-10 items-center gap-1.5 rounded-full bg-white px-3.5 text-sm font-bold text-navy-900 ring-1 ring-mist-300 lg:hidden"
-          >
-            <Icon name="pin" className="h-4 w-4 text-navy-500" />
-            {t.showOnMap}
-          </button>
-        )}
-        <FilterPill<Sort>
-          icon="↕️"
-          label={hp.sortLabel}
-          options={sorts.map(([value, label]) => ({ value, label }))}
-          value={sort}
-          onChange={(v) => setSort(v === "all" ? "best" : v)}
-          locale={c.locale}
-        />
-        <span className="text-xs font-semibold text-navy-500">
-          {activeCount(facets) ? fx.showing.replace("{n}", String(hotels.length)).replace("{m}", String(totalHeld)) : (result?.total && nextToken && !extra.ended
-              ? t.hotelsOfTotal.replace("{total}", result.total.toLocaleString(locale === "ar" ? "ar-SA-u-nu-latn" : "en-US")).replace("{count}", String(hotels.length))
-              : (nextToken && !extra.ended ? t.hotelsCountMore : t.hotelsCount).replace("{count}", String(hotels.length)))}
-        </span>
+        <p className="text-[13px] text-navy-600">
+          <b className="text-navy-950">
+            {t.bkFound
+              .replace("{city}", cityName)
+              .replace("{count}", (activeCount(facets) ? hotels.length : result?.total || hotels.length).toLocaleString(locale === "ar" ? "ar-SA-u-nu-latn" : "en-US"))}
+          </b>
+        </p>
+        <div className="ms-auto hidden lg:block">
+          <FilterPill<Sort>
+            icon="↕️"
+            label={hp.sortLabel}
+            options={sorts.map(([value, label]) => ({ value, label }))}
+            value={sort}
+            onChange={(v) => setSort(v === "all" ? "best" : v)}
+            locale={c.locale}
+          />
+        </div>
         {c.nights > 1 && (
-          <div className="ms-auto flex rounded-full bg-mist-100 p-1 text-xs font-bold" role="group" aria-label={t.priceShowLabel}>
+          <div className="flex rounded-full bg-mist-100 p-1 text-xs font-bold lg:ms-0" role="group" aria-label={t.priceShowLabel}>
             {[false, true].map((pn) => (
               <button
                 key={String(pn)}
@@ -552,23 +583,37 @@ export default function HotelList({
         )}
       </div>
       {quickRow}
-      </div>
       {chips}
       {note && <p className="text-sm font-semibold text-navy-700">{note}</p>}
-      {hotels.map((h) => (
-        <HotelCard
-          key={h.token || h.name}
-          hotel={h}
-          c={c}
-          distance={centre && h.lat != null && h.lng != null ? km(centre, { lat: h.lat, lon: h.lng }) : null}
-          cityName={fromName ?? cityName}
-          fromPlace={Boolean(fromName)}
-          perNight={perNight}
-          cityQuery={cityQuery}
-          locale={locale}
-          href={pageHref(h)}
-        />
-      ))}
+      {pinned && !pinHotel && (
+        <article aria-label={t.bkSearched} className="rounded-2xl bg-navy-50 p-4 ring-2 ring-navy-500">
+          <p className="text-[11px] font-extrabold text-navy-600">{t.bkSearched}</p>
+          <h3 className="mt-0.5 font-display text-lg font-extrabold text-navy-950">
+            <bdi>{pinned.label}</bdi>
+          </h3>
+          <p className="mt-1 text-xs text-navy-600">{t.bkNoPriceYet}</p>
+          <a href={pinned.href} className="mt-3 inline-flex min-h-10 items-center rounded-lg bg-sun-500 px-4 text-sm font-extrabold text-white hover:bg-sun-600">
+            {t.bkSeePrices}
+          </a>
+        </article>
+      )}
+      {(pinHotel ? [pinHotel, ...hotels.filter((h) => !isPinned(h))] : hotels).map((h) => {
+        const d = centre && h.lat != null && h.lng != null ? km(centre, { lat: h.lat, lon: h.lng }) : null;
+        const own = pinHotel ? isPinned(h) : false;
+        return (
+          <HotelCard
+            key={h.token || h.name}
+            hotel={h}
+            c={c}
+            pinned={own}
+            distance={own && pinAt && !prefs.nearTo ? null : d}
+            distanceText={fromName ? t.bkNearHotel.replace("{hotel}", fromName) : t.fromCentreShort}
+            perNight={perNight}
+            locale={locale}
+            href={pageHref(h)}
+          />
+        );
+      })}
       {nextToken && !extra.ended && (
         <button
           type="button"
@@ -611,292 +656,166 @@ function HotelCard({
   hotel,
   c,
   distance,
-  cityName,
-  cityQuery,
+  distanceText,
   locale,
   perNight = false,
-  fromPlace = false,
   href,
+  pinned = false,
 }: {
-  /** The hotel's own page («اختر»). */
+  /** The hotel's own page. */
   href: string;
   perNight?: boolean;
-  /** The distance is from a place the traveller chose, not the centre. */
-  fromPlace?: boolean;
   hotel: HotelResult;
   c: Common;
   distance: number | null;
-  cityName: string;
-  cityQuery: string;
+  /** "{km} كم من …" with the km left as {km}. */
+  distanceText: string;
   locale: "ar" | "en";
+  /** The hotel the traveller searched for: first, framed apart (Booking). */
+  pinned?: boolean;
 }) {
   const { t } = c;
   const hp = useDictionary().hotelPrefs;
-  const [open, setOpen] = useState(false);
   const one = hotel.total ?? (hotel.perNight ? hotel.perNight * c.nights : null);
   const total = one === null ? null : forRooms(one, c);
-  // The framed «خدمات الفندق» box (owner, 7 Nov): breakfast, internet,
-  // parking… as Google lists them for this hotel, then everything else it has.
-  const key = keyAmenities(hotel.amenities, locale);
-  const others = otherAmenities(hotel.amenities, locale, 40);
-  const [allServices, setAllServices] = useState(false);
   const name = (locale === "ar" && hotel.nameAr) || hotel.name;
   const choose = () => {
     rememberHotel(hotel);
-    track("hotel_select", { hotel: hotel.name });
+    track("hotel_select", { hotel: hotel.name, pinned: pinned ? 1 : 0 });
   };
-  const shownPrice = total == null ? null : perNight && c.nights > 1 ? total / c.nights : total;
-  // The frame shows the services that decide a booking (breakfast, wifi,
-  // parking, pool…) on one line each; everything else is a tap away, so the
-  // card stays calm (owner, 7 Nov: «مستوانا احترافي ومرتب»).
-  const lead = key.slice(0, 6);
-  const rest = [...key.slice(6).map((k) => k.label), ...others];
+  const nightly = perNight && c.nights > 1;
+  const shownPrice = total == null ? null : nightly ? total / c.nights : total;
   const word = hotel.rating ? ratingWord(hotel.rating, t) : "";
   const kmText = distance == null ? "" : distance < 10 ? distance.toFixed(1) : String(Math.round(distance));
+  const facts = keyAmenities(hotel.amenities, locale).slice(0, 3).map((k) => k.label);
+  const sites = new Set(hotel.offers.map((o) => o.source)).size;
+  const guests = (c.party?.adults ?? c.adults * (c.rooms ?? 1)) + (c.party?.childrenAges.length ?? c.childrenAges.length * (c.rooms ?? 1));
+  const stayLine = `${nightsLabel(c.nights, t)}، ${countLabel(guests, { one: t.bkGuestOne, two: t.bkGuestTwo, few: t.bkGuestsFew, many: t.bkGuestsMany })}`;
+  const sitesText = countLabel(sites, { one: t.bkSiteOne, two: t.bkSiteTwo, few: t.bkSitesFew, many: t.bkSitesMany });
+  const nf = locale === "ar" ? "ar-SA-u-nu-latn" : "en-US";
+  const score = hotel.rating ? (
+    <span className="grid h-8 min-w-8 shrink-0 place-items-center rounded-md rounded-es-none bg-navy-700 px-1.5 text-sm font-bold text-white sm:h-10 sm:min-w-10 sm:text-base" dir="ltr">
+      {hotel.rating.toFixed(1)}
+    </span>
+  ) : null;
   return (
-    <article className="group/card overflow-hidden rounded-2xl bg-white shadow-[0_1px_2px_rgb(10_30_60/0.06)] ring-1 ring-mist-300 transition duration-200 hover:-translate-y-0.5 hover:shadow-[0_14px_34px_-14px_rgb(10_30_60/0.35)] hover:ring-navy-300">
-      <div className="grid sm:grid-cols-[220px_minmax(0,1fr)] xl:grid-cols-[250px_minmax(0,1fr)_200px]">
-        {/* 1 · Photos: swipe or arrows; a tap opens the hotel's page. */}
+    <article
+      aria-label={pinned ? `${t.bkSearched}: ${name}` : undefined}
+      className={`relative overflow-hidden rounded-2xl transition ${
+        pinned ? "bg-navy-50 ring-2 ring-navy-500" : "bg-white ring-1 ring-mist-300 hover:shadow-[0_10px_28px_-14px_rgb(10_30_60/0.35)] hover:ring-navy-300"
+      }`}
+    >
+      {/* Booking: the whole card opens the hotel. */}
+      <a href={href} onClick={choose} tabIndex={-1} aria-hidden="true" className="absolute inset-0 z-0" />
+      <div className="relative flex gap-3 p-2.5 sm:gap-4 sm:p-3">
         <CardPhotos hotel={hotel} href={href} onOpen={choose} t={t} locale={locale} />
-
-        {/* 2 · The hotel: name, where it is, the framed services. */}
-        <div className="flex min-w-0 flex-col gap-3 p-4 sm:p-5">
-          <div className="min-w-0">
-            <div className="flex items-center gap-2">
-              <Stars count={hotel.stars} className="text-xs" />
-              {hotel.eco && <span className="rounded-full bg-sea-50 px-2 py-0.5 text-[10px] font-extrabold text-sea-800 ring-1 ring-sea-200">{hp.ecoBadge}</span>}
-            </div>
-            <h3 className="mt-0.5 font-display text-lg font-extrabold leading-snug text-navy-950">
-              <a href={href} onClick={choose} className="decoration-2 underline-offset-4 hover:text-sea-800 hover:underline">
+        <div className="flex min-w-0 flex-1 flex-col sm:flex-row sm:gap-4">
+          <div className="min-w-0 flex-1 space-y-1">
+            <h3 className="font-display text-[15.5px] font-extrabold leading-snug text-navy-950 sm:text-lg sm:text-navy-600">
+              <a href={href} onClick={choose} className="relative z-[1] decoration-2 underline-offset-4 hover:underline">
                 <bdi>{name}</bdi>
               </a>
             </h3>
-            {locale === "ar" && hotel.nameAr && (
-              <p className="truncate text-xs font-semibold text-navy-400" dir="ltr">
-                {hotel.name}
+            <div className="flex flex-wrap items-center gap-1.5">
+              <Stars count={hotel.stars} className="text-xs" />
+              {hotel.eco && <span className="rounded bg-sea-50 px-1.5 py-0.5 text-[10px] font-extrabold text-sea-800 ring-1 ring-sea-200">{hp.ecoBadge}</span>}
+            </div>
+            {hotel.rating ? (
+              <p className="flex items-center gap-1.5 text-[13px] sm:hidden">
+                {score}
+                <span className="font-bold text-navy-950">{word}</span>
+                {hotel.reviews ? <span className="text-navy-500">· {t.reviews.replace("{count}", hotel.reviews.toLocaleString(nf))}</span> : null}
+              </p>
+            ) : null}
+            {distance != null && (
+              <p className="flex items-center gap-1 text-[12.5px] text-navy-700">
+                <Icon name="pin" className="h-3.5 w-3.5 shrink-0 text-navy-500" />
+                <span>{distanceText.replace("{km}", kmText)}</span>
               </p>
             )}
+            {facts.length > 0 && <p className="truncate text-[12.5px] text-navy-600">{facts.join(" · ")}</p>}
+            {hotel.dealPct ? (
+              <span className="inline-block rounded-md bg-emerald-50 px-1.5 py-0.5 text-[11px] font-bold text-emerald-700 ring-1 ring-emerald-200">
+                {t.dealLess.replace("{pct}", String(hotel.dealPct))}
+              </span>
+            ) : null}
           </div>
 
-          <ul className="space-y-1 text-[13px] text-navy-700">
-            {distance != null && (
-              <li className="flex items-center gap-1.5">
-                <Icon name="pin" className="h-4 w-4 shrink-0 text-sea-700" />
-                <span className="font-bold text-navy-900">
-                  {fromPlace ? t.fromPlace.replace("{km}", kmText).replace("{city}", cityName) : t.fromCentreShort.replace("{km}", kmText)}
+          <div className="mt-auto flex flex-col items-end text-end sm:mt-0 sm:w-52 sm:shrink-0 sm:border-s sm:border-mist-200 sm:ps-4">
+            {hotel.rating ? (
+              <div className="hidden items-center gap-2 sm:flex">
+                <span>
+                  <span className="block text-sm font-extrabold text-navy-950">{word}</span>
+                  {hotel.reviews ? <span className="block text-[11px] text-navy-500">{t.reviews.replace("{count}", hotel.reviews.toLocaleString(nf))}</span> : null}
                 </span>
-                {hotel.locationRating ? (
-                  <span className="text-xs font-bold text-sea-800">· {hp.locationScore.replace("{r}", hotel.locationRating.toFixed(1))}</span>
-                ) : null}
-              </li>
-            )}
-            {hotel.nearby?.[0] && (
-              <li className="flex items-center gap-1.5 text-xs">
-                <span aria-hidden="true" className="w-4 text-center">🚶</span>
-                <span className="truncate">{nearbyText(hotel.nearby[0], hp.nearbyLine, locale)}</span>
-              </li>
-            )}
-          </ul>
-
-          {(lead.length > 0 || rest.length > 0) && (
-            <div className="mt-auto rounded-xl bg-mist-50 px-3.5 py-3 ring-1 ring-inset ring-mist-200">
-              <p className="mb-2 text-[11px] font-extrabold tracking-wide text-navy-500">{t.servicesTitle}</p>
-              {lead.length > 0 && (
-                <ul className="grid grid-cols-2 gap-x-4 gap-y-1.5">
-                  {lead.map((k) => (
-                    <li key={k.label} className={`flex min-w-0 items-center gap-1.5 text-[13px] font-bold ${k.free ? "text-sea-800" : "text-navy-800"}`}>
-                      <span aria-hidden="true" className="shrink-0 text-sm">{k.icon}</span>
-                      <span className="leading-tight">{k.label}</span>
-                    </li>
-                  ))}
-                </ul>
-              )}
-              {rest.length > 0 && (
-                <div className={lead.length ? "mt-2 border-t border-mist-200 pt-2" : ""}>
-                  {allServices ? (
-                    <ul className="flex flex-wrap gap-1">
-                      {rest.map((a) => (
-                        <li key={a} className="rounded-full bg-white px-2 py-0.5 text-[11px] font-semibold text-navy-700 ring-1 ring-mist-200">
-                          {a}
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <p className="truncate text-xs text-navy-600">{rest.slice(0, 4).join(" · ")}</p>
-                  )}
-                  {rest.length > 4 && (
-                    <button type="button" onClick={() => setAllServices((v) => !v)} aria-expanded={allServices} className="mt-1 inline-flex min-h-8 items-center text-xs font-extrabold text-sea-800 hover:underline">
-                      {allServices ? t.fewerRoomOptions : t.moreServices.replace("{n}", String(rest.length - 4))}
-                    </button>
-                  )}
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-
-        {/* 3 · Rating, price, «اختر»: a column on wide screens, the card's foot on phones. */}
-        <div className="flex flex-col gap-3 border-t border-mist-200 bg-gradient-to-b from-white to-mist-50/60 p-4 sm:col-span-2 sm:p-5 xl:col-span-1 xl:border-s xl:border-t-0">
-          {hotel.rating ? (
-            <div className="flex items-center gap-2.5 xl:justify-end">
-              <span className="order-2 xl:order-1 xl:text-end">
-                <span className="block text-sm font-extrabold text-navy-950">{word}</span>
-                {hotel.reviews ? <span className="block text-[11px] text-navy-500">{t.reviews.replace("{count}", hotel.reviews.toLocaleString(locale === "ar" ? "ar-SA-u-nu-latn" : "en-US"))}</span> : null}
-              </span>
-              <span className="order-1 grid h-10 w-10 shrink-0 place-items-center rounded-lg rounded-es-none bg-navy-900 xl:order-2 font-display text-base font-extrabold text-white" dir="ltr">
-                {hotel.rating.toFixed(1)}
-              </span>
-            </div>
-          ) : (
-            <span className="hidden xl:block" />
-          )}
-
-          <div className="mt-auto flex items-end justify-between gap-3 xl:block xl:text-end">
+                {score}
+              </div>
+            ) : null}
+            {hotel.locationRating ? <p className="mt-1 hidden text-xs text-navy-600 sm:block">{hp.locationScore.replace("{r}", hotel.locationRating.toFixed(1))}</p> : null}
             {shownPrice != null ? (
-              <div>
-                {hotel.dealPct ? (
-                  <span className="mb-1 inline-flex items-center gap-1 rounded-md bg-sea-600 px-1.5 py-0.5 text-[11px] font-extrabold text-white" title={t.dealLess.replace("{pct}", String(hotel.dealPct))}>
-                    {t.dealShort.replace("{pct}", String(hotel.dealPct))}
-                  </span>
-                ) : null}
-                <p className="text-[11px] font-semibold text-navy-500">{perNight && c.nights > 1 ? t.lowestNight : t.lowestStay}</p>
-                <p className="font-display text-2xl font-black leading-tight text-navy-950">{money(shownPrice, locale)}</p>
-                {perNight && c.nights > 1 && total != null && <p className="text-[11px] text-navy-500">{t.stayTotalShort.replace("{amount}", money(total, locale))}</p>}
+              <div className="mt-2 sm:mt-auto">
+                <p className="text-[11.5px] text-navy-500">{nightly ? t.lowestNight : stayLine}</p>
+                <p className="font-display text-xl font-black leading-tight text-navy-950 sm:text-2xl">{money(shownPrice, locale)}</p>
+                <p className="text-[11px] text-navy-500">
+                  {t.bkTaxes}
+                  {sites > 1 ? ` · ${t.bkCheapestOf.replace("{sites}", sitesText)}` : ""}
+                </p>
                 {c.budget > 0 && total != null && (
-                  <p className={`text-[11px] font-bold ${total > c.budget ? "text-rose-700" : "text-sea-700"}`}>
+                  <p className={`text-[11px] font-bold ${total > c.budget ? "text-rose-700" : "text-emerald-700"}`}>
                     {total > c.budget ? t.overBudget.replace("{amount}", money(total - c.budget, locale)) : `✓ ${t.withinBudget}`}
                   </p>
                 )}
               </div>
-            ) : (
-              <span />
-            )}
-            <div className="flex shrink-0 flex-col gap-1 xl:mt-3">
-              <a
-                href={href}
-                onClick={choose}
-                title={t.chooseHint}
-                className="inline-flex min-h-12 min-w-[140px] items-center justify-center gap-1.5 rounded-xl bg-sun-400 px-5 text-base font-extrabold text-navy-950 shadow-[var(--shadow-sun)] transition hover:bg-sun-300 xl:w-full"
-              >
-                {t.choose}
-                <span aria-hidden="true" className="transition group-hover/card:-translate-x-0.5 ltr:group-hover/card:translate-x-0.5">
-                  {locale === "ar" ? "←" : "→"}
-                </span>
-              </a>
-              <button
-                type="button"
-                onClick={() => setOpen((v) => !v)}
-                aria-expanded={open}
-                className="inline-flex min-h-9 items-center justify-center gap-1 rounded-lg px-2 text-xs font-bold text-sea-800 hover:bg-sea-50"
-              >
-                {t.pricesEverySite}
-                <span aria-hidden="true">{open ? "▴" : "▾"}</span>
-              </button>
-            </div>
+            ) : pinned ? (
+              <p className="mt-2 text-xs font-semibold text-navy-600">{t.bkNoPriceYet}</p>
+            ) : null}
+            <a
+              href={href}
+              onClick={choose}
+              className="relative z-[1] mt-2 hidden min-h-10 w-full items-center justify-center gap-1 rounded-lg bg-sun-500 px-4 text-sm font-extrabold text-white transition hover:bg-sun-600 sm:inline-flex"
+            >
+              {t.bkSeePrices}
+              <span aria-hidden="true">{locale === "ar" ? "‹" : "›"}</span>
+            </a>
           </div>
         </div>
       </div>
-      {open && (
-        <div className="border-t border-mist-200 bg-mist-50/60 p-4">
-          <AllSites hotel={hotel} c={c} cityQuery={cityQuery} />
-        </div>
-      )}
     </article>
   );
 }
 
 /**
- * The card's photos (owner, 7 Nov: «صور الفندق» in the frame): the arrows or
- * a swipe step through Google's photos of the hotel, a tap opens its page.
- * No sideways scrolling (one photo at a time), so no rail is needed.
+ * The card's photo (Booking): one photo beside the hotel on phones, a tap
+ * opens its page; wider screens step through the photos with arrows.
  */
 function CardPhotos({ hotel, href, onOpen, t, locale }: { hotel: HotelResult; href: string; onOpen: () => void; t: Common["t"]; locale: "ar" | "en" }) {
   const imgs = hotel.images;
   const [i, setI] = useState(0);
-  const [x0, setX0] = useState<number | null>(null);
-  if (!imgs.length) return <div className="hidden bg-gradient-to-br from-navy-800 to-navy-950 sm:block" />;
+  const box = "relative z-[1] w-[118px] shrink-0 self-stretch overflow-hidden rounded-xl bg-mist-100 min-h-[170px] sm:w-[200px] sm:min-h-[200px] lg:w-[220px]";
+  const fav = (
+    <span className="absolute start-1.5 top-1.5 z-[1]">
+      <FavButton locale={locale} fav={{ type: "hotel", name: hotel.name, area: "", label: hotel.nameAr || undefined }} />
+    </span>
+  );
+  if (!imgs.length) return <div className={`${box} bg-gradient-to-br from-navy-700 to-navy-950`}>{fav}</div>;
   const n = imgs.length;
   const go = (d: number) => setI((v) => (v + d + n) % n);
-  const rtl = locale === "ar";
   return (
-    <div
-      className="group relative aspect-[16/10] overflow-hidden bg-mist-100 sm:aspect-auto sm:h-full sm:min-h-[230px]"
-      onTouchStart={(e) => setX0(e.touches[0].clientX)}
-      onTouchEnd={(e) => {
-        if (x0 == null) return;
-        const dx = e.changedTouches[0].clientX - x0;
-        setX0(null);
-        if (Math.abs(dx) > 40) go((dx < 0 ? 1 : -1) * (rtl ? -1 : 1));
-      }}
-    >
+    <div className={`group ${box}`}>
       <a href={href} onClick={onOpen} tabIndex={-1} aria-hidden="true" className="absolute inset-0">
         <Photo key={i} src={imgs[i].full || imgs[i].thumb} alt="" className="h-full w-full" />
       </a>
-      <span className="pointer-events-none absolute end-2 top-2 z-[1]">
-        <span className="pointer-events-auto">
-          <FavButton locale={locale} fav={{ type: "hotel", name: hotel.name, area: "", label: hotel.nameAr || undefined }} />
-        </span>
-      </span>
+      {fav}
       {n > 1 && (
         <>
-          <button
-            type="button"
-            onClick={() => go(-1)}
-            aria-label={t.prevPhoto}
-            className="absolute start-2 top-1/2 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full bg-white/90 text-lg font-bold text-navy-900 shadow transition sm:opacity-0 sm:group-hover:opacity-100"
-          >
+          <button type="button" onClick={() => go(-1)} aria-label={t.prevPhoto} className="absolute start-2 top-1/2 hidden h-8 w-8 -translate-y-1/2 place-items-center rounded-full bg-white/90 text-lg font-bold text-navy-900 shadow opacity-0 transition group-hover:opacity-100 sm:grid">
             <span aria-hidden="true" className="rtl:rotate-180">‹</span>
           </button>
-          <button
-            type="button"
-            onClick={() => go(1)}
-            aria-label={t.nextPhoto}
-            className="absolute end-2 top-1/2 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full bg-white/90 text-lg font-bold text-navy-900 shadow transition sm:opacity-0 sm:group-hover:opacity-100"
-          >
+          <button type="button" onClick={() => go(1)} aria-label={t.nextPhoto} className="absolute end-2 top-1/2 hidden h-8 w-8 -translate-y-1/2 place-items-center rounded-full bg-white/90 text-lg font-bold text-navy-900 shadow opacity-0 transition group-hover:opacity-100 sm:grid">
             <span aria-hidden="true" className="rtl:rotate-180">›</span>
           </button>
-          <span className="pointer-events-none absolute bottom-2 start-2 rounded-full bg-black/55 px-2 py-0.5 text-[11px] font-bold text-white" dir="ltr">
-            {i + 1} / {n}
-          </span>
-          <span className="pointer-events-none absolute inset-x-0 bottom-2.5 flex justify-center gap-1" aria-hidden="true">
-            {imgs.slice(0, 8).map((_, k) => (
-              <span key={k} className={`h-1.5 rounded-full transition-all ${k === i ? "w-4 bg-white" : "w-1.5 bg-white/60"}`} />
-            ))}
-          </span>
         </>
       )}
     </div>
   );
-}
-
-/** The hotel's price on every site: one more search, by its Google id. */
-function AllSites({ hotel, c, cityQuery }: { hotel: HotelResult; c: Common; cityQuery: string }) {
-  const url = useMemo(() => {
-    const p = new URLSearchParams({ q: `${hotel.name} ${cityQuery}`.slice(0, 120), checkIn: c.checkIn, checkOut: c.checkOut, adults: String(c.adults) });
-    if (c.childrenAges.length) p.set("childrenAges", c.childrenAges.join(","));
-    if (hotel.token) p.set("token", hotel.token);
-    return `/api/hotel-prices?${p.toString()}`;
-  }, [hotel.name, hotel.token, cityQuery, c.checkIn, c.checkOut, c.adults, c.childrenAges]);
-  const [state, setState] = useState<{ url: string; result: HotelSearch | null } | null>(null);
-  useEffect(() => {
-    let live = true;
-    fetch(url)
-      .then((r) => (r.ok ? r.json() : null))
-      .then((b: { result?: HotelSearch | null } | null) => live && setState({ url, result: b?.result ?? null }))
-      .catch(() => live && setState({ url, result: null }));
-    return () => {
-      live = false;
-    };
-  }, [url]);
-  if (!state || state.url !== url) {
-    return (
-      <p className="flex items-center gap-2 text-sm font-semibold text-navy-700">
-        <span className="h-4 w-4 animate-spin rounded-full border-2 border-navy-200 border-t-sun-500" aria-hidden="true" />
-        {c.t.checking}
-      </p>
-    );
-  }
-  // No search left: the list's own hotel, with whatever offers it carried.
-  const full = state.result?.hotels.find((h) => h.name) ?? hotel;
-  return <PriceRows hotel={{ ...hotel, ...full, lat: full.lat ?? hotel.lat, lng: full.lng ?? hotel.lng }} c={c} checkedAt={state.result?.checkedAt ?? new Date().toISOString()} compact />;
 }

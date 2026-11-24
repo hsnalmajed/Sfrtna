@@ -50,6 +50,10 @@ function Chevron() {
   );
 }
 
+/** One of the three equal buttons of Booking's results bar (sort · filter · map). */
+export const BAR_BUTTON =
+  "flex min-h-11 flex-1 items-center justify-center gap-1.5 px-2 text-sm font-bold text-navy-950 transition hover:bg-mist-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-sun-400";
+
 export default function FilterPill<T extends string | number>(
   props: {
     icon?: string;
@@ -60,6 +64,8 @@ export default function FilterPill<T extends string | number>(
         Left out for a filter that always has a value (the month). */
     allLabel?: string;
     locale: Locale;
+    /** Booking's bar (hotels): an equal-width button with the label only and a dot when set. */
+    bar?: { label: string; on: boolean };
   } & (
     | { multi?: false; value: T | "all"; onChange: (v: T | "all") => void }
     | { multi: true; value: T[]; onChange: (v: T[]) => void }
@@ -160,11 +166,23 @@ export default function FilterPill<T extends string | number>(
         onClick={() => setOpen(true)}
         aria-haspopup="dialog"
         aria-label={`${props.label}: ${summary}`}
-        className={`${pillBase} ${active ? pillOn : pillOff}`}
+        className={props.bar ? BAR_BUTTON : `${pillBase} ${active ? pillOn : pillOff}`}
       >
-        {props.icon && <span aria-hidden="true">{props.icon}</span>}
-        <span className="min-w-0 leading-tight [text-wrap:balance]">{chosen.length > 1 ? `${props.label} · ${chosen.length}` : summary}</span>
-        <Chevron />
+        {props.bar ? (
+          <>
+            <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2.2" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M7 4v16M7 20l-3-3M7 20l3-3M17 20V4M17 4l-3 3M17 4l3 3" />
+            </svg>
+            {props.bar.label}
+            {props.bar.on && <span className="h-2 w-2 rounded-full bg-sun-500" aria-hidden="true" />}
+          </>
+        ) : (
+          <>
+            {props.icon && <span aria-hidden="true">{props.icon}</span>}
+            <span className="min-w-0 leading-tight [text-wrap:balance]">{chosen.length > 1 ? `${props.label} · ${chosen.length}` : summary}</span>
+            <Chevron />
+          </>
+        )}
       </button>
       {open && createPortal(sheet, document.body)}
     </>

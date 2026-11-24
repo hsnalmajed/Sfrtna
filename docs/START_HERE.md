@@ -115,8 +115,23 @@ iPhone app.
 
 ## ▶ Hand-off (15 Nov 2026) — current state
 
-**▶▶▶▶▶▶▶▶▶▶ NEXT = BUILD «HOTELS = BOOKING APP 1:1» (owner APPROVED 24 Nov
-15:28, Opus, NEW CHAT).** Study DONE (owner's Booking app shots: Lafif
+**▶▶▶▶▶▶▶▶▶▶ «HOTELS = BOOKING APP» ROUND 1 BUILT + PUSHED 24 Nov (same
+chat):** named search → city list with the searched hotel first in a navy
+frame (`pinned` in HotelList; card links carry `open=1` → hotel page; list
+down → page as before); Booking cards (photo start, score, distance from the
+searched hotel, price block «6 ليالٍ، شخصان · شامل الضرائب · الأرخص من N
+مواقع», «اعرض الأسعار» ≥sm, whole card taps); phone bar ترتيب|تصفية|الخريطة
+(`bar` prop on FilterPill/FilterSheet); compact navy band on phones; hotel
+page: Booking photo grid «+N», highlights row, stay box (dates + «بحثت عن»),
+STICKY «اختر الغرفة» bar on phones, section nav ≥sm only; rooms = one card
+each with option box + full «اختر» → RoomBooking sheet (unchanged). Checked
+locally (Playwright, mocked prices) 360/390/768/1440: no sideways overflow.
+dict keys `hotelResults.bk*`. **NEXT:** owner checks on the phone (live
+prices shut till 6 Dec → list may fall back to partners); round 2 = his
+notes + rooms facts (beds/size when Google gives them), score box beside
+the title on phones, map/surroundings tabs.
+**(spec, kept)** BUILD «HOTELS = BOOKING APP 1:1» (owner APPROVED 24 Nov
+15:28). Study DONE (owner's Booking app shots: Lafif
 Al-Khaldia Madinah; Booking site in Chrome). Mock-ups = the spec:
 `docs/design/hotels-booking/` (hotels-phone-mockup.png = 4 phone screens,
 hotels-desktop-mockup.png, hotels.html = exact CSS: navy-700 score badge with
