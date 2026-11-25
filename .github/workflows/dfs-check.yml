@@ -12,6 +12,10 @@ on:
         description: "Compare mode: hotel names to open, | separated"
         type: string
         default: ""
+      sources:
+        description: "List every site that priced hotels (DataForSEO only)"
+        type: boolean
+        default: false
       compare:
         description: "Before/after: old source (SerpApi) vs new, same moment"
         type: boolean
@@ -33,5 +37,6 @@ jobs:
           CITIES: ${{ inputs.cities }}
           COMPARE: ${{ inputs.compare }}
           HOTELS: ${{ inputs.hotels }}
+          SOURCES: ${{ inputs.sources }}
         run: |
-          if [ "$COMPARE" = "true" ]; then node scripts/hotel-compare.mjs; else node scripts/dfs-check.mjs; fi
+          if [ "$SOURCES" = "true" ]; then node scripts/dfs-sources.mjs; elif [ "$COMPARE" = "true" ]; then node scripts/hotel-compare.mjs; else node scripts/dfs-check.mjs; fi
