@@ -1,23 +1,18 @@
-name: Wide-page reports (apps)
-
+name: Wide-page reports
 on:
   workflow_dispatch:
     inputs:
-      hours:
-        description: "Look back this many hours"
-        default: "24"
-
+      hours: { description: "Look back hours", default: "168" }
 permissions:
   contents: read
-
 jobs:
   read:
     runs-on: ubuntu-latest
     steps:
-      - name: Print the automatic wide-page reports
+      - name: Read the apps' automatic wide-page reports
         env:
           SMOKE_TOKEN: ${{ secrets.SMOKE_TOKEN }}
         run: |
-          curl -fsS -H "x-sfrtna-smoke: $SMOKE_TOKEN" -A "Mozilla/5.0 sfrtna-check" \
-            "https://sfrtna.com/api/feedback/recent?hours=${{ inputs.hours }}" \
-          | jq -r '.items[] | select((.text // "") | startswith("AUTO wide")) | "=== \(.ctx.page // "") \(.ctx.screen // "") \(.ctx.device // "")\n\(.text)"'
+          curl -sf -H "x-sfrtna-smoke: $SMOKE_TOKEN" "https://sfrtna.com/api/feedback/recent?hours=${{ inputs.hours }}" -o fb.json || { echo "::error::fetch failed"; exit 1; }
+          jq -r '.items[] | select((.text // "") | test("AUTO wide-page")) | "\(.ctx.page // .page // "?") | \(.ctx.device // "" | .[0:40]) | \(.text | gsub("\n"; " ⏎ "))"' fb.json | head -40 | while IFS= read -r l; do echo "::notice::${l:0:3000}"; done
+          echo "count=$(jq '[.items[] | select((.text // "") | test("AUTO wide-page"))] | length' fb.json)"
