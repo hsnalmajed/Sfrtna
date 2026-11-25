@@ -34,6 +34,26 @@ export function isIosApp(): boolean {
   return typeof navigator !== "undefined" && IOS_APP_UA.test(navigator.userAgent);
 }
 
+/**
+ * ATT decision injected by AppDelegate.swift (ATTBridge) into window.__sfrAtt.
+ * "authorized" = user allowed tracking → we may load GA and partner scripts.
+ * Everything else (denied / restricted / not_determined / missing) = clean mode.
+ * Browser only.
+ */
+export function attAllowed(): boolean {
+  if (typeof window === "undefined") return false;
+  return (window as unknown as { __sfrAtt?: string }).__sfrAtt === "authorized";
+}
+
+/**
+ * True when third-party scripts must be suppressed:
+ * - always inside the iPhone app unless ATT was explicitly authorized.
+ * Browser only.
+ */
+export function isIosClean(): boolean {
+  return isIosApp() && !attAllowed();
+}
+
 const noop = () => () => {};
 
 /**
@@ -43,4 +63,12 @@ const noop = () => () => {};
  */
 export function useIosApp(): boolean | null {
   return useSyncExternalStore(noop, isIosApp, () => null);
+}
+
+/**
+ * Like useIosApp but honours ATT: returns true only when in the app AND
+ * tracking is not authorized. Render third-party things only on `false`.
+ */
+export function useIosClean(): boolean | null {
+  return useSyncExternalStore(noop, isIosClean, () => null);
 }

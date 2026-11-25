@@ -1,6 +1,8 @@
 import UIKit
 import Capacitor
 import UserNotifications
+import AppTrackingTransparency
+import AdSupport
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -12,6 +14,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // and a tap opens the plan they belong to.
         UNUserNotificationCenter.current().delegate = self
         return true
+    }
+
+    func applicationDidBecomeActive(_ application: UIApplication) {
+        // App Tracking Transparency (ATT) — Apple 5.1.2(i), 25 Nov 2026.
+        // We ask once; iOS never shows the prompt twice. The result is stored
+        // in UserDefaults so the web layer can read it and decide whether to
+        // load GA/partner scripts (iosClean.ts honours "denied").
+        // The prompt must come after the app is fully active, not in
+        // didFinishLaunching — Apple requires a small delay so the UI is ready.
+        if #available(iOS 14.0, *) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                let status = ATTrackingManager.trackingAuthorizationStatus
+                // Only show the prompt if not yet determined.
+                guard status == .notDetermined else {
+                    ATTBridge.notify(status)
+                    return
+                }
+                ATTrackingManager.requestTrackingAuthorization { granted in
+                    DispatchQueue.main.async { ATTBridge.notify(granted) }
+                }
+            }
+        }
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -26,10 +50,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
-    }
-
-    func applicationDidBecomeActive(_ application: UIApplication) {
-        // (Scenes are on: SceneDelegate.sceneDidBecomeActive does the work.)
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
@@ -58,6 +78,39 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         DispatchQueue.main.async { TripMode.open(plan ?? "") }
         completionHandler()
     }
+}
+
+// MARK: - ATT Bridge
+//
+// Passes the ATT decision to the web page so iosClean.ts can decide
+// whether to allow GA / partner scripts. The status is written to
+// UserDefaults AND injected into the page as window.__sfrAtt.
+// Values: "authorized" | "denied" | "restricted" | "not_determined"
+
+import AppTrackingTransparency
+
+@available(iOS 14, *)
+enum ATTBridge {
+    static func notify(_ status: ATTrackingManager.AuthorizationStatus) {
+        let str: String
+        switch status {
+        case .authorized:   str = "authorized"
+        case .denied:       str = "denied"
+        case .restricted:   str = "restricted"
+        default:            str = "not_determined"
+        }
+        UserDefaults.standard.set(str, forKey: "sfr_att")
+        // Tell the web layer immediately — the page may already be open.
+        let js = "try{window.__sfrAtt='\(str)';}catch(e){}"
+        DispatchQueue.main.async {
+            // Walk up to the main view controller's WebView.
+            if let vc = UIApplication.shared.windows.first?.rootViewController as? UINavigationController,
+               let mvc = vc.viewControllers.first as? MainViewController {
+                mvc.webView?.evaluateJavaScript(js, completionHandler: nil)
+            }
+        }
+    }
+
 }
 
 // MARK: - Sfrtna shell

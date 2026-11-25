@@ -30,6 +30,8 @@
 	<string>سفرتنا تضيف محطات خطة رحلتك إلى تقويمك بأوقاتها وأماكنها. Sfrtna adds your trip plan's stops to your calendar.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>نستخدم موقعك لنعرف اتجاه القبلة، ولنجد أقرب مسجد ومطعم حلال، ولنقترح أقرب مطار ونعرض مكانك على خريطة المدينة. لا نحفظه ولا نرسله لأي جهة.</string>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>يتيح لنا تتبع النشاط تقديم تجربة شخصية وقياس فعالية الإعلانات التي نعرضها عبر شركاء الخدمة. لك حق رفض ذلك في أي وقت. App tracking lets us personalise your experience and measure partner referrals. You can opt out at any time.</string>
 	<key>CFBundleAllowMixedLocalizations</key>
 	<true/>
 	<key>CFBundleLocalizations</key>
