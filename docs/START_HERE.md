@@ -161,8 +161,8 @@ $55.96, order DAT261125-7053-10227); ~$0.013 a 54-hotel list, $0.004 a
 hotel page → ~3,000 visitor searches. (2) DONE 25 Nov: link-only hotel
 buttons removed (named-hotel fallback + «no price» search links; Stay22
 partner list kept; `extraHotelSites` now unused, file kept).** **List price ≠ page price FIXED 25 Nov** (list by
-point only = no market = before taxes; now point + market 2682 → list =
-page, TEST_PLAN). **▶ NEXT:** re-run `dfs-check.yml` compare (Madinah) to
+point = before taxes, even with the market code; now market 2682 + city
+keyword → list = page, TEST_PLAN). **▶ NEXT:** re-run `dfs-check.yml` compare (Madinah) to
 confirm live; Then owner checks hotels on the phone; (3) flights: same
 rule — price sources beyond Aviasales (RUH missing); (4) local leaders per
 country appear through Google's price list (market `location_code` 2682

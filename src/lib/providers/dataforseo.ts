@@ -266,14 +266,16 @@ export async function dfsHotelPrices(q: {
   const stars = q.minStars && q.minStars >= 2 && q.minStars <= 5 ? [2, 3, 4, 5].filter((s) => s >= (q.minStars as number)) : [];
   const minRating = q.rating === 9 ? 4.5 : q.rating === 8 ? 4 : q.rating === 7 ? 3.5 : 0;
   const maxPrice = q.maxPerNight && q.maxPerNight > 0 ? Math.round(q.maxPerNight) : 0;
-  const key = `dfs-hotels2:${q.q.toLowerCase()}:${q.checkIn}:${q.checkOut}:${adults}:${ages.join(",")}:${currency}:${depth}:${stars.join("")}:${minRating}:${maxPrice}:${q.freeCancel ? 1 : 0}:${q.rentals ? 1 : 0}${q.mkt ? `:${q.mkt}` : ""}`;
-  // The point AND the Saudi market (25 Nov 2026): a point alone answers in
-  // no market, with prices BEFORE taxes (Madinah list 16–20 % under each
-  // hotel page); with the market the list price = the page's, taxes in.
+  const key = `dfs-hotels3:${q.q.toLowerCase()}:${q.checkIn}:${q.checkOut}:${adults}:${ages.join(",")}:${currency}:${depth}:${stars.join("")}:${minRating}:${maxPrice}:${q.freeCancel ? 1 : 0}:${q.rentals ? 1 : 0}${q.mkt ? `:${q.mkt}` : ""}`;
+  // The Saudi market + the city's name (25 Nov 2026): a point answers with
+  // prices BEFORE taxes (Madinah list 16–20 % under each hotel page), even
+  // with the market code beside it; market + keyword = the page's price,
+  // taxes in (Golden Tulip 484, Pullman 749, Al Saha 876, two runs).
+  // "both" stays for site checks only.
   const where =
-    q.mkt === "kw" || !point
-      ? { location_code: MARKET, keyword: q.q, search_this_area: false }
-      : { location_coordinate: point, location_code: MARKET };
+    q.mkt === "both" && point
+      ? { location_coordinate: point, location_code: MARKET }
+      : { location_code: MARKET, keyword: q.q, search_this_area: false };
   const list = await cachedJson<HotelSearch>(key, 6 * 3600, async () => {
     const r = await post("hotel_searches/live", {
       ...where,

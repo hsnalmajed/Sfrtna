@@ -358,4 +358,6 @@ says «شامل الضرائب». Also «Noon» (rental) list 153 vs page 352.
 **ROOT CAUSE + FIX (run 45593447300):** the list was located by point only
 (no market) → prices before taxes. Same list with the Saudi market code 2682:
 Golden Tulip 484 = page 484, Pullman 749 = page 749, Al Saha 876 = page 876.
-List now = point + market code (cache key dfs-hotels2).
+Point + market code was NOT stable (run 45595603981: 405 / 626 / 740 again);
+market + keyword matched the page in both runs → list = market 2682 + city
+keyword (cache key dfs-hotels3).
