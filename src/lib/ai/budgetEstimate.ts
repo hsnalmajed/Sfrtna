@@ -22,6 +22,7 @@ import { findAirport } from "@/lib/airports";
 import { CITY_OF_AIRPORT } from "@/lib/providers/travelpayouts";
 import { exploreFares, googleFlights, hotelPrices, type HotelResult } from "@/lib/providers/serpapi";
 import { tripFaresFrom } from "@/lib/providers/travelpayouts";
+import { sdFlights } from "@/lib/providers/scrapingdog";
 import { readCityCosts } from "@/lib/costs";
 import type { CityCosts, Pair } from "@/lib/costsTypes";
 import { fetchRates, rateBetween, type Rates } from "@/lib/rates";
@@ -124,7 +125,7 @@ async function flightTo(r: EstimateRequest, dest: string): Promise<BudgetEstimat
   });
   const hit = (explore ?? []).filter((f) => sameCity(f.airport, dest)).sort((a, b) => a.price - b.price)[0];
   if (hit) return { price: hit.price, stops: hit.stops, airline: hit.airline, live: true };
-  const gf = await googleFlights({
+  const ask = {
     origin: r.origin,
     destination: dest,
     departDate: r.from,
@@ -135,8 +136,8 @@ async function flightTo(r: EstimateRequest, dest: string): Promise<BudgetEstimat
     currency: r.currency,
     locale: r.locale,
     directOnly: r.directOnly,
-    pace: "explore",
-  });
+  };
+  const gf = (await sdFlights(ask)) ?? (await googleFlights({ ...ask, pace: "explore" }));
   const best = (gf?.flights ?? []).slice().sort((a, b) => a.price - b.price)[0];
   if (best) return { price: Math.round(best.price), stops: best.stops, airline: best.legs[0]?.airline ?? "", live: true };
   // No live price to be had now: the fare seen recently for these days

@@ -6,7 +6,7 @@ import { accounts } from "@/lib/accounts";
  * paid plans"). Kept in the same anonymous stats table under kind "ext";
  * the weekly report divides them by visits.
  */
-export type UsageKey = "serpapi" | "here" | "resend" | "viator";
+export type UsageKey = "serpapi" | "here" | "resend" | "viator" | "scrapingdog";
 
 export function countUse(key: UsageKey): void {
   const job = (async () => {

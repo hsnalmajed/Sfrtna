@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { googleFlights } from "@/lib/providers/serpapi";
+import { sdConfigured, sdFlights, sdLastError } from "@/lib/providers/scrapingdog";
 
 export const dynamic = "force-dynamic";
 
@@ -22,7 +23,7 @@ export async function GET(request: Request) {
   }
   const n = (k: string, max: number) => Math.max(0, Math.min(max, Number(q.get(k)) || 0));
   const currency = /^[A-Z]{3}$/.test(q.get("currency") || "") ? (q.get("currency") as string) : "SAR";
-  const result = await googleFlights({
+  const ask = {
     origin,
     destination,
     departDate,
@@ -31,9 +32,23 @@ export async function GET(request: Request) {
     children: n("children", 8),
     infants: n("infants", 4),
     currency,
-    locale: q.get("locale") === "en" ? "en" : "ar",
+    locale: (q.get("locale") === "en" ? "en" : "ar") as "ar" | "en",
     directOnly: q.get("directOnly") === "true",
-  });
-  if (!result || result.flights.length === 0) return new NextResponse(null, { status: 204 });
-  return NextResponse.json(result, { headers: { "Cache-Control": "no-store" } });
+  };
+  // Paid-per-search source first (cheap, prepaid); SerpApi's small free
+  // allowance stays for the destination explorer, and answers when the
+  // first one is not set up, is out of credit, or finds nothing.
+  const first = await sdFlights(ask);
+  const result = first && first.flights.length > 0 ? first : await googleFlights(ask);
+  // Which source answered: for our own site check only, never for visitors.
+  // (Only the source check that spends on purpose: page checks keep the 204.)
+  const own =
+    Boolean(process.env.SMOKE_TOKEN) &&
+    request.headers.get("x-sfrtna-smoke") === process.env.SMOKE_TOKEN &&
+    request.headers.get("x-sfrtna-spend") === "1";
+  const check = own ? { via: result === first ? "sd" : result ? "serp" : "none", sdOn: sdConfigured(), sdError: sdLastError() } : undefined;
+  if (!result || result.flights.length === 0) {
+    return own ? NextResponse.json({ check }, { status: 200 }) : new NextResponse(null, { status: 204 });
+  }
+  return NextResponse.json(own ? { ...result, check } : result, { headers: { "Cache-Control": "no-store" } });
 }

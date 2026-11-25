@@ -165,7 +165,16 @@ point = before taxes, even with the market code; now market 2682 + city
 keyword → list = page, TEST_PLAN). LIVE CONFIRMED (Madinah + Riyadh, TEST_PLAN). Small gap: list can show
 Google's featured price above the page's cheapest site (Crowne Plaza 280 vs
 263). **▶ NEXT:** owner checks hotels on the phone; (3) flights: same
-rule — price sources beyond Aviasales (RUH missing); (4) local leaders per
+rule — price sources beyond Aviasales (RUH missing). **25 Nov study:**
+Amadeus self-service CLOSED 17 Jul 2026; TP search API needs 50k MAU;
+Skyscanner API >100k traffic; Duffel = we'd sell tickets (not our model);
+Ignav $2/1k, source + SA coverage unstated. **Built 25 Nov: Scrapingdog**
+(Google Flights, same fields as SerpApi, ~$0.002/search) =
+`providers/scrapingdog.ts`, first in `/api/flight-fallback` + budget
+advisor, SerpApi after; inactive until Runtime secret SCRAPINGDOG_KEY;
+check = `flight-source-check.yml` (RUH-IST, DMM-CMB). Owner: account +
+secret → run the check → TEST_PLAN. Then: merge its options WITH the
+partner's even when the partner answers (more options/airlines); (4) local leaders per
 country appear through Google's price list (market `location_code` 2682
 SA); Xotelo (free, Tripadvisor-based) = terms unclear, ask before use.
 **PHONES «page moves» (owner video 24 Nov 16:05, iPhone app, hotels):**

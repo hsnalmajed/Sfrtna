@@ -220,6 +220,7 @@ const allowances = [
   ["أسعار الفنادق وجوجل للطيران (SerpApi)", `${n(serp?.perMonth || 250)} في الشهر`, `${n(ext.get("serpapi") || 0)} بحث${serp?.connected ? ` · الشهر: ${n(serp.used)} من ${n(serp.perMonth)}` : ""}`, visits ? (perVisit(ext.get("serpapi") || 0) * 100).toFixed(1) : "—", carries((serp?.perMonth || 250) / 30, ext.get("serpapi") || 0)],
   ["أسماء الفنادق (HERE)", "4,800 في الشهر (حدّنا)", `${n(ext.get("here") || 0)} طلب`, visits ? (perVisit(ext.get("here") || 0) * 100).toFixed(1) : "—", carries(160, ext.get("here") || 0)],
   ["البريد (Resend)", "100 في اليوم · 3,000 في الشهر", `${n(ext.get("resend") || 0)} رسالة`, visits ? (perVisit(ext.get("resend") || 0) * 100).toFixed(1) : "—", carries(100, ext.get("resend") || 0)],
+  ["أسعار الطيران الحية (Scrapingdog)", "رصيد مدفوع مسبقاً", `${n(ext.get("scrapingdog") || 0)} بحث`, visits ? (perVisit(ext.get("scrapingdog") || 0) * 100).toFixed(1) : "—", null],
   ["الأنشطة (Viator)", "بلا حد معلن", `${n(ext.get("viator") || 0)} طلب`, visits ? (perVisit(ext.get("viator") || 0) * 100).toFixed(1) : "—", null],
 ].filter(Boolean);
 const allowanceHtml = `<table style="width:100%;border-collapse:collapse;background:#fff;border:1px solid #eaecf0;font-size:13px">

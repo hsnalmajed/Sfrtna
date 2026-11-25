@@ -1,0 +1,36 @@
+# Live check of the flight price sources on production (by hand). Spends a
+# few paid searches on purpose. Lines start with CHECK in the log.
+name: Flight source check
+on:
+  workflow_dispatch:
+    inputs:
+      routes:
+        description: "Routes, comma separated (RUH-IST,DMM-CMB)"
+        type: string
+        default: RUH-IST,DMM-CMB
+      depart:
+        description: "Departure date YYYY-MM-DD"
+        type: string
+        default: "2026-12-17"
+      return:
+        description: "Return date YYYY-MM-DD (empty = one way)"
+        type: string
+        default: "2026-12-24"
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Check
+        env:
+          SMOKE_TOKEN: ${{ secrets.SMOKE_TOKEN }}
+          ROUTES: ${{ inputs.routes }}
+          DEPART: ${{ inputs.depart }}
+          RETURN: ${{ inputs.return }}
+        run: node scripts/flight-source-check.mjs
