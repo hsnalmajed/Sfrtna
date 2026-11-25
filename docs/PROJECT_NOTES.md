@@ -3050,3 +3050,38 @@ suggest from «رحلتي».
   twice → re-dispatched; when its file lands: publish_staged --apply,
   build-index, guide deep only=negombo.
 
+
+## Scrapingdog — services plan (owner 25 Nov 2026, build chat)
+Account almajedhsn@gmail.com, FREE plan (100 credits/month, resets 2 Dec);
+key in Cloudflare secret SCRAPINGDOG_KEY. Owner: no paid plan before launch;
+at launch one month Lite ($40, BLACKDOG15 −15%), measure, decide. Add-on
+credits need a paid plan. Free credits: X follow + mention = 4k (owner
+tweeted 25 Nov, asked support by chat), LinkedIn = 6k. Pay-as-you-go
+alternatives checked: ScrapeBadger (Google only, credits never expire,
+1,000 free), Bright Data / Apify Skyscanner (per itinerary → ~$1/search).
+**USE (and what for):**
+- Skyscanner Search — flights source #1: 1,089 options / 23 sellers RUH-IST.
+- Google Flights — flights backup (live now, form us/en only).
+- Google Hotels — hotels backup to DataForSEO.
+- Booking Search — benchmark our hotel prices vs Booking.
+- Airbnb Search — new «شقق وبيوت» tab in hotel results (owner wants it), live
+  price + link; check Airbnb's commission programme → PARTNERS.
+- Google Maps Places — FACTS only (hours, closed, rating number, reviews
+  count, location) for the plan, guide, halal restaurants, mosques.
+- Tripadvisor Search — ranking + rating numbers of sights for plan/guide.
+- Google Search — check sellers' sites, programmes, official visa pages.
+- Google News — «رحلتي» alert before travel (strike, airport closure,
+  weather): headline + link only.
+- Google Trends — order «أفضل الوجهات في {month}» by real Gulf searches.
+- Amazon Search — «جهّز أغراض رحلتك» in «قبل أن تسافر» + «رحلتي» (bags,
+  adapters, locks) with Amazon Associates links (check Amazon.sa terms).
+- Facebook Ads Library + TikTok Ads — marketing study of competitors' ads.
+**DO NOT USE (why):** Booking Place / Tripadvisor Place / Airbnb Place
+(photos, texts, reviews are owned → copyright + Google penalty; licensed way
+= Tripadvisor Content API, Booking affiliate content — check their terms);
+Maps Reviews / Photos / Posts, Google Images / Lens, Bing/Yahoo images
+(unlicensed); Google AI Mode / AI Overview / ChatGPT (another AI's answers,
+unreliable; we have our own AI — its gap is real data = Maps Places);
+Yelp (weak in Gulf/Asia); other engines (Google is enough); shopping sites
+other than Amazon; social profiles/posts, YouTube (owned content; embeds
+break iOS clean mode); Screenshot, Sheets add-on.

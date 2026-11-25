@@ -49,6 +49,8 @@ Rules from now on:
 ## Owner's standing rules (must follow)
 
 - Always reply in **Arabic**. Act as developer, reviewer, CX expert, designer.
+- **Owner 25 Nov: SHORT, useful replies** — long text distracts. A clear
+  decision, not a list of proposals, when he asks for a root solution.
 - Owner steps: ONE step per message; every English word to click/type on its
   own line, **bold**; never chain screens with arrows; never mix English
   button names inside an Arabic sentence. Wait for «تم».
@@ -212,7 +214,10 @@ Trip.com, Mytrip/Gotogate=Etraveli, Kiwi, Almosafer, Rehlat, Expedia,
 Booking, UBFly, Flightnetwork, TravelWings, AkbarTravels + airlines).
 Owner pasted the Scrapingdog key in chat 25 Nov → ask him to regenerate
 it + update the Cloudflare secret once the build is checked. Free test
-credits: ScrapeBadger 1,000 (Google, PAYG never expires) if needed.
+credits: ScrapeBadger 1,000 (Google, PAYG never expires) if needed. Which
+Scrapingdog services we use / don't use and why: PROJECT_NOTES «Scrapingdog
+— services plan» (Airbnb tab, Maps Places facts, News alerts, Trends,
+Amazon gear list, no copied photos/reviews).
 (4) local leaders per
 country appear through Google's price list (market `location_code` 2682
 SA); Xotelo (free, Tripadvisor-based) = terms unclear, ask before use.
