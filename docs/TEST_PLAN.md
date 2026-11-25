@@ -366,3 +366,13 @@ Tulip 484/484, Pullman 748/749, Al Saha 876/876; Riyadh 60 hotels, Holiday Inn
 Malaz 261, Ramada King Fahd 293 (= OLD list). Left: Crowne Plaza Riyadh list
 280 while its page's cheapest site is 263 (Vio.com) — the list shows Google's
 featured price, not always the cheapest site.
+
+## Flight source #2 — Scrapingdog (25 Nov 2026)
+`flight-source-check.yml`, production, 17→24 Dec, 2 adults + 1 child, SAR.
+- RUH-IST: Scrapingdog answered (form us/en; sa/ar and sa/en → http 400
+  «Something went wrong»): 9 options, cheapest 3,054 (flynas XY 299 non-stop)
+  = SerpApi same moment 3,054 (8 options). Airlines: Flynas, Saudia, Turkish,
+  flydubai. Names come in English; times unpadded → padded in code.
+- DMM-CMB: all three forms → 400 at that moment → SerpApi answered (9
+  options, cheapest 6,464 Air India). Re-check: may be Scrapingdog flakiness.
+- Not yet compared with Skyscanner / Wego (next: 10 routes + 10 hotels).

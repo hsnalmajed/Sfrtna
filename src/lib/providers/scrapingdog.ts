@@ -153,7 +153,11 @@ export async function sdFlights(q: {
     if (!body) return null;
     const best = (body.best_flights as Option[] | undefined) ?? [];
     const other = (body.other_flights as Option[] | undefined) ?? [];
-    const time = (s?: string) => (s ? s.slice(11, 16) : "");
+    // Times come unpadded ("2026-12-17 2:55", "… 16" for 16:00): pad them.
+    const time = (s?: string) => {
+      const m = /^\d{4}-\d{2}-\d{2}[ T](\d{1,2})(?::(\d{1,2}))?/.exec(s ?? "");
+      return m ? `${m[1].padStart(2, "0")}:${(m[2] ?? "0").padStart(2, "0")}` : "";
+    };
     const flights: FallbackFlight[] = [...best.map((o) => [o, true] as const), ...other.map((o) => [o, false] as const)]
       .map(([o, isBest]) => [o, Number(o.price), isBest] as const)
       .filter(([o, price]) => Number.isFinite(price) && price > 0 && (o.flights?.length ?? 0) > 0)
