@@ -31,7 +31,7 @@
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>نستخدم موقعك لنعرف اتجاه القبلة، ولنجد أقرب مسجد ومطعم حلال، ولنقترح أقرب مطار ونعرض مكانك على خريطة المدينة. لا نحفظه ولا نرسله لأي جهة.</string>
 	<key>NSUserTrackingUsageDescription</key>
-	<string>يتيح لنا تتبع النشاط تقديم تجربة شخصية وقياس فعالية الإعلانات التي نعرضها عبر شركاء الخدمة. لك حق رفض ذلك في أي وقت. App tracking lets us personalise your experience and measure partner referrals. You can opt out at any time.</string>
+	<string>نستخدم ذلك فقط لقياس استخدام التطبيق وتحسينه (Google Analytics). لا نعرض إعلانات. إن رفضت فلن يُجمع أي شيء للتتبع. We use this only to measure and improve how the app is used (Google Analytics). We show no ads. If you decline, nothing is collected for tracking.</string>
 	<key>CFBundleAllowMixedLocalizations</key>
 	<true/>
 	<key>CFBundleLocalizations</key>
