@@ -189,13 +189,31 @@ checks hotels on the phone; (3) flights: same
 rule — price sources beyond Aviasales (RUH missing). **25 Nov study:**
 Amadeus self-service CLOSED 17 Jul 2026; TP search API needs 50k MAU;
 Skyscanner API >100k traffic; Duffel = we'd sell tickets (not our model);
-Ignav $2/1k, source + SA coverage unstated. **Built 25 Nov: Scrapingdog**
-(Google Flights, same fields as SerpApi, ~$0.002/search) =
-`providers/scrapingdog.ts`, first in `/api/flight-fallback` + budget
-advisor, SerpApi after; inactive until Runtime secret SCRAPINGDOG_KEY;
-check = `flight-source-check.yml` (RUH-IST, DMM-CMB). Owner: account +
-secret → run the check → TEST_PLAN. Then: merge its options WITH the
-partner's even when the partner answers (more options/airlines); (4) local leaders per
+Ignav $2/1k, source + SA coverage unstated. **Built 25 Nov: Scrapingdog** (`providers/scrapingdog.ts`, Runtime secret
+SCRAPINGDOG_KEY SET 25 Nov, account almajedhsn@gmail.com, FREE plan: 100
+credits/month, ~75 left, resets 2 Dec; owner asked support for 4k credits
+for an X mention). Google Flights via it LIVE first in `/api/flight-fallback`
++ budget advisor (only form us/en works; sa/ar → 400), SerpApi after.
+**KEY FINDING (TEST_PLAN «Flight source #2»): Skyscanner Search via
+Scrapingdog** (`GET api.scrapingdog.com/skyscanner/search`, froms, to,
+date1/date2 YYYY-MM-DD, adults, children, child_ages, cabinclass, region SA,
+currency SAR; 5 credits/call) RUH-IST = 1,089 itineraries, 16 airlines, 23
+sellers (booking_options[] book_with/price/is_airline), cheapest 3,002 vs
+Google 3,054 (9 options). Cold call = partial (60) → call twice.
+**OWNER DECISION 25 Nov 22:55: no paid plan before launch** (Lite
+$40/mo, BLACKDOG15 −15%; add-ons need a plan). At launch: one month Lite,
+measure, decide. **▶ NEXT (Opus, build chat):** build Skyscanner as flight
+source #1 for our results list (own cards like Google fallback, every
+seller + price, 2 calls, cache 20 min, falls back to Google/Aviasales when
+no credit), seller buttons → seller's own site / commission programme (NOT
+Skyscanner's tracking_link), Arabic airline names, discover page prices
+for in-season candidates; PARTNERS rows for each seller (Alrehlat, Wingie,
+Trip.com, Mytrip/Gotogate=Etraveli, Kiwi, Almosafer, Rehlat, Expedia,
+Booking, UBFly, Flightnetwork, TravelWings, AkbarTravels + airlines).
+Owner pasted the Scrapingdog key in chat 25 Nov → ask him to regenerate
+it + update the Cloudflare secret once the build is checked. Free test
+credits: ScrapeBadger 1,000 (Google, PAYG never expires) if needed.
+(4) local leaders per
 country appear through Google's price list (market `location_code` 2682
 SA); Xotelo (free, Tripadvisor-based) = terms unclear, ask before use.
 **PHONES «page moves» (owner video 24 Nov 16:05, iPhone app, hotels):**
