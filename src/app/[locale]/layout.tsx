@@ -91,7 +91,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
         */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `try{var u=navigator.userAgent;if(u.indexOf("SfrtnaApp/")>-1){document.documentElement.classList.add("in-app");var v=document.querySelector('meta[name=viewport]');if(v)v.setAttribute("content","width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no, viewport-fit=cover")}if(u.indexOf("SfrtnaTabs/")>-1)document.documentElement.classList.add("in-ios-tabs")}catch(e){}`,
+            __html: `try{var u=navigator.userAgent;if(u.indexOf("SfrtnaApp/")>-1){document.documentElement.classList.add("in-app");var v=document.querySelector('meta[name=viewport]');if(v)v.setAttribute("content","width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no, viewport-fit=cover")}if(u.indexOf("SfrtnaTabs/")>-1)document.documentElement.classList.add("in-ios-tabs")}catch(e){}`,
           }}
         />
       </head>

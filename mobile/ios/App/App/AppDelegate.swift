@@ -186,6 +186,7 @@ class MainViewController: CAPBridgeViewController {
     }
 
     private var sidewaysWatch: NSKeyValueObservation?
+    private var zoomWatch: NSKeyValueObservation?
 
     /// The page never moves sideways or zooms (owner, 24 Nov 2026: «the page
     /// moves, it is not steady» on the hotel pages). Our pages are built to
@@ -202,6 +203,15 @@ class MainViewController: CAPBridgeViewController {
         // 17:29: on the phone the page was still ~10 pt wider than the
         // screen, which iOS lets you pan even with overflow clipped). The
         // start is the left edge in English, the right edge in Arabic.
+        // Zoom is never kept (owner, 25 Nov 2026: real iPhone reports showed
+        // pages zoomed ~6.5% after a field was focused, so the start edge was
+        // cut and the page slid). Any zoom goes straight back to 100%.
+        zoomWatch = sv.observe(\.zoomScale, options: [.new]) { sv, _ in
+            let base = sv.minimumZoomScale
+            if abs(sv.zoomScale - base) > 0.001 {
+                DispatchQueue.main.async { sv.setZoomScale(base, animated: false) }
+            }
+        }
         sidewaysWatch = sv.observe(\.contentOffset, options: [.new]) { [weak self] sv, _ in
             let minX = -sv.adjustedContentInset.left
             let maxX = max(minX, sv.contentSize.width - sv.bounds.width + sv.adjustedContentInset.right)
