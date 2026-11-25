@@ -6,8 +6,6 @@ import Link from "next/link";
 import { useDictionary } from "@/lib/dict/context";
 import type { Locale } from "@/lib/types";
 import { parseChildrenAges } from "@/lib/searchParamsUtil";
-import { extraHotelSites } from "@/lib/suppliers";
-import { hotelPartnerLinks } from "@/lib/affiliateLinks";
 import { nightsBetween } from "@/components/PlannerFields";
 import { cleanRooms, roomShare } from "@/lib/rooms";
 import Icon from "@/components/ui/Icon";
@@ -15,7 +13,6 @@ import HotelPrices from "@/components/HotelPrices";
 import Stay22HotelMap from "@/components/Stay22HotelMap";
 import HotelList from "@/components/HotelList";
 import { findHotelCity, hotelCityPlace } from "@/components/HotelCityInput";
-import PartnerLink from "@/components/PartnerLink";
 import NextStepTabs, { markStep, tripCityFrom } from "@/components/NextStepTabs";
 import { RATING_LABEL, readHotelPrefs } from "@/lib/hotelPrefs";
 import ShareButton from "@/components/ShareButton";
@@ -81,8 +78,6 @@ function HotelResultsContent() {
   const breakfast = sp.get("breakfast") === "true";
   const prefs = useMemo(() => readHotelPrefs(new URLSearchParams(sp.toString())), [sp]);
   const hp = dict.hotelPrefs;
-  // The partners' own list understands only "an apartment" or not.
-  const stay = prefs.place === "aparthotel" || prefs.place === "rental" ? ("apartment" as const) : undefined;
 
   const complete = Boolean(query && checkIn && checkOut);
   // No list from Google (allowance paced out, or down): our partners' list.
@@ -122,54 +117,6 @@ function HotelResultsContent() {
         : (nights <= 10 ? t.nights : t.nightsMany).replace("{count}", String(nights));
 
   // City searches: "City, Country" in English for the partners' place lookup.
-  const cityAddress = useMemo(() => {
-    const c = tripCityFrom(query) ?? tripCityFrom(label);
-    if (!c) return undefined;
-    let country = "";
-    try {
-      country = new Intl.DisplayNames(["en"], { type: "region" }).of(c.countryCode) ?? "";
-    } catch {
-      /* the city alone is still a usable place */
-    }
-    return country ? `${c.nameEn}, ${country}` : c.nameEn;
-  }, [query, label]);
-
-  const links = useMemo(
-    () =>
-      complete
-        ? hotelPartnerLinks({
-            query,
-            checkIn,
-            checkOut,
-            adults,
-            childrenAges,
-            rooms,
-            minStars: mode === "discover" ? minStars : undefined,
-            breakfast: mode === "discover" ? breakfast : undefined,
-            stay: mode === "discover" ? stay : undefined,
-            isHotel: mode === "known",
-            area: mode === "known" ? hotelArea || undefined : cityAddress,
-            locale,
-          }).concat(
-            // Suppliers directory (8 Nov): more sites for a city search, no
-            // commission — KAYAK and Google Hotels with the dates filled in.
-            mode === "discover" && cityAddress
-              ? extraHotelSites({
-                  slug: (tripCityFrom(query) ?? tripCityFrom(label))?.slug,
-                  locale,
-                  cityEn: cityAddress.split(", ")[0],
-                  countryEn: cityAddress.split(", ")[1],
-                  checkIn,
-                  checkOut,
-                  adults,
-                  childrenAges,
-                }).map((l) => ({ partner: l.name, url: l.href }))
-              : []
-          )
-        : [],
-    [complete, query, label, checkIn, checkOut, adults, childrenAges, rooms, mode, minStars, breakfast, stay, locale, hotelArea, cityAddress]
-  );
-
   // The city of this stay, for the next-step tabs: the searched city, or
   // for a named hotel the first part of its address that is a city we cover.
   const tripCity = useMemo(() => {
@@ -226,26 +173,6 @@ function HotelResultsContent() {
     if (prefs.nearTo) chips.push(hp.nearToChip.replace("{place}", prefs.nearTo.n));
     for (const a of prefs.amenities) chips.push(hp.amenity[a]);
   }
-
-  const partnerButtons = (
-      <div className={`grid gap-3 text-start ${links.length - 1 >= 3 ? "sm:grid-cols-3" : "sm:grid-cols-2"}`}>
-        {links.map((l, i) => (
-          <PartnerLink
-            key={l.partner}
-            partner={l.partner}
-            href={l.url}
-            className={`flex items-center justify-center gap-2.5 rounded-xl px-6 py-4 text-base font-extrabold transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sun-400 focus-visible:ring-offset-2 ${
-              i === 0
-                ? "col-span-full bg-sun-400 text-navy-950 shadow-[var(--shadow-sun)] hover:bg-sun-300"
-                : "bg-white text-navy-900 ring-1 ring-mist-200 hover:ring-navy-300"
-            }`}
-          >
-            <Icon name="search" className="h-5 w-5" strokeWidth={2.4} />
-            {t.openAt.replace("{partner}", l.partner)}
-          </PartnerLink>
-        ))}
-      </div>
-  );
 
   return (
     <div className="bg-mist-50">
@@ -363,7 +290,7 @@ function HotelResultsContent() {
                 nights={nights}
                 locale={locale}
                 t={t}
-                fallback={partnerButtons}
+                fallback={null}
                 alternatives={
                   tripCity
                     ? {

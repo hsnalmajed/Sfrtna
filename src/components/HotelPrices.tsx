@@ -275,7 +275,6 @@ export function PriceRows({
     return (
       <div>
         <p className="text-sm font-semibold text-navy-700">{t.noPartnerPrice}</p>
-        <PartnerSearchLinks hotel={hotel} c={c} />
       </div>
     );
   }
@@ -336,38 +335,6 @@ export function PriceRows({
         {c.nights === 1 ? t.stayTotalOne : t.stayTotal.replace("{nights}", nightsLabel(c.nights, t))}
         {(c.rooms ?? 1) > 1 && ` · ${t.roomsPriced.replace(/\{count\}/g, String(c.rooms))}`} · {t.checkedAtAll.replace("{time}", time)}
       </p>
-    </div>
-  );
-}
-
-/** Plain partner searches, for when there is no price to show. */
-function PartnerSearchLinks({ hotel, c }: { hotel: HotelResult; c: Common }) {
-  const links = hotelPartnerLinks({
-    query: hotel.name,
-    checkIn: c.checkIn,
-    checkOut: c.checkOut,
-    adults: c.party?.adults ?? c.adults,
-    childrenAges: c.party?.childrenAges ?? c.childrenAges,
-    rooms: c.rooms,
-    isHotel: true,
-    area: hotel.address,
-    lat: hotel.lat,
-    lng: hotel.lng,
-    locale: c.locale,
-  });
-  return (
-    <div className="mt-3 flex flex-wrap gap-2">
-      {links.map((l) => (
-        <PartnerLink
-          key={l.partner}
-          partner={l.partner}
-          href={l.url}
-          className="inline-flex items-center gap-1.5 rounded-full bg-white px-3.5 py-2 text-xs font-bold text-navy-900 ring-1 ring-mist-200 transition hover:ring-navy-300"
-        >
-          <Icon name="search" className="h-3.5 w-3.5 text-navy-500" />
-          {c.t.openAt.replace("{partner}", l.partner)}
-        </PartnerLink>
-      ))}
     </div>
   );
 }

@@ -156,9 +156,12 @@ own checks never spend). Active once Runtime secrets DATAFORSEO_LOGIN /
 DATAFORSEO_PASSWORD exist. **LIVE 24 Nov 21:5x:** owner made the account
 ($1 trial, business mail info@sfrtna.com) + both secrets; `dfs-check.yml`:
 Riyadh/Istanbul 60 hotels (was ~20), Crowne Plaza 16 sites = Google Hotels
-site by site (TEST_PLAN). **▶ NEXT:** (1) owner tops up the balance before
-the $1 runs out (~250 live calls) and checks on the phone;
-(2) then remove/hide link-only hotel buttons (rule); (3) flights: same
+site by site (TEST_PLAN). **25 Nov: (1) owner TOPPED UP $50 (+VAT; balance
+$55.96, order DAT261125-7053-10227); ~$0.013 a 54-hotel list, $0.004 a
+hotel page → ~3,000 visitor searches. (2) DONE 25 Nov: link-only hotel
+buttons removed (named-hotel fallback + «no price» search links; Stay22
+partner list kept; `extraHotelSites` now unused, file kept).** **▶ NEXT:**
+owner checks hotels on the phone; (3) flights: same
 rule — price sources beyond Aviasales (RUH missing); (4) local leaders per
 country appear through Google's price list (market `location_code` 2682
 SA); Xotelo (free, Tripadvisor-based) = terms unclear, ask before use.
