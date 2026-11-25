@@ -119,7 +119,9 @@ export async function sdFlights(q: {
       const res = await fetch(url.toString());
       countUse("scrapingdog");
       if (!res.ok) {
-        lastError = `http ${res.status}`;
+        // The reason, for the site check (never the key: it is not echoed).
+        const why = (await res.text().catch(() => "")).replace(/\s+/g, " ").slice(0, 200);
+        lastError = `http ${res.status} ${why}`;
         return null;
       }
       body = (await res.json()) as Record<string, unknown>;
