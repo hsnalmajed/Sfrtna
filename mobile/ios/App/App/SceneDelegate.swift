@@ -1,5 +1,6 @@
 import UIKit
 import Capacitor
+import AppTrackingTransparency
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
@@ -22,6 +23,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     /// next 60 of all kept plans, so each visit moves the window forward.
     func sceneDidBecomeActive(_ scene: UIScene) {
         TripAlerts.rescheduleAll()
+        // ATT prompt — must be in sceneDidBecomeActive (not AppDelegate) when
+        // SceneDelegate is present; iOS ignores applicationDidBecomeActive then.
+        if #available(iOS 14.0, *) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                let status = ATTrackingManager.trackingAuthorizationStatus
+                guard status == .notDetermined else {
+                    ATTBridge.notify(status)
+                    return
+                }
+                ATTrackingManager.requestTrackingAuthorization { granted in
+                    DispatchQueue.main.async { ATTBridge.notify(granted) }
+                }
+            }
+        }
     }
 
     func windowScene(_ windowScene: UIWindowScene, performActionFor shortcutItem: UIApplicationShortcutItem,

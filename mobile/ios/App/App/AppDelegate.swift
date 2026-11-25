@@ -16,27 +16,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
-    func applicationDidBecomeActive(_ application: UIApplication) {
-        // App Tracking Transparency (ATT) — Apple 5.1.2(i), 25 Nov 2026.
-        // We ask once; iOS never shows the prompt twice. The result is stored
-        // in UserDefaults so the web layer can read it and decide whether to
-        // load GA/partner scripts (iosClean.ts honours "denied").
-        // The prompt must come after the app is fully active, not in
-        // didFinishLaunching — Apple requires a small delay so the UI is ready.
-        if #available(iOS 14.0, *) {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                let status = ATTrackingManager.trackingAuthorizationStatus
-                // Only show the prompt if not yet determined.
-                guard status == .notDetermined else {
-                    ATTBridge.notify(status)
-                    return
-                }
-                ATTrackingManager.requestTrackingAuthorization { granted in
-                    DispatchQueue.main.async { ATTBridge.notify(granted) }
-                }
-            }
-        }
-    }
+    // ATT prompt is in SceneDelegate.sceneDidBecomeActive — that method fires
+    // instead of applicationDidBecomeActive when a SceneDelegate is present.
 
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
