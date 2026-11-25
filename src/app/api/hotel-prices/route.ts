@@ -59,9 +59,11 @@ export async function GET(req: NextRequest) {
   // SerpApi. Filters only Google's own codes can express (property types,
   // amenities) and the site check's probe stay on SerpApi.
   const serpToken = Boolean(token && /^Ch[A-Za-z0-9_-]+$/.test(token) === false) || Boolean(page && !/^d\d{2,3}s\d{1,3}$/.test(page));
+  const mktRaw = sp.get("mkt");
+  const mkt = smoke && req.headers.get("x-sfrtna-smoke") === smoke && (mktRaw === "kw" || mktRaw === "both") ? mktRaw : undefined;
   const useDfs = dfsConfigured() && !probe && !types.length && !amenities.length && !serpToken;
   const dfs = useDfs
-    ? await dfsHotelPrices({ q, checkIn, checkOut, adults, childrenAges, token, minStars, maxPerNight, page, one, rating, freeCancel, rentals })
+    ? await dfsHotelPrices({ q, checkIn, checkOut, adults, childrenAges, token, minStars, maxPerNight, page, one, rating, freeCancel, rentals, mkt })
     : null;
   const result =
     dfs ??

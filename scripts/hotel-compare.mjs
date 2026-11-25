@@ -34,6 +34,14 @@ for (const city of cities) {
   const ol = old.body?.result?.hotels ?? [];
   console.log(`CHECK NEW list: via=${neu.body?.check?.via} hotels=${nl.length} more=${neu.body?.result?.nextPage ? "yes" : "no"} total=${neu.body?.result?.total ?? "-"} currency=${neu.body?.result?.currency ?? "-"}`);
   console.log(`CHECK OLD list: via=${old.body?.check?.via} hotels=${ol.length} more=${old.body?.result?.nextPage ? "yes" : "no"} total=${old.body?.result?.total ?? "-"} currency=${old.body?.result?.currency ?? "-"}`);
+  // Same list located other ways (site check only): market code + keyword,
+  // and point + market code — do their prices match the hotel pages?
+  const alt = {};
+  for (const m of ["kw", "both"]) {
+    const r = await ask({ q: city, mkt: m });
+    alt[m] = r.body?.result?.hotels ?? [];
+    console.log(`CHECK NEW-${m} list: via=${r.body?.check?.via} err=${r.body?.check?.dfsError || "-"} hotels=${alt[m].length}`);
+  }
   const both = nl.filter((h) => ol.some((o) => key(o.name) === key(h.name)));
   console.log(`CHECK in both lists: ${both.length}`);
   for (const h of both.slice(0, 8)) {
@@ -51,6 +59,7 @@ for (const city of cities) {
     for (const [tag, r] of [["NEW", n1], ["OLD", o1]]) {
       const h = r.body?.result?.hotels?.[0];
       const offers = priced(h).sort((a, b) => (a.perNight ?? 1e9) - (b.perNight ?? 1e9));
+      if (tag === "NEW") for (const m of ["kw", "both"]) { const a = alt[m].find((x) => key(x.name) === key(pick.name)); console.log(`CHECK   NEW-${m} list price ${a?.perNight ?? "not in list"}`); }
       console.log(`CHECK ${tag} hotel page: via=${r.body?.check?.via} name=${h?.name ?? "-"} list=${tag === "NEW" ? pick.perNight : oPick?.perNight} sites=${offers.length} rooms=${h?.rooms?.length ?? 0} cheapest=${offers[0]?.perNight ?? "-"} ${offers[0]?.source ?? ""} currency=${r.body?.result?.currency ?? "-"}`);
       for (const o of offers.slice(0, 20)) console.log(`CHECK   ${tag} site ${o.source} ${o.perNight ?? "-"} /night total ${o.total ?? "-"}${o.official ? " official" : ""}`);
     }

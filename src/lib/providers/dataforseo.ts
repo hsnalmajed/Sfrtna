@@ -237,6 +237,9 @@ export async function dfsHotelPrices(q: {
   rentals?: boolean;
   page?: string;
   one?: boolean;
+  /** Site check only (25 Nov test): how the list is located — "kw" = market
+   *  code + keyword, "both" = point + market code. Default: the point. */
+  mkt?: "kw" | "both";
 }): Promise<HotelSearch | null> {
   const currency = (q.currency || "SAR").toUpperCase();
   const ages = (q.childrenAges ?? []).map((a) => Math.min(17, Math.max(0, Math.round(a)))).slice(0, 5);
@@ -264,10 +267,16 @@ export async function dfsHotelPrices(q: {
   const stars = q.minStars && q.minStars >= 2 && q.minStars <= 5 ? [2, 3, 4, 5].filter((s) => s >= (q.minStars as number)) : [];
   const minRating = q.rating === 9 ? 4.5 : q.rating === 8 ? 4 : q.rating === 7 ? 3.5 : 0;
   const maxPrice = q.maxPerNight && q.maxPerNight > 0 ? Math.round(q.maxPerNight) : 0;
-  const key = `dfs-hotels1:${q.q.toLowerCase()}:${q.checkIn}:${q.checkOut}:${adults}:${ages.join(",")}:${currency}:${depth}:${stars.join("")}:${minRating}:${maxPrice}:${q.freeCancel ? 1 : 0}:${q.rentals ? 1 : 0}`;
+  const key = `dfs-hotels1:${q.q.toLowerCase()}:${q.checkIn}:${q.checkOut}:${adults}:${ages.join(",")}:${currency}:${depth}:${stars.join("")}:${minRating}:${maxPrice}:${q.freeCancel ? 1 : 0}:${q.rentals ? 1 : 0}${q.mkt ? `:${q.mkt}` : ""}`;
+  const where =
+    q.mkt === "kw" || !point
+      ? { location_code: MARKET, keyword: q.q, search_this_area: false }
+      : q.mkt === "both"
+        ? { location_coordinate: point, location_code: MARKET }
+        : { location_coordinate: point };
   const list = await cachedJson<HotelSearch>(key, 6 * 3600, async () => {
     const r = await post("hotel_searches/live", {
-      ...(point ? { location_coordinate: point } : { location_code: MARKET, keyword: q.q, search_this_area: false }),
+      ...where,
       ...party,
       depth,
       ...(stars.length ? { stars } : {}),
