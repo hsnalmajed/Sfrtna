@@ -160,13 +160,10 @@ site by site (TEST_PLAN). **25 Nov: (1) owner TOPPED UP $50 (+VAT; balance
 $55.96, order DAT261125-7053-10227); ~$0.013 a 54-hotel list, $0.004 a
 hotel page → ~3,000 visitor searches. (2) DONE 25 Nov: link-only hotel
 buttons removed (named-hotel fallback + «no price» search links; Stay22
-partner list kept; `extraHotelSites` now unused, file kept).** **▶ NEXT (Opus, NEW CHAT): FIX FIRST — list price ≠
-hotel page price** (TEST_PLAN «Before / after, Madinah»: list ~16–20 % lower,
-likely before taxes; card says «شامل الضرائب»). Try hotel_searches with
-`location_code` 2682 + keyword instead of `location_coordinate` (market SA
-may include taxes) via `dfs-check.yml` compare=true; if no tax-inclusive
-list price exists, the card must not claim taxes, and must say the page
-shows the final price. Then owner checks hotels on the phone; (3) flights: same
+partner list kept; `extraHotelSites` now unused, file kept).** **List price ≠ page price FIXED 25 Nov** (list by
+point only = no market = before taxes; now point + market 2682 → list =
+page, TEST_PLAN). **▶ NEXT:** re-run `dfs-check.yml` compare (Madinah) to
+confirm live; Then owner checks hotels on the phone; (3) flights: same
 rule — price sources beyond Aviasales (RUH missing); (4) local leaders per
 country appear through Google's price list (market `location_code` 2682
 SA); Xotelo (free, Tripadvisor-based) = terms unclear, ask before use.

@@ -355,3 +355,7 @@ the LIST price is ~16–20 % under the hotel page's** (Pullman list 625 vs page 
 Golden Tulip 405 vs 484; Al Saha 740 vs 876; OLD Pullman 606 vs 731) — ratio ≈ Saudi
 VAT 15 % + municipality fee → list = before taxes, page = with taxes, yet the card
 says «شامل الضرائب». Also «Noon» (rental) list 153 vs page 352.
+**ROOT CAUSE + FIX (run 45593447300):** the list was located by point only
+(no market) → prices before taxes. Same list with the Saudi market code 2682:
+Golden Tulip 484 = page 484, Pullman 749 = page 749, Al Saha 876 = page 876.
+List now = point + market code (cache key dfs-hotels2).
