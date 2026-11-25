@@ -21,6 +21,12 @@ import { useSyncExternalStore } from "react";
  * dropped), and the iOS guard in CI (scripts/ios-clean-check.mjs) fails the
  * release if any of it comes back.
  *
+ * 25 Nov 2026 (Apple's 3rd 5.1.2(i) note: «use App Tracking Transparency»):
+ * the app now shows Apple's ATT prompt at launch (SceneDelegate.swift). Only
+ * when the user taps «Allow» (window.__sfrAtt === "authorized", set at
+ * document start by AppDelegate.swift) does Google Analytics run in the app
+ * (isIosClean). Partner scripts and frames stay out either way (isIosApp).
+ *
  * Decided in the browser only: the edge HTML cache is keyed by URL, so the
  * server sends the app and the web the same page (see [locale]/layout.tsx).
  * Anything third-party must therefore never be in the server HTML either —

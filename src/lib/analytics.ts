@@ -1,5 +1,5 @@
 import { rememberSearch } from "@/lib/recentSearches";
-import { isIosApp } from "@/lib/iosClean";
+import { isIosClean } from "@/lib/iosClean";
 /**
  * Google Analytics 4 — one place for every measurement call on the site.
  *
@@ -108,8 +108,9 @@ function countEvent(event: string, params: Params): void {
 export function track(event: string, params: Params = {}): void {
   if (!isMeasuredHost()) return;
   countEvent(event, params);
-  // iPhone app: nothing for Google Analytics, not even queued (lib/iosClean.ts).
-  if (isIosApp()) return;
+  // iPhone app: nothing for Google Analytics unless the user allowed
+  // tracking in Apple's ATT prompt (lib/iosClean.ts).
+  if (isIosClean()) return;
   try {
     // gtag may not have loaded yet; the queue is read in order when it does.
     window.dataLayer = window.dataLayer || [];

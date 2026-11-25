@@ -17,7 +17,7 @@ import {
 } from "@/lib/analytics";
 import type { Locale } from "@/lib/types";
 import { useDictionary } from "@/lib/dict/context";
-import { isIosApp, useIosApp } from "@/lib/iosClean";
+import { isIosApp, isIosClean, useIosApp } from "@/lib/iosClean";
 
 /**
  * GA4 tag, the site-wide click listener and the consent banner.
@@ -142,13 +142,17 @@ export default function Analytics({ locale }: { locale: Locale }) {
 
   useEffect(() => {
     if (!isMeasuredHost()) return;
-    // iPhone app: no Google Analytics and no cookie banner at all (Apple
-    // 5.1.2(i), 18 Nov 2026 — see lib/iosClean.ts). Only our own anonymous
-    // counts (countStat → /api/stats: no identifier, no cookie) still run.
-    if (!isIosApp()) {
+    // iPhone app: Google Analytics only when the user tapped «Allow» in
+    // Apple's App Tracking Transparency prompt (Apple 5.1.2(i), 25 Nov 2026
+    // — see lib/iosClean.ts); that answer IS the consent, so no cookie
+    // banner in the app. Otherwise only our own anonymous counts
+    // (countStat → /api/stats: no identifier, no cookie) run.
+    const ios = isIosApp();
+    if (!ios || !isIosClean()) {
+      if (ios) saveConsent("granted");
       // eslint-disable-next-line react-hooks/set-state-in-effect -- host is only known in the browser
       setMeasured(true);
-      setAskConsent(readConsent() === null);
+      setAskConsent(!ios && readConsent() === null);
     }
     document.addEventListener("click", onClick, { capture: true });
     countVisit(locale);

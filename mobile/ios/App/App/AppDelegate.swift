@@ -80,19 +80,19 @@ enum ATTBridge {
         case .restricted:   str = "restricted"
         default:            str = "not_determined"
         }
+        let before = UserDefaults.standard.string(forKey: "sfr_att")
         UserDefaults.standard.set(str, forKey: "sfr_att")
-        // Tell the web layer immediately — the page may already be open.
-        let js = "try{window.__sfrAtt='\(str)';}catch(e){}"
         DispatchQueue.main.async {
-            // Walk up to the main view controller's WebView.
-            if let vc = UIApplication.shared.windows.first?.rootViewController as? UINavigationController,
-               let mvc = vc.viewControllers.first as? MainViewController {
-                mvc.webView?.evaluateJavaScript(js, completionHandler: nil)
-            }
+            // SceneDelegate sets MainViewController as the window's root.
+            let mvc = UIApplication.shared.connectedScenes
+                .compactMap { ($0 as? UIWindowScene)?.windows.first?.rootViewController as? MainViewController }
+                .first
+            // Reload only when «may track» flips (first «denied» needs none).
+            mvc?.applyAtt(str, changed: (before == "authorized") != (str == "authorized"))
         }
     }
-
 }
+
 
 // MARK: - Sfrtna shell
 //
@@ -131,8 +131,36 @@ class MainViewController: CAPBridgeViewController {
     /// frame runs inside the app, and no other site's cookie is kept. Our
     /// own pages, pictures and map tiles still load; partner sites open in
     /// the Safari sheet (openOutside), which this does not touch.
+    /// ATT (Apple 5.1.2(i), 25 Nov 2026): the user's answer to the system
+    /// prompt, kept in UserDefaults «sfr_att». Every page gets it at document
+    /// start as window.__sfrAtt (iosClean.ts reads it). Only «authorized»
+    /// lifts the no-tracking rules; anything else keeps the app clean.
+    static var attAuthorized: Bool { UserDefaults.standard.string(forKey: "sfr_att") == "authorized" }
+
+    private func installAttFlag(_ value: String?) {
+        let v = value ?? "not_determined"
+        webView?.configuration.userContentController.addUserScript(WKUserScript(
+            source: "try{window.__sfrAtt='\(v)';}catch(e){}",
+            injectionTime: .atDocumentStart, forMainFrameOnly: true))
+    }
+
+    /// Called by ATTBridge after every check. On a change: new flag for every
+    /// later page, rules lifted or put back, and the page reloaded so it
+    /// runs with the new answer at once.
+    func applyAtt(_ value: String, changed: Bool) {
+        guard let wv = webView else { return }
+        wv.evaluateJavaScript("try{window.__sfrAtt='\(value)';}catch(e){}", completionHandler: nil)
+        guard changed else { return }
+        installAttFlag(value)
+        wv.configuration.userContentController.removeAllContentRuleLists()
+        installNoTrackingRules()
+        wv.reload()
+    }
+
     private func installNoTrackingRules() {
         guard let wv = webView else { return }
+        // The user allowed tracking through ATT: our analytics may run.
+        if MainViewController.attAuthorized { return }
         let rules = """
         [
           {"trigger": {"url-filter": ".*", "resource-type": ["script"], "load-type": ["third-party"]}, "action": {"type": "block"}},
@@ -198,6 +226,7 @@ class MainViewController: CAPBridgeViewController {
             uiProxy.host = self
             wv.uiDelegate = uiProxy
         }
+        installAttFlag(UserDefaults.standard.string(forKey: "sfr_att"))
         installNoTrackingRules()
         installSafeArea()
         lockSideways()
