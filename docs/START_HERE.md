@@ -164,7 +164,13 @@ partner list kept; `extraHotelSites` now unused, file kept).** **List price ≠ 
 point = before taxes, even with the market code; now market 2682 + city
 keyword → list = page, TEST_PLAN). LIVE CONFIRMED (Madinah + Riyadh, TEST_PLAN). Small gap: list can show
 Google's featured price above the page's cheapest site (Crowne Plaza 280 vs
-263). **▶ NEXT:** owner checks hotels on the phone; (3) flights: same
+263). **25 Nov owner's study file (104 platforms) checked
+against live data:** TEST_PLAN «Which sites already give a LIVE hotel price»
+— 28+ of its platforms already priced through Google's list; the Gulf locals
+(Almosafer, almatar, Flyin…) never appear and have no public price API.
+Owner decision pending: which price APIs to apply for (Agoda affiliate
+search API, Booking Demand = Managed Affiliate only, Trip.com feed via Awin,
+RateHawk waiting). **▶ NEXT:** owner checks hotels on the phone; (3) flights: same
 rule — price sources beyond Aviasales (RUH missing). **25 Nov study:**
 Amadeus self-service CLOSED 17 Jul 2026; TP search API needs 50k MAU;
 Skyscanner API >100k traffic; Duffel = we'd sell tickets (not our model);

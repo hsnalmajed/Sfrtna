@@ -387,3 +387,19 @@ featured price, not always the cheapest site.
   TravelWings, Saudia, Expedia, Booking.com, Turkish, Gulf Air, Qatar,
   EgyptAir, Etihad, Oman Air, flyadeal. Seller links = Skyscanner redirect
   (no commission for us) → route each seller via its own programme.
+
+### Which sites already give a LIVE hotel price (25 Nov 2026, `dfs-check.yml` sources=true, run 45683444957)
+
+15 cities (Riyadh, Jeddah, Madinah, Makkah, Dubai, Doha, Kuwait City, Manama,
+Muscat, Cairo, Istanbul, Trabzon, Kuala Lumpur, Bangkok, Bali) × list + 6 hotel
+pages, 17–20 Dec, 2 adults (run hit the 10-min job limit before Tokyo…Rome).
+Sites per city 8 (Riyadh) – 33 (Dubai). Seen with a price: Booking, Agoda,
+Expedia, Hotels.com, Trip.com, Vrbo, KAYAK.sa, HotelsCombined ar, Skyscanner,
+Wego, rehlat.com.sa, klook, Traveloka, Tiket.com, Hostelworld, Otelz.com,
+obilet.com, ENUYGUN, Jolly Tur, Oteldeniste, Kiwi.com, Vio.com, Bluepillow,
+HomeToGo, Halalbooking, Walmisk, hotels' own sites (IHG, Hilton, Marriott…).
+NOT seen in any city: Almosafer, almatar, Flyin, Musafir, HolidayMe, dnata,
+Gathern, ZenHotels, Etstur, Tatilsepeti, Tatilbudur, Cleartrip, MakeMyTrip, OYO,
+Airbnb. Owner's study file (104 platforms, «Global_Hotel_Flight_Platforms_
+Database_v2.xlsx») = leads, not verified (no source per row; e.g. Rehlat's
+Cuelinks campaign is paused; Almosafer showed no programme on its own site).
