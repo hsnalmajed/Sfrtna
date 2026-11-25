@@ -334,3 +334,24 @@ Live on production (`dfs-check.yml`, run 45465466635), 17–20 Dec 2026, 2 adult
 Prices match the source site by site. Rooms 30, review topics 12, photos 8.
 Gaps: list rows carry one price (the hotel page carries every site);
 some hotels lack an address in Hotel Info (Somerset Maslak Istanbul).
+
+### Before / after, Madinah (25 Nov 2026, `dfs-check.yml` compare mode, runs 45586715227 + 45586932807)
+
+Same moment, 17–20 Dec 2026, 2 adults, SAR. OLD = SerpApi (forced by probe), NEW = DataForSEO.
+
+| Check | OLD | NEW |
+| --- | --- | --- |
+| Hotels in the first list | 20 (Google says 3,539 in total) | 56–58 (+ «more» to 140) |
+| Hotels found in both lists | 27–29 | |
+| Pullman Zamzam: sites with a price | 22 | 21 |
+| Pullman Zamzam: Booking / Agoda / official | 756 / 756 / 756 | 756 / 756 / 756 |
+| Pullman Zamzam: cheapest site | 731 (Vio.com, dealbase) | 749 (Qantas Hotels) |
+| Al Saha: sites / cheapest | 3 / 861 (Expedia.mx) | 3 / 876 (Clicktrip) |
+| Golden Tulip Al Ansar: sites | 2 (Booking 484, Travelmyth 527) | 1 (Booking 484) |
+
+Sites per hotel ≈ the same (same Google data); NEW lists Saudi-market sites (Wego,
+KAYAK.sa, HotelsCombined ar), OLD UK ones (.co.uk). **BUG found (both sources):
+the LIST price is ~16–20 % under the hotel page's** (Pullman list 625 vs page 749;
+Golden Tulip 405 vs 484; Al Saha 740 vs 876; OLD Pullman 606 vs 731) — ratio ≈ Saudi
+VAT 15 % + municipality fee → list = before taxes, page = with taxes, yet the card
+says «شامل الضرائب». Also «Noon» (rental) list 153 vs page 352.
