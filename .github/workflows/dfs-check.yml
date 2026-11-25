@@ -8,6 +8,10 @@ on:
         description: "Cities, comma separated"
         type: string
         default: Istanbul,Riyadh
+      compare:
+        description: "Before/after: old source (SerpApi) vs new, same moment"
+        type: boolean
+        default: false
 permissions:
   contents: read
 jobs:
@@ -23,4 +27,6 @@ jobs:
         env:
           SMOKE_TOKEN: ${{ secrets.SMOKE_TOKEN }}
           CITIES: ${{ inputs.cities }}
-        run: node scripts/dfs-check.mjs
+          COMPARE: ${{ inputs.compare }}
+        run: |
+          if [ "$COMPARE" = "true" ]; then node scripts/hotel-compare.mjs; else node scripts/dfs-check.mjs; fi
