@@ -184,3 +184,66 @@ export async function sdFlights(q: {
     return { flights, url: googleFlightsUrl(q), roundTrip: round, currency: q.currency };
   });
 }
+
+/**
+ * One-off probe of Scrapingdog's Skyscanner search (25 Nov 2026), for our
+ * own source check only — never called for visitors. Its docs are not
+ * public; the dashboard shows GET /skyscanner/search with froms, to, date1,
+ * date2 (empty = one way), adults, children, child_ages, cabinclass,
+ * region, currency. The date format is not shown, so the probe tries the
+ * likely ones and returns a short outline of the first answer.
+ */
+export async function sdSkyscannerProbe(q: {
+  origin: string;
+  destination: string;
+  departDate: string;
+  returnDate?: string;
+  adults: number;
+  children: number;
+  currency: string;
+}): Promise<{ form: string; status: number; keys: string[]; outline: string; errors: string[] }> {
+  const errors: string[] = [];
+  const iso = (d: string) => d;
+  const us = (d: string) => `${d.slice(5, 7)}/${d.slice(8, 10)}/${d.slice(0, 4)}`;
+  const yy = (d: string) => `${d.slice(2, 4)}${d.slice(5, 7)}${d.slice(8, 10)}`;
+  for (const [name, f] of [["iso", iso], ["us", us], ["yymmdd", yy]] as const) {
+    const url = new URL("https://api.scrapingdog.com/skyscanner/search");
+    const p: Record<string, string> = {
+      api_key: key(),
+      froms: q.origin,
+      to: q.destination,
+      date1: f(q.departDate),
+      adults: String(q.adults),
+      children: String(q.children),
+      cabinclass: "economy",
+      region: "SA",
+      currency: q.currency,
+    };
+    if (q.returnDate) p.date2 = f(q.returnDate);
+    if (q.children) p.child_ages = Array(q.children).fill("8").join(",");
+    for (const [k, v] of Object.entries(p)) url.searchParams.set(k, v);
+    try {
+      const res = await fetch(url.toString());
+      countUse("scrapingdog");
+      const text = await res.text();
+      if (!res.ok) {
+        errors.push(`${name}: http ${res.status} ${text.replace(/\s+/g, " ").slice(0, 150)}`);
+        continue;
+      }
+      let keys: string[] = [];
+      try {
+        const j = JSON.parse(text) as unknown;
+        keys = Array.isArray(j) ? [`array(${j.length})`] : Object.keys(j as object).map((k) => {
+          const v = (j as Record<string, unknown>)[k];
+          return Array.isArray(v) ? `${k}[${v.length}]` : k;
+        });
+      } catch {
+        keys = ["not json"];
+      }
+      return { form: name, status: res.status, keys, outline: text.replace(/\s+/g, " ").replaceAll(key(), "***").slice(0, 3500), errors };
+    } catch (e) {
+      errors.push(`${name}: ${e instanceof Error ? e.message : "fetch failed"}`);
+    }
+  }
+  return { form: "none", status: 0, keys: [], outline: "", errors };
+}

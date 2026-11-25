@@ -16,6 +16,10 @@ on:
         description: "Return date YYYY-MM-DD (empty = one way)"
         type: string
         default: "2026-12-24"
+      probe:
+        description: "Probe instead of the normal check (sky = Skyscanner)"
+        type: string
+        default: ""
 permissions:
   contents: read
 jobs:
@@ -33,4 +37,5 @@ jobs:
           ROUTES: ${{ inputs.routes }}
           DEPART: ${{ inputs.depart }}
           RETURN: ${{ inputs.return }}
+          PROBE: ${{ inputs.probe }}
         run: node scripts/flight-source-check.mjs

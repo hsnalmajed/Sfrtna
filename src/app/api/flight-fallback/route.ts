@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { googleFlights } from "@/lib/providers/serpapi";
-import { sdConfigured, sdFlights, sdLastError } from "@/lib/providers/scrapingdog";
+import { sdConfigured, sdFlights, sdLastError, sdSkyscannerProbe } from "@/lib/providers/scrapingdog";
 
 export const dynamic = "force-dynamic";
 
@@ -35,6 +35,15 @@ export async function GET(request: Request) {
     locale: (q.get("locale") === "en" ? "en" : "ar") as "ar" | "en",
     directOnly: q.get("directOnly") === "true",
   };
+  // Source probe (own spending check only): Skyscanner through Scrapingdog.
+  if (
+    q.get("probe") === "sky" &&
+    process.env.SMOKE_TOKEN &&
+    request.headers.get("x-sfrtna-smoke") === process.env.SMOKE_TOKEN &&
+    request.headers.get("x-sfrtna-spend") === "1"
+  ) {
+    return NextResponse.json(await sdSkyscannerProbe(ask), { headers: { "Cache-Control": "no-store" } });
+  }
   // Paid-per-search source first (cheap, prepaid); SerpApi's small free
   // allowance stays for the destination explorer, and answers when the
   // first one is not set up, is out of credit, or finds nothing.

@@ -22,10 +22,17 @@ for (const r of routes) {
   const [origin, destination] = r.split("-");
   const p = { origin, destination, departDate, adults: "2", children: "1", currency: "SAR", locale: "ar" };
   if (returnDate) p.returnDate = returnDate;
+  if (process.env.PROBE) p.probe = process.env.PROBE;
   const res = await fetch(`${BASE}/api/flight-fallback?${new URLSearchParams(p)}`, { headers })
     .then(async (x) => ({ status: x.status, body: x.status === 204 ? null : await x.json().catch(() => null) }))
     .catch((e) => ({ status: 0, body: { error: String(e) } }));
   const b = res.body;
+  if (process.env.PROBE) {
+    console.log(`CHECK ${r} probe=${process.env.PROBE}: http ${res.status} form=${b?.form} keys=${(b?.keys ?? []).join(",")}`);
+    for (const e of b?.errors ?? []) console.log(`CHECK   error ${e}`);
+    console.log(`CHECK   outline ${b?.outline ?? ""}`);
+    continue;
+  }
   const flights = b?.flights ?? [];
   const airlines = [...new Set(flights.flatMap((f) => f.legs.map((l) => l.airline)))];
   const cheapest = flights.slice().sort((a, c) => a.price - c.price)[0];
