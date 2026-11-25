@@ -403,3 +403,7 @@ Gathern, ZenHotels, Etstur, Tatilsepeti, Tatilbudur, Cleartrip, MakeMyTrip, OYO,
 Airbnb. Owner's study file (104 platforms, «Global_Hotel_Flight_Platforms_
 Database_v2.xlsx») = leads, not verified (no source per row; e.g. Rehlat's
 Cuelinks campaign is paused; Almosafer showed no programme on its own site).
+Study file v3 (25 Nov 22:45): «المصدر» column = domain names only, same note on
+every row, no page per claim. Spot checks: Almosafer hotels + flights on
+Admitad = «Closed» (affi.io); Flyin SA EG on Admitad = «Closed»; Rehlat on
+Cuelinks = paused; Airbnb programme ended 31 Mar 2021 (file correct).
