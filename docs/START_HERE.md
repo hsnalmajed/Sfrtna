@@ -170,7 +170,22 @@ against live data:** TEST_PLAN «Which sites already give a LIVE hotel price»
 (Almosafer, almatar, Flyin…) never appear and have no public price API.
 Owner decision pending: which price APIs to apply for (Agoda affiliate
 search API, Booking Demand = Managed Affiliate only, Trip.com feed via Awin,
-RateHawk waiting). **▶ NEXT:** owner checks hotels on the phone; (3) flights: same
+RateHawk waiting). **▶▶ NEXT (owner 25 Nov 22:47, Opus, NEW CHAT): SITE-BY-SITE study of
+the owner's file v3 (104 platforms, uploads «Global_Hotel_Flight_Platforms_
+Database_v3.xlsx» — ask the owner to attach it again).** Owner: «study it in
+detail, site by site» — goal = more options, more suppliers, maybe LOWER
+prices. Per site, in the doc «دراسة مواقع الفنادق المحلية» (rounds by region,
+Gulf + Middle East first, show the owner after each round): (a) does it
+already price in our list (TEST_PLAN «Which sites…», 15 cities); (b) for
+those that do: how often it is the CHEAPEST for the same hotel (count from
+`dfs-sources.mjs`, add cheapest-site tally); (c) for those that don't (Almosafer,
+almatar, Flyin, Musafir, HolidayMe, dnata, Gathern…): same 5 hotels + dates
+checked by hand in Chrome on the site vs our cheapest → cheaper or not, and
+hotels it has that our list lacks; (d) partner programme verified on its OWN
+page or the network's own page (status open/closed), commission, fees;
+(e) price API: public / on request (write to ask) / none; (f) deep link.
+Then the owner decides who to contact for a price API. **Then:** owner
+checks hotels on the phone; (3) flights: same
 rule — price sources beyond Aviasales (RUH missing). **25 Nov study:**
 Amadeus self-service CLOSED 17 Jul 2026; TP search API needs 50k MAU;
 Skyscanner API >100k traffic; Duffel = we'd sell tickets (not our model);
