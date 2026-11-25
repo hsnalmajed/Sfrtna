@@ -32,24 +32,27 @@ for (const city of cities) {
   const old = await ask({ q: city, probe: "1" });
   const nl = neu.body?.result?.hotels ?? [];
   const ol = old.body?.result?.hotels ?? [];
-  console.log(`CHECK NEW list: via=${neu.body?.check?.via} hotels=${nl.length} more=${neu.body?.result?.nextPage ? "yes" : "no"} total=${neu.body?.result?.total ?? "-"}`);
-  console.log(`CHECK OLD list: via=${old.body?.check?.via} hotels=${ol.length} more=${old.body?.result?.nextPage ? "yes" : "no"} total=${old.body?.result?.total ?? "-"}`);
+  console.log(`CHECK NEW list: via=${neu.body?.check?.via} hotels=${nl.length} more=${neu.body?.result?.nextPage ? "yes" : "no"} total=${neu.body?.result?.total ?? "-"} currency=${neu.body?.result?.currency ?? "-"}`);
+  console.log(`CHECK OLD list: via=${old.body?.check?.via} hotels=${ol.length} more=${old.body?.result?.nextPage ? "yes" : "no"} total=${old.body?.result?.total ?? "-"} currency=${old.body?.result?.currency ?? "-"}`);
   const both = nl.filter((h) => ol.some((o) => key(o.name) === key(h.name)));
   console.log(`CHECK in both lists: ${both.length}`);
   for (const h of both.slice(0, 8)) {
     const o = ol.find((x) => key(x.name) === key(h.name));
     console.log(`CHECK   ${h.name} | NEW ${h.perNight ?? "-"} /night, ${priced(h).length} sites | OLD ${o.perNight ?? "-"} /night, ${priced(o).length} sites`);
   }
-  // One hotel page from each source (the first hotel found by both).
-  const pick = both.find((h) => h.token);
-  if (!pick) continue;
-  const oPick = ol.find((x) => key(x.name) === key(pick.name));
-  const n1 = await ask({ q: `${pick.name} ${city}`, token: pick.token });
-  const o1 = await ask({ q: `${pick.name} ${city}`, probe: "1", ...(oPick?.token ? { token: oPick.token } : { one: "1" }) });
-  for (const [tag, r] of [["NEW", n1], ["OLD", o1]]) {
-    const h = r.body?.result?.hotels?.[0];
-    const offers = priced(h).sort((a, b) => (a.perNight ?? 1e9) - (b.perNight ?? 1e9));
-    console.log(`CHECK ${tag} hotel page: via=${r.body?.check?.via} name=${h?.name ?? "-"} sites=${offers.length} rooms=${h?.rooms?.length ?? 0} cheapest=${offers[0]?.perNight ?? "-"} ${offers[0]?.source ?? ""}`);
-    for (const o of offers.slice(0, 20)) console.log(`CHECK   ${tag} site ${o.source} ${o.perNight ?? "-"} /night${o.official ? " official" : ""}`);
+  // Hotel pages from each source: the named hotels (HOTELS, | separated)
+  // found by both, else the first found by both.
+  const want = (process.env.HOTELS || "").split("|").map(key).filter(Boolean);
+  const picks = (want.length ? both.filter((h) => want.some((w) => key(h.name).includes(w))) : both.slice(0, 1)).filter((h) => h.token);
+  for (const pick of picks) {
+    const oPick = ol.find((x) => key(x.name) === key(pick.name));
+    const n1 = await ask({ q: `${pick.name} ${city}`, token: pick.token });
+    const o1 = await ask({ q: `${pick.name} ${city}`, probe: "1", ...(oPick?.token ? { token: oPick.token } : { one: "1" }) });
+    for (const [tag, r] of [["NEW", n1], ["OLD", o1]]) {
+      const h = r.body?.result?.hotels?.[0];
+      const offers = priced(h).sort((a, b) => (a.perNight ?? 1e9) - (b.perNight ?? 1e9));
+      console.log(`CHECK ${tag} hotel page: via=${r.body?.check?.via} name=${h?.name ?? "-"} list=${tag === "NEW" ? pick.perNight : oPick?.perNight} sites=${offers.length} rooms=${h?.rooms?.length ?? 0} cheapest=${offers[0]?.perNight ?? "-"} ${offers[0]?.source ?? ""} currency=${r.body?.result?.currency ?? "-"}`);
+      for (const o of offers.slice(0, 20)) console.log(`CHECK   ${tag} site ${o.source} ${o.perNight ?? "-"} /night total ${o.total ?? "-"}${o.official ? " official" : ""}`);
+    }
   }
 }
