@@ -376,3 +376,14 @@ featured price, not always the cheapest site.
 - DMM-CMB: all three forms → 400 at that moment → SerpApi answered (9
   options, cheapest 6,464 Air India). Re-check: may be Scrapingdog flakiness.
 - Not yet compared with Skyscanner / Wego (next: 10 routes + 10 hotels).
+- **Skyscanner via Scrapingdog (probe, 25 Nov 20:5x, same dates/passengers):**
+  RUH-IST 2nd call = 1,089 itineraries (84 direct), 16 airlines, 23 sellers,
+  cheapest 3,002 SAR (Alrehlat; Wingie 3,006; Google/SerpApi 3,054, 9 options).
+  1st call (cold) = 60 itineraries, cheapest 3,100: answers grow while
+  Skyscanner's quotes come in (35 quote requests) → build = 2 calls (cold +
+  ~seconds later). DMM-CMB = 10 itineraries, 8 of 29 quotes in (cold).
+  Sellers RUH-IST (lowest): Alrehlat, Wingie, AkbarTravels, Trip.com, flynas,
+  UBFly, Flightnetwork, Mytrip, Gotogate, Rehlat, Kiwi, Almosafer,
+  TravelWings, Saudia, Expedia, Booking.com, Turkish, Gulf Air, Qatar,
+  EgyptAir, Etihad, Oman Air, flyadeal. Seller links = Skyscanner redirect
+  (no commission for us) → route each seller via its own programme.
