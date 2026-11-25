@@ -240,7 +240,40 @@ export async function sdSkyscannerProbe(q: {
       } catch {
         keys = ["not json"];
       }
-      return { form: name, status: res.status, keys, outline: text.replace(/\s+/g, " ").replaceAll(key(), "***").slice(0, 3500), errors };
+      // Outline: itineraries, cheapest, stops, airlines and every seller
+      // (name, airline or agency, how many itineraries, its lowest price).
+      let outline = "";
+      try {
+        const j = JSON.parse(text) as {
+          search_information?: Record<string, unknown>;
+          search_metadata?: Record<string, unknown>;
+          itineraries?: { price?: number; legs?: { stops?: number; flights?: { airline?: string }[] }[]; booking_options?: { book_with?: string; is_airline?: boolean; price?: number }[] }[];
+        };
+        const its = j.itineraries ?? [];
+        const sellers = new Map<string, { n: number; min: number; airline: boolean }>();
+        const airlines = new Set<string>();
+        let direct = 0;
+        for (const it of its) {
+          if ((it.legs ?? []).every((l) => (l.stops ?? 0) === 0)) direct++;
+          for (const l of it.legs ?? []) for (const f of l.flights ?? []) if (f.airline) airlines.add(f.airline);
+          for (const b of it.booking_options ?? []) {
+            const k = b.book_with ?? "?";
+            const cur = sellers.get(k) ?? { n: 0, min: Infinity, airline: Boolean(b.is_airline) };
+            cur.n++;
+            if (typeof b.price === "number") cur.min = Math.min(cur.min, b.price);
+            sellers.set(k, cur);
+          }
+        }
+        const prices = its.map((i) => i.price ?? Infinity).sort((a, b) => a - b);
+        outline =
+          `complete=${String(j.search_metadata?.results_complete)} quotes=${JSON.stringify(j.search_information?.quote_requests ?? {})} ` +
+          `itineraries=${its.length} direct=${direct} cheapest=${prices[0]} 5th=${prices[4]} 10th=${prices[9]} ` +
+          `airlines(${airlines.size})=${[...airlines].join(", ")} || sellers(${sellers.size})=` +
+          [...sellers.entries()].sort((a, b) => a[1].min - b[1].min).map(([k, v]) => `${k}${v.airline ? "(airline)" : ""} x${v.n} min ${Math.round(v.min)}`).join("; ");
+      } catch {
+        outline = text.replace(/\s+/g, " ").replaceAll(key(), "***").slice(0, 1500);
+      }
+      return { form: name, status: res.status, keys, outline, errors };
     } catch (e) {
       errors.push(`${name}: ${e instanceof Error ? e.message : "fetch failed"}`);
     }
