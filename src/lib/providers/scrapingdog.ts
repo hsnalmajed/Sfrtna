@@ -47,8 +47,11 @@ async function isOwnCheck(): Promise<boolean> {
 
 /** The last refusal, for the site check only (never shown to visitors). */
 let lastError = "";
+/** Index (in sdFlights' list) of the market/language form that answered last. */
+let workingForm = -1;
+let lastForm = "";
 export function sdLastError(): string {
-  return lastError;
+  return [lastForm && `ok=${lastForm}`, lastError].filter(Boolean).join(" ");
 }
 
 const https = (u?: string) => (u && u.startsWith("https://") ? u : "");
@@ -97,8 +100,7 @@ export async function sdFlights(q: {
   return cachedJson<FallbackFlights>(cacheKey, 20 * 60, async () => {
     // Our own checks read the cache only.
     if (await isOwnCheck()) return null;
-    const url = new URL(BASE);
-    const p: Record<string, string> = {
+    const base: Record<string, string> = {
       api_key: key(),
       departure_id: q.origin,
       arrival_id: q.destination,
@@ -106,33 +108,49 @@ export async function sdFlights(q: {
       type: round ? "1" : "2",
       adults: String(q.adults),
       currency: q.currency,
-      country: "sa",
-      language: q.locale,
     };
-    if (round) p.return_date = q.returnDate as string;
-    if (q.children) p.children = String(q.children);
-    if (q.infants) p.infants_on_lap = String(q.infants);
-    if (q.directOnly) p.stops = "1";
-    for (const [k, v] of Object.entries(p)) url.searchParams.set(k, v);
-    let body: Record<string, unknown>;
-    try {
-      const res = await fetch(url.toString());
-      countUse("scrapingdog");
-      if (!res.ok) {
-        // The reason, for the site check (never the key: it is not echoed).
-        const why = (await res.text().catch(() => "")).replace(/\s+/g, " ").slice(0, 200);
-        lastError = `http ${res.status} ${why}`;
-        return null;
+    if (round) base.return_date = q.returnDate as string;
+    if (q.children) base.children = String(q.children);
+    if (q.infants) base.infants_on_lap = String(q.infants);
+    if (q.directOnly) base.stops = "1";
+    // The docs list market/language examples only (us/uk/fr, en/es/fr/de):
+    // the Saudi market in Arabic is asked first, then plainer forms. The one
+    // that answered is kept for the next searches (and shown to the check).
+    const forms = [
+      { country: "sa", language: q.locale },
+      { country: "sa", language: "en" },
+      { country: "us", language: "en" },
+    ];
+    const order = workingForm >= 0 ? [forms[workingForm], ...forms.filter((_, i) => i !== workingForm)] : forms;
+    let body: Record<string, unknown> | null = null;
+    const errors: string[] = [];
+    for (const form of order) {
+      const url = new URL(BASE);
+      for (const [k, v] of Object.entries({ ...base, ...form })) url.searchParams.set(k, v);
+      try {
+        const res = await fetch(url.toString());
+        countUse("scrapingdog");
+        if (!res.ok) {
+          // The reason, for the site check (never the key: it is not echoed).
+          const why = (await res.text().catch(() => "")).replace(/\s+/g, " ").slice(0, 120);
+          errors.push(`${form.country}/${form.language}: http ${res.status} ${why}`);
+          continue;
+        }
+        const b = (await res.json()) as Record<string, unknown>;
+        if (b.error) {
+          errors.push(`${form.country}/${form.language}: ${String(b.error).slice(0, 120)}`);
+          continue;
+        }
+        body = b;
+        workingForm = forms.indexOf(form);
+        lastForm = `${form.country}/${form.language}`;
+        break;
+      } catch (e) {
+        errors.push(`${form.country}/${form.language}: ${e instanceof Error ? e.message : "fetch failed"}`);
       }
-      body = (await res.json()) as Record<string, unknown>;
-    } catch (e) {
-      lastError = e instanceof Error ? e.message : "fetch failed";
-      return null;
     }
-    if (body.error || body.message) {
-      lastError = String(body.error || body.message).slice(0, 200);
-      return null;
-    }
+    lastError = errors.join(" | ").slice(0, 400);
+    if (!body) return null;
     const best = (body.best_flights as Option[] | undefined) ?? [];
     const other = (body.other_flights as Option[] | undefined) ?? [];
     const time = (s?: string) => (s ? s.slice(11, 16) : "");
@@ -159,7 +177,6 @@ export async function sdFlights(q: {
         best: isBest,
       }));
     if (flights.length === 0) return null;
-    lastError = "";
     return { flights, url: googleFlightsUrl(q), roundTrip: round, currency: q.currency };
   });
 }
