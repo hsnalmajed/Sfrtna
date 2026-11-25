@@ -361,3 +361,8 @@ Golden Tulip 484 = page 484, Pullman 749 = page 749, Al Saha 876 = page 876.
 Point + market code was NOT stable (run 45595603981: 405 / 626 / 740 again);
 market + keyword matched the page in both runs → list = market 2682 + city
 keyword (cache key dfs-hotels3).
+**LIVE CONFIRMED (run 45598041023):** Madinah 60 hotels; list = page: Golden
+Tulip 484/484, Pullman 748/749, Al Saha 876/876; Riyadh 60 hotels, Holiday Inn
+Malaz 261, Ramada King Fahd 293 (= OLD list). Left: Crowne Plaza Riyadh list
+280 while its page's cheapest site is 263 (Vio.com) — the list shows Google's
+featured price, not always the cheapest site.
