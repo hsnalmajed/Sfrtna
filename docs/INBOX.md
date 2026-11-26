@@ -14,6 +14,9 @@ task under «For the build chat» below instead of coding here.
   link to open written out; 3) if waiting is needed: say exactly how long
   or which mail to wait for; 4) end with «انتقل للإيميل التالي» when
   nothing is left now. Goal: fast, exact mail triage.
+  **Owner 26 Nov: never postpone.** An important mail gets its solution
+  steps NOW, starting with the first step in the same reply — no «later»,
+  no «when convenient».
 - Owner pastes only the relevant lines of a mail (sender, date, the ask) or
   ONE screenshot. Claude: what it means, what to do, a ready reply if one is
   needed (English or Arabic as the thread), and updates the table below.
