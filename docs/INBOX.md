@@ -62,3 +62,4 @@ Closed: Stay22 (4 Nov, payout threshold $500 never met).
   the checker's real UA (and any WAF/bot block), then make «/» always carry
   the tag for it (e.g. widen the match, or put the tag in the «/» redirect
   response body). Then owner presses Verify again.
+- **26 Nov (mail chat): Mitgo ticket «Declined requests… re-review» answered 25 Nov 15:09: they give NO reasons, only their help article. 13 declined (Trip.com, Flight Network, Kiwi.com, Infobus, Gotogate, Eurowings, Global YO, Mytrip, VisatoSinga…). No reply needed. Next: re-apply each one from the Admitad programmes page where a join button shows again; keep ad space verified.**
