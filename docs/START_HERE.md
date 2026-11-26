@@ -372,6 +372,17 @@ in X (+/−, back to ours) → nearest cities with their days (tick, +/−; days
 not given → first city). `/api/ai/plan` `preview:true` → `routeOptions`;
 `answers.split` validated in plan.ts, built exactly in routePlan.ts. Checked
 locally (Playwright 390 px, Istanbul 12 days → 7 + Bursa 3 + Sapanca 2).
+**PHOTOS ROUND 3 DONE 25 Nov: 414/415 reviewed (jazan had 0 photos).
+26 Nov owner: «connect ANY site that gives city photos» (more, varied, every
+city). Built: Pexels credit link in the viewer (licence); trial
+`scripts/photos/extra-sources.ts` + `photo-trial.yml` (→ branch
+`photo-trial`, sheets x-<slug>.jpg): Wikivoyage banner/lead photo OK
+(Istanbul Hagia Sophia, Jazan port), Openverse = mostly Commons repeats +
+wrong cities (Tabuk = Philippines) → try `source=flickr`; Unsplash waits for
+secret UNSPLASH_ACCESS_KEY (owner step, credit line approved by owner);
+next: Pixabay API (free, self-host), Saudi Tourism media bank (ask). Then
+merge chosen sources into gallery2 collect + build (s u/w/o, credit `c`,
+link `pg`, Unsplash download ping when published).**
 **▶ NOW = round 3 «الصور» (owner 19 Nov 14:29, Bangkok: «only 4 views, and is
 this even Bangkok? apply to all»).** LIVE (ef76bcd): «المناظر» = each famous
 sight's own Pexels photos by NAME (12 sights × ≤3, shown in rounds: one per
