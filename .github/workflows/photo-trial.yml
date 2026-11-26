@@ -1,0 +1,48 @@
+# Trial of new photo sources (scripts/photos/extra-sources.ts): Unsplash
+# (when the UNSPLASH_ACCESS_KEY secret exists), Wikivoyage banners, Openverse.
+# Sheets go to branch `photo-trial`; never touches main or the live galleries.
+name: Photo sources trial
+
+on:
+  workflow_dispatch:
+    inputs:
+      only:
+        description: "Cities (comma list)"
+        type: string
+        required: true
+
+permissions:
+  contents: write
+
+concurrency:
+  group: photo-trial
+  cancel-in-progress: false
+
+jobs:
+  trial:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          check-latest: true
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - name: Collect
+        run: npx --yes tsx@4 scripts/photos/extra-sources.ts collect --only "${{ inputs.only }}"
+      - name: Sheets
+        run: npx --yes tsx@4 scripts/photos/extra-sources.ts sheets --only "${{ inputs.only }}"
+      - name: Push to the trial branch
+        run: |
+          cd photo-trial
+          ls
+          git init -q
+          git config user.name "Claude"; git config user.email "noreply@anthropic.com"
+          git checkout -q -B photo-trial
+          git add extra.json x-*.jpg
+          git commit -q -m "Photo sources trial: ${{ inputs.only }}"
+          git push -q -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" photo-trial

@@ -237,6 +237,15 @@ export default function CityPhotos({
                 <p className="truncate text-sm text-white/65">
                   {p.k === "v" ? countryName : `${cityName}، ${countryName}`}
                   {p.c && <span className="text-white/40"> · 📷 {p.c}</span>}
+                  {/* Pexels' licence asks for a visible link back (owner 26 Nov: one small line). */}
+                  {p.s === "p" && (
+                    <span className="text-white/40">
+                      {" · 📷 "}
+                      <a href={`https://www.pexels.com/photo/${p.o.match(/photos\/(\d+)/)?.[1] ?? ""}/`} target="_blank" rel="noopener" className="underline decoration-white/20 hover:text-white/70">
+                        Pexels
+                      </a>
+                    </span>
+                  )}
                 </p>
               </div>
               <a
