@@ -1,0 +1,8 @@
+# Unsplash eye check (gallery2.ts build). One line per city looked at, tags u#
+# from the sheet u-<slug>.jpg on branch unsplash-sheets:
+#   tabuk u3 u9     drop photo 3 and 9, show the rest
+#   jazan *         none fit (wrong place / not good enough)
+#   istanbul        all good
+# A city NOT listed here shows no Unsplash photo. Owner's standard (19 Nov):
+# every photo must show the city's beauty, sights and things to do — drop
+# hazy/dull skylines, insides, statues, B&W, wrong places, people close-ups.

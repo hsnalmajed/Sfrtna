@@ -2,7 +2,7 @@
 // chosen by eye (scripts/photos/gallery2.ts → public/data/gallery/<slug>.json),
 // read through ASSETS like the guide.
 export interface GalleryPhoto {
-  /** Pexels: the original image URL. Commons: the "a/ab/File.jpg" path. */
+  /** Pexels: the original image URL. Commons: the "a/ab/File.jpg" path. Unsplash: its urls.raw (hotlinked, as its terms ask). */
   o: string;
   an: string;
   en: string;
@@ -10,12 +10,14 @@ export interface GalleryPhoto {
   x: number;
   /** v = a view of the city, l = a landmark. */
   k: "v" | "l";
-  /** p = Pexels, c = Wikimedia Commons. */
-  s: "p" | "c";
+  /** p = Pexels, c = Wikimedia Commons, u = Unsplash. */
+  s: "p" | "c" | "u";
   /** The file's own width (Commons thumbnails are never asked wider). */
   w?: number;
-  /** Commons credit: "author · licence". */
+  /** Commons credit: "author · licence". Unsplash: the photographer's name. */
   c?: string;
+  /** Unsplash: the photographer's profile, with our referral tags. */
+  cu?: string;
 }
 
 type Stored = Omit<GalleryPhoto, "k" | "s"> & Partial<Pick<GalleryPhoto, "k" | "s">>;
@@ -37,6 +39,7 @@ export function commonsUrl(im: string, width: number, fileWidth?: number): strin
 
 /** The photo at about `width` px wide. */
 export function galleryUrl(p: Pick<GalleryPhoto, "o" | "s" | "w">, width: number): string {
+  if (p.s === "u") return `${p.o}${p.o.includes("?") ? "&" : "?"}w=${width}&q=75&fit=max&auto=format`;
   if (p.s !== "c") return `${p.o}?auto=compress&cs=tinysrgb&w=${width}`;
   return commonsUrl(p.o, width, p.w);
 }

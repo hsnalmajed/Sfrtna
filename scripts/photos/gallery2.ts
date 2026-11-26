@@ -18,18 +18,29 @@
 //     → photo-review/gallery2.json (resumable)
 //   npx tsx scripts/photos/gallery2.ts sheets [--only a,b]
 //     → photo-review/v2-<slug>.jpg + v2-index.json (cities collected, not yet reviewed)
+//   UNSPLASH_ACCESS_KEY=… npx tsx scripts/photos/gallery2.ts unsplash [--max 40] [--only a,b] [--redo]
+//     → row.u (Unsplash views; one search per city; stops before the hourly limit)
+//   npx tsx scripts/photos/gallery2.ts usheets [--only a,b]
+//     → photo-review/u-<slug>.jpg (Unsplash photos not yet in unsplash-drop.txt)
+//   UNSPLASH_ACCESS_KEY=… npx tsx scripts/photos/gallery2.ts uping
+//     → tells Unsplash once about every published photo (its API terms)
 //   npx tsx scripts/photos/gallery2.ts build <gallery2.json>
 //     → public/data/gallery/<slug>.json for every reviewed city
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { COUNTRY_CITIES } from "@/lib/cities";
-import { findCountry } from "@/lib/countries";
+import { COUNTRIES, findCountry } from "@/lib/countries";
 import { CITY_COORDS } from "@/data/cityCoords";
 import { UNFIT } from "@/lib/pexels";
-import { commonsUrl } from "@/lib/gallery";
+import { galleryUrl } from "@/lib/gallery";
 
 const DIR = "photo-review";
 const FILE = `${DIR}/gallery2.json`;
 const DROP = "scripts/photos/gallery2-drop.txt";
+/** Unsplash eye check, same format (tags u#): «tabuk u3 u9», «jazan *», «istanbul». */
+const UDROP = "scripts/photos/unsplash-drop.txt";
+/** Unsplash photo ids already reported as used (download_location ping). */
+const UPINGED = "scripts/photos/unsplash-pinged.txt";
+const UTM = "utm_source=sfrtna&utm_medium=referral";
 /** View candidates kept for the eye check; about half survive it. */
 const MAX_VIEWS = 30;
 const MAX_LANDMARKS = 25;
@@ -44,23 +55,31 @@ const arg = (n: string) => {
 };
 const only = new Set((arg("--only") ?? "").split(",").filter(Boolean));
 
-/** One photo. `s` = source: p Pexels (o = original URL), c Commons (o = "a/ab/File.jpg"). */
+/** One photo. `s` = source: p Pexels (o = original URL), c Commons (o = "a/ab/File.jpg"), u Unsplash (o = urls.raw, hotlinked). */
 export type Photo = {
   /** v = Pexels view of the city, n = Commons nature near it, l = a famous sight (guide place). */
   k: "v" | "l" | "n";
   /** For sights: the place's rank in the guide (0 = most famous), so the gallery follows fame. */
   f?: number;
-  s: "p" | "c";
+  s: "p" | "c" | "u";
   o: string;
   w: number;
   an: string;
   en: string;
   y: number;
   x: number;
-  /** Credit for Commons photos: "author · licence". */
+  /** Credit for Commons photos: "author · licence"; Unsplash: the photographer. */
   c?: string;
+  /** Unsplash: photographer's profile (credit link). */
+  cu?: string;
+  /** Unsplash: the photo's page. */
+  pg?: string;
+  /** Unsplash: download_location, pinged once the photo is published (never published itself). */
+  dl?: string;
+  /** Unsplash: its description, for the eye-check sheet only. */
+  t?: string;
 };
-type Store = Record<string, { v: Photo[]; l: Photo[]; n?: Photo[]; s?: Photo[] }>;
+type Store = Record<string, { v: Photo[]; l: Photo[]; n?: Photo[]; s?: Photo[]; u?: Photo[] }>;
 type GuidePlace = {
   n?: string;
   e?: string;
@@ -439,7 +458,7 @@ async function collect() {
     }
     // Commons nature near the city only where sights are few — it needs an eye check before it shows.
     const nature = landmarks.length + sights.length < 8 ? await commonsNear({ an: c.nameAr, en: city }, centre, places) : [];
-    store[c.slug] = { v: views, l: landmarks, n: nature, s: sights };
+    store[c.slug] = { ...store[c.slug], v: views, l: landmarks, n: nature, s: sights };
     writeFileSync(FILE, JSON.stringify(store));
     console.log(
       `${c.slug}: ${sights.length} sights, ${views.length} views, ${nature.length} nature, ${landmarks.length} landmarks (${ranked.filter((r) => r.inf!.quality).length} rated)`,
@@ -449,10 +468,133 @@ async function collect() {
   console.log(`collected ${Object.keys(store).length}/${cities().length}`);
 }
 
-function reviewed(): Map<string, Set<string> | "all"> {
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+const escRe = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+/** Not a city view on Unsplash (food, insides, screens…); people/animals via UNFIT/ANIMALS. */
+const U_NOT_VIEW = /\b(interior|inside|indoor|portrait|selfie|food|dish|coffee|car|cars|traffic|logo|map|flag|statue|sculpture|museum|exhibit|screen|phone|laptop)\b/;
+
+type UResult = {
+  id: string;
+  width: number;
+  height: number;
+  description?: string | null;
+  alt_description?: string | null;
+  premium?: boolean;
+  sponsorship?: unknown;
+  tags?: { title?: string }[];
+  urls: { raw: string };
+  links: { html: string; download_location: string };
+  user: { name: string; links?: { html?: string } };
+};
+
+/**
+ * Unsplash views (owner 26 Nov: «connect ANY site with city photos»; trial:
+ * Unsplash best by far). One search per city, «City Country»; the city must be
+ * named as a whole word and no other country named (Jazan → Jazan, Iran).
+ * Demo key = 50 requests an hour: stops on --max or when Unsplash says ≤ 2 left.
+ */
+async function unsplashCollect() {
+  const key = process.env.UNSPLASH_ACCESS_KEY;
+  if (!key) throw new Error("UNSPLASH_ACCESS_KEY missing");
+  mkdirSync(DIR, { recursive: true });
+  const store: Store = existsSync(FILE) ? JSON.parse(readFileSync(FILE, "utf8")) : {};
+  const redo = process.argv.includes("--redo");
+  let budget = Number(arg("--max") ?? 40);
+  const fresh: string[] = [];
+  for (const c of cities()) {
+    if (only.size && !only.has(c.slug)) continue;
+    if (store[c.slug]?.u && !redo) continue;
+    const centre = CITY_COORDS[c.slug];
+    if (!centre) continue;
+    if (budget <= 0) break;
+    const city = c.nameEn.replace(/\s*\(.*?\)\s*/g, " ").trim();
+    const country = findCountry(c.code)?.nameEn ?? "";
+    const word = new RegExp(`\\b${escRe(fold(city))}\\b`);
+    const others = COUNTRIES.filter((k) => k.code !== c.code)
+      .map((k) => fold(k.nameEn))
+      .filter((n) => n.length >= 4 && !fold(city).includes(n) && !fold(country).includes(n));
+    const url = new URL("https://api.unsplash.com/search/photos");
+    url.search = new URLSearchParams({ query: `${city} ${country}`, per_page: "30", orientation: "landscape", content_filter: "high" }).toString();
+    budget--;
+    const res = await fetch(url, { headers: { Authorization: `Client-ID ${key}`, "Accept-Version": "v1" } });
+    const remaining = Number(res.headers.get("x-ratelimit-remaining") ?? "99");
+    if (!res.ok) {
+      console.log(`${c.slug}: ${res.status} ${(await res.text()).slice(0, 120)}`);
+      break;
+    }
+    const body = (await res.json()) as { results?: UResult[] };
+    const u: Photo[] = [];
+    for (const r of body.results ?? []) {
+      if (u.length >= 20) break;
+      if (r.premium || r.sponsorship || r.width < 2000 || r.width < r.height * 1.2) continue;
+      const text = fold([r.description, r.alt_description, ...(r.tags ?? []).map((t) => t.title)].filter(Boolean).join(" "));
+      if (!word.test(text) || others.some((n) => text.includes(n))) continue;
+      if (U_NOT_VIEW.test(text) || UNFIT.test(text) || ANIMALS.test(text)) continue;
+      u.push({
+        k: "v",
+        s: "u",
+        o: r.urls.raw,
+        w: r.width,
+        an: c.nameAr,
+        en: city,
+        y: centre.lat,
+        x: centre.lon,
+        c: r.user.name,
+        cu: r.user.links?.html,
+        pg: r.links.html,
+        dl: r.links.download_location,
+        t: (r.description || r.alt_description || "").slice(0, 80),
+      });
+    }
+    store[c.slug] = { ...(store[c.slug] ?? { v: [], l: [] }), u };
+    fresh.push(c.slug);
+    writeFileSync(FILE, JSON.stringify(store));
+    console.log(`${c.slug}: unsplash ${u.length} (of ${body.results?.length ?? 0}) · left this hour ${remaining}`);
+    if (remaining <= 2) break;
+    await sleep(1200);
+  }
+  writeFileSync(`${DIR}/u-new.txt`, fresh.join(","));
+  console.log(`unsplash: ${fresh.length} cities this run, ${cities().filter((c) => CITY_COORDS[c.slug] && !store[c.slug]?.u).length} left`);
+}
+
+/** Unsplash's terms: report each published photo once (its download_location). */
+async function unsplashPing() {
+  const key = process.env.UNSPLASH_ACCESS_KEY;
+  if (!key) throw new Error("UNSPLASH_ACCESS_KEY missing");
+  const store: Store = JSON.parse(readFileSync(FILE, "utf8"));
+  const done = new Set(existsSync(UPINGED) ? readFileSync(UPINGED, "utf8").split("\n").filter(Boolean) : []);
+  const dlByRaw = new Map<string, string>();
+  for (const row of Object.values(store)) for (const p of row.u ?? []) if (p.dl) dlByRaw.set(p.o, p.dl);
+  const idOf = (dl: string) => dl.match(/photos\/([^/?]+)\/download/)?.[1] ?? "";
+  let budget = Number(arg("--max") ?? 20);
+  let sent = 0;
+  outer: for (const c of cities()) {
+    const f = `public/data/gallery/${c.slug}.json`;
+    if (!existsSync(f)) continue;
+    for (const p of JSON.parse(readFileSync(f, "utf8")) as Photo[]) {
+      if (p.s !== "u") continue;
+      const dl = dlByRaw.get(p.o);
+      const id = dl ? idOf(dl) : "";
+      if (!dl || !id || done.has(id)) continue;
+      if (budget-- <= 0) break outer;
+      const res = await fetch(dl, { headers: { Authorization: `Client-ID ${key}`, "Accept-Version": "v1" } });
+      if (!res.ok) {
+        console.log(`ping ${id}: ${res.status}`);
+        break outer;
+      }
+      done.add(id);
+      sent++;
+      await sleep(600);
+    }
+  }
+  writeFileSync(UPINGED, [...done].sort().join("\n") + (done.size ? "\n" : ""));
+  console.log(`unsplash pings ${sent} · total ${done.size}`);
+}
+
+function reviewed(file = DROP): Map<string, Set<string> | "all"> {
   const drops = new Map<string, Set<string> | "all">();
-  if (!existsSync(DROP)) return drops;
-  for (const raw of readFileSync(DROP, "utf8").split("\n")) {
+  if (!existsSync(file)) return drops;
+  for (const raw of readFileSync(file, "utf8").split("\n")) {
     const [slug, ...rest] = raw.trim().split(/\s+/);
     if (!slug || slug.startsWith("#")) continue;
     drops.set(
@@ -463,13 +605,12 @@ function reviewed(): Map<string, Set<string> | "all"> {
   return drops;
 }
 
-const thumb = (p: Photo, w: number) =>
-  p.s === "p" ? `${p.o}?auto=compress&w=${w}` : commonsUrl(p.o, w, p.w);
+const thumb = (p: Photo, w: number) => galleryUrl(p, w);
 
-async function sheets() {
+async function sheets(unsplash = false) {
   const sharp = (await import("sharp")).default;
   const store: Store = JSON.parse(readFileSync(FILE, "utf8"));
-  const done = reviewed();
+  const done = reviewed(unsplash ? UDROP : DROP);
   const W = 200,
     H = 133,
     PER_ROW = 8,
@@ -482,7 +623,7 @@ async function sheets() {
   const index: string[] = [];
   for (const [slug, row] of Object.entries(store)) {
     if (only.size ? !only.has(slug) : done.has(slug)) continue;
-    const all = [
+    const all = unsplash ? (row.u ?? []).map((p, i) => ({ p, tag: `u${i + 1}` })) : [
       ...(row.s ?? []).map((p, i) => ({ p, tag: `s${i + 1}` })),
       ...(row.n ?? []).map((p, i) => ({ p, tag: `n${i + 1}` })),
       ...row.v.map((p, i) => ({ p, tag: `v${i + 1}` })),
@@ -493,7 +634,9 @@ async function sheets() {
     const width = PER_ROW * (W + GAP) + GAP,
       height = 34 + rows * (H + 22);
     const layers: { input: Buffer; left: number; top: number }[] = [];
-    let svg = `<text x="6" y="24" font-size="20" font-weight="bold" font-family="sans-serif">${esc(slug)} — ${(row.n ?? []).length} nature, ${row.v.length} views, ${row.l.length} landmarks</text>`;
+    let svg = unsplash
+      ? `<text x="6" y="24" font-size="20" font-weight="bold" font-family="sans-serif">${esc(slug)} — ${all.length} Unsplash</text>`
+      : `<text x="6" y="24" font-size="20" font-weight="bold" font-family="sans-serif">${esc(slug)} — ${(row.n ?? []).length} nature, ${row.v.length} views, ${row.l.length} landmarks</text>`;
     // One at a time with a pause: Wikimedia refuses bursts (blank tiles).
     for (const [j, { p, tag }] of all.entries()) {
       const x = GAP + (j % PER_ROW) * (W + GAP),
@@ -518,7 +661,7 @@ async function sheets() {
         }
       }
       if (p.s === "c") await new Promise((r) => setTimeout(r, 250));
-      svg += `<rect x="${x}" y="${y}" width="${tag.length * 11 + 6}" height="22" fill="${p.k === "v" ? "#06c" : p.k === "n" ? "#070" : "#000"}"/><text x="${x + 3}" y="${y + 17}" font-size="16" font-weight="bold" fill="#ff0" font-family="sans-serif">${tag}</text><text x="${x}" y="${y + H + 15}" font-size="11" font-family="sans-serif">${esc(p.en.slice(0, 32))}</text>`;
+      svg += `<rect x="${x}" y="${y}" width="${tag.length * 11 + 6}" height="22" fill="${p.k === "v" ? "#06c" : p.k === "n" ? "#070" : "#000"}"/><text x="${x + 3}" y="${y + 17}" font-size="16" font-weight="bold" fill="#ff0" font-family="sans-serif">${tag}</text><text x="${x}" y="${y + H + 15}" font-size="11" font-family="sans-serif">${esc((unsplash ? p.t ?? "" : p.en).slice(0, 32))}</text>`;
     }
     layers.push({
       input: Buffer.from(
@@ -530,23 +673,36 @@ async function sheets() {
     await sharp({ create: { width, height, channels: 3, background: "#fff" } })
       .composite(layers)
       .jpeg({ quality: 70 })
-      .toFile(`${DIR}/v2-${slug}.jpg`);
+      .toFile(`${DIR}/${unsplash ? "u" : "v2"}-${slug}.jpg`);
     index.push(slug);
   }
-  writeFileSync(`${DIR}/v2-index.json`, JSON.stringify(index));
+  writeFileSync(`${DIR}/${unsplash ? "u" : "v2"}-index.json`, JSON.stringify(index));
   console.log(`sheets ${index.length}`);
 }
 
 function build(file: string) {
   const store: Store = JSON.parse(readFileSync(file, "utf8"));
   const done = reviewed();
+  const udone = reviewed(UDROP);
   mkdirSync("public/data/gallery", { recursive: true });
   let n = 0,
     photos = 0;
   for (const c of cities()) {
     const d = done.get(c.slug);
     const row = store[c.slug];
-    if (d === "all" || !row) continue;
+    if (!row) continue;
+    // Unsplash: only after its own eye check (Jazan's search gave Jazan in Iran).
+    const ud = udone.get(c.slug);
+    const uKept = ud instanceof Set ? (row.u ?? []).filter((_, i) => !ud.has(`u${i + 1}`)).slice(0, 15) : [];
+    if (d === "all") {
+      // Commons/Pexels refused for this city: Unsplash alone, if the eye kept enough.
+      if (uKept.length >= 4) {
+        writeFileSync(`public/data/gallery/${c.slug}.json`, JSON.stringify(uKept.map(publicPhoto)));
+        n++;
+        photos += uKept.length;
+      }
+      continue;
+    }
     // Not looked at yet: only the sights by name (their own photos), no general views or Commons nature.
     const seenByEye = d instanceof Set;
     const keep = (list: Photo[], k: string) => list.filter((_, i) => !(seenByEye && d.has(`${k}${i + 1}`)));
@@ -580,24 +736,25 @@ function build(file: string) {
     }
     const nat = seenByEye ? keep(row.n ?? [], "n") : [];
     const general = seenByEye ? keep(row.v, "v").slice(0, 6) : [];
-    const views = [...rounds, ...nat, ...general].slice(0, 36).map((p) => ({ ...p, k: "v" as const }));
+    // Owner 26 Nov: Unsplash = the best city scenes, right after each sight's own photos.
+    const views = [...rounds, ...uKept, ...nat, ...general].slice(0, 40).map((p) => ({ ...p, k: "v" as const }));
     const sights = byFame(keep(row.l, "l"))
       .filter((p) => !NOT_A_SIGHT.has(kindOf.get(p.o) ?? ""))
       .slice(0, 25);
     const items = [...views, ...sights];
     if (items.length < 4) continue;
-    const out = items.map((p) => ({
-      ...p,
-      f: undefined,
-      y: +p.y.toFixed(5),
-      x: +p.x.toFixed(5),
-    }));
+    const out = items.map(publicPhoto);
     writeFileSync(`public/data/gallery/${c.slug}.json`, JSON.stringify(out));
     n++;
     photos += items.length;
   }
   console.log(`galleries ${n} · photos ${photos}`);
   writeImageSitemap();
+}
+
+/** What a published gallery keeps of a photo (no fame rank, no ping URL, no photo page). */
+function publicPhoto(p: Photo) {
+  return { ...p, t: undefined, f: undefined, dl: undefined, pg: undefined, cu: p.cu ? `${p.cu}?${UTM}` : undefined, y: +p.y.toFixed(5), x: +p.x.toFixed(5) };
 }
 
 /** Every published gallery as Google image-sitemap entries, on both language pages. */
@@ -608,7 +765,7 @@ function writeImageSitemap() {
     const f = `public/data/gallery/${c.slug}.json`;
     if (!existsSync(f)) continue;
     const items = JSON.parse(readFileSync(f, "utf8")) as Photo[];
-    const urls = items.map((p) => (p.s === "c" ? commonsUrl(p.o, 1280, p.w) : `${p.o}?auto=compress&cs=tinysrgb&w=1280`));
+    const urls = items.map((p) => galleryUrl(p, 1280));
     for (const lang of ["ar", "en"]) {
       body += `<url><loc>https://sfrtna.com/${lang}/attractions/${c.code}/${c.slug}</loc>${urls.map((u) => `<image:image><image:loc>${esc(u)}</image:loc></image:image>`).join("")}</url>\n`;
     }
@@ -626,16 +783,22 @@ function left() {
 }
 
 const mode = process.argv[2];
-(mode === "collect"
-  ? collect()
-  : mode === "sheets"
-    ? sheets()
-    : mode === "build"
-      ? Promise.resolve(build(process.argv[3]))
-      : mode === "left"
-        ? Promise.resolve(left())
-        : Promise.reject(new Error("collect | sheets | build | left"))
-).catch((e) => {
-  console.error(e);
-  process.exit(1);
-});
+const modes: Record<string, () => Promise<void> | void> = {
+  collect,
+  sheets: () => sheets(),
+  build: () => build(process.argv[3]),
+  left,
+  unsplash: unsplashCollect,
+  usheets: () => sheets(true),
+  uping: unsplashPing,
+};
+Promise.resolve()
+  .then(() => {
+    const run = modes[mode];
+    if (!run) throw new Error(Object.keys(modes).join(" | "));
+    return run();
+  })
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
+  });

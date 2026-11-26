@@ -1,0 +1,92 @@
+# Unsplash into the city galleries (owner 26 Nov: «connect ANY site with city
+# photos»). scripts/photos/gallery2.ts unsplash/usheets/uping. Demo key = 50
+# requests an hour → ≤ 38 searches + ≤ 8 pings a run, once an hour.
+# Candidates → branch photo-review-v2 (gallery2.json, row.u); eye-check
+# sheets → branch unsplash-sheets (u-<slug>.jpg); only cities listed in
+# scripts/photos/unsplash-drop.txt show their Unsplash photos.
+name: Gallery Unsplash
+
+on:
+  schedule:
+    - cron: "47 * * * *"
+  workflow_dispatch:
+    inputs:
+      only:
+        description: "Only these cities (comma list)"
+        type: string
+        default: ""
+      redo:
+        description: "Search the listed cities again"
+        type: boolean
+        default: false
+      sheets_only:
+        description: "Only draw sheets for «only» (no search)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  # Same group as gallery2.yml: both write photo-review-v2's gallery2.json.
+  group: gallery-v3
+  cancel-in-progress: false
+
+jobs:
+  unsplash:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
+      REPO_URL: https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          check-latest: true
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - name: Bring back the review branch
+        run: |
+          mkdir -p photo-review
+          git fetch -q origin photo-review-v2
+          git show origin/photo-review-v2:gallery2.json > photo-review/gallery2.json
+      - name: Search Unsplash (≤ 38 cities)
+        if: ${{ !inputs.sheets_only }}
+        run: npx --yes tsx@4 scripts/photos/gallery2.ts unsplash --max 38 ${{ inputs.only && format('--only {0}', inputs.only) || '' }} ${{ inputs.redo && '--redo' || '' }}
+      - name: Save the candidates (only gallery2.json; the v2 sheets on the branch stay)
+        if: ${{ !inputs.sheets_only }}
+        run: |
+          git clone -q --depth 1 -b photo-review-v2 "$REPO_URL" branch
+          cp photo-review/gallery2.json branch/gallery2.json
+          cd branch
+          git config user.name "Claude"; git config user.email "noreply@anthropic.com"
+          git add gallery2.json
+          if git commit -q -m "Unsplash candidates"; then git push -q origin photo-review-v2; else echo "nothing new"; fi
+      - name: Publish eye-checked photos + tell Unsplash once per photo
+        if: ${{ !inputs.sheets_only }}
+        run: |
+          npx --yes tsx@4 scripts/photos/gallery2.ts build photo-review/gallery2.json
+          npx --yes tsx@4 scripts/photos/gallery2.ts uping --max 8
+          if [ -n "$(git status --porcelain public/data/gallery public/sitemap-images.xml scripts/photos/unsplash-pinged.txt)" ]; then
+            bash scripts/ci/push-to-main.sh "Photos: Unsplash in the city galleries (automatic run)" public/data/gallery public/sitemap-images.xml scripts/photos/unsplash-pinged.txt
+          else
+            echo "galleries unchanged"
+          fi
+      - name: Sheets → branch unsplash-sheets
+        run: |
+          list="${{ inputs.only }}"
+          [ -z "$list" ] && [ -f photo-review/u-new.txt ] && list=$(cat photo-review/u-new.txt)
+          [ -z "$list" ] && { echo "no new cities"; exit 0; }
+          npx --yes tsx@4 scripts/photos/gallery2.ts usheets --only "$list"
+          if git ls-remote --exit-code --heads origin unsplash-sheets >/dev/null; then
+            git clone -q --depth 1 -b unsplash-sheets "$REPO_URL" sheets
+          else
+            mkdir sheets && cd sheets && git init -q && git checkout -q -b unsplash-sheets && git remote add origin "$REPO_URL" && cd ..
+          fi
+          cp photo-review/u-*.jpg sheets/ 2>/dev/null || { echo "no photos to show"; exit 0; }
+          cd sheets
+          git config user.name "Claude"; git config user.email "noreply@anthropic.com"
+          git add -A
+          if git commit -q -m "Unsplash sheets: $list"; then git push -q origin unsplash-sheets; else echo "nothing new"; fi
