@@ -43,6 +43,6 @@ jobs:
           git init -q
           git config user.name "Claude"; git config user.email "noreply@anthropic.com"
           git checkout -q -B photo-trial
-          git add extra.json x-*.jpg
+          git add extra.json x-*.jpg 2>/dev/null || git add extra.json
           git commit -q -m "Photo sources trial: ${{ inputs.only }}"
           git push -q -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" photo-trial

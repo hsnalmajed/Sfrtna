@@ -58,7 +58,7 @@ async function getJson(url: string | URL, headers: Record<string, string> = {}):
         continue;
       }
       if (!res.ok) {
-        console.log(`  ${res.status} ${String(url).slice(0, 90)}`);
+        console.log(`  ${res.status} ${String(url).slice(0, 90)} ${(await res.text()).slice(0, 200)}`);
         return null;
       }
       return await res.json();
@@ -129,6 +129,7 @@ async function wikivoyage(titles: string[], centre: { lat: number; lon: number }
       query?: { pages?: { title: string; missing?: boolean; pageprops?: Record<string, string>; coordinates?: { lat: number; lon: number }[] }[] };
     } | null;
     const page = body?.query?.pages?.[0];
+    console.log(`  wikivoyage ${title}: ${JSON.stringify(page).slice(0, 300)}`);
     const banner = page?.pageprops?.wpb_banner;
     if (!page || page.missing || !banner) continue;
     const co = page.coordinates?.[0];
