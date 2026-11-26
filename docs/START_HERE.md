@@ -130,12 +130,20 @@ branch **`unsplash-sheets`** `u-<slug>.jpg`. A city shows Unsplash ONLY once
 listed in `scripts/photos/unsplash-drop.txt` (eye check, tags u#; format in
 the file); then the next run publishes (after each sight's own photos, ≤15)
 and pings. Viewer: «📷 name · Unsplash» with referral tags.
-**NEXT (Opus):** ~10 cities a chat: `git fetch origin unsplash-sheets`, look
-at each sheet, write its line (owner's standard: beauty, sights, things to
-do; drop hazy, insides, statues, wrong place), push. When ~20 cities are
-live: owner applies for **Production** in the Unsplash dashboard (needs a
-screenshot of the credit line in the viewer) → 1,000/h. Then Pixabay API,
-Saudi Tourism media bank (ask permission).
+**26 Nov: first 35 cities eye-checked + LIVE (9ef4914, release green):** 264
+Unsplash photos in 31 galleries; none fit al-wakrah (= Doha), al-ahsa, taif,
+umluj — small Saudi cities' searches return Madinah/Makkah, so «unnamed»
+results need the eye. Built galleries pushed straight from the chat (build
+needs no key); pings (≤8/run) catch up in later runs.
+**NEXT (Opus):** review each new batch: `git fetch --depth 1 origin
++unsplash-sheets:refs/remotes/origin/unsplash-sheets` (the + matters:
+photo-review-v2 is force-pushed, so always fetch with +), read the sheets of
+cities not yet in unsplash-drop.txt, append lines with a keep-list script
+(see 26 Nov commit), build from photo-review-v2's gallery2.json, push
+gallery + drop file. If no run in 2 h, dispatch gallery-unsplash.yml.
+**Owner step pending:** apply for Unsplash **Production** (31 cities live;
+needs a screenshot of the credit line in a city's photo viewer) → 1,000/h.
+Then Pixabay API, Saudi Tourism media bank (ask permission).
 
 **Open, in owner's order (details: PROJECT_NOTES archive):**
 - Apple: build 62 WAITING_FOR_REVIEW (ATT path). Apple mail → mail chat.
