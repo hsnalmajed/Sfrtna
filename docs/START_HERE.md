@@ -372,17 +372,27 @@ in X (+/−, back to ours) → nearest cities with their days (tick, +/−; days
 not given → first city). `/api/ai/plan` `preview:true` → `routeOptions`;
 `answers.split` validated in plan.ts, built exactly in routePlan.ts. Checked
 locally (Playwright 390 px, Istanbul 12 days → 7 + Bursa 3 + Sapanca 2).
-**PHOTOS ROUND 3 DONE 25 Nov: 414/415 reviewed (jazan had 0 photos).
-26 Nov owner: «connect ANY site that gives city photos» (more, varied, every
-city). Built: Pexels credit link in the viewer (licence); trial
-`scripts/photos/extra-sources.ts` + `photo-trial.yml` (→ branch
-`photo-trial`, sheets x-<slug>.jpg): Wikivoyage banner/lead photo OK
-(Istanbul Hagia Sophia, Jazan port), Openverse = mostly Commons repeats +
-wrong cities (Tabuk = Philippines) → try `source=flickr`; Unsplash waits for
-secret UNSPLASH_ACCESS_KEY (owner step, credit line approved by owner);
-next: Pixabay API (free, self-host), Saudi Tourism media bank (ask). Then
-merge chosen sources into gallery2 collect + build (s u/w/o, credit `c`,
-link `pg`, Unsplash download ping when published).**
+**▶▶ NEXT (Opus, NEW CHAT): UNSPLASH INTO THE CITY GALLERIES.** Photos
+round 3 done 25 Nov (414/415 eye-reviewed; jazan had 0). 26 Nov owner:
+«connect ANY site with city photos» (more, varied, every city). Trial
+(`scripts/photos/extra-sources.ts` + `photo-trial.yml` → branch
+`photo-trial`, sheets x-<slug>.jpg) RESULT: **Unsplash = best by far**
+(Tabuk 12 superb desert/stars/Hisma, Istanbul 10, Baku 15; Abha 1; Jazan 4 =
+Jazan in IRAN → keep the eye check + add country to the match); Wikivoyage
+lead photo = 1–2 per city, sometimes wrong (Tabuk = a shell) → extra
+candidate only; **Openverse DROPPED** (Commons repeats, Tabuk = Philippines).
+Owner made Unsplash app «Sfrtna» (Demo, 50 req/h, account info@sfrtna.com),
+GitHub secret UNSPLASH_ACCESS_KEY works. Owner approved a small credit line
+in the viewer. Pexels credit link LIVE in CityPhotos viewer (289ad69).
+BUILD: gallery2.ts collect `u` list per city (s:"u", o = urls.raw hotlinked,
+`c` photographer, `pg` photo page, `dl` download_location) for ALL cities in
+batches under 50/h; sheets tag u#; build mixes kept u# into «المناظر»;
+`galleryUrl` for "u" = `${o}&w=…&q=75&auto=format`; viewer line «📷 name ·
+Unsplash» with UTM links (utm_source=sfrtna&utm_medium=referral); ping each
+published u#'s `dl` once (record in a file); then owner applies for
+Production in the Unsplash dashboard (screenshot of the credit line) →
+1,000 req/h. Next sources after: Pixabay API (free, self-host), Saudi
+Tourism media bank (ask permission).
 **▶ NOW = round 3 «الصور» (owner 19 Nov 14:29, Bangkok: «only 4 views, and is
 this even Bangkok? apply to all»).** LIVE (ef76bcd): «المناظر» = each famous
 sight's own Pexels photos by NAME (12 sights × ≤3, shown in rounds: one per
@@ -1033,4 +1043,4 @@ payout threshold $500 not met» (wire $500; PayPal/ACH $100).
 Waiting on the owner: Admitad — 19 Nov fix (PARTNERS «19 Nov ROOT CAUSE»: custom rule no-UA ≠ «/» + Bot fight mode OFF + no-UA tag + monitor) → Verify → re-apply to the 5 rejected; Google Play ticket reply; Google-fares
 decision after the 6 Nov measurement; Android APK on a real phone.
 
-**Recommended model for the next chat: Opus 5.5** (round 3: review the photo sheets).
+**Recommended model for the next chat: Opus 5.5** (Unsplash into the galleries).
