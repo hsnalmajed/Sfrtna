@@ -79,7 +79,9 @@ export type Photo = {
   /** Unsplash: its description, for the eye-check sheet only. */
   t?: string;
 };
-type Store = Record<string, { v: Photo[]; l: Photo[]; n?: Photo[]; s?: Photo[]; u?: Photo[] }>;
+type Store = Record<string, { v: Photo[]; l: Photo[]; n?: Photo[]; s?: Photo[]; u?: Photo[]; uv?: number }>;
+/** Unsplash filter version: rows searched with an older filter are searched again. */
+const UVER = 2;
 type GuidePlace = {
   n?: string;
   e?: string;
@@ -503,16 +505,24 @@ async function unsplashCollect() {
   const fresh: string[] = [];
   for (const c of cities()) {
     if (only.size && !only.has(c.slug)) continue;
-    if (store[c.slug]?.u && !redo) continue;
+    if (store[c.slug]?.uv === UVER && !redo) continue;
     const centre = CITY_COORDS[c.slug];
     if (!centre) continue;
     if (budget <= 0) break;
     const city = c.nameEn.replace(/\s*\(.*?\)\s*/g, " ").trim();
     const country = findCountry(c.code)?.nameEn ?? "";
-    const word = new RegExp(`\\b${escRe(fold(city))}\\b`);
-    const others = COUNTRIES.filter((k) => k.code !== c.code)
+    // «AlUla» = «Al Ula» = «Al-Ula»: compare with «al» joined to the word after it and no hyphens.
+    const join = (t: string) => t.replace(/\bal[\s-]+/g, "al").replace(/-/g, " ");
+    const word = new RegExp(`\\b${escRe(join(fold(city)))}\\b`);
+    // Another country named as a whole word («Jazan, Iran»; not «woman» for Oman).
+    const otherNames = COUNTRIES.filter((k) => k.code !== c.code)
       .map((k) => fold(k.nameEn))
       .filter((n) => n.length >= 4 && !fold(city).includes(n) && !fold(country).includes(n));
+    const other = new RegExp(`\\b(${otherNames.map(escRe).join("|")})\\b`);
+    const why: Record<string, number> = {};
+    const no = (r: string) => {
+      why[r] = (why[r] ?? 0) + 1;
+    };
     const url = new URL("https://api.unsplash.com/search/photos");
     url.search = new URLSearchParams({ query: `${city} ${country}`, per_page: "30", orientation: "landscape", content_filter: "high" }).toString();
     budget--;
@@ -526,10 +536,29 @@ async function unsplashCollect() {
     const u: Photo[] = [];
     for (const r of body.results ?? []) {
       if (u.length >= 20) break;
-      if (r.premium || r.sponsorship || r.width < 2000 || r.width < r.height * 1.2) continue;
-      const text = fold([r.description, r.alt_description, ...(r.tags ?? []).map((t) => t.title)].filter(Boolean).join(" "));
-      if (!word.test(text) || others.some((n) => text.includes(n))) continue;
-      if (U_NOT_VIEW.test(text) || UNFIT.test(text) || ANIMALS.test(text)) continue;
+      if (r.premium || r.sponsorship) {
+        no("plus");
+        continue;
+      }
+      if (r.width < 2000 || r.width < r.height * 1.2) {
+        no("size");
+        continue;
+      }
+      const text = join(fold([r.description, r.alt_description, ...(r.tags ?? []).map((t) => t.title)].filter(Boolean).join(" ")));
+      if (!word.test(text)) {
+        no("no-city");
+        continue;
+      }
+      const o = text.match(other)?.[1];
+      if (o) {
+        no(`other:${o}`);
+        continue;
+      }
+      const bad = text.match(U_NOT_VIEW)?.[1] ?? text.match(UNFIT)?.[1] ?? text.match(ANIMALS)?.[1];
+      if (bad) {
+        no(`unfit:${bad}`);
+        continue;
+      }
       u.push({
         k: "v",
         s: "u",
@@ -546,15 +575,16 @@ async function unsplashCollect() {
         t: (r.description || r.alt_description || "").slice(0, 80),
       });
     }
-    store[c.slug] = { ...(store[c.slug] ?? { v: [], l: [] }), u };
+    store[c.slug] = { ...(store[c.slug] ?? { v: [], l: [] }), u, uv: UVER };
     fresh.push(c.slug);
     writeFileSync(FILE, JSON.stringify(store));
-    console.log(`${c.slug}: unsplash ${u.length} (of ${body.results?.length ?? 0}) · left this hour ${remaining}`);
+    const reasons = Object.entries(why).sort((a, b) => b[1] - a[1]).slice(0, 5).map(([k, v]) => `${k} ${v}`).join(", ");
+    console.log(`${c.slug}: unsplash ${u.length} (of ${body.results?.length ?? 0}; ${reasons}) · left this hour ${remaining}`);
     if (remaining <= 2) break;
     await sleep(1200);
   }
   writeFileSync(`${DIR}/u-new.txt`, fresh.join(","));
-  console.log(`unsplash: ${fresh.length} cities this run, ${cities().filter((c) => CITY_COORDS[c.slug] && !store[c.slug]?.u).length} left`);
+  console.log(`unsplash: ${fresh.length} cities this run, ${cities().filter((c) => CITY_COORDS[c.slug] && store[c.slug]?.uv !== UVER).length} left`);
 }
 
 /** Unsplash's terms: report each published photo once (its download_location). */
