@@ -81,7 +81,7 @@ export type Photo = {
 };
 type Store = Record<string, { v: Photo[]; l: Photo[]; n?: Photo[]; s?: Photo[]; u?: Photo[]; uv?: number }>;
 /** Unsplash filter version: rows searched with an older filter are searched again. */
-const UVER = 2;
+const UVER = 3;
 type GuidePlace = {
   n?: string;
   e?: string;
@@ -533,9 +533,8 @@ async function unsplashCollect() {
       break;
     }
     const body = (await res.json()) as { results?: UResult[] };
-    const u: Photo[] = [];
+    const u: (Photo & { named?: boolean })[] = [];
     for (const r of body.results ?? []) {
-      if (u.length >= 20) break;
       if (r.premium || r.sponsorship) {
         no("plus");
         continue;
@@ -545,10 +544,10 @@ async function unsplashCollect() {
         continue;
       }
       const text = join(fold([r.description, r.alt_description, ...(r.tags ?? []).map((t) => t.title)].filter(Boolean).join(" ")));
-      if (!word.test(text)) {
-        no("no-city");
-        continue;
-      }
+      // 26 Nov run: Unsplash's own captions rarely name the city (Izmir 30 of 30),
+      // yet the search was for it — kept, after those that do; the eye check decides.
+      const named = word.test(text);
+      if (!named) no("no-city (kept)");
       const o = text.match(other)?.[1];
       if (o) {
         no(`other:${o}`);
@@ -573,8 +572,12 @@ async function unsplashCollect() {
         pg: r.links.html,
         dl: r.links.download_location,
         t: (r.description || r.alt_description || "").slice(0, 80),
+        named,
       });
     }
+    u.sort((a, b) => Number(b.named) - Number(a.named));
+    u.splice(20);
+    for (const p of u) delete p.named;
     store[c.slug] = { ...(store[c.slug] ?? { v: [], l: [] }), u, uv: UVER };
     fresh.push(c.slug);
     writeFileSync(FILE, JSON.stringify(store));
