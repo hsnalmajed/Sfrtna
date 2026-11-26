@@ -3085,3 +3085,30 @@ unreliable; we have our own AI — its gap is real data = Maps Places);
 Yelp (weak in Gulf/Asia); other engines (Google is enough); shopping sites
 other than Amazon; social profiles/posts, YouTube (owned content; embeds
 break iOS clean mode); Screenshot, Sheets add-on.
+
+
+## Apple 5.1.2(i) — ATT path + phone zoom root cause (25–26 Nov 2026)
+
+- Apple's 3rd 5.1.2(i) note (25 Nov 13:56): «web content you own collects
+  cookies … use App Tracking Transparency». Two replies «we don't track» had
+  been refused, so we followed its 4 steps literally.
+- Builds: 58 ATT in AppDelegate (never ran: Scenes) → 59 moved to
+  SceneDelegate + flag at document start + `applyAtt` (rules lifted /
+  restored, reload only when «may track» flips) → 60 honest prompt text (old
+  text spoke of ads) → 62 + zoom lock. 61 = cancelled run.
+- Web: `Analytics.tsx` / `analytics.ts` gate GA on `isIosClean()`; ATT
+  «Allow» = consent (no banner in the app). Partner scripts still gated on
+  `isIosApp()` (owner's decision: flights/Stay22 open outside the app).
+- App Store Connect (done by Claude in the owner's Chrome): App Privacy —
+  Device ID added (Analytics, not linked, tracking), Product Interaction /
+  Search History / Other Diagnostic Data → used for tracking; Review Notes
+  rewritten (2,363 chars, ATT paragraph first); build 60 then 62 attached
+  (`ios-store.yml only=build`). Owner sent the reply + prompt screenshot
+  26 Nov 02:49; resubmitted via `ios-review.yml submit=yes` 03:10 →
+  WAITING_FOR_REVIEW. Chrome file upload is blocked for Claude: the owner
+  attaches files himself.
+- Phones: `wide-reports.yml` reads the apps' automatic WideWatch reports.
+  They showed every page zoomed (iPhone 440 → inner 413; iPad 375 → 329/352)
+  after a small-text field was focused. Fix: touch-screen fields ≥16px
+  (`globals.css`), apps' viewport adds `minimum-scale=1, user-scalable=no`,
+  iOS `zoomWatch` resets zoom. overflow-scan green; owner confirmed build 62.

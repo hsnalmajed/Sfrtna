@@ -116,6 +116,24 @@ City guide / Viator / Search Console / Status email / Feedback / Dashboard /
 iPhone app.
 
 ## ▶ Hand-off (15 Nov 2026) — current state
+**▶ APPLE 26 Nov 03:10 — RESUBMITTED, WAITING_FOR_REVIEW (build 62).**
+3rd 5.1.2(i) note (25 Nov) refused «we don't track» → we took Apple's ATT
+path, all 4 steps: ATT prompt at first launch (`SceneDelegate.sceneDidBecomeActive`
+— AppDelegate's never fires with Scenes); answer injected at document start
+as `window.__sfrAtt`; «Allow» = GA only (`isIosClean`), partners stay out
+(`isIosApp`); deny/undecided = clean mode + WebKit no-tracking rules. App
+Privacy declares tracking (Device ID, Product Interaction, Search History,
+Other Diagnostic Data). Review Notes open with the prompt location
+(listing.json). Reply + prompt screenshot sent. Prompt text: usage
+measurement only, no ads. Never add tracking beyond GA without updating
+App Privacy. Apple mail → mail chat (1–3 days).
+**PHONES «cut / slides sideways» ROOT CAUSE 25 Nov (live + build 62):** real
+WideWatch reports: page width right but ZOOMED ~6.5% (inner 413 of 440) —
+iOS zooms when a field under 16px is focused and never zooms back. Fix:
+every field ≥16px on touch screens (globals.css), apps' viewport
+`user-scalable=no`, iOS shell snaps any zoom back (`zoomWatch`). Owner
+confirmed on build 62. Read reports any time: `wide-reports.yml`.
+
 
 **▶▶▶▶▶▶▶▶▶▶▶ NEXT (owner 24 Nov 15:58, Opus, NEW CHAT): LOCAL HOTEL SITES
 STUDY** (a friend's tip: most countries have a local hotel app with most
