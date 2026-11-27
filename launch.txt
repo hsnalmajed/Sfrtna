@@ -1,0 +1,5 @@
++ perl -e 'alarm shift; exec @ARGV' 90 xcrun simctl launch EED6FB0A-E273-43C6-B5DE-3DF739543042 com.sfrtna.app
+/Users/runner/work/_temp/d901b6f7-3cd2-4186-b495-dc2662f05ebc.sh: line 2:  5201 Alarm clock: 14         perl -e 'alarm shift; exec @ARGV' "$@"
+launch failed 142, retrying
++ perl -e 'alarm shift; exec @ARGV' 90 xcrun simctl launch EED6FB0A-E273-43C6-B5DE-3DF739543042 com.sfrtna.app
+/Users/runner/work/_temp/d901b6f7-3cd2-4186-b495-dc2662f05ebc.sh: line 2:  8948 Alarm clock: 14         perl -e 'alarm shift; exec @ARGV' "$@"

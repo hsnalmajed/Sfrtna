@@ -1,0 +1,20 @@
+device:     iPhone 17 Pro Max (0BF273CD-70D1-4646-BE79-A0E7EF224D18) (Shutdown) 
+warm-up failed
+store-1-home ok
+store-2-flights ok
+store-3-hotels ok
+store-4-discover ok
+store-5-city ok
+store-6-seasons ok
+store-7-visa ok
+store-8-currency ok
+store-en-1-home ok
+store-en-2-flights ok
+store-en-3-hotels ok
+store-en-4-discover ok
+store-en-5-city ok
+store-en-6-seasons ok
+store-en-7-visa ok
+store-en-8-currency ok
+check-partner failed
+check-print ok
