@@ -146,6 +146,7 @@ needs a screenshot of the credit line in a city's photo viewer) → 1,000/h.
 Then Pixabay API, Saudi Tourism media bank (ask permission).
 
 **Open, in owner's order (details: PROJECT_NOTES archive):**
+- Apple 27 Nov 16:22: build 63 + reply (not a travel provider) → **Waiting for Review**; flight prices in iOS show after ATT Allow.
 - Apple 27 Nov: 5.1.2(i) PASSED (ATT); NEW rejection **5.1.1(ix)** — air
   travel = regulated field → must be an ORGANIZATION account (no document
   fixes it). Root fix: one-person LLC (business.sa; a «مؤسسة» = sole
