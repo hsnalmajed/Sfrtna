@@ -146,7 +146,12 @@ needs a screenshot of the credit line in a city's photo viewer) → 1,000/h.
 Then Pixabay API, Saudi Tourism media bank (ask permission).
 
 **Open, in owner's order (details: PROJECT_NOTES archive):**
-- Apple: build 62 WAITING_FOR_REVIEW (ATT path). Apple mail → mail chat.
+- Apple 27 Nov: 5.1.2(i) PASSED (ATT); NEW rejection **5.1.1(ix)** — air
+  travel = regulated field → must be an ORGANIZATION account (no document
+  fixes it). Root fix: one-person LLC (business.sa; a «مؤسسة» = sole
+  proprietorship, Apple refuses it) → free D-U-N-S (Apple lookup) →
+  Developer Support converts THIS account (app kept) → resubmit build 62.
+  Same entity → Play organization account. Steps in INBOX row 1.
 - Flights: Skyscanner via Scrapingdog as flight source #1 (spec: archive
   «KEY FINDING … Skyscanner Search»); no paid plan before launch; owner to
   regenerate the Scrapingdog key after the build is checked.
