@@ -31,7 +31,7 @@
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>نستخدم موقعك لنعرف اتجاه القبلة، ولنجد أقرب مسجد ومطعم حلال، ولنقترح أقرب مطار ونعرض مكانك على خريطة المدينة. لا نحفظه ولا نرسله لأي جهة.</string>
 	<key>NSUserTrackingUsageDescription</key>
-	<string>نستخدم ذلك فقط لقياس استخدام التطبيق وتحسينه (Google Analytics). لا نعرض إعلانات. إن رفضت فلن يُجمع أي شيء للتتبع. We use this only to measure and improve how the app is used (Google Analytics). We show no ads. If you decline, nothing is collected for tracking.</string>
+	<string>نستخدم ذلك لقياس استخدام التطبيق (Google Analytics) ولعرض أسعار الطيران الحية من مواقع الشركاء داخل التطبيق، وقد تستخدم هذه المواقع ملفات تعريف لاحتساب الإحالة. لا نعرض إعلانات. إن رفضت فلن يُجمع شيء للتتبع، وتُفتح نتائج الطيران على موقع الشريك. We use this to measure app usage (Google Analytics) and to show partners' live flight prices in the app; those sites may use cookies to credit our referral. We show no ads. If you decline, nothing is collected for tracking and flight results open on the partner's website.</string>
 	<key>CFBundleAllowMixedLocalizations</key>
 	<true/>
 	<key>CFBundleLocalizations</key>

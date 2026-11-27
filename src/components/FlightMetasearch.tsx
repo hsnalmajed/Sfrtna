@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { preconnect, preloadModule } from "react-dom";
 import type { Locale } from "@/lib/types";
-import { isIosApp } from "@/lib/iosClean";
+import { isIosClean } from "@/lib/iosClean";
 
 /**
  * Real flight results, inside our own page.
@@ -43,9 +43,10 @@ export const WIDGET_SRC = "https://tpwgt.com/wl_web/main.js?wl_id=22604";
  * so the results page starts searching the moment it opens.
  */
 export function warmFlightSearch() {
-  // Browser only, and never in the iPhone app: a preload in the server HTML
-  // would make the app fetch the partner's script too (lib/iosClean.ts).
-  if (typeof window === "undefined" || isIosApp()) return;
+  // Browser only, and in the iPhone app only after the traveller allowed
+  // tracking in Apple's ATT prompt: the partner's script is third-party
+  // (lib/iosClean.ts). A preload in the server HTML would load it for all.
+  if (typeof window === "undefined" || isIosClean()) return;
   preconnect("https://tpwgt.com");
   preconnect("https://tickets-api.eu-north-1.apistp.com");
   // A module script: only a module preload is reused when it is added.
@@ -76,9 +77,11 @@ export default function FlightMetasearch({
   prefill?: string | null;
 }) {
   useEffect(() => {
-    // The partner's live search runs in our page — never in the iPhone app,
-    // where flights open on the partner's own site instead (lib/iosClean.ts).
-    if (isIosApp()) return;
+    // The partner's live search runs in our page — in the iPhone app only
+    // after «Allow» in Apple's ATT prompt (owner 27 Nov: prices are the
+    // point of the app); otherwise flights open on the partner's own site
+    // (FlightsOutside, lib/iosClean.ts).
+    if (isIosClean()) return;
     warmFlightSearch();
     // The widget takes its starting trip from this one parameter, and reads
     // it when its script runs — so it goes on the address before the script

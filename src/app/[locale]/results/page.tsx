@@ -10,7 +10,7 @@ import { CABINS, type Cabin, type RoomType, type Locale, type MultiCityLegInput,
 import TripCurrencyInline from "@/components/TripCurrencyInline";
 import FlightMetasearch from "@/components/FlightMetasearch";
 import FlightsOutside from "@/components/FlightsOutside";
-import { useIosApp } from "@/lib/iosClean";
+import { useIosApp, useIosClean } from "@/lib/iosClean";
 import FlightResultsGuide from "@/components/FlightResultsGuide";
 import NextStepTabs, { markStep } from "@/components/NextStepTabs";
 import MultiCityTabs from "@/components/MultiCityTabs";
@@ -365,6 +365,11 @@ function ResultsContent() {
 
 
   const ios = useIosApp();
+  // iPhone app: the live search (partner script) only after «Allow» in
+  // Apple's ATT prompt; otherwise the results open on the partner's site.
+  const iosClean = useIosClean();
+  const flightsOutside = ios === true && iosClean === true;
+  const flightsLive = ios === false || (ios === true && iosClean === false);
   const flightRoute =
           search.origin && search.destination && search.departDate
             ? {
@@ -546,12 +551,12 @@ function ResultsContent() {
       {/* In the iPhone app the live results open on the partner's own site
           (lib/iosClean.ts); the guide and the widget below run in browsers
           and in the Android app only. Nothing until it is known which. */}
-      {ios === true && flightRoute && (
+      {flightsOutside && flightRoute && (
         <div className="mt-5">
           <FlightsOutside locale={locale} route={flightRoute} code={flightSearchCode(search)} currency={search.currency} />
         </div>
       )}
-      {ios === false && (
+      {flightsLive && (
       <>
       <FlightResultsGuide
         locale={locale}
