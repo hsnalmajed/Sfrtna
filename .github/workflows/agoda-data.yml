@@ -1,53 +1,45 @@
-# Agoda Hotel Data File (partner download, URL kept in the secret
-# AGODA_HOTEL_FILE_URL, never printed). Step "inspect": downloads it and
-# writes its shape to the log (lines start with AGODA) so the city/hotel id
-# mapping can be built. By hand only.
+# Agoda data bundle: Agoda's Hotel Data File (partner download; the link is
+# the secret AGODA_HOTEL_FILE_URL, never printed), English + Arabic →
+# scripts/agoda/build-bundle.py → agoda-data.tar.zst on the GitHub release
+# «agoda-data». release.yml unpacks it into public/data/agoda/ before the
+# build, so the data never sits in the code. Monthly + by hand.
 name: Agoda data
 on:
   workflow_dispatch:
+  schedule:
+    - cron: "17 2 3 * *"
 permissions:
   contents: write
 jobs:
-  inspect:
+  bundle:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
-      - name: Download
+      - name: Download (English + Arabic)
         env:
           URL: ${{ secrets.AGODA_HOTEL_FILE_URL }}
         run: |
           set -e
-          mkdir -p /tmp/ag && cd /tmp/ag
-          if [ -z "$URL" ]; then echo "AGODA no secret"; exit 1; fi
-          code=$(curl -sSL -o raw -w '%{http_code} %{content_type}' "$URL" || true)
-          echo "AGODA http/type: $code"
-          echo "AGODA size: $(stat -c %s raw) bytes"
-          echo "AGODA file: $(file -b raw)"
-      - name: Inspect
+          mkdir -p /tmp/ag/en /tmp/ag/ar && cd /tmp/ag
+          if [ -z "$URL" ]; then echo "::error::AGODA_HOTEL_FILE_URL missing"; exit 1; fi
+          curl -sSfL -o en.zip "$URL"
+          curl -sSfL -o ar.zip "${URL//_EN/_AR}"
+          unzip -q en.zip -d en && unzip -q ar.zip -d ar && rm en.zip ar.zip
+          ls -la en ar | sed 's/^/AGODA /'
+      - name: Build bundle
         run: |
-          cd /tmp/ag
-          kind=$(file -b raw)
-          case "$kind" in
-            Zip*) unzip -l raw | tail -n 12 | sed 's/^/AGODA zip: /'; unzip -q raw -d x ;;
-            gzip*) mkdir -p x && gunzip -c raw > x/data ;;
-            *) mkdir -p x && cp raw x/data ;;
-          esac
-          for f in $(find x -type f | head -5); do
-            echo "AGODA ---- $f ($(stat -c %s "$f") bytes, $(file -b "$f"))"
-            echo "AGODA lines: $(wc -l < "$f")"
-            head -c 3000 "$f" | head -n 4 | cut -c1-1500 | sed 's/^/AGODA row: /'
-          done
-      - name: Build index
-        run: |
-          python3 scripts/agoda/build-index.py "$(find /tmp/ag/x -name '*.csv' | head -1)" /tmp/ag/out | sed 's/^/AGODA /'
-          du -sh /tmp/ag/out/tiles | sed 's/^/AGODA tiles size: /'
-          ls /tmp/ag/out/tiles | wc -l | sed 's/^/AGODA tile files: /'
-          grep -c NONE /tmp/ag/out/report.txt | sed 's/^/AGODA cities without id: /' || true
-      - name: Push to branch agoda-index
-        run: |
+          set -e
+          python3 -I scripts/agoda/build-bundle.py "$(ls /tmp/ag/en/*.csv)" "$(ls /tmp/ag/ar/*.csv)" /tmp/ag/out
           cd /tmp/ag/out
-          git init -q -b agoda-index
-          git add -A
-          git -c user.name="github-actions" -c user.email="actions@github.com" commit -q -m "Agoda index $(date -u +%F)"
-          git push -q -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" agoda-index
+          echo "AGODA files: $(find . -type f | wc -l)  size: $(du -sh . | cut -f1)"
+          echo "AGODA biggest: $(find . -type f -printf '%s %p\n' | sort -n | tail -3 | tr '\n' ' ')"
+          grep -E "^(riyadh|jeddah|makkah|madinah|dubai|istanbul|cairo|london|bali)\b" report.txt | sed 's/^/AGODA /'
+          tar -C /tmp/ag/out -cf - . | zstd -q -19 -T0 -o /tmp/ag/agoda-data.tar.zst
+          echo "AGODA bundle: $(du -h /tmp/ag/agoda-data.tar.zst | cut -f1)"
+      - name: Publish to the release «agoda-data»
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view agoda-data >/dev/null 2>&1 || gh release create agoda-data --title "Agoda data (generated)" --notes "Built by agoda-data.yml from Agoda's Hotel Data File. Unpacked into public/data/agoda/ by release.yml." --latest=false
+          gh release upload agoda-data /tmp/ag/agoda-data.tar.zst /tmp/ag/out/report.txt --clobber

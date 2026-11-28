@@ -110,6 +110,19 @@ jobs:
         if: steps.guard.outputs.ready == 'true'
         run: npm ci --no-audit --no-fund
 
+      - name: Agoda data bundle
+        # Every Agoda hotel of our cities (agoda-data.yml → release «agoda-data»),
+        # unpacked into public/data/agoda/ so it ships as static assets. Missing
+        # bundle → the site runs without it (only the ids tiles in git).
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release download agoda-data -p agoda-data.tar.zst -D /tmp/agoda 2>/dev/null; then
+            mkdir -p public/data/agoda && zstd -dc /tmp/agoda/agoda-data.tar.zst | tar -C public/data/agoda -xf -
+            echo "Agoda bundle: $(find public/data/agoda -type f | wc -l) files"
+          else
+            echo "::warning title=Agoda::no agoda-data bundle yet"
+          fi
       - name: Build once
         if: steps.guard.outputs.ready == 'true'
         run: npx opennextjs-cloudflare build 2>&1 | tail -n 40
