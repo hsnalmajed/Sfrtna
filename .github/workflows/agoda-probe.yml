@@ -20,5 +20,5 @@ jobs:
           for city in Riyadh Jeddah Dubai Istanbul; do
             curl -s -H "x-sfrtna-smoke: $SMOKE_TOKEN" \
               "$BASE/api/hotel-prices?q=hotels+in+$city&checkIn=$ci&checkOut=$co&adults=2&agoda=1" \
-              | jq -c --arg c "$city" '{city:$c, agoda:.check.agoda}' | sed 's/^/AGODA /'
+              | jq -c --arg c "$city" '{city:$c, n:(.result.hotels|length?), err:.error, check:.check, ids:([.result.hotels[]?.agodaId]|map(select(.))|length)}' | sed 's/^/AGODA /'
           done
