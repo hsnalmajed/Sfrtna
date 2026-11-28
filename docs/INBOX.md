@@ -9,6 +9,11 @@ steps). Switch to Opus only if a mail needs code changed — then write the
 task under «For the build chat» below instead of coding here.
 
 ## How we work here
+- **Owner 28 Nov: this chat is for MAIL ONLY.** A mail that needs build work
+  (code, site, app, API) → write the task under «For the build chat» here
+  (or in START_HERE hand-off), push, and tell the owner in one line:
+  «هذا يحتاج محادثة بناء جديدة» + the build opening message + model Opus.
+  Owner-side account steps (forms, dashboards, bank) stay in this chat.
 - **Reply format for every mail (owner 18 Nov):** 1) مهمة / غير مهمة
   (one line why); 2) if important: the steps, one at a time, with every
   link to open written out; 3) if waiting is needed: say exactly how long
