@@ -25,7 +25,11 @@ let lastError = "";
 export const agodaLastError = () => lastError;
 export const agodaConfigured = () => Boolean(process.env.AGODA_API_KEY || process.env.AGODA_API_KEY_2 || process.env.AGODA_API_KEY_3);
 /** The Partners page lists two keys for our one site: we keep them all (_2, _3 = the two lines of the page) and use the one Agoda accepts. */
-const keys = () => [process.env.AGODA_API_KEY, process.env.AGODA_API_KEY_2, process.env.AGODA_API_KEY_3].filter((k): k is string => Boolean(k));
+const keys = () => [process.env.AGODA_API_KEY, process.env.AGODA_API_KEY_2, process.env.AGODA_API_KEY_3].map((k) => (k || "").trim().replace(/^["']|["']$/g, ""))
+    .filter(Boolean);
+/** Site check only: per key, its length and Agoda's answer (never the key). */
+const tried: string[] = [];
+export const agodaKeyReport = () => ({ set: [process.env.AGODA_API_KEY, process.env.AGODA_API_KEY_2, process.env.AGODA_API_KEY_3].map((k) => (k ? k.trim().length : 0)), tried: tried.slice(-6) });
 let goodKey = 0;
 export const agodaKeyInUse = () => (keys().length ? goodKey + 1 : 0);
 
@@ -177,6 +181,7 @@ async function search(criteria: Record<string, unknown>, q: AgodaQuery): Promise
         signal: AbortSignal.timeout(8000),
       });
       text = await res.text();
+      tried.push(`#${i + 1}:${res.status}`);
       if (res.status !== 401) {
         goodKey = i;
         break;
