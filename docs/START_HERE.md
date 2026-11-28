@@ -125,12 +125,20 @@ grep a keyword there, never read it whole.
 ACTIVE, CID 1976542, Runtime secret `AGODA_API_KEY` set by owner, city hotel
 button → /api/go/agoda (cid, smoke check green), bank submitted (1–2 days).
 Trip.com done too: flights + hotels via /api/go/trip (AID 11517619/SID 337178549).
-**NEXT (Opus): Agoda Affiliate Lite API v2** — get the PDF (owner: Partners ›
-Tools › API › «Affiliate_Lite_API_V2.0.pdf» › Download, attach it) and the
-Hotel Data File (city/hotel ids; Tools › Hotel Data File) → Agoda hotels with
-live prices inside hotel results (city + named hotel), Agoda named-hotel
-button = Agoda hotel URL + cid (now Stay22 Allez). Compare counts/prices with
-agoda.com (TEST_PLAN) before release. New /api route → edge-guard ROUTES.
+**Agoda API build 28 Nov (cbfa929…):** Hotel Data File → GitHub secret
+`AGODA_HOTEL_FILE_URL`; `agoda-data.yml` builds `public/data/agoda/tiles`
+(790,501 hotels around our cities, [id, cityId, lat, lng, name, stars]) +
+`cities.json` (408/415; none: Russia, Cuba) via `scripts/agoda/build-index.py`.
+`src/lib/providers/agoda.ts`: id match by place+name (probe: 53–57 of 60
+hotels in Riyadh/Jeddah/Dubai/Istanbul) → `agodaId` on each hotel → named-hotel
+Agoda button = /api/go/agoda on its own page (LIVE). Lite API client: endpoint
+http://affiliateapi7643.agoda.com/affiliateservice/lt_v1, header
+«siteId:key»; dailyRate = per night BEFORE taxes; city search max 30.
+**Blocker:** API answers 401 «Site ID or API key invalid» (site id 1976542 +
+AGODA_API_KEY) → owner checks Site ID/key on Partners › Tools › API.
+**NEXT (Opus):** once 200, run `agoda-probe.yml` (rates vs Google's Agoda
+price, same hotels) → decide tax handling → show Agoda offer where Google has
+none + Agoda-only hotels (city search) → TEST_PLAN vs agoda.com.
 Then: Skyscanner (impact.com + API), Klook direct, airlines.
 
 **NOW — Unsplash in the city galleries (BUILT 26 Nov, 6d27623 + 9c7948d).**
