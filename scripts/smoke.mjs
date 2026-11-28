@@ -221,6 +221,7 @@ for (const [name, path, mark] of [
   ["Airalo", "/api/go/tp?b=airalo&c=TR", /tp\.media|tp\.st|marker=|irclickid=/],
   ["Expedia", `/api/go/expedia?landing=${encodeURIComponent("https://www.expedia.com/Hotel-Search?destination=Istanbul")}`, /camref=/],
   ["Trip.com", `/api/go/trip?s=hotels&landing=${encodeURIComponent("https://www.trip.com/hotels/list?keyword=Istanbul")}`, /Allianceid=11517619&SID=337178549/],
+  ["Agoda", `/api/go/agoda?landing=${encodeURIComponent("https://www.agoda.com/search?textToSearch=Istanbul")}`, /cid=1976542/],
 ]) {
   await check(`partner link: ${name} carries our tag`, async () => {
     const loc = await goLocation(path);

@@ -70,6 +70,19 @@ export function tripComGoUrl(landingPage: string, sub: string): string {
   return `/api/go/trip?s=${encodeURIComponent(sub)}&landing=${encodeURIComponent(landingPage)}`;
 }
 
+/**
+ * Agoda's own affiliate programme (Agoda Partners, site «Approval Site»):
+ * `cid` on any agoda.com page credits the booking to us. Public in the URL,
+ * not a secret (the API key is, and lives in Runtime secrets).
+ */
+const AGODA_CID = "1976542";
+
+export function agodaAffiliateUrl(landingPage: string): string {
+  const u = new URL(landingPage);
+  u.searchParams.set("cid", AGODA_CID);
+  return u.toString();
+}
+
 export interface BookingHandoff {
   /** The partner's own name, shown to the traveller before they leave. */
   partner: string;
@@ -228,9 +241,8 @@ export function hotelPartnerLinks(q: HotelSearchQuery): BookingHandoff[] {
         locale: q.locale ?? "ar",
       });
 
-  // Agoda: a plain search that Stay22's LinkSwap may turn into a paid link
-  // on the page (checked on sfrtna.com, 6 Oct 2026). Trip.com: our own
-  // affiliate link, through /api/go/trip (below).
+  // Agoda (cid) and Trip.com (Allianceid): our own affiliate links, through
+  // /api/go/agoda and /api/go/trip (below).
   const agoda = new URL("https://www.agoda.com/search");
   agoda.searchParams.set("textToSearch", q.query);
   agoda.searchParams.set("checkIn", q.checkIn);
@@ -281,9 +293,9 @@ export function hotelPartnerLinks(q: HotelSearchQuery): BookingHandoff[] {
   // (a click before it loads, or an ad blocker, left the link untagged).
   // Allez needs a place: the city and country in English (`area`), or the
   // typed text. Booking's filters (stars, breakfast, stay type) ride along as
-  // the original search in Allez's `link`. Agoda stays plain until a paid
-  // route is confirmed; Expedia and Trip.com go through our own redirects
-  // (/api/go/expedia, /api/go/trip), which LinkSwap leaves alone.
+  // the original search in Allez's `link`. Expedia, Agoda and Trip.com go
+  // through our own redirects (/api/go/expedia, /api/go/agoda, /api/go/trip),
+  // which LinkSwap leaves alone.
   const city = {
     area: q.area || q.query,
     checkIn: q.checkIn,
@@ -302,7 +314,8 @@ export function hotelPartnerLinks(q: HotelSearchQuery): BookingHandoff[] {
     // Through our own redirect, which adds the affiliate tag: a direct
     // Expedia link would be rewritten by Stay22 (see /api/go/expedia).
     { partner: "Expedia", url: `/api/go/expedia?landing=${encodeURIComponent(expedia.toString())}` },
-    { partner: "Agoda", url: agoda.toString() },
+    // Our own Agoda link (cid), through our redirect so LinkSwap leaves it.
+    { partner: "Agoda", url: `/api/go/agoda?landing=${encodeURIComponent(agoda.toString())}` },
     { partner: "Hotels.com", url: hotelsComUrl },
     { partner: "Trip.com", url: tripComGoUrl(trip.toString(), "hotels") },
     ...(zen ? [{ partner: "ZenHotels", url: zen }] : []),
