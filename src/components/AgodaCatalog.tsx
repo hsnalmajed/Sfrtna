@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useDictionary } from "@/lib/dict/context";
+import ScrollRow from "@/components/ui/ScrollRow";
 
 /**
  * Every Agoda hotel of the city (Agoda Partners, direct): our copy of Agoda's
@@ -243,12 +244,12 @@ function AgodaRow({ h, citySlug, locale, t }: { h: AgodaCard; citySlug: string; 
       {open && info && (
         <div className="border-t border-navy-50 p-3 text-sm text-navy-800">
           {info.photos.length > 0 && (
-            <div className="-mx-1 flex snap-x gap-2 overflow-x-auto px-1 pb-2">
+            <ScrollRow className="flex gap-2 pb-2">
               {info.photos.map((src) => (
                 // eslint-disable-next-line @next/next/no-img-element -- Agoda's hotel photo CDN
-                <img key={src} src={src} alt={name} loading="lazy" className="h-40 w-60 shrink-0 snap-start rounded-xl object-cover" />
+                <img key={src} src={src} alt={name} loading="lazy" className="h-40 w-60 shrink-0 rounded-xl object-cover" />
               ))}
-            </div>
+            </ScrollRow>
           )}
           {(locale === "ar" ? info.addressAr || info.address : info.address) && (
             <p className="mt-1 text-navy-700">📍 {locale === "ar" ? info.addressAr || info.address : info.address}</p>
