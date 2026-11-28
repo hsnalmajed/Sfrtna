@@ -6,12 +6,13 @@ name: Agoda data
 on:
   workflow_dispatch:
 permissions:
-  contents: read
+  contents: write
 jobs:
   inspect:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
+      - uses: actions/checkout@v4
       - name: Download
         env:
           URL: ${{ secrets.AGODA_HOTEL_FILE_URL }}
@@ -37,3 +38,16 @@ jobs:
             echo "AGODA lines: $(wc -l < "$f")"
             head -c 3000 "$f" | head -n 4 | cut -c1-1500 | sed 's/^/AGODA row: /'
           done
+      - name: Build index
+        run: |
+          python3 scripts/agoda/build-index.py "$(find /tmp/ag/x -name '*.csv' | head -1)" /tmp/ag/out | sed 's/^/AGODA /'
+          du -sh /tmp/ag/out/tiles | sed 's/^/AGODA tiles size: /'
+          ls /tmp/ag/out/tiles | wc -l | sed 's/^/AGODA tile files: /'
+          grep -c NONE /tmp/ag/out/report.txt | sed 's/^/AGODA cities without id: /' || true
+      - name: Push to branch agoda-index
+        run: |
+          cd /tmp/ag/out
+          git init -q -b agoda-index
+          git add -A
+          git -c user.name="github-actions" -c user.email="actions@github.com" commit -q -m "Agoda index $(date -u +%F)"
+          git push -q -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" agoda-index
