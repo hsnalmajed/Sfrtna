@@ -23,9 +23,9 @@ const ENDPOINT = "http://affiliateapi7643.agoda.com/affiliateservice/lt_v1";
 
 let lastError = "";
 export const agodaLastError = () => lastError;
-export const agodaConfigured = () => Boolean(process.env.AGODA_API_KEY || process.env.AGODA_API_KEY_2);
-/** The Partners page lists two keys for our one site: we keep both and use the one Agoda accepts. */
-const keys = () => [process.env.AGODA_API_KEY, process.env.AGODA_API_KEY_2].filter((k): k is string => Boolean(k));
+export const agodaConfigured = () => Boolean(process.env.AGODA_API_KEY || process.env.AGODA_API_KEY_2 || process.env.AGODA_API_KEY_3);
+/** The Partners page lists two keys for our one site: we keep them all (_2, _3 = the two lines of the page) and use the one Agoda accepts. */
+const keys = () => [process.env.AGODA_API_KEY, process.env.AGODA_API_KEY_2, process.env.AGODA_API_KEY_3].filter((k): k is string => Boolean(k));
 let goodKey = 0;
 export const agodaKeyInUse = () => (keys().length ? goodKey + 1 : 0);
 
