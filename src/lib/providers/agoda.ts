@@ -25,7 +25,7 @@ let lastError = "";
 export const agodaLastError = () => lastError;
 export const agodaConfigured = () => Boolean(process.env.AGODA_API_KEY || process.env.AGODA_API_KEY_2 || process.env.AGODA_API_KEY_3);
 /** The Partners page lists two keys for our one site: we keep them all (_2, _3 = the two lines of the page) and use the one Agoda accepts. */
-const keys = () => [process.env.AGODA_API_KEY, process.env.AGODA_API_KEY_2, process.env.AGODA_API_KEY_3].map((k) => (k || "").trim().replace(/^["']|["']$/g, ""))
+const keys = () => [process.env.AGODA_API_KEY, process.env.AGODA_API_KEY_2, process.env.AGODA_API_KEY_3].map((k) => (k || "").trim().replace(/^["']|["']$/g, "").replace(/^\d+:/, ""))
     .filter(Boolean);
 /** Site check only: per key, its length and Agoda's answer (never the key). */
 const tried: string[] = [];
