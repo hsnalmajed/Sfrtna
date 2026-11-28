@@ -1,0 +1,23 @@
+# Is Agoda's Hotel Data File offered in Arabic? Prints the link's SHAPE (long
+# tokens masked) and the size/type of language variants. By hand.
+name: Agoda lang
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  lang:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - env:
+          URL: ${{ secrets.AGODA_HOTEL_FILE_URL }}
+        run: |
+          echo "$URL" | sed -E 's/[A-Za-z0-9]{10,}/<T>/g; s/=[0-9]{5,}/=<N>/g' | sed 's/^/SHAPE /'
+          try() { code=$(curl -s -r 0-4095 -o /tmp/p -w '%{http_code} %{size_download} %{content_type}' "$2"); echo "VAR $1 $code $(file -b /tmp/p | cut -c1-60)"; unzip -l /tmp/p 2>/dev/null | head -0; }
+          try orig "$URL"
+          try EN-AR "${URL//_EN/_AR}"
+          try en-ar "${URL//en-us/ar-ae}"
+          try lang1 "${URL//lang=en/lang=ar}"
+          try langid "${URL//languageId=1/languageId=26}"
+          try language "${URL//language=en/language=ar}"
