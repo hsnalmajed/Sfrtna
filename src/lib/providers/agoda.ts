@@ -23,7 +23,11 @@ const ENDPOINT = "http://affiliateapi7643.agoda.com/affiliateservice/lt_v1";
 
 let lastError = "";
 export const agodaLastError = () => lastError;
-export const agodaConfigured = () => Boolean(process.env.AGODA_API_KEY);
+export const agodaConfigured = () => Boolean(process.env.AGODA_API_KEY || process.env.AGODA_API_KEY_2);
+/** The Partners page lists two keys for our one site: we keep both and use the one Agoda accepts. */
+const keys = () => [process.env.AGODA_API_KEY, process.env.AGODA_API_KEY_2].filter((k): k is string => Boolean(k));
+let goodKey = 0;
+export const agodaKeyInUse = () => (keys().length ? goodKey + 1 : 0);
 
 type Tile = [number, number, number, number, string, number][];
 type AssetsBinding = { fetch: (input: Request | string) => Promise<Response> };
@@ -137,8 +141,8 @@ export interface AgodaQuery {
 }
 
 async function search(criteria: Record<string, unknown>, q: AgodaQuery): Promise<AgodaRate[] | null> {
-  const key = process.env.AGODA_API_KEY;
-  if (!key) return null;
+  const all = keys();
+  if (!all.length) return null;
   const body = {
     criteria: {
       ...criteria,
@@ -158,19 +162,28 @@ async function search(criteria: Record<string, unknown>, q: AgodaQuery): Promise
     },
   };
   try {
-    const res = await fetch(ENDPOINT, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Accept-Encoding": "gzip,deflate",
-        Authorization: `${SITE_ID}:${key}`,
-      },
-      body: JSON.stringify(body),
-      signal: AbortSignal.timeout(8000),
-    });
-    const text = await res.text();
-    if (!res.ok) {
-      lastError = `http ${res.status}: ${text.slice(0, 160)}`;
+    let res: Response | null = null;
+    let text = "";
+    // The key that worked last first; on 401 (key refused) the other one.
+    for (const i of [goodKey, ...all.keys()].filter((v, j, a) => v < all.length && a.indexOf(v) === j)) {
+      res = await fetch(ENDPOINT, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept-Encoding": "gzip,deflate",
+          Authorization: `${SITE_ID}:${all[i]}`,
+        },
+        body: JSON.stringify(body),
+        signal: AbortSignal.timeout(8000),
+      });
+      text = await res.text();
+      if (res.status !== 401) {
+        goodKey = i;
+        break;
+      }
+    }
+    if (!res || !res.ok) {
+      lastError = `http ${res?.status}: ${text.slice(0, 160)}`;
       return null;
     }
     const json = JSON.parse(text) as { results?: Record<string, unknown>[]; error?: { id?: number; message?: string } };

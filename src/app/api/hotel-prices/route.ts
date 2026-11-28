@@ -3,7 +3,7 @@ import { hotelPrices } from "@/lib/providers/serpapi";
 import { dfsConfigured, dfsHotelPrices, dfsLastError } from "@/lib/providers/dataforseo";
 import { parseChildrenAges } from "@/lib/searchParamsUtil";
 import { arabicNameFor } from "@/lib/providers/localHotels";
-import { agodaConfigured, agodaHotelRates, agodaIdsFor, agodaLastError } from "@/lib/providers/agoda";
+import { agodaConfigured, agodaHotelRates, agodaIdsFor, agodaLastError, agodaKeyInUse } from "@/lib/providers/agoda";
 
 export const dynamic = "force-dynamic";
 
@@ -93,6 +93,7 @@ export async function GET(req: NextRequest) {
         : null;
       agoda = {
         on: agodaConfigured(),
+        key: agodaKeyInUse(),
         matched: `${matched.length}/${result.hotels.length}`,
         rates: rates?.length ?? null,
         error: agodaLastError(),
