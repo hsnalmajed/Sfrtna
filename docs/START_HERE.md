@@ -73,6 +73,7 @@ Rules from now on:
   programme, rate, conditions to join, whether we meet them, status. Not
   met yet → note what is missing, apply once met. Update it with every
   partner change.
+- **DIRECT FIRST (owner 28 Nov, firm):** for flights, hotels, prices and every service, study the market site by site and connect to each company DIRECTLY (own affiliate programme + its data/API for results and prices in our site). A middleman network only when a direct link is impossible. Direct = more value, safety, trust, and no gaps like Aviasales missing Riyadh. Relying on middlemen first was a failure, not a detail.
 - **Airlines and ticket sites (owner 9 Nov):** direct link to the company
   first; then any commission route, only if trusted. A site that won't open
   or shows a bot check in Chrome → try another browser, then the owner's
