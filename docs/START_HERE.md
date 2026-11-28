@@ -134,11 +134,18 @@ hotels in Riyadh/Jeddah/Dubai/Istanbul) → `agodaId` on each hotel → named-ho
 Agoda button = /api/go/agoda on its own page (LIVE). Lite API client: endpoint
 http://affiliateapi7643.agoda.com/affiliateservice/lt_v1, header
 «siteId:key»; dailyRate = per night BEFORE taxes; city search max 30.
-**Blocker:** API answers 401 «Site ID or API key invalid» (site id 1976542 +
-AGODA_API_KEY) → owner checks Site ID/key on Partners › Tools › API.
-**NEXT (Opus):** once 200, run `agoda-probe.yml` (rates vs Google's Agoda
-price, same hotels) → decide tax handling → show Agoda offer where Google has
-none + Agoda-only hotels (city search) → TEST_PLAN vs agoda.com.
+**API LIVE 28 Nov 06:55 (9883b19):** keys = Runtime secrets AGODA_API_KEY_2/_3
+(old AGODA_API_KEY kept); the Partners copy button gives «siteId:key», the
+code drops the prefix. Probe (`agoda-probe.yml`, 21 days out, 2 nights):
+53–57/60 hotels matched, 23–28 with Agoda rates (SAR) per city; DataForSEO's
+Google list had NO Agoda offer for any of them → Agoda prices are new.
+Rates are shown NOWHERE yet (site check only, `agoda=1`).
+**NEXT (Opus):** (1) open 3 hotels on agoda.com (same dates) and compare
+with dailyRate → is it before taxes (KSA 15% VAT + fees)? write in TEST_PLAN;
+(2) add an «Agoda» offer to each matched hotel with its rate (total incl.
+taxes only if proven equal to agoda.com's, else don't show the number);
+(3) Agoda-only hotels via city search (cities.json) appended to the list;
+(4) Site check + ux-audit, then report.
 Then: Skyscanner (impact.com + API), Klook direct, airlines.
 
 **NOW — Unsplash in the city galleries (BUILT 26 Nov, 6d27623 + 9c7948d).**
