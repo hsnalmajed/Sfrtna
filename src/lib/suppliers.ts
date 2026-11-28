@@ -1,5 +1,6 @@
 import { findAirport } from "@/lib/airports";
 import { CITY_AIRPORTS } from "@/data/cityAirports";
+import { tripComGoUrl } from "@/lib/affiliateLinks";
 
 /**
  * Suppliers directory (owner, 8 Nov 2026): trusted sites for each need,
@@ -91,7 +92,8 @@ function tripComUrl(t: FlightTrip): string {
   u.searchParams.set("babyqty", String(p.infants));
   u.searchParams.set("searchboxarg", "t");
   if (t.currency) u.searchParams.set("curr", t.currency);
-  return u.toString();
+  // Through our redirect, which adds our Trip.com affiliate tag (see /api/go/trip).
+  return tripComGoUrl(u.toString(), "flights");
 }
 
 function kayakUrl(t: FlightTrip): string {

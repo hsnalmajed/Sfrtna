@@ -45,6 +45,31 @@ export function expediaAffiliateUrl(landingPage: string): string {
   return u.toString();
 }
 
+/**
+ * Trip.com's own affiliate programme (approved 27 Nov 2026): any trip.com
+ * page becomes a paid link by adding our Alliance ID and site ID — the
+ * format its link tool issued. Both ride in the visible URL, so they are not
+ * secrets. `trip_sub1` names the button that sent the visitor (flights,
+ * hotels), so the platform's reports show which one books.
+ */
+const TRIP_ALLIANCE_ID = "11517619";
+const TRIP_SID = "337178549";
+const TRIP_SUB3 = "D21620272";
+
+export function tripComAffiliateUrl(landingPage: string, sub = ""): string {
+  const u = new URL(landingPage);
+  u.searchParams.set("Allianceid", TRIP_ALLIANCE_ID);
+  u.searchParams.set("SID", TRIP_SID);
+  u.searchParams.set("trip_sub1", sub.replace(/[^a-z0-9_-]/gi, "").slice(0, 40));
+  u.searchParams.set("trip_sub3", TRIP_SUB3);
+  return u.toString();
+}
+
+/** A trip.com page through our redirect, which adds the tag (see /api/go/trip). */
+export function tripComGoUrl(landingPage: string, sub: string): string {
+  return `/api/go/trip?s=${encodeURIComponent(sub)}&landing=${encodeURIComponent(landingPage)}`;
+}
+
 export interface BookingHandoff {
   /** The partner's own name, shown to the traveller before they leave. */
   partner: string;
@@ -203,8 +228,9 @@ export function hotelPartnerLinks(q: HotelSearchQuery): BookingHandoff[] {
         locale: q.locale ?? "ar",
       });
 
-  // Agoda and Trip.com: plain searches that Stay22's LinkSwap may turn into
-  // paid links on the page (checked on sfrtna.com, 6 Oct 2026).
+  // Agoda: a plain search that Stay22's LinkSwap may turn into a paid link
+  // on the page (checked on sfrtna.com, 6 Oct 2026). Trip.com: our own
+  // affiliate link, through /api/go/trip (below).
   const agoda = new URL("https://www.agoda.com/search");
   agoda.searchParams.set("textToSearch", q.query);
   agoda.searchParams.set("checkIn", q.checkIn);
@@ -255,8 +281,9 @@ export function hotelPartnerLinks(q: HotelSearchQuery): BookingHandoff[] {
   // (a click before it loads, or an ad blocker, left the link untagged).
   // Allez needs a place: the city and country in English (`area`), or the
   // typed text. Booking's filters (stars, breakfast, stay type) ride along as
-  // the original search in Allez's `link`. Agoda and Trip.com stay plain until
-  // a paid route is confirmed; Expedia stays on /api/go/expedia (camref).
+  // the original search in Allez's `link`. Agoda stays plain until a paid
+  // route is confirmed; Expedia and Trip.com go through our own redirects
+  // (/api/go/expedia, /api/go/trip), which LinkSwap leaves alone.
   const city = {
     area: q.area || q.query,
     checkIn: q.checkIn,
@@ -277,7 +304,7 @@ export function hotelPartnerLinks(q: HotelSearchQuery): BookingHandoff[] {
     { partner: "Expedia", url: `/api/go/expedia?landing=${encodeURIComponent(expedia.toString())}` },
     { partner: "Agoda", url: agoda.toString() },
     { partner: "Hotels.com", url: hotelsComUrl },
-    { partner: "Trip.com", url: trip.toString() },
+    { partner: "Trip.com", url: tripComGoUrl(trip.toString(), "hotels") },
     ...(zen ? [{ partner: "ZenHotels", url: zen }] : []),
   ];
 }

@@ -57,6 +57,7 @@ export const ROUTES = {
   "/api/go/expedia": { methods: ["GET"], caller: "link" },
   "/api/go/gyg": { methods: ["GET"], caller: "link" },
   "/api/go/tp": { methods: ["GET"], caller: "link" },
+  "/api/go/trip": { methods: ["GET"], caller: "link" },
   // Accounts (accounts.js). Sign-in routes are counted as heavy: they send
   // email or check a token, and are what a guessing script would hammer.
   "/api/auth/me": { methods: ["GET"], caller: "page" },
