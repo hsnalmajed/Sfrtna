@@ -16,6 +16,9 @@ jobs:
     timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
       - name: Download (English + Arabic)
         env:
           URL: ${{ secrets.AGODA_HOTEL_FILE_URL }}
@@ -31,6 +34,7 @@ jobs:
         run: |
           set -e
           python3 -I scripts/agoda/build-bundle.py "$(ls /tmp/ag/en/*.csv)" "$(ls /tmp/ag/ar/*.csv)" /tmp/ag/out
+          npx --yes tsx@4 scripts/agoda/build-words.ts /tmp/ag/out
           cd /tmp/ag/out
           echo "AGODA files: $(find . -type f | wc -l)  size: $(du -sh . | cut -f1)"
           echo "AGODA biggest: $(find . -type f -printf '%s %p\n' | sort -n | tail -3 | tr '\n' ' ')"

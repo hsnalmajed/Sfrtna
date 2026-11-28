@@ -12,6 +12,7 @@ import Icon from "@/components/ui/Icon";
 import HotelPrices from "@/components/HotelPrices";
 import Stay22HotelMap from "@/components/Stay22HotelMap";
 import HotelList from "@/components/HotelList";
+import AgodaCatalog from "@/components/AgodaCatalog";
 import { findHotelCity, hotelCityPlace } from "@/components/HotelCityInput";
 import NextStepTabs, { markStep, tripCityFrom } from "@/components/NextStepTabs";
 import { RATING_LABEL, readHotelPrefs } from "@/lib/hotelPrefs";
@@ -329,6 +330,20 @@ function HotelResultsContent() {
                       onUnavailable={onListDown}
                     />
                   </>
+                )}
+                {/* Every Agoda hotel of the city (Agoda Partners, direct): our
+                    copy of Agoda's hotel file + Agoda's live rate per page. */}
+                {findHotelCity(query)?.slug && (
+                  <AgodaCatalog
+                    citySlug={findHotelCity(query)!.slug}
+                    cityName={label || query}
+                    checkIn={checkIn}
+                    checkOut={checkOut}
+                    adults={share.adults}
+                    childrenAges={share.childrenAges}
+                    rooms={rooms}
+                    locale={locale}
+                  />
                 )}
                 {/* Every hotel in the city: our partners' full list (thousands
                     in a big city), always under ours — Google gives about 20 a

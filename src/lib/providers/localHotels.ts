@@ -1,3 +1,4 @@
+import { agodaWordKey } from "@/lib/agodaWords";
 import { COUNTRY_CITIES, type CityEntry } from "@/lib/cities";
 import { COUNTRIES } from "@/lib/countries";
 import { normalizeSearch } from "@/lib/search";
@@ -200,7 +201,13 @@ export async function localHotels(
   // The longest word picks the files: it is the one fewest hotels share.
   const lead = [...terms].sort((a, b) => stem(b.word).length - stem(a.word).length)[0];
   const keys = [...new Set(lead.forms.map((f) => shardKey(f.split(" ")[0])).filter((k): k is string => Boolean(k)))].slice(0, 4);
-  const lists = await Promise.all(keys.map((k) => readData<StoredHotel[]>(`hotel-words/${k}.json`)));
+  // Agoda's hotels too (Agoda Partners' hotel file, Arabic + English names):
+  // three-letter files, so ~446k hotels stay quick to read.
+  const agodaKeys = [...new Set(lead.forms.map((f) => agodaWordKey(f.split(" ")[0])).filter((k): k is string => Boolean(k)))].slice(0, 3);
+  const lists = await Promise.all([
+    ...keys.map((k) => readData<StoredHotel[]>(`hotel-words/${k}.json`)),
+    ...agodaKeys.map((k) => readData<StoredHotel[]>(`agoda/words/${k}.json`)),
+  ]);
 
   const seen = new Set<string>();
   const found: { h: StoredHotel; exact: number; opens: number; home: number }[] = [];
@@ -208,7 +215,8 @@ export async function localHotels(
     for (const h of list ?? []) {
       if (city && h[0] !== city.slug) continue;
       // Neighbouring cities' circles overlap (Doha and Al Wakrah): one row per name.
-      const id = h[1];
+      // One row per name and city: OpenStreetMap and Agoda often both hold it.
+      const id = `${h[0]}|${normalizeSearch(h[1])}`;
       if (seen.has(id)) continue;
       const c = cities().get(h[0]);
       const text = normalizeSearch([h[1], h[2], h[4], c?.nameEn, c?.nameAr].filter(Boolean).join(" "));

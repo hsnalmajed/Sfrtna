@@ -36,8 +36,8 @@ export const agodaKeyInUse = () => (keys().length ? goodKey + 1 : 0);
 type Tile = [number, number, number, number, string, number][];
 type AssetsBinding = { fetch: (input: Request | string) => Promise<Response> };
 
-async function readTile(key: string): Promise<Tile> {
-  if (!/^-?\d{1,3}_-?\d{1,3}$/.test(key)) return [];
+/** One file of our Agoda bundle (public/data/agoda/<path>), through ASSETS. */
+async function readAgodaFile<T>(path: string): Promise<T | null> {
   try {
     const { getCloudflareContext } = await import("@opennextjs/cloudflare");
     let assets: AssetsBinding | undefined;
@@ -47,17 +47,55 @@ async function readTile(key: string): Promise<Tile> {
       assets = undefined;
     }
     if (!assets) {
-      if (process.env.NODE_ENV === "production") return [];
+      if (process.env.NODE_ENV === "production") return null;
       const { readFile } = await import("node:fs/promises");
-      const text = await readFile(`${process.cwd()}/public/data/agoda/tiles/${key}.json`, "utf8").catch(() => null);
-      return text ? (JSON.parse(text) as Tile) : [];
+      const text = await readFile(`${process.cwd()}/public/data/agoda/${path}`, "utf8").catch(() => null);
+      return text ? (JSON.parse(text) as T) : null;
     }
-    const res = await assets.fetch(new Request(`https://assets.local/data/agoda/tiles/${key}.json`));
-    return res.ok ? ((await res.json()) as Tile) : [];
+    const res = await assets.fetch(new Request(`https://assets.local/data/agoda/${path}`));
+    return res.ok ? ((await res.json()) as T) : null;
   } catch {
-    return [];
+    return null;
   }
 }
+
+async function readTile(key: string): Promise<Tile> {
+  if (!/^-?\d{1,3}_-?\d{1,3}$/.test(key)) return [];
+  return (await readAgodaFile<Tile>(`tiles/${key}.json`)) ?? [];
+}
+
+/**
+ * Every Agoda hotel of one of our cities (build-bundle.py), most reviewed
+ * first: [id, name, nameAr, stars, rating/10, reviews, lat, lng, photo, type, shard].
+ */
+export type AgodaListRow = [number, string, string, number, number, number, number, number, string, string, number];
+export async function agodaCityList(slug: string): Promise<AgodaListRow[] | null> {
+  if (!/^[a-z0-9-]{2,60}$/.test(slug)) return null;
+  return readAgodaFile<AgodaListRow[]>(`city/${slug}.json`);
+}
+
+export interface AgodaDetails {
+  photos?: string[];
+  addr?: string;
+  addrAr?: string;
+  ov?: string;
+  ovAr?: string;
+  in?: string;
+  out?: string;
+  rooms?: number;
+  opened?: string;
+  renov?: string;
+  chain?: string;
+  brand?: string;
+}
+export async function agodaHotelDetails(slug: string, shard: number, id: number): Promise<AgodaDetails | null> {
+  if (!/^[a-z0-9-]{2,60}$/.test(slug) || !(shard >= 0 && shard < 1000)) return null;
+  const file = await readAgodaFile<Record<string, AgodaDetails>>(`hotel/${slug}/${Math.floor(shard)}.json`);
+  return file?.[String(id)] ?? null;
+}
+
+/** A photo path from the bundle → Agoda's image server (https). */
+export const agodaPhoto = (path: string, size = "800x600") => (path ? `https://pix8.agoda.net/hotelImages/${path}?s=${size}` : "");
 
 /** Words that say "a place to stay", not which one. */
 const GENERIC = new Set(
