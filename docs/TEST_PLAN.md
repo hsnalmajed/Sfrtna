@@ -407,3 +407,13 @@ Study file v3 (25 Nov 22:45): «المصدر» column = domain names only, same 
 every row, no page per claim. Spot checks: Almosafer hotels + flights on
 Admitad = «Closed» (affi.io); Flyin SA EG on Admitad = «Closed»; Rehlat on
 Cuelinks = paused; Airbnb programme ended 31 Mar 2021 (file correct).
+
+## Agoda direct — 28 Nov 2026 (dates +21/+23 days, 2 adults, SAR)
+- Count: Riyadh — ours 2,109 Agoda hotels (all inventory) vs agoda.com 1,311
+  «places» available for those dates; Dubai 5,654, Makkah 687, Madinah 842.
+- Price: Meral Crown — API 146.87 SAR/night; agoda.com 131–132 SAR/night
+  shown with an extra Agoda coupon (logged-out, «SAR 30 saved»). agoda.com
+  labels room prices «لليلة قبل الضرائب والرسوم» → we show Agoda's rate with
+  the same label, never mixed with other sites' tax-included totals.
+- Live (agoda-probe.yml): rates for 21–29 of each 30 shown; details 5 photos +
+  Arabic overview; search «ميرال» / "Meral Crown" / «هيلتون دبي» find the hotels.

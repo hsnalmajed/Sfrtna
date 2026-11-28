@@ -140,12 +140,19 @@ code drops the prefix. Probe (`agoda-probe.yml`, 21 days out, 2 nights):
 53–57/60 hotels matched, 23–28 with Agoda rates (SAR) per city; DataForSEO's
 Google list had NO Agoda offer for any of them → Agoda prices are new.
 Rates are shown NOWHERE yet (site check only, `agoda=1`).
-**NEXT (Opus):** (1) open 3 hotels on agoda.com (same dates) and compare
-with dailyRate → is it before taxes (KSA 15% VAT + fees)? write in TEST_PLAN;
-(2) add an «Agoda» offer to each matched hotel with its rate (total incl.
-taxes only if proven equal to agoda.com's, else don't show the number);
-(3) Agoda-only hotels via city search (cities.json) appended to the list;
-(4) Site check + ux-audit, then report.
+**28 Nov 13:40 — ALL AGODA HOTELS LIVE (5062f3c, release green):**
+`agoda-data.yml` (monthly) builds EN+AR bundle → GitHub release «agoda-data»
+(77 MB zst, 620 MB, ~8.5k files), `release.yml` unpacks it into
+public/data/agoda/ (NOT in git except tiles/). 445,929 hotels / 408 cities,
+176k Arabic names from Agoda. `/api/agoda-hotels` (city list, 30/page, live
+rates, q= AR/EN name, sort) + `/api/agoda-hotel` (photos, overview AR/EN,
+address) → `AgodaCatalog` on hotel results (cards, show more, details,
+Google Maps link, «عرض السعر في أجودا»). Price = per night before taxes and
+fees (agoda.com shows the same; TEST_PLAN). Name search reads
+`agoda/words/<3-letter key>` too (localHotels). Probe: `agoda-probe.yml`.
+**NEXT (Opus):** default order «popular» = most reviews; consider rating ×
+reviews; Agoda rate inside the Google list cards (has agodaId); then
+Skyscanner direct.
 Then: Skyscanner (impact.com + API), Klook direct, airlines.
 
 **NOW — Unsplash in the city galleries (BUILT 26 Nov, 6d27623 + 9c7948d).**
