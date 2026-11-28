@@ -120,6 +120,19 @@ iPhone app.
 Old hand-offs (15–26 Nov, every detail) = PROJECT_NOTES «Archived hand-offs»;
 grep a keyword there, never read it whole.
 
+**NOW (owner 28 Nov) — finish AGODA 100%, then the next company the same way
+(direct first; order in INBOX «28 Nov 04:40»).** Done 28 Nov: Agoda Partners
+ACTIVE, CID 1976542, Runtime secret `AGODA_API_KEY` set by owner, city hotel
+button → /api/go/agoda (cid, smoke check green), bank submitted (1–2 days).
+Trip.com done too: flights + hotels via /api/go/trip (AID 11517619/SID 337178549).
+**NEXT (Opus): Agoda Affiliate Lite API v2** — get the PDF (owner: Partners ›
+Tools › API › «Affiliate_Lite_API_V2.0.pdf» › Download, attach it) and the
+Hotel Data File (city/hotel ids; Tools › Hotel Data File) → Agoda hotels with
+live prices inside hotel results (city + named hotel), Agoda named-hotel
+button = Agoda hotel URL + cid (now Stay22 Allez). Compare counts/prices with
+agoda.com (TEST_PLAN) before release. New /api route → edge-guard ROUTES.
+Then: Skyscanner (impact.com + API), Klook direct, airlines.
+
 **NOW — Unsplash in the city galleries (BUILT 26 Nov, 6d27623 + 9c7948d).**
 `gallery2.ts unsplash` (one «City Country» search a city, ≤20 kept: those
 naming the city first («Al Ula» = «AlUla»), then unnamed ones (Unsplash's
@@ -168,4 +181,4 @@ Then Pixabay API, Saudi Tourism media bank (ask permission).
   Booking-style, home hero, plan map).
 - Release gate: green again (26 Nov 01:30).
 
-**Recommended model for the next chat: Opus 5.5** (Unsplash eye check).
+**Recommended model for the next chat: Opus 5.5** (Agoda API build).
