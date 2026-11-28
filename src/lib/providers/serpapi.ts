@@ -237,6 +237,8 @@ export interface HotelResult {
   typical?: { low: number; high: number } | null;
   /** «26% less than usual» → 26. */
   dealPct?: number | null;
+  /** The hotel's Agoda id (added by the route from our Agoda index), when matched. */
+  agodaId?: number | null;
 }
 
 export interface HotelRoom {

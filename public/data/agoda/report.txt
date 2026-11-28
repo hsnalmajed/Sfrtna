@@ -1,0 +1,415 @@
+abha	9894	Abha, Saudi Arabia	97/170
+abu-dhabi	10182	Abu Dhabi, United Arab Emirates	219/219
+accra	7100	Accra, Ghana	412/413
+addis-ababa	21035	Addis Ababa, Ethiopia	255/255
+adelaide	11981	Adelaide, Australia	299/303
+agadir	10475	Agadir, Morocco	102/180
+agra	9641	Agra, India	646/646
+al-ahsa	19034	Al Hofuf, Saudi Arabia	58/68
+al-ain	9174	Al Ain, United Arab Emirates	35/45
+al-baha	244096	Al Bahah, Saudi Arabia	25/27
+al-khobar	4276	Al-Khobar, Saudi Arabia	295/357
+al-wakrah	4472	Doha, Qatar	67/67
+alexandria	2199	Alexandria, Egypt	130/131
+algiers	1194	Algiers, Algeria	63/84
+almaty	5624	Almaty, Kazakhstan	492/498
+alula	244026	Al Ula, Saudi Arabia	40/40
+amalfi	5872	Salerno, Italy	129/861
+amman	15806	Amman, Jordan	640/647
+amsterdam	13868	Amsterdam, Netherlands	647/679
+andorra-la-vella	20710	Andorra La Vella, Andorra	29/152
+ankara	2423	Ankara, Türkiye	202/237
+annecy	11918	Annecy, France	45/111
+antalya	7493	Antalya, Türkiye	666/668
+apia	105623	Apia, Samoa	25/26
+aqaba	79445	Aqaba, Jordan	113/228
+arequipa	11175	Arequipa, Peru	117/117
+arusha	8696	Arusha, Tanzania	199/199
+astana	23684	Nur-Sultan, Kazakhstan	222/223
+asuncion	10401	Asuncion, Paraguay	62/67
+aswan	14246	Aswan, Egypt	108/111
+athens	16571	Athens, Greece	2064/2089
+auckland	3750	Auckland, New Zealand	440/441
+ayutthaya	17704	Ayutthaya, Thailand	225/225
+baalbek	NONE
+baku	13621	Baku, Azerbaijan	550/550
+bali	17193	Bali, Indonesia	277/278
+bandar-seri-begawan	6691	Bandar Seri Begawan, Brunei Darussalam	56/59
+bandung	18943	Bandung, Indonesia	3654/3657
+banff	9957	Banff (AB), Canada	44/45
+bangkok	9395	Bangkok, Thailand	5461/5558
+barcelona	2002	Barcelona, Spain	1589/1653
+bariloche	16619	San Carlos de Bariloche, Argentina	171/175
+batumi	11350	Batumi, Georgia	456/492
+beijing	1569	Beijing, China	4584/4585
+beirut	11680	Beirut, Lebanon	192/204
+belfast	18934	Belfast, United Kingdom	153/174
+belgrade	79692	Belgrade, Serbia	359/359
+belize-city	633	Belize City, Belize	31/34
+bengaluru	4923	Bangalore, India	3301/3307
+bentota	14130	Bentota, Sri Lanka	188/286
+bergen	14414	Bergen, Norway	76/85
+berlin	2366	Berlin, Germany	802/805
+birmingham	2021	Birmingham, United Kingdom	638/674
+bishkek	700999	Bishkek, Kyrgyzstan	221/223
+bled	2071	Bled, Slovenia	53/80
+bodrum	3253	Bodrum, Türkiye	307/307
+bogor	21740	Bogor, Indonesia	742/1223
+bogota	4926	Bogotá, Colombia	666/671
+bologna	1002	Bologna, Italy	403/441
+bolu	2531	Bolu, Türkiye	19/28
+boracay	15903	Boracay Island, Philippines	558/588
+bordeaux	12838	Bordeaux, France	174/300
+borjomi	665333	Borjomi, Georgia	23/27
+boston	9254	Boston (MA), United States	159/244
+brasov	10095	Brasov, Romania	137/196
+bratislava	4091	Bratislava, Slovakia	154/156
+bridgetown	6851	Christ Church, Barbados	74/135
+brisbane	9466	Brisbane, Australia	567/567
+brno	8366	Brno, Czech Republic	79/84
+bruges	17729	Bruges, Belgium	176/378
+brussels	15904	Brussels, Belgium	368/411
+bucharest	16145	Bucharest, Romania	472/508
+budapest	10647	Budapest, Hungary	849/855
+budva	79831	Budva, Montenegro	321/373
+buenos-aires	9294	Buenos Aires, Argentina	632/635
+bukhara	701031	Bukhoro, Uzbekistan	189/205
+bursa	8623	Bursa, Türkiye	113/116
+busan	17172	Busan, South Korea	1458/1459
+byblos	4198	Jounieh, Lebanon	26/81
+cairns	13550	Cairns, Australia	176/176
+cairo	18749	Giza, Egypt	718/1362
+calgary	8913	Calgary (AB), Canada	159/159
+cameron-highlands	1399	Cameron Highlands, Malaysia	1035/1035
+cancun	5954	Cancun, Mexico	393/394
+cape-town	1063	Cape Town, South Africa	1678/1680
+cappadocia	21319	Goreme, Türkiye	228/612
+cartagena	10838	Cartagena, Colombia	484/488
+casablanca	15368	Casablanca, Morocco	198/198
+cebu	4001	Cebu, Philippines	3770/3801
+chefchaouen	213229	Chefchaouen, Morocco	96/108
+chengdu	4729	Chengdu, China	6203/6204
+chiang-mai	7401	Chiang Mai, Thailand	3525/3525
+chiang-rai	4234	Chiang Rai, Thailand	446/446
+chicago	13899	Chicago (IL), United States	243/243
+christchurch	6167	Christchurch, New Zealand	352/355
+cologne	16190	Cologne, Germany	281/372
+colombo	7835	Colombo, Sri Lanka	656/747
+como	12575	Como, Italy	199/349
+copenhagen	16480	Copenhagen, Denmark	383/384
+cordoba	11610	Cordoba, Spain	210/212
+corfu	18670	Corfu Island, Greece	492/505
+cork	6378	Cork, Ireland	39/57
+da-nang	16440	Da Nang, Vietnam	3659/3663
+dahab	15451	Dahab, Egypt	100/100
+dakar	20637	Dakar, Senegal	105/105
+dammam	8449	Dammam, Saudi Arabia	196/216
+dar-es-salaam	18094	Dar Es Salaam, Tanzania	173/176
+delhi	14552	New Delhi, India	2335/2567
+dhaka	1390	Dhaka, Bangladesh	341/341
+djerba	17042	Djerba, Tunisia	93/93
+doha	4472	Doha, Qatar	383/385
+dubai	2994	Dubai, United Arab Emirates	3107/3239
+dublin	1131	Dublin, Ireland	346/349
+dubrovnik	4839	Dubrovnik, Croatia	478/594
+durban	7219	Durban, South Africa	249/251
+durres	21560	Durres, Albania	174/259
+dusseldorf	16448	Dusseldorf, Germany	341/382
+easter-island	21245	Isla de Pascua, Chile	41/42
+edinburgh	18924	Edinburgh, United Kingdom	709/742
+el-calafate	21227	El Calafate, Argentina	118/118
+el-gouna	6700	Hurghada, Egypt	171/171
+ella	106095	Ella, Sri Lanka	357/474
+entebbe	105411	Entebbe, Uganda	132/160
+faro	13711	Faro, Portugal	83/191
+fes	85860	Fes, Morocco	312/313
+fethiye	19577	Fethiye, Türkiye	395/395
+florence	16573	Florence, Italy	1720/1846
+florianopolis	8734	Florianopolis, Brazil	188/211
+foz-do-iguacu	18017	Foz Do Iguacu, Brazil	143/269
+frankfurt	15847	Frankfurt am Main, Germany	412/543
+fujairah	4626	Fujairah, United Arab Emirates	23/29
+fukuoka	16527	Fukuoka, Japan	1298/1313
+gabala	686433	Gabala, Azerbaijan	33/40
+gaborone	949	Gaborone, Botswana	66/67
+galapagos	171927	Galapagos, Ecuador	71/72
+galle	19768	Galle, Sri Lanka	750/1115
+galway	15446	Galway, Ireland	83/95
+gdansk	3935	Gdansk, Poland	451/559
+geneva	16592	Geneva, Switzerland	170/252
+georgetown	23021	Georgetown, Guyana	28/31
+giza	18749	Giza, Egypt	742/1305
+glasgow	18926	Glasgow, United Kingdom	333/349
+goa	11304	Goa, India	87/91
+gold-coast	16611	Gold Coast, Australia	829/830
+gothenburg	16062	Gothenburg, Sweden	143/195
+granada	9170	Granada, Spain	472/525
+grand-baie	19226	Mauritius Island, Mauritius	294/316
+guadalajara	14757	Guadalajara, Mexico	296/308
+guangzhou	10112	Guangzhou, China	3662/3985
+guatemala-city	12939	Guatemala City, Guatemala	105/106
+guayaquil	6638	Guayaquil, Ecuador	67/70
+guba	700897	Quba, Azerbaijan	12/25
+gudauri	665335	Gudauri, Georgia	59/60
+hail	245355	Ha'il, Saudi Arabia	62/62
+hamburg	7169	Hamburg, Germany	440/445
+hammamet	739	Hammamet, Tunisia	99/115
+hanoi	2758	Hanoi, Vietnam	7157/7768
+havana	NONE
+helsinki	11154	Helsinki, Finland	170/192
+heraklion	18007	Crete Island, Greece	436/438
+heviz	13239	Hévíz, Hungary	42/74
+hiroshima	10554	Hiroshima, Japan	417/417
+ho-chi-minh-city	13170	Ho Chi Minh City, Vietnam	8658/8713
+hoi-an	16552	Hoi An, Vietnam	1260/1631
+hong-kong	16808	Hong Kong, Hong Kong SAR, China	1070/1119
+honiara	671776	Honiara, Solomon Islands	13/13
+honolulu	10921	Honolulu (HI), United States	199/201
+hua-hin	17019	Hua Hin / Cha-am, Thailand	1766/1766
+hurghada	6700	Hurghada, Egypt	477/477
+ibiza	2976	Ibiza, Spain	377/381
+innsbruck	3453	Innsbruck, Austria	70/114
+interlaken	5323	Interlaken, Switzerland	103/255
+ipoh	15523	Ipoh, Malaysia	1684/1741
+islamabad	5058	Islamabad, Pakistan	649/752
+istanbul	14932	İstanbul, Türkiye	3396/3411
+izmir	13183	İzmir, Türkiye	173/175
+jaipur	8845	Jaipur, India	2544/2544
+jajce	707093	Jajce, Bosnia Herzegovina	1/1
+jakarta	8691	Jakarta, Indonesia	6202/6283
+jazan	665676	Jazan, Saudi Arabia	78/80
+jeddah	9777	Jeddah, Saudi Arabia	941/943
+jeju	16901	Jeju, South Korea	756/758
+jerash	547342	Jerash, Jordan	14/27
+johannesburg	5663	Johannesburg, South Africa	906/914
+kandy	11158	Kandy, Sri Lanka	792/795
+karakol	710535	Karakol, Kyrgyzstan	30/31
+karlovy-vary	12863	Karlovy Vary, Czech Republic	124/134
+kathmandu	2487	Kathmandu, Nepal	1302/1406
+kazan	NONE
+kazbegi	665337	Kazbegi, Georgia	56/65
+khasab	19196	Khasab, Oman	5/6
+khiva	710553	Khiva, Uzbekistan	57/57
+kigali	11442	Kigali, Rwanda	338/341
+kingston	19917	Kingston, Jamaica	115/131
+kochi	12722	Kochi, India	1031/1040
+koh-samui	17198	Koh Samui, Thailand	2063/2074
+koror	18337	Koror Island, Palau	25/33
+kota-kinabalu	5070	Kota Kinabalu, Malaysia	1815/1818
+kotor	79834	Kotor, Montenegro	101/222
+krabi	14865	Krabi, Thailand	1019/1019
+krakow	15790	Kraków, Poland	809/827
+kuala-lumpur	14524	Kuala Lumpur, Malaysia	8950/9002
+kuching	14523	Kuching, Malaysia	1298/1299
+kusadasi	13122	Kusadasi, Türkiye	104/159
+kutaisi	665338	Kutaisi, Georgia	116/126
+kuwait-city	16918	Kuwait, Kuwait	109/109
+kyoto	1784	Kyoto, Japan	2907/2972
+la-paz	8061	La Paz, Bolivia	78/81
+labuan-bajo	669526	Labuan Bajo, Indonesia	190/213
+lagos	20711	Lagos, Nigeria	558/871
+lahore	2298	Lahore, Pakistan	453/453
+lake-toba	512968	Samosir, Indonesia	80/123
+langkawi	16928	Langkawi, Malaysia	906/906
+larnaca	2993	Larnaca, Cyprus	162/187
+las-vegas	17072	Las Vegas (NV), United States	328/328
+lausanne	2003	Lausanne, Switzerland	39/93
+liberia	4425	Liberia, Costa Rica	17/18
+lima	7082	Lima, Peru	431/434
+limassol	14385	Limassol, Cyprus	115/138
+lisbon	16364	Lisbon, Portugal	1350/1449
+livingstone	13683	Victoria Falls, Zimbabwe	91/151
+ljubljana	14313	Ljubljana, Slovenia	162/176
+lombok	16842	Lombok, Indonesia	420/440
+london	233	London, United Kingdom	5482/5507
+los-angeles	12772	Los Angeles (CA), United States	495/498
+los-cabos	9739	Cabo San Lucas, Mexico	120/129
+luang-prabang	16919	Luang Prabang, Laos	461/461
+lucerne	79546	Luzern, Switzerland	102/151
+luxembourg	13200	Luxembourg, Luxembourg	90/127
+luxor	10643	Luxor, Egypt	205/205
+lyon	11361	Lyon, France	281/418
+maafushi	17759	Maldive Islands, Maldives	87/88
+macau	10022	Zhuhai, China	1006/1295
+madeira	18013	Madeira Island, Portugal	386/397
+madinah	23028	Medina, Saudi Arabia	837/839
+madrid	5531	Madrid, Spain	1395/1398
+mahe	669661	Seychelles Islands, Seychelles	297/298
+makkah	78591	Mecca, Saudi Arabia	672/681
+malacca	15121	Malacca, Malaysia	2789/2793
+malaga	12521	Málaga, Spain	522/557
+male	513550	Male City and Airport, Maldives	225/257
+manama	16630	Manama, Bahrain	291/298
+manchester	12349	Manchester, United Kingdom	683/709
+manila	1622	Manila, Philippines	11121/11549
+maputo	20640	Maputo, Mozambique	54/55
+marrakesh	11825	Marrakech, Morocco	1567/1573
+marsa-alam	78545	Marsa Alam, Egypt	12/12
+marseille	1030	Marseille, France	216/232
+medellin	10309	Medellín, Colombia	592/627
+melbourne	10372	Melbourne, Australia	1326/1330
+mendoza	12690	Mendoza, Argentina	149/149
+mexico-city	2086	Mexico City, Mexico	915/934
+miami	18720	Miami Beach (FL), United States	483/891
+milan	16585	Milan, Italy	1942/2086
+mirissa	512866	Mirissa, Sri Lanka	450/999
+mombasa	7081	Mombasa, Kenya	161/179
+monte-carlo	5277	Nice, France	216/357
+montego-bay	3561	Montego Bay, Jamaica	111/112
+montevideo	5534	Montevideo, Uruguay	69/69
+montreal	9933	Montreal (QC), Canada	285/319
+moscow	NONE
+mostar	4229	Mostar, Bosnia Herzegovina	59/61
+mumbai	16850	Mumbai, India	2025/2026
+munich	16017	Munich, Germany	553/624
+muscat	6445	Muscat, Oman	75/75
+mykonos	12153	Mykonos, Greece	751/765
+nadi	5057	Nadi, Fiji	219/224
+nairobi	8944	Nairobi, Kenya	565/576
+najran	9615	Najran, Saudi Arabia	17/22
+naples	16572	Naples, Italy	1816/1966
+nassau	10440	Nassau, Bahamas	49/49
+negombo	10136	Negombo, Sri Lanka	654/685
+new-york	318	New York (NY), United States	803/912
+nha-trang	2679	Nha Trang, Vietnam	1350/1351
+nice	5277	Nice, France	255/437
+nizwa	19738	Nizwa, Oman	31/31
+novi-sad	79693	Novi Sad, Serbia	51/70
+nukualofa	105433	Nuku'alofa, Tonga	21/21
+nuwara-eliya	10008	Nuwara Eliya, Sri Lanka	416/421
+okinawa	717899	Okinawa Main island, Japan	742/748
+oran	78480	Oran, Algeria	34/50
+orlando	10757	Orlando (FL), United States	353/353
+osaka	9590	Osaka, Japan	6403/6574
+osh	701003	Osh, Kyrgyzstan	28/28
+oslo	12746	Oslo, Norway	191/204
+ottawa	6845	Ottawa (ON), Canada	70/94
+oxford	1196	Oxford, United Kingdom	181/242
+palermo	14810	Palermo, Italy	644/699
+palma	16716	Majorca, Spain	491/491
+panama-city	3356	Panama City, Panama	284/289
+paphos	517	Paphos, Cyprus	242/344
+paramaribo	512691	Paramaribo, Suriname	38/45
+paris	15470	Paris, France	4370/4650
+pattaya	8584	Pattaya, Thailand	5361/5364
+penang	16087	Penang, Malaysia	2466/2473
+perth	11980	Perth, Australia	272/272
+petra	11401	Petra, Jordan	140/140
+phnom-penh	4816	Phnom Penh, Cambodia	955/965
+phu-quoc	17188	Phu Quoc Island, Vietnam	997/1000
+phuket	16056	Phuket, Thailand	5065/5065
+pisa	13723	Pisa, Italy	164/252
+podgorica	79836	Podgorica, Montenegro	56/57
+pokhara	5733	Pokhara, Nepal	412/414
+port-louis	19226	Mauritius Island, Mauritius	114/126
+port-moresby	13649	Port Moresby, Papua New Guinea	25/25
+port-of-spain	5086	Port Of Spain, Trinidad & Tobago	24/33
+port-vila	17163	Port Vila, Vanuatu	46/46
+porto	8738	Porto, Portugal	1351/1537
+prague	15977	Prague, Czech Republic	1113/1127
+praslin	669661	Seychelles Islands, Seychelles	168/169
+puerto-princesa	16185	Palawan, Philippines	499/517
+puerto-vallarta	61	Puerto Vallarta, Mexico	199/240
+punta-arenas	11374	Punta Arenas, Chile	30/30
+punta-cana	3332	Punta Cana, Dominican Republic	195/195
+punta-del-este	6764	Punta Del Este, Uruguay	79/81
+quebec-city	16644	Quebec City (QC), Canada	174/191
+queenstown	2566	Queenstown, New Zealand	227/227
+quito	9909	Quito, Ecuador	207/209
+qusar	700897	Quba, Azerbaijan	10/22
+rabat	3147	Rabat, Morocco	145/167
+ras-al-khaimah	12050	Ras Al Khaimah, United Arab Emirates	92/92
+reykjavik	13864	Reykjavik, Iceland	215/227
+rhodes	16051	Rhodes, Greece	496/497
+riga	3636	Riga, Latvia	145/149
+rio-de-janeiro	7395	Rio De Janeiro, Brazil	464/485
+riyadh	5349	Riyadh, Saudi Arabia	748/748
+roatan	102759	Roatan Island, Honduras	72/72
+rome	16594	Rome, Italy	4748/4773
+rotterdam	2396	Rotterdam, Netherlands	110/174
+rovaniemi	8486	Rovaniemi, Finland	75/76
+saint-petersburg	NONE
+sal	105426	Santa Maria, Cape Verde	49/49
+salalah	11229	Salalah, Oman	121/121
+salvador	4617	Salvador, Brazil	167/167
+salzburg	11876	Salzburg, Austria	153/231
+samarkand	14617	Samarkand, Uzbekistan	278/278
+san-francisco	13801	San Francisco (CA), United States	366/374
+san-jose	6576	San Jose, Costa Rica	132/173
+san-marino	21093	San Marino, San Marino	12/46
+san-salvador	10448	San Salvador, El Salvador	94/97
+santa-cruz	102636	Santa Cruz De La Sierra, Bolivia	57/62
+santiago	86197	Santiago, Chile	332/332
+santo-domingo	18340	Santo Domingo, Dominican Republic	238/241
+santorini	16084	Santorini, Greece	1740/1746
+sao-paulo	16638	São Paulo, Brazil	1206/1247
+sapanca	67785	Sapanca, Türkiye	146/223
+sapporo	3435	Sapporo, Japan	1331/1372
+sarajevo	10703	Sarajevo, Bosnia Herzegovina	157/163
+saranda	102916	Saranda, Albania	430/500
+seattle	3687	Seattle (WA), United States	182/251
+seoul	14690	Seoul, South Korea	3490/3537
+seville	16577	Seville, Spain	829/856
+shamakhi	700869	Ağsu, Azerbaijan	1/2
+shanghai	3987	Shanghai, China	4584/4586
+sharjah	2994	Dubai, United Arab Emirates	443/788
+sharm-el-sheikh	15897	Sharm El Sheikh, Egypt	166/166
+sheki	694141	Sheki, Azerbaijan	15/15
+shenzhen	12333	Shenzhen, China	2938/2948
+siem-reap	16917	Siem Reap, Cambodia	877/880
+sighnaghi	665343	Sighnaghi, Georgia	11/15
+sigiriya	18230	Sigiriya, Sri Lanka	357/361
+singapore	4064	Singapore, Singapore	648/649
+skopje	10189	Skopje, North Macedonia	92/96
+sochi	NONE
+sofia	8581	Sofia, Bulgaria	291/297
+sousse	5979	Sousse, Tunisia	53/102
+split	6325	Split, Croatia	446/709
+stockholm	1618	Stockholm, Sweden	254/308
+strasbourg	7254	Strasbourg, France	126/187
+sur	78590	Sur, Oman	12/12
+suva	18307	Suva, Fiji	92/94
+sydney	14370	Sydney, Australia	1299/1309
+tabuk	181889	Tabouk, Saudi Arabia	91/97
+taif	665578	Al Taif, Saudi Arabia	136/137
+taipei	4951	Taipei, Taiwan	1428/1468
+tallinn	1460	Tallinn, Estonia	128/129
+tangier	85868	Tangier, Morocco	150/153
+tashkent	13002	Tashkent, Uzbekistan	591/591
+tbilisi	647	Tbilisi, Georgia	795/804
+the-hague	16278	The Hague, Netherlands	185/280
+thessaloniki	8711	Thessaloniki, Greece	298/303
+tirana	9206	Tirana, Albania	442/449
+tokyo	5085	Tokyo, Japan	7375/7446
+toronto	4495	Toronto (ON), Canada	285/285
+trabzon	19794	Trabzon, Türkiye	179/214
+trincomalee	105970	Trincomalee, Sri Lanka	142/142
+tromso	15887	Tromsø, Norway	57/61
+tunis	8152	Tunis, Tunisia	121/151
+ubud	17193	Bali, Indonesia	5600/5710
+umluj	246250	Umm Lajj, Saudi Arabia	11/21
+valencia	1623	València, Spain	456/492
+valletta	5923	Sliema, Malta	275/906
+vancouver	9023	Vancouver (BC), Canada	144/214
+varadero	NONE
+varna	5093	Varna, Bulgaria	176/176
+vatican-city	16594	Rome, Italy	4717/4738
+venice	17164	Venice, Italy	1370/1401
+victoria-falls	13683	Victoria Falls, Zimbabwe	94/154
+vienna	16582	Vienna, Austria	1090/1119
+vientiane	10871	Vientiane, Laos	472/479
+vilnius	6960	Vilnius, Lithuania	123/124
+wadi-rum	105930	Wadi Rum, Jordan	189/189
+warsaw	16587	Warsaw, Poland	922/946
+washington-dc	17753	Washington D.C., United States	199/353
+wellington	2704	Wellington, New Zealand	158/160
+windhoek	18231	Windhoek, Namibia	68/68
+xian	15947	Xian, China	4057/4058
+yanbu	1203	Yanbu, Saudi Arabia	53/53
+yerevan	23554	Yerevan, Armenia	418/425
+yogyakarta	14018	Yogyakarta, Indonesia	3682/3692
+zagreb	6658	Zagreb, Croatia	267/290
+zakopane	7625	Zakopane, Poland	314/395
+zanzibar	9846	Zanzibar, Tanzania	128/130
+zermatt	4498	Zermatt, Switzerland	148/194
+zurich	16462	Zürich, Switzerland	299/354

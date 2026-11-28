@@ -83,6 +83,26 @@ export function agodaAffiliateUrl(landingPage: string): string {
   return u.toString();
 }
 
+/**
+ * Agoda's page for one hotel (its Agoda id) and these dates; our cid is
+ * added by /api/go/agoda. Lands on the hotel itself, no search in between.
+ */
+export function agodaHotelLanding(
+  hotelId: number,
+  q: { checkIn: string; checkOut: string; adults: number; childrenAges: number[]; rooms?: number }
+): string {
+  const u = new URL("https://www.agoda.com/partners/partnersearch.aspx");
+  u.searchParams.set("hid", String(hotelId));
+  u.searchParams.set("checkin", q.checkIn);
+  u.searchParams.set("checkout", q.checkOut);
+  u.searchParams.set("NumberofAdults", String(Math.max(1, q.adults)));
+  u.searchParams.set("NumberofChildren", String(q.childrenAges.length));
+  if (q.childrenAges.length) u.searchParams.set("childages", q.childrenAges.join(","));
+  u.searchParams.set("Rooms", String(Math.max(1, q.rooms ?? 1)));
+  u.searchParams.set("currency", "SAR");
+  return u.toString();
+}
+
 export interface BookingHandoff {
   /** The partner's own name, shown to the traveller before they leave. */
   partner: string;
@@ -168,6 +188,8 @@ export interface HotelSearchQuery {
   locale?: "ar" | "en";
   /** Rooms booked (1 when not said); adults and children are the whole party. */
   rooms?: number;
+  /** A named hotel's Agoda id (our index of Agoda's hotel file), when matched. */
+  agodaId?: number | null;
 }
 
 /** The party spread over the rooms, the first rooms taking the extra: [adults per room], [room of each child]. */
@@ -283,7 +305,13 @@ export function hotelPartnerLinks(q: HotelSearchQuery): BookingHandoff[] {
     return [
       { partner: "Booking.com", url: hotelAllezUrl("booking", h) },
       { partner: "Expedia", url: hotelAllezUrl("expedia", h) },
-      { partner: "Agoda", url: hotelAllezUrl("agoda", h) },
+      // Agoda direct when we know the hotel's Agoda id: its own page + our cid.
+      {
+        partner: "Agoda",
+        url: q.agodaId
+          ? `/api/go/agoda?landing=${encodeURIComponent(agodaHotelLanding(q.agodaId, { ...q, rooms: rooms.r }))}`
+          : hotelAllezUrl("agoda", h),
+      },
       { partner: "Hotels.com", url: hotelAllezUrl("hotelscom", h) },
     ];
   }

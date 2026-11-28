@@ -157,6 +157,7 @@ export function siteOffers(hotel: HotelResult, c: Common): SiteOffer[] {
     lat: hotel.lat,
     lng: hotel.lng,
     locale: c.locale,
+    agodaId: hotel.agodaId,
   });
   const out: SiteOffer[] = [];
   for (const o of hotel.offers) {

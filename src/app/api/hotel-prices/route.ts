@@ -3,6 +3,7 @@ import { hotelPrices } from "@/lib/providers/serpapi";
 import { dfsConfigured, dfsHotelPrices, dfsLastError } from "@/lib/providers/dataforseo";
 import { parseChildrenAges } from "@/lib/searchParamsUtil";
 import { arabicNameFor } from "@/lib/providers/localHotels";
+import { agodaConfigured, agodaHotelRates, agodaIdsFor, agodaLastError } from "@/lib/providers/agoda";
 
 export const dynamic = "force-dynamic";
 
@@ -75,8 +76,35 @@ export async function GET(req: NextRequest) {
   if (result && sp.get("lang") === "ar") {
     for (const h of result.hotels) h.nameAr = arabicNameFor(h.name) ?? undefined;
   }
-  // Site check only: which source answered, and DataForSEO's refusal if any.
+  // Agoda direct: each shown hotel's Agoda id (our index of Agoda's hotel
+  // file), so its Agoda button lands on the hotel itself with our cid.
   const smokeOk = Boolean(smoke && req.headers.get("x-sfrtna-smoke") === smoke);
-  const check = smokeOk ? { via: dfs ? "dfs" : result ? "serp" : "none", dfsOn: dfsConfigured(), dfsError: dfsLastError() } : undefined;
+  let agoda: Record<string, unknown> | undefined;
+  if (result?.hotels.length) {
+    const ids = await agodaIdsFor(result.hotels);
+    result.hotels.forEach((h, i) => (h.agodaId = ids[i]?.hotelId ?? null));
+    // Site check only, for now: Agoda's live rate beside Google's Agoda price
+    // for the same hotels, to learn how they compare (Agoda's dailyRate is
+    // before taxes) before any Agoda number is shown to travellers.
+    if (smokeOk && sp.get("agoda") === "1") {
+      const matched = result.hotels.filter((h) => h.agodaId);
+      const rates = agodaConfigured()
+        ? await agodaHotelRates(matched.map((h) => h.agodaId as number), { checkIn, checkOut, adults, childrenAges })
+        : null;
+      agoda = {
+        on: agodaConfigured(),
+        matched: `${matched.length}/${result.hotels.length}`,
+        rates: rates?.length ?? null,
+        error: agodaLastError(),
+        sample: matched.slice(0, 12).map((h) => {
+          const r = rates?.find((x) => x.hotelId === h.agodaId);
+          const g = h.offers.find((o) => /^agoda$/i.test(o.source));
+          return { name: h.name, id: h.agodaId, agodaName: r?.hotelName, dailyRate: r?.dailyRate, crossed: r?.crossedOutRate, cur: r?.currency, room: r?.roomtypeName, googleAgodaNight: g?.perNight, googleAgodaBeforeTax: g?.perNightBeforeTax };
+        }),
+      };
+    }
+  }
+  // Site check only: which source answered, and DataForSEO's refusal if any.
+  const check = smokeOk ? { via: dfs ? "dfs" : result ? "serp" : "none", dfsOn: dfsConfigured(), dfsError: dfsLastError(), agoda } : undefined;
   return NextResponse.json({ result, ...(check ? { check } : {}) }, { headers: { "Cache-Control": "no-store" } });
 }
