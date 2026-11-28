@@ -1,0 +1,39 @@
+# Agoda Hotel Data File (partner download, URL kept in the secret
+# AGODA_HOTEL_FILE_URL, never printed). Step "inspect": downloads it and
+# writes its shape to the log (lines start with AGODA) so the city/hotel id
+# mapping can be built. By hand only.
+name: Agoda data
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Download
+        env:
+          URL: ${{ secrets.AGODA_HOTEL_FILE_URL }}
+        run: |
+          set -e
+          mkdir -p /tmp/ag && cd /tmp/ag
+          if [ -z "$URL" ]; then echo "AGODA no secret"; exit 1; fi
+          code=$(curl -sSL -o raw -w '%{http_code} %{content_type}' "$URL" || true)
+          echo "AGODA http/type: $code"
+          echo "AGODA size: $(stat -c %s raw) bytes"
+          echo "AGODA file: $(file -b raw)"
+      - name: Inspect
+        run: |
+          cd /tmp/ag
+          kind=$(file -b raw)
+          case "$kind" in
+            Zip*) unzip -l raw | tail -n 12 | sed 's/^/AGODA zip: /'; unzip -q raw -d x ;;
+            gzip*) mkdir -p x && gunzip -c raw > x/data ;;
+            *) mkdir -p x && cp raw x/data ;;
+          esac
+          for f in $(find x -type f | head -5); do
+            echo "AGODA ---- $f ($(stat -c %s "$f") bytes, $(file -b "$f"))"
+            echo "AGODA lines: $(wc -l < "$f")"
+            head -c 3000 "$f" | head -n 4 | cut -c1-1500 | sed 's/^/AGODA row: /'
+          done
